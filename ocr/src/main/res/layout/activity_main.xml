@@ -1,0 +1,81 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    tools:context="com.aibabel.ocr.MainActivity">
+
+
+    <ScrollView
+        android:id="@+id/sv_image"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:id="@+id/ll_image"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/px876">
+                <ImageView
+                    android:id="@+id/iv_image"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/px876"
+                    android:scaleType="fitStart"
+                    android:scrollbarAlwaysDrawVerticalTrack="true" />
+                <com.aibabel.ocr.widgets.MyRelativeLayout
+                    android:id="@+id/rl_image"
+                    android:layout_width="match_parent"
+                    android:background="@color/transparent"
+                    android:layout_height="@dimen/px876">
+                </com.aibabel.ocr.widgets.MyRelativeLayout>
+            </RelativeLayout>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/px400" />
+        </LinearLayout>
+    </ScrollView>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/px400"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentStart="true">
+
+        <android.support.v4.view.ViewPager
+            android:id="@+id/viewpager"
+            android:layout_width="fill_parent"
+            android:layout_height="@dimen/px400"
+            android:layout_gravity="center"
+            android:background="#fffffF"></android.support.v4.view.ViewPager>
+
+        <LinearLayout
+            android:id="@+id/ll_dots"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="@dimen/px50"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"></LinearLayout>
+    </RelativeLayout>
+
+    <TextView
+        android:id="@+id/tv_back"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@mipmap/ic_back"
+        android:textColor="@color/colorOrange" />
+
+    <!-- <ScrollerViewPager
+         android:id="@+id/view_pager"
+         android:background="@color/colorAccent"
+         android:layout_width="match_parent"
+         android:layout_height="200dp"
+         android:layout_alignParentBottom="true"
+         android:layout_gravity="center" />-->
+
+
+</RelativeLayout>

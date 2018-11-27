@@ -1,0 +1,22 @@
+<resources>
+    <string name="app_name">拍照翻译</string>
+    <string name="error_msg">很抱歉，没能识别出任何数据！</string>
+    <string name="no_same">不能翻译同一种语言，请选择其它语言！</string>
+    <string name="no_net">当前无网络，请联网操作</string>
+    <string name="select_lan">选择语言</string>
+    <string name="keep_balance">文字保持水平</string>
+    <string name="object">物体</string>
+    <string name="meau">菜单</string>
+    <string name="artical">文章</string>
+    <string name="recogning">正在识别中…</string>
+    <string name="small">很抱歉，涂抹区域过小，请重新涂抹</string>
+    <string name="description">菜单、路牌全识别</string>
+
+    <string name="i_down">我知道了</string>
+    <string name="select_moshi">选择翻译模式</string>
+    <string name="confirm_translate_button">开始识别</string>
+    <string name="chongxin_photo">重拍</string>
+    <string name="photo_error">您要重拍吗？</string>
+
+    <string name="more">更多介绍 ></string>
+</resources>

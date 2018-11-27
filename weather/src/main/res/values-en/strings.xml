@@ -1,0 +1,18 @@
+<resources>
+    <string name="app_name">Weather</string>
+    <string name="check_currency">Select City</string>
+    <string name="common_used">Commonly Used</string>
+    <string name="bianji">Edit</string>
+    <string name="jintian">Today</string>
+    <string name="mingtina">Tomorrow</string>
+    <string name="xianzai">Now</string>
+    <string name="shi">:00</string>
+    <string name="shidu">Humidity</string>
+    <string name="wendu">Temperature</string>
+    <string name="fengsu">Wind Speed</string>
+    <string name="jiangshuiliang">Precipitation</string>
+
+    <!--toast-->
+    <string name="toast_chengshiguoduo">Max. 10 cities can be added to the list.</string>
+    <string name="toast_wuwangluo">No Internet access. Please connect to the network.</string>
+</resources>

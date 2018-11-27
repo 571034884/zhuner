@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<shape xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <solid android:color="#1a1a1a" />
+
+
+    <!-- 设置边框宽度 -->
+     <stroke android:width="@dimen/px0.5" android:color="#fff"/>
+
+    <!-- 四个角的弧度 -->
+    <corners
+        android:bottomLeftRadius="@dimen/text_size388"
+        android:bottomRightRadius="@dimen/text_size388"
+        android:topLeftRadius="@dimen/text_size388"
+        android:topRightRadius="@dimen/text_size388" />
+</shape>

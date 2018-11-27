@@ -1,0 +1,493 @@
+[
+  {
+    "id": 0,
+    "name_local": "中文",
+    "lang_code": "ch_ch",
+    "alert": "请说标准普通话。",
+    "name": "중국어",
+    "sound": 1,
+    "child": []
+  },
+  {
+    "id": 1,
+    "name_local": "English",
+    "lang_code": "en",
+    "alert": "Please speak in standard language.",
+    "name": "영어",
+    "sound": 1,
+    "child": [
+      {
+        "var_id": 0,
+        "var": "영어(중국)",
+        "var_code": "en_ch",
+        "var_local": "China",
+        "sound": 1
+      },
+      {
+        "var_id": 1,
+        "var": "영어(영국)",
+        "var_code": "en_en",
+        "var_local": "UK",
+        "sound": 1
+      },
+      {
+        "var_id": 2,
+        "var": "영어(미국)",
+        "var_code": "en_usa",
+        "var_local": "US",
+        "sound": 1
+      },
+      {
+        "var_id": 3,
+        "var": "영어(오스트레일리아)",
+        "var_code": "en_aus",
+        "var_local": "Australia",
+        "sound": 1
+      },
+      {
+        "var_id": 4,
+        "var": "영어(뉴질랜드)",
+        "var_code": "en_new",
+        "var_local": "New Zealand",
+        "sound": 1
+      },
+      {
+        "var_id": 5,
+        "var": "영어(캐나다)",
+        "var_code": "en_can",
+        "var_local": "Canada",
+        "sound": 1
+      },
+      {
+        "var_id": 6,
+        "var": "영어(인도)",
+        "var_code": "en_ind",
+        "var_local": "India",
+        "sound": 1
+      },
+      {
+        "var_id": 7,
+        "var": "영어(아일랜드)",
+        "var_code": "en_ire",
+        "var_local": "Ireland",
+        "sound": 1
+      },
+      {
+        "var_id": 8,
+        "var": "영어(남아프리카)",
+        "var_code": "en_sa",
+        "var_local": "South Africa",
+        "sound": 1
+      }
+    ]
+  },
+  {
+    "id": 2,
+    "name_local": "日本語",
+    "lang_code": "jpa",
+    "alert": "標準語で話してください。",
+    "name": "일본어 가로쓰기",
+    "sound": 1,
+    "child": []
+  },
+  {
+    "id": 2,
+    "name_local": "日本語",
+    "lang_code": "jpa_v",
+    "alert": "標準語で話してください。",
+    "name": "일본어 세로쓰기",
+    "sound": 1,
+    "child": []
+  },
+  {
+    "id": 3,
+    "name_local": "粵語",
+    "lang_code": "ch_yy",
+    "alert": "唔该请讲标准语。",
+    "name": "광둥어",
+    "sound": 1,
+    "child": []
+  },
+  {
+    "id": 4,
+    "name_local": "ภาษาไทย",
+    "lang_code": "tha",
+    "alert": "กรุณาพูดภาษาไทยมาตรฐาน",
+    "name": "태국어",
+    "sound": 1,
+    "child": []
+  },
+  {
+    "id": 5,
+    "name_local": "Bahasa Indonesia",
+    "lang_code": "idn",
+    "alert": "Silahkan berbicara bahasa baku.",
+    "name": "인도네시아어",
+    "sound": 1,
+    "child": []
+  },
+  {
+    "id": 6,
+    "name_local": "Русский",
+    "lang_code": "rus",
+    "alert": "Пожалуйста, говорите на стандартном языке.",
+    "name": "러시아어",
+    "sound": 1,
+    "child": []
+  },
+  {
+    "id": 7,
+    "name_local": "Français",
+    "lang_code": "fr",
+    "alert": "Parlez la langue standard, s'il vous plaît.",
+    "name": "프랑스어",
+    "sound": 1,
+    "child": [
+      {
+        "var_id": 0,
+        "var": "프랑스어(프랑스)",
+        "var_code": "fra_fra",
+        "var_local": "France",
+        "sound": 1
+      },
+      {
+        "var_id": 1,
+        "var": "프랑스어(캐나다)",
+        "var_code": "fra_can",
+        "var_local": "Canada",
+        "sound": 1
+      }
+    ]
+  },
+  {
+    "id": 8,
+    "name_local": "Español",
+    "lang_code": "es",
+    "alert": "Hable la lengua estándar, por favor.",
+    "name": "스페인어",
+    "sound": 1,
+    "child": [
+      {
+        "var_id": 0,
+        "var": "스페인어(스페인)",
+        "var_code": "spa_esp",
+        "var_local": "España",
+        "sound": 1
+      },
+      {
+        "var_id": 1,
+        "var": "스페인어(라틴 아메리카)",
+        "var_code": "spa_xla",
+        "var_local": "Latinoamérica",
+        "sound": 1
+      }
+    ]
+  },
+  {
+    "id": 9,
+    "name_local": "한국어",
+    "lang_code": "kor",
+    "alert": "표준어로 말하십시오.",
+    "name": "한국어",
+    "sound": 1,
+    "child": []
+  },
+  {
+    "id": 10,
+    "name_local": "Deutsch",
+    "lang_code": "ger",
+    "alert": "Sprechen Sie bitte die Standardsprache.",
+    "name": "독일어",
+    "sound": 1,
+    "child": []
+  },
+  {
+    "id": 11,
+    "name_local": "Italiano",
+    "lang_code": "ita",
+    "alert": "Parli la lingua standard, per favore.",
+    "name": "이탈리아어",
+    "sound": 1,
+    "child": []
+  },
+  {
+    "id": 12,
+    "name_local": "Português",
+    "lang_code": "pt",
+    "alert": "Fale o idioma padrão, por favor.",
+    "name": "포르투갈어",
+    "sound": 1,
+    "child": [
+      {
+        "var_id": 0,
+        "var": "포르투갈어(포르투갈)",
+        "var_code": "por_prt",
+        "var_local": "Portugal",
+        "sound": 1
+      },
+      {
+        "var_id": 1,
+        "var": "포르투갈어(브라질)",
+        "var_code": "por_bra",
+        "var_local": "Brazil",
+        "sound": 1
+      }
+    ]
+  },
+  {
+    "id": 13,
+    "name_local": "Ελληνικά",
+    "lang_code": "ell",
+    "alert": "Μιλήστε σε τυποποιημένη γλώσσα, παρακαλώ.",
+    "name": "그리스어",
+    "sound": 1,
+    "child": []
+  },
+  {
+    "id": 14,
+    "name_local": "Nederlands",
+    "lang_code": "nld",
+    "alert": "Spreek alstublieft in standaardtaal.",
+    "name": "네덜란드어",
+    "sound": 1,
+    "child": []
+  },
+  {
+    "id": 15,
+    "name_local": "العربية",
+    "lang_code": "ara_egy",
+    "alert": "يرجى التحدث باللغة القياسية.",
+    "name": "아랍어",
+    "sound": 1,
+    "child": [
+      {
+        "var_id": 0,
+        "var": "아랍어(이집트)",
+        "var_code": "ara_egy",
+        "var_local": "المصرية",
+        "sound": 1
+      },
+      {
+        "var_id": 1,
+        "var": "아랍어(사우디아라비아)",
+        "var_code": "ara_sau",
+        "var_local": "العربية السعودية",
+        "sound": 1
+      },
+      {
+        "var_id": 2,
+        "var": "아랍어(국제)",
+        "var_code": "ara_int",
+        "var_local": "الدولية",
+        "sound": 1
+      }
+    ]
+  },
+  {
+    "id": 16,
+    "name_local": "Bahasa Melayu",
+    "lang_code": "mys",
+    "alert": "Sila bercakap bahasa baku.",
+    "name": "마레이어",
+    "sound": 0,
+    "child": []
+  },
+  {
+    "id": 17,
+    "name_local": "Wikang Filipino",
+    "lang_code": "fil",
+    "alert": "Mangyaring magsalita ng karaniwang wika.",
+    "name": "필리핀어",
+    "sound": 0,
+    "child": []
+  },
+  {
+    "id": 18,
+    "name_local": "Türkçe",
+    "lang_code": "tur",
+    "alert": "Standart dilde konuşun, lütfen.",
+    "name": "터키어",
+    "sound": 0,
+    "child": []
+  },
+  {
+    "id": 19,
+    "name_local": "Українська",
+    "lang_code": "ukr",
+    "alert": "Будь ласка, говорите на стандартній мові.",
+    "name": "우크라이나어",
+    "sound": 0,
+    "child": []
+  },
+  {
+    "id": 20,
+    "name_local": "Tiếng Việt",
+    "lang_code": "vie",
+    "alert": "Hãy nói ngôn ngữ tiêu chuẩn.",
+    "name": "베트남어",
+    "sound": 0,
+    "child": []
+  },
+  {
+    "id": 21,
+    "name_local": "Polski",
+    "lang_code": "pol",
+    "alert": "Proszę mówić w standardowym języku.",
+    "name": "폴란드어",
+    "sound": 0,
+    "child": []
+  },
+  {
+    "id": 22,
+    "name_local": "Svenska",
+    "lang_code": "swe",
+    "alert": "Snälla tala på standardspråk.",
+    "name": "스웨덴어",
+    "sound": 0,
+    "child": []
+  },
+  {
+    "id": 23,
+    "name_local": "Dansk",
+    "lang_code": "dan",
+    "alert": "Tal venligst på standard sprog.",
+    "name": "덴마크어",
+    "sound": 0,
+    "child": []
+  },
+  {
+    "id": 24,
+    "name_local": "Suomi",
+    "lang_code": "fin",
+    "alert": "Puhu yleiskieltä.",
+    "name": "핀란드어",
+    "sound": 0,
+    "child": []
+  },
+  {
+    "id": 25,
+    "name_local": "Čeština",
+    "lang_code": "ces",
+    "alert": "Mluvte ve standardním jazyce, prosím.",
+    "name": "체코어",
+    "sound": 0,
+    "child": []
+  },
+  {
+    "id": 26,
+    "name_local": "Română",
+    "lang_code": "ron",
+    "alert": "Vorbiți în limba standard, vă rog.",
+    "name": "루마니아어",
+    "sound": 0,
+    "child": []
+  },
+  {
+    "id": 27,
+    "name_local": "Slovenščina",
+    "lang_code": "slk",
+    "alert": "Govori v standardnem jeziku, prosim.",
+    "name": "슬로베니아어",
+    "sound": 0,
+    "child": []
+  },
+  {
+    "id": 28,
+    "name_local": "Català",
+    "lang_code": "cat",
+    "alert": "Parli el llenguatge estàndard, si us plau.",
+    "name": "카탈로니아어",
+    "sound": 0,
+    "child": []
+  },
+  {
+    "id": 29,
+    "name_local": "Magyar",
+    "lang_code": "hun",
+    "alert": "Beszélj a standard nyelven.",
+    "name": "헝가리어",
+    "sound": 0,
+    "child": []
+  },
+  {
+    "id": 30,
+    "name_local": "Slovenčina",
+    "lang_code": "sk",
+    "alert": "Hovorte v štandardnom jazyku, prosím.",
+    "name": "슬로바키아어",
+    "sound": 0,
+    "child": []
+  },
+  {
+    "id": 31,
+    "name_local": "Norsk (bokmål)",
+    "lang_code": "nor",
+    "alert": "Vennligst snakk i standardspråket.",
+    "name": "노르웨이어",
+    "sound": 0,
+    "child": []
+  },
+  {
+    "id": 32,
+    "name_local": "Hrvatski",
+    "lang_code": "cro",
+    "alert": "Molimo govoriti standardni jezik.",
+    "name": "크로아티아어",
+    "sound": 0,
+    "child": []
+  },
+  {
+    "id": 33,
+    "name_local": "Íslenska",
+    "lang_code": "is",
+    "alert": "Vinsamlegast talaðu staðalmálið.",
+    "name": "아이슬란드어",
+    "sound": 0,
+    "child": []
+  },
+  {
+    "id": 34,
+    "name_local": "isiZulu",
+    "lang_code": "zu",
+    "alert": "Sicela ukhulume ulimi standard.",
+    "name": "줄루어",
+    "sound": 0,
+    "child": []
+  },
+  {
+    "id": 35,
+    "name_local": "Jawa",
+    "lang_code": "ja",
+    "alert": "Mangga nganggo basa standar.",
+    "name": "자와어",
+    "sound": 0,
+    "child": []
+  },
+  {
+    "id": 36,
+    "name_local": "Lietuvių",
+    "lang_code": "lt",
+    "alert": "Prašau kalbėti standartine kalba.",
+    "name": "리투아니아어",
+    "sound": 0,
+    "child": []
+  },
+  {
+    "id": 37,
+    "name_local": "Latviešu",
+    "lang_code": "lv",
+    "alert": "Lūdzu, runājiet standarta valodu.",
+    "name": "라트비아어",
+    "sound": 0,
+    "child": []
+  },
+  {
+    "id": 38,
+    "name_local": "Galego",
+    "lang_code": "gl",
+    "alert": "Fale o idioma estándar, por favor.",
+    "name": "갈리시아어",
+    "sound": 0,
+    "child": []
+  }
+]

@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#000000"
+    tools:context="com.aibabel.weather.activity.AddCityActivity">
+
+    <LinearLayout
+        android:id="@+id/ll"
+        android:layout_width="0px"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/px20"
+        android:layout_marginTop="@dimen/px44"
+        android:focusable="true"
+        android:focusableInTouchMode="true"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <TextView
+            android:layout_width="@dimen/px0"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/check_currency"
+            android:textColor="#ffffff"
+            android:textSize="@dimen/px40" />
+
+        <ImageView
+            android:id="@+id/iv_guanbi"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="@dimen/px20"
+            android:src="@mipmap/guanbi" />
+    </LinearLayout>
+
+    <com.aibabel.weather.custom.EditTextWithDel
+        android:id="@+id/et_search"
+        android:layout_width="@dimen/px0"
+        android:layout_height="@dimen/px64"
+        android:layout_marginBottom="@dimen/px36"
+        android:layout_marginLeft="@dimen/px20"
+        android:layout_marginRight="@dimen/px20"
+        android:layout_marginTop="@dimen/px36"
+        android:background="@drawable/bg_city_select"
+        android:singleLine="true"
+        android:textColor="#ffffff"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/ll" />
+
+    <com.aibabel.weather.custom.PinnedHeaderListView
+        android:id="@+id/rv_currency"
+        android:layout_width="@dimen/px0"
+        android:layout_height="@dimen/px0"
+        android:layout_marginLeft="@dimen/px20"
+        android:layout_marginRight="@dimen/px20"
+        android:layout_marginTop="@dimen/px26"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/et_search" />
+
+    <TextView
+        android:id="@+id/tv_dialog"
+        android:layout_width="@dimen/px66"
+        android:layout_height="@dimen/px66"
+        android:background="@drawable/shape_slide_grey"
+        android:gravity="center"
+        android:text="A"
+        android:textColor="@android:color/white"
+        android:textSize="@dimen/px35"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/ll"
+        tools:visibility="visible" />
+
+    <com.aibabel.weather.custom.SideBar
+        android:id="@+id/sb_sort"
+        android:layout_width="@dimen/px30"
+        android:layout_height="@dimen/px0"
+        android:layout_marginBottom="@dimen/px50"
+        android:layout_marginTop="@dimen/px164"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/ll" />
+
+</android.support.constraint.ConstraintLayout>

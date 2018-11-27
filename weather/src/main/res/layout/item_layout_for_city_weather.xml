@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/ll_item"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/px128"
+    android:orientation="horizontal"
+    android:paddingLeft="@dimen/px20">
+
+    <android.support.constraint.ConstraintLayout
+        android:id="@+id/cl_item_content"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <android.support.constraint.ConstraintLayout
+            android:id="@+id/cl_left"
+            android:layout_width="@dimen/px0"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toLeftOf="@id/tv_wendu"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <TextView
+                android:id="@+id/tv_time"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="上午9:30"
+                app:layout_constraintTop_toTopOf="parent"
+                android:textColor="#ffffff"
+                android:textSize="@dimen/px24" />
+
+            <com.aibabel.weather.custom.AutoFitTextView
+                android:id="@+id/tv_city"
+                android:layout_width="@dimen/px0"
+                android:layout_height="wrap_content"
+                android:gravity="bottom"
+                android:singleLine="true"
+                android:text=""
+                android:textColor="#ffffff"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tv_time"
+                app:layout_constraintBottom_toBottomOf="parent"/>
+
+            <!--<TextView-->
+            <!--android:id="@+id/tv_city"-->
+            <!--android:layout_width="@dimen/px0"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_marginTop="@dimen/px10"-->
+            <!--android:textColor="#ffffff"-->
+            <!--android:textSize="@dimen/px40"-->
+            <!--app:layout_constraintTop_toBottomOf="@id/tv_time" />-->
+
+        </android.support.constraint.ConstraintLayout>
+
+        <TextView
+            android:id="@+id/tv_wendu"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="sans-serif-thin"
+            android:text="22度"
+            android:textColor="#ffffff"
+            android:textSize="@dimen/px80"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+    </android.support.constraint.ConstraintLayout>
+
+    <TextView
+        android:id="@+id/tv_delete"
+        android:layout_width="@dimen/px120"
+        android:layout_height="match_parent"
+        android:background="#fe5000"
+        android:gravity="center"
+        android:text="删除"
+        android:textColor="#ffffff"
+        android:textSize="@dimen/px28" />
+</LinearLayout>

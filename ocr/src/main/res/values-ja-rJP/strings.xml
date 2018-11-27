@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+	<string name="app_name">カメラ翻訳</string>
+	<string name="error_msg">すみません、テキストが何も認識されていません。</string>
+	<string name="no_same">同じ言語の間の翻訳ができず、他の言語をご選択ください。</string>
+	<string name="no_net">通信できませんでした。まず、ネットワックにご接続ください。</string>
+	<string name="select_lan">言語を選択する</string>
+	<string name="keep_balance">文を水平か垂直にお揃えください。</string>
+	<string name="meau">メニュー</string>
+	<string name="artical">ドキュメント</string>
+	<string name="recogning">認識中…</string>
+	<string name="small">すみませんが、選択された部分が小さすぎます。もう一度ご選択ください。</string>
+
+	<string name="i_down">分かりました</string>
+	<string name="select_moshi">翻訳モードを選択</string>
+	<string name="confirm_translate_button">認識を始める</string>
+	<string name="chongxin_photo">撮り直す</string>
+	<string name="photo_error">お撮り直しですか？</string>
+	<string name="more">もっと見る ></string>
+
+</resources>

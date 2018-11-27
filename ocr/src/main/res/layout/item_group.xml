@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:gravity="center_vertical"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/px110"
+        android:layout_marginLeft="@dimen/px44"
+        android:layout_marginRight="@dimen/px44"
+        android:orientation="horizontal">
+        <!--   <ImageView
+               android:id="@+id/img_horn"
+               android:layout_width="wrap_content"
+               android:layout_height="wrap_content"
+               android:layout_marginTop="24px"
+               android:src="@mipmap/horn_no_lan"/>-->
+        <LinearLayout
+            android:layout_width="@dimen/px0"
+            android:layout_height="@dimen/px110"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/tv_name_zh"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginBottom="0px"
+                android:text="中文"
+                android:textColor="#fe5000"
+                android:textSize="@dimen/px36" />
+
+            <TextView
+                android:id="@+id/tv_name_local"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:text="中文"
+                android:textColor="#999999"
+                android:textSize="@dimen/px24" />
+        </LinearLayout>
+
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent">
+
+            <ImageView
+                android:id="@+id/iv_elv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:layout_marginRight="@dimen/px10" />
+           <!-- android:src="@mipmap/buttom"-->
+
+            <ImageView
+                android:id="@+id/iv_choice"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:layout_marginRight="@dimen/px50" />
+            <!--android:src="@mipmap/select"-->
+        </RelativeLayout>
+
+    </LinearLayout>
+
+    <View
+        android:id="@+id/lv_lan_item_view"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/px1"
+        android:layout_marginLeft="@dimen/px44"
+        android:layout_marginRight="@dimen/px44"
+        android:background="#333333" />
+</LinearLayout>

@@ -1,0 +1,23 @@
+<resources>
+    <string name="app_name">Sos</string>
+
+    <string name="morenxianshi">Country, City</string>
+    <string name="quxiao">Cancel</string>
+    <string name="yazhou">Asia</string>
+    <string name="ouzhou">Europe</string>
+    <string name="feizhou">Africa</string>
+    <string name="beimeizhou">North America</string>
+    <string name="nanmeizhou">South America</string>
+    <string name="dayangzhou">Oceania</string>
+    <string name="zhankaigengduo">More</string>
+    <string name="dingweichengshi">City</string>
+    <string name="suoshuguojia">Country</string>
+    <string name="lingshiguanxinxi">Chinese Consulate-General in </string>
+    <string name="guojiaquhao">Country calling code</string>
+    <string name="lingshiguandianhua">(Consulate) Tel.</string>
+    <string name="lingshiguandizhi">(Consulate) Addr.</string>
+    <string name="baojingdianhua">Emergency telephone number (Police)</string>
+    <string name="jijiudianhua">Emergency telephone number (Ambulance)</string>
+
+    <string name="toast_zanwuxinxi">No information found.</string>
+</resources>

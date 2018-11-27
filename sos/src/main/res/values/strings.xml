@@ -1,0 +1,23 @@
+<resources>
+    <string name="app_name">Sos</string>
+
+    <string name="morenxianshi">国家、城市</string>
+    <string name="quxiao">取消</string>
+    <string name="yazhou">亚洲</string>
+    <string name="ouzhou">欧洲</string>
+    <string name="feizhou">非洲</string>
+    <string name="beimeizhou">北美洲</string>
+    <string name="nanmeizhou">南美洲</string>
+    <string name="dayangzhou">大洋洲</string>
+    <string name="zhankaigengduo">展开更多</string>
+    <string name="dingweichengshi">定位城市</string>
+    <string name="suoshuguojia">所属国家</string>
+    <string name="lingshiguanxinxi">中国驻[城市]总领事馆</string>
+    <string name="guojiaquhao">国家区号</string>
+    <string name="lingshiguandianhua">领事馆电话</string>
+    <string name="lingshiguandizhi">领事馆地址</string>
+    <string name="baojingdianhua">报警电话</string>
+    <string name="jijiudianhua">急救电话</string>
+
+    <string name="toast_zanwuxinxi">暂无信息</string>
+</resources>

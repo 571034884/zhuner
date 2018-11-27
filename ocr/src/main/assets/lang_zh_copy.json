@@ -1,0 +1,484 @@
+[
+  {
+    "id": 0,
+    "name": "中文",
+    "name_local": "汉语",
+    "lang_code": "ch_ch",
+    "alert": "请说标准普通话。",
+    "sound": 1,
+    "child": []
+  },
+  {
+    "id": 1,
+    "name": "英语",
+    "name_local": "English",
+    "lang_code": "en",
+    "alert": "Please speak in standard language.",
+    "sound": 1,
+    "child": [
+      {
+        "var_id": 0,
+        "var": "英语(中国)",
+        "var_code": "en_ch",
+        "var_local": "China",
+        "sound": 1
+      },
+      {
+        "var_id": 1,
+        "var": "英语(英国)",
+        "var_code": "en_en",
+        "var_local": "UK",
+        "sound": 1
+      },
+      {
+        "var_id": 2,
+        "var": "英语(美国)",
+        "var_code": "en_usa",
+        "var_local": "US",
+        "sound": 1
+      },
+      {
+        "var_id": 3,
+        "var": "英语(澳大利亚)",
+        "var_code": "en_aus",
+        "var_local": "Australia",
+        "sound": 1
+      },
+      {
+        "var_id": 4,
+        "var": "英语(新西兰)",
+        "var_code": "en_new",
+        "var_local": "New Zealand",
+        "sound": 1
+      },
+      {
+        "var_id": 5,
+        "var": "英语(加拿大)",
+        "var_code": "en_can",
+        "var_local": "Canada",
+        "sound": 1
+      },
+      {
+        "var_id": 6,
+        "var": "英语(印度)",
+        "var_code": "en_ind",
+        "var_local": "India",
+        "sound": 1
+      },
+      {
+        "var_id": 7,
+        "var": "英语(爱尔兰)",
+        "var_code": "en_ire",
+        "var_local": "Ireland",
+        "sound": 1
+      },
+      {
+        "var_id": 8,
+        "var": "英语(南非)",
+        "var_code": "en_sa",
+        "var_local": "South Africa",
+        "sound": 1
+      }
+    ]
+  },
+  {
+    "id": 2,
+    "name": "日语",
+    "name_local": "日本語",
+    "lang_code": "jpa",
+    "alert": "標準語で話してください。",
+    "sound": 1,
+    "child": []
+  },
+  {
+    "id": 3,
+    "name": "粤语",
+    "name_local": "粵語",
+    "lang_code": "ch_yy",
+    "alert": "唔该请讲标准语。",
+    "sound": 1,
+    "child": []
+  },
+  {
+    "id": 4,
+    "name": "泰语",
+    "name_local": "ภาษาไทย",
+    "lang_code": "tha",
+    "alert": "กรุณาพูดภาษาไทยมาตรฐาน",
+    "sound": 1,
+    "child": []
+  },
+  {
+    "id": 5,
+    "name": "印尼语",
+    "name_local": "Bahasa Indonesia",
+    "lang_code": "idn",
+    "alert": "Silahkan berbicara bahasa baku.",
+    "sound": 1,
+    "child": []
+  },
+  {
+    "id": 6,
+    "name": "俄语",
+    "name_local": "Русский",
+    "lang_code": "rus",
+    "alert": "Пожалуйста, говорите на стандартном языке.",
+    "sound": 1,
+    "child": []
+  },
+  {
+    "id": 7,
+    "name": "法语",
+    "name_local": "Français",
+    "lang_code": "fr",
+    "alert": "Parlez la langue standard, s'il vous plaît.",
+    "sound": 1,
+    "child": [
+      {
+        "var_id": 0,
+        "var": "法语(法国)",
+        "var_code": "fra_fra",
+        "var_local": "France",
+        "sound": 1
+      },
+      {
+        "var_id": 1,
+        "var": "法语(加拿大)",
+        "var_code": "fra_can",
+        "var_local": "Canada",
+        "sound": 1
+      }
+    ]
+  },
+  {
+    "id": 8,
+    "name": "西班牙语",
+    "name_local": "Español",
+    "lang_code": "es",
+    "alert": "Hable la lengua estándar, por favor.",
+    "sound": 1,
+    "child": [
+      {
+        "var_id": 0,
+        "var": "西班牙语(西班牙)",
+        "var_code": "spa_esp",
+        "var_local": "España",
+        "sound": 1
+      },
+      {
+        "var_id": 1,
+        "var": "西班牙语(拉丁美洲)",
+        "var_code": "spa_xla",
+        "var_local": "Latinoamérica",
+        "sound": 1
+      }
+    ]
+  },
+  {
+    "id": 9,
+    "name": "韩语",
+    "name_local": "한국어",
+    "lang_code": "kor",
+    "alert": "표준어로 말하십시오.",
+    "sound": 1,
+    "child": []
+  },
+  {
+    "id": 10,
+    "name": "德语",
+    "name_local": "Deutsch",
+    "lang_code": "ger",
+    "alert": "Sprechen Sie bitte die Standardsprache.",
+    "sound": 1,
+    "child": []
+  },
+  {
+    "id": 11,
+    "name": "意大利语",
+    "name_local": "Italiano",
+    "lang_code": "ita",
+    "alert": "Parli la lingua standard, per favore.",
+    "sound": 1,
+    "child": []
+  },
+  {
+    "id": 12,
+    "name": "葡萄牙语",
+    "name_local": "Português",
+    "lang_code": "pt",
+    "alert": "Fale o idioma padrão, por favor.",
+    "sound": 1,
+    "child": [
+      {
+        "var_id": 0,
+        "var": "葡萄牙语(葡萄牙)",
+        "var_code": "por_prt",
+        "var_local": "Portuguese",
+        "sound": 1
+      },
+      {
+        "var_id": 1,
+        "var": "葡萄牙语(巴西)",
+        "var_code": "por_bra",
+        "var_local": "Brazil",
+        "sound": 1
+      }
+    ]
+  },
+  {
+    "id": 13,
+    "name": "希腊语",
+    "name_local": "Ελληνικά",
+    "lang_code": "ell",
+    "alert": "Μιλήστε σε τυποποιημένη γλώσσα, παρακαλώ.",
+    "sound": 1,
+    "child": []
+  },
+  {
+    "id": 14,
+    "name": "荷兰语",
+    "name_local": "Nederlands",
+    "lang_code": "nld",
+    "alert": "Spreek alstublieft in standaardtaal.",
+    "sound": 1,
+    "child": []
+  },
+  {
+    "id": 15,
+    "name": "阿拉伯语",
+    "name_local": "العربية",
+    "lang_code": "ara_egy",
+    "alert": "يرجى التحدث باللغة القياسية.",
+    "sound": 1,
+    "child": [
+      {
+        "var_id": 0,
+        "var": "阿拉伯语(埃及)",
+        "var_code": "ara_egy",
+        "var_local": "المصرية",
+        "sound": 1
+      },
+      {
+        "var_id": 1,
+        "var": "阿拉伯语(沙特阿拉伯)",
+        "var_code": "ara_sau",
+        "var_local": "العربية السعودية",
+        "sound": 1
+      },
+      {
+        "var_id": 2,
+        "var": "阿拉伯语(国际)",
+        "var_code": "ara_int",
+        "var_local": "الدولية",
+        "sound": 1
+      }
+    ]
+  },
+  {
+    "id": 16,
+    "name": "马来语",
+    "name_local": "Bahasa Melayu",
+    "lang_code": "mys",
+    "alert": "Sila bercakap bahasa baku.",
+    "sound": 0,
+    "child": []
+  },
+  {
+    "id": 17,
+    "name": "菲律宾语",
+    "name_local": "Wikang Filipino",
+    "lang_code": "fil",
+    "alert": "Mangyaring magsalita ng karaniwang wika.",
+    "sound": 0,
+    "child": []
+  },
+  {
+    "id": 18,
+    "name": "土耳其语",
+    "name_local": "Türkçe",
+    "lang_code": "tur",
+    "alert": "Standart dilde konuşun, lütfen.",
+    "sound": 0,
+    "child": []
+  },
+  {
+    "id": 19,
+    "name": "乌克兰语",
+    "name_local": "Українська",
+    "lang_code": "ukr",
+    "alert": "Будь ласка, говорите на стандартній мові.",
+    "sound": 0,
+    "child": []
+  },
+  {
+    "id": 20,
+    "name": "越南语",
+    "name_local": "Tiếng Việt",
+    "lang_code": "vie",
+    "alert": "Hãy nói ngôn ngữ tiêu chuẩn.",
+    "sound": 0,
+    "child": []
+  },
+  {
+    "id": 21,
+    "name": "波兰语",
+    "name_local": "Polski",
+    "lang_code": "pol",
+    "alert": "Proszę mówić w standardowym języku.",
+    "sound": 0,
+    "child": []
+  },
+  {
+    "id": 22,
+    "name": "瑞典语",
+    "name_local": "Svenska",
+    "lang_code": "swe",
+    "alert": "Snälla tala på standardspråk.",
+    "sound": 0,
+    "child": []
+  },
+  {
+    "id": 23,
+    "name": "丹麦语",
+    "name_local": "Dansk",
+    "lang_code": "dan",
+    "alert": "Tal venligst på standard sprog.",
+    "sound": 0,
+    "child": []
+  },
+  {
+    "id": 24,
+    "name": "芬兰语",
+    "name_local": "Suomi",
+    "lang_code": "fin",
+    "alert": "Puhu yleiskieltä.",
+    "sound": 0,
+    "child": []
+  },
+  {
+    "id": 25,
+    "name": "捷克语",
+    "name_local": "Čeština",
+    "lang_code": "ces",
+    "alert": "Mluvte ve standardním jazyce, prosím.",
+    "sound": 0,
+    "child": []
+  },
+  {
+    "id": 26,
+    "name": "罗马尼亚语",
+    "name_local": "Română",
+    "lang_code": "ron",
+    "alert": "Vorbiți în limba standard, vă rog.",
+    "sound": 0,
+    "child": []
+  },
+  {
+    "id": 27,
+    "name": "斯洛文尼亚语",
+    "name_local": "Slovenščina",
+    "lang_code": "slk",
+    "alert": "Govori v standardnem jeziku, prosim.",
+    "sound": 0,
+    "child": []
+  },
+  {
+    "id": 28,
+    "name": "加泰罗尼亚语",
+    "name_local": "Català",
+    "lang_code": "cat",
+    "alert": "Parli el llenguatge estàndard, si us plau.",
+    "sound": 0,
+    "child": []
+  },
+  {
+    "id": 29,
+    "name": "匈牙利语",
+    "name_local": "Magyar",
+    "lang_code": "hun",
+    "alert": "Beszélj a standard nyelven.",
+    "sound": 0,
+    "child": []
+  },
+  {
+    "id": 30,
+    "name": "斯洛伐克语",
+    "name_local": "Slovenčina",
+    "lang_code": "sk",
+    "alert": "Hovorte v štandardnom jazyku, prosím.",
+    "sound": 0,
+    "child": []
+  },
+  {
+    "id": 31,
+    "name": "挪威语",
+    "name_local": "Norsk (bokmål)",
+    "lang_code": "nor",
+    "alert": "Vennligst snakk i standardspråket.",
+    "sound": 0,
+    "child": []
+  },
+  {
+    "id": 32,
+    "name": "克罗地亚语",
+    "name_local": "Hrvatski",
+    "lang_code": "cro",
+    "alert": "Molimo govoriti standardni jezik.",
+    "sound": 0,
+    "child": []
+  },
+  {
+    "id": 33,
+    "name": "冰岛语",
+    "name_local": "Íslenska",
+    "lang_code": "is",
+    "alert": "Vinsamlegast talaðu staðalmálið.",
+    "sound": 0,
+    "child": []
+  },
+  {
+    "id": 34,
+    "name": "祖鲁语",
+    "name_local": "isiZulu",
+    "lang_code": "zu",
+    "alert": "Sicela ukhulume ulimi standard.",
+    "sound": 0,
+    "child": []
+  },
+  {
+    "id": 35,
+    "name": "爪哇语",
+    "name_local": "Jawa",
+    "lang_code": "ja",
+    "alert": "Mangga nganggo basa standar.",
+    "sound": 0,
+    "child": []
+  },
+  {
+    "id": 36,
+    "name": "立陶宛语",
+    "name_local": "Lietuvių",
+    "lang_code": "lt",
+    "alert": "Prašau kalbėti standartine kalba.",
+    "sound": 0,
+    "child": []
+  },
+  {
+    "id": 37,
+    "name": "拉脱维亚语",
+    "name_local": "Latviešu",
+    "lang_code": "lv",
+    "alert": "Lūdzu, runājiet standarta valodu.",
+    "sound": 0,
+    "child": []
+  },
+  {
+    "id": 38,
+    "name": "加利西亚语",
+    "name_local": "Galego",
+    "lang_code": "gl",
+    "alert": "Fale o idioma estándar, por favor.",
+    "sound": 0,
+    "child": []
+  }
+]

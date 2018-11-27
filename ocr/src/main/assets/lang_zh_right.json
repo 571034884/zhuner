@@ -1,0 +1,137 @@
+[
+  {
+    "id": 0,
+    "name": "中文",
+    "name_local": "汉语",
+    "lang_code": "ch_ch",
+    "alert": "请说标准普通话。",
+    "sound": 1,
+    "child": []
+  },
+  {
+    "id": 1,
+    "name": "英语",
+    "name_local": "English",
+    "lang_code": "en",
+    "alert": "Please speak in standard language.",
+    "sound": 1,
+    "child": []
+  },
+  {
+    "id": 2,
+    "name": "日语",
+    "name_local": "日本語",
+    "lang_code": "jpa",
+    "alert": "標準語で話してください。",
+    "sound": 1,
+    "child": []
+  },
+  {
+    "id": 3,
+    "name": "泰语",
+    "name_local": "ภาษาไทย",
+    "lang_code": "tha",
+    "alert": "กรุณาพูดภาษาไทยมาตรฐาน",
+    "sound": 1,
+    "child": []
+  },
+  {
+    "id": 4,
+    "name": "印尼语",
+    "name_local": "Bahasa Indonesia",
+    "lang_code": "idn",
+    "alert": "Silahkan berbicara bahasa baku.",
+    "sound": 1,
+    "child": []
+  },
+  {
+    "id": 5,
+    "name": "俄语",
+    "name_local": "Русский",
+    "lang_code": "rus",
+    "alert": "Пожалуйста, говорите на стандартном языке.",
+    "sound": 1,
+    "child": []
+  },
+  {
+    "id": 6,
+    "name": "法语",
+    "name_local": "Français",
+    "lang_code": "fr",
+    "alert": "Parlez la langue standard, s'il vous plaît.",
+    "sound": 1,
+    "child": []
+  },
+  {
+    "id": 7,
+    "name": "西班牙语",
+    "name_local": "Español",
+    "lang_code": "es",
+    "alert": "Hable la lengua estándar, por favor.",
+    "sound": 1,
+    "child": []
+  },
+  {
+    "id": 8,
+    "name": "韩语",
+    "name_local": "한국어",
+    "lang_code": "kor",
+    "alert": "표준어로 말하십시오.",
+    "sound": 1,
+    "child": []
+  },
+  {
+    "id": 9,
+    "name": "德语",
+    "name_local": "Deutsch",
+    "lang_code": "ger",
+    "alert": "Sprechen Sie bitte die Standardsprache.",
+    "sound": 1,
+    "child": []
+  },
+  {
+    "id": 10,
+    "name": "意大利语",
+    "name_local": "Italiano",
+    "lang_code": "ita",
+    "alert": "Parli la lingua standard, per favore.",
+    "sound": 1,
+    "child": []
+  },
+  {
+    "id": 11,
+    "name": "葡萄牙语",
+    "name_local": "Português",
+    "lang_code": "pt",
+    "alert": "Fale o idioma padrão, por favor.",
+    "sound": 1,
+    "child": []
+  },
+  {
+    "id": 12,
+    "name": "土耳其语",
+    "name_local": "Türkçe",
+    "lang_code": "tur",
+    "alert": "Standart dilde konuşun, lütfen.",
+    "sound": 0,
+    "child": []
+  },
+  {
+    "id": 13,
+    "name": "波兰语",
+    "name_local": "Polski",
+    "lang_code": "pol",
+    "alert": "Proszę mówić w standardowym języku.",
+    "sound": 0,
+    "child": []
+  },
+  {
+    "id": 14,
+    "name": "瑞典语",
+    "name_local": "Svenska",
+    "lang_code": "swe",
+    "alert": "Snälla tala på standardspråk.",
+    "sound": 0,
+    "child": []
+  }
+]

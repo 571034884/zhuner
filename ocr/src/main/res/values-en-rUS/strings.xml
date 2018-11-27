@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+	<string name="app_name">Camera Translation</string>
+	<string name="error_msg">Sorry, no text was recognized.</string>
+	<string name="no_same">Translation is not supported within the same language. Please select other language(s).</string>
+	<string name="no_net">No Internet access. Please connect to the network.</string>
+	<string name="select_lan">Select Language</string>
+	<string name="keep_balance">Please align the text horizontally or vertically.</string>
+	<string name="meau">Menu</string>
+	<string name="artical">Document</string>
+	<string name="recogning">Recognizing…</string>
+	<string name="small">Sorry, the area selected for recognition is too small, please select it again.</string>
+
+
+	<string name="i_down">Got it</string>
+	<string name="select_moshi">Select transtion mode</string>
+	<string name="confirm_translate_button">Start recognition</string>
+	<string name="chongxin_photo">Retake</string>
+	<string name="photo_error">Would you like to retake the picture？</string>
+
+	<string name="more">More information ></string>
+
+</resources>

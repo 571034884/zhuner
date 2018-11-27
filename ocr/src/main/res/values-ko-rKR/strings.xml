@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+	<string name="app_name">카메라 번역</string>
+	<string name="error_msg">미아합니다. 촬영한 내용에 문자가 없습니다.</string>
+	<string name="no_same">촬영한 내용의 언어와 통역하실 언어가 동일하면 안됩니다.기타 언어로 선택하여 주세요.</string>
+	<string name="no_net">네트워크가 불가하므로 연결하여 사용 바랍니다.</string>
+	<string name="select_lan">언어를 선택하기</string>
+	<string name="keep_balance">촬영시 문자를 수평 혹은 수직으로 하여 주세요.</string>
+	<string name="meau">메뉴</string>
+	<string name="artical">도큐멘트</string>
+	<string name="recogning">인식 중…</string>
+	<string name="small">미안합니다, 선택된 부분이 너무 작습니다. 다시 선택하세요.</string>
+
+	<string name="i_down">알겠습니다</string>
+	<string name="select_moshi">번역 모드를 선택</string>
+	<string name="confirm_translate_button">인식 시작</string>
+	<string name="chongxin_photo">재촬영</string>
+	<string name="photo_error">재촬영 하시겠습니까？</string>
+	<string name="more">더 보기 ></string>
+
+</resources>

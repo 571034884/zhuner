@@ -1,0 +1,23 @@
+<resources>
+    <string name="app_name">Sos</string>
+
+    <string name="morenxianshi">국가, 도시.</string>
+    <string name="quxiao">취소</string>
+    <string name="yazhou">아시아</string>
+    <string name="ouzhou">유럽</string>
+    <string name="feizhou">아프리카 </string>
+    <string name="beimeizhou">북미주</string>
+    <string name="nanmeizhou">남미주</string>
+    <string name="dayangzhou">대양주</string>
+    <string name="zhankaigengduo">더 보기</string>
+    <string name="dingweichengshi">도시명</string>
+    <string name="suoshuguojia">국가명</string>
+    <string name="lingshiguanxinxi">주[城市] 중국총영사관</string>
+    <string name="guojiaquhao">국가번호</string>
+    <string name="lingshiguandianhua">(영사관) 전화번호</string>
+    <string name="lingshiguandizhi">(영사관) 주소</string>
+    <string name="baojingdianhua">응급 전화번호 (경찰)</string>
+    <string name="jijiudianhua">응급 전화번호 (구급)</string>
+
+    <string name="toast_zanwuxinxi">검색한 정보 데이트가 없습니다.</string>
+</resources>

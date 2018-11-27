@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="147px"
+    android:background="#000000"
+    android:orientation="vertical"
+    android:paddingRight="20px">
+
+    <TextView
+        android:id="@+id/tv_catagory"
+        android:layout_width="match_parent"
+        android:layout_height="43px"
+        android:gravity="center_vertical"
+        android:textColor="@color/gray66"
+        android:textSize="24px" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0px"
+        android:layout_weight="1"
+        android:gravity="center_vertical"
+        android:paddingBottom="20px"
+        android:paddingTop="20px">
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/iv_country"
+            android:layout_width="64px"
+            android:layout_height="64px"
+            android:src="@mipmap/ic_launcher_round" />
+
+        <TextView
+            android:id="@+id/tv_currency"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="36px"
+            android:text="人民币"
+            android:textColor="#ffffff"
+            android:textSize="30px" />
+
+        <TextView
+            android:id="@+id/tv_currency_abbreviations"
+            android:layout_width="0px"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="16px"
+            android:layout_weight="1"
+            android:ellipsize="end"
+            android:gravity="center_vertical"
+            android:singleLine="true"
+            android:text="CNY"
+            android:textColor="#ffffff"
+            android:textSize="24px" />
+
+        <ImageView
+            android:id="@+id/iv_xuanzhong"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@mipmap/hl_xuanzhong" />
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:background="#333333" />
+
+</LinearLayout>

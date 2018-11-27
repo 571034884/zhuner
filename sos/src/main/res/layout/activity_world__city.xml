@@ -1,0 +1,412 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.aibabel.sos.custom.MyScrollview xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/hsvScroll"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/black00"
+    android:orientation="vertical"
+    tools:context=".activity.WorldCountryActivity">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginBottom="@dimen/px24"
+        android:orientation="vertical">
+
+        <include
+            android:id="@+id/i_title"
+            layout="@layout/layout_unified_title" />
+
+        <!--<LinearLayout-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="@dimen/px78"-->
+            <!--android:paddingLeft="@dimen/px20"-->
+            <!--android:paddingRight="20px">-->
+
+            <!--<ImageView-->
+                <!--android:id="@+id/iv_fanhui"-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_gravity="center_vertical"-->
+                <!--android:layout_marginRight="@dimen/px20"-->
+                <!--android:src="@mipmap/fanhui_bai" />-->
+
+            <!--<TextView-->
+                <!--android:id="@+id/tv_sousuo"-->
+                <!--android:layout_width="@dimen/px0"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_gravity="center_vertical"-->
+                <!--android:layout_weight="1"-->
+                <!--android:background="@drawable/circle_rect_title"-->
+                <!--android:drawableLeft="@mipmap/sousuo_sousuo"-->
+                <!--android:gravity="center_vertical"-->
+                <!--android:hint="@string/morenxianshi"-->
+                <!--android:paddingLeft="@dimen/px10"-->
+                <!--android:textColorHint="@color/gray66"-->
+                <!--android:textSize="@dimen/px24" />-->
+        <!--</LinearLayout>-->
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/text_size72"
+            android:layout_marginTop="@dimen/text_size14"
+            android:background="#f6f6f6"
+            android:orientation="horizontal"
+            android:visibility="gone">
+
+            <TextView
+                android:id="@+id/tv_recently_viewed"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="@dimen/text_size20"
+                android:gravity="center_vertical"
+                android:text="最近查看"
+                android:textColor="#b7b7b7"
+                android:textSize="@dimen/text_size24" />
+
+            <TextView
+                android:id="@+id/tv_city1"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="@dimen/text_size30"
+                android:gravity="center_vertical"
+                android:text="日本"
+                android:textColor="#222222"
+                android:textSize="@dimen/text_size24" />
+
+            <TextView
+                android:id="@+id/tv_city2"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="@dimen/text_size30"
+                android:gravity="center_vertical"
+                android:text="帕劳"
+                android:textColor="#222222"
+                android:textSize="@dimen/text_size24" />
+
+            <TextView
+                android:id="@+id/tv_city3"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="@dimen/text_size30"
+                android:gravity="center_vertical"
+                android:text="马尔代夫"
+                android:textColor="#222222"
+                android:textSize="@dimen/text_size24" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/ll_hot_citys"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:visibility="gone">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/text_size20"
+                android:layout_marginTop="@dimen/text_size20"
+                android:gravity="center"
+                android:text="热门"
+                android:textColor="#000000"
+                android:textSize="@dimen/text_size30" />
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/rv_hot_citys"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/text_size18"
+                android:layout_marginRight="@dimen/text_size18"></android.support.v7.widget.RecyclerView>
+
+            <LinearLayout
+                android:id="@+id/ll_hot"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="@dimen/text_size8"
+                    android:src="@mipmap/shijie_xoalajiantou" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="展开更多"
+                    android:textColor="#c6c6c6"
+                    android:textSize="@dimen/text_size24" />
+            </LinearLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/ll_asia_citys"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/tv_Asia"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/text_size20"
+                android:layout_marginTop="@dimen/text_size46"
+                android:gravity="center"
+                android:text="@string/yazhou"
+                android:textColor="@color/whiteff"
+                android:textSize="@dimen/text_size30" />
+
+            <com.aibabel.sos.custom.MyRecyclerView
+                android:id="@+id/rv_asia_citys"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/text_size18"
+                android:layout_marginRight="@dimen/text_size18" />
+
+            <LinearLayout
+                android:id="@+id/ll_asia"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="@dimen/text_size8"
+                    android:src="@mipmap/shijie_xoalajiantou" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/zhankaigengduo"
+                    android:textColor="#c6c6c6"
+                    android:textSize="@dimen/text_size24" />
+            </LinearLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/ll_europe_citys"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/text_size42"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/text_size20"
+                android:gravity="center"
+                android:text="@string/ouzhou"
+                android:textColor="@color/whiteff"
+                android:textSize="@dimen/text_size30" />
+
+            <com.aibabel.sos.custom.MyRecyclerView
+                android:id="@+id/rv_europe_citys"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/text_size18"
+                android:layout_marginRight="@dimen/text_size18" />
+
+            <LinearLayout
+                android:id="@+id/ll_europe"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="@dimen/text_size8"
+                    android:src="@mipmap/shijie_xoalajiantou" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/zhankaigengduo"
+                    android:textColor="#c6c6c6"
+                    android:textSize="@dimen/text_size24" />
+            </LinearLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/ll_africa_citys"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/text_size42"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/text_size20"
+                android:gravity="center"
+                android:text="@string/feizhou"
+                android:textColor="@color/whiteff"
+                android:textSize="@dimen/text_size30" />
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/rv_africa_citys"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/text_size18"
+                android:layout_marginRight="@dimen/text_size18"></android.support.v7.widget.RecyclerView>
+
+            <LinearLayout
+                android:id="@+id/ll_africa"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="@dimen/text_size8"
+                    android:src="@mipmap/shijie_xoalajiantou" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/zhankaigengduo"
+                    android:textColor="#c6c6c6"
+                    android:textSize="@dimen/text_size24" />
+            </LinearLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/ll_NorthAmerica_citys"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/text_size42"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/text_size20"
+                android:gravity="center"
+                android:text="@string/beimeizhou"
+                android:textColor="@color/whiteff"
+                android:textSize="@dimen/text_size30" />
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/rv_NorthAmerica_citys"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/text_size18"
+                android:layout_marginRight="@dimen/text_size18"></android.support.v7.widget.RecyclerView>
+
+            <LinearLayout
+                android:id="@+id/ll_NorthAmerica"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="@dimen/text_size8"
+                    android:src="@mipmap/shijie_xoalajiantou" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/zhankaigengduo"
+                    android:textColor="#c6c6c6"
+                    android:textSize="@dimen/text_size24" />
+            </LinearLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/ll_SouthAmerica_citys"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/text_size42"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/text_size20"
+                android:gravity="center"
+                android:text="@string/nanmeizhou"
+                android:textColor="@color/whiteff"
+                android:textSize="@dimen/text_size30" />
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/rv_SouthAmerica_citys"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/text_size18"
+                android:layout_marginRight="@dimen/text_size18"></android.support.v7.widget.RecyclerView>
+
+            <LinearLayout
+                android:id="@+id/ll_SouthAmerica"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="@dimen/text_size8"
+                    android:src="@mipmap/shijie_xoalajiantou" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/zhankaigengduo"
+                    android:textColor="#c6c6c6"
+                    android:textSize="@dimen/text_size24" />
+            </LinearLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/ll_Oceania_citys"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/text_size42"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/text_size20"
+                android:gravity="center"
+                android:text="@string/dayangzhou"
+                android:textColor="@color/whiteff"
+                android:textSize="@dimen/text_size30" />
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/rv_Oceania_citys"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/text_size18"
+                android:layout_marginRight="@dimen/text_size18"></android.support.v7.widget.RecyclerView>
+
+            <LinearLayout
+                android:id="@+id/ll_Oceania"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="@dimen/text_size8"
+                    android:src="@mipmap/shijie_xoalajiantou" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/zhankaigengduo"
+                    android:textColor="#c6c6c6"
+                    android:textSize="@dimen/text_size24" />
+            </LinearLayout>
+        </LinearLayout>
+    </LinearLayout>
+</com.aibabel.sos.custom.MyScrollview>

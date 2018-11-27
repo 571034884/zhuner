@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">時鐘</string>
+    <string name="check_currency">選擇城市</string>
+    <string name="common_used">常用</string>
+    <string name="zuotian">昨天</string>
+    <string name="jintian">今天</string>
+    <string name="mingtian">明天</string>
+    <string name="xiaoshi">小時</string>
+    <string name="toast_wuwangluo">網路不可用，請先連結網路</string>
+</resources>

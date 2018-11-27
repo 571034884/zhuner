@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#000000"
+    tools:context="com.aibabel.weather.activity.EditCityActivity">
+
+    <android.support.constraint.ConstraintLayout
+        android:id="@+id/cl_dingwei"
+        android:layout_width="@dimen/px0"
+        android:layout_height="@dimen/px160"
+        android:paddingLeft="@dimen/px20"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent">
+
+        <android.support.constraint.ConstraintLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <TextView
+                android:id="@+id/tv_time_dingwei"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="上午9:30"
+                android:textColor="#ffffff"
+                android:textSize="@dimen/px24" />
+
+            <TextView
+                android:id="@+id/tv_city_dingwei"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="北京市"
+                android:textColor="#ffffff"
+                android:textSize="@dimen/px40"
+                app:layout_constraintTop_toBottomOf="@id/tv_time_dingwei" />
+
+        </android.support.constraint.ConstraintLayout>
+
+        <TextView
+            android:id="@+id/tv_wendu_dingwei"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="28度"
+            android:fontFamily="sans-serif-thin"
+            android:textColor="#ffffff"
+            android:textSize="@dimen/px80"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+    </android.support.constraint.ConstraintLayout>
+
+    <View
+        android:id="@+id/v_line"
+        android:layout_width="@dimen/px0"
+        android:layout_height="@dimen/px1"
+        android:background="@drawable/gray333333"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/cl_dingwei"></View>
+
+    <com.aibabel.weather.custom.removeitemrecyclerview.ItemRemoveRecyclerView
+        android:id="@+id/rv_city"
+        android:layout_width="@dimen/px0"
+        android:layout_height="@dimen/px0"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/v_line" />
+
+</android.support.constraint.ConstraintLayout>

@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="@dimen/px40"
+    android:background="#000">
+    <TextView
+        android:id="@+id/tv_popu_city"
+        android:layout_width="@dimen/px120"
+        android:layout_height="@dimen/px48"
+        android:gravity="center"
+        android:background="@drawable/popu_background"
+        android:text="全部"
+        android:textColor="#fff"/>
+
+</android.support.constraint.ConstraintLayout>

@@ -1,0 +1,17 @@
+<resources>
+    <string name="app_name">날씨</string>
+    <string name="check_currency">도시 선택</string>
+    <string name="common_used">상용</string>
+    <string name="bianji">편집</string>
+    <string name="jintian">오늘</string>
+    <string name="mingtina">내일</string>
+    <string name="xianzai">지금</string>
+    <string name="shi">:00</string>
+    <string name="shidu">습도</string>
+    <string name="wendu">기온</string>
+    <string name="fengsu">풍속</string>
+    <string name="jiangshuiliang">강수량</string>
+    <!--toast-->
+    <string name="toast_chengshiguoduo">최대 10개 도시 추가 가능.</string>
+    <string name="toast_wuwangluo">네트워크가 불가하므로 연결하여 사용 바랍니다.</string>
+</resources>
