@@ -36,7 +36,7 @@ dependencies {
     //logger
     api 'com.orhanobut:logger:2.2.0'
     //屏幕适配
-    api 'me.jessyan:autosize:1.0.5'
+//    api 'me.jessyan:autosize:1.0.5'
     //友盟统计
     api 'com.umeng.sdk:common:1.5.0'
     api 'com.umeng.sdk:analytics:7.5.0'

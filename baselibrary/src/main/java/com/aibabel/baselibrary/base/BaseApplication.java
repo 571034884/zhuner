@@ -28,8 +28,6 @@ import org.litepal.LitePal;
 
 import java.util.LinkedList;
 
-import me.jessyan.autosize.AutoSizeConfig;
-import me.jessyan.autosize.unit.Subunits;
 
 /**
  * 作者：SunSH on 2018/11/9 10:43
@@ -183,7 +181,7 @@ public abstract class BaseApplication extends Application {
      * 初始化布局适配  布局中使用pt做位单位
      */
     public void initLayoutConfig() {
-        AutoSizeConfig.getInstance().getUnitsManager().setSupportDP(true).setSupportSubunits(Subunits.PT);
+//        AutoSizeConfig.getInstance().getUnitsManager().setSupportDP(true).setSupportSubunits(Subunits.PT);
     }
 
     /**

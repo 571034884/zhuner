@@ -1,12 +1,12 @@
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion 27
+    compileSdkVersion 28
     buildToolsVersion '27.0.3'
     defaultConfig {
-        applicationId "com.aibabel.ocr55354"
+        applicationId "com.aibabel.ocr"
         minSdkVersion 21
-        targetSdkVersion 27
+        targetSdkVersion 28
         versionCode 2
         versionName "1.0.1"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
@@ -16,6 +16,10 @@ android {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
+    }
+    compileOptions {
+        targetCompatibility 1.8
+        sourceCompatibility 1.8
     }
 
     lintOptions {
@@ -28,6 +32,8 @@ android {
 }
 
 dependencies {
+    implementation project(path: ':baselibrary')
+
     implementation fileTree(include: ['*.jar'], dir: 'libs')
     androidTestImplementation('com.android.support.test.espresso:espresso-core:2.2.2', {
         exclude group: 'com.android.support', module: 'support-annotations'
@@ -36,9 +42,9 @@ dependencies {
     /*json解析*/
     /*OKGO网络请求框架*/
     //    implementation 'com.github.GeniusLiu:GestureViewBinder:v1.0.0'
-    implementation 'com.android.support:appcompat-v7:27.+'
+    implementation 'com.android.support:appcompat-v7:28.+'
     implementation 'com.android.support:design:27.+'
-    implementation 'com.android.support:cardview-v7:27.+'
+    implementation 'com.android.support:cardview-v7:28.+'
     implementation 'com.android.support.constraint:constraint-layout:1.0.2'
     implementation 'com.orhanobut:logger:2.1.1'
     implementation 'com.google.code.gson:gson:2.2.4'
