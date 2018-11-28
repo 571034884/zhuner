@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">BaseLibrary</string>
+
+    <string name="toast_wuwangluo">当前无网络，请联网操作</string>
+</resources>

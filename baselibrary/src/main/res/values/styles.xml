@@ -1,0 +1,22 @@
+<resources>
+
+    <!--&lt;!&ndash;base主题&ndash;&gt;-->
+    <!--<style name="BaseTheme" parent="Theme.AppCompat.Light.NoActionBar">-->
+        <!--<item name="android:windowNoTitle">true</item>-->
+        <!--<item name="android:windowFullscreen">true</item>-->
+        <!--&lt;!&ndash; Customize your theme here. &ndash;&gt;-->
+        <!--&lt;!&ndash;<item name="colorPrimary">@color/colorPrimary</item>&ndash;&gt;-->
+        <!--&lt;!&ndash;<item name="colorPrimaryDark">@color/colorPrimaryDark</item>&ndash;&gt;-->
+        <!--&lt;!&ndash;<item name="colorAccent">@color/colorAccent</item>&ndash;&gt;-->
+    <!--</style>-->
+
+    <!-- Base application theme. -->
+    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+        <!-- 采用默认的样式，这里无需配置alertDialogTheme -->
+    </style>
+
+    <style name="AppThemeNight" parent="Theme.AppCompat.DayNight">
+        <item name="alertDialogTheme">@style/Theme.Dialog.Alert</item>
+    </style>
+
+</resources>

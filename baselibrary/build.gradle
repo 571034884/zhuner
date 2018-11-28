@@ -1,0 +1,80 @@
+apply plugin: 'com.android.library'
+apply plugin: 'maven'
+android {
+    compileSdkVersion 28
+
+    defaultConfig {
+        minSdkVersion 21
+        targetSdkVersion 28
+        versionCode 1
+        versionName "1.0"
+
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+
+    compileOptions {
+        targetCompatibility 1.8
+        sourceCompatibility 1.8
+    }
+}
+
+dependencies {
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+
+    implementation 'com.android.support:appcompat-v7:28.0.0'
+    testImplementation 'junit:junit:4.12'
+    androidTestImplementation 'com.android.support.test:runner:1.0.2'
+    androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
+    //logger
+    api 'com.orhanobut:logger:2.2.0'
+    //屏幕适配
+    api 'me.jessyan:autosize:1.0.5'
+    //友盟统计
+    api 'com.umeng.sdk:common:1.5.0'
+    api 'com.umeng.sdk:analytics:7.5.0'
+    //LitPal
+    api 'org.litepal.android:java:3.0.0'
+    //OkGo
+    api 'com.lzy.net:okgo:3.0.4'
+    //fastion
+    api 'com.alibaba:fastjson:1.2.2'
+    //dialog
+    api 'com.github.tianzhijiexian:EasyDialog:1.1.4'
+    //glide
+    api 'com.github.bumptech.glide:glide:4.8.0'
+    annotationProcessor 'com.github.bumptech.glide:compiler:4.8.0'
+    //picasso 若要更换图片加载框架 将PicassoLoader打开即可
+//    implementation 'com.squareup.picasso:picasso:2.71828'
+    //butterkinfe
+    api 'com.jakewharton:butterknife:8.8.1'
+//    annotationProcessor 'com.jakewharton:butterknife-compiler:8.8.1'
+    //热修复
+    api 'com.aliyun.ams:alicloud-android-hotfix:3.2.7'
+//    //加载图片
+//    api 'com.github.bumptech.glide:glide:3.7.0'
+//    //高斯模糊
+//    api 'jp.wasabeef:glide-transformations:2.0.1'
+
+    uploadArchives {
+        repositories.mavenDeployer {
+            // 修改为自己刚才创建的仓库地址
+            repository(url: "http://101.200.231.195:8081/nexus/content/repositories/thirdparty") {
+                authentication(userName: "admin", password: "aibabel123")
+            }
+            pom.version = "1.0.18"
+            pom.artifactId = "base"
+            pom.groupId = "com.aibabel"
+            pom.name = "base"
+            pom.packaging = 'aar'
+        }
+    }
+
+}

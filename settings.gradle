@@ -1,1 +1,1 @@
-include ':app','clock','currency','sos','weather','ocr'
+include ':baselibrary','clock','currency','sos','weather','ocr'

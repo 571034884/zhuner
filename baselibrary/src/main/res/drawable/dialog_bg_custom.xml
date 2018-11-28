@@ -1,0 +1,23 @@
+<!--根据inster调节距离屏幕左右的边距-->
+<inset xmlns:android="http://schemas.android.com/apk/res/android"
+    android:insetBottom="26pt"
+    android:insetLeft="66pt"
+    android:insetRight="66pt"
+    android:insetTop="16pt">
+
+    <layer-list>
+
+        <item>
+            <color android:color="#00E4007F" />
+        </item>
+
+        <item android:top="20dp">
+            <shape android:shape="rectangle">
+                <corners android:radius="10pt" />
+                <solid android:color="#db9e73" />
+            </shape>
+        </item>
+
+    </layer-list>
+
+</inset>

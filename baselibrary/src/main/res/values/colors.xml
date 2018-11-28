@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!--<color name="colorPrimary">#3F51B5</color>-->
+    <!--<color name="colorPrimaryDark">#303F9F</color>-->
+    <!--<color name="colorAccent">#FF4081</color>-->
+    <color name="white">#ffffff</color>
+    <!--<color name="balck">#000000</color>-->
+    <!--<color name="grayd2">#d2d2d2</color>-->
+    <!--<color name="colorDefault">#FF4F00</color>-->
+    <!--<color name="gray36">#363636</color>-->
+    <!--<color name="gray66">#666666</color>-->
+    <!--<color name="gray6e">#6e6e6e</color>-->
+    <!--<color name="grayd7">#d7d7d7</color>-->
+    <!--<color name="grayc3">#c3c3c3</color>-->
+    <!--<color name="red">#ff0000</color>-->
+    <!--<color name="black26">#262626</color>-->
+    <!--<color name="grayce">#cecece</color>-->
+    <color name="c_fe5100">#fe5100</color>
+    <!--<color name="gray_75">#757575</color>-->
+    <!--<color name="gray_ef">#efefef</color>-->
+    <!--<color name="gray_cf">#cfcfcf</color>-->
+    <!--<color name="color_99">#999999</color>-->
+    <!--<color name="titleHint">#999999</color>-->
+    <!--<color name="titleColor">#000000</color>-->
+    <!--<color name="titleTvRight1">#0a0a0a</color>-->
+    <!--<color name="cf96019">#f96019</color>-->
+    <!--<color name="gray99">#999999</color>-->
+    <!--<color name="c80while">#99ffffff</color>-->
+
+    <color name="dialog_bg_color">#58595a</color>
+</resources>
