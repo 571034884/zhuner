@@ -1,0 +1,34 @@
+apply plugin: 'com.android.application'
+
+android {
+    compileSdkVersion 28
+    defaultConfig {
+        applicationId "com.aibabel.coupon1"
+        minSdkVersion 21
+        targetSdkVersion 28
+        versionCode 1
+        versionName "1.0"
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+    }
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+    compileOptions {
+        targetCompatibility 1.8
+        sourceCompatibility 1.8
+    }
+}
+
+dependencies {
+    annotationProcessor 'com.jakewharton:butterknife-compiler:8.8.1'
+    //banner
+    implementation 'com.youth.banner:banner:1.4.9'
+    //圆形图片
+    implementation 'de.hdodenhof:circleimageview:2.1.0'
+    implementation project(':baselibrary')
+    //noinspection GradleCompatible
+    implementation 'com.android.support:design:28.+'
+}

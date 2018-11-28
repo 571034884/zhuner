@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">글로벌 WiFi</string>
+    <string name="goumaitaochang">구매</string>
+    <string name="shiyongzhuyi">주의 사항</string>
+    <string name="xiadan_data">발주 날짜</string>
+    <string name="daoqi_data">유효 기한</string>
+    <string name="daituikuan">(반환 중)</string>
+    <string name="weijihuo">(미활성)</string>
+    <string name="yijihuo">(활성화)</string>
+    <string name="wuwangluo">네트워크가 불가하므로 연결하여 사용 바랍니다.</string>
+    <string name="shangwangshuoming">주의 사항</string>
+    <string name="goumaitianshu">구매 수량 (단위: 일)</string>
+    <string name="lijikaitong">적시 활성화</string>
+
+    <string name="day_num1">该产品下单天数不支持30天以上，请修改</string>
+    <string name="day_num2">该产品下单天数最小为1天，请修改</string>
+    <string name="quxiao">취소</string>
+    <string name="tijiao">결재</string>
+
+    <string name="bukexiugai">구매 수량 변경 불가</string>
+    <string name="zuidafenshu">최대 구매 수량</string>
+    <string name="zuixiaofenshu">최소 구매 수량</string>
+    <string name="dingdanhao">주문서 번호 :</string>
+
+    <string name="zoudiule">서버에 오류가 발생했습니다. 나중에 다시 시도해주세요. ~</string>
+    <string name="isnonet">인터넷에 연결되어 있지 않습니다. 연결 상황을 체크하여 다시 시도해주세요. ~</string>
+    <string name="success">구매 성공 </string>
+    <string name="fail">구매 실패</string>
+
+    <string name="weixin">WeChat로 QR 코드를 스캔하여 지불 가능합니다.</string>
+
+    <string name="day">day(s)</string>
+    <string name="gong">altogether&#160;</string>
+    <string name="gong1">&#160;,&#160;</string>
+    <string name="rmb">&#160;¥&#160;</string>
+    <string name="dollar">&#160;$&#160;</string>
+
+
+    <string name="taochangxiangqing">구매 세부 정보</string>
+    <string name="dingdan">제품 이름:</string>
+    <string name="jihuo">활성화 상태:</string>
+    <string name="help">도움 받기</string>
+    <string name="xuzu">계속  세내다</string>
+    <string name="ruhejihuo">활성화 방법:</string>
+    <string name="jixu_goumai">계속 구매하십시오</string>
+    <string name="jihuo_help">도착 국가에 도달 한 후 번역기를 다시 시작하여</string>
+
+    <string name="iccid">내장 SIM 카드 읽기 오류</string>
+    <string name="min_days1">최소 주문 기간은</string>
+    <string name="min_days2">일입니다.</string>
+    <string name="zhifubao">알리페이로 바코드 스캔하여 지불바랍니다. </string>
+
+    <string name="weixin_pay">위채드 지불</string>
+    <string name="zhifubao_pay">알리페이 지불</string>
+    <string name="paypal_pay">PayPal 지불</string>
+    <string name="pay_type">지불 방식을 선택하세요</string>
+</resources>

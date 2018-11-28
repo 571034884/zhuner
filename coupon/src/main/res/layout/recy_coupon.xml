@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:id="@+id/rl"
+    android:background="@mipmap/coupon"
+    android:layout_marginBottom="@dimen/px8">
+    <TextView
+        android:id="@+id/tv_jiaobiao_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@mipmap/jiaobiao"
+        android:gravity="center"
+        android:textColor="#fff"
+
+        android:textSize="@dimen/px24"/>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true">
+
+        <ImageView
+            android:id="@+id/iv_shop_img"
+            android:layout_width="@dimen/px100"
+            android:layout_height="@dimen/px100"
+            android:layout_marginLeft="@dimen/px10"
+            android:scaleType="fitXY"
+            android:src="@mipmap/song" />
+        <TextView
+            android:id="@+id/tv_shop_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="松本清"
+            android:layout_alignTop="@id/iv_shop_img"
+            android:layout_toRightOf="@id/iv_shop_img"
+            android:layout_marginLeft="@dimen/px14"
+            android:textSize="@dimen/px28"
+            android:textColor="#020202"/>
+        <TextView
+            android:id="@+id/tv_shop_price"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="立享95折+8%免税"
+            android:layout_below="@id/tv_shop_name"
+            android:layout_toRightOf="@id/iv_shop_img"
+            android:layout_marginLeft="@dimen/px14"
+            android:textSize="@dimen/px24"
+            android:textColor="#212020"/>
+        <TextView
+            android:id="@+id/tv_shop_details"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="消费满30000日元使用"
+            android:layout_below="@id/tv_shop_price"
+            android:layout_toRightOf="@id/iv_shop_img"
+            android:layout_marginLeft="@dimen/px14"
+            android:textSize="@dimen/px24"
+            android:textColor="#7e7d7d"/>
+
+        <TextView
+            android:id="@+id/tv_receive"
+            android:layout_width="@dimen/px118"
+            android:layout_height="@dimen/px45"
+            android:text="免费领"
+            android:textColor="#fff"
+            android:textSize="@dimen/px26"
+            android:layout_alignParentRight="true"
+            android:layout_marginLeft="@dimen/px12"
+            android:layout_marginRight="@dimen/px12"
+            android:gravity="center"
+            android:background="@drawable/shape_background"
+            android:layout_centerVertical="true"/>
+    </RelativeLayout>
+</RelativeLayout>

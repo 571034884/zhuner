@@ -1,0 +1,264 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".activity.MainActivity">
+
+    <com.aibabel.tucao.utils.MyScrollview
+        android:id="@+id/Scroll"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <android.support.constraint.ConstraintLayout
+            android:id="@+id/cl"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
+            android:visibility="gone">
+
+            <TextView
+                android:id="@+id/tv_tucao"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/text_size20"
+                android:layout_marginTop="@dimen/px44"
+                android:text="@string/title"
+                android:textColor="#fff"
+                android:textSize="@dimen/px40"
+                android:textStyle="bold"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <ImageView
+                android:id="@+id/iv_close"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="@dimen/px30"
+                android:src="@mipmap/close"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="@id/tv_tucao" />
+
+            <TextView
+                android:id="@+id/tv_title"
+                android:layout_width="0px"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/px54"
+                android:textColor="#fff"
+                android:textSize="@dimen/px30"
+                app:layout_constraintLeft_toLeftOf="@id/tv_tucao"
+                app:layout_constraintRight_toRightOf="@id/iv_close"
+                app:layout_constraintTop_toBottomOf="@id/tv_tucao" />
+
+            <TextView
+                android:id="@+id/tv_number1"
+                android:layout_width="0px"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/px40"
+                android:drawableLeft="@mipmap/timuyuandian"
+                android:drawablePadding="@dimen/text_size20"
+                android:textColor="#fff"
+                android:textSize="@dimen/text_size24"
+                app:layout_constraintLeft_toLeftOf="@id/tv_tucao"
+                app:layout_constraintRight_toRightOf="@id/iv_close"
+                app:layout_constraintTop_toBottomOf="@id/tv_title" />
+
+            <RadioGroup
+                android:id="@+id/rg_number1"
+                android:layout_width="0px"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/text_size20"
+                android:layout_marginTop="@dimen/px34"
+                android:orientation="horizontal"
+                android:weightSum="3"
+                app:layout_constraintLeft_toLeftOf="@id/tv_tucao"
+                app:layout_constraintRight_toRightOf="@id/iv_close"
+                app:layout_constraintTop_toBottomOf="@id/tv_number1">
+
+                <RadioButton
+                    android:id="@+id/man_rb"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:button="@null"
+                    android:drawableLeft="@drawable/radiobutton_selector"
+                    android:drawablePadding="@dimen/text_size14"
+                    android:textColor="#fff"
+                    android:textSize="@dimen/text_size24" />
+
+                <RadioButton
+                    android:id="@+id/woman_rb"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:button="@null"
+                    android:drawableLeft="@drawable/radiobutton_selector"
+                    android:drawablePadding="@dimen/text_size14"
+                    android:textColor="#fff"
+                    android:textSize="@dimen/text_size24" />
+            </RadioGroup>
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/rv_number"
+                android:layout_width="0px"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/px28"
+                android:background="#fff"
+                android:nestedScrollingEnabled="false"
+                app:layout_constraintLeft_toLeftOf="@id/tv_tucao"
+                app:layout_constraintRight_toRightOf="@id/iv_close"
+                app:layout_constraintTop_toBottomOf="@id/rg_number1">
+
+            </android.support.v7.widget.RecyclerView>
+
+            <LinearLayout
+                android:id="@+id/lin1"
+                android:layout_width="0px"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/px92"
+                android:orientation="horizontal"
+                app:layout_constraintLeft_toLeftOf="@id/tv_tucao"
+                app:layout_constraintRight_toRightOf="@id/iv_close"
+                app:layout_constraintTop_toBottomOf="@id/rv_number"
+
+                >
+
+                <View
+                    android:layout_width="@dimen/px140"
+                    android:layout_height="1px"
+                    android:layout_gravity="center_vertical"
+                    android:background="#fe5000" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/text_size28"
+                    android:layout_marginRight="@dimen/text_size28"
+                    android:gravity="center"
+                    android:text="吐槽专享"
+                    android:textColor="#fff"
+                    android:textSize="@dimen/px40"
+                    android:textStyle="bold" />
+
+                <View
+                    android:layout_width="@dimen/px140"
+                    android:layout_height="1px"
+                    android:layout_gravity="center_vertical"
+                    android:background="#fe5000" />
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/tv_yuyin"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/px22"
+                android:text="还有其他想吐槽的语音告诉准儿"
+                android:textColor="#969696"
+                android:textSize="@dimen/text_size24"
+                app:layout_constraintLeft_toLeftOf="@id/tv_tucao"
+                app:layout_constraintRight_toRightOf="@id/iv_close"
+                app:layout_constraintTop_toBottomOf="@id/lin1" />
+
+            <LinearLayout
+                android:id="@+id/lin2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/px56"
+                android:nestedScrollingEnabled="false"
+                android:orientation="vertical"
+                app:layout_constraintLeft_toLeftOf="@id/tv_tucao"
+                app:layout_constraintRight_toRightOf="@id/iv_close"
+                app:layout_constraintTop_toBottomOf="@id/tv_yuyin">
+
+                <com.aibabel.tucao.utils.MyListView
+                    android:id="@+id/em_lv_recodeList"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:divider="#0000"
+                    android:listSelector="#0000" />
+            </LinearLayout>
+
+            <com.aibabel.tucao.manager.AudioRecordButton
+                android:id="@+id/em_tv_btn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="@dimen/px44"
+                android:background="@mipmap/mic"
+                android:gravity="center"
+                app:layout_constraintLeft_toLeftOf="@id/tv_tucao"
+                app:layout_constraintRight_toRightOf="@id/iv_close"
+                app:layout_constraintTop_toBottomOf="@id/lin2" />
+
+            <TextView
+                android:id="@+id/tv_submit"
+                android:layout_width="@dimen/px260"
+                android:layout_height="@dimen/px78"
+                android:layout_marginBottom="@dimen/text_size50"
+                android:layout_marginTop="@dimen/px54"
+                android:background="@drawable/shape_background"
+                android:gravity="center"
+                android:text="提交享优惠"
+                android:textColor="#fff"
+                android:textSize="@dimen/px30"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintLeft_toLeftOf="@id/tv_tucao"
+                app:layout_constraintRight_toRightOf="@id/iv_close"
+                app:layout_constraintTop_toBottomOf="@id/em_tv_btn" />
+
+        </android.support.constraint.ConstraintLayout>
+    </com.aibabel.tucao.utils.MyScrollview>
+    <RelativeLayout
+        android:id="@+id/rl_isnet"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+       >
+
+        <TextView
+            android:id="@+id/tv_tucao1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/text_size20"
+            android:layout_marginTop="@dimen/px44"
+            android:text="@string/title"
+            android:textColor="#fff"
+            android:textSize="@dimen/px40"
+            android:textStyle="bold"
+            />
+
+        <ImageView
+            android:id="@+id/iv_close1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="@dimen/px30"
+            android:src="@mipmap/close"
+            android:layout_alignParentRight="true"
+            android:layout_marginTop="@dimen/px44"
+            />
+        <LinearLayout
+            android:id="@+id/lin_isnet"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:orientation="vertical"
+            android:visibility="gone">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:src="@mipmap/isnet" />
+
+            <TextView
+                android:id="@+id/tv_error"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="70px"
+                android:text="@string/isnonet"
+                android:textColor="#fff"
+                android:textSize="30px" />
+        </LinearLayout>
+    </RelativeLayout>
+</RelativeLayout>

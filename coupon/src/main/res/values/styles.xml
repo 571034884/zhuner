@@ -1,0 +1,17 @@
+<resources>
+
+    <!-- Base application theme. -->
+    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <!-- Customize your theme here. -->
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowFullscreen">true</item>
+        <item name="android:windowBackground">@color/colorWhite</item>
+    </style>
+    <style name="Widget.SearchView" parent="Widget.AppCompat.SearchView">
+        <item name="searchIcon">@mipmap/ic_search</item>
+    </style>
+
+    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" >
+        <item name="elevation">@dimen/px0</item>
+    </style>
+</resources>

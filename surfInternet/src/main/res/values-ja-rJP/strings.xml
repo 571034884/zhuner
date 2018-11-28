@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">グローバルWiFi</string>
+
+    <string name="goumaitaochang">ご注文</string>
+    <string name="shiyongzhuyi">注意事項</string>
+    <string name="xiadan_data">ご注文の日付</string>
+    <string name="daoqi_data">有効期限</string>
+    <string name="daituikuan">(返却中)</string>
+    <string name="weijihuo">(未アクティベート)</string>
+    <string name="yijihuo">(アクティベート済み)</string>
+    <string name="wuwangluo">通信できませんでした。まず、ネットワックにご接続ください。</string>
+
+    <string name="shangwangshuoming">注意事項</string>
+    <string name="goumaitianshu">ご注文の数量（単位：日間）</string>
+    <string name="lijikaitong">今すぐ、アクティベートする</string>
+
+    <string name="day_num1">本製品の最高30日間までご利用いただけます。ご利用の日数をご修正ください。</string>
+    <string name="day_num2">本製品の最低1日からご利用いただけます。ご利用の日数をご修正ください。</string>
+    <string name="quxiao">キャンセル</string>
+    <string name="tijiao">送信</string>
+
+    <string name="bukexiugai">ご注文の数量は変更不可</string>
+    <string name="zuidafenshu">最大注文数量</string>
+    <string name="zuixiaofenshu">最小注文数量</string>
+    <string name="dingdanhao">注文書号:</string>
+
+
+    <string name="zoudiule">サーバーエラーが発生しました。後にもう一度お試しください。 ~</string>
+    <string name="isnonet">インタネットにアクセスできませんでした。インターネットの接続状況をご確認ください。 ~</string>
+    <string name="success">購入に成功</string>
+    <string name="fail">購入に失敗</string>
+
+    <string name="weixin">WeChatでQRコードをスキャンしてお支払い可能です。</string>
+
+    <string name="day">day(s)</string>
+    <string name="gong">altogether&#160;</string>
+    <string name="gong1">&#160;,&#160;</string>
+    <string name="rmb">&#160;¥&#160;</string>
+    <string name="dollar">&#160;$&#160;</string>
+
+    <string name="taochangxiangqing">購入の詳細</string>
+    <string name="dingdan">製品名:</string>
+    <string name="jihuo">起動状態の活性化:</string>
+    <string name="help">ヘルプ</string>
+    <string name="xuzu">持続させる</string>
+    <string name="ruhejihuo">有効にする方法:</string>
+    <string name="jixu_goumai">購入を続ける</string>
+    <string name="jihuo_help">目的の国についた後に翻訳アプリを起動させる</string>
+
+    <string name="iccid">内蔵SIMカード読み込みエラー</string>
+    <string name="min_days1">注文の最低日数は</string>
+    <string name="min_days2">日です。</string>
+    <string name="zhifubao">アリペイでバーコード読み取りして支払くださることを望みます.</string>
+
+    <string name="weixin_pay">上チャドで支払</string>
+    <string name="zhifubao_pay">アリペイで支払</string>
+    <string name="paypal_pay">PayPalで支払</string>
+    <string name="pay_type">お支払い方法をお選びください</string>
+</resources>

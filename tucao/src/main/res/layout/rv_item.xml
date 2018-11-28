@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="#000"
+    android:orientation="vertical">
+
+    <!--用于隐藏-->
+    <LinearLayout
+        android:id="@+id/lin_number1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/px26"
+        android:orientation="vertical">
+        <!--题目-->
+        <TextView
+            android:id="@+id/tv_title1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="#fff"
+            android:drawableLeft="@mipmap/timuyuandian"
+            android:layout_marginBottom="@dimen/px34"
+            android:drawablePadding="@dimen/text_size20"
+            android:textSize="@dimen/text_size24" />
+        <!--答案-->
+
+        <CheckBox
+            android:id="@+id/cb_item_daan1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/px28"
+            android:layout_marginLeft="@dimen/text_size20"
+            android:button="@null"
+            android:drawableLeft="@drawable/checkbutton_selector"
+            android:textColor="#fff"
+            android:textSize="@dimen/text_size24" />
+
+
+        <CheckBox
+            android:id="@+id/cb_item_daan2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/px28"
+            android:layout_marginLeft="@dimen/text_size20"
+            android:button="@null"
+            android:drawableLeft="@drawable/checkbutton_selector"
+            android:textColor="#fff"
+            android:textSize="@dimen/text_size24" />
+
+
+        <CheckBox
+            android:id="@+id/cb_item_daan3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/px28"
+            android:layout_marginLeft="@dimen/text_size20"
+            android:button="@null"
+            android:drawableLeft="@drawable/checkbutton_selector"
+            android:textColor="#fff"
+            android:textSize="@dimen/text_size24" />
+
+
+        <CheckBox
+            android:id="@+id/cb_item_daan4"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/px28"
+            android:layout_marginLeft="@dimen/text_size20"
+            android:button="@null"
+            android:drawableLeft="@drawable/checkbutton_selector"
+            android:textColor="#fff"
+            android:textSize="@dimen/text_size24" />
+
+
+        <CheckBox
+            android:id="@+id/cb_item_daan5"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/px28"
+            android:layout_marginLeft="@dimen/text_size20"
+            android:button="@null"
+            android:drawableLeft="@drawable/checkbutton_selector"
+            android:textColor="#fff"
+            android:textSize="@dimen/text_size24" />
+
+
+    </LinearLayout>
+
+
+</LinearLayout>

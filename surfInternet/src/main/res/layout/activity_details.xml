@@ -1,0 +1,323 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.aibabel.surfinternet.utils.MyScrollview xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.aibabel.surfinternet.activity.DetailsActivity">
+
+    <RelativeLayout
+        android:id="@+id/rl"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:visibility="gone">
+
+        <android.support.constraint.ConstraintLayout
+            android:id="@+id/cl_details"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:focusable="true"
+            android:focusableInTouchMode="true">
+
+            <TextView
+                android:id="@+id/tv_country"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/text_size20"
+                android:layout_marginTop="@dimen/text_size115"
+                android:textColor="#ffffff"
+                android:textSize="@dimen/text_size40"
+                android:textStyle="bold"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/tv_operator"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/text_size20"
+                android:layout_marginTop="@dimen/text_size30"
+                android:textColor="#ffffff"
+                android:textSize="@dimen/text_size30"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tv_country" />
+
+            <TextView
+                android:id="@+id/tv_price_day"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/text_size30"
+                android:textColor="#ffffff"
+                android:textSize="@dimen/text_size30"
+                app:layout_constraintLeft_toLeftOf="@id/tv_operator"
+                app:layout_constraintTop_toBottomOf="@id/tv_operator_name" />
+
+            <TextView
+                android:id="@+id/tv_operator_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/text_size30"
+                android:textColor="#ffffff"
+                android:textSize="@dimen/text_size30"
+                app:layout_constraintLeft_toLeftOf="@id/tv_operator"
+                app:layout_constraintTop_toBottomOf="@id/tv_operator" />
+
+            <View
+                android:id="@+id/view1"
+                android:layout_width="@dimen/px0"
+                android:layout_height="@dimen/text_size1"
+                android:layout_marginLeft="@dimen/text_size20"
+                android:layout_marginRight="@dimen/text_size20"
+                android:layout_marginTop="@dimen/text_size30"
+                android:background="#333333"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tv_price_day" />
+
+            <TextView
+                android:id="@+id/tv_internet"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/text_size38"
+                android:text="@string/shangwangshuoming"
+                android:textColor="#9d9d9d"
+                android:textSize="@dimen/text_size24"
+                app:layout_constraintLeft_toLeftOf="@id/tv_operator"
+                app:layout_constraintTop_toBottomOf="@id/view1" />
+
+            <TextView
+                android:id="@+id/tv_roaming"
+                android:layout_width="@dimen/px0"
+                android:layout_height="wrap_content"
+
+                android:lineSpacingExtra="@dimen/text_size8"
+                android:textColor="#ffffff"
+                android:textSize="@dimen/text_size24"
+                app:layout_constraintLeft_toLeftOf="@id/view1"
+                app:layout_constraintRight_toRightOf="@id/view1"
+                app:layout_constraintTop_toBottomOf="@id/tv_internet" />
+
+
+            <View
+                android:id="@+id/view2"
+                android:layout_width="@dimen/px0"
+                android:layout_height="@dimen/text_size1"
+                android:layout_marginTop="@dimen/text_size38"
+                android:background="#333333"
+                app:layout_constraintLeft_toLeftOf="@id/view1"
+                app:layout_constraintRight_toRightOf="@id/view1"
+                app:layout_constraintTop_toBottomOf="@id/tv_roaming" />
+
+
+            <TextView
+                android:id="@+id/tv_shopping"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/text_size38"
+                android:text="@string/goumaitianshu"
+                android:textColor="#ffffff"
+                android:textSize="@dimen/text_size24"
+                app:layout_constraintLeft_toLeftOf="@id/view2"
+                app:layout_constraintTop_toBottomOf="@id/view2" />
+
+            <LinearLayout
+                android:id="@+id/ll"
+                android:layout_width="220px"
+                android:layout_height="@dimen/text_size50"
+                android:layout_marginTop="@dimen/text_size30"
+                android:background="@drawable/shape_background2"
+                android:orientation="horizontal"
+                app:layout_constraintLeft_toLeftOf="@id/view2"
+                app:layout_constraintTop_toBottomOf="@id/tv_shopping">
+
+                <TextView
+                    android:id="@+id/bt_reduce"
+                    android:layout_width="@dimen/px0"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:text="－" />
+
+                <TextView
+                    android:id="@+id/tv_number"
+                    android:layout_width="@dimen/text_size90"
+                    android:layout_height="match_parent"
+                    android:background="#dddddd"
+                    android:gravity="center"
+                    android:text="1"
+                    android:textColor="#fe5000"
+                    android:textSize="@dimen/text_size30" />
+
+                <TextView
+                    android:id="@+id/bt_plus"
+                    android:layout_width="@dimen/px0"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:text="＋" />
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/tv_MinDays"
+                android:visibility="gone"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/px10"
+                app:layout_constraintLeft_toLeftOf="@id/ll"
+                app:layout_constraintTop_toBottomOf="@id/ll"
+                android:textColor="#fff"
+                />
+
+            <LinearLayout
+                android:id="@+id/ll2"
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/text_size50"
+                android:layout_marginTop="@dimen/text_size30"
+                android:orientation="horizontal"
+                app:layout_constraintLeft_toLeftOf="@id/ll"
+                app:layout_constraintTop_toBottomOf="@id/tv_MinDays">
+
+                <TextView
+                    android:id="@+id/tv_price_num1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:text=" "
+                    android:textColor="#fe5000"
+                    android:textSize="@dimen/text_size30" />
+
+                <TextView
+                    android:id="@+id/tv_price_num2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginRight="@dimen/px20"
+                    android:text="@string/day"
+                    android:textColor="#ffffff"
+                    android:textSize="@dimen/text_size30" />
+
+                <TextView
+                    android:id="@+id/tv_price_num5"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:text="@string/gong1"
+                    android:textColor="#ffffff"
+                    android:textSize="@dimen/text_size30" />
+
+                <TextView
+                    android:id="@+id/tv_price_num6"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+
+                    android:textColor="#ffffff"
+                    android:textSize="@dimen/text_size30"
+                    android:visibility="gone" />
+
+                <TextView
+                    android:id="@+id/tv_price_num3"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:textColor="#fe5000"
+                    android:textSize="@dimen/text_size30" />
+
+                <TextView
+                    android:id="@+id/tv_price_num4"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+
+                    android:textColor="#ffffff"
+                    android:textSize="@dimen/text_size30" />
+            </LinearLayout>
+
+            <View
+                android:id="@+id/view4"
+                android:layout_width="0px"
+                android:layout_height="@dimen/text_size1"
+                android:layout_marginTop="@dimen/text_size38"
+                android:background="#333333"
+                app:layout_constraintLeft_toLeftOf="@id/view2"
+                app:layout_constraintRight_toRightOf="@id/view2"
+                app:layout_constraintTop_toBottomOf="@id/ll2" />
+
+            <TextView
+                android:id="@+id/bt_submission"
+                android:layout_width="@dimen/px0"
+                android:layout_height="@dimen/text_size80"
+                android:layout_marginBottom="@dimen/text_size40"
+                android:layout_marginTop="@dimen/text_size40"
+                android:background="@drawable/shape_background"
+                android:gravity="center"
+                android:text="@string/lijikaitong"
+                android:textColor="#ffffff"
+                android:textSize="@dimen/text_size30"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintLeft_toLeftOf="@id/view4"
+                app:layout_constraintRight_toRightOf="@id/view4"
+                app:layout_constraintTop_toBottomOf="@id/view4" />
+
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/px88"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <ImageView
+                    android:id="@+id/iv_back"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:src="@mipmap/back" />
+            </RelativeLayout>
+        </android.support.constraint.ConstraintLayout>
+
+        <RelativeLayout
+            android:id="@+id/rl_NoNet"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="gone">
+
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/px88"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <ImageView
+                    android:id="@+id/iv_back2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:src="@mipmap/back" />
+            </RelativeLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:layout_marginTop="@dimen/px500"
+                android:orientation="vertical">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:src="@mipmap/isnet" />
+
+                <TextView
+                    android:id="@+id/tv_error"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginTop="@dimen/px70"
+                    android:text="@string/isnonet"
+                    android:textColor="#fff"
+                    android:textSize="30px" />
+            </LinearLayout>
+        </RelativeLayout>
+    </RelativeLayout>
+</com.aibabel.surfinternet.utils.MyScrollview>

@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Global Internet Access</string>
+    <string name="goumaitaochang">Purchase</string>
+    <string name="shiyongzhuyi">Usage Tips</string>
+    <string name="xiadan_data">Purchase Date</string>
+    <string name="daoqi_data">Expiration Date</string>
+    <string name="daituikuan">(Refund Pending)</string>
+    <string name="weijihuo">(Not Activated)</string>
+    <string name="yijihuo">(Activated)</string>
+    <string name="wuwangluo">No Internet access. Please connect to the network.</string>
+
+    <string name="shangwangshuoming">Usage Tips</string>
+    <string name="goumaitianshu"> Purchase quantity (unit: days)</string>
+    <string name="lijikaitong">Activate Now</string>
+
+    <string name="day_num1">This product supports no more than 30 days. Please re-enter the number.</string>
+    <string name="day_num2">This product supports minimum 1 day. Please re-enter the number.</string>
+    <string name="quxiao">Cancel</string>
+    <string name="tijiao">Submit</string>
+
+    <string name="bukexiugai">Quantity cannot be changed. Date</string>
+    <string name="zuidafenshu">Maximum quantity</string>
+    <string name="zuixiaofenshu">Minumum quantity</string>
+    <string name="dingdanhao">Order ID:</string>
+
+    <string name="zoudiule">Server error occurred, please try again later ~</string>
+    <string name="isnonet">No Internet connection, please check and try again ~</string>
+    <string name="success">Purchase success</string>
+    <string name="fail">Purchase failure</string>
+
+    <string name="weixin">Please scan the QR code with WeChat to pay</string>
+
+    <string name="day">day(s)</string>
+    <string name="gong">altogether&#160;</string>
+    <string name="gong1">&#160;,&#160;</string>
+    <string name="rmb">&#160;¥&#160;</string>
+    <string name="dollar">&#160;$&#160;</string>
+
+
+    <string name="taochangxiangqing">Purchase details</string>
+    <string name="dingdan">Product Name:</string>
+    <string name="jihuo">Activation status:</string>
+    <string name="help">Getting help</string>
+    <string name="xuzu">Renewal</string>
+    <string name="ruhejihuo">How to activate:</string>
+    <string name="jixu_goumai">Continue to buy</string>
+    <string name="jihuo_help">After reaching the destination country, restart the translator to activate</string>
+
+    <string name="iccid">Built-in SIM card load error</string>
+    <string name="min_days1">The minimum order days are</string>
+    <string name="min_days2">days.</string>
+    <string name="zhifubao">Please scan to pay with Alipay</string>
+
+    <string name="weixin_pay">WeChat pay</string>
+    <string name="zhifubao_pay">Alipay pay</string>
+    <string name="paypal_pay">PayPal pay</string>
+    <string name="pay_type">Please choose payment method</string>
+</resources>
