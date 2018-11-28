@@ -15,7 +15,6 @@ import com.aibabel.currencyconversion.app.Constant;
 import com.aibabel.currencyconversion.bean.NewCurrencyBean;
 import com.aibabel.currencyconversion.utils.CheckFlag;
 import com.aibabel.currencyconversion.utils.InternationalizationUtil;
-import com.bumptech.glide.Glide;
 
 import java.util.List;
 
