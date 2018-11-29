@@ -242,7 +242,6 @@ public class TrandActivity extends BaseActivity implements BaseCallback {
                 RequestOptions requestOptions = new RequestOptions()
                         .placeholder(R.mipmap.morentu)
                         .bitmapTransform(new CropCircleTransformation(TrandActivity.this));
-
                 Glide.with(TrandActivity.this)
                         .load(((TrandBean.DataBean) o).getImpage())
                         .apply(requestOptions)
