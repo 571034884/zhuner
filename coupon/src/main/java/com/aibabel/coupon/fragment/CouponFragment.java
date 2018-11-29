@@ -93,7 +93,7 @@ public class CouponFragment extends Fragment {
 
                 Glide.with(getActivity())
                         .load(((CouponBean) o).getIv_shop_img())
-                        .diskCacheStrategy(DiskCacheStrategy.RESULT)
+//                        .diskCacheStrategy(DiskCacheStrategy.RESULT)
                         .into(iv_shop_img);
             }
         };

@@ -130,7 +130,6 @@ public class DetailsActivity extends AppCompatActivity {
                 tv_xingjiabi2.setText(((RemenBean) o).getRemen_tedian2());
                 Glide.with(DetailsActivity.this)
                         .load(((RemenBean) o).getRemen_img())
-                        .diskCacheStrategy(DiskCacheStrategy.RESULT)
                         .into(iv_remen_img);
 
             }

@@ -3,6 +3,8 @@ package com.aibabel.surfinternet.activity;
 import android.content.ActivityNotFoundException;
 import android.content.ComponentName;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.constraint.ConstraintLayout;
@@ -30,6 +32,7 @@ import com.aibabel.surfinternet.utils.NetUtil;
 import com.aibabel.surfinternet.utils.ToastUtil;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.request.RequestOptions;
 import com.lzy.okgo.model.Response;
 import com.umeng.analytics.MobclickAgent;
 
@@ -42,6 +45,7 @@ import java.util.Map;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import jp.wasabeef.glide.transformations.CropCircleTransformation;
+
 
 public class TrandActivity extends BaseActivity implements BaseCallback {
 
@@ -235,11 +239,13 @@ public class TrandActivity extends BaseActivity implements BaseCallback {
                 tv_qian = holder.getView(R.id.tv_qian);
 
 
+                RequestOptions requestOptions = new RequestOptions()
+                        .placeholder(R.mipmap.morentu)
+                        .bitmapTransform(new CropCircleTransformation(TrandActivity.this));
+
                 Glide.with(TrandActivity.this)
                         .load(((TrandBean.DataBean) o).getImpage())
-                        .placeholder(R.mipmap.morentu)
-                        .diskCacheStrategy(DiskCacheStrategy.RESULT)
-                        .bitmapTransform(new CropCircleTransformation(TrandActivity.this))
+                        .apply(requestOptions)
                         .into(iv_country);
                 tv_zhongwen.setText(((TrandBean.DataBean) o).getCountry());
                 String days = ((TrandBean.DataBean) o).getDays().toString();

@@ -225,7 +225,6 @@ public class ReceiveActivity extends BaseActivity {
 
                 Glide.with(ReceiveActivity.this)
                         .load(((CouponBean) o).getIv_shop_img())
-                        .diskCacheStrategy(DiskCacheStrategy.RESULT)
                         .into(iv_shop_img);
 
                 tv_receive.setOnClickListener(new View.OnClickListener() {
