@@ -1,0 +1,12 @@
+<resources>
+    <string name="app_name">订单</string>
+
+    <string name="generate_code">生成二维码</string>
+    <string name="conn_status">Connection Status</string>
+    <string name="signal_strength">Signal strength</string>
+    <string name="security_level">Security</string>
+    <string name="password">Password</string>
+    <string name="ip_address">IP address</string>
+    <string name="disconnect">Forget</string>
+    <string name="cancel">Cancel</string>
+</resources>

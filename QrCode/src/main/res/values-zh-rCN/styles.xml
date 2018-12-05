@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="str_unconnect">未连接</string>
+    <string name="simple_fragment_wifi_title">Wi-Fi</string>
+    <string name="my_wifi_toast_success">连接成功！</string>
+    <string name="my_wifi_toast_failure">连接失败！</string>
+    <string name="my_wifi_toast_error">wifi密码认证错误！</string>
+    <string name="my_wifi_status_connected">已连接</string>
+    <string name="my_wifi_item_dis_connected">已连接</string>
+    <string name="my_wifi_item_dis_connecting">正在连接中</string>
+    <string name="my_wifi_signal_no">无信号</string>
+    <string name="my_wifi_signal_very_strong">极强</string>
+    <string name="my_wifi_signal_strong">强</string>
+    <string name="my_wifi_signal_more_strong">较强</string>
+    <string name="my_wifi_signal_weak">弱</string>
+    <string name="my_wifi_listview_pulldown">下拉刷新</string>
+    <string name="my_wifi_listview_loosen">松开刷新</string>
+    <string name="my_wifi_listview_refreshing">正在刷新</string>
+    <string name="my_wifi_listview_update">最近更新</string>
+    <string name="my_wifi_listview_last_update">上次更新</string>
+    <string name="simple_fragment_wifi">WiFi设置</string>
+
+    <string name="wifi_modify_activity_name_tag">SSID: </string>
+    <string name="wifi_modify_qiut_btn_tx">返回</string>
+    <string name="wifi_modify_ensure_btn_tx">链接</string>
+    <string name="wifi_modify_pwd_hint_tx">输入Wi-Fi密码</string>
+
+
+    <string name="my_zhanghaojihuo">帐号激活</string>
+    <string name="my_saomiaojihuoma">扫描激活码</string>
+    <string name="my_shebeichongzhi">设备重置</string>
+    <string name="my_jianchagengxin">检查更新版本</string>
+    <string name="my_zulindaoqi">租赁到期，请归还设备</string>
+    <string name="my_snbuzhengque">sn码不正确</string>
+    <string name="my_guihai">请归还设备并重置</string>
+    <string name="my_weizaizulinqi">未在租赁期内</string>
+    <string name="my_chongxinsaoma">扫描失败，请重新扫描</string>
+    <string name="my_erweishibei">二维码生成失败</string>
+</resources>

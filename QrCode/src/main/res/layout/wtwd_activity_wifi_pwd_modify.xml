@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/black"
+    >
+
+   <!--  <android.support.design.widget.AppBarLayout
+        android:id="@+id/wifi_modify_toolbar_ly"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:background="@color/transparent">
+
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/wifi_modify_toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            tools:ignore="ExtraText">
+
+           <Button
+                android:id="@+id/wifi_modify_toolbar_back"
+                android:layout_width="50dp"
+                android:layout_height="35dp"
+                android:layout_gravity="left"
+                android:background="@drawable/ic_navigate_back_translator"
+                android:padding="6dp"
+                tools:ignore="RtlHardcoded" /> 
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:text="密码设置"
+                android:textAllCaps="false"
+                android:textColor="@color/white"
+                android:textSize="@dimen/fontsize_19" />
+        </android.support.v7.widget.Toolbar>
+    </android.support.design.widget.AppBarLayout> -->
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/wifi_modify_toolbar_ly">
+
+        <LinearLayout
+            android:id="@+id/wifi_modify_name_ly"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:orientation="horizontal"
+            android:weightSum="4">
+
+            <TextView
+                android:id="@+id/wifi_modify_wifi_name_tag_tv"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="3"
+                android:text="@string/wifi_modify_activity_name_tag"
+                android:textColor="@color/white"
+                android:textSize="@dimen/fontsize_18" />
+
+            <TextView
+                android:id="@+id/wifi_modify_wifi_name_tv"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:textColor="@color/white"
+                android:textSize="@dimen/fontsize_18" />
+        </LinearLayout>
+
+        <EditText
+            android:id="@+id/wifi_modify_wifi_pwd_btn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/wifi_modify_name_ly"
+            android:layout_margin="10dp"
+            android:layout_marginTop="10dp"
+            android:background="@color/white"
+            android:padding="10dp"
+            android:textAllCaps="false"
+            android:textColor="@color/black"
+            android:textColorHint="@color/gray_active_icon"
+	    android:maxLength="50"
+	    android:singleLine="true"
+            android:textSize="@dimen/fontsize_18" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/wifi_modify_wifi_pwd_btn"
+            android:layout_marginTop="40dp"
+            android:orientation="horizontal"
+            android:padding="10dp"
+            android:weightSum="2">
+
+            <Button
+                android:id="@+id/wifi_modify_cancel_btn"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_margin="10dp"
+                android:layout_weight="1"
+                android:background="@color/md_yellow_900"
+                android:text="@string/wifi_modify_qiut_btn_tx"
+                android:textAllCaps="false" />
+
+            <Button
+                android:id="@+id/wifi_modify_ensure_btn"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_margin="10dp"
+                android:layout_weight="1"
+                android:background="@color/md_yellow_900"
+                android:text="@string/wifi_modify_ensure_btn_tx"
+                android:textAllCaps="false" />
+        </LinearLayout>
+    </RelativeLayout>
+</RelativeLayout>
