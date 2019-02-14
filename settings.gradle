@@ -1,1 +1,1 @@
-include ':baselibrary','clock','currency','sos','weather','ocr','surfInternet','readme','coupon','tucao'
+include ':baselibrary', ':aidlaar','clock','currency','sos','weather','ocr','surfInternet','readme','coupon','tucao'
