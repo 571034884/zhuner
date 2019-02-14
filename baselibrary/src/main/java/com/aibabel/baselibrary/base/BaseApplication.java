@@ -7,7 +7,9 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.util.Log;
 
+import com.aibabel.aidlaar.StatisticsManager;
 import com.aibabel.baselibrary.BuildConfig;
+import com.aibabel.baselibrary.http.OkGoUtil;
 import com.aibabel.baselibrary.imageloader.ImageLoader;
 import com.aibabel.baselibrary.imageloader.object.GlideLoader;
 import com.aibabel.baselibrary.utils.CommonUtils;
@@ -17,8 +19,6 @@ import com.orhanobut.logger.AndroidLogAdapter;
 import com.orhanobut.logger.FormatStrategy;
 import com.orhanobut.logger.Logger;
 import com.orhanobut.logger.PrettyFormatStrategy;
-import com.taobao.sophix.SophixManager;
-import com.taobao.sophix.listener.PatchLoadStatusListener;
 import com.umeng.analytics.MobclickAgent;
 import com.umeng.commonsdk.UMConfigure;
 
@@ -27,7 +27,9 @@ import org.json.JSONObject;
 import org.litepal.LitePal;
 
 import java.util.LinkedList;
+import java.util.concurrent.TimeUnit;
 
+import okhttp3.OkHttpClient;
 
 /**
  * 作者：SunSH on 2018/11/9 10:43
@@ -37,6 +39,38 @@ import java.util.LinkedList;
 public abstract class BaseApplication extends Application {
 
     public static BaseApplication mApplication;
+    public static int iReadTime = 30000;
+    public static int iWriteTime = 30000;
+    private static int iConnectTime = 10000;
+
+    public static boolean allPhysicalButtonsExitEnable = false;
+    public static boolean statisticsEnable = false;
+
+    /**
+     * 设置物理按键杀死程序，回到菜单
+     *
+     * @return
+     */
+    public static boolean isAllPhysicalButtonsExitEnable() {
+        return allPhysicalButtonsExitEnable;
+    }
+
+    public static void setAllPhysicalButtonsExitEnable(boolean allPhysicalButtonsExitEnable) {
+        BaseApplication.allPhysicalButtonsExitEnable = allPhysicalButtonsExitEnable;
+    }
+
+    /**
+     * 全局设置是否开启统计功能
+     *
+     * @return
+     */
+    public static boolean isStatisticsEnable() {
+        return statisticsEnable;
+    }
+
+    public static void setStatisticsEnable(boolean statisticsEnable) {
+        BaseApplication.statisticsEnable = statisticsEnable;
+    }
 
     /**
      * 存储程序中所创建的activity
@@ -47,7 +81,6 @@ public abstract class BaseApplication extends Application {
     @Override
     protected void attachBaseContext(Context base) {
         super.attachBaseContext(base);
-        initHotfixConfig();
     }
 
     @Override
@@ -58,41 +91,15 @@ public abstract class BaseApplication extends Application {
 
         initAppExitConfig();
         initLogConfig();
-//        initLayoutConfig();
         initUmengConfig(setUmengKey());
         initLitPalConfig();
         initOkGoConfig();
         initImageLoaderConfig();
+        initStatisticsConfig();
     }
 
-    /**
-     * 初始化热修复配置
-     */
-    private void initHotfixConfig() {
-        String appVersion;
-        try {
-            appVersion = this.getPackageManager().getPackageInfo(this.getPackageName(), 0).versionName;
-        } catch (Exception e) {
-            appVersion = "1.0.0";
-        }
-
-        SophixManager.getInstance().setContext(this)
-                .setAppVersion(appVersion)
-//                .setAesKey("")
-                .setAesKey("0123456789123456")//与编译差异文件使用的key保持一致
-                .setEnableDebug(true)
-                .setPatchLoadStatusStub(new PatchLoadStatusListener() {
-                    @Override
-                    public void onLoad(final int mode, final int code, final String info, final int handlePatchVersion) {
-                        String msg = new StringBuilder("").append("Mode:").append(mode)
-                                .append(" Code:").append(code)
-                                .append(" Info:").append(info)
-                                .append(" HandlePatchVersion:").append(handlePatchVersion).toString();
-                        Logger.e(msg);
-                    }
-                }).initialize();
-        //调取后台接口判断是否真的有版本修复
-
+    public void initStatisticsConfig() {
+        StatisticsManager.getInstance(this).setConfig(getAppPackageName(),getAppVersionName());
     }
 
     /**
@@ -116,43 +123,32 @@ public abstract class BaseApplication extends Application {
      */
     public abstract String getAppPackageName();
 
-    /**
-     * 通过当前程序包名 获取服务器地址
-     *
-     * @param packageName 包名
-     * @return
-     */
-    public String checkIps(String packageName) {
-        String countryName = ProviderUtils.getInfo(mApplication, ProviderUtils.CONTENT_URI_LOCATION, "country");
-        String ips = ProviderUtils.getInfo(mApplication, ProviderUtils.CONTENT_URI_LOCATION, "ips");
-        String key;
-        try {
-            if (countryName.equals("中国")) {
-                key = "中国_" + packageName + "_joner";
-            } else {
-                key = "default_" + packageName + "_joner";
-            }
-            JSONObject jsonObject = new JSONObject(ips);
-            JSONArray jsonArray = new JSONArray(jsonObject.getString(key));
-            return jsonArray.getJSONObject(0).get("domain").toString();
-        } catch (Exception e) {
-            Log.e("init: ", "ip信息错误");
-            return "";
-        }
-    }
 
     /**
      * 初始化服务器地址和接口组
      */
-    public abstract void setServerUrlAndInterfaceGroup(String ips);
+    public abstract void setServerUrlAndInterfaceGroup();
+
+    public static void setOkGoTimeConfig(int readTime, int writeTime, int connectTime) {
+        iReadTime = readTime;
+        iWriteTime = writeTime;
+        iConnectTime = connectTime;
+    }
 
     /**
      * 初始化okgo
      */
     public void initOkGoConfig() {
-        OkGo.getInstance().init(this);
-        setServerUrlAndInterfaceGroup(checkIps(getAppPackageName()));
-        getAppVersionName();
+        setServerUrlAndInterfaceGroup();
+        OkHttpClient.Builder builder = new OkHttpClient.Builder();
+        //全局的读取超时时间
+        builder.readTimeout(iReadTime, TimeUnit.MILLISECONDS);
+        //全局的写入超时时间
+        builder.writeTimeout(iWriteTime, TimeUnit.MILLISECONDS);
+        //全局的连接超时时间
+        builder.connectTimeout(iConnectTime, TimeUnit.MILLISECONDS);
+        OkGo.getInstance().init(this).setOkHttpClient(builder.build()).setRetryCount(0);
+        OkGoUtil.appVersionName = getAppVersionName();
     }
 
     /**
@@ -178,13 +174,6 @@ public abstract class BaseApplication extends Application {
     }
 
     /**
-     * 初始化布局适配  布局中使用pt做位单位
-     */
-    public void initLayoutConfig() {
-//        AutoSizeConfig.getInstance().getUnitsManager().setSupportDP(true).setSupportSubunits(Subunits.PT);
-    }
-
-    /**
      * 初始化日志框架
      */
     public void initLogConfig() {
@@ -192,7 +181,7 @@ public abstract class BaseApplication extends Application {
         Logger.addLogAdapter(new AndroidLogAdapter(strategy) {
             @Override
             public boolean isLoggable(int priority, @Nullable String tag) {
-                return BuildConfig.DEBUG;
+                return true;
             }
         });
     }

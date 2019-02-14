@@ -1,6 +1,7 @@
 package com.aibabel.baselibrary.base;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -22,6 +23,7 @@ public abstract class BaseFragment extends Fragment {
     Unbinder unbinder;
     //构造方法参数的key
     public static final String PARAM = "param";
+    public Context mContext;
 
     public BaseFragment() {
 
@@ -39,16 +41,18 @@ public abstract class BaseFragment extends Fragment {
 
     /**
      * 获取Fragment布局
+     *
      * @return
      */
-     public abstract int getLayout();
+    public abstract int getLayout();
 
     /**
      * 逻辑代码
+     *
      * @param view
      * @param savedInstanceState
      */
-     public abstract void init(View view, Bundle savedInstanceState);
+    public abstract void init(View view, Bundle savedInstanceState);
 
     @Nullable
     @Override
@@ -56,6 +60,7 @@ public abstract class BaseFragment extends Fragment {
         View view = inflater.inflate(getLayout(), container, false);
         unbinder = ButterKnife.bind(this, view);
         init(view, savedInstanceState);
+        mContext = getContext();
         return view;
     }
 
@@ -63,5 +68,13 @@ public abstract class BaseFragment extends Fragment {
     public void onDestroyView() {
         super.onDestroyView();
         unbinder.unbind();
+    }
+
+    public void startActivity(Class cls) {
+        startActivity(new Intent(mContext, cls));
+    }
+
+    public void startActivityForResult(Class cls, int requestCode) {
+        startActivityForResult(new Intent(mContext, cls), requestCode);
     }
 }

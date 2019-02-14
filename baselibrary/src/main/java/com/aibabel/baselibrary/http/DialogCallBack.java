@@ -1,20 +1,14 @@
 package com.aibabel.baselibrary.http;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 
-import com.aibabel.baselibrary.R;
-import com.aibabel.baselibrary.dialog.MyLoadingDialog;
+import com.aibabel.baselibrary.dialog.CustomProgress;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.StringCallback;
 import com.lzy.okgo.model.Response;
 import com.lzy.okgo.request.base.Request;
-
-import kale.ui.view.dialog.BaseEasyDialog;
-import kale.ui.view.dialog.EasyDialog;
 
 
 /**
@@ -25,12 +19,11 @@ import kale.ui.view.dialog.EasyDialog;
 public class DialogCallBack extends StringCallback {
     private String TAG = "DialogCallBack";
 
-    EasyDialog dialog;
+    CustomProgress dialog;
     private Context context;
     private boolean isShowDialog;//是否显示dialog
     private boolean isCancel;//是否能返回键取消，默认能
     private Object tag;//用于取消网络连接
-    private BaseEasyDialog.Builder builder;
 
     /**
      * @param context
@@ -63,17 +56,21 @@ public class DialogCallBack extends StringCallback {
     public void onStart(Request<String, ? extends Request> request) {
         super.onStart(request);
         if (isShowDialog && context != null) {
-            builder = EasyDialog.builder(context, R.style.Theme_Dialog_Alert_Kale, MyLoadingDialog.class);
-            dialog = builder.build();
-            dialog.setCancelable(false);
-            dialog.show(((AppCompatActivity) context).getSupportFragmentManager());
-            builder.setOnCancelListener(new DialogInterface.OnCancelListener() {
+            dialog = CustomProgress.show(context, "", true, null);
+            dialog.setOnCancelListener(new DialogInterface.OnCancelListener() {
                 @Override
                 public void onCancel(DialogInterface dialogInterface) {
                     if (tag != null) {
                         Log.e(TAG, "onCancel: 取消网络请求");
                         OkGo.getInstance().cancelTag(tag);
                     }
+                }
+            });
+            dialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
+                @Override
+                public void onDismiss(DialogInterface dialogInterface) {
+                    dialog.stopAnimation();
+                    dialog = null;
                 }
             });
         }
@@ -88,9 +85,8 @@ public class DialogCallBack extends StringCallback {
     public void onFinish() {
         super.onFinish();
         Log.e(TAG, "onFinish: ");
-        if (dialog != null && dialog.getDialog().isShowing()) {
+        if (dialog != null && dialog.isShowing()) {
             dialog.dismiss();
-            dialog = null;
         }
     }
 

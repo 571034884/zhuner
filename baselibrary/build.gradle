@@ -3,6 +3,10 @@ apply plugin: 'maven'
 android {
     compileSdkVersion 28
 
+    lintOptions {
+        abortOnError false
+    }
+
     defaultConfig {
         minSdkVersion 21
         targetSdkVersion 28
@@ -10,7 +14,6 @@ android {
         versionName "1.0"
 
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
-
     }
 
     buildTypes {
@@ -24,21 +27,29 @@ android {
         targetCompatibility 1.8
         sourceCompatibility 1.8
     }
+
+//    configurations.all {
+//        resolutionStrategy {//由于各个依赖库中版本不一致，有时会导致一些异常情况，故强制使用同一版本
+//            force "com.android.support:recyclerview-v7:28.0.0"
+//            force "com.android.support:appcompat-v7:28.0.0"
+//            force "com.android.support:design:28.0.0"
+//            force "com.android.support:support-vector-drawable:28.0.0"
+//            force "com.android.support:support-v4:28.0.0"
+//        }
+//    }
+
 }
 
 dependencies {
-    api fileTree(dir: 'libs', include: ['*.jar'])
+    implementation fileTree(include: ['*.jar'], dir: 'libs')
+    implementation 'com.android.support:appcompat-v7:28.0.0'
+    implementation 'com.android.support:design:28.0.0-alpha1'
+    implementation 'com.android.support.constraint:constraint-layout:1.1.3'
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'com.android.support.test:runner:1.0.2'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
-
-    api 'com.android.support:appcompat-v7:28.0.0'
-    api 'com.android.support:recyclerview-v7:28.+'
-    api 'com.android.support.constraint:constraint-layout:1.1.3'
     //logger
     api 'com.orhanobut:logger:2.2.0'
-    //屏幕适配
-//    api 'me.jessyan:autosize:1.0.5'
     //友盟统计
     api 'com.umeng.sdk:common:1.5.0'
     api 'com.umeng.sdk:analytics:7.5.0'
@@ -49,34 +60,44 @@ dependencies {
     //fastion
     api 'com.alibaba:fastjson:1.2.2'
     //dialog
-    api 'com.github.tianzhijiexian:EasyDialog:1.1.4'
     //glide
     api 'com.github.bumptech.glide:glide:4.8.0'
     annotationProcessor 'com.github.bumptech.glide:compiler:4.8.0'
     //picasso 若要更换图片加载框架 将PicassoLoader打开即可
-//    implementation 'com.squareup.picasso:picasso:2.71828'
+    //    implementation 'com.squareup.picasso:picasso:2.71828'
     //butterkinfe
     api 'com.jakewharton:butterknife:8.8.1'
-//    annotationProcessor 'com.jakewharton:butterknife-compiler:8.8.1'
+    //    annotationProcessor 'com.jakewharton:butterknife-compiler:8.8.1'
     //热修复
     api 'com.aliyun.ams:alicloud-android-hotfix:3.2.7'
-//    //加载图片
-//    api 'com.github.bumptech.glide:glide:3.7.0'
-//    //高斯模糊
-//    api 'jp.wasabeef:glide-transformations:2.0.1'
-
+    //    //加载图片
+    //    api 'com.github.bumptech.glide:glide:3.7.0'
+    //    //高斯模糊
+    //    api 'jp.wasabeef:glide-transformations:2.0.1'
+    //recyclerView
+    api 'com.zhouyou:easyrecyclerview:1.0.5'
+    api 'com.android.support:design:28.0.0'
+//    api (name:'aidlaar-release',ext:'aar')
+//    api project(':aidlaar-release')
+//    compile project(path: ':aidlaar')
+    api 'com.aibabel:aidlaar:1.0.14'
     uploadArchives {
         repositories.mavenDeployer {
             // 修改为自己刚才创建的仓库地址
             repository(url: "http://101.200.231.195:8081/nexus/content/repositories/thirdparty") {
                 authentication(userName: "admin", password: "aibabel123")
             }
-            pom.version = "1.0.18"
+            pom.version = "1.4.11"
             pom.artifactId = "base"
             pom.groupId = "com.aibabel"
             pom.name = "base"
             pom.packaging = 'aar'
         }
     }
-
 }
+//repositories {
+//    flatDir {
+//        dirs 'libs'
+//    }
+//}
+

@@ -10,4 +10,6 @@ public interface BaseCallback<T extends BaseBean> {
     void onSuccess(String method, T model,String resoureJson);
 
     void onError(String method, String message,String resoureJson);
+
+    void onFinsh(String method);
 }

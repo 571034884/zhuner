@@ -1,0 +1,228 @@
+<?xml version="1.0" encoding="utf-8"?>
+<animation-list xmlns:android="http://schemas.android.com/apk/res/android"
+    android:oneshot="false">
+
+    <item
+        android:drawable="@mipmap/loading_0000"
+        android:duration="60" />
+    <item
+        android:drawable="@mipmap/loading_0001"
+        android:duration="60" />
+    <item
+        android:drawable="@mipmap/loading_0002"
+        android:duration="60" />
+    <item
+        android:drawable="@mipmap/loading_0003"
+        android:duration="60" />
+    <item
+        android:drawable="@mipmap/loading_0004"
+        android:duration="60" />
+    <item
+        android:drawable="@mipmap/loading_0005"
+        android:duration="60" />
+    <item
+        android:drawable="@mipmap/loading_0006"
+        android:duration="60" />
+    <item
+        android:drawable="@mipmap/loading_0007"
+        android:duration="60" />
+    <item
+        android:drawable="@mipmap/loading_0008"
+        android:duration="60" />
+    <item
+        android:drawable="@mipmap/loading_0009"
+        android:duration="60" />
+    <item
+        android:drawable="@mipmap/loading_0010"
+        android:duration="60" />
+    <item
+        android:drawable="@mipmap/loading_0011"
+        android:duration="60" />
+    <item
+        android:drawable="@mipmap/loading_0012"
+        android:duration="60" />
+    <item
+        android:drawable="@mipmap/loading_0013"
+        android:duration="60" />
+    <item
+        android:drawable="@mipmap/loading_0014"
+        android:duration="60" />
+    <item
+        android:drawable="@mipmap/loading_0015"
+        android:duration="60" />
+    <item
+        android:drawable="@mipmap/loading_0016"
+        android:duration="60" />
+    <item
+        android:drawable="@mipmap/loading_0017"
+        android:duration="60" />
+    <item
+        android:drawable="@mipmap/loading_0018"
+        android:duration="60" />
+    <item
+        android:drawable="@mipmap/loading_0019"
+        android:duration="60" />
+    <item
+        android:drawable="@mipmap/loading_0020"
+        android:duration="60" />
+    <item
+        android:drawable="@mipmap/loading_0021"
+        android:duration="60" />
+    <item
+        android:drawable="@mipmap/loading_0022"
+        android:duration="60" />
+    <item
+        android:drawable="@mipmap/loading_0023"
+        android:duration="60" />
+    <item
+        android:drawable="@mipmap/loading_0024"
+        android:duration="60" />
+    <item
+        android:drawable="@mipmap/loading_0025"
+        android:duration="60" />
+    <item
+        android:drawable="@mipmap/loading_0026"
+        android:duration="60" />
+    <item
+        android:drawable="@mipmap/loading_0027"
+        android:duration="60" />
+    <item
+        android:drawable="@mipmap/loading_0028"
+        android:duration="60" />
+    <item
+        android:drawable="@mipmap/loading_0029"
+        android:duration="60" />
+    <item
+        android:drawable="@mipmap/loading_0030"
+        android:duration="60" />
+    <item
+        android:drawable="@mipmap/loading_0031"
+        android:duration="60" />
+    <item
+        android:drawable="@mipmap/loading_0032"
+        android:duration="60" />
+    <item
+        android:drawable="@mipmap/loading_0033"
+        android:duration="60" />
+    <item
+        android:drawable="@mipmap/loading_0034"
+        android:duration="60" />
+    <item
+        android:drawable="@mipmap/loading_0035"
+        android:duration="60" />
+    <item
+        android:drawable="@mipmap/loading_0036"
+        android:duration="60" />
+    <item
+        android:drawable="@mipmap/loading_0037"
+        android:duration="60" />
+    <item
+        android:drawable="@mipmap/loading_0038"
+        android:duration="60" />
+    <item
+        android:drawable="@mipmap/loading_0039"
+        android:duration="60" />
+    <item
+        android:drawable="@mipmap/loading_0040"
+        android:duration="60" />
+    <item
+        android:drawable="@mipmap/loading_0041"
+        android:duration="60" />
+    <item
+        android:drawable="@mipmap/loading_0042"
+        android:duration="60" />
+    <item
+        android:drawable="@mipmap/loading_0043"
+        android:duration="60" />
+    <item
+        android:drawable="@mipmap/loading_0044"
+        android:duration="60" />
+    <item
+        android:drawable="@mipmap/loading_0045"
+        android:duration="60" />
+    <item
+        android:drawable="@mipmap/loading_0046"
+        android:duration="60" />
+    <item
+        android:drawable="@mipmap/loading_0047"
+        android:duration="60" />
+    <item
+        android:drawable="@mipmap/loading_0048"
+        android:duration="60" />
+    <item
+        android:drawable="@mipmap/loading_0049"
+        android:duration="60" />
+    <item
+        android:drawable="@mipmap/loading_0050"
+        android:duration="60" />
+    <item
+        android:drawable="@mipmap/loading_0051"
+        android:duration="60" />
+    <item
+        android:drawable="@mipmap/loading_0052"
+        android:duration="60" />
+    <item
+        android:drawable="@mipmap/loading_0053"
+        android:duration="60" />
+    <item
+        android:drawable="@mipmap/loading_0054"
+        android:duration="60" />
+    <item
+        android:drawable="@mipmap/loading_0055"
+        android:duration="60" />
+    <item
+        android:drawable="@mipmap/loading_0056"
+        android:duration="60" />
+    <item
+        android:drawable="@mipmap/loading_0057"
+        android:duration="60" />
+    <item
+        android:drawable="@mipmap/loading_0058"
+        android:duration="60" />
+    <item
+        android:drawable="@mipmap/loading_0059"
+        android:duration="60" />
+    <item
+        android:drawable="@mipmap/loading_0060"
+        android:duration="60" />
+    <item
+        android:drawable="@mipmap/loading_0061"
+        android:duration="60" />
+    <item
+        android:drawable="@mipmap/loading_0062"
+        android:duration="60" />
+    <item
+        android:drawable="@mipmap/loading_0063"
+        android:duration="60" />
+    <item
+        android:drawable="@mipmap/loading_0064"
+        android:duration="60" />
+    <item
+        android:drawable="@mipmap/loading_0065"
+        android:duration="60" />
+    <item
+        android:drawable="@mipmap/loading_0066"
+        android:duration="60" />
+    <item
+        android:drawable="@mipmap/loading_0067"
+        android:duration="60" />
+    <item
+        android:drawable="@mipmap/loading_0068"
+        android:duration="60" />
+    <item
+        android:drawable="@mipmap/loading_0069"
+        android:duration="60" />
+    <item
+        android:drawable="@mipmap/loading_0070"
+        android:duration="60" />
+    <item
+        android:drawable="@mipmap/loading_0071"
+        android:duration="60" />
+    <item
+        android:drawable="@mipmap/loading_0072"
+        android:duration="60" />
+    <item
+        android:drawable="@mipmap/loading_0073"
+        android:duration="60" />
+
+</animation-list>
