@@ -51,7 +51,7 @@ public abstract class CommomRecyclerAdapter<T> extends RecyclerView.Adapter<Recy
         if (position == 0) {
             convert((CommonRecyclerViewHolder) holder, mData, position);
         } else {
-            convert((CommonRecyclerViewHolder) holder, mDatas.get(position), position);
+            convert((CommonRecyclerViewHolder) holder, mDatas.get(position - 1), position);
         }
     }
 

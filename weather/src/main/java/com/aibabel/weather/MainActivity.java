@@ -2,6 +2,7 @@ package com.aibabel.weather;
 
 import android.content.Context;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
@@ -14,6 +15,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.aibabel.aidlaar.StatisticsManager;
 import com.aibabel.weather.activity.AddCityActivity;
 import com.aibabel.weather.activity.EditCityActivity;
 import com.aibabel.weather.adapter.WeatherAdapter;
@@ -33,8 +35,10 @@ import com.aibabel.weather.utils.ToastUtil;
 import com.aibabel.weather.utils.WeizhiUtil;
 import com.github.promeg.pinyinhelper.Pinyin;
 import com.lzy.okgo.OkGo;
+import com.lzy.okgo.callback.StringCallback;
 import com.lzy.okgo.model.Response;
 import com.lzy.okgo.request.GetRequest;
+import com.taobao.sophix.SophixManager;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -91,6 +95,7 @@ public class MainActivity extends BaseActivity implements BaseCallback {
 
     @Override
     public void init() {
+        rexiufu();
         context = this;
         initViewPager();
         weatherUrlBeanList.addAll(getLishichengshi());
@@ -169,6 +174,9 @@ public class MainActivity extends BaseActivity implements BaseCallback {
                     Intent intent = new Intent(MainActivity.this, AddCityActivity.class);
                     startActivityForResult(intent, 888);
                 }
+                Map<String, String> map = new HashMap<>();
+                map.put(TAG, "添加");
+                StatisticsManager.getInstance(MainActivity.this).addEventAidl("点击事件", map);
             }
         });
         tvEdit.setOnClickListener(new OnMultiClickListener() {
@@ -179,6 +187,9 @@ public class MainActivity extends BaseActivity implements BaseCallback {
                     intent.putExtra("weatherBeanList", (Serializable) weatherBeanList);
                     intent.putExtra("weatherUrlBeanList", (Serializable) weatherUrlBeanList);
                     startActivityForResult(intent, 888);
+                    Map<String, String> map = new HashMap<>();
+                    map.put(TAG, "编辑");
+                    StatisticsManager.getInstance(MainActivity.this).addEventAidl("点击事件", map);
                 }
             }
         });
@@ -357,6 +368,8 @@ public class MainActivity extends BaseActivity implements BaseCallback {
         if (TextUtils.equals(countryNameCN, "中国")) {
             key = "中国_" + getPackageName() + "_joner";
             countryName = "China";
+            if (cityNameCN.contains("香港")) cityNameCN = "香港";
+            else if (cityNameCN.contains("澳门")) cityNameCN = "澳门";
             if (cityNameCN.length() > 2 && cityNameCN.contains("市"))
                 cityNameCN = cityNameCN.substring(0, cityNameCN.lastIndexOf("市"));
             for (int i = 0; i < cityNameCN.length(); i++) {
@@ -367,8 +380,12 @@ public class MainActivity extends BaseActivity implements BaseCallback {
             key = "default_" + getPackageName() + "_joner";
             countryName = countryNameCN;
             cityName = cityNameCN;
-            getChineseNameOfLocation(countryNameCN, cityNameCN);
+            if (!TextUtils.equals(countryNameCN, "") && TextUtils.equals(cityNameCN, ""))
+                getChineseNameOfLocation(countryNameCN, cityNameCN);
+            else aaa();
         }
+//        Constant.IP_PORT = "http://39.107.238.111:7001/";
+//        Constant.IP_PORT = "http://192.168.50.10:7001/";
     }
 
     /**
@@ -458,6 +475,42 @@ public class MainActivity extends BaseActivity implements BaseCallback {
     public void onError(String method, String message) {
         Log.e(TAG, "onError: " + message);
         aaa();
+    }
+
+    public void rexiufu() {
+        String latitude = "1111";
+        String longitude = "1111";
+//        String latitude = WeizhiUtil.getInfo(this, WeizhiUtil.CONTENT_URI_WY, "latitude");
+//        String longitude = WeizhiUtil.getInfo(this, WeizhiUtil.CONTENT_URI_WY, "longitude");
+        String url = Constant.IP_PORT + "/v1/jonersystem/GetAppNew?sn=" + CommonUtils.getSN() + "&no=" + CommonUtils.getRandom() + "&sl=" + CommonUtils.getLocalLanguage() + "&av=" + BuildConfig.VERSION_NAME + "&app=" + getPackageName() + "&sv=" + Build.DISPLAY + "&lat=" + latitude + "&lng=" + longitude;
+
+        OkGo.<String>get(url)
+                .tag(this)
+                .execute(new StringCallback() {
+                    @Override
+                    public void onSuccess(Response<String> response) {
+                        Log.e(TAG, response.body().toString());
+                        if (!TextUtils.isEmpty(response.body().toString())) {
+                            try {
+                                JSONObject jsonObject = new JSONObject(response.body().toString());
+                                boolean isNew = (Boolean) ((JSONObject) jsonObject.get("data")).get("isNew");
+                                if (isNew) {
+                                    SophixManager.getInstance().queryAndLoadNewPatch();
+                                    Log.e("success:", "=================" + isNew + "=================");
+                                } else {
+                                    Log.e("failed:", "=================" + isNew + "=================");
+                                }
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                                Log.e("Exception:", "==========" + e.getMessage() + "===========");
+                            }
+                        }
+                    }
+
+                    @Override
+                    public void onError(Response<String> response) {
+                    }
+                });
     }
 
 }

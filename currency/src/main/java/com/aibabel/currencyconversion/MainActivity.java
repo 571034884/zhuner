@@ -4,8 +4,9 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Color;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
+import android.support.constraint.ConstraintLayout;
 import android.text.TextUtils;
 import android.util.DisplayMetrics;
 import android.util.Log;
@@ -15,15 +16,14 @@ import android.view.WindowManager;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
 import android.view.animation.LinearInterpolator;
-import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.aibabel.aidlaar.StatisticsManager;
 import com.aibabel.currencyconversion.app.BaseActivity;
 import com.aibabel.currencyconversion.app.Constant;
-import com.aibabel.currencyconversion.bean.CurrencyBean;
 import com.aibabel.currencyconversion.bean.ExchangeRateBean;
 import com.aibabel.currencyconversion.bean.NewCurrencyBean;
 import com.aibabel.currencyconversion.utils.Calculate;
@@ -34,11 +34,12 @@ import com.aibabel.currencyconversion.utils.InternationalizationUtil;
 import com.aibabel.currencyconversion.utils.NetUtil;
 import com.aibabel.currencyconversion.utils.SharePrefUtil;
 import com.aibabel.currencyconversion.utils.ToastUtil;
+import com.aibabel.currencyconversion.utils.WeizhiUtil;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.StringCallback;
 import com.lzy.okgo.model.Response;
 import com.lzy.okgo.request.GetRequest;
-import com.umeng.analytics.MobclickAgent;
+import com.taobao.sophix.SophixManager;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -46,7 +47,9 @@ import org.json.JSONObject;
 import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.regex.Pattern;
 
 import butterknife.BindView;
@@ -106,6 +109,10 @@ public class MainActivity extends BaseActivity {
     View vCursor2;
     @BindView(R.id.v_cursor3)
     View vCursor3;
+    @BindView(R.id.iv_guanbi)
+    ImageView ivGuanbi;
+    @BindView(R.id.clGuanbi)
+    ConstraintLayout clGuanbi;
 
     private int screenWidth;
     private ViewTreeObserver.OnGlobalLayoutListener globalLayoutListener;
@@ -134,6 +141,13 @@ public class MainActivity extends BaseActivity {
 
     @Override
     public void init() {
+        rexiufu();
+        String guangbi = getIntent().getStringExtra("from");
+        if (guangbi != null && guangbi.equals("food")) {
+            clGuanbi.setVisibility(View.VISIBLE);
+        } else {
+            clGuanbi.setVisibility(View.GONE);
+        }
         try {
             Cursor cursor = getContentResolver().query(CONTENT_URI, null, null, null, null);
             cursor.moveToFirst();
@@ -165,6 +179,11 @@ public class MainActivity extends BaseActivity {
         etCurrencyCount2.getViewTreeObserver().addOnGlobalLayoutListener(new MyGlobalLayoutListener(llZuo2, llYou2, tvCurrencyAbbreviations2, ivXiala2));
         etCurrencyCount3.getViewTreeObserver().addOnGlobalLayoutListener(new MyGlobalLayoutListener(llZuo3, llYou3, tvCurrencyAbbreviations3, ivXiala3));
 
+    }
+
+    @OnClick(R.id.iv_guanbi)
+    public void onViewClicked() {
+        finish();
     }
 
     public class MyGlobalLayoutListener implements ViewTreeObserver.OnGlobalLayoutListener {
@@ -281,9 +300,12 @@ public class MainActivity extends BaseActivity {
         Constant.CURRENCY_ABBREVIATION_VALUE_2 = SharePrefUtil.getString(this, Constant.CURRENCY_ABBREVIATION_KEY_2, "USD");
         Constant.CURRENCY_ABBREVIATION_VALUE_3 = SharePrefUtil.getString(this, Constant.CURRENCY_ABBREVIATION_KEY_3, "JPY");
         //币种名称
-        NewCurrencyBean childBean1 = FastJsonUtil.changeJsonToBean(SharePrefUtil.getString(this, Constant.CURRENCY_NAME_KEY_1, Constant.CURRENCY_NAME_MOREN_1), NewCurrencyBean.class);
-        NewCurrencyBean childBean2 = FastJsonUtil.changeJsonToBean(SharePrefUtil.getString(this, Constant.CURRENCY_NAME_KEY_2, Constant.CURRENCY_NAME_MOREN_2), NewCurrencyBean.class);
-        NewCurrencyBean childBean3 = FastJsonUtil.changeJsonToBean(SharePrefUtil.getString(this, Constant.CURRENCY_NAME_KEY_3, Constant.CURRENCY_NAME_MOREN_3), NewCurrencyBean.class);
+        NewCurrencyBean childBean1 = FastJsonUtil.changeJsonToBean(SharePrefUtil.getString(this, Constant.CURRENCY_NAME_KEY_1, Constant.CURRENCY_NAME_MOREN_1), NewCurrencyBean
+                .class);
+        NewCurrencyBean childBean2 = FastJsonUtil.changeJsonToBean(SharePrefUtil.getString(this, Constant.CURRENCY_NAME_KEY_2, Constant.CURRENCY_NAME_MOREN_2), NewCurrencyBean
+                .class);
+        NewCurrencyBean childBean3 = FastJsonUtil.changeJsonToBean(SharePrefUtil.getString(this, Constant.CURRENCY_NAME_KEY_3, Constant.CURRENCY_NAME_MOREN_3), NewCurrencyBean
+                .class);
         Constant.CURRENCY_NAME_VALUE_1 = InternationalizationUtil.getCurrentText(childBean1);
         Constant.CURRENCY_NAME_VALUE_2 = InternationalizationUtil.getCurrentText(childBean2);
         Constant.CURRENCY_NAME_VALUE_3 = InternationalizationUtil.getCurrentText(childBean3);
@@ -300,7 +322,8 @@ public class MainActivity extends BaseActivity {
         tvCurrencyName2.setText(Constant.CURRENCY_NAME_VALUE_2);
         tvCurrencyName3.setText(Constant.CURRENCY_NAME_VALUE_3);
         if (NetUtil.isNetworkAvailable(MainActivity.this)) {
-            GetRequest<String> getRequest = OkGo.<String>get(Constant.IP_PORT + Constant.URL + Constant.CURRENCY_ABBREVIATION_VALUE_1 + "," + Constant.CURRENCY_ABBREVIATION_VALUE_2 + "," + Constant.CURRENCY_ABBREVIATION_VALUE_3).tag(this);
+            GetRequest<String> getRequest = OkGo.<String>get(Constant.IP_PORT + Constant.URL + Constant.CURRENCY_ABBREVIATION_VALUE_1 + "," + Constant
+                    .CURRENCY_ABBREVIATION_VALUE_2 + "," + Constant.CURRENCY_ABBREVIATION_VALUE_3).tag(this);
             getRequest.params("sn", CommonUtils.getSN());
             getRequest.params("sysLanguage", CommonUtils.getSN());
             getRequest.params("sl", CommonUtils.getLocalLanguage());
@@ -364,7 +387,8 @@ public class MainActivity extends BaseActivity {
                 //屏幕模式显示
                 resetInit("100");
                 try {
-                    tvProvider.setText(getResources().getString(R.string.provided_update) + " " + new SimpleDateFormat("yyyy-MM-dd").format(new Date(new Long(Constant.CURRENCY_TIME) * 1000)));
+                    tvProvider.setText(getResources().getString(R.string.provided_update) + " " + new SimpleDateFormat("yyyy-MM-dd").format(new Date(new Long(Constant
+                            .CURRENCY_TIME) * 1000)));
                 } catch (Exception e) {
 
                 }
@@ -650,6 +674,9 @@ public class MainActivity extends BaseActivity {
                 SharePrefUtil.saveString(this, Constant.CURRENCY_ABBREVIATION_KEY_3, xuanzhongAbbreviation);
                 SharePrefUtil.saveString(this, Constant.CURRENCY_NAME_KEY_3, FastJsonUtil.changObjectToString(childBean));
             }
+            Map<String, String> map = new HashMap<>();
+            map.put(requestCode + "", xuanzhongName);
+            StatisticsManager.getInstance(MainActivity.this).addEventAidl("点击事件", map);
             getCurrentExchangeRate();
         }
     }
@@ -736,4 +763,42 @@ public class MainActivity extends BaseActivity {
     public boolean is0_9(String s) {
         return Pattern.matches(".*(0|1|2|3|4|5|6|7|8|9).*", s);
     }
+
+
+    public void rexiufu() {
+        String latitude = "1111";
+        String longitude = "111";
+//        String latitude = WeizhiUtil.getInfo(this, WeizhiUtil.CONTENT_URI_WY, "latitude");
+//        String longitude = WeizhiUtil.getInfo(this, WeizhiUtil.CONTENT_URI_WY, "longitude");
+        String url = Constant.IP_PORT + "/v1/jonersystem/GetAppNew?sn=" + CommonUtils.getSN() + "&no=" + CommonUtils.getRandom() + "&sl=" + CommonUtils.getLocalLanguage() + "&av=" + BuildConfig.VERSION_NAME + "&app=" + getPackageName() + "&sv=" + Build.DISPLAY + "&lat=" + latitude + "&lng=" + longitude;
+
+        OkGo.<String>get(url)
+                .tag(this)
+                .execute(new StringCallback() {
+                    @Override
+                    public void onSuccess(Response<String> response) {
+                        Log.e(TAG, response.body().toString());
+                        if (!TextUtils.isEmpty(response.body().toString())) {
+                            try {
+                                JSONObject jsonObject = new JSONObject(response.body().toString());
+                                boolean isNew = (Boolean) ((JSONObject) jsonObject.get("data")).get("isNew");
+                                if (isNew) {
+                                    SophixManager.getInstance().queryAndLoadNewPatch();
+                                    Log.e("success:", "=================" + isNew + "=================");
+                                } else {
+                                    Log.e("failed:", "=================" + isNew + "=================");
+                                }
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                                Log.e("Exception:", "==========" + e.getMessage() + "===========");
+                            }
+                        }
+                    }
+
+                    @Override
+                    public void onError(Response<String> response) {
+                    }
+                });
+    }
+
 }

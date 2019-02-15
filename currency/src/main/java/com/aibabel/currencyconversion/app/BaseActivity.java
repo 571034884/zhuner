@@ -2,11 +2,11 @@ package com.aibabel.currencyconversion.app;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v7.app.AppCompatActivity;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.WindowManager;
 
+import com.aibabel.statisticalserver.SimpleStatisticsActivity;
 import com.umeng.analytics.MobclickAgent;
 
 import butterknife.ButterKnife;
@@ -17,7 +17,7 @@ import butterknife.Unbinder;
  * 功能：
  * 版本：1.0
  */
-public abstract class BaseActivity extends AppCompatActivity {
+public abstract class BaseActivity extends SimpleStatisticsActivity {
 
     private Unbinder mUnbinder;
 

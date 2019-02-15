@@ -7,7 +7,8 @@ import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.util.Log;
 
-import com.aibabel.currencyconversion.utils.APKVersionUtils;
+import com.aibabel.aidlaar.StatisticsManager;
+import com.aibabel.currencyconversion.BuildConfig;
 import com.aibabel.currencyconversion.utils.CommonUtils;
 import com.aibabel.currencyconversion.utils.DensityHelper;
 import com.aibabel.currencyconversion.utils.SharePrefUtil;
@@ -44,6 +45,7 @@ public class MyApplication extends Application {
         initAppExitConfig();
         initOKgoConfig();
         initUmengConfig();
+        StatisticsManager.getInstance(this).setConfig(getPackageName(), BuildConfig.VERSION_NAME);
     }
 
     /**

@@ -1,4 +1,5 @@
 apply plugin: 'com.android.application'
+apply plugin: 'com.aliyun.ams.emas-services'
 
 // 当前beta版本号
 ext.build_number = "beta1"
@@ -14,8 +15,8 @@ android {
         applicationId "com.aibabel.weather"
         minSdkVersion 23
         targetSdkVersion 28
-        versionCode 15
-        versionName "1.0.15"
+        versionCode 20
+        versionName "1.1.19"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
@@ -60,4 +61,9 @@ dependencies {
     implementation 'com.github.promeg:tinypinyin-lexicons-java-cncity:2.0.3'
     // 可选，适用于Java的中国地区词典
     implementation files('libs/pinyin4j-2.5.0.jar')
+}
+repositories {
+    maven {
+        url "http://maven.aliyun.com/nexus/content/repositories/releases"
+    }
 }
