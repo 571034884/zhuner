@@ -2,14 +2,24 @@ package com.aibabel.sos;
 
 import android.content.Intent;
 import android.net.Uri;
+import android.os.Build;
+import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 
 import com.aibabel.sos.activity.InformationItemActivity;
 import com.aibabel.sos.activity.WorldCountryActivity;
 import com.aibabel.sos.app.BaseActivity;
 import com.aibabel.sos.app.Constans;
+import com.aibabel.sos.utils.CommonUtils;
 import com.aibabel.sos.utils.SosDbUtil;
 import com.aibabel.sos.utils.WeizhiUtil;
+import com.lzy.okgo.OkGo;
+import com.lzy.okgo.callback.StringCallback;
+import com.lzy.okgo.model.Response;
+import com.taobao.sophix.SophixManager;
+
+import org.json.JSONObject;
 
 public class MainActivity extends BaseActivity {
 
@@ -32,9 +42,15 @@ public class MainActivity extends BaseActivity {
     }
 
     public void initData() {
-        countryName = WeizhiUtil.getInfo(MainActivity.this, WeizhiUtil.CONTENT_URI_WY, "country");
-        cityName = WeizhiUtil.getInfo(MainActivity.this, WeizhiUtil.CONTENT_URI_WY, "city");
-        countryName1 = WeizhiUtil.getInfo(MainActivity.this, WeizhiUtil.CONTENT_URI_ZF, "Country");
+        rexiufu();
+        if (getIntent().getStringExtra("country") != null && getIntent().getStringExtra("country") != null) {
+            countryName = getIntent().getStringExtra("country");
+            cityName = getIntent().getStringExtra("city");
+        } else {
+            countryName = WeizhiUtil.getInfo(MainActivity.this, WeizhiUtil.CONTENT_URI_WY, "country");
+            cityName = WeizhiUtil.getInfo(MainActivity.this, WeizhiUtil.CONTENT_URI_WY, "city");
+            countryName1 = WeizhiUtil.getInfo(MainActivity.this, WeizhiUtil.CONTENT_URI_ZF, "Country");
+        }
         if (cityName.length() > 2 && cityName.contains("市"))
             cityName = cityName.substring(0, cityName.lastIndexOf("市"));
         Constans.GUOJIA = countryName;
@@ -66,46 +82,46 @@ public class MainActivity extends BaseActivity {
                 intent.putExtra("fh", View.GONE);
             }
         }
+        if (getIntent().getStringExtra("from") != null && getIntent().getStringExtra("from").equals("menu"))
+            intent.putExtra("fh", View.VISIBLE);
         startActivity(intent);
         finish();
-//        try {
-//            Cursor cursor = getContentResolver().query(CONTENT_URI_WY, null, null, null, null);
-//            cursor.moveToFirst();
-//            countryName = cursor.getString(2);
-//            cityName = cursor.getString(3);
-//            Constans.GUOJIA = countryName;
-//            Constans.CHENGSHI = cityName;
-//            cursor.close();
-//            Cursor cursor1 = getContentResolver().query(CONTENT_URI_ZF, null, null, null, null);
-//            cursor1.moveToFirst();
-//            countryName1 = cursor1.getString(1);
-//            cityName1 = cursor1.getString(3);
-//            cursor1.close();
-//            Log.e("initData: ", "接收到定位服务的cursor" + countryName + "    " + countryName1);
-//        } catch (Exception e) {
-//            Log.e("initData: ", "没有接收到定位服务的cursor");
-//            e.printStackTrace();
-//        }
-//        cityName = "大阪";
-//        cityName1 = "纽约";
-//        countryName = "中国";
-//        countryName1 = "美国";
-//        if (!TextUtils.equals(cityName1, "") && TextUtils.equals(cityName, cityName1) && SosDbUtil.getLingshiguan(cityName).size() > 0) {
-//            Intent intent = new Intent(MainActivity.this, InformationItemActivity.class);
-//            intent.putExtra("cs", cityName);
-//            intent.putExtra("gj", countryName);
-//            startActivity(intent);
-//            finish();
-//        } else if (!TextUtils.equals(countryName1, "中国") && !TextUtils.equals(countryName1, "")) {
-//            Intent intent = new Intent(MainActivity.this, InformationItemActivity.class);
-//            intent.putExtra("gj", countryName1);
-//            startActivity(intent);
-//            finish();
-//        } else {
-//            Intent intent = new Intent(MainActivity.this, WorldCountryActivity.class);
-//            intent.putExtra("fh", View.GONE);
-//            startActivity(intent);
-//            finish();
-//        }
     }
+
+    public void rexiufu() {
+//        String latitude = WeizhiUtil.getInfo(this, WeizhiUtil.CONTENT_URI_WY, "latitude");
+//        String longitude = WeizhiUtil.getInfo(this, WeizhiUtil.CONTENT_URI_WY, "longitude");
+        String latitude = "1111";
+        String longitude = "1111";
+        String url = "http://abroad.api.joner.aibabel.cn:7001/v1/jonersystem/GetAppNew?sn=" + CommonUtils.getSN() + "&no=" + CommonUtils.getRandom() + "&sl=" + CommonUtils.getLocalLanguage() + "&av=" + BuildConfig.VERSION_NAME + "&app=" + getPackageName() + "&sv=" + Build.DISPLAY + "&lat=" + latitude + "&lng=" + longitude;
+
+        OkGo.<String>get(url)
+                .tag(this)
+                .execute(new StringCallback() {
+                    @Override
+                    public void onSuccess(Response<String> response) {
+                        Log.e("TAG", response.body().toString());
+                        if (!TextUtils.isEmpty(response.body().toString())) {
+                            try {
+                                JSONObject jsonObject = new JSONObject(response.body().toString());
+                                boolean isNew = (Boolean) ((JSONObject) jsonObject.get("data")).get("isNew");
+                                if (isNew) {
+                                    SophixManager.getInstance().queryAndLoadNewPatch();
+                                    Log.e("success:", "=================" + isNew + "=================");
+                                } else {
+                                    Log.e("failed:", "=================" + isNew + "=================");
+                                }
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                                Log.e("Exception:", "==========" + e.getMessage() + "===========");
+                            }
+                        }
+                    }
+
+                    @Override
+                    public void onError(Response<String> response) {
+                    }
+                });
+    }
+
 }

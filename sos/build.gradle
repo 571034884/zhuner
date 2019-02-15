@@ -1,4 +1,5 @@
 apply plugin: 'com.android.application'
+apply plugin: 'com.aliyun.ams.emas-services'
 
 // 当前beta版本号
 ext.build_number = "beta1"
@@ -14,8 +15,8 @@ android {
         applicationId "com.aibabel.sos"
         minSdkVersion 23
         targetSdkVersion 28
-        versionCode 13
-        versionName "1.0.13"
+        versionCode 15
+        versionName "1.0.15"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
@@ -62,6 +63,11 @@ dependencies {
     implementation files('libs/pinyin4j-2.5.0.jar')
     //圆形图片
     implementation 'de.hdodenhof:circleimageview:2.1.0'
+}
+repositories {
+    maven {
+        url "http://maven.aliyun.com/nexus/content/repositories/releases"
+    }
 }
 
 
