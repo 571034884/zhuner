@@ -6,6 +6,21 @@
     android:layout_height="match_parent"
     tools:context="com.aibabel.currencyconversion.MainActivity">
 
+    <android.support.constraint.ConstraintLayout
+        android:id="@+id/clGuanbi"
+        android:layout_width="match_parent"
+        android:layout_height="80px">
+
+        <ImageView
+            android:id="@+id/iv_guanbi"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="20px"
+            android:src="@mipmap/hl_guanbi"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintRight_toRightOf="parent" />
+    </android.support.constraint.ConstraintLayout>
+
     <LinearLayout
         android:id="@+id/ll"
         android:layout_width="0px"
@@ -33,7 +48,7 @@
         app:layout_constraintBottom_toTopOf="@id/ll"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toBottomOf="@id/clGuanbi">
 
         <android.support.constraint.Guideline
             android:id="@+id/guideline"

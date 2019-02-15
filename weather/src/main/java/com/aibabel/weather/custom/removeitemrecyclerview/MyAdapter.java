@@ -19,6 +19,10 @@ public class MyAdapter extends RecyclerView.Adapter {
     private List<WeatherBean> mList;
     private List<WeatherUrlBean> mUrlList;
 
+    public List<WeatherUrlBean> getmUrlList() {
+        return mUrlList;
+    }
+
     public MyAdapter(Context context, List<WeatherBean> list, List<WeatherUrlBean> urlList) {
         mContext = context;
         mInflater = LayoutInflater.from(context);
@@ -50,6 +54,7 @@ public class MyAdapter extends RecyclerView.Adapter {
         viewHolder.tv_city.setTag(position);
 //        viewHolder.tv_wendu.setText(mList.get(position).getWeatherNowData().getTemperature_string().split("\\(")[1].split(" ")[0] + "°");
     }
+
 
     public void setMaxMinText(TextView textView, String textMax, String textMin) {
         if (TextUtils.equals(textMax, "")) {

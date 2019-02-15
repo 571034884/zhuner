@@ -5,6 +5,9 @@ import android.app.Application;
 import android.os.Bundle;
 import android.util.Log;
 
+import com.aibabel.aidlaar.StatisticsManager;
+import com.aibabel.statisticalserver.SimpleStatisticsActivity;
+import com.aibabel.weather.BuildConfig;
 import com.aibabel.weather.utils.CommonUtils;
 import com.aibabel.weather.utils.DensityHelper;
 import com.lzy.okgo.OkGo;
@@ -42,6 +45,7 @@ public class MyApplication extends Application {
         initAppExitConfig();
         initOKgoConfig();
         initUmengConfig();
+        StatisticsManager.getInstance(this).setConfig(getPackageName(), BuildConfig.VERSION_NAME);
     }
 
     /**

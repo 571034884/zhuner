@@ -10,8 +10,10 @@ import android.text.TextUtils;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.WindowManager;
+import android.widget.EditText;
 import android.widget.TextView;
 
+import com.aibabel.aidlaar.StatisticsManager;
 import com.aibabel.weather.MainActivity;
 import com.aibabel.weather.R;
 import com.aibabel.weather.adapter.CommonItemDecoration;
@@ -32,8 +34,10 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 import java.util.TimeZone;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -116,6 +120,9 @@ public class EditCityActivity extends BaseActivity {
 
             @Override
             public void onDeleteClick(int position) {
+                Map<String, String> map = new HashMap<>();
+                map.put("删除", adapter.getmUrlList().get(position).getCityCN() + adapter.getmUrlList().get(position).getCountryCN());
+                StatisticsManager.getInstance(EditCityActivity.this).addEventAidl("点击事件", map);
                 adapter.removeItem(position);
                 delPosition.add(position);
             }

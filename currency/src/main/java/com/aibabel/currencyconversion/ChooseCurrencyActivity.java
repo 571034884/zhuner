@@ -184,11 +184,13 @@ public class ChooseCurrencyActivity extends BaseActivity {
         sbSort.setOnTouchingLetterChangedListener(new SideBar.OnTouchingLetterChangedListener() {
             @Override
             public void onTouchingLetterChanged(String s) {
-                //该字母首次出现的位置
-                int position = mIndexer.getPositionForSection(ALL_CHARACTER.indexOf(s));
-                if (position != -1) {
-                    //因为列表默认加上了常用的分组 所以位置需要再-1
-                    sortListView.setSelection(position + 1 - 1);
+                if (CommonUtils.isAvailable(ChooseCurrencyActivity.this)){
+                    //该字母首次出现的位置
+                    int position = mIndexer.getPositionForSection(ALL_CHARACTER.indexOf(s));
+                    if (position != -1) {
+                        //因为列表默认加上了常用的分组 所以位置需要再-1
+                        sortListView.setSelection(position + 1 - 1);
+                    }
                 }
             }
         });

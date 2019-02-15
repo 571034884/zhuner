@@ -1,4 +1,5 @@
 apply plugin: 'com.android.application'
+apply plugin: 'com.aliyun.ams.emas-services'
 // 当前beta版本号
 ext.build_number = "beta1"
 
@@ -13,8 +14,8 @@ android {
         applicationId "com.aibabel.currencyconversion"
         minSdkVersion 23
         targetSdkVersion 28
-        versionCode 15
-        versionName "1.0.15"
+        versionCode 17
+        versionName "1.0.17"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
@@ -64,4 +65,9 @@ dependencies {
     annotationProcessor 'com.jakewharton:butterknife-compiler:8.8.1'
     implementation files('libs/pinyin4j-2.5.0.jar')
     implementation 'de.hdodenhof:circleimageview:2.1.0'
+}
+repositories {
+    maven {
+        url "http://maven.aliyun.com/nexus/content/repositories/releases"
+    }
 }

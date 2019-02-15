@@ -15,6 +15,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.aibabel.aidlaar.StatisticsManager;
 import com.aibabel.weather.R;
 import com.aibabel.weather.app.BaseActivity;
 import com.aibabel.weather.app.Constant;
@@ -100,7 +101,8 @@ public class AddCityActivity extends BaseActivity implements BaseCallback {
      */
     public void initData() {
         Map<String, String> map = new HashMap<>();
-        OkGoUtil.<CityListBean>get(AddCityActivity.this, Constant.URL_CITYLIST_NEW, map, CityListBean.class, this);
+        OkGoUtil.<CityListBean>get(AddCityActivity.this, Constant.URL_CITYLIST_NEW, map,
+                CityListBean.class, this);
         sbSort.setTextView(tvDialog);
     }
 
@@ -118,10 +120,12 @@ public class AddCityActivity extends BaseActivity implements BaseCallback {
             Log.v("hideInputResult", "zzz-->>" + hideInputResult);
             if (hideInputResult) {
                 v.clearFocus();
-                InputMethodManager imm = (InputMethodManager) AddCityActivity.this.getSystemService(Activity.INPUT_METHOD_SERVICE);
+                InputMethodManager imm = (InputMethodManager) AddCityActivity.this
+                        .getSystemService(Activity.INPUT_METHOD_SERVICE);
                 if (v != null) {
                     if (imm.isActive()) {
-                        imm.hideSoftInputFromWindow(v.getApplicationWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
+                        imm.hideSoftInputFromWindow(v.getApplicationWindowToken(),
+                                InputMethodManager.HIDE_NOT_ALWAYS);
                     }
                 }
             }
@@ -139,7 +143,8 @@ public class AddCityActivity extends BaseActivity implements BaseCallback {
             int bottom = top + v.getHeight();
             int right = left + v.getWidth();
             //之前一直不成功的原因是,getX获取的是相对父视图的坐标,getRawX获取的才是相对屏幕原点的坐标！！！
-            Log.v("leftTop[]", "zz--left:" + left + "--top:" + top + "--bottom:" + bottom + "--right:" + right);
+            Log.v("leftTop[]", "zz--left:" + left + "--top:" + top + "--bottom:" + bottom +
+                    "--right:" + right);
             Log.v("event", "zz--getX():" + event.getRawX() + "--getY():" + event.getRawY());
             if (event.getRawX() > left && event.getRawX() < right
                     && event.getRawY() > top && event.getRawY() < bottom) {
@@ -160,7 +165,8 @@ public class AddCityActivity extends BaseActivity implements BaseCallback {
 //        sortListView.setAdapter(adapter);
 //        sortListView.setOnScrollListener(adapter);
         //設置頂部固定頭部
-        View view = LayoutInflater.from(getApplicationContext()).inflate(R.layout.list_group_item, sortListView, false);
+        View view = LayoutInflater.from(getApplicationContext()).inflate(R.layout
+                .list_group_item, sortListView, false);
 
         sortListView.setPinnedHeaderView(view);
     }
@@ -213,6 +219,10 @@ public class AddCityActivity extends BaseActivity implements BaseCallback {
             @Override
             public void onItemClick(AdapterView<?> parent, View view,
                                     int position, long id) {
+
+                Map<String, String> map = new HashMap<>();
+                map.put("添加", adapter.getData().get(position).getCityCn() + adapter.getData().get(position).getCountryCn());
+                StatisticsManager.getInstance(AddCityActivity.this).addEventAidl( "点击事件", map);
                 Intent intent = new Intent();
                 intent.putExtra("countryCn", adapter.getData().get(position).getCountryCn());
                 intent.putExtra("countryEn", adapter.getData().get(position).getCountryEn());
@@ -233,7 +243,7 @@ public class AddCityActivity extends BaseActivity implements BaseCallback {
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 //当输入框里面的值为空，更新为原来的列表，否则为过滤数据列表
-                if (CommonUtils.isNetAvailable(AddCityActivity.this))
+                if (CommonUtils.isNetAvailable(AddCityActivity.this) && SourceDateList != null && SourceDateList.size() > 0)
                     filterData(s.toString());
             }
 
@@ -250,6 +260,7 @@ public class AddCityActivity extends BaseActivity implements BaseCallback {
      * @param filterStr
      */
     private void filterData(String filterStr) {
+        if (SourceDateList == null) return;
         List<CityListBean.DataBean> mSortList = new ArrayList<>();
         if (TextUtils.isEmpty(filterStr)) {
             mSortList = SourceDateList;
@@ -257,7 +268,9 @@ public class AddCityActivity extends BaseActivity implements BaseCallback {
             mSortList.clear();
             for (CityListBean.DataBean sortModel : SourceDateList) {
                 String name = sortModel.getCityCn();
-                if (name.toUpperCase().indexOf(filterStr.toString().toUpperCase()) != -1 || PinyinUtils.getPingYin(name).toUpperCase().startsWith(filterStr.toString().toUpperCase())) {
+                if (name.toUpperCase().indexOf(filterStr.toString().toUpperCase()) != -1 ||
+                        PinyinUtils.getPingYin(name).toUpperCase().startsWith(filterStr.toString()
+                        .toUpperCase())) {
                     mSortList.add(sortModel);
                 }
             }

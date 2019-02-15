@@ -2,27 +2,18 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
+      <module fileurl="file://$PROJECT_DIR$/Aibabel.iml" filepath="$PROJECT_DIR$/Aibabel.iml" />
       <module fileurl="file://$PROJECT_DIR$/WqhSurfInternet.iml" filepath="$PROJECT_DIR$/WqhSurfInternet.iml" />
-      <module fileurl="file://$PROJECT_DIR$/baselibrary/baselibrary.iml" filepath="$PROJECT_DIR$/baselibrary/baselibrary.iml" />
+      <module fileurl="file://$PROJECT_DIR$/aidlaar/aidlaar.iml" filepath="$PROJECT_DIR$/aidlaar/aidlaar.iml" />
       <module fileurl="file://$PROJECT_DIR$/baselibrary/baselibrary.iml" filepath="$PROJECT_DIR$/baselibrary/baselibrary.iml" />
       <module fileurl="file://$PROJECT_DIR$/clock/clock.iml" filepath="$PROJECT_DIR$/clock/clock.iml" />
-      <module fileurl="file://$PROJECT_DIR$/clock/clock.iml" filepath="$PROJECT_DIR$/clock/clock.iml" />
-      <module fileurl="file://$PROJECT_DIR$/coupon/coupon.iml" filepath="$PROJECT_DIR$/coupon/coupon.iml" />
       <module fileurl="file://$PROJECT_DIR$/coupon/coupon.iml" filepath="$PROJECT_DIR$/coupon/coupon.iml" />
       <module fileurl="file://$PROJECT_DIR$/currency/currency.iml" filepath="$PROJECT_DIR$/currency/currency.iml" />
-      <module fileurl="file://$PROJECT_DIR$/currency/currency.iml" filepath="$PROJECT_DIR$/currency/currency.iml" />
-      <module fileurl="file://$PROJECT_DIR$/fyt_git.iml" filepath="$PROJECT_DIR$/fyt_git.iml" />
-      <module fileurl="file://$PROJECT_DIR$/ocr/ocr.iml" filepath="$PROJECT_DIR$/ocr/ocr.iml" />
       <module fileurl="file://$PROJECT_DIR$/ocr/ocr.iml" filepath="$PROJECT_DIR$/ocr/ocr.iml" />
       <module fileurl="file://$PROJECT_DIR$/readme/readme.iml" filepath="$PROJECT_DIR$/readme/readme.iml" />
-      <module fileurl="file://$PROJECT_DIR$/readme/readme.iml" filepath="$PROJECT_DIR$/readme/readme.iml" />
-      <module fileurl="file://$PROJECT_DIR$/sos/sos.iml" filepath="$PROJECT_DIR$/sos/sos.iml" />
       <module fileurl="file://$PROJECT_DIR$/sos/sos.iml" filepath="$PROJECT_DIR$/sos/sos.iml" />
       <module fileurl="file://$PROJECT_DIR$/surfInternet/surfInternet.iml" filepath="$PROJECT_DIR$/surfInternet/surfInternet.iml" />
-      <module fileurl="file://$PROJECT_DIR$/surfInternet/surfInternet.iml" filepath="$PROJECT_DIR$/surfInternet/surfInternet.iml" />
       <module fileurl="file://$PROJECT_DIR$/tucao/tucao.iml" filepath="$PROJECT_DIR$/tucao/tucao.iml" />
-      <module fileurl="file://$PROJECT_DIR$/tucao/tucao.iml" filepath="$PROJECT_DIR$/tucao/tucao.iml" />
-      <module fileurl="file://$PROJECT_DIR$/weather/weather.iml" filepath="$PROJECT_DIR$/weather/weather.iml" />
       <module fileurl="file://$PROJECT_DIR$/weather/weather.iml" filepath="$PROJECT_DIR$/weather/weather.iml" />
     </modules>
   </component>
