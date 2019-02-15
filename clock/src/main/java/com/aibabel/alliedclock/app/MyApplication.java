@@ -5,6 +5,8 @@ import android.app.Application;
 import android.os.Bundle;
 import android.util.Log;
 
+import com.aibabel.aidlaar.StatisticsManager;
+import com.aibabel.alliedclock.BuildConfig;
 import com.aibabel.alliedclock.utils.CommonUtils;
 import com.aibabel.alliedclock.utils.DensityHelper;
 import com.lzy.okgo.OkGo;
@@ -40,6 +42,7 @@ public class MyApplication extends Application {
         initOKgoConfig();
         initUmengConfig();
         initAppExitConfig();
+        StatisticsManager.getInstance(this).setConfig(getPackageName(), BuildConfig.VERSION_NAME);
     }
 
     /**
@@ -58,7 +61,8 @@ public class MyApplication extends Application {
 
     public void initUmengConfig() {
         //初始化组件化基础库, 统计SDK/推送SDK/分享SDK都必须调用此初始化接口
-        UMConfigure.init(this, "5b51a0bdf29d981e20000060", CommonUtils.getSN(), UMConfigure.DEVICE_TYPE_PHONE,
+        UMConfigure.init(this, "5b51a0bdf29d981e20000060", CommonUtils.getSN(), UMConfigure
+                        .DEVICE_TYPE_PHONE,
                 null);
         MobclickAgent.setScenarioType(this, MobclickAgent.EScenarioType.E_UM_NORMAL);
     }

@@ -15,6 +15,8 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.aibabel.aidlaar.StatisticsManager;
+import com.aibabel.alliedclock.MainActivity;
 import com.aibabel.alliedclock.R;
 import com.aibabel.alliedclock.app.BaseActivity;
 import com.aibabel.alliedclock.app.Constant;
@@ -215,7 +217,8 @@ public class AddCityActivity extends BaseActivity implements BaseCallback {
 //            mSortList.clear();
 ////            for (CurrencyBean sortModel : currencyBeanList) {
 ////                String name = sortModel.getGroup();
-////                if (name.toUpperCase().indexOf(filterStr.toString().toUpperCase()) != -1 || PinyinUtils.getPingYin(name).toUpperCase().startsWith(filterStr.toString().toUpperCase())) {
+////                if (name.toUpperCase().indexOf(filterStr.toString().toUpperCase()) != -1 || PinyinUtils.getPingYin(name).toUpperCase().startsWith(filterStr.toString()
+/// .toUpperCase())) {
 ////                    mSortList.add(sortModel);
 ////                }
 ////            }
@@ -343,6 +346,9 @@ public class AddCityActivity extends BaseActivity implements BaseCallback {
             @Override
             public void onItemClick(AdapterView<?> parent, View view,
                                     int position, long id) {
+                Map<String, String> map = new HashMap<>();
+                map.put("城市名称", adapter.getData().get(position).getCityCn());
+                StatisticsManager.getInstance(AddCityActivity.this).addEventAidl( "添加城市", map);
                 Intent intent = new Intent();
                 intent.putExtra("cityCn", adapter.getData().get(position).getCityCn());
                 intent.putExtra("cityEn", adapter.getData().get(position).getCityEn());
@@ -362,7 +368,7 @@ public class AddCityActivity extends BaseActivity implements BaseCallback {
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 //当输入框里面的值为空，更新为原来的列表，否则为过滤数据列表
-                if (CommonUtils.isAvailable(AddCityActivity.this))
+                if (CommonUtils.isAvailable(AddCityActivity.this)&& SourceDateList != null && SourceDateList.size() > 0)
                     filterData(s.toString());
             }
 
@@ -379,6 +385,7 @@ public class AddCityActivity extends BaseActivity implements BaseCallback {
      * @param filterStr
      */
     private void filterData(String filterStr) {
+        if (SourceDateList == null) return;
         List<CityListBean.DataBean> mSortList = new ArrayList<>();
         if (TextUtils.isEmpty(filterStr)) {
             mSortList = SourceDateList;
@@ -386,7 +393,8 @@ public class AddCityActivity extends BaseActivity implements BaseCallback {
             mSortList.clear();
             for (CityListBean.DataBean sortModel : SourceDateList) {
                 String name = sortModel.getCityCn();
-                if (name.toUpperCase().indexOf(filterStr.toString().toUpperCase()) != -1 || PinyinUtils.getPingYin(name).toUpperCase().startsWith(filterStr.toString().toUpperCase())) {
+                if (name.toUpperCase().indexOf(filterStr.toString().toUpperCase()) != -1 || PinyinUtils.getPingYin(name).toUpperCase().startsWith(filterStr.toString()
+                        .toUpperCase())) {
                     mSortList.add(sortModel);
                 }
             }

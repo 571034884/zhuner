@@ -24,6 +24,10 @@ public class MyAdapter extends RecyclerView.Adapter {
     private LayoutInflater mInflater;
     private List<ClockBean> mList;
 
+    public List<ClockBean> getmList() {
+        return mList;
+    }
+
     public MyAdapter(Context context, List<ClockBean> list) {
         mContext = context;
         mInflater = LayoutInflater.from(context);
