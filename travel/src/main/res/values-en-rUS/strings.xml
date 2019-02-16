@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+	<string name="app_name">Travel Guide</string>
+	<string name="country">Country Overview</string>
+	<string name="hot_city">Most Visited Cities</string>
+	<string name="spot">Scenic Spots</string>
+	<string name="search_hint">Country, City, Scenic Spot</string>
+	<string name="cancle">Cancel</string>
+	<string name="hot">Hot</string>
+	<string name="more">View More</string>
+	<string name="asia">Asia</string>
+	<string name="europe">Europe</string>
+	<string name="africa">Africa</string>
+	<string name="NorthAmerica">North America</string>
+	<string name="SouthAmerica">South America</string>
+	<string name="Oceania">Oceania</string>
+	<string name="destination">Destination</string>
+	<string name="no_data">No Information found.</string>
+	<string name="load_more">Loading…</string>
+	<string name="clear_history">Clear History</string>
+	<string name="lastest_searches">Search History</string>
+	<string name="hot_destinations">Most Visited Destinations</string>
+	<string name="launcher">Listen to the world</string>
+	<!--toast-->
+	<string name="loading">Loading</string>
+	<string name="net_unavailable">No Internet access. Please connect to the network.</string>
+	<string name="try_again">The service is currently unavailable, please try again later.</string>
+	<string name="no_more">	No more data.</string>
+	<string name="n_explain">spot guide(s)</string>
+	<string name="contain">Including</string>
+	<string name="fail_path">Sorry, error(s) occurred while playing.</string>
+    <string name="dialog_content" />
+	<string name="cont_use">取消</string>
+	<string name="conn_net">立即前往</string>
+    <string name="download">有离线包快去下载吧！</string>
+
+
+</resources>

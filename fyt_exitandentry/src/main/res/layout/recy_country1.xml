@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <TextView
+        android:id="@+id/tv"
+        android:background="@drawable/churujing_city"
+        android:layout_width="@dimen/px_198"
+        android:layout_height="@dimen/px_64"
+        android:text="京都"
+        android:textSize="@dimen/px_30"
+        android:layout_marginTop="@dimen/px_48"
+        android:layout_marginRight="@dimen/px_48"
+        android:gravity="center"
+        android:textColor="#333"
+        />
+</LinearLayout>

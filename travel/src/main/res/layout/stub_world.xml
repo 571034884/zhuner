@@ -1,0 +1,374 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:orientation="vertical"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:id="@+id/ll_hot_citys"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/px_20"
+            android:layout_marginTop="@dimen/px_46"
+            android:gravity="center"
+            android:text="@string/hot"
+            android:textColor="#000000"
+            android:textSize="@dimen/px_30" />
+
+        <com.aibabel.travel.widgets.MyRecyclerView
+            android:id="@+id/rv_hot_citys"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/px_12"
+            android:layout_marginRight="@dimen/px_12" />
+
+        <TextView
+            android:id="@+id/tv_hot_empty"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:layout_gravity="center"
+            android:background="@mipmap/error_h"
+            android:contentDescription="@null" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center">
+
+            <TextView
+                android:id="@+id/tv_hot"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:drawableLeft="@mipmap/moreicon"
+                android:drawablePadding="@dimen/px_8"
+                android:text="@string/more"
+                android:padding="@dimen/px_10"
+                android:textColor="#c6c6c6"
+                android:textSize="@dimen/px_24"
+                android:visibility="gone" />
+        </LinearLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/ll_asia_citys"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/px_20"
+            android:layout_marginTop="@dimen/px_46"
+            android:gravity="center"
+            android:text="@string/asia"
+            android:textColor="#000000"
+            android:textSize="30px" />
+
+        <com.aibabel.travel.widgets.MyRecyclerView
+            android:id="@+id/rv_asia_citys"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/px_12"
+            android:layout_marginRight="@dimen/px_12" />
+
+        <TextView
+            android:id="@+id/tv_asia_empty"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:layout_gravity="center"
+            android:background="@mipmap/error_h"
+            android:contentDescription="@null" />
+
+        <LinearLayout
+
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center">
+
+            <TextView
+                android:id="@+id/tv_asia"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:drawableLeft="@mipmap/moreicon"
+                android:drawablePadding="@dimen/px_8"
+                android:text="@string/more"
+                android:padding="@dimen/px_10"
+                android:textColor="#c6c6c6"
+                android:textSize="@dimen/px_24"
+                android:visibility="gone" />
+        </LinearLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/ll_europe_citys"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/px_42"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/px_20"
+            android:gravity="center"
+            android:text="@string/europe"
+            android:textColor="#000000"
+            android:textSize="30px" />
+
+        <com.aibabel.travel.widgets.MyRecyclerView
+            android:id="@+id/rv_europe_citys"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/px_12"
+            android:layout_marginRight="@dimen/px_12" />
+
+        <TextView
+            android:id="@+id/tv_europe_empty"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:layout_gravity="center"
+            android:background="@mipmap/error_h"
+
+            android:contentDescription="@null" />
+
+        <LinearLayout
+
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center">
+
+            <TextView
+                android:id="@+id/tv_europe"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:drawableLeft="@mipmap/moreicon"
+                android:drawablePadding="@dimen/px_8"
+                android:padding="@dimen/px_10"
+                android:text="@string/more"
+                android:textColor="#c6c6c6"
+                android:textSize="@dimen/px_24"
+                android:visibility="gone" />
+        </LinearLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/ll_africa_citys"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/px_42"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/px_20"
+            android:gravity="center"
+            android:text="@string/africa"
+            android:textColor="#000000"
+            android:textSize="30px" />
+
+        <com.aibabel.travel.widgets.MyRecyclerView
+            android:id="@+id/rv_africa_citys"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/px_12"
+            android:layout_marginRight="@dimen/px_12" />
+
+        <TextView
+            android:id="@+id/tv_africa_empty"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:layout_gravity="center"
+            android:background="@mipmap/error_h"
+            android:contentDescription="@null" />
+
+        <LinearLayout
+
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center">
+
+            <TextView
+                android:id="@+id/tv_africa"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:drawableLeft="@mipmap/moreicon"
+                android:drawablePadding="@dimen/px_8"
+                android:padding="@dimen/px_10"
+                android:text="@string/more"
+                android:textColor="#c6c6c6"
+                android:textSize="@dimen/px_24"
+                android:visibility="gone" />
+        </LinearLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/ll_NorthAmerica_citys"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/px_42"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/px_20"
+            android:gravity="center"
+            android:text="@string/NorthAmerica"
+            android:textColor="#000000"
+            android:textSize="30px" />
+
+        <com.aibabel.travel.widgets.MyRecyclerView
+            android:id="@+id/rv_NorthAmerica_citys"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/px_12"
+            android:layout_marginRight="@dimen/px_12" />
+
+        <TextView
+            android:id="@+id/tv_NorthAmerica_empty"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:layout_gravity="center"
+            android:background="@mipmap/error_h"
+
+            android:contentDescription="@null" />
+
+        <LinearLayout
+
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center">
+
+            <TextView
+                android:id="@+id/tv_NorthAmerica"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:drawableLeft="@mipmap/moreicon"
+                android:drawablePadding="@dimen/px_8"
+                android:padding="@dimen/px_10"
+                android:text="@string/more"
+                android:textColor="#c6c6c6"
+                android:textSize="@dimen/px_24"
+                android:visibility="gone" />
+        </LinearLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/ll_SouthAmerica_citys"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/px_42"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/px_20"
+            android:gravity="center"
+            android:text="@string/SouthAmerica"
+            android:textColor="#000000"
+            android:textSize="30px" />
+
+        <com.aibabel.travel.widgets.MyRecyclerView
+            android:id="@+id/rv_SouthAmerica_citys"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/px_12"
+            android:layout_marginRight="@dimen/px_12" />
+
+        <TextView
+            android:id="@+id/tv_SouthAmerica_empty"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:layout_gravity="center"
+            android:background="@mipmap/error_h"
+
+            android:contentDescription="@null" />
+
+        <LinearLayout
+
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center">
+
+            <TextView
+                android:id="@+id/tv_SouthAmerica"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:drawableLeft="@mipmap/moreicon"
+                android:drawablePadding="@dimen/px_8"
+                android:padding="@dimen/px_10"
+                android:text="@string/more"
+                android:textColor="#c6c6c6"
+                android:textSize="@dimen/px_24"
+                android:visibility="gone" />
+        </LinearLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/ll_Oceania_citys"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/px_42"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/px_20"
+            android:gravity="center"
+            android:text="@string/Oceania"
+            android:textColor="#000000"
+            android:textSize="30px" />
+
+        <com.aibabel.travel.widgets.MyRecyclerView
+            android:id="@+id/rv_Oceania_citys"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/px_12"
+            android:layout_marginRight="@dimen/px_12" />
+
+        <TextView
+            android:id="@+id/tv_Oceania_empty"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:layout_gravity="center"
+            android:background="@mipmap/error_h"
+
+            android:contentDescription="@null" />
+
+
+        <LinearLayout
+
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center">
+
+            <TextView
+                android:id="@+id/tv_Oceania"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:drawableLeft="@mipmap/moreicon"
+                android:drawablePadding="@dimen/px_8"
+                android:padding="@dimen/px_10"
+                android:text="@string/more"
+                android:textColor="#c6c6c6"
+                android:textSize="@dimen/px_24"
+                android:visibility="gone" />
+        </LinearLayout>
+    </LinearLayout>
+</LinearLayout>

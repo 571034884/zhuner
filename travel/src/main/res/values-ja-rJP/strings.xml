@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+	<string name="app_name">観光ガイド</string>
+	<string name="country">国別の案内</string>
+	<string name="hot_city">人気都市</string>
+	<string name="spot">観光スポット</string>
+	<string name="search_hint">国家・都市・観光スポット</string>
+	<string name="cancle">キャンセル</string>
+	<string name="hot">人気</string>
+	<string name="more">もっと見る</string>
+	<string name="asia">アジア</string>
+	<string name="europe">ヨーロッパ</string>
+	<string name="africa">アフリカ</string>
+	<string name="NorthAmerica">北アメリカ</string>
+	<string name="SouthAmerica">南アメリカ</string>
+	<string name="Oceania">オセアニア</string>
+	<string name="destination">旅行先	</string>
+	<string name="no_data">お探しの情報が見つかりませんでした。</string>
+	<string name="load_more">ロード中	</string>
+	<string name="clear_history">履歴を消す</string>
+	<string name="lastest_searches">検索履歴</string>
+	<string name="hot_destinations">人気の旅行先</string>
+	<string name="launcher">この世界の声を</string>
+	<!--toast-->
+	<string name="loading">ロード中</string>
+	<string name="net_unavailable">通信できませんでした。まず、ネットワックにご接続ください。</string>
+	<string name="try_again">サーバーエラーが発生しました。後でまたお試しください。</string>
+	<string name="no_more">これ以上の情報がありません。</string>
+	<string name="n_explain">件があります。</string>
+	<string name="contain">観光スポットガイドは</string>
+	<string name="fail_path">すみません、エラーで再生できませんでした。</string>
+    <string name="dialog_content" />
+	<string name="cont_use">取消</string>
+	<string name="conn_net">立即前往</string>
+    <string name="download">有离线包快去下载吧！</string>
+
+
+</resources>

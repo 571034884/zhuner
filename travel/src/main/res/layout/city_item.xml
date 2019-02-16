@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/px_10">
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:foreground="@color/color_tr">
+        <ImageView
+            android:id="@+id/iv_city_item"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/px_312"
+            android:scaleType="centerCrop" />
+    </FrameLayout>
+        <TextView
+            android:id="@+id/tv_city_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/px_36"
+            android:textStyle="bold"
+            android:textColor="#fff"
+            android:paddingLeft="@dimen/px_20"
+            android:paddingRight="@dimen/px_20"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="@dimen/px_118"
+            android:layout_marginBottom="@dimen/px_10"/>
+        <TextView
+            android:id="@+id/tv_city_english_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="#fff"
+            android:textSize="@dimen/px_20"
+            android:visibility="gone"
+            android:layout_marginBottom="@dimen/px_26"
+            android:layout_centerHorizontal="true"
+            android:layout_below="@id/tv_city_name"/>
+        <TextView
+            android:id="@+id/tv_city_number"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/px_20"
+            android:textColor="#fff"
+            android:layout_below="@id/tv_city_english_name"
+            android:layout_centerHorizontal="true"/>
+    </RelativeLayout>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/px_1"
+        android:background="@color/color_ff"/>
+</android.support.constraint.ConstraintLayout>

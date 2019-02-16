@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".activity.NoCityActivity">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <RelativeLayout
+            android:id="@+id/country_img_cl_layout"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/px_440"
+            >
+
+            <LinearLayout
+                android:id="@+id/choice_city_ll_layout"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="@dimen/px_20">
+
+                <TextView
+                    android:id="@+id/tv_country_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="东京"
+                    android:textColor="#fff"
+                    android:textSize="@dimen/px_30" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="•"
+                    android:textColor="#fff"
+                    android:textSize="@dimen/px_30" />
+
+                <TextView
+                    android:id="@+id/tv_city_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:drawableRight="@mipmap/drop_down"
+                    android:text="日本"
+                    android:textColor="#fff"
+                    android:textSize="@dimen/px_30" />
+            </LinearLayout>
+        </RelativeLayout>
+        <android.support.v7.widget.RecyclerView
+            android:layout_marginTop="@dimen/px_8"
+            android:layout_marginLeft="@dimen/px_48"
+            android:id="@+id/rv_city"
+            android:layout_width="match_parent"
+            android:layout_height="0px"
+            android:layout_weight="1"></android.support.v7.widget.RecyclerView>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/px_100"
+            android:layout_marginRight="@dimen/px_100"
+            android:layout_marginTop="@dimen/px_64"
+            android:layout_marginBottom="@dimen/px_48"
+            android:gravity="center"
+            android:textColor="#666"
+            android:textSize="@dimen/px_24"
+            android:text="您所在的城市没有出入境，可选择其他城市或退出"/>
+    </LinearLayout>
+</ScrollView>

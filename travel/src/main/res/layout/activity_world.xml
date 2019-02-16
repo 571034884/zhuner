@@ -1,0 +1,334 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.aibabel.travel.widgets.MyScrollview xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/hsv_scroll"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginBottom="@dimen/px_24"
+        android:layout_marginTop="@dimen/px_24"
+        android:orientation="vertical">
+
+        <android.support.v7.widget.SearchView
+            android:id="@+id/sv_search"
+            style="@style/Widget.SearchView"
+            android:layout_width="@dimen/px_504"
+            android:layout_height="wrap_content"
+            android:background="@drawable/bg_search"
+            app:queryHint="搜索国家或者城市名称"></android.support.v7.widget.SearchView>
+
+        <LinearLayout
+            android:id="@+id/ll_hot_citys"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/px_20"
+                android:layout_marginTop="@dimen/px_46"
+                android:gravity="center"
+                android:text="热门"
+                android:textColor="#000000"
+                android:textSize="30px" />
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/rv_hot_citys"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/px_18"
+                android:layout_marginRight="@dimen/px_18"></android.support.v7.widget.RecyclerView>
+
+            <LinearLayout
+                android:id="@+id/ll_hot"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="@dimen/px_8"
+                    android:src="@mipmap/moreicon" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="展开更多"
+                    android:textColor="#c6c6c6"
+                    android:textSize="@dimen/px_24" />
+            </LinearLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/ll_asia_citys"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/px_20"
+                android:layout_marginTop="@dimen/px_46"
+                android:gravity="center"
+                android:text="亚洲"
+                android:textColor="#000000"
+                android:textSize="30px" />
+
+            <com.aibabel.travel.widgets.MyRecyclerView
+                android:id="@+id/rv_asia_citys"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/px_18"
+                android:layout_marginRight="@dimen/px_18"/>
+
+            <LinearLayout
+                android:id="@+id/ll_asia"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="@dimen/px_8"
+                    android:src="@mipmap/moreicon" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="展开更多"
+                    android:textColor="#c6c6c6"
+                    android:textSize="@dimen/px_24" />
+            </LinearLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/ll_europe_citys"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/px_42"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/px_20"
+                android:gravity="center"
+                android:text="欧洲"
+                android:textColor="#000000"
+                android:textSize="30px" />
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/rv_europe_citys"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/px_18"
+                android:layout_marginRight="@dimen/px_18"></android.support.v7.widget.RecyclerView>
+
+            <LinearLayout
+                android:id="@+id/ll_europe"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="@dimen/px_8"
+                    android:src="@mipmap/moreicon" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="展开更多"
+                    android:textColor="#c6c6c6"
+                    android:textSize="@dimen/px_24" />
+            </LinearLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/ll_africa_citys"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/px_42"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/px_20"
+                android:gravity="center"
+                android:text="非洲"
+                android:textColor="#000000"
+                android:textSize="30px" />
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/rv_africa_citys"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/px_18"
+                android:layout_marginRight="@dimen/px_18"></android.support.v7.widget.RecyclerView>
+
+            <LinearLayout
+                android:id="@+id/ll_africa"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="@dimen/px_8"
+                    android:src="@mipmap/moreicon" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="展开更多"
+                    android:textColor="#c6c6c6"
+                    android:textSize="@dimen/px_24" />
+            </LinearLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/ll_NorthAmerica_citys"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/px_42"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/px_20"
+                android:gravity="center"
+                android:text="北美洲"
+                android:textColor="#000000"
+                android:textSize="30px" />
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/rv_NorthAmerica_citys"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/px_18"
+                android:layout_marginRight="@dimen/px_18"></android.support.v7.widget.RecyclerView>
+
+            <LinearLayout
+                android:id="@+id/ll_NorthAmerica"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="@dimen/px_8"
+                    android:src="@mipmap/moreicon" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="展开更多"
+                    android:textColor="#c6c6c6"
+                    android:textSize="@dimen/px_24" />
+            </LinearLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/ll_SouthAmerica_citys"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/px_42"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/px_20"
+                android:gravity="center"
+                android:text="南美洲"
+                android:textColor="#000000"
+                android:textSize="30px" />
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/rv_SouthAmerica_citys"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/px_18"
+                android:layout_marginRight="@dimen/px_18"></android.support.v7.widget.RecyclerView>
+
+            <LinearLayout
+                android:id="@+id/ll_SouthAmerica"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="@dimen/px_8"
+                    android:src="@mipmap/moreicon" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="展开更多"
+                    android:textColor="#c6c6c6"
+                    android:textSize="@dimen/px_24" />
+            </LinearLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/ll_Oceania_citys"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/px_42"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/px_20"
+                android:gravity="center"
+                android:text="大洋洲"
+                android:textColor="#000000"
+                android:textSize="30px" />
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/rv_Oceania_citys"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/px_18"
+                android:layout_marginRight="@dimen/px_18"/>
+
+            <LinearLayout
+                android:id="@+id/ll_Oceania"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="@dimen/px_8"
+                    android:src="@mipmap/moreicon" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="展开更多"
+                    android:textColor="#c6c6c6"
+                    android:textSize="@dimen/px_24" />
+            </LinearLayout>
+        </LinearLayout>
+    </LinearLayout>
+</com.aibabel.travel.widgets.MyScrollview>

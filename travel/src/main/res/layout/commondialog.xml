@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="20px"
+        android:layout_marginRight="20px"
+        android:background="@drawable/popu_background"
+        android:orientation="vertical">
+        <TextView
+            android:id="@+id/tv_wenzi"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="20dp"
+            android:lineSpacingExtra="8px"
+            android:layout_marginLeft="32px"
+            android:layout_marginRight="32px"
+            android:gravity="center"
+            android:layout_marginTop="64px"
+            android:layout_marginBottom="64px"
+            android:textColor="#333"/>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:background="#ccc"/>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="75px">
+        <TextView
+            android:id="@+id/tv_jixu"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:text="@string/cont_use"
+            android:singleLine="true"
+            android:textColor="#999999"
+            android:textSize="20sp"
+            android:gravity="center"
+            android:layout_height="match_parent" />
+        <View
+            android:layout_width="1px"
+            android:layout_height="match_parent"
+            android:background="#ccc"/>
+        <TextView
+            android:id="@+id/tv_lianwang"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:text="@string/conn_net"
+            android:singleLine="true"
+            android:textColor="#fe5000"
+            android:textSize="20sp"
+            android:gravity="center"
+            android:layout_height="match_parent" />
+    </LinearLayout>
+    </LinearLayout>
+</LinearLayout>

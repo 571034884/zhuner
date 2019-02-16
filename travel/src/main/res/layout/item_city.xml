@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:orientation="vertical"
+    android:layout_height="wrap_content">
+
+
+        <ImageView
+            android:id="@+id/iv_item_city"
+            android:layout_width="@dimen/px_245"
+            android:layout_height="@dimen/px_154"
+            android:layout_gravity="center"
+            android:scaleType="centerCrop"
+            android:contentDescription="@null"/>
+        <TextView
+            android:id="@+id/tv_item_city"
+            android:layout_gravity="center_horizontal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/px_24"
+            android:gravity="center"
+            android:singleLine="true"
+            android:paddingTop="@dimen/px_16"
+            android:paddingBottom="@dimen/px_16"
+            android:textColor="@color/colorBlack" />
+
+
+</LinearLayout>

@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="#ffffff">
+
+    <ImageView
+        android:id="@+id/iv_destination"
+        android:layout_width="136pt"
+        android:layout_height="136pt"
+        android:layout_marginTop="@dimen/px_7"
+        android:scaleType="fitXY"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <View
+        android:id="@+id/view1"
+        android:layout_width="0pt"
+        android:layout_height="@dimen/px_1"
+        android:layout_marginTop="@dimen/px_7"
+        android:background="#e3e3e3"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/iv_destination" />
+
+ <!--   <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8pt"
+        android:layout_marginLeft="16pt"
+        android:gravity="center_vertical"
+        android:orientation="vertical">-->
+
+        <TextView
+            android:id="@+id/tv_name"
+            android:layout_width="0dp"
+            app:layout_constraintRight_toRightOf="parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="0pt"
+            android:gravity="center_vertical"
+            android:paddingLeft="@dimen/px_20"
+            android:maxLines="3"
+            android:text=""
+            android:textColor="#000000"
+            android:textSize="@dimen/px_30"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toRightOf="@id/iv_destination"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <!--<TextView
+            android:id="@+id/tv_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="0px"
+            android:text="箱根排名第2的航班"
+            android:textColor="#666666"
+            android:textSize="@dimen/px_24" />
+
+        <TextView
+            android:id="@+id/tv_branch"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="日本/箱根"
+            android:textColor="#c7c7c7"
+            android:textSize="@dimen/px_24" />-->
+   <!-- </LinearLayout>-->
+
+</android.support.constraint.ConstraintLayout>
