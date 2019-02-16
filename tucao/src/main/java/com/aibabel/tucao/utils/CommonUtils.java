@@ -25,7 +25,27 @@ public class CommonUtils {
 
         }
     }
+    public static String getLocalLanguage(){
 
+        String country = Locale.getDefault().getCountry();
+        String language = Locale.getDefault().getLanguage();
+        String sl = "";
+
+        switch (language){
+            case "zh":
+                sl = language+"_"+country;
+                break;
+            case "en":
+            case "ja":
+            case "ko":
+                sl = language;
+                break;
+            default:
+                sl="en";
+                break;
+        }
+        return sl;
+    }
     /**
      * 根据手机的分辨率从 dp 的单位 转成为 px(像素)
      */

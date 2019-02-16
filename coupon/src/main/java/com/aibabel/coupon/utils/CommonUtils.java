@@ -4,6 +4,11 @@ import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.text.TextUtils;
+import android.util.Log;
+import android.widget.ImageView;
+
+import com.aibabel.baselibrary.imageloader.ImageLoader;
+import com.aibabel.coupon.bean.Constans;
 
 import java.util.Locale;
 
@@ -31,6 +36,7 @@ public class CommonUtils {
         if(TextUtils.isEmpty(serialNum)){
             return "0000000000000000";
         }
+        Log.e("sn",serialNum);
         return serialNum;
     }
 
@@ -61,6 +67,16 @@ public class CommonUtils {
         }
         return sl;
     }
+    public static void setPicture1x1(String url, ImageView view) {
+        ImageLoader.getInstance().load(url).placeholder(Constans.LOADING_1X1).error(Constans.LOAD_FAIL_1X1).into(view);
+    }
 
+    public static void setPicture540x280(String url, ImageView view) {
+        ImageLoader.getInstance().load(url).placeholder(Constans.LOADING_540X280).error(Constans.LOAD_FAIL_540X280).into(view);
+    }
+
+    public static void setPicture(String url, int placeholder, int error, ImageView view) {
+        ImageLoader.getInstance().load(url).placeholder(placeholder).error(error).into(view);
+    }
 
 }

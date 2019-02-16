@@ -4,6 +4,7 @@ import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.text.TextUtils;
+import android.util.Log;
 
 import java.util.Locale;
 
@@ -21,7 +22,27 @@ public class CommonUtils {
     }
 
 
+    public static String getLocalLanguage(){
 
+        String country = Locale.getDefault().getCountry();
+        String language = Locale.getDefault().getLanguage();
+        String sl = "";
+
+        switch (language){
+            case "zh":
+                sl = language+"_"+country;
+                break;
+            case "en":
+            case "ja":
+            case "ko":
+                sl = language;
+                break;
+            default:
+                sl="en";
+                break;
+        }
+        return sl;
+    }
     /**
      * 获取本机SN 设备识别码
      * @return
@@ -31,12 +52,14 @@ public class CommonUtils {
         if(TextUtils.isEmpty(serialNum)){
             return "0000000000000000";
         }
+        Log.e("sn","=="+serialNum);
         return serialNum;
     }
 
 
     public static int getRandom(){
         int random =  (int)((Math.random()*9+1)*1000);
+        Log.e("random","=="+random);
         return random;
     }
 
@@ -59,6 +82,7 @@ public class CommonUtils {
                 sl="en";
                 break;
         }
+        Log.e("sl","=="+sl);
         return sl;
     }
 

@@ -2,8 +2,11 @@ package com.aibabel.coupon.activity;
 
 import android.content.Context;
 import android.content.Intent;
+import android.database.Cursor;
 import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
+import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.constraint.ConstraintLayout;
 import android.support.design.widget.AppBarLayout;
@@ -23,27 +26,35 @@ import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.aibabel.aidlaar.StatisticsManager;
+import com.aibabel.baselibrary.base.BaseActivity;
+import com.aibabel.baselibrary.http.BaseBean;
+import com.aibabel.baselibrary.http.BaseCallback;
+import com.aibabel.baselibrary.http.OkGoUtil;
 import com.aibabel.coupon.R;
 import com.aibabel.coupon.adapter.CommomRecyclerAdapter;
 import com.aibabel.coupon.adapter.CommonRecyclerViewHolder;
+import com.aibabel.coupon.bean.Constans;
 import com.aibabel.coupon.bean.CouponBean;
-import com.aibabel.coupon.fragment.CouponFragment;
+import com.aibabel.coupon.utils.CommonUtils;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.lzy.okgo.model.Response;
 import com.youth.banner.Banner;
 import com.youth.banner.BannerConfig;
 import com.youth.banner.loader.ImageLoader;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import butterknife.OnClick;
 
 
 //   目的地 领券页
-public class ReceiveActivity extends BaseActivity {
+public class ReceiveActivity extends BaseActivity implements BaseCallback<BaseBean> {
 
 
     RecyclerView rvCoupon;
@@ -64,9 +75,9 @@ public class ReceiveActivity extends BaseActivity {
     AppBarLayout appbar;
     @BindView(R.id.ll_root)
     CoordinatorLayout cl;
+    @BindView(R.id.iv_banner)
+    ImageView ivBanner;
     private CommomRecyclerAdapter adapter;
-    private List<CouponBean> couponList = new ArrayList<>();
-    private String img_url = "https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1536148533790&di=6b6f44e5602faa55606b7918ba7e00f1&imgtype=0&src=http%3A%2F%2Fi2.w.hjfile.cn%2Fnews%2F201509%2F201509101221406593.jpg";
     private RelativeLayout rl;
     private TextView tv_receive;
 
@@ -78,12 +89,14 @@ public class ReceiveActivity extends BaseActivity {
     private ImageView iv_close;
     private PopupWindow popupWindow;
     private ViewStub vsTest;
+    private String country_name;
+    private String country_name_english;
+    private String country_img;
+    private String country_banner_img;
+    private CouponBean couponBean;
+    private List<CouponBean.DataBean> couponBeanData;
+    private int couponId;
 
-    @Override
-    public int initLayout() {
-        return R.layout.searchview;
-
-    }
 
     @Override
     public void init() {
@@ -94,12 +107,15 @@ public class ReceiveActivity extends BaseActivity {
         rvCoupon = iv_vsContent.findViewById(R.id.rv_coupon);
         tvMudidi = iv_vsContent.findViewById(R.id.tv_mudidi);
         tvCoupon = iv_vsContent.findViewById(R.id.tv_coupon);
+
+
+        initIntent();
         initTitle();
-//        initIntent();
+        initPopupwindow();
         initAdapter();
         initData();
-        initBanner();
-        initPopupwindow();
+
+
         appbar.addOnOffsetChangedListener(new AppBarLayout.OnOffsetChangedListener() {
             @Override
             public void onOffsetChanged(AppBarLayout appBarLayout, int verticalOffset) {
@@ -111,12 +127,13 @@ public class ReceiveActivity extends BaseActivity {
                     float scale = (float) dy / toolbarHeight;
                     float alpha = scale * 255;
                     clRoot.setBackgroundColor(Color.argb((int) alpha, 255, 255, 255));
-                    ivLeft.setImageResource(R.mipmap.ic_backb);
-                    ivRight.setImageResource(R.mipmap.my_coupon_yes);
+                    ivLeft.setImageResource(R.mipmap.lyzx_fanhuibaise);
+
+                    ivRight.setImageResource(R.mipmap.my_coupon_white);
                 } else {
                     clRoot.setBackgroundColor(Color.argb((int) 255, 255, 255, 255));
-                    ivLeft.setImageResource(R.mipmap.ic_backb);
-                    ivRight.setImageResource(R.mipmap.my_coupon_yes);
+                    ivLeft.setImageResource(R.mipmap.lyzx_fanhuishense);
+                    ivRight.setImageResource(R.mipmap.my_coupon_red);
                 }
             }
         });
@@ -143,17 +160,35 @@ public class ReceiveActivity extends BaseActivity {
         ivRight.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(ReceiveActivity.this, CouponActivity.class);
-                intent.putExtra("type",1);
-                startActivity(intent);
+//                Intent intent = new Intent(ReceiveActivity.this, CouponActivity.class);
+//                intent.putExtra("type", 1);
+//                startActivity(intent);
+
+                Intent intent = new Intent();
+                intent.putExtra("type", 1);
+                setResult(200,intent);
+                finish();
             }
         });
 
         ivLeft.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(ReceiveActivity.this, CouponActivity.class);
-                intent.putExtra("type",0);
+
+
+                Intent intent = new Intent();
+                intent.putExtra("type", 0);
+                setResult(200,intent);
+                finish();
+//                startActivity(intent);
+            }
+        });
+
+        tvTitle.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(ReceiveActivity.this, SearchActivity.class);
+                intent.putExtra("country",country_name);
                 startActivity(intent);
             }
         });
@@ -168,11 +203,10 @@ public class ReceiveActivity extends BaseActivity {
     }
 
     // Banner 的轮播图
-    private void initBanner() {
-        imaglist.add("http://pic26.photophoto.cn/20130218/0017030092066924_b.jpg");
-        imaglist.add("http://pic33.nipic.com/20130927/13469348_101538361365_2.jpg");
-        imaglist.add("http://i.ledanji.com/up/2017/b/ba4f96592ce11dda");
-        imaglist.add("https://i02picsos.sogoucdn.com/167ca5fc543fd1a5");
+    private void initBanner(List<CouponBean.DataBean> couponBeanData) {
+        for (int i = 0; i < couponBeanData.size(); i++) {
+            imaglist.add(couponBeanData.get(i).getCouponData().getBannerimage());
+        }
         banner.setImages(imaglist)//添加图片集合或图片url集合
                 .setDelayTime(1500)//设置轮播时间
                 .setBannerStyle(BannerConfig.CIRCLE_INDICATOR)
@@ -181,13 +215,32 @@ public class ReceiveActivity extends BaseActivity {
                 .start();
     }
 
+    private void userGetOneCoupon(int couponId) {
+
+
+        Map<String, String> map = new HashMap<>();
+        if (TextUtils.equals(Constans.PRO_VERSION,"L")){
+            map.put("leaseId",Constans.PRO_DEV_OID);
+        }
+        map.put("CouponId", couponId + "");
+        map.put("countryName", country_name);
+        OkGoUtil.<BaseBean>get(ReceiveActivity.this, Constans.METHOD_USERGETONECOUPON, map, BaseBean.class, this);
+
+    }
 
     private void initData() {
-        for (int i = 0; i < 5; i++) {
+
+    /*    for (int i = 0; i < 5; i++) {
 
             couponList.add(new CouponBean("", img_url, "松本清", "立享95折+8%免税", "消费满30000日元使用", "免费领"));
         }
-        adapter.updateData(couponList);
+        adapter.updateData(couponList);*/
+        Map<String, String> map = new HashMap<>();
+        if (TextUtils.equals(Constans.PRO_VERSION,"L")){
+            map.put("leaseId",Constans.PRO_DEV_OID);
+        }
+        map.put("countryName", country_name);
+        OkGoUtil.<CouponBean>get(ReceiveActivity.this, Constans.METHOD_GETCOUPONMSG, map, CouponBean.class, this);
     }
 
     private void initAdapter() {
@@ -197,11 +250,11 @@ public class ReceiveActivity extends BaseActivity {
         //设置为垂直布局，这也是默认的
         layoutManager.setOrientation(OrientationHelper.VERTICAL);
 
-        adapter = new CommomRecyclerAdapter(this, couponList, R.layout.recy_coupon, new CommomRecyclerAdapter.OnItemClickListener() {
+        adapter = new CommomRecyclerAdapter(this, couponBeanData, R.layout.recy_coupon, new CommomRecyclerAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(CommonRecyclerViewHolder holder, final int postion) {
 
-                popupWindowShow();
+//                popupWindowShow(postion);
 
             }
         }, null) {
@@ -213,53 +266,88 @@ public class ReceiveActivity extends BaseActivity {
                 TextView tv_shop_price = holder.getView(R.id.tv_shop_price);
                 TextView tv_shop_details = holder.getView(R.id.tv_shop_details);
                 tv_receive = holder.getView(R.id.tv_receive);
-
-
+                RelativeLayout rlPopu = holder.getView(R.id.rl_popu);
+                RelativeLayout rlReceive = holder.getView(R.id.rl_receive);
                 ImageView iv_shop_img = holder.getView(R.id.iv_shop_img);
-                tv_jiaobiao_name.setText(((CouponBean) o).getTv_jiaobiao_name());
-                tv_shop_name.setText(((CouponBean) o).getTv_shop_name());
-                tv_shop_price.setText(((CouponBean) o).getTv_shop_price());
-                tv_shop_details.setText(((CouponBean) o).getTv_shop_details());
-                tv_receive.setText(((CouponBean) o).getTv_receive());
-                tv_jiaobiao_name.setText(((CouponBean) o).getTv_jiaobiao_name());
+                tv_shop_name.setText(((couponBeanData).get(position).getCouponData().getTitle()));
+                tv_shop_price.setText(((couponBeanData).get(position).getCouponData().getYouhui()));
+                tv_shop_details.setText(((couponBeanData).get(position).getCouponData().getTiaojianshort()));
 
-                Glide.with(ReceiveActivity.this)
-                        .load(((CouponBean) o).getIv_shop_img())
-                        .into(iv_shop_img);
+                if (TextUtils.equals((couponBeanData).get(position).getUserHasThisCoupon(), "true")) {
+                    tv_receive.setText("去使用");
+                } else {
+                    tv_receive.setText("免费领");
+                }
 
-                tv_receive.setOnClickListener(new View.OnClickListener() {
+                rlPopu.setOnClickListener(new View.OnClickListener() {
                     @Override
-                    public void onClick(View v) {
-                        if (TextUtils.equals(couponList.get(position).getTv_receive(), "免费领")) {
-                            couponList.get(position).setTv_receive("去使用");
-                            adapter.updateData(couponList);
-                        } else {
-                            startActivity(new Intent(ReceiveActivity.this, DetailsActivity.class));
+                    public void onClick(View view) {
+                        Map map = new HashMap();
+                        StatisticsManager.getInstance(mContext).addEventAidl( "点击我的优惠券", map);
+                        try {
+                            popupWindowShow(position);
+                        }catch (Exception e){
+                            e.printStackTrace();
                         }
 
                     }
                 });
-                if (TextUtils.equals(couponList.get(position).getTv_receive(), "免费领")) {
-                    tv_receive.setBackgroundResource(R.drawable.shape_background);
+                Glide.with(ReceiveActivity.this)
+                        .load(((couponBeanData).get(position).getCouponData().getImage()))
+                        .into(iv_shop_img);
+
+                rlReceive.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        couponId = couponBeanData.get(position).getCouponData().getCouponId();
+                        Log.e("couponId", couponId + "");
+                        if (TextUtils.equals(couponBeanData.get(position).getUserHasThisCoupon(), "false")) {
+                            Map map = new HashMap();
+                            map.put("优惠券名称",couponBeanData.get(position).getCouponData().getTitle());
+                            StatisticsManager.getInstance(mContext).addEventAidl("领用", map);
+                            userGetOneCoupon(couponId);
+                            couponBeanData.get(position).setUserHasThisCoupon("true");
+                            adapter.updateData(couponBeanData);
+
+                        } else {
+                            Map map = new HashMap();
+                            map.put("优惠券名称",couponBeanData.get(position).getCouponData().getTitle());
+                            StatisticsManager.getInstance(mContext).addEventAidl( "使用", map);
+
+                            Intent intent = new Intent(ReceiveActivity.this, DetailsActivity.class);
+
+                            intent.putExtra("couponId", couponId);
+                            startActivity(intent);
+                        }
+
+                    }
+                });
+                if (TextUtils.equals((couponBeanData).get(position).getUserHasThisCoupon(), "false")) {
+//                    tv_receive.setBackgroundResource(R.drawable.shape_background);
+
                     tv_receive.setTextColor(Color.parseColor("#ffffff"));
                 } else {
-                    tv_receive.setBackgroundResource(R.drawable.shape_background2);
-                    tv_receive.setTextColor(Color.parseColor("#3e3e3e"));
+//                    tv_receive.setBackgroundResource(R.drawable.shape_background2);
+
+                    tv_receive.setTextColor(Color.parseColor("#ffffff"));
                 }
 
             }
         };
-
         rvCoupon.setAdapter(adapter);
-
     }
 
 
     /**
      * 底部弹出popupWindow
      */
-    private void popupWindowShow() {
+    private void popupWindowShow(int position) {
 //        cl.setBackgroundColor(Color.parseColor("#30000000"));
+
+        tv_title.setText(couponBeanData.get(position).getCouponData().getContext());
+        Glide.with(ReceiveActivity.this)
+                .load(((couponBeanData).get(position).getCouponData().getImage()))
+                .into(iv_img);
         popupWindow = new PopupWindow(popu1, ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         setBackgroundAlpha(0.25f);//设置屏幕透明
         popupWindow.setTouchable(true);
@@ -279,7 +367,10 @@ public class ReceiveActivity extends BaseActivity {
         iv_close.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                popupWindow.dismiss();
+                if (popupWindow!=null){
+
+                    popupWindow.dismiss();
+                }
             }
         });
     }
@@ -299,9 +390,45 @@ public class ReceiveActivity extends BaseActivity {
 
     private void initIntent() {
         Intent intent = getIntent();
-        String country_name = intent.getStringExtra("country_name");
-        String country_name_english = intent.getStringExtra("country_name_english");
-        int country_img = intent.getIntExtra("country_img", 0);
+        country_name = intent.getStringExtra("country_name");
+        country_name_english = intent.getStringExtra("country_name_english");
+        country_img = intent.getStringExtra("country_img");
+        country_banner_img = intent.getStringExtra("country_banner_img");
+        setPathParams("国家名称");
+    }
+
+
+
+
+
+    @Override
+    public int getLayout(Bundle bundle) {
+        return R.layout.searchview;
+    }
+
+    @Override
+    public void onSuccess(String method, BaseBean baseBean, String s1) {
+        switch (method) {
+            case Constans.METHOD_GETCOUPONMSG:
+                couponBean = (CouponBean) baseBean;
+                couponBeanData = couponBean.getData();
+
+                adapter.updateData(couponBeanData);
+                initBanner(couponBeanData);
+                Glide.with(ReceiveActivity.this)
+                        .load(((couponBeanData).get(0).getCouponData().getBannerimage()))
+                        .into(ivBanner);
+                break;
+        }
+    }
+
+    @Override
+    public void onError(String s, String s1, String s2) {
+
+    }
+
+    @Override
+    public void onFinsh(String s) {
 
     }
 

@@ -3,14 +3,15 @@ package com.aibabel.surfinternet.activity;
 import android.content.ActivityNotFoundException;
 import android.content.ComponentName;
 import android.content.Intent;
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.RequiresApi;
 import android.support.constraint.ConstraintLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.OrientationHelper;
 import android.support.v7.widget.RecyclerView;
+import android.telephony.SubscriptionInfo;
+import android.telephony.SubscriptionManager;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
@@ -20,6 +21,7 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.aibabel.aidlaar.StatisticsManager;
 import com.aibabel.surfinternet.R;
 import com.aibabel.surfinternet.adapter.CommomRecyclerAdapter;
 import com.aibabel.surfinternet.adapter.CommonRecyclerViewHolder;
@@ -46,7 +48,6 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import jp.wasabeef.glide.transformations.CropCircleTransformation;
 
-
 public class TrandActivity extends BaseActivity implements BaseCallback {
 
 
@@ -72,10 +73,8 @@ public class TrandActivity extends BaseActivity implements BaseCallback {
     private TrandBean trandBean;
     private CommomRecyclerAdapter adapter;
     private TextView tv_qian;
-    private int onclick = 0;
     private boolean is_onclick = true;
-    private String version = "";
-
+    private String iccid;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -198,18 +197,20 @@ public class TrandActivity extends BaseActivity implements BaseCallback {
                 String skuid = trandList.get(postion).getSkuid();
 
                 String price = trandList.get(postion).getPrice();
-//                String price = s.substring(0, s.indexOf("."));
                 float s1 = Float.valueOf(price);
                 DecimalFormat fnum = new DecimalFormat("##0.00");
                 String dd = fnum.format(s1);
                 String name = trandList.get(postion).getCountry().toString();
                 String days = trandList.get(postion).getDays().toString();
-//                String price = trandList.get(postion).getPrice();
                 Intent intent = new Intent(TrandActivity.this, DetailsActivity.class);
                 intent.putExtra("skuid", skuid);
                 intent.putExtra("price", dd + "");
                 intent.putExtra("name", name);
                 intent.putExtra("days", days);
+
+                Map map = new HashMap();
+                map.put("商品名称",name);
+                StatisticsManager.getInstance(TrandActivity.this).addEventAidl("点击商品", map);
 
                 if (NetUtil.isNetworkAvailable(TrandActivity.this)) {
 
@@ -219,13 +220,10 @@ public class TrandActivity extends BaseActivity implements BaseCallback {
                         is_onclick = false;
                     }
 
-//                    finish();
                 } else {
-//                    rl2.setBackground(getResources().getDrawable(R.mipmap.net1));
                     rl2.setVisibility(View.GONE);
                     llIsnet.setVisibility(View.VISIBLE);
                     ToastUtil.showShort(TrandActivity.this, getResources().getString(R.string.wuwangluo));
-//                    ToastUtil.showShort(TrandActivity.this,"当前无网络，请联网操作");
                 }
             }
         }, null) {
@@ -238,13 +236,14 @@ public class TrandActivity extends BaseActivity implements BaseCallback {
                 TextView tv_zhongwen = holder.getView(R.id.tv_zhongwen);
                 tv_qian = holder.getView(R.id.tv_qian);
 
+                RequestOptions options = new RequestOptions()
+                        .placeholder(R.mipmap.morentu)//图片加载出来前，显示的图片
+                        .fallback(R.mipmap.morentu) //url为空的时候,显示的图片
+                        .error(R.mipmap.morentu);//图片加载失败后，显示的图片
 
-                RequestOptions requestOptions = new RequestOptions()
-                        .placeholder(R.mipmap.morentu)
-                        .bitmapTransform(new CropCircleTransformation(TrandActivity.this));
                 Glide.with(TrandActivity.this)
                         .load(((TrandBean.DataBean) o).getImpage())
-                        .apply(requestOptions)
+                        .apply(options)
                         .into(iv_country);
                 tv_zhongwen.setText(((TrandBean.DataBean) o).getCountry());
                 String days = ((TrandBean.DataBean) o).getDays().toString();
@@ -253,37 +252,19 @@ public class TrandActivity extends BaseActivity implements BaseCallback {
 
                 DecimalFormat fnum = new DecimalFormat("##0.00");
                 String dd = fnum.format(s1);
-//                String substring = s.substring(0, s.indexOf("."));
                 if (TextUtils.equals(Constans.PHONE_MOBILE_NUMBER,"PH")&&TextUtils.equals(Constans.COUNTRY_VERSION_NUMBER,"5")&&TextUtils.equals(Constans.PRO_VERSION_NUMBER,"S")){
                         tv_qian.setText("$ " + dd + "/" + getResources().getString(R.string.day));
                 }else {
                     tv_qian.setText("¥ " + dd + "/" + getResources().getString(R.string.day));
                 }
-
-//                tv_qian.setText("¥ " + "**" +"/"+ days + getResources().getString(R.string.day));
-//                tv_qian.setText("¥ " + "**" + "/天");
             }
         };
         rv.setAdapter(adapter);
     }
 
     private void initData() {
-//
+
         Map<String, String> map = new HashMap<>();
-        try {
-            String display = Build.DISPLAY;
-//            Constans.PRO_VERSION_NUMBER = display.substring(9, 10);
-            Constans.PRO_VERSION_NUMBER = "S";
-
-//            Constans.COUNTRY_VERSION_NUMBER = display.substring(7, 8);
-            Constans.COUNTRY_VERSION_NUMBER = "5";
-
-//            Constans.PHONE_MOBILE_NUMBER = display.substring(0, 2);
-            Constans.PHONE_MOBILE_NUMBER = "PH";
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
         if (TextUtils.equals(Constans.PHONE_MOBILE_NUMBER,"PH")&&TextUtils.equals(Constans.COUNTRY_VERSION_NUMBER,"5")&&TextUtils.equals(Constans.PRO_VERSION_NUMBER,"S")){
             map.put("currencyType", "Dollar");
             map.put("priceFor", "forSell");
@@ -295,6 +276,8 @@ public class TrandActivity extends BaseActivity implements BaseCallback {
 
         map.put("sysLanguage", Constans.SETCOUNTRYlANGUAGE);
         map.put("hasBaseDays", "true");
+        map.put("iccid",Constans.PHONE_ICCID);
+//        map.put("cardType","lksc");
         OkGoUtil.<TrandBean>get(TrandActivity.this, Constans.METHOD_GUOJIALIEBIAO, map, TrandBean.class, this);
     }
 

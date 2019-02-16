@@ -1,6 +1,8 @@
 package com.aibabel.surfinternet.js;
 
+import android.content.ContentValues;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Message;
@@ -47,7 +49,7 @@ public class PayPalActivity extends BaseActivity implements OnJSClickListener {
     RelativeLayout rlWeb;
     private AdvancedWebView webView;
     private String time = "0";
-
+    Uri uri = Uri.parse("content://icc/adn");
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -57,8 +59,6 @@ public class PayPalActivity extends BaseActivity implements OnJSClickListener {
             initView();
             initData();
         } else {
-//            ToastUtil.showShort(CustomWebViewActivity.this,"当前无网络，请联网后操作");
-//            rlWeb.setBackgroundResource(R.mipmap.net1);
             rl.setVisibility(View.GONE);
             llIsnet.setVisibility(View.VISIBLE);
         }
@@ -91,11 +91,6 @@ public class PayPalActivity extends BaseActivity implements OnJSClickListener {
 
             @Override
             public boolean onCreateWindow(WebView view, boolean isDialog, boolean isUserGesture, Message resultMsg) {
-//
-//                AdvancedWebView newWebView = new AdvancedWebView(CustomWebViewActivity.this);
-//                WebView.WebViewTransport transport = (WebView.WebViewTransport) resultMsg.obj;
-//                transport.setWebView(newWebView);
-//                resultMsg.sendToTarget();
                 return true;
             }
         });
@@ -113,12 +108,7 @@ public class PayPalActivity extends BaseActivity implements OnJSClickListener {
         time = intent.getStringExtra("time");
         String subOrderNo = intent.getStringExtra("subOrderNo");
         Log.e("subOrderNo_pay", subOrderNo);
-//        webView.loadUrl("https://www.baidu.com");
-//        webView.loadUrl("https://wx.aibabel.com:3002/test/index.html" + "?url=" + url + "&subOrderNo=" + subOrderNo + "&payType=" + payType);
         webView.loadUrl(url);
-//        webView.loadUrl("https://wx.aibabel.com:3002/test/index.html" + "?url=" + url + "&subOrderNo=" + subOrderNo);
-//        webView.loadUrl("http://192.168.5.199:3001/test/index.html" + "?url=" + url + "&subOrderNo=" + subOrderNo);
-//        rlWeb.setVisibility(View.VISIBLE);
 
         webView.setWebChromeClient(new WebChromeClient() {
             public void onProgressChanged(WebView view, final int progress) {
@@ -190,6 +180,7 @@ public class PayPalActivity extends BaseActivity implements OnJSClickListener {
                 rl.setVisibility(View.GONE);
                 tvError.setText(getResources().getString(R.string.success));
                 llIsnet.setVisibility(View.VISIBLE);
+//                insertContact("softsim","00001");
             }
         });
 
@@ -202,7 +193,14 @@ public class PayPalActivity extends BaseActivity implements OnJSClickListener {
             }
         }, 3000);
     }
-
+    public void insertContact(String name, String phoneNumber) {
+        ContentValues values = new ContentValues();
+        values.put("tag", name);
+        values.put("number", phoneNumber);
+        Uri insertInfo = getContentResolver().insert(uri, values);
+        Log.e("1023",">>>>>>" + "new sim contact uri, "
+                + insertInfo.toString());
+    }
     @Override
     public void onJSClick(final JsClickInfo jsInfo) {
         Log.e("js", "回结果");

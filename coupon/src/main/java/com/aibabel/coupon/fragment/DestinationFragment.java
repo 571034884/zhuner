@@ -11,6 +11,8 @@ import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.OrientationHelper;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,14 +20,28 @@ import android.view.ViewStub;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.aibabel.aidlaar.StatisticsManager;
+import com.aibabel.baselibrary.base.BaseFragment;
+import com.aibabel.baselibrary.http.BaseBean;
+import com.aibabel.baselibrary.http.BaseCallback;
+import com.aibabel.baselibrary.http.OkGoUtil;
 import com.aibabel.coupon.R;
+import com.aibabel.coupon.activity.CouponActivity;
 import com.aibabel.coupon.activity.ReceiveActivity;
+import com.aibabel.coupon.activity.SearchActivity;
 import com.aibabel.coupon.adapter.CommomRecyclerAdapter;
 import com.aibabel.coupon.adapter.CommonRecyclerViewHolder;
+import com.aibabel.coupon.bean.Constans;
 import com.aibabel.coupon.bean.CountryBean;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.lzy.okgo.model.Response;
+
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -33,10 +49,10 @@ import butterknife.Unbinder;
 
 /**
  * A simple {@link Fragment} subclass.
- *
+ * <p>
  * 目的地 首页
  */
-public class DestinationFragment extends Fragment {
+public class DestinationFragment extends BaseFragment implements BaseCallback<BaseBean> {
     RecyclerView rvCountry;
     TextView tvMudidi;
     TextView tvCoupon;
@@ -52,28 +68,31 @@ public class DestinationFragment extends Fragment {
     AppBarLayout appbar;
     @BindView(R.id.ll_root)
     CoordinatorLayout llRoot;
-    Unbinder unbinder;
+    private final int requestCode = 100;
+    private CouponActivity activity;
+
 
     private ViewStub vsTest;
     private int[] country_img = {R.mipmap.japan, R.mipmap.thailand, R.mipmap.korea, R.mipmap.others};
     private CommomRecyclerAdapter adapter;
-    private List<CountryBean> countryList = new ArrayList<>();
+    private CountryBean countryBean;
+    private List<CountryBean.DataBean> countryBeanData = new ArrayList<>();
 
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        View inflate = inflater.inflate(R.layout.activity_base_mudidi, container, false);
-        unbinder = ButterKnife.bind(this, inflate);
-        // 搜索框 的 悬浮 效果
-        vsTest = inflate.findViewById(R.id.vs_test);
+    public int getLayout() {
+        return R.layout.activity_base_mudidi;
+    }
+
+    @Override
+    public void init(View view, Bundle bundle) {
+        vsTest = view.findViewById(R.id.vs_test);
         vsTest.setLayoutResource(R.layout.stub_mudidi);
         View iv_vsContent = vsTest.inflate();
         rvCountry = iv_vsContent.findViewById(R.id.rv_country);
         tvMudidi = iv_vsContent.findViewById(R.id.tv_mudidi);
         tvCoupon = iv_vsContent.findViewById(R.id.tv_coupon);
-
+        activity = (CouponActivity)getActivity();
         initTitle();
 
         // 国家 recyclerview
@@ -103,33 +122,57 @@ public class DestinationFragment extends Fragment {
             }
         });
 
+        tvTitle.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getActivity(), SearchActivity.class);
+                startActivity(intent);
+            }
+        });
 
-        return inflate;
+
     }
 
     public void initTitle() {
         ivLeft.setVisibility(View.GONE);
         tvTitle.setVisibility(View.VISIBLE);
         ivRight.setVisibility(View.GONE);
+        Intent intent = getActivity().getIntent();
+        String from = intent.getStringExtra("from");
 
-        ivLeft.setVisibility(getActivity().getIntent().getIntExtra("isback", View.GONE));
+        if (TextUtils.equals("map", from)) {
+            ivLeft.setVisibility(getActivity().getIntent().getIntExtra("isback", View.VISIBLE));
+        }else {
+            ivLeft.setVisibility(getActivity().getIntent().getIntExtra("isback", View.GONE));
+        }
+        ivLeft.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getActivity().finish();
+            }
+        });
+
 
         ivLeft.setImageResource(R.mipmap.ic_back);
-        tvTitle.setHint(getResources().getString(R.string.search_hint_country));
+        tvTitle.setHint(getResources().getString(R.string.search_hint_shop));
         tvTitle.setHintTextColor(getResources().getColor(R.color.color_99));
         tvTitle.setBackgroundResource(R.drawable.bg_search_80while);
         ivRight.setImageResource(R.mipmap.ic_home_w);
         clRoot.setAlpha(1);
+
+
     }
 
 
     private void initData() {
-        countryList.clear();
+     /*   countryList.clear();
         countryList.add(new CountryBean(getResources().getString(R.string.country_japan), getResources().getString(R.string.country_japan_eng), country_img[0]));
         countryList.add(new CountryBean(getResources().getString(R.string.country_Thailand), getResources().getString(R.string.country_Thailand_eng), country_img[1]));
         countryList.add(new CountryBean(getResources().getString(R.string.country_korea), getResources().getString(R.string.country_korea_eng), country_img[2]));
         countryList.add(new CountryBean(getResources().getString(R.string.country_other), getResources().getString(R.string.country_other_eng), country_img[3]));
-        adapter.updateData(countryList);
+        adapter.updateData(countryList);*/
+        Map<String, String> map = new HashMap<>();
+        OkGoUtil.<CountryBean>get(getActivity(), Constans.METHOD_GETCOUPONCOUNTRY, map, CountryBean.class, this);
     }
 
     private void initAdapter() {
@@ -141,17 +184,24 @@ public class DestinationFragment extends Fragment {
         //设置为垂直布局，这也是默认的
         layoutManager.setOrientation(OrientationHelper.VERTICAL);
 
-        adapter = new CommomRecyclerAdapter(getActivity(), countryList, R.layout.recy_country, new CommomRecyclerAdapter.OnItemClickListener() {
+        adapter = new CommomRecyclerAdapter(getActivity(), countryBeanData, R.layout.recy_country, new CommomRecyclerAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(CommonRecyclerViewHolder holder, int postion) {
-                String country_name = countryList.get(postion).getCountry_name();
-                String country_name_english = countryList.get(postion).getCountry_name_english();
-                int country_img = countryList.get(postion).getCountry_img();
+                Map map = new HashMap();
+                map.put("国家名称",countryBeanData.get(postion).getCountryname());
+                StatisticsManager.getInstance(mContext).addEventAidl( "点击国家", map);
+
+
+                String country_name = countryBeanData.get(postion).getCountryname();
+                String country_name_english = countryBeanData.get(postion).getCountryengname();
+                String country_img = countryBeanData.get(postion).getCountryimage();
+                String country_banner_img = countryBeanData.get(postion).getBannerimage();
                 Intent intent = new Intent(getActivity(), ReceiveActivity.class);
                 intent.putExtra("country_name", country_name);
                 intent.putExtra("country_name_english", country_name_english);
                 intent.putExtra("country_img", country_img);
-                startActivity(intent);
+                intent.putExtra("country_banner_img", country_banner_img);
+                startActivityForResult(intent,requestCode);
             }
         }, null) {
 
@@ -161,9 +211,11 @@ public class DestinationFragment extends Fragment {
                 TextView tv_country_name = holder.getView(R.id.tv_country_name);
                 TextView tv_country_english = holder.getView(R.id.tv_country_english);
                 ImageView iv_country_img = holder.getView(R.id.iv_country_img);
-                tv_country_name.setText(((CountryBean) o).getCountry_name());
-                tv_country_english.setText(((CountryBean) o).getCountry_name_english());
-                iv_country_img.setImageResource(((CountryBean) o).getCountry_img());
+                tv_country_name.setText(((CountryBean.DataBean) o).getCountryname());
+                tv_country_english.setText(((CountryBean.DataBean) o).getCountryengname());
+                Glide.with(getActivity())
+                        .load(((CountryBean.DataBean) o).getCountryimage())
+                        .into(iv_country_img);
 
             }
         };
@@ -172,8 +224,41 @@ public class DestinationFragment extends Fragment {
     }
 
     @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+
+//        if(requestCode==100&&resultCode==200){
+//
+//        }
+        int type = data.getIntExtra("type",0);
+        activity.showFragment(type);
+
+    }
+
+    @Override
     public void onDestroyView() {
         super.onDestroyView();
-        unbinder.unbind();
+    }
+
+
+    @Override
+    public void onSuccess(String method, BaseBean baseBean, String s1) {
+        switch (method) {
+            case Constans.METHOD_GETCOUPONCOUNTRY:
+                countryBean = (CountryBean) baseBean;
+                countryBeanData = countryBean.getData();
+                Log.e("size", countryBeanData.size() + "");
+                adapter.updateData(countryBeanData);
+                break;
+        }
+    }
+
+    @Override
+    public void onError(String s, String s1, String s2) {
+
+    }
+
+    @Override
+    public void onFinsh(String s) {
+
     }
 }

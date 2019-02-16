@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.aibabel.travel">
+
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.MOUNT_UNMOUNT_FILESYSTEMS" />
+    <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
+    <uses-permission android:name="android.permission.CHANGE_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS" />
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <uses-permission android:name="android.permission.VIBRATE" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.GET_TASKS" />
+
+    <!-- 这个权限用于进行网络定位 -->
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <!-- 这个权限用于访问GPS定位 -->
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <!-- 用于访问wifi网络信息，wifi信息会用于进行网络定位 -->
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <!-- 获取运营商信息，用于支持提供运营商信息相关的接口 -->
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <!-- 这个权限用于获取wifi的获取权限，wifi信息会用来进行网络定位 -->
+    <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
+    <!-- 用于读取手机当前的状态 -->
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <!-- 写入扩展存储，向扩展卡写入数据，用于写入离线定位数据 -->
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <!-- 访问网络，网络定位需要上网 -->
+    <uses-permission android:name="android.permission.INTERNET" />
+    <!-- SD卡读取权限，用户写入离线定位数据 -->
+    <uses-permission android:name="android.permission.MOUNT_UNMOUNT_FILESYSTEMS" />
+
+    <!-- 判断当前Activity是否在前台 -->
+    <uses-permission android:name="android.permission.GET_TASKS" />
+
+    <!--
+      <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW"/>
+    <uses-permission android:name="android.permission.SYSTEM_OVERLAY_WINDOW"/>
+    -->
+    <!--
+        <uses-permission android:name="android.permission.CONNECTIVITY_USE_RESTRICTED_NETWORKS" />
+    <uses-permission android:name="android.permission.CONNECTIVITY_INTERNAL" />
+    <uses-permission android:name="android.permission.CONNECTIVITY_USE_RESTRICTED_NETWORKS" />
+    <uses-permission android:name="android.permission.CONNECTIVITY_INTERNAL" />
+    -->
+    <application
+        android:name=".app.SophixStubApplication"
+        android:allowBackup="true"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:supportsRtl="true"
+        android:theme="@style/AppTheme">
+
+        <!-- 启动页 -->
+        <activity
+            android:name=".activity.LauncherActivity"
+            android:screenOrientation="portrait"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <!-- 世界页面 -->
+        <activity
+            android:name=".activity.WorldActivity"
+            android:screenOrientation="portrait" />
+        <!-- 景点页 -->
+        <activity
+            android:name=".activity.SpotActivity"
+            android:screenOrientation="portrait"
+            android:exported="true"/>
+        <!-- 景点详情页 -->
+        <activity
+            android:name=".activity.SpotDetailActivity"
+            android:screenOrientation="portrait"
+            android:exported="true"/>
+        <!-- 城市页 -->
+        <activity
+            android:name=".activity.CityActivity"
+            android:screenOrientation="portrait" />
+        <!-- 搜索页面 -->
+        <activity
+            android:name=".activity.SearchPageActivity"
+            android:screenOrientation="portrait" />
+        <!-- 国家页 -->
+        <activity
+            android:name=".activity.CountryActivity"
+            android:screenOrientation="portrait" />
+
+        <meta-data
+            android:name="com.baidu.lbsapi.API_KEY"
+            android:value="REHXC8VbwZn1oG1GzORr9zDkW5422mfx" />
+
+        <receiver
+            android:name=".broadcastreceiver.NotiftLocation"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="com.aibabel.broadcast.noticelocation" />
+            </intent-filter>
+        </receiver>
+        <receiver
+            android:name=".broadcastreceiver.ExpireBroadcast"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="com.android.zhuner" />
+            </intent-filter>
+        </receiver>
+
+        <service
+            android:name=".service.LocationService"
+            android:enabled="true"
+            android:exported="true"
+            android:process=":location" />
+
+        <receiver
+            android:name=".broadcastreceiver.NoticeBroadcastReceiver"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="com.aibabel.broadcast.travel" />
+            </intent-filter>
+        </receiver>
+
+        <service
+            android:name="com.baidu.location.f"
+            android:enabled="true"
+            android:process=":remote" />
+
+        <activity android:name=".activity.InformationActivity" />
+        <activity android:name=".activity.ServiceActivity"></activity>
+
+        <meta-data
+            android:name="com.taobao.android.hotfix.IDSECRET"
+            android:value="25597610-1" />
+        <meta-data
+            android:name="com.taobao.android.hotfix.APPSECRET"
+            android:value="9c8781e1ab28f8be0b78b49b170d9288" />
+        <meta-data
+            android:name="com.taobao.android.hotfix.RSASECRET"
+            android:value="MIIEvwIBADANBgkqhkiG9w0BAQEFAASCBKkwggSlAgEAAoIBAQDJOudgUJFkK1huDWxcVX3CNzdKTdQvl6iteBcePs0qqOyxuWBmpAlQpDBhX5L2mIk3Y9lwBvEAxnzJMkr2fCMjHR+In2DZdoRerbLVO5upRHN6DhKDBOS2L9S9koS7NGOzhERcX+i7H6DLCYPMLjOVu8Y1qeGIH8c0g2Cqf0q5lWvxwVYRfqBv9j1ptHKys1E9aP/wc23E95FWceF1i8CLIA50qkoX/xQhEo2f4e+g0ATOHtEpKiTeZla3f3gl+lsITD+iuMYJX/QsgLatPRZCnTl2Jo0oAOXaomfOdSmvgEI5LZKKseig3XAYglsWoxDOO/Y+xY6dyIpQWS7/H0pNAgMBAAECggEAXmh3QxWpkKBRZZiAnTUywhqbow2ungF+DpyH5BW8teX43kzFcIJHKIFPfW+UiIL55XW//rITAbUduFsTFl8ZMREpyTRVANF8utqtSyMjHZ/SuZG+l5+FGgCIw8Po59dla0SDuf75NklZa8h0ACgw5W/qRyUDfZTDJdz5TiRYT4Z38XLzXdMG5cIQETdBXhXrFNmMwXeGCQJvt95xfKHfHZVpUiaWXxmQSbdwLtDCoiSSx/TFXSYFAVChNtjGHbjLfQpfJpVp1SeVM5jG55WyQoBsRqA7LOIZ2Cd7VyO45fFWnd5fMiyDniun0YGt0UXfGWU2Pxdz8QKxPwdBwKGkNQKBgQD5D7b0nsfFqvcnT4wGwz7FvJNuY/JJ+7oaRv+yuaQNFpxD4oSM9aQsJYiYuYy43GLFk0k4ieOWEj8ZgdSVNpnAVmyfbncRyH0QOkgKy0c3ZoSc7AFaGw6HgJ9XXeg7fKnPGUTCBLIUkeUJQC3LeB865Vdm33JbolyJ/fAks4S0LwKBgQDO1g9vozOjjZyzAw8QZXUeN8jss7FTmzW/xvd6pmVgP91yVd4p/brAhfPuVjOhoewJQ7av9e353gP/vjba/OhqnyyqMhqVxGaL9rNxUqGjNeUVaHIZo3y1I86Qh7zpuNOH69rzgTseoP9+32DY9qYAoNhfrazg3fnOzRTmOlt+QwKBgQCoqHegl5V4yhmsSTXtrnHnvZeo/Y2phAm2mbW19fid1F3lqpNQUVfnfVNO+PfOh49rdB31Z4ryqVCJmV233c2obd4I6OlA5Z+rSYxXouiLH6VWDour1P61y+gbZcBJ6FWlpNrm9/8P5uxOo2Nfkey0GXJie5YZb41y9L+WWurWiQKBgQDH/NPKBovcfQVhVPjQyri2MgwVSh2QEEelGXWaYp8stDOi5IG+KjXTBvH3peOgSdbWkmFmu6yQ52kIc1vI27bBuQxPt8havR7GABA650GgdHD/BREl1xyybF/DAWvYtLva9WKsBW0rTVIc01FqFvolK2BrCptYhWiP2110ykJCzwKBgQCGyT5xG/Sw+7Maum6e5cNFz+/nLHkMv/OLyON2+smDJVy/oCONkg5lIHgrDlue+Kap1lZvdlCEbOaqfku+XSlGjiPvl9aF8I6RegftXEygvp9dTlg5f6s8vkAhbo6nMGLZLGUNlpGMX4EI/hme40oXSTANNP3zDfX9/rzl3BprBQ=="/>
+
+    </application>
+
+</manifest>

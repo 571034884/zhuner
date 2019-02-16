@@ -45,7 +45,7 @@ import java.util.Locale;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class OrderActivity extends BaseActivity implements BaseCallback {
+public class OrderActivity extends BaseActivity {
 
 
     @BindView(R.id.iv_back1)
@@ -73,19 +73,13 @@ public class OrderActivity extends BaseActivity implements BaseCallback {
     TextView tvError;
     @BindView(R.id.tv_net_help)
     TextView tvNetHelp;
-    //
-    private String orderId;
 
     private CommomRecyclerAdapter adapter;
-    private SimpleDateFormat dateFormat;
-    private SharedPreferences sp;
     private List<OrderitemBean.DataBean> datalist = new ArrayList<>();
     private OrderitemBean orderitemBean;
     private boolean is_onclick = true;
     private TextView tv_help;
     private TextView tv_xuzu;
-    private String version = "";
-    private int daynum = 0;
 
     @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
@@ -101,7 +95,6 @@ public class OrderActivity extends BaseActivity implements BaseCallback {
         }
         if (NetUtil.isNetworkAvailable(OrderActivity.this)) {
             initAdapter();
-
             try {
                 initData();
             } catch (ParseException e) {
@@ -129,10 +122,7 @@ public class OrderActivity extends BaseActivity implements BaseCallback {
     }
 
     private void initCountry() {
-        String country = Locale.getDefault().getCountry();
-        String language = getResources().getConfiguration().locale.getLanguage();
-
-        if (language.equals("zh")||language.equals("en")) {
+        if (Constans.PHONE_LANGUAGE.equals("zh") || Constans.PHONE_LANGUAGE.equals("en")) {
             tv_help.setVisibility(View.VISIBLE);
         } else {
             tv_help.setVisibility(View.GONE);
@@ -171,16 +161,6 @@ public class OrderActivity extends BaseActivity implements BaseCallback {
     }
 
     private void initAdapter() {
-//        tvPurchase.setVisibility(View.GONE);
-
-        try {
-            String display = Build.DISPLAY;
-            Constans.PRO_VERSION_NUMBER = display.substring(9, 10);
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
 
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         //设置布局管理器
@@ -254,10 +234,8 @@ public class OrderActivity extends BaseActivity implements BaseCallback {
                             clOrder.setVisibility(View.GONE);
                             rlNoNet.setVisibility(View.VISIBLE);
 
-//                    ToastUtil.showShort(OrderActivity.this, "当前无网络请联网后操作");
                         }
 
-//                startActivity(new Intent(OrderActivity.this, TrandActivity.class));
                     }
                 });
 
@@ -271,40 +249,11 @@ public class OrderActivity extends BaseActivity implements BaseCallback {
                 }
 
 
-                if (type == 9) {
-//                    tv_data.setText("下单时间:");
-                    tv_data.setText(getResources().getString(R.string.xiadan_data) + " :");
-                    dingdan_data.setText(((OrderitemBean.DataBean) o).getCreatedAt());
-                    //两次加大字体，设置字体为红色（big会加大字号，font可以定义颜色）
-//                    tv_dingdan_number.setText("订单 ：" + ((OrderitemBean.DataBean) o).getSkuName() + " " + "(待退款)");
-                    tv_dingdan_number.setText(getResources().getString(R.string.dingdan) + ((OrderitemBean.DataBean) o).getSkuName());
-                    tv_jihuozhuantai.setText(getResources().getString(R.string.daituikuan));
-                    ll_jihuo.setVisibility(View.GONE);
-                    tv_jihuozhuantai.setTextColor(getColor(R.color.red));
-                    tv_jihuo_help.setVisibility(View.GONE);
-                    ll_xq.setVisibility(View.VISIBLE);
-                    String days = ((OrderitemBean.DataBean) o).getDays();
-                    String copies = ((OrderitemBean.DataBean) o).getCopies();
-                    Integer days1 = Integer.valueOf(days);
-                    Integer copies1 = Integer.valueOf(copies);
-                    int days2 = Math.multiplyExact(days1, copies1);
-//                    tv_goumaixianqing.setText(days1 + getResources().getString(R.string.day) + " * " + copies1 + "份" + "共" + days2 + getResources().getString(R.string.day));
-                    tv_goumaixianqing.setText(getResources().getString(R.string.gong) + " " + days2 + " " + getResources().getString(R.string.day));
-                } else if (type == 1) {
-
-
-//                    tv_data.setText("下单时间:");
+                if (type == 9 || type == 1) {
                     tv_data.setText(getResources().getString(R.string.xiadan_data) + " :");
                     dingdan_data.setText(((OrderitemBean.DataBean) o).getCreatedAt());
                     tv_dingdan_number.setText(getResources().getString(R.string.dingdan) + ((OrderitemBean.DataBean) o).getSkuName());
-                    tv_jihuozhuantai.setText(getResources().getString(R.string.weijihuo));
                     tv_jihuozhuantai.setTextColor(getColor(R.color.red));
-                    ll_jihuo.setVisibility(View.VISIBLE);
-                    tv_jihuo_help.setVisibility(View.VISIBLE);
-                    tv_jihuo_help.setText(getResources().getString(R.string.jihuo_help));
-                    tv_jihuo_help.setTextColor(getColor(R.color.yellow));
-
-
                     ll_xq.setVisibility(View.VISIBLE);
                     String days = ((OrderitemBean.DataBean) o).getDays();
                     String copies = ((OrderitemBean.DataBean) o).getCopies();
@@ -312,8 +261,17 @@ public class OrderActivity extends BaseActivity implements BaseCallback {
                     Integer copies1 = Integer.valueOf(copies);
                     int days2 = Math.multiplyExact(days1, copies1);
                     tv_goumaixianqing.setText(getResources().getString(R.string.gong) + " " + days2 + " " + getResources().getString(R.string.day));
-
-
+                    if (type == 9) {
+                        tv_jihuozhuantai.setText(getResources().getString(R.string.daituikuan));
+                        ll_jihuo.setVisibility(View.GONE);
+                        tv_jihuo_help.setVisibility(View.GONE);
+                    } else if (type == 1) {
+                        tv_jihuozhuantai.setText(getResources().getString(R.string.weijihuo));
+                        ll_jihuo.setVisibility(View.VISIBLE);
+                        tv_jihuo_help.setVisibility(View.VISIBLE);
+                        tv_jihuo_help.setText(getResources().getString(R.string.jihuo_help));
+                        tv_jihuo_help.setTextColor(getColor(R.color.yellow));
+                    }
                 } else if (type == 8) {
                     tv_data.setText(getResources().getString(R.string.daoqi_data) + " :");
 //                    tv_data.setText("到期时间:");
@@ -327,7 +285,9 @@ public class OrderActivity extends BaseActivity implements BaseCallback {
 
                 }
             }
-        };
+        }
+
+        ;
         rvDingdan.setAdapter(adapter);
     }
 
@@ -381,22 +341,6 @@ public class OrderActivity extends BaseActivity implements BaseCallback {
             }
         }*/
     }
-
-    @Override
-    public void onSuccess(String method, BaseBean model) {
-
-
-    }
-
-
-    @Override
-    public void onError(String method, Response<String> response) {
-        clOrder.setVisibility(View.GONE);
-        rlNoNet.setVisibility(View.VISIBLE);
-        tvError.setText(getResources().getString(R.string.zoudiule));
-
-    }
-
     public static long stringToLong(String strTime, String formatType)
             throws ParseException {
         Date date = stringToDate(strTime, formatType); // String类型转成date类型

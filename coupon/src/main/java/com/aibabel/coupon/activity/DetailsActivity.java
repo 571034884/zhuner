@@ -3,34 +3,41 @@ package com.aibabel.coupon.activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.OrientationHelper;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
-import android.widget.GridLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.aibabel.baselibrary.base.BaseActivity;
+import com.aibabel.baselibrary.http.BaseBean;
+import com.aibabel.baselibrary.http.BaseCallback;
+import com.aibabel.baselibrary.http.OkGoUtil;
 import com.aibabel.coupon.R;
 import com.aibabel.coupon.adapter.CommomRecyclerAdapter;
 import com.aibabel.coupon.adapter.CommonRecyclerViewHolder;
 import com.aibabel.coupon.adapter.MyGridLayoutManager;
-import com.aibabel.coupon.bean.CountryBean;
-import com.aibabel.coupon.bean.CouponBean;
+import com.aibabel.coupon.bean.Constans;
 import com.aibabel.coupon.bean.RemenBean;
 import com.aibabel.coupon.bean.ShopBean;
+
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.github.chrisbanes.photoview.PhotoView;
+import com.lzy.okgo.model.Response;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import de.hdodenhof.circleimageview.CircleImageView;
 
 // 优惠券详情页
-public class DetailsActivity extends AppCompatActivity {
+public class DetailsActivity extends BaseActivity implements BaseCallback<BaseBean> {
 
     @BindView(R.id.iv_back)
     ImageView ivBack;
@@ -54,23 +61,24 @@ public class DetailsActivity extends AppCompatActivity {
     RecyclerView rvDianpu;
     @BindView(R.id.rv_remen)
     RecyclerView rvRemen;
+    @BindView(R.id.iv_yuantu)
+    ImageView ivYuantu;
 
-    private List<ShopBean> shopList = new ArrayList<>();
+
     private List<RemenBean> remenList = new ArrayList<>();
-    private String img_url = "https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1536148533790&di=6b6f44e5602faa55606b7918ba7e00f1&imgtype=0&src=http%3A%2F%2Fi2.w.hjfile.cn%2Fnews%2F201509%2F201509101221406593.jpg";
     private CommomRecyclerAdapter adapter;
     private CommomRecyclerAdapter adapter1;
+    private ShopBean shopBean;
+    private ShopBean.DataBean shopBeanData;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_details);
-        ButterKnife.bind(this);
+    public int getLayout(Bundle bundle) {
+        return  R.layout.activity_details;
+    }
 
-        initAdapter();
-
+    @Override
+    public void init() {
         initData();
-
         ivBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -80,13 +88,13 @@ public class DetailsActivity extends AppCompatActivity {
     }
 
     private void initShopAdapter() {
-        LinearLayoutManager layoutManager = new LinearLayoutManager(this);
+      /*  LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         //设置布局管理器
         rvDianpu.setLayoutManager(layoutManager);
         //设置为垂直布局，这也是默认的
         layoutManager.setOrientation(OrientationHelper.VERTICAL);
 
-        adapter = new CommomRecyclerAdapter(this, shopList, R.layout.recy_dianpu, new CommomRecyclerAdapter.OnItemClickListener() {
+        adapter = new CommomRecyclerAdapter(this, shopBeanData, R.layout.recy_dianpu, new CommomRecyclerAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(CommonRecyclerViewHolder holder, int postion) {
             }
@@ -96,18 +104,19 @@ public class DetailsActivity extends AppCompatActivity {
                 TextView tv_dianpu_name = holder.getView(R.id.tv_dianpu_name);
                 TextView tv_dianpu_address = holder.getView(R.id.tv_dianpu_address);
                 TextView tv_dianpu_time = holder.getView(R.id.tv_dianpu_time);
-                tv_dianpu_name.setText(((ShopBean) o).getShop_name());
-                tv_dianpu_address.setText(((ShopBean) o).getShop_address());
-                tv_dianpu_time.setText(((ShopBean) o).getShop_time());
+//                tv_dianpu_name.setText(((ShopBean) o).getShop_name());
+//                tv_dianpu_address.setText(((ShopBean) o).getShop_address());
+//                tv_dianpu_time.setText(((ShopBean) o).getShop_time());
 
             }
         };
         rvDianpu.setAdapter(adapter);
-
+*/
 
     }
+
     private void initRememAdapter() {
-         MyGridLayoutManager myGridLayoutManager = new MyGridLayoutManager(this,2);
+        MyGridLayoutManager myGridLayoutManager = new MyGridLayoutManager(this, 2);
         //设置布局管理器
         rvRemen.setLayoutManager(myGridLayoutManager);
         //设置为垂直布局，这也是默认的
@@ -138,21 +147,79 @@ public class DetailsActivity extends AppCompatActivity {
     }
 
     private void initData() {
-        for (int i = 0; i < 4; i++) {
+        Intent intent = getIntent();
+        int couponId = intent.getIntExtra("couponId", -1);
+        Log.e("couponId",couponId+"==");
+      /*  for (int i = 0; i < 4; i++) {
             shopList.add(new ShopBean("松本清（银座5th店）", "地址：中英区银座5-5-1", "营业时间:10:00-22:00"));
             remenList.add(new RemenBean(img_url, "安耐晒", "防水", "性价比高"));
         }
         adapter.updateData(shopList);
-        adapter1.updateData(remenList);
+        adapter1.updateData(remenList);*/
+
+        Map<String, String> map = new HashMap<>();
+        if (TextUtils.equals(Constans.PRO_VERSION,"L")){
+            map.put("leaseId",Constans.PRO_DEV_OID);
+        }
+        map.put("CouponId", couponId + "");
+        OkGoUtil.<ShopBean>get(DetailsActivity.this, Constans.METHOD_GETONECOUPONDETIAL, map, ShopBean.class, this);
     }
 
     private void initAdapter() {
 
-        initShopAdapter();
-        initRememAdapter();
+//        initShopAdapter();
+//        initRememAdapter();
 
 
     }
 
 
+
+
+    @Override
+    public void onSuccess(String method, BaseBean baseBean, String s1) {
+        switch (method) {
+            case Constans.METHOD_GETONECOUPONDETIAL:
+                shopBean = (ShopBean) baseBean;
+                shopBeanData = shopBean.getData();
+                tvZhekou.setText(shopBeanData.getTitle()+shopBeanData.getYouhui());
+
+
+                Glide.with(DetailsActivity.this)
+                        .load((shopBeanData).getImage())
+                        .into(ivImg);
+//                tvZhekou.setText(shopBeanData.getYouhui());
+//                tvXiangqing.setText(shopBeanData.getTiaojianshort());
+                Glide.with(DetailsActivity.this)
+                        .load((shopBeanData).getQrimage())
+                        .into(ivTiaoxinma);
+                tvYouhuiTime.setText((shopBeanData).getTime());
+                tvYouhuiZhengce.setText((shopBeanData).getTiaojian());
+
+                Glide.with(DetailsActivity.this)
+                        .load((shopBeanData).getBasicimage())
+                        .into(ivYuantu);
+                Log.e("imgurl",(shopBeanData).getBasicimage());
+
+                ivYuantu.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Intent intent = new Intent(DetailsActivity.this,PhotoViewActivity.class);
+                        intent.putExtra("photo_img",shopBeanData.getBasicimage());
+                        startActivity(intent);
+                    }
+                });
+                break;
+        }
+    }
+
+    @Override
+    public void onError(String s, String s1, String s2) {
+
+    }
+
+    @Override
+    public void onFinsh(String s) {
+
+    }
 }

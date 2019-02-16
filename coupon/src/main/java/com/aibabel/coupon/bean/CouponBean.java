@@ -1,5 +1,9 @@
 package com.aibabel.coupon.bean;
 
+import com.aibabel.baselibrary.http.BaseBean;
+
+import java.util.List;
+
 /**
  * 作者：wuqinghua_fyt on 2018/9/5 17:03
  * 功能：
@@ -7,70 +11,198 @@ package com.aibabel.coupon.bean;
  *  我的优惠券 页  和  目的地领券页
  *  参数 ： 角标名字  店图片  店名字  店商品价格   使用条件  是否领券
  */
-public class CouponBean {
+public class CouponBean extends BaseBean {
 
-    private String tv_jiaobiao_name ;
-    private String iv_shop_img ;
-    private String tv_shop_name ;
-    private String tv_shop_price ;
-    private String tv_shop_details ;
-    private String tv_receive ;
-//    https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1536148533790&di=6b6f44e5602faa55606b7918ba7e00f1&imgtype=0&src=http%3A%2F%2Fi2.w.hjfile.cn%2Fnews%2F201509%2F201509101221406593.jpg
 
-    public CouponBean(String tv_jiaobiao_name, String iv_shop_img, String tv_shop_name, String tv_shop_price, String tv_shop_details, String tv_receive) {
-        this.tv_jiaobiao_name = tv_jiaobiao_name;
-        this.iv_shop_img = iv_shop_img;
-        this.tv_shop_name = tv_shop_name;
-        this.tv_shop_price = tv_shop_price;
-        this.tv_shop_details = tv_shop_details;
-        this.tv_receive = tv_receive;
+    private List<DataBean> data;
+
+    public List<DataBean> getData() {
+        return data;
     }
 
-    public String getTv_jiaobiao_name() {
-        return tv_jiaobiao_name;
+    public void setData(List<DataBean> data) {
+        this.data = data;
     }
 
-    public void setTv_jiaobiao_name(String tv_jiaobiao_name) {
-        this.tv_jiaobiao_name = tv_jiaobiao_name;
-    }
+    public static class DataBean {
+        /**
+         * couponData : {"CouponId":1,"countryname":"泰国","countryengname":"Thailand","countryimage":"http://destination.cdn.aibabel.com/coupon/pic/Thailand.png","bannerimage":"http://destination.cdn.aibabel.com/coupon/pic/Thailand-banner.png","image":"http://destination.cdn.aibabel.com/coupon/pic/kingpower.png","title":"王权免税店（清迈机场店）","youhui":"200泰铢","tiaojian":"购物满2500泰铢","couponType":"","context":"泰国王权免税店隶属于泰国王权国际集团旗下，汇聚众多世界时尚热销品牌，购物空间优雅舒适，拥有王权曼谷市中心店、王权曼谷素万那普国际机场店、王权曼谷史万利店、王权曼谷廊曼机场店、芭提雅市区店、普吉国际机场店，合艾机场店，清迈国际机场店等八大分店。","qrimage":"http://destination.cdn.aibabel.com/coupon/pic/泰国连锁Spa店 Let's Relax 85折券.png","basicimage":"http://destination.cdn.aibabel.com/coupon/pic/泰国免税店王权（清迈机场店）.jpg","time":"2019/3/31","tiaojianshort":"部分商品不可享受折扣，详询店员"}
+         * userHasThisCoupon : false
+         */
 
-    public String getIv_shop_img() {
-        return iv_shop_img;
-    }
+        private CouponDataBean couponData;
+        private String userHasThisCoupon;
 
-    public void setIv_shop_img(String iv_shop_img) {
-        this.iv_shop_img = iv_shop_img;
-    }
+        public CouponDataBean getCouponData() {
+            return couponData;
+        }
 
-    public String getTv_shop_name() {
-        return tv_shop_name;
-    }
+        public void setCouponData(CouponDataBean couponData) {
+            this.couponData = couponData;
+        }
 
-    public void setTv_shop_name(String tv_shop_name) {
-        this.tv_shop_name = tv_shop_name;
-    }
+        public String getUserHasThisCoupon() {
+            return userHasThisCoupon;
+        }
 
-    public String getTv_shop_price() {
-        return tv_shop_price;
-    }
+        public void setUserHasThisCoupon(String userHasThisCoupon) {
+            this.userHasThisCoupon = userHasThisCoupon;
+        }
 
-    public void setTv_shop_price(String tv_shop_price) {
-        this.tv_shop_price = tv_shop_price;
-    }
+        public static class CouponDataBean {
+            /**
+             * CouponId : 1
+             * countryname : 泰国
+             * countryengname : Thailand
+             * countryimage : http://destination.cdn.aibabel.com/coupon/pic/Thailand.png
+             * bannerimage : http://destination.cdn.aibabel.com/coupon/pic/Thailand-banner.png
+             * image : http://destination.cdn.aibabel.com/coupon/pic/kingpower.png
+             * title : 王权免税店（清迈机场店）
+             * youhui : 200泰铢
+             * tiaojian : 购物满2500泰铢
+             * couponType :
+             * context : 泰国王权免税店隶属于泰国王权国际集团旗下，汇聚众多世界时尚热销品牌，购物空间优雅舒适，拥有王权曼谷市中心店、王权曼谷素万那普国际机场店、王权曼谷史万利店、王权曼谷廊曼机场店、芭提雅市区店、普吉国际机场店，合艾机场店，清迈国际机场店等八大分店。
+             * qrimage : http://destination.cdn.aibabel.com/coupon/pic/泰国连锁Spa店 Let's Relax 85折券.png
+             * basicimage : http://destination.cdn.aibabel.com/coupon/pic/泰国免税店王权（清迈机场店）.jpg
+             * time : 2019/3/31
+             * tiaojianshort : 部分商品不可享受折扣，详询店员
+             */
 
-    public String getTv_shop_details() {
-        return tv_shop_details;
-    }
+            private int CouponId;
+            private String countryname;
+            private String countryengname;
+            private String countryimage;
+            private String bannerimage;
+            private String image;
+            private String title;
+            private String youhui;
+            private String tiaojian;
+            private String couponType;
+            private String context;
+            private String qrimage;
+            private String basicimage;
+            private String time;
+            private String tiaojianshort;
 
-    public void setTv_shop_details(String tv_shop_details) {
-        this.tv_shop_details = tv_shop_details;
-    }
+            public int getCouponId() {
+                return CouponId;
+            }
 
-    public String getTv_receive() {
-        return tv_receive;
-    }
+            public void setCouponId(int CouponId) {
+                this.CouponId = CouponId;
+            }
 
-    public void setTv_receive(String tv_receive) {
-        this.tv_receive = tv_receive;
+            public String getCountryname() {
+                return countryname;
+            }
+
+            public void setCountryname(String countryname) {
+                this.countryname = countryname;
+            }
+
+            public String getCountryengname() {
+                return countryengname;
+            }
+
+            public void setCountryengname(String countryengname) {
+                this.countryengname = countryengname;
+            }
+
+            public String getCountryimage() {
+                return countryimage;
+            }
+
+            public void setCountryimage(String countryimage) {
+                this.countryimage = countryimage;
+            }
+
+            public String getBannerimage() {
+                return bannerimage;
+            }
+
+            public void setBannerimage(String bannerimage) {
+                this.bannerimage = bannerimage;
+            }
+
+            public String getImage() {
+                return image;
+            }
+
+            public void setImage(String image) {
+                this.image = image;
+            }
+
+            public String getTitle() {
+                return title;
+            }
+
+            public void setTitle(String title) {
+                this.title = title;
+            }
+
+            public String getYouhui() {
+                return youhui;
+            }
+
+            public void setYouhui(String youhui) {
+                this.youhui = youhui;
+            }
+
+            public String getTiaojian() {
+                return tiaojian;
+            }
+
+            public void setTiaojian(String tiaojian) {
+                this.tiaojian = tiaojian;
+            }
+
+            public String getCouponType() {
+                return couponType;
+            }
+
+            public void setCouponType(String couponType) {
+                this.couponType = couponType;
+            }
+
+            public String getContext() {
+                return context;
+            }
+
+            public void setContext(String context) {
+                this.context = context;
+            }
+
+            public String getQrimage() {
+                return qrimage;
+            }
+
+            public void setQrimage(String qrimage) {
+                this.qrimage = qrimage;
+            }
+
+            public String getBasicimage() {
+                return basicimage;
+            }
+
+            public void setBasicimage(String basicimage) {
+                this.basicimage = basicimage;
+            }
+
+            public String getTime() {
+                return time;
+            }
+
+            public void setTime(String time) {
+                this.time = time;
+            }
+
+            public String getTiaojianshort() {
+                return tiaojianshort;
+            }
+
+            public void setTiaojianshort(String tiaojianshort) {
+                this.tiaojianshort = tiaojianshort;
+            }
+        }
     }
 }

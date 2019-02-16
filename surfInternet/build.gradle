@@ -1,5 +1,5 @@
 apply plugin: 'com.android.application'
-
+apply plugin: 'com.aliyun.ams.emas-services'
 def buildTime() {
     return System.currentTimeMillis()
 }
@@ -10,8 +10,8 @@ android {
         applicationId "com.aibabel.surfinternet"
         minSdkVersion 21
         targetSdkVersion 28
-        versionCode 6
-        versionName "1.0.6"
+        versionCode 12
+        versionName "1.1.2"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
     // 一定要写在android节点中
@@ -52,4 +52,9 @@ dependencies {
     implementation 'jp.wasabeef:glide-transformations:2.0.1'
     implementation 'de.hdodenhof:circleimageview:2.1.0'
     implementation project(':baselibrary')
+}
+repositories {
+    maven {
+        url "http://maven.aliyun.com/nexus/content/repositories/releases"
+    }
 }

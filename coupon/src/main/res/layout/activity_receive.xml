@@ -9,7 +9,7 @@
 
     <com.aibabel.coupon.utils.MyScrollview
         android:layout_width="match_parent"
-        android:layout_height="0px"
+        android:layout_height="@dimen/y0"
         app:layout_constraintBottom_toTopOf="@id/view1"
         app:layout_constraintTop_toTopOf="parent">
 
@@ -21,13 +21,22 @@
 
             <com.youth.banner.Banner
                 android:id="@+id/banner"
+                android:visibility="gone"
                 android:layout_width="match_parent"
-                android:layout_height="350px"
+                android:layout_height="@dimen/y350"
                 android:scaleType="fitXY"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintTop_toTopOf="parent">
 
             </com.youth.banner.Banner>
+            <ImageView
+                android:id="@+id/iv_banner"
+                android:visibility="visible"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/y350"
+                android:scaleType="fitXY"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
             <ImageView
                 android:id="@+id/iv_country_img"
@@ -56,7 +65,7 @@
                     android:layout_height="wrap_content"
                     android:text="日本"
                     android:textColor="#fff"
-                    android:textSize="@dimen/px40"
+                    android:textSize="@dimen/y40"
                     android:textStyle="bold" />
 
                 <TextView
@@ -65,20 +74,18 @@
                     android:layout_height="wrap_content"
                     android:text="Japan"
                     android:textColor="#fff"
-                    android:textSize="@dimen/px30" />
+                    android:textSize="@dimen/y30" />
             </LinearLayout>
 
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/rv_coupon"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_marginLeft="@dimen/px14"
-                android:layout_marginRight="@dimen/px14"
-                android:layout_marginTop="@dimen/px30"
+                android:layout_marginTop="@dimen/y30"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/banner"></android.support.v7.widget.RecyclerView>
+                app:layout_constraintTop_toBottomOf="@id/iv_banner"></android.support.v7.widget.RecyclerView>
 
 
         </android.support.constraint.ConstraintLayout>
@@ -87,20 +94,20 @@
     <View
         android:id="@+id/view1"
         android:layout_width="match_parent"
-        android:layout_height="2px"
+        android:layout_height="@dimen/y2"
         android:background="#d2d2d2"
         app:layout_constraintBottom_toTopOf="@id/lin" />
 
     <LinearLayout
         android:id="@+id/lin"
         android:layout_width="match_parent"
-        android:layout_height="74px"
+        android:layout_height="@dimen/y74"
         android:background="#eeeeee"
         android:gravity="center_vertical"
         app:layout_constraintBottom_toBottomOf="parent">
 
         <RelativeLayout
-            android:layout_width="0px"
+            android:layout_width="@dimen/x0"
             android:layout_height="wrap_content"
             android:layout_weight="1">
 
@@ -113,11 +120,11 @@
                 android:gravity="center"
                 android:text="目的地"
                 android:textColor="#c2c2c2"
-                android:textSize="@dimen/px28" />
+                android:textSize="@dimen/y28" />
         </RelativeLayout>
 
         <RelativeLayout
-            android:layout_width="0px"
+            android:layout_width="@dimen/x0"
             android:layout_height="wrap_content"
             android:layout_weight="1">
 
@@ -130,7 +137,7 @@
                 android:gravity="center"
                 android:text="优惠券"
                 android:textColor="#c2c2c2"
-                android:textSize="@dimen/px28" />
+                android:textSize="@dimen/y28" />
         </RelativeLayout>
 
     </LinearLayout>

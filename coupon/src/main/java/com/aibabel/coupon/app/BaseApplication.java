@@ -3,8 +3,12 @@ package com.aibabel.coupon.app;
 import android.app.Activity;
 import android.app.Application;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.Log;
+import android.view.KeyEvent;
 
+import com.aibabel.baselibrary.http.OkGoUtil;
+import com.aibabel.coupon.BuildConfig;
 import com.aibabel.coupon.utils.DensityHelper;
 import com.lzy.okgo.OkGo;
 
@@ -16,90 +20,35 @@ import okhttp3.OkHttpClient;
 /**
  * Created by Wuqinghua on 2018/6/28 0028.
  */
-public class BaseApplication extends Application{
-    /**
-     * 存储程序中所创建的activity
-     */
-    private static LinkedList<Activity> activityLinkedList;
-    public static int stateCount = 0;
-    private static final int DESIGN_WIDTH = 540;
+public class BaseApplication extends com.aibabel.baselibrary.base.BaseApplication{
+
     @Override
     public void onCreate() {
         super.onCreate();
 
-        OkHttpClient.Builder builder = new OkHttpClient.Builder();
-        //全局的读取超时时间
-        builder.readTimeout(15000, TimeUnit.MILLISECONDS);
-        //全局的写入超时时间
-        builder.writeTimeout(15000, TimeUnit.MILLISECONDS);
-        //全局的连接超时时间
-        builder.connectTimeout(15000, TimeUnit.MILLISECONDS);
-
-        OkGo.getInstance().init(this).setOkHttpClient(builder.build()); //必须调用初始化
-
-        initAppExitConfig();
-
-        initLayoutConfig();
-
-
-
-    }
-    /**
-     * 初始化布局适配  布局中使用pt做位单位
-     */
-    public void initLayoutConfig() {
-        new DensityHelper(this, DESIGN_WIDTH).activate();
+        com.aibabel.baselibrary.base.BaseApplication.setAllPhysicalButtonsExitEnable(true);
     }
 
-
-    /**
-     * 每当创建新的activity的时候，添加Activity到list中，方便统一退出
-     */
-    public void initAppExitConfig() {
-
-        activityLinkedList = new LinkedList<>();
-
-        registerActivityLifecycleCallbacks(new ActivityLifecycleCallbacks() {
-            @Override
-            public void onActivityCreated(Activity activity, Bundle savedInstanceState) {
-                activityLinkedList.add(activity);
-            }
-
-            @Override
-            public void onActivityStarted(Activity activity) {
-//                Log.d(TAG, "onActivityStarted: " + activity.getLocalClassName());
-                stateCount++;
-            }
-            @Override
-            public void onActivityResumed(Activity activity) {
-            }
-
-            @Override
-            public void onActivityPaused(Activity activity) {
-            }
-
-            @Override
-            public void onActivityStopped(Activity activity) {
-                stateCount--;
-            }
-
-            @Override
-            public void onActivitySaveInstanceState(Activity activity, Bundle outState) {
-
-            }
-            @Override
-            public void onActivityDestroyed(Activity activity) {
-                activityLinkedList.remove(activity);
-            }
-        });
+    @Override
+    public String getAppVersionName() {
+        return BuildConfig.VERSION_NAME;
     }
-    /**
-     * 退出所有app
-     */
-    public static void exit() {
-        for (Activity activity : activityLinkedList) {
-            activity.finish();
-        }
-        android.os.Process.killProcess(android.os.Process.myPid());
+
+    @Override
+    public String getAppPackageName() {
+        return getPackageName();
     }
+
+    @Override
+    public void setServerUrlAndInterfaceGroup() {
+        OkGoUtil.setDefualtServerUrl( "http://abroad.api.joner.aibabel.cn:7001");
+        OkGoUtil.setDefaultInterfaceGroup("/v1/coupon/");
+    }
+
+    @Override
+    public String setUmengKey() {
+        return "5c331054f1f556aa320007af";
+    }
+
+
 }

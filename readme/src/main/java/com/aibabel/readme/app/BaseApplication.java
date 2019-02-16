@@ -5,6 +5,8 @@ import android.app.Application;
 import android.os.Bundle;
 import android.util.Log;
 
+import com.aibabel.aidlaar.StatisticsManager;
+import com.aibabel.readme.BuildConfig;
 import com.aibabel.readme.utils.CommonUtils;
 import com.aibabel.readme.utils.DensityHelper;
 import com.umeng.analytics.MobclickAgent;
@@ -37,7 +39,7 @@ public class BaseApplication extends Application {
         UMConfigure.init(this, "5bc6a287b465f5e42a00036e", CommonUtils.getSN(), UMConfigure.DEVICE_TYPE_PHONE,
                 null);
         MobclickAgent.setScenarioType(this, MobclickAgent.EScenarioType.E_UM_NORMAL);
-
+        StatisticsManager.getInstance(this).setConfig(getPackageName(), BuildConfig.VERSION_NAME);
     }
     /**
      * 初始化布局适配  布局中使用pt做位单位

@@ -222,7 +222,7 @@
             android:layout_marginLeft="@dimen/text_size20"
             android:layout_marginTop="@dimen/px44"
             android:text="@string/title"
-            android:textColor="#fff"
+            android:textColor="#ffffff"
             android:textSize="@dimen/px40"
             android:textStyle="bold"
             />

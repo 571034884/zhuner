@@ -7,15 +7,15 @@
     <solid android:color="#99ffffff" />
     <!-- 设置边框宽度 -->
     <stroke
-        android:width="@dimen/px1"
+        android:width="@dimen/x1"
         android:color="#c3c3c3" />
 
     <!-- 四个角的弧度 -->
     <corners
-        android:bottomLeftRadius="@dimen/px40"
-        android:bottomRightRadius="@dimen/px40"
-        android:topLeftRadius="@dimen/px40"
-        android:topRightRadius="@dimen/px40" />
+        android:bottomLeftRadius="@dimen/y40"
+        android:bottomRightRadius="@dimen/y40"
+        android:topLeftRadius="@dimen/y40"
+        android:topRightRadius="@dimen/y40" />
     <!-- padding：TextView里面的文字与TextView边界的间隔 -->
 
 

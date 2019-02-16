@@ -10,8 +10,8 @@
 
     <!-- 四个角的弧度 -->
     <corners
-        android:bottomLeftRadius="500px"
-        android:bottomRightRadius="500px"
-        android:topLeftRadius="500px"
-        android:topRightRadius="500px" />
+        android:bottomLeftRadius="@dimen/y500"
+        android:bottomRightRadius="@dimen/y500"
+        android:topLeftRadius="@dimen/y500"
+        android:topRightRadius="@dimen/y500" />
 </shape>

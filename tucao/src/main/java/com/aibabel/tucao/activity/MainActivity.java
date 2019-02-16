@@ -29,6 +29,7 @@ import android.widget.RadioGroup;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.aibabel.tucao.BuildConfig;
 import com.aibabel.tucao.R;
 import com.aibabel.tucao.adapter.CommomRecyclerAdapter;
 import com.aibabel.tucao.adapter.CommonRecyclerViewHolder;
@@ -41,11 +42,17 @@ import com.aibabel.tucao.manager.MediaManager;
 import com.aibabel.tucao.okgo.BaseBean;
 import com.aibabel.tucao.okgo.BaseCallback;
 import com.aibabel.tucao.okgo.OkGoUtil;
+import com.aibabel.tucao.utils.CommonUtils;
+import com.aibabel.tucao.utils.Constant;
 import com.aibabel.tucao.utils.FileUtils;
 import com.aibabel.tucao.utils.MyScrollview;
 import com.aibabel.tucao.utils.NetUtil;
 import com.aibabel.tucao.utils.ToastUtil;
+import com.aibabel.tucao.utils.WeizhiUtil;
+import com.lzy.okgo.OkGo;
+import com.lzy.okgo.callback.StringCallback;
 import com.lzy.okgo.model.Response;
+import com.taobao.sophix.SophixManager;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -191,7 +198,42 @@ public class MainActivity extends BaseActivity implements BaseCallback, AudioRec
         initListener();
 //        initEvent();
         mEmTvBtn.setOnLongListener(this);
+        rexiufu();
 
+
+    }
+    public void rexiufu() {
+        String latitude = WeizhiUtil.getInfo(this, WeizhiUtil.CONTENT_URI_WY, "latitude");
+        String longitude = WeizhiUtil.getInfo(this, WeizhiUtil.CONTENT_URI_WY, "longitude");
+        String url = Constans.HOST_XW + "/v1/jonersystem/GetAppNew?sn=" + CommonUtils.getSN() + "&no=" + CommonUtils.getRandom() + "&sl=" + CommonUtils.getLocalLanguage() + "&av=" + BuildConfig.VERSION_NAME + "&app=" + getPackageName() + "&sv=" + Build.DISPLAY + "&lat=" + latitude + "&lng=" + longitude;
+
+        OkGo.<String>get(url)
+                .tag(this)
+                .execute(new StringCallback() {
+                    @Override
+                    public void onSuccess(Response<String> response) {
+                        Log.e("热修复", response.body().toString());
+                        if (!TextUtils.isEmpty(response.body().toString())) {
+                            try {
+                                JSONObject jsonObject = new JSONObject(response.body().toString());
+                                boolean isNew = (Boolean) ((JSONObject) jsonObject.get("data")).get("isNew");
+                                if (isNew) {
+                                    SophixManager.getInstance().queryAndLoadNewPatch();
+                                    Log.e("success:", "=================" + isNew + "=================");
+                                } else {
+                                    Log.e("failed:", "=================" + isNew + "=================");
+                                }
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                                Log.e("Exception:", "==========" + e.getMessage() + "===========");
+                            }
+                        }
+                    }
+
+                    @Override
+                    public void onError(Response<String> response) {
+                    }
+                });
     }
 
     private void initData1() {

@@ -8,9 +8,10 @@ import android.view.View;
 import android.view.WindowManager;
 
 import com.aibabel.readme.app.BaseApplication;
+import com.aibabel.statisticalserver.SimpleStatisticsActivity;
 import com.umeng.analytics.MobclickAgent;
 
-public class BaseActivity extends AppCompatActivity {
+public class BaseActivity extends SimpleStatisticsActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);// 设置全屏

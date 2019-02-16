@@ -1,7 +1,9 @@
 package com.aibabel.surfinternet.js;
 
+import android.content.ContentValues;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Message;
@@ -17,9 +19,11 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.aibabel.aidlaar.StatisticsManager;
 import com.aibabel.surfinternet.MainActivity;
 import com.aibabel.surfinternet.R;
 import com.aibabel.surfinternet.activity.BaseActivity;
+import com.aibabel.surfinternet.activity.DetailsActivity;
 import com.aibabel.surfinternet.bean.Constans;
 import com.aibabel.surfinternet.utils.NetUtil;
 import com.bumptech.glide.Glide;
@@ -28,6 +32,8 @@ import com.umeng.analytics.MobclickAgent;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -56,12 +62,10 @@ public class CustomWebViewActivity extends BaseActivity implements OnJSClickList
     @BindView(R.id.tv_payType)
     TextView tvPayType;
     private AdvancedWebView webView;
-    private boolean flag = false;
     private String time = "0";
+    Uri uri = Uri.parse("content://icc/adn");
+    private String skuid;
 
-
-    //    private String url = "https://wx.aibabel.com:3002/test/index.html";
-//    private String url = "/common/flow/api/createOrder";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -71,11 +75,7 @@ public class CustomWebViewActivity extends BaseActivity implements OnJSClickList
 
             initView();
             initData();
-
-
         } else {
-//            ToastUtil.showShort(CustomWebViewActivity.this,"当前无网络，请联网后操作");
-//            rlWeb.setBackgroundResource(R.mipmap.net1);
             rl.setVisibility(View.GONE);
             llIsnet.setVisibility(View.VISIBLE);
         }
@@ -84,7 +84,6 @@ public class CustomWebViewActivity extends BaseActivity implements OnJSClickList
             @Override
             public void onClick(View v) {
                 finish();
-//                startActivity(new Intent(CustomWebViewActivity.this, DetailsActivity.class));
             }
         });
     }
@@ -98,25 +97,20 @@ public class CustomWebViewActivity extends BaseActivity implements OnJSClickList
             @Override
             public void onPageStarted(WebView view, String url, Bitmap favicon) {
                 super.onPageStarted(view, url, favicon);
-//                flag = true ;
             }
 
             @Override
             public void onPageFinished(WebView view, String url) {
                 super.onPageFinished(view, url);
-//                if (flag)
-//                webView.getSettings().setBlockNetworkImage(false);
             }
 
             @Override
             public void onReceivedError(WebView view, int errorCode, String description, String failingUrl) {
-//                Toast.makeText(CustomWebViewActivity.this, "网络不可用", Toast.LENGTH_SHORT).show();
                 super.onReceivedError(view, errorCode, description, failingUrl);
             }
 
             @Override
             public boolean shouldOverrideUrlLoading(WebView view, String url) {
-//                view.loadUrl(url);
                 return true;
             }
         });
@@ -124,11 +118,6 @@ public class CustomWebViewActivity extends BaseActivity implements OnJSClickList
 
             @Override
             public boolean onCreateWindow(WebView view, boolean isDialog, boolean isUserGesture, Message resultMsg) {
-//
-//                AdvancedWebView newWebView = new AdvancedWebView(CustomWebViewActivity.this);
-//                WebView.WebViewTransport transport = (WebView.WebViewTransport) resultMsg.obj;
-//                transport.setWebView(newWebView);
-//                resultMsg.sendToTarget();
                 return true;
             }
         });
@@ -145,17 +134,17 @@ public class CustomWebViewActivity extends BaseActivity implements OnJSClickList
 
     public void initData() {
 
-
-//        webView.loadUrl("https://www.baidu.com");
-//        webView.loadUrl("https://wx.aibabel.com:3002/test/index.html" + "?url=" + url + "&subOrderNo=" + subOrderNo + "&payType=" + payType);
-
-
         Intent intent = getIntent();
         String url = intent.getStringExtra("url");
         Log.e("url", url);
         String subOrderNo = intent.getStringExtra("subOrderNo");
         Log.e("subOrderNo_zfb", subOrderNo);
         String payType = intent.getStringExtra("payType");
+        skuid = intent.getStringExtra("SKUID");
+        Map map1 = new HashMap();
+        map1.put("SKUID", skuid);
+        StatisticsManager.getInstance(CustomWebViewActivity.this).addEventAidl("进入页面", map1);
+
         switch (payType){
             case "1":
                 tvPayType.setText(getResources().getString(R.string.weixin));
@@ -169,11 +158,6 @@ public class CustomWebViewActivity extends BaseActivity implements OnJSClickList
 
 
         webView.loadUrl(Constans.HOST_XS + "/test/index.html" + "?url=" + url + "&subOrderNo=" + subOrderNo + "&payType=" + payType);
-//        webView.loadUrl("https://wx.aibabel.com:3002/test/index.html" + "?url=" + url + "&subOrderNo=" + subOrderNo + "&payType=" + payType);
-
-
-//        webView.loadUrl("https://wx.aibabel.com:3002/test/index.html" + "?url=" + url + "&subOrderNo=" + subOrderNo);
-//        webView.loadUrl("http://192.168.5.199:3001/test/index.html" + "?url=" + url + "&subOrderNo=" + subOrderNo);
         rlWeb.setVisibility(View.VISIBLE);
 
         webView.setWebChromeClient(new WebChromeClient() {
@@ -283,6 +267,14 @@ public class CustomWebViewActivity extends BaseActivity implements OnJSClickList
                 rl.setVisibility(View.GONE);
                 tvError.setText(getResources().getString(R.string.success));
                 llIsnet.setVisibility(View.VISIBLE);
+
+                Map map1 = new HashMap();
+                map1.put("SKUID", skuid);
+                StatisticsManager.getInstance(CustomWebViewActivity.this).addEventAidl("支付成功", map1);
+
+
+//                insertContact("softsim","00001");
+
             }
         });
 
@@ -296,6 +288,14 @@ public class CustomWebViewActivity extends BaseActivity implements OnJSClickList
         }, 3000);
     }
 
+    public void insertContact(String name, String phoneNumber) {
+        ContentValues values = new ContentValues();
+        values.put("tag", name);
+        values.put("number", phoneNumber);
+        Uri insertInfo = getContentResolver().insert(uri, values);
+        Log.e("1023",">>>>>>" + "new sim contact uri, "
+                + insertInfo.toString());
+    }
 
     @Override
     public void onJSClick(final JsClickInfo jsInfo) {

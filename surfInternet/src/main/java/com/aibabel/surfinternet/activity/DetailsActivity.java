@@ -25,6 +25,7 @@ import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.aibabel.aidlaar.StatisticsManager;
 import com.aibabel.surfinternet.R;
 import com.aibabel.surfinternet.bean.Constans;
 import com.aibabel.surfinternet.bean.DetailsBean;
@@ -128,25 +129,15 @@ public class DetailsActivity extends BaseActivity implements BaseCallback, View.
     private String name;
     private String skuid;
     private String desc;
-    private String settlementPrice1;
     private String operator;
     private PaymentBean paymentBean;
     private List<PriceBeans.DataBean.PriceBean> price1;
     private Double price11;
     private PopupWindow popupWindow;
-    private View popu;
-    private EditText mEditText;
-    private Button mBut_cancle;
-    private Button mbut_Submit;
-    private String mEditText_str;
-    private String tvNuber_num;
     private String days;
     //copys 的份数
     private ArrayList<String> copys_num = new ArrayList<>();
     private boolean is_onclick = true;
-    private boolean isMtkDoubleSim;
-    private String iccid;
-    private boolean isFind = false;
     private WindowManager.LayoutParams params;
     private TextView tvAlipay;
     private TextView tvPayPal;
@@ -165,83 +156,39 @@ public class DetailsActivity extends BaseActivity implements BaseCallback, View.
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_details);
         ButterKnife.bind(this);
-        initMtkDoubleSim();
-//        iccid = "89860012017300216438";
         params = getWindow().getAttributes();
-
-        Map<String, String> map = new HashMap<>();
-
         if (NetUtil.isNetworkAvailable(DetailsActivity.this)) {
             initData();
-
-//            Glide.with(DetailsActivity.this).load(R.mipmap.success2).into(ivBack);
-//            initPopupwindow();
         } else {
             rl.setVisibility(View.VISIBLE);
             clDetails.setVisibility(View.GONE);
             rlNoNet.setVisibility(View.VISIBLE);
         }
-
-
-       /* rl.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (NetUtil.isNetworkAvailable(DetailsActivity.this)) {
-                    initData();
-                }
-            }
-        });*/
         initShopping();
         initonClick();
         btSubmission.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                Map map1 = new HashMap();
+                map1.put("商品名称", name);
+                StatisticsManager.getInstance(DetailsActivity.this).addEventAidl("购买", map1);
                 popup();
-
-             /*   if (NetUtil.isNetworkAvailable(DetailsActivity.this)) {
-                    String price_num = tvPriceNum3.getText().toString();
-                    initPayment(price_num);
-                } else {
-
-                    rl.setVisibility(View.VISIBLE);
-                    clDetails.setVisibility(View.GONE);
-
-                    rlNoNet.setVisibility(View.VISIBLE);
-//                    rl.setBackgroundResource(R.mipmap.net1);
-                }*/
-
             }
-
-
         });
 
 
         ivBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                startActivity(new Intent(DetailsActivity.this, TrandActivity.class));
                 finish();
             }
         });
         ivBack2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                startActivity(new Intent(DetailsActivity.this, TrandActivity.class));
                 finish();
             }
         });
-
-//        tvNumber.setOnClickListener(new View.OnClickListener() {
-//            @RequiresApi(api = Build.VERSION_CODES.N)
-//            @Override
-//            public void onClick(View v) {
-//                tvNuber_num = tvNumber.getText().toString();
-//
-////                popupWindowShow();
-//
-//            }
-//        });
     }
 
     /**
@@ -278,20 +225,7 @@ public class DetailsActivity extends BaseActivity implements BaseCallback, View.
         LinAlipay = pop.findViewById(R.id.Lin_Alipay);
         LinPayPal = pop.findViewById(R.id.Lin_PayPal);
 
-        if (TextUtils.equals(Constans.PHONE_MOBILE_NUMBER,"PH")&&TextUtils.equals(Constans.COUNTRY_VERSION_NUMBER,"5")&&TextUtils.equals(Constans.PRO_VERSION_NUMBER,"S")){
-            LinPayPal.setVisibility(View.VISIBLE);
-            LinWeChat.setVisibility(View.GONE);
-            LinAlipay.setVisibility(View.GONE);
-        }else {
-            LinPayPal.setVisibility(View.GONE);
-            LinWeChat.setVisibility(View.VISIBLE);
-            LinAlipay.setVisibility(View.VISIBLE);
-        }
-
-
-
-
-     /*   if (TextUtils.equals(Constans.COUNTRY_VERSION_NUMBER, "5")) {
+        if (TextUtils.equals(Constans.PHONE_MOBILE_NUMBER, "PH") && TextUtils.equals(Constans.COUNTRY_VERSION_NUMBER, "5") && TextUtils.equals(Constans.PRO_VERSION_NUMBER, "S")) {
             LinPayPal.setVisibility(View.VISIBLE);
             LinWeChat.setVisibility(View.GONE);
             LinAlipay.setVisibility(View.GONE);
@@ -299,7 +233,8 @@ public class DetailsActivity extends BaseActivity implements BaseCallback, View.
             LinPayPal.setVisibility(View.GONE);
             LinWeChat.setVisibility(View.VISIBLE);
             LinAlipay.setVisibility(View.VISIBLE);
-        }*/
+        }
+
 
         tvAlipay = pop.findViewById(R.id.tv_Alipay);
         tvPayPal = pop.findViewById(R.id.tv_PayPal);
@@ -312,6 +247,10 @@ public class DetailsActivity extends BaseActivity implements BaseCallback, View.
         popupWindow.setBackgroundDrawable(new BitmapDrawable(getResources(), (Bitmap) null));
         popupWindow.setAnimationStyle(R.style.anim_menu_bottombar);
         mIsShowing = false;
+
+        Map map1 = new HashMap();
+        map1.put("SKUID", skuid);
+        StatisticsManager.getInstance(DetailsActivity.this).addEventAidl("进入页面", map1);
 
         btnCancel.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -373,266 +312,59 @@ public class DetailsActivity extends BaseActivity implements BaseCallback, View.
     }
 
     private void initLanguage() {
-        //获取当前手机的语言
-        country = Locale.getDefault().getCountry();
-        language = getResources().getConfiguration().locale.getLanguage();
-        //读取语言选择的 json 文件
-        Log.e("lan_country", country + "========lan_language----------" + language + "--------");
-
-        if (language.equals("zh")) {
-            if (country.equals("CN")) {
-                Constans.SETCOUNTRYlANGUAGE = "Chj";
-                tvPriceNum6.setVisibility(View.GONE);
-                tvPriceNum4.setVisibility(View.VISIBLE);
-
-                if (TextUtils.equals(Constans.PHONE_MOBILE_NUMBER,"PH")&&TextUtils.equals(Constans.COUNTRY_VERSION_NUMBER,"5")&&TextUtils.equals(Constans.PRO_VERSION_NUMBER,"S")){
-                    tvPriceNum4.setText(getResources().getString(R.string.dollar));
-                }else {
-                    tvPriceNum4.setText(getResources().getString(R.string.rmb));
-                }
-
-
-                /*if (TextUtils.equals(Constans.COUNTRY_VERSION_NUMBER, "5")) {
-                    tvPriceNum4.setText(getResources().getString(R.string.dollar));
-                }else {
-                    tvPriceNum4.setText(getResources().getString(R.string.rmb));
-
-                }*/
-
-            } else if (country.equals("TW")) {
-                Constans.SETCOUNTRYlANGUAGE = "Chf";
-                tvPriceNum6.setVisibility(View.GONE);
-                tvPriceNum4.setVisibility(View.VISIBLE);
-                if (TextUtils.equals(Constans.PHONE_MOBILE_NUMBER,"PH")&&TextUtils.equals(Constans.COUNTRY_VERSION_NUMBER,"5")&&TextUtils.equals(Constans.PRO_VERSION_NUMBER,"S")){
-                    tvPriceNum4.setText(getResources().getString(R.string.dollar));
-                }else {
-                    tvPriceNum4.setText(getResources().getString(R.string.rmb));
-                }
-               /* if (TextUtils.equals(Constans.COUNTRY_VERSION_NUMBER, "5")) {
-                    tvPriceNum4.setText(getResources().getString(R.string.dollar));
-                }else {
-                    tvPriceNum4.setText(getResources().getString(R.string.rmb));
-
-                }*/
+        if (Constans.PHONE_LANGUAGE.equals("zh")) {
+            tvPriceNum6.setVisibility(View.GONE);
+            tvPriceNum4.setVisibility(View.VISIBLE);
+            if (TextUtils.equals(Constans.PHONE_MOBILE_NUMBER, "PH") && TextUtils.equals(Constans.COUNTRY_VERSION_NUMBER, "5") && TextUtils.equals(Constans.PRO_VERSION_NUMBER, "S")) {
+                tvPriceNum4.setText(getResources().getString(R.string.dollar));
             } else {
-                Constans.SETCOUNTRYlANGUAGE = "Chj";
-                tvPriceNum6.setVisibility(View.GONE);
-                tvPriceNum4.setVisibility(View.VISIBLE);
-
-                if (TextUtils.equals(Constans.PHONE_MOBILE_NUMBER,"PH")&&TextUtils.equals(Constans.COUNTRY_VERSION_NUMBER,"5")&&TextUtils.equals(Constans.PRO_VERSION_NUMBER,"S")){
-                    tvPriceNum4.setText(getResources().getString(R.string.dollar));
-                }else {
-                    tvPriceNum4.setText(getResources().getString(R.string.rmb));
-                }
-               /* if (TextUtils.equals(Constans.COUNTRY_VERSION_NUMBER, "5")) {
-                    tvPriceNum4.setText(getResources().getString(R.string.dollar));
-                }else {
-                    tvPriceNum4.setText(getResources().getString(R.string.rmb));
-
-                }*/
+                tvPriceNum4.setText(getResources().getString(R.string.rmb));
             }
-        } else if (language.equals("en")) {
-            Constans.SETCOUNTRYlANGUAGE = "En";
+        } else if (Constans.PHONE_LANGUAGE.equals("en") || Constans.PHONE_LANGUAGE.equals("ja") || Constans.PHONE_LANGUAGE.equals("ko")) {
             tvPriceNum6.setVisibility(View.VISIBLE);
             tvPriceNum4.setVisibility(View.GONE);
-
-            if (TextUtils.equals(Constans.PHONE_MOBILE_NUMBER,"PH")&&TextUtils.equals(Constans.COUNTRY_VERSION_NUMBER,"5")&&TextUtils.equals(Constans.PRO_VERSION_NUMBER,"S")){
+            if (TextUtils.equals(Constans.PHONE_MOBILE_NUMBER, "PH") && TextUtils.equals(Constans.COUNTRY_VERSION_NUMBER, "5") && TextUtils.equals(Constans.PRO_VERSION_NUMBER, "S")) {
                 tvPriceNum6.setText(getResources().getString(R.string.dollar));
-            }else {
+            } else {
                 tvPriceNum6.setText(getResources().getString(R.string.rmb));
             }
-           /* if (TextUtils.equals(Constans.COUNTRY_VERSION_NUMBER, "5")) {
-                tvPriceNum6.setText(getResources().getString(R.string.dollar));
-            }else {
-                tvPriceNum6.setText(getResources().getString(R.string.rmb));
-
-            }*/
-        } else if (language.equals("ja")) {
-            Constans.SETCOUNTRYlANGUAGE = "Jpa";
-            tvPriceNum6.setVisibility(View.VISIBLE);
-            tvPriceNum4.setVisibility(View.GONE);
-
-            if (TextUtils.equals(Constans.PHONE_MOBILE_NUMBER,"PH")&&TextUtils.equals(Constans.COUNTRY_VERSION_NUMBER,"5")&&TextUtils.equals(Constans.PRO_VERSION_NUMBER,"S")){
-                tvPriceNum6.setText(getResources().getString(R.string.dollar));
-            }else {
-                tvPriceNum6.setText(getResources().getString(R.string.rmb));
-            }
-           /* if (TextUtils.equals(Constans.COUNTRY_VERSION_NUMBER, "5")) {
-                tvPriceNum6.setText(getResources().getString(R.string.dollar));
-            }else {
-                tvPriceNum6.setText(getResources().getString(R.string.rmb));
-
-            }*/
-        } else if (language.equals("ko")) {
-            Constans.SETCOUNTRYlANGUAGE = "Kor";
-            tvPriceNum6.setVisibility(View.VISIBLE);
-            tvPriceNum4.setVisibility(View.GONE);
-
-            if (TextUtils.equals(Constans.PHONE_MOBILE_NUMBER,"PH")&&TextUtils.equals(Constans.COUNTRY_VERSION_NUMBER,"5")&&TextUtils.equals(Constans.PRO_VERSION_NUMBER,"S")){
-                tvPriceNum6.setText(getResources().getString(R.string.dollar));
-            }else {
-                tvPriceNum6.setText(getResources().getString(R.string.rmb));
-            }
-            /*if (TextUtils.equals(Constans.COUNTRY_VERSION_NUMBER, "5")) {
-                tvPriceNum6.setText(getResources().getString(R.string.dollar));
-            }else {
-                tvPriceNum6.setText(getResources().getString(R.string.rmb));
-            }*/
         } else {
             Constans.SETCOUNTRYlANGUAGE = "Chj";
             tvPriceNum6.setVisibility(View.GONE);
             tvPriceNum4.setVisibility(View.VISIBLE);
-            if (TextUtils.equals(Constans.PHONE_MOBILE_NUMBER,"PH")&&TextUtils.equals(Constans.COUNTRY_VERSION_NUMBER,"5")&&TextUtils.equals(Constans.PRO_VERSION_NUMBER,"S")){
+            if (TextUtils.equals(Constans.PHONE_MOBILE_NUMBER, "PH") && TextUtils.equals(Constans.COUNTRY_VERSION_NUMBER, "5") && TextUtils.equals(Constans.PRO_VERSION_NUMBER, "S")) {
                 tvPriceNum4.setText(getResources().getString(R.string.dollar));
-            }else {
+            } else {
                 tvPriceNum4.setText(getResources().getString(R.string.rmb));
             }
-           /* if (TextUtils.equals(Constans.COUNTRY_VERSION_NUMBER, "5")) {
-                tvPriceNum4.setText(getResources().getString(R.string.dollar));
-            }else {
-                tvPriceNum4.setText(getResources().getString(R.string.rmb));
-            }*/
         }
-
-
-    }
-
-
-    /*  *//**
-     * 初始化修改我方语言的popupwindow
-     *//*
-    private void initPopupwindow() {
-        popu = View.inflate(DetailsActivity.this, R.layout.text_popu, null);
-        mEditText = popu.findViewById(R.id.mEditText);
-        mBut_cancle = popu.findViewById(R.id.mbut_Cancle);
-        mbut_Submit = popu.findViewById(R.id.mbut_Submit);
-
-
-    }*/
-
-
-    /**
-     * 底部弹出popupWindow
-     *//*
-    private void popupWindowShow() {
-        popupWindow = new PopupWindow(popu, ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-        popupWindow.setTouchable(true);
-        popupWindow.setFocusable(true);
-        popupWindow.setBackgroundDrawable(new BitmapDrawable());
-        popupWindow.showAtLocation(clDetails, Gravity.BOTTOM, 0, 0);
-
-        mEditText.setText(tvNuber_num);
-        mEditText.setSelection(tvNuber_num.length());
-        mbut_Submit.setOnClickListener(new View.OnClickListener() {
-            @RequiresApi(api = Build.VERSION_CODES.N)
-            @Override
-            public void onClick(View v) {
-
-                mEditText_str = mEditText.getText().toString();
-
-                Integer integer = Integer.valueOf(mEditText_str);
-                if (integer > 30) {
-                    ToastUtil.showShort(DetailsActivity.this, getResources().getString(R.string.day_num1));
-                } else if (integer == 0) {
-//                    ToastUtil.showShort(DetailsActivity.this, "该产品下单天数最小为1天，请修改");
-                    ToastUtil.showShort(DetailsActivity.this, getResources().getString(R.string.day_num2));
-                } else {
-
-                    tvNumber.setText(integer + "");
-                    tvPriceNum1.setText(integer + " ");
-//                    int pricenum = Math.multiplyExact(integer, price11);
-                    Double pricenum = integer * price11;
-                    tvPriceNum3.setText(pricenum + "");
-                    popupWindow.dismiss();
-                }
-
-            }
-        });
-        mBut_cancle.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                tvNumber.setText(tvNuber_num);
-                mEditText.setText(tvNuber_num);
-                popupWindow.dismiss();
-            }
-        });
-    }*/
-    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP_MR1)
-    private void initMtkDoubleSim() {
-
-
-        try {
-            List<SubscriptionInfo> list = SubscriptionManager.from(this).getActiveSubscriptionInfoList();
-            for (int i = 0; i < list.size(); i++) {
-                if (list.get(i).getSimSlotIndex() == 1) {
-                    Log.e("iccid123", list.get(i).getIccId());
-                    iccid = list.get(i).getIccId();
-                    isFind = true;
-                    return;
-                }
-            }
-//                if (!isFind) {
-//                    ivClose.setVisibility(View.GONE);
-//                    ll.setVisibility(View.VISIBLE);
-//                    llIsnet.setVisibility(View.VISIBLE);
-//                    ivError.setImageResource(R.mipmap.iccid);
-//                    tvError.setText(getResources().getString(R.string.iccid));
-//
-//                }
-//            if (list.get(i).getSimSlotIndex()==1){
-//                Log.e("iccid123",list.get(i).getIccId());
-//                iccid = list.get(i).getIccId();
-//                if (null == iccid) {
-//                    ivClose.setVisibility(View.GONE);
-//                    ll.setVisibility(View.VISIBLE);
-//                    llIsnet.setVisibility(View.VISIBLE);
-//                    ivError.setImageResource(R.mipmap.iccid);
-//                    tvError.setText(getResources().getString(R.string.iccid));
-//                }
-//            }else {
-//                iccid = list.get(i).getIccId();
-//            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
     }
 
     private void initPayment(String payType) {
-//        iccid = "89860012017300216438";
-        Log.e("iccid_xiadan", iccid);
+        Map map1 = new HashMap();
+        map1.put("SKUID", skuid);
+        StatisticsManager.getInstance(DetailsActivity.this).addEventAidl("填写信息", map1);
 
-        if (iccid == null) {
-            initMtkDoubleSim();
-//            iccid = "89860012017300216438";
-        }
 
         Map<String, String> map = new HashMap<>();
-//        iccid="89860012017300216438";
-//        map.put("iccId", "89860012017300216438");   //卡号
-//        map.put("iccId", "123123");
-        map.put("iccId", iccid);
+        map.put("iccId", Constans.PHONE_ICCID);
         map.put("skuId", skuid);
         map.put("describe", desc);
         map.put("copies", tvNumber.getText().toString());
         String s1 = tvPriceNum3.getText().toString();
         String s = bigDecimalDo(s1, 100);
         String s2 = s.substring(0, s.length() - 3);
-
         map.put("spend", s2);
 //        map.put("spend", "1");
         map.put("skuName", operator);
         map.put("days", days);
-
         map.put("payType", payType);
-
-        map.put("language",Constans.SETCOUNTRYlANGUAGE);
-
-
+        map.put("language", Constans.SETCOUNTRYlANGUAGE);
+//        map.put("cardType","lksc");
         OkGoUtil.<PaymentBean>post(DetailsActivity.this, Constans.METHOD_CHUANGJIANDINGDAN, new JSONObject(map), PaymentBean.class, this);
-        /*for (Map.Entry<String, String> entry : map.entrySet()) {
-            Log.e("map", entry.getKey() + "====" + map.get(entry.getKey()));
-        }*/
+        for (Map.Entry<String, String> entry : map.entrySet()) {
+            Log.e("map_chuangjiandingdan", entry.getKey() + "====" + map.get(entry.getKey()));
+        }
 
     }
 
@@ -653,26 +385,27 @@ public class DetailsActivity extends BaseActivity implements BaseCallback, View.
     private void initShopping() {
         Map<String, String> map = new HashMap<>();
 
-        if (TextUtils.equals(Constans.PHONE_MOBILE_NUMBER,"PH")&&TextUtils.equals(Constans.COUNTRY_VERSION_NUMBER,"5")&&TextUtils.equals(Constans.PRO_VERSION_NUMBER,"S")){
+        if (TextUtils.equals(Constans.PHONE_MOBILE_NUMBER, "PH") && TextUtils.equals(Constans.COUNTRY_VERSION_NUMBER, "5") && TextUtils.equals(Constans.PRO_VERSION_NUMBER, "S")) {
             map.put("currencyType", "Dollar");
             map.put("priceFor", "forSell");
-        }else if (TextUtils.equals(Constans.PRO_VERSION_NUMBER,"S")){
+        } else if (TextUtils.equals(Constans.PRO_VERSION_NUMBER, "S")) {
             map.put("priceFor", "forSell");
-        }else {
+        } else {
             map.put("priceFor", "forLease");
         }
         map.put("sysLanguage", Constans.SETCOUNTRYlANGUAGE);
-
         map.put("hasBaseDays", "true");
-
+        map.put("iccid", Constans.PHONE_ICCID);
+//        map.put("cardType", "lksc");
         OkGoUtil.<PriceBeans>get(DetailsActivity.this, Constans.METHOD_GUOJIALIEBIAOXIANQINGYEPIRCE, map, PriceBeans.class, this);
-
+        for (Map.Entry<String, String> entry : map.entrySet()) {
+            Log.e("map_gouwujiaqian", entry.getKey() + "====" + map.get(entry.getKey()));
+        }
     }
 
     private void initonClick() {
         btReduce.setOnClickListener(this);
         btPlus.setOnClickListener(this);
-//        tvNumber.setOnClickListener(this);
     }
 
     private void initData() {
@@ -682,12 +415,18 @@ public class DetailsActivity extends BaseActivity implements BaseCallback, View.
         price = intent.getStringExtra("price");
 
         price11 = Double.valueOf(price);
-//        price11 = Integer.parseInt(price);
         name = intent.getStringExtra("name");
         days = intent.getStringExtra("days");
+
         Map<String, String> map = new HashMap<>();
         map.put("sysLanguage", Constans.SETCOUNTRYlANGUAGE);
+        map.put("iccid", Constans.PHONE_ICCID);
+//        map.put("cardType", "lksc");
         OkGoUtil.<DetailsBean>get(DetailsActivity.this, Constans.METHOD_GUOJIALIEBIAOXIANQINGYE, map, DetailsBean.class, this);
+
+        for (Map.Entry<String, String> entry : map.entrySet()) {
+            Log.e("map_kadingdanxiangqing", entry.getKey() + "====" + map.get(entry.getKey()));
+        }
 
     }
 
@@ -716,24 +455,18 @@ public class DetailsActivity extends BaseActivity implements BaseCallback, View.
                         } catch (Exception e) {
                             e.printStackTrace();
                         }
-
-                        if (TextUtils.equals(Constans.PHONE_MOBILE_NUMBER,"PH")&&TextUtils.equals(Constans.COUNTRY_VERSION_NUMBER,"5")&&TextUtils.equals(Constans.PRO_VERSION_NUMBER,"S")){
+                        if (TextUtils.equals(Constans.PHONE_MOBILE_NUMBER, "PH") && TextUtils.equals(Constans.COUNTRY_VERSION_NUMBER, "5") && TextUtils.equals(Constans.PRO_VERSION_NUMBER, "S")) {
                             tvPriceDay.setText("$ " + price + "/" + getResources().getString(R.string.day));
-                        }else {
+                        } else {
                             tvPriceDay.setText("¥ " + price + "/" + getResources().getString(R.string.day));
                         }
-
-
-
                         String chaka = desc.replaceAll("插卡", "");
-
                         tvRoaming.setText(chaka);
                         tvOperatorName.setText(operator);
                         tvPriceNum3.setText(price);
                         skuid = detalist.get(i).getSkuId();
                         clDetails.setVisibility(View.VISIBLE);
                         rl.setVisibility(View.VISIBLE);
-
                     }
 
                 }
@@ -749,7 +482,6 @@ public class DetailsActivity extends BaseActivity implements BaseCallback, View.
                         for (int j = 0; j < copyslist.size(); j++) {
                             copys_num.add(copyslist.get(j).getCopies());
                         }
-
                         tvNumber.setText(copys_num.get(0));
                         tvPriceNum1.setText(copys_num.get(0));
                         tvPriceNum3.setText(bigDecimalDo(copys_num.get(0), price11));
@@ -772,30 +504,33 @@ public class DetailsActivity extends BaseActivity implements BaseCallback, View.
                 String time = tvNumber.getText().toString();
 
                 //1 微信  2 支付宝 3 paypal
-                switch (payType) {
-                    case "1":
-                        intent = new Intent(DetailsActivity.this, CustomWebViewActivity.class);
-                        intent.putExtra("url", url);
-                        intent.putExtra("subOrderNo", subOrderNo);
-                        intent.putExtra("time", time);
-                        intent.putExtra("payType", payType);
-                        break;
-                    case "2":
-                        intent = new Intent(DetailsActivity.this, CustomWebViewActivity.class);
-                        intent.putExtra("url", url);
-                        intent.putExtra("subOrderNo", subOrderNo);
-                        intent.putExtra("time", time);
-                        intent.putExtra("payType", payType);
-                        break;
-                    case "3":
-                        intent = new Intent(DetailsActivity.this, PayPalActivity.class);
-                        intent.putExtra("url", url);
-                        intent.putExtra("subOrderNo", subOrderNo);
-                        intent.putExtra("time", time);
-                        intent.putExtra("payType", payType);
-                        break;
-                }
+                if (!TextUtils.equals(payType, "3")) {
 
+                    Map map1 = new HashMap();
+                    map1.put("SKUID", skuid);
+                    map1.put("填写是否通过", "true");
+                    if (TextUtils.equals(payType, "2")) {
+                        map1.put("支付方式", "支付宝");
+                    } else {
+                        map1.put("支付方式", "微信");
+                    }
+
+                    StatisticsManager.getInstance(DetailsActivity.this).addEventAidl("支付", map1);
+                    intent = new Intent(DetailsActivity.this, CustomWebViewActivity.class);
+                } else {
+                    Map map1 = new HashMap();
+                    map1.put("SKUID", skuid);
+                    map1.put("填写是否通过", "true");
+                    map1.put("支付方式", "paypal");
+                    StatisticsManager.getInstance(DetailsActivity.this).addEventAidl("支付", map1);
+
+                    intent = new Intent(DetailsActivity.this, PayPalActivity.class);
+                }
+                intent.putExtra("url", url);
+                intent.putExtra("subOrderNo", subOrderNo);
+                intent.putExtra("time", time);
+                intent.putExtra("payType", payType);
+                intent.putExtra("SKUID", skuid);
                 if (is_onclick) {
                     onClickable(btSubmission, is_onclick);
                     startActivity(intent);

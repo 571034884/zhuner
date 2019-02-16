@@ -16,6 +16,8 @@ import com.lzy.okgo.request.PostRequest;
 
 import org.json.JSONObject;
 
+import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -66,6 +68,8 @@ public class OkGoUtil {
 //                response.getException()
 
                 mCallback.onError(method, response);
+                Log.e("onError",response.message());
+
             }
         });
 
@@ -74,6 +78,14 @@ public class OkGoUtil {
     public static <T> void post(final Context context, final String method, JSONObject json, final Class<PaymentBean> cls, final BaseCallback mCallback) {
 
         PostRequest<String> postRequest = OkGo.<String>post(Constans.HOST_XS + Constans.METHOD_GROUP_XS + method).tag(method);
+//          postRequest.get
+
+
+
+        Log.e("posturl===============",postRequest.getUrl());
+        Log.e("postjson============",json.toString());
+
+
 
         postRequest.upJson(json);
 

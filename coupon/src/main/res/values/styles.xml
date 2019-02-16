@@ -14,4 +14,33 @@
     <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" >
         <item name="elevation">@dimen/px0</item>
     </style>
+    <!--dialogprogress-->
+    <style name="loading_dialog" parent="Widget.AppCompat.ProgressBar">
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:background">@android:color/transparent</item>
+        <!--弹出框时背景是否变暗-->
+        <item name="android:backgroundDimEnabled">false</item>
+        <item name="android:windowIsFloating">true</item>
+        <item name="android:windowIsTranslucent">true</item>
+    </style>
+
+    <style name="anim_menu_bottombar">
+        <item name="android:windowEnterAnimation">@anim/menu_bottombar_in</item>
+        <item name="android:windowExitAnimation">@anim/menu_bottombar_out</item>
+    </style>
+
+
+    <declare-styleable name="Custom_Round_Image_View">
+        <attr name="radius" format="dimension"/>
+        <attr name="left_top_radius" format="dimension"/>
+        <attr name="right_top_radius" format="dimension"/>
+        <attr name="right_bottom_radius" format="dimension"/>
+        <attr name="left_bottom_radius" format="dimension"/>
+    </declare-styleable>
+    <declare-styleable name="XRatingBar">
+        <attr name="numStars" format="integer" /><!--总的星星数-->
+        <attr name="rating" format="float" /><!--当前已选中的星星个数-->
+        <attr name="dividerWidth" format="dimension" /><!--单个星星之间的间隔-->
+        <attr name="ratingViewClass" format="string" />
+    </declare-styleable>
 </resources>

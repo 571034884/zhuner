@@ -1,11 +1,14 @@
 package com.aibabel.coupon.utils;
 
 import android.content.Context;
+import android.content.res.TypedArray;
 import android.graphics.Canvas;
 import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
 import android.view.Gravity;
 import android.widget.RadioButton;
+
+import com.aibabel.coupon.R;
 
 /**
  * 作者：wuqinghua_fyt on 2018/9/10 17:54
@@ -13,7 +16,8 @@ import android.widget.RadioButton;
  * 版本：1.0
  */
 public class MyRadioButton  extends android.support.v7.widget.AppCompatRadioButton {
-    private static final String TAG = MyRadioButton.class.getSimpleName();
+    private float mImg_width;
+    private float mImg_height;
 
     public MyRadioButton(Context context) {
         super(context);
@@ -21,24 +25,41 @@ public class MyRadioButton  extends android.support.v7.widget.AppCompatRadioButt
 
     public MyRadioButton(Context context, AttributeSet attrs) {
         super(context, attrs);
-    }
-
-    public MyRadioButton(Context context, AttributeSet attrs, int defStyleAttr) {
-        super(context, attrs, defStyleAttr);
+        TypedArray t = context.obtainStyledAttributes(attrs, R.styleable.MyRadioButton);
+        mImg_width = t.getDimension(R.styleable.MyRadioButton_rb_width, 40);
+        mImg_height = t.getDimension(R.styleable.MyRadioButton_rb_height, 40);
+        t.recycle();
     }
 
     @Override
-    protected void onDraw(Canvas canvas) {
-        super.onDraw(canvas);
-        Drawable[] drawables = getCompoundDrawables();
-        Drawable drawable = drawables[0];
-        int gravity = getGravity();
-        int left = 0;
-        if (gravity == Gravity.CENTER) {
-            left = ((int) (getWidth() - drawable.getIntrinsicWidth() - getPaint().measureText(getText().toString()))
-                    / 2);
+    protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
+        super.onMeasure(widthMeasureSpec, heightMeasureSpec);
+        //让RadioButton的图标可调大小 属性：
+        Drawable drawableLeft = this.getCompoundDrawables()[0];//获得文字左侧图片
+        Drawable drawableTop = this.getCompoundDrawables()[1];//获得文字顶部图片
+        Drawable drawableRight = this.getCompoundDrawables()[2];//获得文字右侧图片
+        Drawable drawableBottom = this.getCompoundDrawables()[3];//获得文字底部图片
+        if (drawableLeft != null) {
+            drawableLeft.setBounds(0, 0, (int) mImg_width, (int) mImg_height);
+            this.setCompoundDrawables(drawableLeft, null, null, null);
         }
-        drawable.setBounds(left, 0, left + drawable.getIntrinsicWidth(), drawable.getIntrinsicHeight());
+        if (drawableRight != null) {
+            drawableRight.setBounds(0, 0, (int) mImg_width, (int) mImg_height);
+            this.setCompoundDrawables(null, null, drawableRight, null);
+        }
+        if (drawableTop != null) {
+            drawableTop.setBounds(0, 0, (int) mImg_width, (int) mImg_height);
+            this.setCompoundDrawables(null, drawableTop, null, null);
+        }
+        if (drawableBottom != null) {
+            drawableBottom.setBounds(0, 0, (int) mImg_width, (int) mImg_height);
+            this.setCompoundDrawables(null, null, null, drawableBottom);
+        }
     }
-
 }
+
+
+
+
+
+

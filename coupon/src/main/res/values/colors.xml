@@ -8,4 +8,12 @@
     <color name="color_c3">#c3c3c3</color>
     <color name="color_66">#666666</color>
     <color name="color_99">#999999</color>
+    <color name="green">#60bf7d</color>
+    <color name="yellow">#ea751f</color>
+    <color name="white">#FFFFFF</color>
+    <color name="grayc3">#c3c3c3</color>
+    <color name="c889b9c9c">#889b9c9c</color>
+    <color name="c88fe5000">#fe5000</color>
+    <color name="black">#000000</color>
+    <color name="red">#e04040</color>
 </resources>

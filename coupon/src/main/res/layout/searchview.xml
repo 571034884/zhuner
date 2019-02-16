@@ -9,24 +9,37 @@
         android:id="@+id/appbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="#fff"
         android:theme="@style/AppTheme.AppBarOverlay">
 
         <android.support.design.widget.CollapsingToolbarLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:background="#fff"
             app:layout_scrollFlags="scroll|enterAlways|enterAlwaysCollapsed">
 
 
-                <com.youth.banner.Banner
-                    android:id="@+id/banner"
-                    android:layout_width="match_parent"
-                    android:layout_height="350px"
-                    android:layout_marginTop="88px"
-                    android:scaleType="fitXY"
-                    app:layout_constraintLeft_toLeftOf="parent"
-                    app:layout_constraintTop_toTopOf="parent">
+            <com.youth.banner.Banner
+                android:id="@+id/banner"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/y350"
+                android:layout_marginTop="@dimen/y88"
+                android:scaleType="fitXY"
+                android:visibility="gone"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
 
-                </com.youth.banner.Banner>
+            </com.youth.banner.Banner>
+
+            <ImageView
+                android:id="@+id/iv_banner"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/y350"
+                android:layout_marginBottom="@dimen/px30"
+                android:scaleType="fitXY"
+                android:visibility="visible"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
             <!--标题 -->
             <android.support.v7.widget.Toolbar
                 android:layout_width="match_parent"

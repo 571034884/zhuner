@@ -1,6 +1,7 @@
 package com.aibabel.surfinternet;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -32,15 +33,18 @@ import com.aibabel.surfinternet.bean.OrderitemBean;
 import com.aibabel.surfinternet.okgo.BaseBean;
 import com.aibabel.surfinternet.okgo.BaseCallback;
 import com.aibabel.surfinternet.okgo.OkGoUtil;
+import com.aibabel.surfinternet.utils.CommonUtils;
 import com.aibabel.surfinternet.utils.NetUtil;
+import com.aibabel.surfinternet.utils.WeizhiUtil;
+import com.lzy.okgo.OkGo;
+import com.lzy.okgo.callback.StringCallback;
 import com.lzy.okgo.model.Response;
+import com.taobao.sophix.SophixManager;
 import com.umeng.analytics.MobclickAgent;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import java.io.InputStreamReader;
-import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -53,22 +57,17 @@ import butterknife.ButterKnife;
 public class MainActivity extends BaseActivity implements BaseCallback {
 
 
-    @BindView(R.id.tv_quanqiu)
-    TextView tvQuanqiu;
-    @BindView(R.id.iv_close)
+    private static final String TODO = "";
+
     ImageView ivClose;
-    @BindView(R.id.ll)
-    RelativeLayout ll;
-    @BindView(R.id.cl)
-    ConstraintLayout cl;
-    @BindView(R.id.ll_isnet)
-    LinearLayout llIsnet;
-    @BindView(R.id.tv_error)
-    TextView tvError;
-    @BindView(R.id.tv_net_help)
+    TextView tvQuanqiu;
     TextView tvNetHelp;
-    @BindView(R.id.iv_error)
+    RelativeLayout ll;
     ImageView ivError;
+    TextView tvError;
+    LinearLayout llIsnet;
+    ConstraintLayout cl;
+
     private OrderitemBean orderitemBean;
     private List<OrderitemBean.DataBean> datalist = new ArrayList<>();
     private Intent intent;
@@ -81,16 +80,17 @@ public class MainActivity extends BaseActivity implements BaseCallback {
     private String key_xw;
     private String key_xs;
     private boolean is_onclick = true;
-    private String iccid;
     private boolean isFind = false;
 
+    @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);// 设置全屏
         setContentView(R.layout.activity_main);
-        ButterKnife.bind(this);
+        initView();
+
 //        sendBroadcast(new Intent("com.android.zhuner.wqhtime"));
         try {
             Cursor cursor = getContentResolver().query(CONTENT_URI, null, null, null, null);
@@ -102,67 +102,44 @@ public class MainActivity extends BaseActivity implements BaseCallback {
                 if (countryNameCN.equals("中国")) {
                     key_xw = "中国_" + getPackageName() + "_joner";
                     key_xs = "中国_" + getPackageName() + "_pay";
-//                key_xs_payment = "中国_"+"com.aibabel.surfinternet"+"_pay";
                 } else {
                     key_xw = "default_" + getPackageName() + "_joner";
                     key_xs = "default_" + getPackageName() + "_pay";
-//                key_xs_payment = "default_"+"com.aibabel.surfinternet"+"_pay";
                 }
                 JSONObject jsonObject = new JSONObject(ips);
                 JSONArray jsonArray_xw = new JSONArray(jsonObject.getString(key_xw));
                 Constans.HOST_XW = jsonArray_xw.getJSONObject(0).get("domain").toString();
 //                Constans.HOST_XW = "http://39.107.238.111:7001";
-
-//                Constans.HOST_XW="http://192.168.50.8:7001";
+                Log.e("HOST_XW", Constans.HOST_XW + "---");
                 JSONArray jsonArray_xs = new JSONArray(jsonObject.getString(key_xs));
                 Constans.HOST_XS = jsonArray_xs.getJSONObject(0).get("domain").toString();
 //                Constans.HOST_XS = "http://api.web.aibabel.cn:7000";
-//                Constans.HOST_XS = "https://wx.aibabel.com:3002";
-//                Constans.HOST_XS = "http://192.168.1.107:3001";
-
                 Log.e("HOST_XS", Constans.HOST_XS + "---");
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
 
-
+        rexiufu();
         initCountryLanguage();
+//        init_imei();
+        getVersion();
+
         if (NetUtil.isNetworkAvailable(MainActivity.this)) {
             initData();
         } else {
-//            initData();
-//            cl.setBackgroundResource(R.mipmap.net1);
             ivClose.setVisibility(View.GONE);
             ll.setVisibility(View.VISIBLE);
             llIsnet.setVisibility(View.VISIBLE);
-//            Timer timer = new Timer();
-//            timer.schedule(new TimerTask() {
-//                @Override
-//                public void run() {
-//                    finish();
-//                }
-//            }, 5000);
         }
-
-     /*   llIsnet.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (NetUtil.isNetworkAvailable(MainActivity.this)){
-                    initData();
-
-
-                }
-            }
-        });*/
-
+        //关闭
         ivClose.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 finish();
             }
         });
-
+        //帮助
         tvNetHelp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -175,27 +152,74 @@ public class MainActivity extends BaseActivity implements BaseCallback {
         });
     }
 
+    private void initView() {
+        ivClose = findViewById(R.id.iv_close);
+        ivError = findViewById(R.id.iv_error);
+        tvQuanqiu = findViewById(R.id.tv_quanqiu);
+        llIsnet = findViewById(R.id.ll_isnet);
+        cl = findViewById(R.id.cl);
+        tvNetHelp = findViewById(R.id.tv_net_help);
+        tvError = findViewById(R.id.tv_error);
+        ll = findViewById(R.id.ll);
+    }
+
+    public void rexiufu() {
+        String latitude = WeizhiUtil.getInfo(this, WeizhiUtil.CONTENT_URI_WY, "latitude");
+        String longitude = WeizhiUtil.getInfo(this, WeizhiUtil.CONTENT_URI_WY, "longitude");
+        String url = Constans.HOST_XW + "/v1/jonersystem/GetAppNew?sn=" + CommonUtils.getSN() + "&no=" + CommonUtils.getRandom() + "&sl=" + CommonUtils.getLocalLanguage() + "&av=" + BuildConfig.VERSION_NAME + "&app=" + getPackageName() + "&sv=" + Build.DISPLAY + "&lat=" + latitude + "&lng=" + longitude;
+        Log.e("热修复", url);
+        OkGo.<String>get(url)
+                .tag(this)
+                .execute(new StringCallback() {
+                    @Override
+                    public void onSuccess(Response<String> response) {
+                        Log.e("热修复", response.body().toString());
+                        if (!TextUtils.isEmpty(response.body().toString())) {
+                            try {
+                                JSONObject jsonObject = new JSONObject(response.body().toString());
+                                boolean isNew = (Boolean) ((JSONObject) jsonObject.get("data")).get("isNew");
+                                if (isNew) {
+                                    SophixManager.getInstance().queryAndLoadNewPatch();
+                                    Log.e("success:", "=================" + isNew + "=================");
+                                } else {
+                                    Log.e("failed:", "=================" + isNew + "=================");
+                                }
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                                Log.e("Exception:", "==========" + e.getMessage() + "===========");
+                            }
+                        }
+                    }
+
+                    @Override
+                    public void onError(Response<String> response) {
+                    }
+                });
+
+
+    }
+
+    //获取系统语言
     private void initCountryLanguage() {
         //获取当前手机的语言
-        String country = Locale.getDefault().getCountry();
-        String language = getResources().getConfiguration().locale.getLanguage();
+        Constans.PHONE_COUNTRY = Locale.getDefault().getCountry();
+        Constans.PHONE_LANGUAGE = getResources().getConfiguration().locale.getLanguage();
         //读取语言选择的 json 文件
-        InputStreamReader inputStreamReader = null;
-        Log.e("lan_country", country + "========lan_language----------" + language + "--------");
-        if (language.equals("zh")) {
-            if (country.equals("CN")) {
+        Log.e("lan_country", Constans.PHONE_COUNTRY + "========lan_language----------" + Constans.PHONE_LANGUAGE + "--------");
+        if (Constans.PHONE_LANGUAGE.equals("zh")) {
+            if (Constans.PHONE_COUNTRY.equals("CN")) {
                 Constans.SETCOUNTRYlANGUAGE = "Chj";
 
-            } else if (country.equals("TW")) {
+            } else if (Constans.PHONE_COUNTRY.equals("TW")) {
                 Constans.SETCOUNTRYlANGUAGE = "Chf";
             } else {
                 Constans.SETCOUNTRYlANGUAGE = "Chj";
             }
-        } else if (language.equals("en")) {
+        } else if (Constans.PHONE_LANGUAGE.equals("en")) {
             Constans.SETCOUNTRYlANGUAGE = "En";
-        } else if (language.equals("ja")) {
+        } else if (Constans.PHONE_LANGUAGE.equals("ja")) {
             Constans.SETCOUNTRYlANGUAGE = "Jpa";
-        } else if (language.equals("ko")) {
+        } else if (Constans.PHONE_LANGUAGE.equals("ko")) {
             Constans.SETCOUNTRYlANGUAGE = "Kor";
         } else {
             Constans.SETCOUNTRYlANGUAGE = "Chj";
@@ -203,15 +227,7 @@ public class MainActivity extends BaseActivity implements BaseCallback {
 
     }
 
-    @Override
-    protected void onStart() {
-        super.onStart();
-    }
-
-    /**
-     * @param view
-     * @param b    是否可点击
-     */
+    //是否可点击
     private void onClickable(View view, boolean b) {
         if (b) {
             if (null != view) {
@@ -226,34 +242,29 @@ public class MainActivity extends BaseActivity implements BaseCallback {
         }
     }
 
-    //        try {
-//            TelephonyManager tm = (TelephonyManager) MainActivity.this.getSystemService(Context.TELEPHONY_SERVICE);
-//            Class<?> c = Class.forName("android.telephony.TelephonyManager");
-//
-//            Method m = TelephonyManager.class.getDeclaredMethod("getSimSerialNumber", int.class);
-//            iccid = (String) m.invoke(tm, 1);
-//            Log.e("iccid_number", iccid + "===");
-//
-//            if (null == iccid) {
-//                initMtkDoubleSim1();
-////                    ivClose.setVisibility(View.GONE);
-////                    ll.setVisibility(View.VISIBLE);
-////                    llIsnet.setVisibility(View.VISIBLE);
-////                    ivError.setImageResource(R.mipmap.iccid);
-////                    tvError.setText(getResources().getString(R.string.iccid));
-//
-//
-//            }
-//        } catch (Exception e) {
-//            isMtkDoubleSim = false;
-//            return;
-//        }
-//        isMtkDoubleSim = true;
+    private void getVersion() {
+        try {
+            String display = Build.DISPLAY;
+            Constans.PRO_VERSION_NUMBER = display.substring(9, 10);
+//            Constans.PRO_VERSION_NUMBER = "S";
+
+            Constans.COUNTRY_VERSION_NUMBER = display.substring(7, 8);
+//            Constans.COUNTRY_VERSION_NUMBER = "5";
+
+            Constans.PHONE_MOBILE_NUMBER = display.substring(0, 2);
+//            Constans.PHONE_MOBILE_NUMBER = "PH";
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    //获取ICCID
+    @SuppressLint({"MissingPermission", "NewApi"})
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP_MR1)
     private void initMtkDoubleSim() {
-
         try {
             List<SubscriptionInfo> list = SubscriptionManager.from(this).getActiveSubscriptionInfoList();
+            //如果没有取到
             if (null == list || list.size() == 0) {
                 ivClose.setVisibility(View.GONE);
                 ll.setVisibility(View.VISIBLE);
@@ -261,14 +272,16 @@ public class MainActivity extends BaseActivity implements BaseCallback {
                 ivError.setImageResource(R.mipmap.iccid);
                 tvError.setText(getResources().getString(R.string.iccid));
             }
-
-
+            //获取内置卡的Iccid
             for (int i = 0; i < list.size(); i++) {
                 Log.e("Q_M", "ICCID-->" + list.get(i).getIccId());
                 Log.e("Q_M", "sim_id-->" + list.get(i).getSimSlotIndex());
                 if (list.get(i).getSimSlotIndex() == 1) {
-                    Log.e("iccid123", list.get(i).getIccId());
-                    iccid = list.get(i).getIccId();
+
+                    Constans.PHONE_ICCID = list.get(i).getIccId();
+//                    Constans.PHONE_ICCID = "89860012018051816514";
+
+                    Log.e("iccid", Constans.PHONE_ICCID);
                     isFind = true;
                     return;
                 }
@@ -281,19 +294,7 @@ public class MainActivity extends BaseActivity implements BaseCallback {
                 tvError.setText(getResources().getString(R.string.iccid));
 
             }
-//            if (list.get(i).getSimSlotIndex()==1){
-//                Log.e("iccid123",list.get(i).getIccId());
-//                iccid = list.get(i).getIccId();
-//                if (null == iccid) {
-//                    ivClose.setVisibility(View.GONE);
-//                    ll.setVisibility(View.VISIBLE);
-//                    llIsnet.setVisibility(View.VISIBLE);
-//                    ivError.setImageResource(R.mipmap.iccid);
-//                    tvError.setText(getResources().getString(R.string.iccid));
-//                }
-//            }else {
-//                iccid = list.get(i).getIccId();
-//            }
+
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -301,9 +302,15 @@ public class MainActivity extends BaseActivity implements BaseCallback {
 
     }
 
-    public void initMtkDoubleSim1() {
-        TelephonyManager telephonyManager = (TelephonyManager) this
-                .getSystemService(TELEPHONY_SERVICE);// 取得相关系统服务
+    //获取IMEI
+    @RequiresApi(api = Build.VERSION_CODES.M)
+    private void init_imei() {
+
+
+        TelephonyManager tm = (TelephonyManager) this.getSystemService(TELEPHONY_SERVICE);
+
+        TelephonyManager telephonyManager = (TelephonyManager) getSystemService(Context.TELEPHONY_SERVICE);
+
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.READ_PHONE_STATE) != PackageManager.PERMISSION_GRANTED) {
             // TODO: Consider calling
             //    ActivityCompat#requestPermissions
@@ -314,34 +321,28 @@ public class MainActivity extends BaseActivity implements BaseCallback {
             // for ActivityCompat#requestPermissions for more details.
             return;
         }
-        iccid = telephonyManager.getSimSerialNumber();  //取出 ICCID
-        if (null == iccid) {
-            ivClose.setVisibility(View.GONE);
-            ll.setVisibility(View.VISIBLE);
-            llIsnet.setVisibility(View.VISIBLE);
-            ivError.setImageResource(R.mipmap.iccid);
-            tvError.setText(getResources().getString(R.string.iccid));
-        }
-        Log.e("iccid", iccid);
+        Constans.PHONE_ICCID = telephonyManager.getDeviceId(1);
+        Log.e("imei_2", Constans.PHONE_ICCID);
+        //Toast.makeText(MainActivity.this, "slot=" + slot, Toast.LENGTH_LONG).show();
+
     }
 
+
+    @RequiresApi(api = Build.VERSION_CODES.M)
     private void initData() {
         initMtkDoubleSim();
-
-        Log.e("iccid_dindan", iccid + "===");
-//         iccid = "89860012017300216438";
-        if (iccid == null) {
+//         iccid = "89852022018041802362";
+//         Constans.PHONE_ICCID = "89860012017300216438";
+        if (Constans.PHONE_ICCID == null) {
             initMtkDoubleSim();
+//            init_imei();
         } else {
             Map<String, String> map = new HashMap<>();
-
-            map.put("iccid", iccid);
-//            map.put("iccid", "89860012017300216438");
-            Log.e("iccid_dindan", iccid + "===");
-//            ToastUtil.showLong(MainActivity.this,iccid);
+            map.put("iccid", Constans.PHONE_ICCID);
+//            map.put("cardType", "lksc");
+            Log.e("iccid", Constans.PHONE_ICCID + "===");
             OkGoUtil.<OrderitemBean>get(MainActivity.this, Constans.METHOD_KADINGDANXIANGQING, map, OrderitemBean.class, this);
         }
-
     }
 
     @Override
@@ -361,31 +362,30 @@ public class MainActivity extends BaseActivity implements BaseCallback {
     public void onSuccess(String method, BaseBean model) {
         orderitemBean = (OrderitemBean) model;
         datalist = orderitemBean.getData();
-//        ivClose.setVisibility(View.VISIBLE);
-//        llIsnet.setVisibility(View.GONE);
-//        ll.setVisibility(View.GONE);
         if (datalist != null) {
+            //如果 在订单存在的情况下 订单长度为0  则跳转 国家页
             if (datalist.size() == 0) {
                 intent = new Intent(MainActivity.this, TrandActivity.class);
                 intent.putExtra("first", 1);
-
-            } else {
+            }
+            // 否则 跳转 订单页
+            else {
                 intent = new Intent(MainActivity.this, OrderActivity.class);
                 intent.putExtra("orderitemBean", orderitemBean);
                 intent.putExtra("first", 1);
             }
+
+            //如果 在订单不存在的情况下 则跳转 国家页
         } else {
             intent = new Intent(MainActivity.this, TrandActivity.class);
             intent.putExtra("first", 1);
         }
 
 
-        if (NetUtil.isNetworkAvailable(MainActivity.this)) {
+        if (NetUtil.isNetworkAvailable(MainActivity.this)&&Constans.PHONE_ICCID!=null&&!TextUtils.equals(Constans.PHONE_ICCID,"")) {
             startActivity(intent);
             finish();
         } else {
-//            ToastUtil.showShort(MainActivity.this, "当前无网络，请联网操作");
-//            cl.setBackgroundResource(R.mipmap.net1);
             ivClose.setVisibility(View.GONE);
             llIsnet.setVisibility(View.VISIBLE);
             ll.setVisibility(View.VISIBLE);

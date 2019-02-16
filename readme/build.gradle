@@ -1,5 +1,5 @@
 apply plugin: 'com.android.application'
-
+apply plugin: 'com.aliyun.ams.emas-services'
 def buildTime() {
     return System.currentTimeMillis()
 }
@@ -45,4 +45,9 @@ dependencies {
     //butterkinfe
     annotationProcessor 'com.jakewharton:butterknife-compiler:8.8.1'
     implementation project(':baselibrary')
+}
+repositories {
+    maven {
+        url "http://maven.aliyun.com/nexus/content/repositories/releases"
+    }
 }

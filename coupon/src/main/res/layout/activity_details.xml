@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     tools:context=".activity.DetailsActivity">
 
     <LinearLayout
@@ -28,8 +28,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
-                android:text="松本清"
-                android:textSize="@dimen/px32"
+                android:textSize="@dimen/y32"
                 android:textStyle="bold" />
         </RelativeLayout>
 
@@ -43,42 +42,45 @@
 
             <de.hdodenhof.circleimageview.CircleImageView
                 android:id="@+id/iv_img"
-                android:layout_width="@dimen/px86"
-                android:layout_height="@dimen/px86"
-                android:layout_marginBottom="@dimen/px22"
-                android:layout_marginTop="@dimen/px40"
-                android:src="@mipmap/song1" />
+                android:layout_width="@dimen/x86"
+                android:layout_height="@dimen/y86"
+                android:layout_marginBottom="@dimen/y22"
+                android:layout_marginTop="@dimen/y40"
+                />
 
             <TextView
                 android:id="@+id/tv_zhekou"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="立享95折+8%免税"
+                android:layout_marginLeft="@dimen/x50"
+                android:layout_marginRight="@dimen/x50"
+                android:gravity="center_horizontal"
                 android:textColor="#fff"
-                android:textSize="@dimen/px42"
+                android:textSize="@dimen/y42"
                 android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/tv_xiangqing"
-                android:layout_width="wrap_content"
+                android:visibility="gone"
+                android:layout_width="@dimen/x500"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/px16"
-                android:text="药妆类产品满30000日元可用"
+                android:layout_marginTop="@dimen/y16"
+                android:gravity="center"
                 android:textColor="#fff" />
 
             <TextView
                 android:id="@+id/tv_xiangzhi"
+                android:visibility="gone"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/px6"
-                android:text="(部分商品不参与活动)"
+                android:layout_marginTop="@dimen/y6"
                 android:textColor="#fff" />
 
             <LinearLayout
-                android:layout_width="@dimen/px402"
-                android:layout_height="@dimen/px118"
-                android:layout_marginTop="@dimen/px50"
-                android:background="#fff"
+                android:layout_width="@dimen/x402"
+                android:layout_height="@dimen/y118"
+                android:layout_marginTop="@dimen/y72"
+
                 android:gravity="center">
 
                 <ImageView
@@ -86,7 +88,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:scaleType="fitXY"
-                    android:src="@mipmap/tiaoxinma" />
+                     />
             </LinearLayout>
 
         </LinearLayout>
@@ -94,13 +96,13 @@
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/px30">
+            android:layout_marginTop="@dimen/y30">
 
             <View
-                android:layout_width="@dimen/px8"
-                android:layout_height="36px"
-                android:layout_marginLeft="@dimen/px30"
-                android:layout_marginRight="@dimen/px10"
+                android:layout_width="@dimen/x8"
+                android:layout_height="@dimen/y36"
+                android:layout_marginLeft="@dimen/x30"
+                android:layout_marginRight="@dimen/x10"
                 android:background="#fe5000" />
 
             <TextView
@@ -108,7 +110,7 @@
                 android:layout_height="wrap_content"
                 android:text="优惠详情"
                 android:textColor="#3e3e3e"
-                android:textSize="@dimen/px30"
+                android:textSize="@dimen/y30"
                 android:textStyle="bold" />
 
         </LinearLayout>
@@ -116,50 +118,68 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/px30"
-            android:layout_marginTop="@dimen/px20"
+            android:layout_marginLeft="@dimen/x30"
+            android:layout_marginTop="@dimen/y20"
             android:text="优惠时间"
             android:textColor="#3e3e3e"
-            android:textSize="@dimen/px28" />
+            android:textSize="@dimen/y28" />
 
         <TextView
             android:id="@+id/tv_youhui_time"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/px30"
-            android:layout_marginTop="@dimen/px14"
-            android:text="2017年1月1日-2018年12月31日"
+            android:layout_marginLeft="@dimen/x30"
+            android:layout_marginTop="@dimen/y14"
             android:textColor="#868686" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/px30"
-            android:layout_marginTop="@dimen/px30"
+            android:layout_marginLeft="@dimen/x30"
+            android:layout_marginTop="@dimen/y30"
             android:text="优惠政策"
             android:textColor="#3e3e3e"
-            android:textSize="@dimen/px28" />
+            android:textSize="@dimen/y28" />
 
         <TextView
             android:id="@+id/tv_youhui_zhengce"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/px30"
-            android:layout_marginRight="@dimen/px30"
-            android:lineSpacingExtra="@dimen/px12"
-            android:text="1.消费满1万日元，可享受97折优惠\n2.消费满3万日元，可享受95折优惠\n3.消费5000日元以上可享受8%免税\n4.部分商品不参与优惠：专柜化妆品，烟酒，书籍，婴儿纸尿布，婴儿食品等，详询店员" />
+            android:layout_marginLeft="@dimen/x30"
+            android:layout_marginRight="@dimen/x30"
+            android:lineSpacingExtra="@dimen/y12"
+            android:layout_marginTop="@dimen/y14"/>
+
+        <ImageView
+            android:layout_marginTop="@dimen/y30"
+            android:id="@+id/iv_yuantu"
+            android:layout_marginLeft="@dimen/x30"
+            android:layout_marginRight="@dimen/x30"
+            android:gravity="center_horizontal"
+            android:layout_marginBottom="@dimen/y30"
+            android:layout_width="match_parent"
+            android:adjustViewBounds="true"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            android:layout_marginBottom="@dimen/px30"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="(点击图片可放大)"/>
 
         <LinearLayout
+            android:visibility="gone"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="@dimen/px20"
-            android:layout_marginTop="@dimen/px44">
+            android:layout_marginBottom="@dimen/y20"
+            android:layout_marginTop="@dimen/y44">
 
             <View
-                android:layout_width="@dimen/px8"
-                android:layout_height="36px"
-                android:layout_marginLeft="@dimen/px30"
-                android:layout_marginRight="@dimen/px10"
+                android:layout_width="@dimen/x8"
+                android:layout_height="@dimen/y36"
+                android:layout_marginLeft="@dimen/x30"
+                android:layout_marginRight="@dimen/x10"
                 android:background="#fe5000" />
 
             <TextView
@@ -167,29 +187,31 @@
                 android:layout_height="wrap_content"
                 android:text="适用店铺"
                 android:textColor="#3e3e3e"
-                android:textSize="@dimen/px30"
+                android:textSize="@dimen/y30"
                 android:textStyle="bold" />
 
         </LinearLayout>
 
         <android.support.v7.widget.RecyclerView
+            android:visibility="gone"
             android:id="@+id/rv_dianpu"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/px20"
-            android:layout_marginRight="@dimen/px20" />
+            android:layout_marginLeft="@dimen/x20"
+            android:layout_marginRight="@dimen/x20" />
 
         <LinearLayout
+            android:visibility="gone"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="@dimen/px20"
-            android:layout_marginTop="@dimen/px44">
+            android:layout_marginBottom="@dimen/y20"
+            android:layout_marginTop="@dimen/y44">
 
             <View
-                android:layout_width="@dimen/px8"
-                android:layout_height="36px"
-                android:layout_marginLeft="@dimen/px30"
-                android:layout_marginRight="@dimen/px10"
+                android:layout_width="@dimen/x8"
+                android:layout_height="@dimen/y36"
+                android:layout_marginLeft="@dimen/x30"
+                android:layout_marginRight="@dimen/x10"
                 android:background="#fe5000" />
 
             <TextView
@@ -197,17 +219,18 @@
                 android:layout_height="wrap_content"
                 android:text="热门推荐"
                 android:textColor="#3e3e3e"
-                android:textSize="@dimen/px30"
+                android:textSize="@dimen/y30"
                 android:textStyle="bold" />
 
         </LinearLayout>
 
         <android.support.v7.widget.RecyclerView
+            android:visibility="gone"
             android:id="@+id/rv_remen"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="@dimen/px50"
-            android:layout_marginLeft="@dimen/px20"
+            android:layout_marginBottom="@dimen/y50"
+            android:layout_marginLeft="@dimen/x20"
            />
     </LinearLayout>
 </com.aibabel.coupon.utils.MyScrollview>

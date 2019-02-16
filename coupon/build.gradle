@@ -1,13 +1,13 @@
 apply plugin: 'com.android.application'
-
+apply plugin: 'com.aliyun.ams.emas-services'
 android {
     compileSdkVersion 28
     defaultConfig {
-        applicationId "com.aibabel.coupon1"
+        applicationId "com.aibabel.coupon"
         minSdkVersion 21
         targetSdkVersion 28
-        versionCode 1
-        versionName "1.0"
+         versionCode 2
+        versionName "1.0.2"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
@@ -31,4 +31,14 @@ dependencies {
     implementation project(':baselibrary')
     //noinspection GradleCompatible
     implementation 'com.android.support:design:28.+'
+    //photoview
+    implementation 'com.github.chrisbanes:PhotoView:2.0.0'
+    //picasso
+    implementation 'com.squareup.picasso:picasso:2.5.2'
+    implementation 'com.hyman:flowlayout-lib:1.1.2'
+}
+repositories {
+    maven {
+        url "http://maven.aliyun.com/nexus/content/repositories/releases"
+    }
 }

@@ -10,50 +10,52 @@
     <FrameLayout
         android:id="@+id/fragment"
         android:layout_width="match_parent"
-        android:layout_height="0px"
+        android:layout_height="@dimen/y0"
         android:layout_weight="1"></FrameLayout>
 
 
     <RadioGroup
         android:id="@+id/rg_number1"
         android:layout_width="match_parent"
-        android:layout_height="80px"
-        android:background="#eeeeee"
+        android:layout_height="@dimen/y96"
+        android:background="#ffffff"
         android:orientation="horizontal"
         android:layout_gravity="center"
         app:layout_constraintBottom_toBottomOf="parent">
 
         <com.aibabel.coupon.utils.MyRadioButton
+            android:layout_marginTop="@dimen/y10"
             android:id="@+id/tv_mudidi"
-            android:layout_width="0px"
+            android:layout_width="@dimen/x0"
             android:layout_weight="1"
-            android:layout_height="match_parent"
-            android:drawableLeft="@drawable/mudidi_selector"
+            android:layout_height="@dimen/y86"
+            android:drawableTop="@drawable/mudidi_selector"
             android:text="目的地"
             android:checked="true"
             android:gravity="center"
             android:button="@null"
-            android:textColor="#5d5d5d"
-            android:textSize="@dimen/px28" />
+            android:textColor="#000"
+            android:textSize="@dimen/y24" />
 
         <com.aibabel.coupon.utils.MyRadioButton
+            android:layout_marginTop="@dimen/y10"
             android:id="@+id/tv_coupon"
-            android:layout_width="0px"
+            android:layout_width="@dimen/x0"
             android:layout_weight="1"
-            android:layout_height="match_parent"
-            android:drawableLeft="@drawable/coupon_selector"
+            android:layout_height="@dimen/y86"
+            android:drawableTop="@drawable/coupon_selector"
             android:button="@null"
             android:gravity="center"
             android:text="优惠券"
             android:textColor="#c2c2c2"
-            android:textSize="@dimen/px28" />
+            android:textSize="@dimen/y24" />
     </RadioGroup>
 
 
     <View
         android:id="@+id/view1"
         android:layout_width="match_parent"
-        android:layout_height="2px"
+        android:layout_height="@dimen/y2"
         android:background="#d2d2d2"
         app:layout_constraintBottom_toTopOf="@id/lin" />
 </LinearLayout>

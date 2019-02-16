@@ -3,16 +3,16 @@
     xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
-    android:layout_marginBottom="@dimen/px12"
-    android:layout_marginRight="@dimen/px20"
+    android:layout_marginBottom="@dimen/y12"
+    android:layout_marginRight="@dimen/x20"
     android:background="@drawable/coupon_background2"
    >
     <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/iv_remen_img"
-        android:layout_width="@dimen/px104"
-        android:layout_height="@dimen/px104"
+        android:layout_width="@dimen/x104"
+        android:layout_height="@dimen/y104"
         android:layout_gravity="center"
-        android:layout_marginTop="@dimen/px28"
+        android:layout_marginTop="@dimen/y28"
         android:src="@mipmap/song1"/>
     <TextView
         android:id="@+id/tv_remen_name"
@@ -21,7 +21,7 @@
         android:text="安耐晒"
         android:textColor="#3e3e3e"
         android:layout_gravity="center_horizontal"
-        android:layout_marginTop="@dimen/px16"/>
+        android:layout_marginTop="@dimen/y16"/>
     <TextView
         android:id="@+id/tv_xingjiabi1"
         android:layout_width="wrap_content"
@@ -29,8 +29,8 @@
         android:text="防水"
         android:textColor="#868686"
         android:layout_gravity="center_horizontal"
-        android:layout_marginBottom="@dimen/px12"
-        android:layout_marginTop="@dimen/px12"/>
+        android:layout_marginBottom="@dimen/y12"
+        android:layout_marginTop="@dimen/y12"/>
     <TextView
         android:id="@+id/tv_xingjiabi2"
         android:layout_width="wrap_content"
@@ -38,6 +38,6 @@
         android:text="性价比高"
         android:textColor="#868686"
         android:layout_gravity="center_horizontal"
-        android:layout_marginBottom="@dimen/px30"
+        android:layout_marginBottom="@dimen/y30"
        />
 </LinearLayout>

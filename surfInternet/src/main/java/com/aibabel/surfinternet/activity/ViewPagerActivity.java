@@ -87,23 +87,22 @@ public class ViewPagerActivity extends BaseActivity {
 
     //初始化ViewPager的方法
     public void initViewPager() {
-        String country = Locale.getDefault().getCountry();
-        String language = getResources().getConfiguration().locale.getLanguage();
-        if (country.equals("CN")) {
+
+        if (Constans.PHONE_COUNTRY.equals("CN")) {
             iv1 = new ImageView(this);
             iv1.setImageResource(R.mipmap.help1);
             iv2 = new ImageView(this);
             iv2.setImageResource(R.mipmap.help2);
             iv3 = new ImageView(this);
             iv3.setImageResource(R.mipmap.help3);
-        } else if (country.equals("TW")) {
+        } else if (Constans.PHONE_COUNTRY.equals("TW")) {
             iv1 = new ImageView(this);
             iv1.setImageResource(R.mipmap.help11);
             iv2 = new ImageView(this);
             iv2.setImageResource(R.mipmap.help12);
             iv3 = new ImageView(this);
             iv3.setImageResource(R.mipmap.help13);
-        }else if (language.equals("en")){
+        }else if (Constans.PHONE_LANGUAGE.equals("en")){
             iv1 = new ImageView(this);
             iv1.setImageResource(R.mipmap.help1_en);
             iv2 = new ImageView(this);
