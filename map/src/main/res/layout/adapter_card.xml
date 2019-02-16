@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/cardView"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center"
+    android:background="@drawable/bg_cardview"
+    app:cardCornerRadius="@dimen/d5"
+    app:cardMaxElevation="@dimen/d8"
+    app:cardUseCompatPadding="true">
+
+
+    <android.support.constraint.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/y160">
+
+        <ImageView
+            android:id="@+id/iv_desc"
+            android:layout_width="@dimen/x160"
+            android:layout_height="@dimen/y160"
+            android:contentDescription="@string/app_name"
+            android:scaleType="fitXY"
+            android:transitionName="image"
+            app:layout_constraintLeft_toLeftOf="parent" />
+
+        <ImageView
+            android:id="@+id/iv_label"
+            android:layout_width="@dimen/x60"
+            android:layout_height="@dimen/y60"
+            android:src="@mipmap/ic_hot"
+            android:visibility="gone" />
+
+        <TextView
+            android:id="@+id/tv_ch"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/x10"
+            android:layout_marginTop="@dimen/y20"
+            android:ellipsize="end"
+            android:fontFamily="sans-serif-thin"
+            android:singleLine="true"
+            android:textColor="@color/c_00"
+            android:textSize="@dimen/s18"
+            android:textStyle="normal"
+            android:transitionName="ch"
+            app:layout_constraintLeft_toRightOf="@id/iv_desc"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/tv_local"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/x10"
+            android:layout_marginTop="@dimen/y4"
+            android:ellipsize="end"
+            android:fontFamily="sans-serif-thin"
+            android:singleLine="true"
+            android:textColor="@color/c_66"
+            android:textSize="13sp"
+            android:textStyle="normal"
+            android:transitionName="en"
+            app:layout_constraintLeft_toRightOf="@id/iv_desc"
+            app:layout_constraintRight_toLeftOf="@id/tv_go"
+            app:layout_constraintTop_toBottomOf="@id/tv_ch" />
+
+
+        <TextView
+            android:id="@+id/tv_category"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/y4"
+            android:layout_marginStart="@dimen/y10"
+            android:ellipsize="end"
+            android:fontFamily="sans-serif-thin"
+            android:paddingBottom="@dimen/y20"
+            android:singleLine="true"
+            android:textColor="@color/c_99"
+            android:textSize="@dimen/s12"
+            android:textStyle="normal"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toRightOf="@id/iv_desc"
+            app:layout_constraintRight_toLeftOf="@id/tv_distance" />
+
+
+        <TextView
+            android:id="@+id/tv_distance"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/y4"
+            android:ellipsize="end"
+            android:fontFamily="sans-serif-thin"
+            android:gravity="right"
+            android:paddingBottom="@dimen/y20"
+            android:paddingLeft="@dimen/x10"
+            android:paddingRight="@dimen/x10"
+            android:singleLine="true"
+            android:textColor="@color/c_66"
+            android:textSize="@dimen/s12"
+            android:textStyle="normal"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintRight_toRightOf="parent" />
+
+        <TextView
+            android:id="@+id/tv_go"
+            android:layout_width="@dimen/x120"
+            android:layout_height="@dimen/y48"
+            android:layout_marginEnd="@dimen/x10"
+            android:background="@drawable/bg_go"
+            android:ellipsize="end"
+            android:gravity="center"
+            android:singleLine="true"
+            android:text="到这去"
+            android:textColor="@color/c_ff"
+            android:textSize="@dimen/s16"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintBottom_toTopOf="@id/tv_distance"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+    </android.support.constraint.ConstraintLayout>
+
+
+</android.support.v7.widget.CardView>

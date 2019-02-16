@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.aibabel.map">
+    //高精度定位
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    //网络定位
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    //读文件
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    //手机权限
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    //获取设备网络状态，禁用后无法获取网络状态
+    <uses-permission android:name="android.permission.INTERNET" />
+    //读取设备硬件信息，统计数据
+    <uses-permission android:name="com.android.launcher.permission.READ_SETTINGS" />
+    //读取系统信息，包含系统版本等信息，用作统计
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    //获取设备的网络状态，鉴权所需网络代理
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    //允许sd卡写权限，需写入地图数据，禁用后无法显示地图
+    <uses-permission android:name="android.permission.WRITE_SETTINGS" />
+    //获取统计数据
+    <uses-permission android:name="android.permission.CAMERA" />
+
+    <application
+        android:name=".SophixStubApplication"
+        android:allowBackup="true"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:supportsRtl="true"
+        android:theme="@style/AppTheme">
+        <activity android:name=".activity.SplashActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
+        <!-- 声明service组件 -->
+        <service
+            android:name="com.baidu.location.f"
+            android:enabled="true"
+            android:process=":bdmap" >
+        </service>
+        <!-- 百度访问AK -->
+        <meta-data
+            android:name="com.baidu.lbsapi.API_KEY"
+            android:value="qErEWjjOHfkyjzCMuGU43UZvWAugN2pP" />
+
+        <!-- autosize屏幕适配 -->
+        <meta-data
+            android:name="design_width_in_dp"
+            android:value="360" />
+        <meta-data
+            android:name="design_height_in_dp"
+            android:value="640" />
+
+        <!-- 阿里热修复 -->
+        <meta-data
+            android:name="com.taobao.android.hotfix.IDSECRET"
+            android:value="25521247" />
+        <meta-data
+            android:name="com.taobao.android.hotfix.APPSECRET"
+            android:value="304d57cf9ddae86dd75ec151cfcfd2cb" />
+        <meta-data
+            android:name="com.taobao.android.hotfix.RSASECRET"
+            android:value="MIIEvgIBADANBgkqhkiG9w0BAQEFAASCBKgwggSkAgEAAoIBAQCvR2ecnDJOWQ2KmOlIPedqIYW03xYsbNTk9snEALXkwv9N8oL+YF2VcIFjd1qRg/nnfnRBQLViZi7KO2UPO1K0bqnZobSQG8SDkd9hG33s8U8leKXzjqsFl50+jMTFMCM3QITdwkjHEEy3Km3dt6Kic05Lo29YAtKauVCX95Yw7cc+mOb7iMFhRkDu9rbJ0VbKt8TBktP3s44vtDZknpgR1q7Wo1aeczoigV0bOUUu59GB9yGksDzkAwdBcB3YLqrGW7llYwBqrY0bXkpinNYSgCCIVAvAkoZBPu1ISYURfLHmLbbfbSQpDaGaFlepJyIbnOZATTkKniTjd3pzy/WjAgMBAAECggEAHEyGAPYC9T1Rf2ACwgQkmbEB2lruRIvpr3Hcz4Vh2KZW++m8ln9OfLMmYL3DZJ0POv3inSpqXpGq2kHOpi/owXLgf1+pPF8PUkK58v6yTRAEvEMHYBRXrlZ1L8Uge8my1dfX28njYChUinoSNOrSGjJNoM6pSmdiQ1LKHU7+87UboWVYXH62FZWG5S2RoZd4x9bvC6jNMEeFRXHm9I7OhnRVDWNNrv5xW0cLNFBEcE8ZAdmAXQyOoRcZvQo7ye/PXgSeSc5zH3VO9ha4IFhy6vMbPC59txKw19dlcTwqZV96dmR3FLqrFrK0cBFGmkzGEIxgvfS30A3DZLgi1kfOIQKBgQDg02NEnjaxGMG5IUWP1vx1mlTcr5X5t6rkMxCdVRt/FJpcp7bhKaWoABatVPzoO+QBefp2M7ZCzGGnDBS55RNt+egvwh0I7FnShgeFydRDZVnSQ3wip2wVproiUOAl0nbinKXcV42BdoWWt5wo+qHi5t6qq5gvnCiShcQTcKGYswKBgQDHlUKC8KNRetO7JqSsKJa9WYYKGOk13z1MKYPq+K2tdp83EXh4NQxGJZnIAidYHuPw6ZxfBbmaiIcOegVochZ88SFXl/scfSGQWsvjLUY1J9zSuc4pqMH8szDtsbegGRz96aywq35g+g4G/rHchzIVDT9NZ22xg88UcniMYetHUQKBgQDSZoF78eSVD+ob6vtChZt2I5xPezMLo8sWDIP7+W3mG83p8DrBtUwGUS7nv6V/YK0chJ7Uh8iF8udggXnUDoGEZl/YcfziIO5einf3yM4Q1ISetfEyLSSFjqaa/r0GKFSB9r9x2a3f/p8+UU6fOw7NXen8JuIhjC6cEPtShhF06QKBgEcPZ70DPML3/ob1/U+mq/UC+OyDbhVWRJbneSaiIARQ5eNPfxsdmB8pqBVEXwnLBdFy+9ABU9Inph6LZ32GkWcu23Y6kJfWHasuCMX8CrFGXiNRMIw4n8j/a/5VdlG0X1QwbOICTV7t6SyoZl9ka3p/WviOSMoZahOXpkAlZQXhAoGBAIpREcc/wd/R80NPQSuOlJU4h8iPrpHNDFmOKmMazadcevRi/5vuGhedGFhbF8ucxjFrijFPziy7KM+Uefs0hu/jsm+e7aMNc3Jy6LsoEowXVUlVjFhAZ3o4zezfwgrwwzC4n4eAVLJa8kRFU4Nj9Z5B3ORKokfg5Mh9CIVpzx/H" />
+        <activity android:name=".MainActivity"></activity>
+        <activity android:name=".activity.LocationActivity" />
+        <activity android:name=".activity.TestActivity" />
+        <activity android:name=".activity.RouteActivity"/>
+        <activity android:name=".activity.SearchActivity"
+            android:windowSoftInputMode="stateVisible"/>
+        <activity android:name=".activity.TrafficDetailActivity"/>
+        <activity android:name=".activity.SearchAddressActivity"
+            android:windowSoftInputMode="stateVisible"/>
+
+        <activity android:name=".activity.TransitRouteActivity"/>
+        <activity android:name=".activity.ActiveActivity"/>
+        <activity android:name=".activity.RouteLineActivity"
+            android:exported="true"
+            />
+        <activity android:name=".activity.CityDetailsActivity"/>
+        <activity android:name=".activity.SearchMapActivity"/>
+
+        <activity android:name=".activity.DialogActivity" android:theme="@style/dialogstyle"></activity>
+    </application>
+
+</manifest>

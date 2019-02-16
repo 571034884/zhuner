@@ -1,0 +1,10 @@
+<litepal>
+    <dbname value="AddressHistory"></dbname>
+    <version value="1"/>
+
+    <list>
+        <mapping class = "com.aibabel.map.bean.search.AddressResult"/>
+        <mapping class = "com.aibabel.map.bean.LocationBean"/>
+        <mapping class = "com.aibabel.map.bean.CollectStarBean"/>
+    </list>
+</litepal>

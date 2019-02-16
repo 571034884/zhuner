@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:paddingLeft="@dimen/x30"
+    android:paddingRight="@dimen/x30"
+    android:layout_height="match_parent">
+
+
+    <ImageView
+        android:id="@+id/iv_icon"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        />
+    <TextView
+        android:id="@+id/tv_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="从我的位置向东北出发"
+        android:textSize="@dimen/y24"
+        android:layout_marginLeft="@dimen/x20"
+        android:layout_toRightOf="@id/iv_icon"
+        android:paddingTop="@dimen/x30"
+        android:paddingBottom="@dimen/x30"
+        android:lineSpacingExtra="@dimen/y10"
+        android:textColor="@color/c_33"
+        android:layout_centerVertical="true"
+        />
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/y1"
+        android:layout_toRightOf="@id/iv_icon"
+        android:layout_marginLeft="@dimen/x20"
+        android:background="@color/c_eb"
+        android:layout_alignParentBottom="true"
+        />
+</RelativeLayout>

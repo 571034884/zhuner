@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <com.baidu.mapapi.map.MapView
+        android:id="@+id/mmap"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:clickable="true" />
+
+    <FrameLayout
+        android:id="@+id/fl0"
+        android:visibility="gone"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <ImageView
+            android:id="@+id/iv_all"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:layout_gravity="center"
+            android:onClick="onClick"
+            android:scaleType="centerCrop"
+            android:src="@mipmap/menu_cate" />
+
+        <ImageView
+            android:id="@+id/iv_shop"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:layout_gravity="center"
+            android:onClick="onClick"
+            android:scaleType="centerCrop"
+            android:src="@mipmap/menu_shop" />
+
+        <ImageView
+            android:id="@+id/iv_scenic"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:layout_gravity="center"
+            android:onClick="onClick"
+            android:scaleType="centerCrop"
+            android:src="@mipmap/menu_scenic" />
+
+        <ImageView
+            android:id="@+id/iv_metro"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:layout_gravity="center"
+            android:onClick="onClick"
+            android:scaleType="centerCrop"
+            android:src="@mipmap/menu_metro" />
+
+        <ImageView
+            android:id="@+id/iv_cate"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:layout_gravity="center"
+            android:onClick="onClick"
+            android:scaleType="centerCrop"
+            android:src="@mipmap/menu_cate" />
+
+        <ImageView
+            android:id="@+id/iv1"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:layout_gravity="center"
+            android:onClick="onClick"
+            android:visibility="gone"
+            android:scaleType="fitXY" />
+    </FrameLayout>
+
+
+</RelativeLayout>

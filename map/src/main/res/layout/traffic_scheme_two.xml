@@ -1,0 +1,163 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:visibility="visible"
+        android:paddingBottom="@dimen/y30"
+        android:paddingTop="@dimen/y30">
+
+        <RelativeLayout
+            android:id="@+id/rl_scheme_two_one"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:onClick="onClick">
+
+            <TextView
+                android:id="@+id/scheme_two_one_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:text="方案一"
+                android:textColor="@color/c_red"
+                android:textSize="@dimen/y20" />
+
+            <TextView
+                android:id="@+id/scheme_two_one_min"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/scheme_two_one_title"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="@dimen/y16"
+                android:text="40分钟"
+                android:textColor="@color/c_red"
+                android:textSize="@dimen/y32" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/scheme_two_one_min"
+                android:layout_marginTop="@dimen/y10"
+                android:gravity="center">
+
+                <TextView
+                    android:id="@+id/scheme_two_one_km"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    android:text="19.6公里"
+                    android:textColor="@color/c_red"
+                    android:textSize="@dimen/y20" />
+
+                <ImageView
+
+                    android:visibility="gone"
+                    android:id="@+id/tv_route_light_one"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/y10"
+                    android:src="@mipmap/ic_light_select" />
+
+                <TextView
+                    android:visibility="gone"
+                    android:id="@+id/tv_route_lightnum_one"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginLeft="@dimen/x5"
+                    android:text="5"
+                    android:textColor="@color/c_red"
+                    android:textSize="@dimen/y20" />
+            </LinearLayout>
+        </RelativeLayout>
+
+        <View
+            android:id="@+id/v_line_one"
+            android:layout_width="1px"
+            android:layout_height="match_parent"
+            android:background="@color/c_f3" />
+
+        <RelativeLayout
+            android:id="@+id/rl_scheme_two_two"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:onClick="onClick">
+
+            <TextView
+                android:id="@+id/scheme_two_two_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:text="方案二"
+                android:textColor="@color/c_99"
+                android:textSize="@dimen/y20" />
+
+            <TextView
+                android:id="@+id/scheme_two_two_min"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/scheme_two_two_title"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="@dimen/y16"
+                android:text="40分钟"
+                android:textColor="@color/c_33"
+                android:textSize="@dimen/y32" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/scheme_two_two_min"
+                android:layout_marginTop="@dimen/y10"
+                android:gravity="center">
+
+                <TextView
+                    android:id="@+id/scheme_two_two_km"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    android:text="19.6公里"
+                    android:textColor="@color/c_33"
+                    android:textSize="@dimen/y20" />
+
+                <ImageView
+                    android:visibility="gone"
+                    android:id="@+id/tv_route_light_two"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/y10"
+                    android:src="@mipmap/ic_light_default" />
+
+                <TextView
+                    android:visibility="gone"
+                    android:id="@+id/tv_route_lightnum_two"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginLeft="@dimen/x5"
+                    android:text="5"
+                    android:textColor="@color/c_33"
+                    android:textSize="@dimen/y20" />
+            </LinearLayout>
+        </RelativeLayout>
+    </LinearLayout>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/y1"
+        android:background="@color/c_eb" />
+
+    <TextView
+        android:id="@+id/scheme_two_details"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/y72"
+        android:gravity="center"
+        android:onClick="onClick"
+        android:text="查看详情"
+        android:textColor="@color/c_red"
+        android:textSize="@dimen/y26" />
+</LinearLayout>

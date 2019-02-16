@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<shape xmlns:android="http://schemas.android.com/apk/res/android"  >
+
+
+<!-- 填充的颜色 -->
+
+  <solid android:color="#FF0000" />
+  <!-- 设置边框宽度 -->
+  <stroke android:width="1px" android:color="#FF0000"/>
+
+<!-- 四个角的弧度 -->
+<!--<corners
+    android:bottomLeftRadius="10px"
+    android:bottomRightRadius="10px"
+    android:topLeftRadius="10px"
+    android:topRightRadius="10px" />-->
+  <corners android:radius="6px"/>
+<!-- padding：TextView里面的文字与TextView边界的间隔 -->
+
+
+</shape>

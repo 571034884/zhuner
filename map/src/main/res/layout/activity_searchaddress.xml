@@ -1,0 +1,193 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <com.baidu.mapapi.map.MapView
+        android:id="@+id/mv_map"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:clickable="true" />
+    <View
+        android:id="@+id/view_tran"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#80000000"
+        />
+
+    <LinearLayout
+        android:id="@+id/ll_view"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/y120"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:background="@drawable/ic_search_view"
+        android:orientation="horizontal">
+        <RelativeLayout
+            android:layout_width="0dp"
+            android:layout_marginLeft="@dimen/x55"
+            android:layout_height="match_parent"
+            android:layout_weight="1">
+
+            <EditText
+                android:id="@+id/et_search"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/y72"
+                android:background="#fff"
+                android:hint="输入关键词"
+                android:inputType="text"
+                android:maxLines="1"
+                android:onClick="onClick"
+                android:textColorHint="@color/c_99"
+                android:textSize="@dimen/y28" />
+
+            <ImageView
+                android:id="@+id/iv_clear_et"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:onClick="onClick"
+                android:src="@mipmap/ic_clear_et" />
+
+        </RelativeLayout>
+
+        <View
+            android:layout_width="1px"
+            android:layout_height="match_parent"
+            android:layout_marginBottom="@dimen/y10"
+            android:visibility="gone"
+            android:layout_marginTop="@dimen/y10"
+            android:background="@color/c_eb" />
+
+        <TextView
+            android:id="@+id/iv_search"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="onClick"
+            android:paddingLeft="@dimen/x25"
+            android:visibility="gone"
+            android:text="搜索"
+            android:textColor="@color/c_33"
+            android:textSize="@dimen/y28" />
+
+    </LinearLayout>
+    <ImageView
+        android:id="@+id/iv_close"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingTop="@dimen/y28"
+        android:paddingLeft="@dimen/x30"
+        android:onClick="onClick"
+        android:src="@mipmap/ic_return" />
+    <LinearLayout
+        android:id="@+id/rl_details"
+        android:layout_below="@id/ll_view"
+        android:layout_width="match_parent"
+        android:layout_marginLeft="@dimen/x18"
+        android:layout_marginRight="@dimen/x18"
+        android:visibility="visible"
+        android:layout_marginBottom="@dimen/y20"
+        android:background="@drawable/tv_search_bg"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+        <ListView
+            android:id="@+id/lv_item_des"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:divider="@null"
+            android:scrollbars="none">
+        </ListView>
+    </LinearLayout>
+
+
+    <RelativeLayout
+        android:id="@+id/rl_route"
+        android:layout_alignParentBottom="true"
+        android:layout_width="match_parent"
+        android:visibility="visible"
+        android:layout_height="wrap_content">
+        <RelativeLayout
+            android:id="@+id/rl_name_address"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <View
+                android:id="@+id/view_null"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/y60"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentTop="true"
+                android:background="#00000000" />
+            <RelativeLayout
+                android:layout_below="@id/view_null"
+                android:layout_width="match_parent"
+                android:background="@color/c_ff"
+                android:paddingTop="@dimen/y30"
+                android:layout_height="wrap_content">
+                <TextView
+                    android:id="@+id/tv_name"
+                    android:background="#fff"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="西二旗地铁站-A口奥术大师多撒大大"
+                    android:textSize="@dimen/y28"
+                    android:paddingLeft="@dimen/x24"
+                    android:paddingRight="@dimen/x190"
+                    android:textColor="@color/c_33"
+                    android:layout_marginBottom="@dimen/y16"
+                    />
+                <TextView
+                    android:id="@+id/tv_address"
+                    android:layout_below="@id/tv_name"
+                    android:layout_width="wrap_content"
+                    android:paddingLeft="@dimen/x24"
+                    android:paddingRight="@dimen/x24"
+                    android:layout_height="wrap_content"
+                    android:text="北京市海淀区西二旗地铁站"
+                    android:textSize="@dimen/y20"
+                    android:textColor="@color/c_66"
+                    android:layout_marginBottom="@dimen/y30"
+                    />
+            </RelativeLayout>
+            <ImageView
+                android:id="@+id/iv_goroute"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@mipmap/ic_route_go"
+                android:onClick="onClick"
+                android:layout_marginRight="@dimen/x40"
+                android:layout_alignParentRight="true"
+                />
+        </RelativeLayout>
+
+        <View
+            android:id="@+id/view_line"
+            android:layout_below="@id/rl_name_address"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/y1"
+            android:background="@color/c_eb"
+            />
+        <TextView
+            android:id="@+id/tv_maker"
+            android:background="@color/c_ff"
+            android:layout_below="@id/view_line"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/y72"
+            android:text="标记为我的酒店"
+            android:onClick="onClick"
+            android:textColor="@color/c_red"
+            android:textSize="@dimen/y26"
+            android:gravity="center"
+            />
+        <ProgressBar
+            android:id="@+id/pb_bar"
+            android:indeterminateTint="@color/c_33"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            android:layout_centerInParent="true"
+            />
+    </RelativeLayout>
+</RelativeLayout>

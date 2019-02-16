@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+    <RelativeLayout
+        android:id="@+id/rl_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <RelativeLayout
+            android:id="@+id/scheme_details"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <com.aibabel.map.views.MyGridView
+                android:id="@+id/my_grid"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:numColumns="2"></com.aibabel.map.views.MyGridView>
+
+            <RelativeLayout
+                android:id="@+id/rl_less"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/y30"
+                android:visibility="visible">
+
+                <TextView
+                    android:id="@+id/tv_less_min"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="40分钟"
+                    android:textColor="@color/c_33"
+                    android:textSize="@dimen/y28" />
+
+                <TextView
+                    android:id="@+id/tv_less_km"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/x24"
+                    android:layout_toRightOf="@id/tv_less_min"
+                    android:text="19.6公里"
+                    android:textColor="@color/c_33"
+                    android:textSize="@dimen/y28" />
+
+                <ImageView
+                    android:id="@+id/tv_route_light"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="@dimen/x24"
+                    android:layout_toRightOf="@id/tv_less_km"
+                    android:src="@mipmap/ic_light_default"
+                    android:visibility="gone" />
+
+                <TextView
+                    android:id="@+id/tv_route_lightnum"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="@dimen/x5"
+                    android:layout_toRightOf="@id/tv_route_light"
+                    android:text="5"
+                    android:textColor="@color/c_33"
+                    android:textSize="@dimen/y20"
+                    android:visibility="gone" />
+            </RelativeLayout>
+        </RelativeLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_below="@id/scheme_details">
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/y1"
+                android:background="@color/c_eb" />
+
+            <TextView
+                android:id="@+id/tv_details"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/y72"
+                android:gravity="center"
+                android:onClick="onClick"
+                android:text="查看详情"
+                android:textColor="@color/c_red"
+                android:textSize="@dimen/y26" />
+        </LinearLayout>
+    </RelativeLayout>
+</RelativeLayout>

@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/c_ff"
+    android:orientation="horizontal"
+    android:paddingBottom="@dimen/y16"
+    android:paddingTop="@dimen/y20">
+    <LinearLayout
+        android:id="@+id/ll_device"
+        android:layout_width="0dp"
+        android:onClick="onClick"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:gravity="center">
+
+        <TextView
+            android:id="@+id/tv_device"
+            style="@style/route_type_padding"
+            android:background="@drawable/tv_routetype_bg"
+            android:drawableLeft="@mipmap/ic_drive"
+            android:text="驾车"
+            android:textColor="@color/c_ff" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/ll_transit"
+        android:layout_width="0dp"
+        android:onClick="onClick"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:gravity="center">
+
+        <TextView
+            android:id="@+id/tv_transit"
+            style="@style/route_type_padding"
+            android:text="公交"
+            android:background="@drawable/tv_routetype_default_bg"
+            android:textColor="@color/c_33" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/ll_walk"
+        android:layout_width="0dp"
+        android:onClick="onClick"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:gravity="center">
+
+        <TextView
+            android:id="@+id/tv_walk"
+            style="@style/route_type_padding"
+            android:background="@drawable/tv_routetype_default_bg"
+            android:text="步行"
+            android:textColor="@color/c_33" />
+    </LinearLayout>
+</LinearLayout>

@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:paddingBottom="@dimen/y48"
+        android:paddingTop="@dimen/y48">
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_weight="3"
+            android:gravity="right"
+            android:orientation="vertical"
+            android:paddingLeft="@dimen/x16"
+            android:paddingRight="@dimen/x16">
+
+            <TextView
+                android:id="@+id/tv_best"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/tv_thebest_bg"
+                android:paddingBottom="@dimen/y4"
+                android:paddingLeft="@dimen/x8"
+                android:paddingRight="@dimen/x8"
+                android:paddingTop="@dimen/y4"
+                android:layout_marginBottom="@dimen/y16"
+                android:text="最佳"
+                android:textColor="@color/c_ff"
+                android:textSize="@dimen/y22" />
+
+            <TextView
+                android:id="@+id/tv_min"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="49分钟"
+                android:textColor="@color/c_33"
+                android:textSize="@dimen/y24" />
+
+            <TextView
+                android:id="@+id/tv_km"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/y16"
+                android:text="800米"
+                android:drawablePadding="@dimen/y8"
+                android:drawableLeft="@mipmap/ic_transit_walk"
+                android:textColor="@color/c_33"
+                android:textSize="@dimen/y24" />
+        </LinearLayout>
+
+        <View
+            android:layout_width="1px"
+            android:layout_height="match_parent"
+            android:background="@color/c_eb" />
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:paddingLeft="@dimen/y16"
+            android:layout_weight="6"
+            android:orientation="vertical">
+            <com.aibabel.map.views.FlowLayout
+                android:id="@+id/flow_txt"
+                android:layout_width="match_parent"
+                android:layout_marginRight="@dimen/x10"
+                android:layout_height="wrap_content">
+            </com.aibabel.map.views.FlowLayout>
+            <TextView
+                android:id="@+id/tv_details"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/y10"
+                android:text="7站 · 4元 · 学知园桥东上车"
+                android:textColor="@color/c_66"
+                android:layout_marginRight="@dimen/y16"
+                android:textSize="@dimen/y20" />
+        </LinearLayout>
+    </LinearLayout>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/y1"
+        android:background="@color/c_eb"
+        />
+</LinearLayout>
