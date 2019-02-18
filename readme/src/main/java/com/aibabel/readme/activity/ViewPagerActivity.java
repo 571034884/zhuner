@@ -37,7 +37,7 @@ public class ViewPagerActivity extends BaseActivity {
     private int[] jinqu = {R.mipmap.jinqu1, R.mipmap.jinqu2, R.mipmap.jinqu3, R.mipmap.jinqu4, R.mipmap.jinqu5, R.mipmap.jinqu6, R.mipmap.jinqu7, R.mipmap.jinqu8};
     private int[] quanqiu = {R.mipmap.quanqiu1, R.mipmap.quanqiu2, R.mipmap.quanqiu3, R.mipmap.quanqiu4, R.mipmap.quanqiu5, R.mipmap.quanqiu6, R.mipmap.quanqiu7};
     private int[] mudidi = {R.mipmap.mudidi1, R.mipmap.mudidi2, R.mipmap.mudidi3};
-    private int[] paizhao = {R.mipmap.photo1, R.mipmap.photo2};
+
 
     private int[] shijiezhong = {R.mipmap.zhong1};
     private int[] tianqi = {R.mipmap.tianqi1, R.mipmap.tianqi2};
@@ -72,6 +72,7 @@ public class ViewPagerActivity extends BaseActivity {
     private int currentPosition = 0;
     private LinearLayout.LayoutParams lp_dots_normal, lp_dots_focused;
     private int[] yuyinfanyi;
+    private int[] paizhao;
     private int[] yuyinmishu;
     private int[] shezhi;
 
@@ -95,19 +96,24 @@ public class ViewPagerActivity extends BaseActivity {
         int type = intent.getIntExtra("type", 0);
         String version = intent.getStringExtra("version");
         String proVersion = intent.getStringExtra("proVersion");
+//        version = "PH";
+//        proVersion = "S";
         switch (version) {
             case "PM":
+                paizhao = new int[]{R.mipmap.photo1, R.mipmap.photo2};
                 yuyinfanyi = new int[]{R.mipmap.yuyinfanyi_go1, R.mipmap.yuyinfanyi_go2, R.mipmap.yuyinfanyi3};
                 yuyinmishu = new int[]{R.mipmap.yuyinmishu_go1};
                 shezhi = new int[]{R.mipmap.shezhi_go1, R.mipmap.shezhi_go2};
                 break;
             case "PL":
+                paizhao = new int[]{R.mipmap.photo1, R.mipmap.photo2};
                 yuyinfanyi = new int[]{R.mipmap.yuyinfanyi1, R.mipmap.yuyinfanyi2, R.mipmap.yuyinfanyi3};
                 yuyinmishu = new int[]{R.mipmap.yuyinmishu1};
                 shezhi = new int[]{R.mipmap.shezhi1, R.mipmap.shezhi2, R.mipmap.shezhi3, R.mipmap.shezhi4};
                 break;
             case "PH":
-                yuyinfanyi = new int[]{R.mipmap.yuyinfanyi_fly1, R.mipmap.yuyinfanyi_fly2, R.mipmap.yuyinfanyi3};
+                paizhao = new int[]{R.mipmap.p1, R.mipmap.photo2};
+                yuyinfanyi = new int[]{R.mipmap.yuyinfanyi_fly1, R.mipmap.yuyinfanyi_fly2,  R.mipmap.yuyinfanyi6,R.mipmap.yuyinfanyi3};
                 yuyinmishu = new int[]{R.mipmap.yuyinmishu_fly1};
                 shezhi = new int[]{R.mipmap.shezhi1, R.mipmap.shezhi_fly2, R.mipmap.shezhi3, R.mipmap.shezhi4};
                 break;

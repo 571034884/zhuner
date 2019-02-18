@@ -11,6 +11,7 @@
       <module fileurl="file://$PROJECT_DIR$/fyt_exitandentry/fyt_exitandentry.iml" filepath="$PROJECT_DIR$/fyt_exitandentry/fyt_exitandentry.iml" />
       <module fileurl="file://$PROJECT_DIR$/fyt_git.iml" filepath="$PROJECT_DIR$/fyt_git.iml" />
       <module fileurl="file://$PROJECT_DIR$/fyt_play/fyt_play.iml" filepath="$PROJECT_DIR$/fyt_play/fyt_play.iml" />
+      <module fileurl="file://$PROJECT_DIR$/map/map.iml" filepath="$PROJECT_DIR$/map/map.iml" />
       <module fileurl="file://$PROJECT_DIR$/ocr/ocr.iml" filepath="$PROJECT_DIR$/ocr/ocr.iml" />
       <module fileurl="file://$PROJECT_DIR$/readme/readme.iml" filepath="$PROJECT_DIR$/readme/readme.iml" />
       <module fileurl="file://$PROJECT_DIR$/sos/sos.iml" filepath="$PROJECT_DIR$/sos/sos.iml" />

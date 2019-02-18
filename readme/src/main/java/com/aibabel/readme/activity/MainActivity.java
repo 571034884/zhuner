@@ -56,6 +56,9 @@ public class MainActivity extends BaseActivity {
         Log.e("version", "==" + proVersion);
         version = display.substring(0, 2);
         Log.e("version", "==" + version);
+
+//        version = "PH";
+//        proVersion = "S";
         initAdapter();
         initData(version);
         Map map = new HashMap();
@@ -187,7 +190,7 @@ public class MainActivity extends BaseActivity {
                 readmeList.add(new ReadmeItemBean(3, "景区导览"));
                 readmeList.add(new ReadmeItemBean(4, "目的地"));
                 readmeList.add(new ReadmeItemBean(5, "设置"));
-                readmeList.add(new ReadmeItemBean(6, "物体识别"));
+//                readmeList.add(new ReadmeItemBean(6, "物体识别"));
                 readmeList.add(new ReadmeItemBean(7, "全球上网"));
                 readmeList.add(new ReadmeItemBean(8, "语音秘书"));
                 readmeList.add(new ReadmeItemBean(9, "汇率换算"));
