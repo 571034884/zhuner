@@ -1,1 +1,1 @@
-include ':baselibrary', ':aidlaar', ':fyt_exitandentry', ':flow', ':fyt_play', ':travel', 'clock', 'currency', 'sos', 'weather', 'ocr', 'surfInternet', 'readme', 'coupon', 'tucao', ':map'
+include ':baselibrary', ':aidlaar', ':fyt_exitandentry', ':flow', ':fyt_play', ':travel', 'clock', 'currency', 'sos', 'weather', 'ocr', 'surfInternet', 'readme', 'coupon', 'tucao', ':map',":common"
