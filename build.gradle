@@ -25,6 +25,11 @@ allprojects {
         maven { url "https://jitpack.io"}
         maven{ url 'http://101.200.231.195:8081/nexus/content/repositories/thirdparty'}
         maven { url "http://maven.aliyun.com/nexus/content/repositories/releases" }
+        maven { url 'https://dl.bintray.com/xuuhaoo/maven/'}
+        configurations.all {
+            resolutionStrategy {
+                force 'com.android.support:support-v4:28.+'
+            }}
     }
 }
 

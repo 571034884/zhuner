@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.aibabel.translate">
+
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.RECORD_AUDIO" />
+    <uses-permission android:name="android:sharedUserId=android.uid.system" />
+    <!-- 允许读取wifi网络状态 -->
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+    <uses-permission android:name="android.permission.MOUNT_UNMOUNT_FILESYSTEMS" />
+
+    <application
+        android:name=".app.SophixStubApplication"
+        android:allowBackup="true"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:supportsRtl="true"
+        android:theme="@style/AppTheme">
+        <activity
+            android:name=".MainActivity"
+            android:launchMode="singleTask">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity android:name=".activity.BaseActivity" />
+        <activity android:name=".activity.LanguageActivity" />
+
+        <receiver
+            android:name=".broadcast.ReleaseModelReceiver"
+            android:enabled="true"
+            android:exported="true">
+
+            <!-- 闲时释放模型 -->
+            <intent-filter>
+                <action android:name="com.aibabel.translate.RELEASE_MODEL" />
+            </intent-filter>
+        </receiver>
+        <receiver
+            android:name=".broadcast.ShutDownReceiver"
+            android:enabled="true"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.ACTION_SHUTDOWN" />
+
+                <category android:name="android.intent.category.HOME" />
+            </intent-filter>
+        </receiver>
+        <receiver
+            android:name=".broadcast.ActiveBroadcastReceiver"
+            android:enabled="true"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="com.android.zhuner" />
+            </intent-filter>
+        </receiver>
+
+        <activity android:name=".activity.RecordActivity" />
+        <activity
+            android:name=".activity.EditActivity"
+            android:windowSoftInputMode="stateVisible|adjustResize" />
+
+        <service
+            android:name="cn.richinfo.mt.service.MTService"
+            android:exported="false"></service>
+        <receiver android:name="cn.richinfo.mt.receiver.MTBroadCastReceiver">
+            <intent-filter>
+                <action android:name="cn.richinfo.mutm.action.HEARTBEAT" />
+            </intent-filter>
+
+        </receiver>
+
+        <!--热修复-->
+        <meta-data
+            android:name="com.taobao.android.hotfix.IDSECRET"
+            android:value="25577011-1" />
+        <meta-data
+            android:name="com.taobao.android.hotfix.APPSECRET"
+            android:value="0dddbd19f698b985645335fe225850b6" />
+        <meta-data
+            android:name="com.taobao.android.hotfix.RSASECRET"
+            android:value="MIIEvAIBADANBgkqhkiG9w0BAQEFAASCBKYwggSiAgEAAoIBAQCQ1YbXcRSdHra8m/SDvzg2meCVkQGVXcN8eWuUDzQCpuvCbaWr5DVTzYkVY0+z+4uOianp5+yv0xM3qbKu1/9WigZ/9+yONHSfSNHPyEZi6ADi9H60Pmb16Vg8P6BeJgrqD7KCBsk3JGC7SRJFQZNvjNGRVKkX4uphFp8sOwqpkvsPMDY8BrPZF1W2tj3L7qn2p/ppRXXNNwV8C6FSQ0xERdufvQzcFbKfrA/KZRb/72AECLla5SDsGikpkCiHt7mV4ts1bSpMYje3k1ccUbsT5oLcPuFlN3CAC5uHiuznmmMCfZUjKtXAvPLpoEM7IEnOh+IHgt+S4UDy0yYvxJRFAgMBAAECggEAUWAHcQjSAi19kp81VMidduAiNSbR8vBJo6g872VTXaIXmJgum1OPOtSijufLol5U3PMwCoIKlAdOJtor0Nz/U8odOM09lfCXDd/GMq5eDbg4t0uT3QWqp8RBlShSnFNXkobbTv8tEtRXnSLDJzJe+i/ul28vyoHuGjqxmBJcPUXDihmlZVmIWpL2ifb5yIOdfBQ6NywK+8lHmjNpTAmbr3PrdaWGX4W+79udCECd13tTnSRXOszE38AlzOtuuB2jjRZpoW1txT4A8eXrewjw8ApooyRwbkC5dSJ43FQ6k1JCLlGrS4/b4SCqGCk3StATCaSUzZsa/znWHQzttZVPiQKBgQDb8xy7P8WsxdE0/lsXU076uHUGUrpCcYbWcvBbODoGZwTv7o4pW/Sg2QhikJ/LNM9+RdITRSQRTZXBZsuQCsq3wjtZ5o5oOMKPmer7Z4v61sVqd4VKbDTBNYOyQJJKxkHtsIbtzqU2OkTRsgA1dE7q/2ZLYm9xQWWps27UKguWLwKBgQCokqIsnINz3Xs1VZun9KFd9UG+/XUzxsfXBbFdcAtqiZ6QDI7mlH+wHKLkTaELuEL4QGPPClafYGldHcQOTlCNrO4Nfydm6Z55N0OfbfBXYFrA5OQrQwf/k/nm+jWkGA0nWjI11Mj7RpZO9UbRKmv982IsPplCgI7zZupwrcETywKBgGqskS27szqlQl7qUfGRJQfyeEdVziI1f0j4u9vx/Cpowns/ftFOWOm9+RQcwnNCrLO4VzejW+fMcio3mdjFcyYGXNSwPjcL+Ei/RLkjsj849Mw7JXk/26ItOy8zpAACAa2u5PHnPDd9sSzmoLVMMI5Gyi0bk6MhLZZNgR4DOlVfAoGASpHrGa7224drXHGNVOP7ijPXLKS0dv4FIxJKnpnVAwDz2qcjg87HGWHhkPriNewB/A2H2WuqXABrO5zSQL3WFoYcHG5WQMkxqE+RI3KfshdWriPS52xUmnOcRdgDaJ6XGwRkV7nUWoukLDOGazrH4OQMVqQuaeOy2Ot64/OJCLcCgYBYZ0vxM7gTdNQY9rtc87OfWIlL0M9fEzE3cPgv+rkVQiyMcxe/4sdfyXhG3BS+8ao56a/F+rs09M0kz6JAfDQd5qkG35GuZBQ2j/nv03jNicdWzRpyFoVNgKO9g27fGbwZX8jwEZxAjCSPxs/6FC2CoBg252YyY7/0m+tjvtTcdg==" />
+    </application>
+
+</manifest>

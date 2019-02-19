@@ -1,0 +1,872 @@
+[
+  {
+    "id": 0,
+    "name": "汉语",
+    "name_local": "汉语",
+    "lang_code": "ch_ch",
+    "alert": "请说标准普通话。",
+    "sound": 1,
+    "child": [
+      {
+        "var_id": 0,
+        "var": "汉语(中国大陆)",
+        "var_code": "ch_ch",
+        "var_local": "中国大陆",
+        "offline": "离线",
+        "sound": 1,
+        "offline_code": "ch_ch",
+        "alert": "请说标准普通话。"
+      },
+      {
+        "var_id": 1,
+        "var": "汉语(中国台湾)",
+        "var_code": "ch_tw",
+        "var_local": "中国台湾",
+        "offline": "离线",
+        "sound": 1,
+        "offline_code": "ch_tw",
+        "alert": "請說標準國語。"
+      }
+    ],
+    "offline": "离线",
+    "offline_code": "ch_ch"
+  },
+  {
+    "id": 1,
+    "name": "英语",
+    "name_local": "English",
+    "lang_code": "en",
+    "alert": "Please speak in standard language.",
+    "sound": 1,
+    "child": [
+      {
+        "var_id": 0,
+        "var": "英语(中国)",
+        "var_code": "en_ch",
+        "var_local": "China",
+        "offline": "Offline",
+        "sound": 1,
+        "offline_code": "en_ch",
+        "alert": "Please speak in standard language."
+      },
+      {
+        "var_id": 1,
+        "var": "英语(英国)",
+        "var_code": "en_en",
+        "var_local": "UK",
+        "offline": "Offline",
+        "sound": 1,
+        "offline_code": "en_en",
+        "alert": "Please speak in standard language."
+      },
+      {
+        "var_id": 2,
+        "var": "英语(美国)",
+        "var_code": "en_usa",
+        "var_local": "US",
+        "offline": "Offline",
+        "sound": 1,
+        "offline_code": "en_usa",
+        "alert": "Please speak in standard language."
+      },
+      {
+        "var_id": 3,
+        "var": "英语(澳大利亚)",
+        "var_code": "en_aus",
+        "var_local": "Australia",
+        "offline": "Offline",
+        "sound": 1,
+        "offline_code": "en_aus",
+        "alert": "Please speak in standard language."
+      },
+      {
+        "var_id": 4,
+        "var": "英语(新西兰)",
+        "var_code": "en_new",
+        "var_local": "New Zealand",
+        "offline": "Offline",
+        "sound": 1,
+        "offline_code": "en_new",
+        "alert": "Please speak in standard language."
+      },
+      {
+        "var_id": 5,
+        "var": "英语(加拿大)",
+        "var_code": "en_can",
+        "var_local": "Canada",
+        "offline": "Offline",
+        "sound": 1,
+        "offline_code": "en_can",
+        "alert": "Please speak in standard language."
+      },
+      {
+        "var_id": 6,
+        "var": "英语(印度)",
+        "var_code": "en_ind",
+        "var_local": "India",
+        "offline": "Offline",
+        "sound": 1,
+        "offline_code": "en_ind",
+        "alert": "Please speak in standard language."
+      },
+      {
+        "var_id": 7,
+        "var": "英语(爱尔兰)",
+        "var_code": "en_ire",
+        "var_local": "Ireland",
+        "offline": "Offline",
+        "sound": 1,
+        "offline_code": "en_ire",
+        "alert": "Please speak in standard language."
+      },
+      {
+        "var_id": 8,
+        "var": "英语(南非)",
+        "var_code": "en_sa",
+        "var_local": "South Africa",
+        "offline": "Offline",
+        "sound": 1,
+        "offline_code": "en_sa",
+        "alert": "Please speak in standard language."
+      },
+      {
+        "var_id": 9,
+        "var": "英语(菲律宾)",
+        "var_code": "en_ph",
+        "var_local": "Philippines",
+        "offline": "Offline",
+        "sound": 1,
+        "offline_code": "en_ph",
+        "alert": "Please speak in standard language."
+      },
+      {
+        "var_id": 10,
+        "var": "英语(肯尼亚)",
+        "var_code": "en_ke",
+        "var_local": "Kenya",
+        "offline": "Offline",
+        "sound": 1,
+        "offline_code": "en_ke",
+        "alert": "Please speak in standard language."
+      }
+    ],
+    "offline": "Offline",
+    "offline_code": "en"
+  },
+  {
+    "id": 2,
+    "name": "日语",
+    "name_local": "日本語",
+    "lang_code": "jpa",
+    "alert": "標準語で話してください。",
+    "sound": 1,
+    "child": [],
+    "offline": "オフライン",
+    "offline_code": "jpa"
+  },
+  {
+    "id": 3,
+    "name": "粤语",
+    "name_local": "粵語",
+    "lang_code": "ch_yy",
+    "alert": "唔该请讲标准语。",
+    "sound": 1,
+    "child": [
+      {
+        "var_id": 0,
+        "var": "粤语(中国大陆)",
+        "var_code": "ch_yy",
+        "var_local": "中国大陆",
+        "offline": "离线",
+        "sound": 1,
+        "offline_code": "ch_yy",
+        "alert": "唔该请讲标准语。"
+      },
+      {
+        "var_id": 1,
+        "var": "粤语(中国香港)",
+        "var_code": "ch_hk_j",
+        "var_local": "中国香港",
+        "offline": "离线",
+        "sound": 1,
+        "offline_code": "ch_hk_j",
+        "alert": "唔該請講標準語。"
+      }
+    ],
+    "offline": "离线",
+    "offline_code": "ch_yy"
+  },
+  {
+    "id": 4,
+    "name": "泰语",
+    "name_local": "ภาษาไทย",
+    "lang_code": "tha",
+    "alert": "กรุณาพูดภาษาไทยมาตรฐาน",
+    "sound": 1,
+    "child": [],
+    "offline": "ออฟไลน์",
+    "offline_code": "tha"
+  },
+  {
+    "id": 5,
+    "name": "印尼语",
+    "name_local": "Bahasa Indonesia",
+    "lang_code": "idn",
+    "alert": "Silahkan berbicara bahasa baku.",
+    "sound": 1,
+    "child": [],
+    "offline": "Luring",
+    "offline_code": "idn"
+  },
+  {
+    "id": 6,
+    "name": "俄语",
+    "name_local": "Русский",
+    "lang_code": "rus",
+    "alert": "Пожалуйста, говорите на стандартном языке.",
+    "sound": 1,
+    "child": [],
+    "offline": "Оффлайновый",
+    "offline_code": "rus"
+  },
+  {
+    "id": 7,
+    "name": "法语",
+    "name_local": "Français",
+    "lang_code": "fr",
+    "alert": "Parlez la langue standard, s'il vous plaît.",
+    "sound": 1,
+    "child": [
+      {
+        "var_id": 0,
+        "var": "法语(法国)",
+        "var_code": "fra_fra",
+        "var_local": "France",
+        "offline": "Offline",
+        "sound": 1,
+        "offline_code": "fra_fra",
+        "alert": "Parlez la langue standard, s'il vous plaît."
+      },
+      {
+        "var_id": 1,
+        "var": "法语(加拿大)",
+        "var_code": "fra_can",
+        "var_local": "Canada",
+        "offline": "Offline",
+        "sound": 1,
+        "offline_code": "fra_can",
+        "alert": "Parlez la langue standard, s'il vous plaît."
+      }
+    ],
+    "offline": "Offline",
+    "offline_code": "fr"
+  },
+  {
+    "id": 8,
+    "name": "西班牙语",
+    "name_local": "Español",
+    "lang_code": "es",
+    "alert": "Hable la lengua estándar, por favor.",
+    "sound": 1,
+    "child": [
+      {
+        "var_id": 0,
+        "var": "西班牙语(西班牙)",
+        "var_code": "spa_esp",
+        "var_local": "España",
+        "offline": "Fuera de línea",
+        "sound": 1,
+        "offline_code": "spa_esp",
+        "alert": "Hable la lengua estándar, por favor."
+      },
+      {
+        "var_id": 1,
+        "var": "西班牙语(拉丁美洲)",
+        "var_code": "spa_xla",
+        "var_local": "Latinoamérica",
+        "offline": "Fuera de línea",
+        "sound": 1,
+        "offline_code": "spa_xla",
+        "alert": "Hable la lengua estándar, por favor."
+      },
+      {
+        "var_id": 2,
+        "var": "西班牙语(墨西哥)",
+        "var_code": "spa_mx",
+        "var_local": "México",
+        "offline": "Fuera de línea",
+        "sound": 1,
+        "offline_code": "spa_mx",
+        "alert": "Hable la lengua estándar, por favor."
+      },
+      {
+        "var_id": 3,
+        "var": "西班牙语(美国)",
+        "var_code": "spa_us",
+        "var_local": "EE. UU.",
+        "offline": "Offline",
+        "sound": 1,
+        "offline_code": "spa_us",
+        "alert": "Hable la lengua estándar, por favor."
+      }
+    ],
+    "offline": "Fuera de línea",
+    "offline_code": "es"
+  },
+  {
+    "id": 9,
+    "name": "韩语",
+    "name_local": "한국어",
+    "lang_code": "kor",
+    "alert": "표준어로 말하십시오.",
+    "sound": 1,
+    "child": [],
+    "offline": "오프라인",
+    "offline_code": "kor"
+  },
+  {
+    "id": 10,
+    "name": "德语",
+    "name_local": "Deutsch",
+    "lang_code": "ger",
+    "alert": "Sprechen Sie bitte die Standardsprache.",
+    "sound": 1,
+    "child": [],
+    "offline": "Offline",
+    "offline_code": "ger"
+  },
+  {
+    "id": 11,
+    "name": "意大利语",
+    "name_local": "Italiano",
+    "lang_code": "ita",
+    "alert": "Parli la lingua standard, per favore.",
+    "sound": 1,
+    "child": [],
+    "offline": "Offline",
+    "offline_code": "ita"
+  },
+  {
+    "id": 12,
+    "name": "葡萄牙语",
+    "name_local": "Português",
+    "lang_code": "pt",
+    "alert": "Fale o idioma padrão, por favor.",
+    "sound": 1,
+    "child": [
+      {
+        "var_id": 0,
+        "var": "葡萄牙语(葡萄牙)",
+        "var_code": "por_prt",
+        "var_local": "Portugal",
+        "offline": "Offline",
+        "sound": 1,
+        "offline_code": "por_prt",
+        "alert": "Fale o idioma padrão, por favor."
+      },
+      {
+        "var_id": 1,
+        "var": "葡萄牙语(巴西)",
+        "var_code": "por_bra",
+        "var_local": "Brazil",
+        "offline": "Offline",
+        "sound": 1,
+        "offline_code": "por_bra",
+        "alert": "Fale o idioma padrão, por favor."
+      }
+    ],
+    "offline": "Offline",
+    "offline_code": "pt"
+  },
+  {
+    "id": 13,
+    "name": "希腊语",
+    "name_local": "Ελληνικά",
+    "lang_code": "ell",
+    "alert": "Μιλήστε σε τυποποιημένη γλώσσα, παρακαλώ.",
+    "sound": 1,
+    "child": [],
+    "offline": "Χωρίς σύνδεση",
+    "offline_code": "ell"
+  },
+  {
+    "id": 14,
+    "name": "荷兰语",
+    "name_local": "Nederlands",
+    "lang_code": "nld",
+    "alert": "Spreek alstublieft in standaardtaal.",
+    "sound": 1,
+    "child": [],
+    "offline": "Offline",
+    "offline_code": "nld"
+  },
+  {
+    "id": 15,
+    "name": "阿拉伯语",
+    "name_local": "العربية",
+    "lang_code": "ara_egy",
+    "alert": "يرجى التحدث باللغة القياسية.",
+    "sound": 1,
+    "child": [
+      {
+        "var_id": 0,
+        "var": "阿拉伯语(埃及)",
+        "var_code": "ara_egy",
+        "var_local": "المصرية",
+        "offline": "غير متصل",
+        "sound": 1,
+        "offline_code": "ara_egy",
+        "alert": "يرجى التحدث باللغة القياسية."
+      },
+      {
+        "var_id": 1,
+        "var": "阿拉伯语(沙特阿拉伯)",
+        "var_code": "ara_sau",
+        "var_local": "العربية السعودية",
+        "offline": "غير متصل",
+        "sound": 1,
+        "offline_code": "ara_sau",
+        "alert": "يرجى التحدث باللغة القياسية."
+      },
+      {
+        "var_id": 2,
+        "var": "阿拉伯语(国际)",
+        "var_code": "ara_int",
+        "var_local": "الدولية",
+        "offline": "غير متصل",
+        "sound": 1,
+        "offline_code": "ara_int",
+        "alert": "يرجى التحدث باللغة القياسية."
+      },
+      {
+        "var_id": 3,
+        "var": "阿拉伯语(卡塔尔)",
+        "var_code": "ara_qa",
+        "var_local": "قطر",
+        "offline": "غير متصل",
+        "sound": 1,
+        "offline_code": "ara_qa",
+        "alert": "يرجى التحدث باللغة القياسية."
+      },
+      {
+        "var_id": 4,
+        "var": "阿拉伯语(阿联酋)",
+        "var_code": "ara_ae",
+        "var_local": "الأمارات العربية المتحدة",
+        "offline": "غير متصل",
+        "sound": 1,
+        "offline_code": "ara_ae",
+        "alert": "يرجى التحدث باللغة القياسية."
+      }
+    ],
+    "offline": "غير متصل",
+    "offline_code": "ara_egy"
+  },
+  {
+    "id": 16,
+    "name": "马来语",
+    "name_local": "Bahasa Melayu",
+    "lang_code": "mys",
+    "alert": "Sila bercakap bahasa baku.",
+    "sound": 1,
+    "child": [],
+    "offline": "Offline",
+    "offline_code": "mys"
+  },
+  {
+    "id": 18,
+    "name": "土耳其语",
+    "name_local": "Türkçe",
+    "lang_code": "tur",
+    "alert": "Standart dilde konuşun, lütfen.",
+    "sound": 1,
+    "child": [],
+    "offline": "Çevrim dışı",
+    "offline_code": "tur"
+  },
+  {
+    "id": 20,
+    "name": "越南语",
+    "name_local": "Tiếng Việt",
+    "lang_code": "vie",
+    "alert": "Hãy nói ngôn ngữ tiêu chuẩn.",
+    "sound": 1,
+    "child": [],
+    "offline": "Ngoại tuyến",
+    "offline_code": "vie"
+  },
+  {
+    "id": 21,
+    "name": "波兰语",
+    "name_local": "Polski",
+    "lang_code": "pol",
+    "alert": "Proszę mówić w standardowym języku.",
+    "sound": 1,
+    "child": [],
+    "offline": "Offline",
+    "offline_code": "pol"
+  },
+  {
+    "id": 22,
+    "name": "瑞典语",
+    "name_local": "Svenska",
+    "lang_code": "swe",
+    "alert": "Snälla tala på standardspråk.",
+    "sound": 1,
+    "child": [],
+    "offline": "Off-line",
+    "offline_code": "swe"
+  },
+  {
+    "id": 23,
+    "name": "丹麦语",
+    "name_local": "Dansk",
+    "lang_code": "dan",
+    "alert": "Tal venligst på standard sprog.",
+    "sound": 1,
+    "child": [],
+    "offline": "Offline",
+    "offline_code": "dan"
+  },
+  {
+    "id": 24,
+    "name": "芬兰语",
+    "name_local": "Suomi",
+    "lang_code": "fin",
+    "alert": "Puhu yleiskieltä.",
+    "sound": 1,
+    "child": [],
+    "offline": "Offline",
+    "offline_code": "fin"
+  },
+  {
+    "id": 25,
+    "name": "捷克语",
+    "name_local": "Čeština",
+    "lang_code": "ces",
+    "alert": "Mluvte ve standardním jazyce, prosím.",
+    "sound": 1,
+    "child": [],
+    "offline": "Offline",
+    "offline_code": "ces"
+  },
+  {
+    "id": 26,
+    "name": "罗马尼亚语",
+    "name_local": "Română",
+    "lang_code": "ron",
+    "alert": "Vorbiți în limba standard, vă rog.",
+    "sound": 1,
+    "child": [],
+    "offline": "Offline",
+    "offline_code": "ron"
+  },
+  {
+    "id": 27,
+    "name": "斯洛文尼亚语",
+    "name_local": "Slovenščina",
+    "lang_code": "slk",
+    "alert": "Govori v standardnem jeziku, prosim.",
+    "sound": 1,
+    "child": [],
+    "offline": "Brez povezave",
+    "offline_code": "slk"
+  },
+  {
+    "id": 28,
+    "name": "加泰罗尼亚语",
+    "name_local": "Català",
+    "lang_code": "cat",
+    "alert": "Parli el llenguatge estàndard, si us plau.",
+    "sound": 1,
+    "child": [],
+    "offline": "Fora de línia",
+    "offline_code": "cat"
+  },
+  {
+    "id": 29,
+    "name": "匈牙利语",
+    "name_local": "Magyar",
+    "lang_code": "hun",
+    "alert": "Beszélj a standard nyelven.",
+    "sound": 1,
+    "child": [],
+    "offline": "Offline",
+    "offline_code": "hun"
+  },
+  {
+    "id": 30,
+    "name": "斯洛伐克语",
+    "name_local": "Slovenčina",
+    "lang_code": "sk",
+    "alert": "Hovorte v štandardnom jazyku, prosím.",
+    "sound": 1,
+    "child": [],
+    "offline": "Offline",
+    "offline_code": "sk"
+  },
+  {
+    "id": 31,
+    "name": "挪威语",
+    "name_local": "Norsk (bokmål)",
+    "lang_code": "nor",
+    "alert": "Vennligst snakk i standardspråket.",
+    "sound": 1,
+    "child": [],
+    "offline": "Frakoblet",
+    "offline_code": "nor"
+  },
+  {
+    "id": 17,
+    "name": "菲律宾语",
+    "name_local": "Wikang Filipino",
+    "lang_code": "fil",
+    "alert": "Mangyaring magsalita ng karaniwang wika.",
+    "sound": 0,
+    "child": [],
+    "offline": "Offline",
+    "offline_code": "fil"
+  },
+  {
+    "id": 19,
+    "name": "乌克兰语",
+    "name_local": "Українська",
+    "lang_code": "ukr",
+    "alert": "Будь ласка, говорите на стандартній мові.",
+    "sound": 0,
+    "child": [],
+    "offline": "Офлайн",
+    "offline_code": "ukr"
+  },
+  {
+    "id": 32,
+    "name": "克罗地亚语",
+    "name_local": "Hrvatski",
+    "lang_code": "cro",
+    "alert": "Molimo govoriti standardni jezik.",
+    "sound": 0,
+    "child": [],
+    "offline": "Izvanmrežno",
+    "offline_code": "cro"
+  },
+  {
+    "id": 33,
+    "name": "冰岛语",
+    "name_local": "Íslenska",
+    "lang_code": "is",
+    "alert": "Vinsamlegast talaðu staðalmálið.",
+    "sound": 0,
+    "child": [],
+    "offline": "Ótengdur",
+    "offline_code": "is"
+  },
+  {
+    "id": 34,
+    "name": "祖鲁语",
+    "name_local": "isiZulu",
+    "lang_code": "zu",
+    "alert": "Sicela ukhulume ulimi standard.",
+    "sound": 0,
+    "child": [],
+    "offline": "Offline",
+    "offline_code": "zu"
+  },
+  {
+    "id": 35,
+    "name": "爪哇语",
+    "name_local": "Jawa",
+    "lang_code": "ja",
+    "alert": "Mangga nganggo basa standar.",
+    "sound": 0,
+    "child": [],
+    "offline": "Offline",
+    "offline_code": "ja"
+  },
+  {
+    "id": 36,
+    "name": "立陶宛语",
+    "name_local": "Lietuvių",
+    "lang_code": "lt",
+    "alert": "Prašau kalbėti standartine kalba.",
+    "sound": 0,
+    "child": [],
+    "offline": "Neprisijungę",
+    "offline_code": "lt"
+  },
+  {
+    "id": 37,
+    "name": "拉脱维亚语",
+    "name_local": "Latviešu",
+    "lang_code": "lv",
+    "alert": "Lūdzu, runājiet standarta valodu.",
+    "sound": 0,
+    "child": [],
+    "offline": "Bezsaistē",
+    "offline_code": "lv"
+  },
+  {
+    "id": 38,
+    "name": "加利西亚语",
+    "name_local": "Galego",
+    "lang_code": "gl",
+    "alert": "Fale o idioma estándar, por favor.",
+    "sound": 0,
+    "child": [],
+    "offline": "Offline",
+    "offline_code": "gl"
+  },
+  {
+    "id": 39,
+    "name": "保加利亚语",
+    "name_local": "Български",
+    "lang_code": "bg-BG",
+    "alert": "Моля, говорете стандартния език.",
+    "sound": 0,
+    "child": [],
+    "offline": "Офлайн",
+    "offline_code": "bg-BG"
+  },
+  {
+    "id": 40,
+    "name": "高棉语",
+    "name_local": "ភាសាខ្មែរ",
+    "lang_code": "km-KH",
+    "alert": "សូមនិយាយភាសាស្តង់ដារ",
+    "sound": 0,
+    "child": [],
+    "offline": "ក្រៅបណ្ដាញ",
+    "offline_code": "km-KH"
+  },
+  {
+    "id": 41,
+    "name": "老挝语",
+    "name_local": "ພາສາລາວ",
+    "lang_code": "lo-LA",
+    "alert": "ກະລຸນາເວົ້າພາສາມາດຕະຖານ",
+    "sound": 0,
+    "child": [],
+    "offline": "ອອຟໄລ",
+    "offline_code": "lo-LA"
+  },
+  {
+    "id": 42,
+    "name": "尼泊尔语",
+    "name_local": "नेपाली",
+    "lang_code": "ne-NP",
+    "alert": "कृपया मानक भाषा बोल्नुहोस्।",
+    "sound": 0,
+    "child": [],
+    "offline": "अफलाइन",
+    "offline_code": "ne-NP"
+  },
+  {
+    "id": 43,
+    "name": "希伯来语",
+    "name_local": "עברית",
+    "lang_code": "he-IL",
+    "alert": "אנא דוברים את השפה התקנית.",
+    "sound": 0,
+    "child": [],
+    "offline": "לא מקוון",
+    "offline_code": "he-IL"
+  },
+  {
+    "id": 44,
+    "name": "印地语",
+    "name_local": "हिन्दी",
+    "lang_code": "hi-IN",
+    "alert": "कृपया मानक भाषा बोलें।",
+    "sound": 0,
+    "child": [],
+    "offline": "ऑफ़लाइन",
+    "offline_code": "hi-IN"
+  },
+  {
+    "id": 45,
+    "name": "阿姆哈拉语",
+    "name_local": "አማርኛ",
+    "lang_code": "am-ET",
+    "alert": "እባክዎን መደበኛ ቋንቋ ይናገሩ.",
+    "sound": 0,
+    "child": [],
+    "offline": "ከመስመር ውጭ",
+    "offline_code": "am-ET"
+  },
+  {
+    "id": 46,
+    "name": "阿塞拜疆语",
+    "name_local": "Azərbaycan",
+    "lang_code": "az-AZ",
+    "alert": "Xahiş edirik standart dili danışın.",
+    "sound": 0,
+    "child": [],
+    "offline": "Offline",
+    "offline_code": "az-AZ"
+  },
+  {
+    "id": 47,
+    "name": "波斯语",
+    "name_local": "فارسی",
+    "lang_code": "fa-IR",
+    "alert": "لطفا به زبان استاندارد صحبت کنید.",
+    "sound": 0,
+    "child": [],
+    "offline": "آفلاین",
+    "offline_code": "fa-IR"
+  },
+  {
+    "id": 48,
+    "name": "格鲁吉亚语",
+    "name_local": "ქართული",
+    "lang_code": "ka-GE",
+    "alert": "გთხოვთ, ესაუბროთ სტანდარტულ ენას.",
+    "sound": 0,
+    "child": [],
+    "offline": "შემოსული",
+    "offline_code": "ka-GE"
+  },
+  {
+    "id": 49,
+    "name": "哈萨克语(中国)",
+    "name_local": "قازاقشا‎",
+    "lang_code": "kk-KZ",
+    "alert": "ستاندارتتى تىلدە سويلەڭىز.",
+    "sound": 0,
+    "child": [],
+    "offline": "وففلاين",
+    "offline_code": "kk-KZ"
+  },
+  {
+    "id": 50,
+    "name": "塞尔维亚语",
+    "name_local": "Српски",
+    "lang_code": "sr-RS",
+    "alert": "Молимо да говорите на стандардном језику.",
+    "sound": 0,
+    "child": [],
+    "offline": "Оффлине",
+    "offline_code": "sr-RS"
+  },
+  {
+    "id": 51,
+    "name": "泰米尔语",
+    "name_local": "தமிழ்",
+    "lang_code": "ta-LK",
+    "alert": "நிலையான மொழி பேசவும்.",
+    "sound": 0,
+    "child": [],
+    "offline": "ஆஃப்லைன்",
+    "offline_code": "ta-LK"
+  },
+  {
+    "id": 52,
+    "name": "乌尔都语",
+    "name_local": "اردو",
+    "lang_code": "ur-PK",
+    "alert": "براہ مہربانی معیاری زبان بولیں.",
+    "sound": 0,
+    "child": [],
+    "offline": "آف لائن",
+    "offline_code": "ur-PK"
+  }
+]
