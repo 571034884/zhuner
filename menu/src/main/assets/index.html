@@ -1,0 +1,545 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,height=device-height,initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="format-detection" content="email=no,telephone=no"/>
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+        *{margin: 0;padding: 0;list-style: none;}
+        /** 清除内外边距 **/
+        body, h1, h2, h3, h4, h5, h6, hr, p, blockquote, /* structural elements 结构元素 */
+        dl, dt, dd, ul, ol, li, /* list elements 列表元素 */
+        pre, /* text formatting elements 文本格式元素 */
+        form, fieldset, legend, button, input, textarea, /* form elements 表单元素 */
+        th, td /* table elements 表格元素 */ {margin: 0;padding: 0;}
+        /** 设置默认字体 **/
+        body,button, input, select, textarea /* for ie */ {font: 12px/1.5 tahoma, arial, \5b8b\4f53, sans-serif;}
+        h1, h2, h3, h4, h5, h6 { font-size: 100%; }
+        address, cite, dfn, em, var { font-style: normal; } /* 将斜体扶正 */
+        code, kbd, pre, samp { font-family: courier new, courier, monospace,"宋体"; } /* 统一等宽字体 */
+        small { font-size: .12rem; } /* 小于 12px 的中文很难阅读，让 small 正常化 */
+        /** 重置列表元素 **/
+        ul, ol { list-style: none; }
+        /** 重置文本格式元素 **/
+        a { text-decoration: none; color: #000; }
+        a:hover { text-decoration: none;}
+        /** 重置表单元素 **/
+        legend { color: #000; } /* for ie6 */
+        fieldset, img { border: 0; } /* img 搭车：让链接里的 img 无边框 */
+        button, input, select, textarea { font-size: 100%; } /* 使得表单元素在 ie 下能继承字体大小 */
+        /* 注：optgroup 无法扶正 */
+        /** 重置表格元素 **/
+        table { border-collapse: collapse; border-spacing: 0; }
+        /* 清除浮动 */
+        .ks-clear:after, .clear:after { content: '\20';display: block;height: 0;clear: both;}
+        .ks-clear, .clear {*zoom: 1;}
+        html,body,.wrapper{width: 100%; height: 100%;display: flex;flex-direction: column;}
+        .header{ width: 100%; background: rgba(0,0,0,0); color: #fff; padding-top: 10px; font-size: 1.5rem; position: relative; display: flex; justify-content: center; align-items: center;}
+        .center_title{display: flex; justify-content: center; align-items: center;}
+        .center_title span {display: inline-block;}
+        .center_title span img {display: inline-block;}
+        .center_title .select{width: 12px; height: 100%;display: flex; justify-content: center; align-items: center;padding-left: 5px;}
+        /* .header .select{ position: absolute; top: 25px;  left: 242px; } */
+        .back img{ width: 100%; height: 100%; }
+        .section{ height: 100%; flex: 1; overflow-y: scroll; }
+        .banner{ width: 100%; height: 220px; background-size: 100% 100%;}
+        .banner img{ width: 100%; height: 100%; }
+        #tab{ width: 100%; height: auto; padding-top: 12px; color: #333; font-size: 14px; }
+        #tab #tab_list{width: 100%; display: flex; }
+        #tab_list .list{ width: 50%; text-align: center; }
+        .list:nth-child(1){ border-right: 1px solid #ebebeb; }
+        .active span{ color: #ff0000; display: inline-block; height: 100%; width: 30%; font-size: 16px; border-bottom: 2px solid #ff0000;}
+        #tab_content .content:nth-child(2){ display: none;}
+        .content_header{ width: 100%; color: #333; font-size: 16px; text-align: center; padding-top: 10px; padding-bottom: 10px;}
+        /* .content1{padding-top: 18px;} */
+        /* .content_sect1{ width: 90%;  margin: auto; } */
+        #tab_content{width: 90%; margin: auto;}
+        .content_section .content_img{ width: 100%; height: auto;  }
+        .content_img img{ width: 100%; height: 100%; border-radius: 8px; }
+        .content_cont_city{ padding-bottom: 10px; }
+        .content_cont_country{ padding-bottom: 10px; }
+        .content_cont{ padding-bottom: 10px; }
+        /* .content_cont p img{
+            width: 100%;
+            height: 100%;
+        } */
+        .content_frequency-show{
+            width: 100%;
+            height: auto;
+            margin-top: 18px;
+            margin-bottom: 23px;
+        }
+        .content_frequency{
+            width: 100%;
+            height: auto;
+            border-radius: 8px;
+            border:1px solid #ebebeb;
+            display: flex;
+            margin-top: 18px;
+            margin-bottom: 23px;
+        }
+        .content_frequency .voice_icon{
+            width: 60px;
+            height: 60px;
+            padding: 10px 5px 10px 5px;
+        }
+        .content_frequency .voice_icon img {
+            width: 100%;
+            height: 100%;
+        }
+        .content_frequency .play-box {
+            flex: 1;
+            margin-right: 10px;
+            /* width: 100%; */
+            /* margin: 0 auto; */
+        }
+
+        .content_frequency .play-box .left {
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            /* float: left; */
+        }
+        .content_frequency .play-box .left p.timeline { width: 100%;height: 2px; background:#ebebeb; border-radius: 5px; margin:14px auto 0; position: relative; z-index: 2; }
+        .content_frequency .play-box .left p.timeline span {position: relative; width: 0px; height: 2px; background: #ff0000; border-radius: 5px; display: block; -webkit-transition: width ease-out 0.3s;-o-transition: width ease-out 0.3s;transition: width ease-out 0.3s;}
+        /* .content_frequency .play-box .left p.timeline span:after{content: ""; position: absolute; top: -4px; right:-0.6rem;width: 1.2rem; height:1.2rem; border-radius: 50%;background-color: #FFF;} */
+        .content_frequency .play-box .left .l-title { font-size: 14px; color: #333333; margin-top:20px;}
+        .content_frequency .play-box .left div.info {  font-size: 10px; margin-top:4px; z-index: 1; color: #999999; display: flex; justify-content: space-between;}
+        .content_frequency .play-box .left div.info .size {   display: block;}
+        .content_frequency .play-box .left div.info .timeshow { display: block;}
+        video{display: none; }
+        #center_sele{display: none;}
+        #center_sele p{line-height: 40px;list-style: none;position: relative;top: -20px;color: #fff;}
+        /* .content_cont .imgs{display: flex;width: 50%;} */
+        #myBtn {
+            display: none;
+            position: fixed;
+            bottom: 10px;
+            right: 10px;
+            z-index: 99;
+            border: none;
+            outline: none;
+            color: white;
+            cursor: pointer;
+            border-radius: 10px;
+            width: 15%;
+        }
+        #myBtn img{
+            width: 100%;
+            height: 100%;
+        }
+    </style>
+</head>
+<body>
+    <div class="wrapper">
+        
+        <section class="section">
+            <a name="top"></a>
+            <div class="banner" id="banner">
+                <header class="header">
+                    <header class="header">
+                        <div class="center_title" id="center_title">
+                            <span id="title_left"></span><span>·</span><span id="title_right"></span>
+                            <span class="select"><img src="image/public/pull-down.png" alt="pull-down"></span>
+                        </div>    
+                    </header>
+                </header>
+            </div>
+            <div id="tab">
+                <div id="tab_list">
+                    <div id="city_list" class="list active"></div>
+                    <div id="national_list" class="list"></div>
+                </div>
+                <div id="tab_content">
+                    <div class="content">
+                        <div id="frequency"></div>
+                        <div id="content_cont1"></div>
+                    </div>
+                    <div class="content"><div id="content_cont2"></div></div>
+                </div>
+            </div>
+        </section>
+        <a href="#top" id="myBtn"><img src="image/public/return.png" alt=""></a>
+    </div>
+</body>
+</html>
+<script src="file:///sdcard/offline/menu/js/jquery-1.4.4.min.js"></script>
+<script>
+    var tab_list = document.getElementById("tab_list");
+    var tab_content = document.getElementById("tab_content");
+    var list_div = tab_list.getElementsByTagName("div");//获取tab列表
+    var centerTitle = document.getElementById('center_title')
+    var content_div = tab_content.getElementsByClassName("content");//获取tab内容列表
+    var center_tit=document.getElementById('center_tit'); //下拉选择
+    var center_title=document.getElementsByClassName('center_title'); 
+    var banner = document.getElementById('banner')
+    var content_cont1=document.getElementById('content_cont1'); 
+    var content_cont2=document.getElementById('content_cont2');
+    var city_list=document.getElementById('city_list');
+    var national_list=document.getElementById('national_list');
+    var center_sele=document.getElementById('center_sele');
+    var frequency=document.getElementById('frequency');
+    var select_p=document.getElementsByTagName("p");//获取下拉内容列表
+    var title_left = document.getElementById('title_left')
+    var title_right = document.getElementById('title_right')
+    var voiceFlag = true
+    var Interval = null
+    var cityName = ''
+    var countryName = ''
+    var cityHeaderImage = ''
+    var countryHeaderImage = ''
+    var baseUrl = 'file:///sdcard/offline/menu/';
+    // var baseUrl = './'
+    var string = menuApp.getCCId();
+    var dataObj = JSON.parse(string);
+    var cityId = dataObj.cityId;
+    var countryId = dataObj.countryId;
+ 
+    // var cityId = 'city_01';
+    // var countryId = 'country_01';
+
+    centerTitle.onclick = function() {
+		AudioControl('js-video',2)
+        menuApp.jumpSearch()
+    }
+    // tab切换
+    for(var i=0 ; i<list_div.length ; i++){
+        list_div[i].index = i;//定义index变量，以便让tab按钮和tab内容相互对应
+        list_div[i].onclick = function( ){//移除全部tab样式和tab内容
+            for(var i =0; i < list_div.length; i++){
+                list_div[i].className = "list ";
+                content_div[i].style.display = "none";
+            }
+            this.className = "list active";//为当前tab添加样式
+            content_div[this.index].style.display="block";//显示当前tab对应的内容
+            if (this.index === 0) {
+                banner.style.backgroundImage = `url('${cityHeaderImage}')` //对应头部图片更改
+            } else {
+                banner.style.backgroundImage = `url('${countryHeaderImage}')` //对应头部图片更改
+            }
+            
+            AudioControl('js-video',this.index)
+        }
+    }
+    // 当网页向下滑动 20px 出现"返回顶部" 按钮
+    document.ontouchmove = function(e){
+        var touch = e.touches[0];
+        if (touch.clientY > 100 || touch.clientY > 100) {
+            document.getElementById("myBtn").style.display = "block";
+        } else {
+            document.getElementById("myBtn").style.display = "none";
+        }
+    }
+    //ajax请求数据
+    function ajax(options) {
+        options = options || {};
+        options.type = (options.type || "GET").toUpperCase();
+        options.dataType = options.dataType || "json";
+        var params = formatParams(options.data);
+        //创建 - 非IE6 - 第一步
+        if (window.XMLHttpRequest) {
+            var xhr = new XMLHttpRequest();
+        } else { //IE6及其以下版本浏览器
+            var xhr = new ActiveXObject('Microsoft.XMLHTTP');
+        }
+        //接收 - 第三步
+        xhr.onreadystatechange = function () {
+            if (xhr.readyState == 4) {
+            var status = xhr.status;
+                if (status >= 200 && status < 300) {
+                    options.success && options.success(xhr.responseText, xhr.responseXML);
+                } else {
+                    options.fail && options.fail(xhr, xhr.status, xhr.statusText, xhr.responseText);
+                }
+            }
+        }
+        //连接 和 发送 - 第二步
+        if (options.type == "GET") {
+            xhr.open("GET", options.url + "?" + params, true);
+            xhr.send(null);
+        } else if (options.type == "POST") {
+            xhr.open("POST", options.url, true);
+            //设置表单提交时的内容类型
+            xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+            xhr.send(params);
+        }
+    }
+    //格式化参数
+    function formatParams(data) {
+        var arr = [];
+        for (var name in data) {
+            arr.push(encodeURIComponent(name) + "=" + encodeURIComponent(data[name]));
+        }
+        // arr.push(("v=" + Math.random()).replace(".",""));
+        return arr.join("&");
+    }
+    //  城市
+    $.ajax({
+        url: baseUrl + 'json/'+ cityId +'.json',
+        type: "GET",
+        dataType: "json",
+        success(res){
+            // var data = JSON.parse(res);
+
+            var data = res;
+            var title = "";
+            var html = "";
+            var frequencys = "";
+            data.dataList.map((res,i) => {
+                title_left.innerHTML = res.name
+				cityName = res.name
+                banner.style.backgroundImage = `url('${res.image}')`
+                cityHeaderImage = res.image
+                title += `<span>${res.name}</span>`;
+                if (res.mp3 != '') {
+                    frequencys += `
+                        <div class="content_frequency">
+                            <div class="voice_icon">
+                                <img src="${res.mp3Icon}" rel="external nofollow" rel="external nofollow" class="js-voice"></img>
+                            </div>
+                            <div class="play-box">
+                                <div class="left">
+                                    <div class="l-title">${res.mp3Name}</div>
+                                    <p class="timeline" class="timeline"><span class="strip" style=""></span></p>
+                                    <div class="info">
+                                        <span class="size" class="size">00:00</span>
+                                        <span class="timeshow" class="timeshow">00:00</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="video">
+                                <video controls name="media" class="js-video"><source src="${res.mp3}" type="video/mp4"></video>
+                            </div>
+                        </div>
+                    `;
+                } else {
+                    frequencys += `
+                        <div class="content_frequency-show">
+                        
+                        </div>
+                    `;
+                }
+                res.content.map((item,i)=>{
+                    html += `
+                        <div class="content1">
+                            <div class="content_header">
+                                ${item.contentTitle}
+                            </div>
+                            <div class="content_section">
+                                <div class="content_sect1">
+                                    <div class="content_img" ${ item.image == ""? 'style="display:none"' : 'style="display:block"' }>
+                                        <img src="${baseUrl}${item.image}" alt="">
+                                    </div>
+                                    <div class="content_cont_city">
+                                        ${item.contentDetail}
+                                        ${item.contentDetails.map(datas => `<p>${datas.detail}</p>`).join('')}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                })
+            })
+            frequency.innerHTML = frequencys;
+            content_cont1.innerHTML = html
+            city_list.innerHTML = title
+            AudioControl('js-video')
+            var content_cont_city = document.getElementsByClassName('content_cont_city')
+            var safetyArr = Array.from(content_cont_city)
+            safetyArr[safetyArr.length-1].onclick = function() {
+				AudioControl('js-video',2)
+                menuApp.jumpSos(countryName,cityName)
+            }
+        },
+        fail(xhr, status, statusText, res){
+       //     menuApp.jumpSos(xhr, '=======', res, '=======');
+           // menuApp.jumpSos(JSON.stringify(xhr), '=======', JSON.stringify(res), '=======');
+        }
+    })
+    //国家
+    $.ajax({
+        url:baseUrl + "json/"+ countryId +".json",
+        type: "GET",
+        dataType: "json",
+        success(res){
+            // var data = JSON.parse(res)
+		
+            var data = res;
+            var title = "";
+            var html = "";
+            var content = "";
+            data.dataList.map((res,i) => {
+                title_right.innerHTML = res.name
+				countryName = res.name
+                countryHeaderImage  = res.image
+                title += `<span>${res.name}</span>`;
+                res.content.map((item,i)=>{
+                    if(item.mp3==""){
+                        html += `
+                            <div class="content1">
+                                <div class="content_header">
+                                    ${item.contentTitle}
+                                </div>
+                                <div class="content_section">
+                                    <div class="content_sect1">
+                                        <div class="content_img" ${ item.image == ""? 'style="display:none"' : 'style="display:block"' }>
+                                            <img src="${baseUrl}${item.image}" alt="">
+                                        </div>
+                                        <div class="content_cont">
+                                            ${item.contentDetail}
+                                            ${item.contentDetails.map(datas => `<div><p>${datas.title}</p><p><span>${datas.detail}</span><img class='imgs' src="${datas.image}"/></p></div>`).join('')}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        `;
+                    }else{
+                        html += `
+                            <div class="content1">
+                                <div class="content_header">
+                                    ${item.contentTitle}
+                                </div>
+                                <div class="content_section">
+                                    <div class="content_frequency">
+                                        <div class="voice_icon">
+                                            <img src="${item.mp3Icon}" rel="external nofollow" rel="external nofollow" class="js-voice"></img>
+                                        </div>
+                                        <div class="play-box">
+                                            <div class="left">
+                                                <div class="l-title">${item.mp3Name}</div>
+                                                <p class="timeline" class="timeline"><span class="strip" style=""></span></p>
+                                                <div class="info">
+                                                    <span class="size" class="size">00:00</span>
+                                                    <span class="timeshow" class="timeshow">00:00</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="video">
+                                            <video controls name="media" class="js-video"><source src="${item.mp3}" type="video/mp4"></video>
+                                        </div>
+                                    </div>
+                                    <div class="content_sect1">
+                                        <div class="content_img" ${ item.image == ""? 'style="display:none"' : 'style="display:block"' }>
+                                            <img src="${baseUrl}${item.image}" alt="">
+                                        </div>
+                                        <div class="content_cont_country">
+                                            ${item.contentDetail}
+                                            ${item.contentDetails.map(datas => `<div><p>${datas.title}</p><p class="imgs"><span>${datas.detail}</span><img  src="${datas.image}"/></p></div>`).join('')}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        `;
+                    }
+                })
+            })
+            content_cont2.innerHTML = html
+            national_list.innerHTML = title
+            AudioControl('js-video')
+        }
+    })
+ 
+
+
+    function AudioControl(id,idx){
+        
+        var audioBtnArray = document.getElementsByClassName(id);
+        var timeline = document.getElementById('timeline')
+        var jsVoice = document.getElementsByClassName('js-voice');
+        Array.from(audioBtnArray).map(function(item,i){
+            if (idx || idx == 0) {
+                
+                Array.from(jsVoice).map(function(itemVoice,iVoice) {
+                    if (i == iVoice) {
+                        voiceFlag = true
+                        itemVoice.src = baseUrl + "image/public/play.png"
+                        item.pause()
+                        item.load()
+                        clearInterval(Interval)
+                    }
+                })
+
+                
+                
+            }
+            item.onloadedmetadata = function() {
+                
+                Array.from(jsVoice).map(function(itemVoice,iVoice) {
+
+                    if (i == iVoice) {
+                        
+                        item.loop;
+                        setTimeShow(item.currentTime,itemVoice);
+                        itemVoice.onclick = function() {
+
+
+                            if ((itemVoice.src).slice(-8) == "play.png" && voiceFlag) {
+                                voiceFlag = false
+                                
+                                Interval = setInterval(function () {
+                                    var currentTime = item.currentTime;
+                                    // console.log(item.readyState,item.seeking,item.ended)
+                                    setTimeShow(currentTime,itemVoice);
+                                }, 1000);
+                                itemVoice.src = baseUrl +"image/public/pause.png"
+                                item.play()
+                            } else if ((itemVoice.src).slice(-9) == "pause.png"){
+                                voiceFlag = true
+                                clearInterval(Interval)
+                                itemVoice.src = baseUrl + "image/public/play.png"
+                                item.pause()
+                            }
+                            
+                        }
+                    }
+                    
+                })
+            }
+           
+            function setTimeShow(t,itemVoice) {
+                t = Math.floor(t);
+                var playTime = secondToMin(item.currentTime);
+                var size = document.getElementsByClassName('size')
+                Array.from(size).map(function(itemSize,iSize) {
+                    if (i == iSize) {
+                        itemSize.innerHTML = playTime;
+                    }
+                   
+                })
+                var timeshow = document.getElementsByClassName('timeshow')
+                Array.from(timeshow).map(function(itemTimeshow,iTimeshow) {
+                    if (i == iTimeshow) {
+                        itemTimeshow.innerText = secondToMin(item.duration)
+                
+                    }
+                })
+                var strip = document.getElementsByClassName('strip')
+                Array.from(strip).map(function(itemStrip,iStrip) {
+                    if (i == iStrip) {
+                        itemStrip.style = "width:"+ (t/item.duration).toFixed(4)*100+"%";
+                    }
+                })
+                if (item.ended == true) {
+                    voiceFlag = true
+                    itemVoice.src = baseUrl + "image/public/play.png"
+                    item.pause()
+                    item.load()
+                    clearInterval(Interval)
+                }
+            }
+            function secondToMin(s) {
+                var MM = Math.floor(s / 60);
+                var SS = s % 60;
+                if (MM < 10)
+                MM = "0" + MM;
+                if (SS < 10)
+                SS = "0" + SS;
+                var min = MM + ":" + SS;
+                return min.split('.')[0];
+            }
+        })
+    }
+   
+</script>

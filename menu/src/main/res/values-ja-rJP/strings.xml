@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="xzmdd">选择目的地</string>
+    <string name="remenchengshi">热门城市</string>
+    <string name="my_weizaizulinqi">リース期間中ではない</string>
+
+
+
+    <string name="kaiqiredian">ホットスポットを切る</string>
+    <string name="xiabokaiqi">下に押してオン</string>
+    <string name="fenxiangredian">インタネットを共有</string>
+    <string name="shangboguanbi">レンタル版の翻訳機のホットスポットの共有は常に開く</string>
+    <string name="mima">パスワード:</string>
+</resources>

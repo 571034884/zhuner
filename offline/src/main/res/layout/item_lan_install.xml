@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <RelativeLayout
+        android:id="@+id/item_lan_download_rl"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:minHeight="90px"
+        android:paddingTop="20px"
+        android:paddingBottom="20px"
+        android:layout_marginLeft="20px"
+        android:layout_marginRight="10px"
+        >
+        <TextView
+            android:id="@+id/item_lan_download_key"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            />
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:orientation="vertical"
+            >
+            <TextView
+                android:id="@+id/item_lan_download_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="俄语(RU)"
+                android:textColor="#000"
+                android:textStyle="bold"
+                android:textSize="28px"
+                />
+            <TextView
+                android:id="@+id/item_lan_download_desc"
+                android:text="下载(16MB)"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/item_lan_download_title"
+                android:layout_marginTop="10px"
+
+                />
+
+        </LinearLayout>
+
+
+        <ImageView
+            android:id="@+id/item_lan_img"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:src="@mipmap/downloadicon"
+            android:layout_centerVertical="true"
+            />
+        <TextView
+            android:id="@+id/item_lan_download_tishi"
+            android:layout_width="300px"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_marginTop="16px"
+            android:textColor="#000"
+            android:text=""
+            android:layout_marginRight="20px"
+            android:gravity="right"
+            android:layout_below="@+id/item_lan_download_progress"
+            android:visibility="gone"
+            android:textSize="14sp"
+            android:layout_centerVertical="true"
+            />
+
+    </RelativeLayout>
+
+</LinearLayout>

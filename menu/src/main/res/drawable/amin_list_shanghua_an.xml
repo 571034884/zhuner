@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<animation-list xmlns:android="http://schemas.android.com/apk/res/android" android:oneshot="false"  ><!-- 定义一个动画帧，Drawable为img0，持续时间50毫秒 -->
+ <item android:drawable="@mipmap/shangboan_0017" android:duration="60" />
+ <item android:drawable="@mipmap/shangboan_0018" android:duration="60" />
+ <item android:drawable="@mipmap/shangboan_0019" android:duration="60" />
+ <item android:drawable="@mipmap/shangboan_0020" android:duration="60" />
+ <item android:drawable="@mipmap/shangboan_0021" android:duration="60" />
+ <item android:drawable="@mipmap/shangboan_0022" android:duration="60" />
+ <item android:drawable="@mipmap/shangboan_0023" android:duration="60" />
+ <item android:drawable="@mipmap/shangboan_0024" android:duration="60" />
+ <item android:drawable="@mipmap/shangboan_0025" android:duration="60" />
+ <item android:drawable="@mipmap/shangboan_0026" android:duration="60" />
+ <item android:drawable="@mipmap/shangboan_0027" android:duration="60" />
+ <item android:drawable="@mipmap/shangboan_0028" android:duration="60" />
+ <item android:drawable="@mipmap/shangboan_0029" android:duration="60" />
+ <item android:drawable="@mipmap/shangboan_0030" android:duration="60" />
+ <item android:drawable="@mipmap/shangboan_0031" android:duration="60" />
+ <item android:drawable="@mipmap/shangboan_0032" android:duration="60" />
+ <item android:drawable="@mipmap/shangboan_0033" android:duration="60" />
+ <item android:drawable="@mipmap/shangboan_0034" android:duration="60" />
+ <item android:drawable="@mipmap/shangboan_0035" android:duration="60" />
+ <item android:drawable="@mipmap/shangboan_0036" android:duration="60" />
+ <item android:drawable="@mipmap/shangboan_0037" android:duration="60" />
+ <item android:drawable="@mipmap/shangboan_0038" android:duration="60" />
+ <item android:drawable="@mipmap/shangboan_0039" android:duration="60" />
+ <item android:drawable="@mipmap/shangboan_0041" android:duration="60" />
+ <item android:drawable="@mipmap/shangboan_0042" android:duration="60" />
+ <item android:drawable="@mipmap/shangboan_0043" android:duration="60" />
+ <item android:drawable="@mipmap/shangboan_0044" android:duration="60" />
+ <item android:drawable="@mipmap/shangboan_0045" android:duration="60" />
+ <item android:drawable="@mipmap/shangboan_0046" android:duration="60" />
+
+
+
+
+
+</animation-list>
+

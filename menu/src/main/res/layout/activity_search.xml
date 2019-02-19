@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".SearchActivity">
+
+
+    <LinearLayout
+        android:id="@+id/ll"
+        android:layout_width="0px"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/x20"
+        android:layout_marginTop="@dimen/y50"
+        android:focusable="true"
+        android:focusableInTouchMode="true"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <TextView
+            android:layout_width="0px"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="选择目的地"
+            android:textColor="@color/clr_333"
+            android:textSize="@dimen/y36" />
+
+        <ImageView
+            android:id="@+id/search_guanbi"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="@dimen/x20"
+            android:src="@mipmap/close" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/search_curr_location_ll"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintTop_toBottomOf="@id/ll"
+        android:layout_marginTop="@dimen/y20"
+        android:visibility="gone"
+        >
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/y2"
+            android:background="#eee" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:paddingTop="@dimen/y10"
+            android:paddingBottom="@dimen/y10"
+            android:paddingLeft="@dimen/x15"
+
+            >
+      <ImageView
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:src="@mipmap/mdd_list_location_icn"
+          />
+            <TextView
+                android:id="@+id/search_curr_location_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="@dimen/y28"
+                android:textColor="@color/clr_333"
+                android:text=""
+                />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="@dimen/y20"
+                android:textColor="@color/clr_666"
+                android:text="当前定位"
+                android:layout_marginLeft="@dimen/x15"
+                />
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/y2"
+            android:background="#eee" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/search_remen_ll"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/x20"
+        android:layout_marginRight="@dimen/x40"
+        android:layout_marginTop="@dimen/y28"
+        android:orientation="vertical"
+        app:layout_constraintTop_toBottomOf="@id/search_curr_location_ll">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="热门城市"
+            android:textColor="@color/clr_999"
+            android:textSize="@dimen/y28" />
+
+        <com.zhy.view.flowlayout.TagFlowLayout
+            android:id="@+id/search_autonext"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/y15"
+            app:max_select="4"
+
+            >
+
+        </com.zhy.view.flowlayout.TagFlowLayout>
+    </LinearLayout>
+
+
+    <com.aibabel.menu.view.sousuo.PinnedHeaderListView
+        android:id="@+id/search_city"
+        android:layout_width="0px"
+        android:layout_height="0px"
+        android:layout_marginLeft="@dimen/x20"
+        android:layout_marginRight="@dimen/x40"
+        android:layout_marginTop="@dimen/y26"
+        android:divider="@null"
+        android:scrollbars="none"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/search_remen_ll" />
+
+    <TextView
+        android:id="@+id/tv_dialog"
+        android:layout_width="@dimen/y66"
+        android:layout_height="@dimen/y66"
+        android:background="@drawable/shape_alpha_bg_000"
+        android:gravity="center"
+        android:text="A"
+        android:textColor="@android:color/white"
+        android:textSize="@dimen/y36"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/ll"
+        tools:visibility="visible" />
+
+    <com.aibabel.menu.view.sousuo.SideBar
+        android:id="@+id/search_sort"
+        android:layout_width="@dimen/x30"
+        android:layout_height="0px"
+        android:layout_marginTop="@dimen/y110"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/ll"
+
+        />
+
+</android.support.constraint.ConstraintLayout>

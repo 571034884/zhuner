@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    
+    <RelativeLayout
+        android:id="@+id/menu_rl"
+        android:layout_width="match_parent"
+        android:layout_height="120px"
+        android:layout_marginLeft="30px"
+
+        >
+        <ImageView
+            android:id="@+id/menu_img"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@mipmap/yyfy"
+            android:layout_centerVertical="true"
+
+            />
+        <TextView
+            android:id="@+id/menu_name"
+            android:text="语音翻译"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="30px"
+            android:textColor="@color/color_131313"
+            android:layout_toRightOf="@+id/menu_img"
+            android:layout_marginLeft="80px"
+            android:layout_centerVertical="true"
+            />
+        <ImageView
+            android:id="@+id/menu_jinru"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:src="@mipmap/jinru"
+            android:layout_alignParentRight="true"
+            />
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1px"
+            android:background="#ccc"
+            android:layout_alignParentBottom="true"
+            android:layout_marginRight="30px"
+            />
+    </RelativeLayout>
+
+</LinearLayout>

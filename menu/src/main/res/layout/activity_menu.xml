@@ -1,0 +1,180 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".MenuActivity">
+
+    <RelativeLayout
+        android:id="@+id/menu_top_rl"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:backgroundTintMode="screen"
+        >
+
+        <ImageView
+            android:id="@+id/menu_img"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:adjustViewBounds="true"
+            android:scaleType="centerCrop"
+
+
+            />
+
+        <LinearLayout
+            android:id="@+id/menu_middle_parent_ll"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="@dimen/x44"
+            android:layout_marginRight="@dimen/x44"
+            android:layout_marginBottom="@dimen/y32"
+            android:layout_marginTop="@dimen/y60"
+            android:background="@drawable/shape_alpha_bg_000"
+            android:orientation="vertical"
+
+            android:gravity="center_horizontal"
+            >
+
+            <android.support.v4.view.ViewPager
+                android:id="@+id/menu_viewpager"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:layout_marginTop="@dimen/y56"
+                android:layout_marginBottom="@dimen/y56"
+                ></android.support.v4.view.ViewPager>
+
+
+        </LinearLayout>
+
+        <com.aibabel.menu.view.BannerIndicator
+            android:id="@+id/menu_bannerindicator"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            app:slider_height="@dimen/x10"
+            app:slider_width="@dimen/x20"
+            app:sleider_align="Center"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="@dimen/y44"
+            ></com.aibabel.menu.view.BannerIndicator>
+
+
+    </RelativeLayout>
+    <LinearLayout
+        android:id="@+id/menu_bttom_parent_ll"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/clr_f3f3f3"
+        android:padding="@dimen/x10"
+        >
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/y120"
+            android:orientation="horizontal"
+            >
+            <LinearLayout
+                android:id="@+id/menu_bottom_yyfy_ll"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:layout_weight="1"
+                android:background="@drawable/shape_fff"
+                android:gravity="center"
+                >
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@mipmap/icon_yyfy"
+                    />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="@dimen/y20"
+                    android:textColor="@color/clr_333"
+                    android:text="语音翻译"
+                    />
+            </LinearLayout>
+            <LinearLayout
+                android:id="@+id/menu_bottom_pzfy_ll"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:layout_weight="1"
+                android:background="@drawable/shape_fff"
+                android:gravity="center"
+                android:layout_marginLeft="@dimen/x10"
+                >
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@mipmap/icon_pzfy"
+                    />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="@dimen/y20"
+                    android:textColor="@color/clr_333"
+                    android:text="拍照翻译"
+                    />
+            </LinearLayout>
+            <LinearLayout
+
+                android:id="@+id/menu_bottom_ddwl_ll"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:layout_weight="1"
+                android:background="@drawable/shape_fff"
+                android:gravity="center"
+                android:layout_marginLeft="@dimen/x10"
+                >
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@mipmap/icon_dangdiwanle"
+                    />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="@dimen/y20"
+                    android:textColor="@color/clr_333"
+                    android:text="当地玩乐"
+                    />
+            </LinearLayout>
+            <LinearLayout
+
+                android:id="@+id/menu_bttom_gd_ll"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:layout_weight="1"
+                android:background="@drawable/shape_fff"
+                android:gravity="center"
+                android:layout_marginLeft="@dimen/x10"
+                android:transitionName="shareName"
+                >
+                <!--  android:src="@mipmap/icon_gengduo"-->
+                <ImageView
+                    android:id="@+id/menu_bttom_gd_img"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+
+                    />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="@dimen/y20"
+                    android:textColor="@color/clr_333"
+                    android:text="返回"
+                    android:layout_marginTop="@dimen/y2"
+                    />
+            </LinearLayout>
+        </LinearLayout>
+    </LinearLayout>
+</LinearLayout>

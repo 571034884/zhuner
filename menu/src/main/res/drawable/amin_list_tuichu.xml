@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<animation-list xmlns:android="http://schemas.android.com/apk/res/android" android:oneshot="true"  ><!-- 定义一个动画帧，Drawable为img0，持续时间50毫秒 -->
+ <item android:drawable="@mipmap/more_0000" android:duration="45" />
+ <item android:drawable="@mipmap/more_0001" android:duration="45" />
+ <item android:drawable="@mipmap/more_0002" android:duration="45" />
+ <item android:drawable="@mipmap/more_0003" android:duration="45" />
+ <item android:drawable="@mipmap/more_0004" android:duration="45" />
+ <item android:drawable="@mipmap/more_0005" android:duration="45" />
+ <item android:drawable="@mipmap/more_0006" android:duration="45" />
+ <item android:drawable="@mipmap/more_0007" android:duration="45" />
+ <item android:drawable="@mipmap/more_0008" android:duration="45" />
+ <item android:drawable="@mipmap/more_0009" android:duration="45" />
+ <item android:drawable="@mipmap/more_0010" android:duration="45" />
+ <item android:drawable="@mipmap/more_0011" android:duration="45" />
+ <item android:drawable="@mipmap/more_0012" android:duration="45" />
+ <item android:drawable="@mipmap/more_0013" android:duration="45" />
+ <item android:drawable="@mipmap/more_0014" android:duration="45" />
+ <item android:drawable="@mipmap/more_0015" android:duration="45" />
+ <item android:drawable="@mipmap/more_0016" android:duration="45" />
+ <item android:drawable="@mipmap/more_0017" android:duration="45" />
+ <item android:drawable="@mipmap/more_0018" android:duration="45" />
+ <item android:drawable="@mipmap/more_0019" android:duration="45" />
+ <item android:drawable="@mipmap/more_0020" android:duration="45" />
+ <item android:drawable="@mipmap/more_0021" android:duration="45" />
+ <item android:drawable="@mipmap/more_0022" android:duration="45" />
+ <item android:drawable="@mipmap/more_0023" android:duration="45" />
+ <item android:drawable="@mipmap/more_0024" android:duration="45" />
+ <item android:drawable="@mipmap/more_0025" android:duration="45" />
+ <item android:drawable="@mipmap/more_0026" android:duration="45" />
+ <item android:drawable="@mipmap/more_0027" android:duration="45" />
+ <item android:drawable="@mipmap/more_0028" android:duration="45" />
+ <item android:drawable="@mipmap/more_0029" android:duration="45" />
+ <item android:drawable="@mipmap/more_0030" android:duration="45" />
+ <item android:drawable="@mipmap/more_0031" android:duration="45" />
+ <item android:drawable="@mipmap/more_0032" android:duration="45" />
+
+
+
+
+
+
+</animation-list>
+

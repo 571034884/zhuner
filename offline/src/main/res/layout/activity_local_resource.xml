@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".LocalResourceActivity"
+    >
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="88px"
+        android:gravity="center_vertical"
+
+        >
+        <ImageButton
+            android:id="@+id/rl_top_return"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@mipmap/dl_return"
+            android:layout_centerVertical="true"
+
+            />
+        <TextView
+            android:id="@+id/rl_top_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="@string/bendiziyuna"
+            android:textSize="30px"
+            android:textColor="#000"
+            />
+
+    </RelativeLayout>
+    <RadioGroup
+        android:id="@+id/rl_gp"
+        android:layout_width="match_parent"
+        android:layout_height="66px"
+        android:layout_marginTop="8px"
+        android:layout_marginStart="16px"
+        android:layout_marginLeft="16px"
+        android:layout_marginRight="16px"
+        android:layout_marginEnd="16px"
+        android:orientation="horizontal"
+        android:background="@drawable/shape_bfbfbf"
+        >
+        <RadioButton
+            android:id="@+id/rl_gp_zy"
+            android:text="@string/ziyuanbao"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:button="@null"
+            android:textSize="24px"
+            android:gravity="center"
+            android:textColor="@drawable/sel_font_fe5000"
+            android:checked="true"
+
+            />
+        <View
+            android:layout_width="2px"
+            android:layout_height="match_parent"
+            android:background="#cfcfcf"
+            />
+        <RadioButton
+            android:id="@+id/rl_gp_install"
+            android:text="@string/title_yaz"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:button="@null"
+            android:textSize="24px"
+            android:gravity="center"
+            android:textColor="@drawable/sel_font_fe5000"
+
+
+            />
+    </RadioGroup>
+
+
+    <FrameLayout
+        android:id="@+id/rl_framelayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="10px"
+        >
+
+
+    </FrameLayout>
+
+    <!--<ListView
+        android:id="@+id/dl_listview"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="10px"
+        android:divider="@null"
+        >
+
+
+    </ListView>-->
+
+
+</LinearLayout>

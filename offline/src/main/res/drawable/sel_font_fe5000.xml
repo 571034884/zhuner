@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+
+
+
+    <!--按钮的字体点击变色 ,注意不能使用android:drawable属性androidStudio要并不会自动显示android:color这个要注意-->
+
+    <!--按钮点击时 ， 灰色-->
+
+    <item android:state_checked="true" android:color="@color/color_fe5000"/>
+
+
+
+    <!--按钮未点击时 ， 白色-->
+
+    <item android:state_checked="false" android:color="@color/color_131313"/>
+
+</selector>

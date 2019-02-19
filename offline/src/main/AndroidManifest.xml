@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    package="com.aibabel.download.offline">
+
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <!-- 创建和删除文件 -->
+    <uses-permission android:name="android.permission.MOUNT_UNMOUNT_FILESYSTEMS" />
+    <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+
+    <!-- 允许读取wifi网络状态 -->
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+
+    <!--唤醒锁-->
+    <uses-permission android:name="android.permission.WAKE_LOCK"/>
+
+
+
+    <application
+        android:name=".app.SophixStubApplication"
+        android:allowBackup="true"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:supportsRtl="true"
+        android:theme="@style/Theme.AppCompat.Light.NoActionBar"
+        tools:replace="android:allowBackup">
+
+        <!--热修复-->
+        <meta-data
+            android:name="com.taobao.android.hotfix.IDSECRET"
+            android:value="25575011" />
+        <meta-data
+            android:name="com.taobao.android.hotfix.APPSECRET"
+            android:value="fd3a500451ee94053ebe4bd99873224b" />
+        <meta-data
+            android:name="com.taobao.android.hotfix.RSASECRET"
+            android:value="MIIEvwIBADANBgkqhkiG9w0BAQEFAASCBKkwggSlAgEAAoIBAQCsReK+lmRSLsJ4ZoLBqWV7djRkk+NRFdy3mKUX3PvIwkcxyJWfI1uGfGM9Z/BrZUsTf6xGYRPslxJWMNlF5I3x/KwVP7cPpNCCfDRDIbMikcmqubC5nHhXeyiOntJMyjFXj4+MtntO1x57ZbchTVb9zTZWrZZ/xwTLX6UtjeW+lruS7EIV5V8c30S8c38FmSOqqYpS1U5jSIA5SX1vUKU67DEBG42THQ5eE+igygyTTQYTXvCOXwvmjCwpyzmQB0Te6esCMFXnlP1VWo0urErja6iA8Zp9h/x1rbzWa/5UcDyvwWUOnIENJOMJe2JG3+FOKjeXOOFBCYxy3xQR7cGxAgMBAAECggEAIrFYPmVvApXkF/cc8f85LqnZVz/pEVVDw7170dhw5DcruzzX1Np7/hNisOUTp60Yd27ItMusBYNO8AiaWNb0Nv1ZclYIeaAJVZ3JsJNCzf1qDXWjv11hZsyomEAnvcsiMK36jK3bGz97JgKP5Kb8k9QV01LV8hmUP5idXRUsZTsEuELqEpj7Ph0ukJxgVIpL1tWgKv293ct3yNIdGYH33LrI7/otFglodSq7iIY+q1UoeybJB9rZKV4g4uG1Ivb8hicrRVaeyKL/K5dbteojgm+1EUDFDCj6hFzEnrAlXpS44q6XSE9R5wW6YELYzNWrDi3C/EQW7jCJxSNIDd3JeQKBgQDopW0o9rQX7vlmBDODGZRv17x0gfXFfh0Zl1rXNYxvMh5srapiFE+RKjOCDUE434q8PCHT+x8DBPWfTz3jaOyPkQXxPv3g21k4v86tgUCZVoXWYketI5RLa7vczwu4XzEAp3McdEQeTbzAunpB9o0KGah9wiLCs799Aqqh9K2JrwKBgQC9kPr/uK3PIVINeGCNdVYLq3u13fLMcbGE4tYOPTLJFoYy6YN1vhDTUEoPsVUXe6qgu5fO0fF1Jn/jxVvzpHHPY+5sHdw3YU/7st0838ckQJsJOiIG3BDQAlD6dTmiMgj47kkMETKYtAIyGQ6u9u8GxOuIXqrA+dgzj8M48uQinwKBgQDRKuKxQNX86rxKz54s0dPWlsX2jl4VWWT6fE2NTrTbyNj351BYbGB5aNL0q8wnQTzwLrRPbemdAlmACXPgQZbnIYGRPIxwHWbjkfhVoO8erl8YuDYvYdzTzqISTgkAlH1vVB43yATypfv93+tJ4U0/doA5yVENcyTIVZxqjp10OwKBgQCBNhRQQBKA7+Zc9iNh6IvJEo8VbP61af2lZXSgagh21pqMk2ye0fnn/38r6STmB85LFvMn7yRVRPPBTmIZ1YoZ4bS/Dy9utC7vkoCIoMO9qyfCB1TwNgpjrmCCB2tMaiyBePJjfkltmq0wdrHygrB0fb9JybU8KlC6/JAF/lGQYwKBgQCKwtjww9iyymix1LDmawe7lI8+KIyiwy6HF4WunyzxJw/99nasSSmoot3ECU1d5QTHfnmHSSSjpYgUVG3cKHr1IBO3dxMQKhz/BQEsj5MFSHRIiWe1S4jRqO3u8T3vFUFG3R15cVpsgDDLQ9/ZUS71giSZumnBwG426RB+uBbv1w==" />
+
+
+        <activity android:name=".MainActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".DownLoadListActivity"
+            android:launchMode="singleTask" />
+        <activity
+            android:name=".LocalResourceActivity"
+            android:launchMode="singleTask" >
+            <intent-filter>
+                <data
+                    android:host="pull.csd.demo"
+                    android:path="/cyn"
+                    android:scheme="csd" />
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+            </intent-filter>
+
+        </activity>
+
+        <receiver android:name=".receiver.NoticeReceiver">
+            <intent-filter>
+
+                <!-- 我发送给系统的  执行copy的广播 -->
+                <action android:name="com.aibabel.download.offline.COPY_DATA" />
+            </intent-filter>
+        </receiver>
+        <receiver android:name=".receiver.ListenterReceiver">
+            <intent-filter>
+
+                <!-- 监听系统的  执行完成回调 -->
+                <action android:name="com.aibabel.download.offline.COPY_DATA_LISTENER" />
+            </intent-filter>
+        </receiver>
+
+        <service android:name=".service.DownloadService" />
+
+        <provider
+            android:name=".provider.OfflineProvider"
+            android:authorities="com.aibabel.download.offline.provider.OfflineProvider"
+            android:enabled="true"
+            android:exported="true" />
+
+        <receiver
+            android:name=".receiver.ShutDownReceiver"
+            android:enabled="true"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.ACTION_SHUTDOWN" />
+
+                <category android:name="android.intent.category.HOME" />
+            </intent-filter>
+        </receiver>
+
+        <activity android:name=".MenuActivity" />
+
+        <receiver
+            android:name=".receiver.NetBroadcastReceiver"
+            android:enabled="true"
+            android:exported="true" />
+
+        <activity android:name=".TestActivity"></activity>
+
+        <service
+            android:name=".service.UnZipInstallService"
+            android:enabled="true"
+            android:exported="true"></service>
+    </application>
+
+</manifest>

@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="com.aibabel.speech.MainActivity"
+    android:background="@color/mainbg"
+    android:id="@+id/main_ll"
+    >
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <ListView
+            android:id="@+id/main_listview"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+
+            ></ListView>
+
+
+
+
+
+        <!--<com.aibabel.speech.widget.WaveView-->
+        <!--android:id="@+id/main_waveview"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="85px"-->
+        <!--android:minHeight="85px"-->
+
+        <!--/>-->
+
+        <FrameLayout
+            android:id="@+id/main_framelayout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            ></FrameLayout>
+    </RelativeLayout>
+
+
+    
+
+</LinearLayout>

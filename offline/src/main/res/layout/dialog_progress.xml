@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center_horizontal"
+   
+    >
+    <RelativeLayout
+        android:layout_width="504px"
+        android:layout_height="wrap_content"
+        android:background="@drawable/shape_ffffff"
+        >
+        <TextView
+            android:id="@+id/dialog_title"
+            android:text="下载提示"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:textColor="@color/color_131313"
+            android:textSize="32px"
+            android:textStyle="bold"
+            android:layout_marginTop="50px"
+            />
+        <TextView
+            android:id="@+id/dialog_desc"
+            android:text="文件下载中，请您耐心等候"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:textColor="@color/color_303030"
+            android:textSize="24px"
+            android:layout_marginTop="28px"
+            android:layout_below="@id/dialog_title"
+            android:layout_marginLeft="54px"
+            android:layout_marginRight="54px"
+            android:layout_marginBottom="40px"
+            android:gravity="center_horizontal"
+            />
+
+        <com.daimajia.numberprogressbar.NumberProgressBar
+            android:id="@+id/dialog_number_progress_bar"
+            style="@style/NumberProgressBar_Funny_download"
+            android:layout_below="@id/dialog_desc"
+            android:minHeight="2px"
+            android:layout_marginLeft="40px"
+            android:layout_marginRight="40px"
+            android:layout_marginBottom="50px"
+            android:progressDrawable="@drawable/number_progressbar_color"
+
+            />
+
+
+
+    </RelativeLayout>
+
+</LinearLayout>

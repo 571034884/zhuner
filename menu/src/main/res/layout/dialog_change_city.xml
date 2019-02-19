@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#000"
+    >
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/x300"
+        android:background="@drawable/shape_fff"
+
+        >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/y65"
+            android:layout_marginBottom="@dimen/y65"
+             android:paddingLeft="@dimen/x20"
+            android:paddingRight="@dimen/x20"
+            android:orientation="vertical"
+
+            >
+            <TextView
+                android:id="@+id/dialog_change_content"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:textColor="@color/clr_333"
+                android:lineSpacingExtra="@dimen/y8"
+                android:textSize="@dimen/y28"
+                android:gravity="center_horizontal"
+                android:text="准儿定位到您在"
+                android:textStyle="bold"
+                />
+            <TextView
+                android:id="@+id/dialog_change_content1"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:textColor="@color/clr_666"
+                android:lineSpacingExtra="@dimen/y8"
+                android:textSize="@dimen/y26"
+                android:gravity="center_horizontal"
+                android:text="是否切换至当前您所在的城市?"
+                android:layout_marginTop="@dimen/y25"
+                />
+
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/y1"
+            android:background="@color/clr_f3f3f3"
+            android:layout_above="@+id/dialog_change_btm_ll"
+            />
+        <LinearLayout
+            android:id="@+id/dialog_change_btm_ll"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/y96"
+            android:layout_alignParentBottom="true"
+            android:orientation="horizontal"
+            >
+            <TextView
+                android:id="@+id/dialog_change_btm_cancle"
+                android:text="取消"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:textColor="@color/clr_666"
+                android:textSize="@dimen/y30"
+                android:gravity="center"
+                android:background="?android:attr/selectableItemBackground"
+                />
+            <View
+                android:layout_width="@dimen/y1"
+                android:layout_height="match_parent"
+                android:background="@color/clr_f3f3f3"
+                android:layout_above="@+id/dialog_change_btm_ll"
+                />
+            <TextView
+                android:id="@+id/dialog_change_btm_sure"
+                android:text="切换"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:textColor="@color/clr_ff0000"
+                android:textSize="@dimen/y30"
+                android:gravity="center"
+                android:background="?android:attr/selectableItemBackground"
+                />
+        </LinearLayout>
+
+    </RelativeLayout>
+</LinearLayout>

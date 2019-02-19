@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="xzmdd">选择目的地</string>
+    <string name="remenchengshi">热门城市</string>
+    <string name="my_weizaizulinqi">리스 기간이 아님</string>
+
+
+    <string name="kaiqiredian">핫스팟 켜기</string>
+    <string name="xiabokaiqi">아래로 켜기</string>
+    <string name="fenxiangredian">인터넷 연결 공유</string>
+    <string name="shangboguanbi">임대판 번역기 핫바 공유 시작</string>
+    <string name="mima">비밀번호:</string>
+</resources>

@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!--viewpager指示器-->
+    <declare-styleable name="BannerIndicator"> <!--指示器之间的间隙-->
+        <attr name="gap" format="dimension" /> <!--指示器的宽度-->
+        <attr name="slider_width" format="dimension" /> <!--指示器的高度-->
+        <attr name="slider_height" format="dimension" /> <!--指示器大小变化方向-->
+        <attr name="sleider_align">
+            <enum name="Left" value="1" />
+            <enum name="Center" value="0" />
+            <enum name="Right" value="2" />
+        </attr>
+    </declare-styleable>
+
+
+
+    <declare-styleable name="MagicTextView">
+    <attr name="innerShadowColor" format="color"/>
+
+    <attr name="innerShadowRadius" format="float"/>
+
+    <attr name="innerShadowDx" format="float"/>
+
+    <attr name="innerShadowDy" format="float"/>
+
+    <attr name="outerShadowColor" format="color"/>
+
+    <attr name="outerShadowRadius" format="float"/>
+
+    <attr name="outerShadowDx" format="float"/>
+
+    <attr name="outerShadowDy" format="float"/>
+
+    <attr name="typeface" format="string"/>
+
+    <attr name="foreground" format="reference|color"/>
+
+    <attr name="background2" format="reference|color"/>
+
+    <attr name="strokeWidth1" format="float"/>
+
+    <attr name="strokeMiter" format="float"/>
+
+    <attr name="strokeColor" format="color"/>
+
+    <attr name="strokeJoinStyle">
+
+    <enum name="miter" value="0"/>
+
+    <enum name="bevel" value="1"/>
+
+    <enum name="round" value="2"/>
+
+</attr>
+
+</declare-styleable>
+
+
+
+</resources>
