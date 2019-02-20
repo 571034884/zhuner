@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="?attr/actionBarSize"
+    android:paddingLeft="@dimen/x20"
+    android:paddingRight="@dimen/x20">
+
+    <com.aibabel.food.custom.DrawableCenterTextView
+        android:id="@+id/dctvCityClose"
+        android:layout_width="@dimen/x120"
+        android:layout_height="wrap_content"
+        android:drawablePadding="@dimen/x10"
+        android:drawableRight="@mipmap/xiala"
+        android:text="东京"
+        android:textColor="@color/black"
+        android:textSize="@dimen/y30"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <com.aibabel.food.custom.DrawableCenterTextView
+        android:id="@+id/dctvSearchClose"
+        android:layout_width="@dimen/x0"
+        android:layout_height="@dimen/y56"
+        android:background="@drawable/shape_search_bg"
+        android:drawableLeft="@mipmap/sousuo"
+        android:gravity="center_vertical"
+        android:textColor="@color/c_66"
+        android:textSize="@dimen/y24"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+</android.support.constraint.ConstraintLayout>

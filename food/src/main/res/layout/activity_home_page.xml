@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                                             xmlns:app="http://schemas.android.com/apk/res-auto"
+                                             xmlns:tools="http://schemas.android.com/tools"
+                                             android:layout_width="match_parent"
+                                             android:layout_height="match_parent"
+                                             tools:context=".activity.HomePageActivity">
+
+    <com.stx.xhb.xbanner.XBanner xmlns:app="http://schemas.android.com/apk/res-auto"
+                                 android:id="@+id/xbanner"
+                                 android:layout_width="match_parent"
+                                 android:layout_height="@dimen/y280"
+                                 app:AutoPlayTime="2500"
+                                 app:isAutoPlay="true"
+                                 app:isShowIndicatorOnlyOne="true"
+                                 app:layout_constraintTop_toTopOf="parent"
+                                 app:pageChangeDuration="800"
+                                 app:pointNormal="@drawable/shape_banner_point_normal"
+                                 app:pointSelect="@drawable/shape_banner_point_select"
+                                 app:pointsContainerBackground="#00aaaaaa"
+                                 app:pointsPosition="RIGHT"
+                                 app:tipTextSize="@dimen/y12"/>
+
+
+    <include
+        android:id="@+id/include_toolbar_open"
+        layout="@layout/layout_title_open"/>
+
+
+    <com.zhouyou.recyclerview.XRecyclerView
+        android:id="@+id/rvHomepage"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/y0"
+        android:nestedScrollingEnabled="false"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/xbanner"/>
+</android.support.constraint.ConstraintLayout>

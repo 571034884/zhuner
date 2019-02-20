@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="@dimen/y8">
+
+    <ImageView
+        android:id="@+id/ivRecommendIcon"
+        android:layout_width="@dimen/x464"
+        android:layout_height="@dimen/y300"
+        android:background="#2b6dc5"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <android.support.constraint.ConstraintLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/x20"
+        android:layout_marginTop="@dimen/y16"
+        app:layout_constraintLeft_toLeftOf="@id/ivRecommendIcon"
+        app:layout_constraintTop_toTopOf="@id/ivRecommendIcon">
+
+        <ImageView
+            android:id="@+id/ivManIcon"
+            android:layout_width="@dimen/y32"
+            android:layout_height="@dimen/y32" />
+
+        <TextView
+            android:id="@+id/tvManSay"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/x8"
+            android:textColor="@color/white"
+            android:textSize="@dimen/y20"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toRightOf="@id/ivManIcon"
+            app:layout_constraintTop_toTopOf="parent" />
+    </android.support.constraint.ConstraintLayout>
+
+    <TextView
+        android:id="@+id/tvRecommendTip"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/y16"
+        android:layout_marginLeft="@dimen/x20"
+        android:text="寿司"
+        android:textColor="@color/c_ef"
+        android:textSize="@dimen/y22"
+        app:layout_constraintBottom_toBottomOf="@id/ivRecommendIcon"
+        app:layout_constraintLeft_toLeftOf="@id/ivRecommendIcon" />
+
+    <TextView
+        android:id="@+id/tvRecommendName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/y10"
+        android:layout_marginLeft="@dimen/x20"
+        android:text="日食记"
+        android:textColor="@color/white"
+        android:textSize="@dimen/y30"
+        app:layout_constraintBottom_toTopOf="@id/tvRecommendTip"
+        app:layout_constraintLeft_toLeftOf="@id/ivRecommendIcon" />
+
+    <TextView
+        android:id="@+id/tvManPay"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="@dimen/x20"
+        android:text="$100/人"
+        android:textColor="@color/white"
+        android:textSize="@dimen/y28"
+        app:layout_constraintBottom_toBottomOf="@id/tvRecommendName"
+        app:layout_constraintRight_toRightOf="@id/ivRecommendIcon"
+        app:layout_constraintTop_toTopOf="@id/tvRecommendName" />
+
+    <TextView
+        android:id="@+id/tvScore"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="@dimen/x20"
+        android:text="4.0分"
+        android:textColor="#ffff00"
+        app:layout_constraintBottom_toBottomOf="@id/tvRecommendTip"
+        app:layout_constraintRight_toRightOf="@id/ivRecommendIcon"
+        app:layout_constraintTop_toTopOf="@id/tvRecommendTip" />
+
+    <com.aibabel.food.custom.ratingbar.XRatingBar xmlns:xRatingBar="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/rbStar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        app:layout_constraintBottom_toBottomOf="@id/tvScore"
+        app:layout_constraintRight_toLeftOf="@id/tvScore"
+        app:layout_constraintTop_toTopOf="@id/tvScore"
+        xRatingBar:dividerWidth="@dimen/x7" />
+
+</android.support.constraint.ConstraintLayout>

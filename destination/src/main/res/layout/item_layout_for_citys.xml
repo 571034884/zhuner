@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/px164"
+    android:paddingBottom="@dimen/px10"
+    android:paddingLeft="@dimen/px20"
+    android:paddingRight="@dimen/px20"
+    android:paddingTop="@dimen/px10">
+
+    <ImageView
+        android:id="@+id/iv_city_pic"
+        android:layout_width="@dimen/px144"
+        android:layout_height="match_parent"
+        android:src="@mipmap/ic_launcher"
+        android:scaleType="center"
+        app:layout_constraintLeft_toLeftOf="parent" />
+
+    <TextView
+        android:id="@+id/tv_city_name"
+        android:layout_width="@dimen/px0"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/px20"
+        android:text=""
+        android:textColor="@color/balck"
+        android:textSize="@dimen/text_size30"
+        app:layout_constraintLeft_toRightOf="@id/iv_city_pic"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/tv_city_introduction"
+        android:layout_width="@dimen/px0"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/px20"
+        android:ellipsize="end"
+        android:maxLines="2"
+        android:text="天皇居于首都传统与现代的滋味"
+        android:textColor="@color/gray36"
+        android:textSize="@dimen/text_size24"
+        android:visibility="gone"
+        app:layout_constraintLeft_toRightOf="@id/iv_city_pic"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tv_city_name" />
+
+    <TextView
+        android:id="@+id/tv_city_attractions"
+        android:layout_width="@dimen/px0"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/px20"
+        android:ellipsize="end"
+        android:maxLines="2"
+        android:text=""
+        android:textColor="@color/grayd7"
+        android:textSize="@dimen/text_size24"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toRightOf="@id/iv_city_pic"
+        app:layout_constraintRight_toRightOf="parent" />
+
+</android.support.constraint.ConstraintLayout>

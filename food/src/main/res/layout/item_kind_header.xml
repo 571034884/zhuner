@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:paddingBottom="@dimen/y20"
+    android:layout_height="wrap_content">
+
+    <ImageView
+        android:id="@+id/ivKindHeaderIcon"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@mipmap/type"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/tvKindHeaderName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/x4"
+        android:text="美食分类"
+        android:textColor="@color/c_33"
+        android:textSize="@dimen/y28"
+        app:layout_constraintBottom_toBottomOf="@id/ivKindHeaderIcon"
+        app:layout_constraintLeft_toRightOf="@id/ivKindHeaderIcon"
+        app:layout_constraintRight_toRightOf="@id/ivKindIcon"
+        app:layout_constraintTop_toTopOf="@id/ivKindHeaderIcon" />
+
+    <TextView
+        android:id="@+id/tvKindHeaderAll"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/y0"
+        android:layout_marginLeft="@dimen/x4"
+        android:text="查看全部"
+        android:textColor="@color/c_66"
+        android:textSize="@dimen/y24"
+        app:layout_constraintBottom_toBottomOf="@id/ivKindHeaderIcon"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="@id/ivKindHeaderIcon" />
+</android.support.constraint.ConstraintLayout>

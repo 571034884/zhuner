@@ -1,0 +1,15 @@
+<resources>
+    <string name="app_name">美食</string>
+    <string name="keyword">输入关键词</string>
+
+    <string name="quxiao">取消</string>
+    <string name="moren">店名、区域、菜系</string>
+    <string name="lishijilu">历史记录</string>
+    <string name="lishiItem">历史标签</string>
+    <string name="quanbuquyu">全部区域</string>
+    <string name="meishifenlei">美食分类</string>
+    <string name="remen">热门搜索</string>
+    <string name="area_select_title">选择目的地</string>
+    <string name="food_launcher">吃，旅途异乡最好的安慰</string>
+
+</resources>

@@ -11,19 +11,26 @@
             <option value="$PROJECT_DIR$/aidlaar" />
             <option value="$PROJECT_DIR$/baselibrary" />
             <option value="$PROJECT_DIR$/clock" />
+            <option value="$PROJECT_DIR$/common" />
             <option value="$PROJECT_DIR$/coupon" />
             <option value="$PROJECT_DIR$/currency" />
+            <option value="$PROJECT_DIR$/destination" />
             <option value="$PROJECT_DIR$/flow" />
+            <option value="$PROJECT_DIR$/food" />
             <option value="$PROJECT_DIR$/fyt_exitandentry" />
             <option value="$PROJECT_DIR$/fyt_play" />
             <option value="$PROJECT_DIR$/map" />
+            <option value="$PROJECT_DIR$/menu" />
             <option value="$PROJECT_DIR$/ocr" />
+            <option value="$PROJECT_DIR$/offline" />
             <option value="$PROJECT_DIR$/readme" />
             <option value="$PROJECT_DIR$/sos" />
             <option value="$PROJECT_DIR$/surfInternet" />
+            <option value="$PROJECT_DIR$/translate" />
             <option value="$PROJECT_DIR$/travel" />
             <option value="$PROJECT_DIR$/tucao" />
             <option value="$PROJECT_DIR$/weather" />
+            <option value="$PROJECT_DIR$/yyzs" />
           </set>
         </option>
         <option name="resolveModulePerSourceSet" value="false" />

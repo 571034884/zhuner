@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                                             xmlns:app="http://schemas.android.com/apk/res-auto"
+                                             xmlns:tools="http://schemas.android.com/tools"
+                                             android:layout_width="match_parent"
+                                             android:layout_height="match_parent"
+                                             android:background="@color/white"
+                                             tools:context=".activity.FilterActivity">
+
+    <android.support.constraint.ConstraintLayout
+        android:id="@+id/clTitle"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/y100">
+
+        <ImageView
+            android:id="@+id/ivBack"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/x20"
+            android:src="@mipmap/back"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toTopOf="parent"/>
+
+        <TextView
+            android:id="@+id/tvCity"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="东京"
+            android:textColor="@color/black"
+            android:textSize="@dimen/y30"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent"/>
+    </android.support.constraint.ConstraintLayout>
+
+    <View
+        android:id="@+id/vLine1"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/y1"
+        android:background="@color/c_33"
+        app:layout_constraintTop_toBottomOf="@+id/clTitle"/>
+
+    <LinearLayout
+        android:id="@+id/llKind"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/y64"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        app:layout_constraintTop_toBottomOf="@id/vLine1">
+
+        <com.aibabel.food.custom.DrawableCenterTextView
+            android:id="@+id/dctvKind1"
+            android:layout_width="@dimen/x120"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:drawablePadding="@dimen/x10"
+            android:drawableRight="@mipmap/fenlei_normal"
+            android:gravity="center_vertical"
+            android:text="区域"
+            android:textColor="@color/c_66"
+            android:textSize="@dimen/y24"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toTopOf="parent"/>
+
+        <com.aibabel.food.custom.DrawableCenterTextView
+            android:id="@+id/dctvKind2"
+            android:layout_width="@dimen/x120"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:drawablePadding="@dimen/x10"
+            android:drawableRight="@mipmap/fenlei_normal"
+            android:gravity="center_vertical"
+            android:text="菜系"
+            android:textColor="@color/c_66"
+            android:textSize="@dimen/y24"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toTopOf="parent"/>
+
+        <com.aibabel.food.custom.DrawableCenterTextView
+            android:id="@+id/dctvKind3"
+            android:layout_width="@dimen/x120"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:drawablePadding="@dimen/x10"
+            android:drawableRight="@mipmap/fenlei_normal"
+            android:gravity="center_vertical"
+            android:text="排序"
+            android:textColor="@color/c_66"
+            android:textSize="@dimen/y24"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toTopOf="parent"/>
+
+    </LinearLayout>
+
+    <com.zhouyou.recyclerview.XRecyclerView
+        android:id="@+id/rvFilter"
+        android:layout_width="@dimen/x0"
+        android:layout_height="@dimen/y0"
+        android:background="@color/c_f3"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/llKind"/>
+
+</android.support.constraint.ConstraintLayout>

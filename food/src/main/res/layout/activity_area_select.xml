@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:zhy="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:background="@color/white"
+    android:layout_height="match_parent"
+    tools:context=".activity.AreaSelectActivity">
+
+    <android.support.constraint.ConstraintLayout
+        android:id="@+id/clTitle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/y56"
+        android:paddingLeft="@dimen/x20"
+        android:paddingRight="@dimen/x10"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <TextView
+            android:id="@+id/tvTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/area_select_title"
+            android:textColor="@color/c_33"
+            android:textSize="@dimen/y36"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
+            android:id="@+id/ivClose"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@mipmap/close"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+    </android.support.constraint.ConstraintLayout>
+
+    <com.zhy.view.flowlayout.TagFlowLayout
+        android:id="@+id/flRemenChengshi"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        app:layout_constraintTop_toBottomOf="@+id/clTitle"
+        zhy:max_select="-1" />
+
+    <com.aibabel.food.custom.sticklist.PinnedHeaderListView
+        android:id="@+id/lvCity"
+        android:layout_width="0px"
+        android:layout_height="0px"
+        android:layout_marginLeft="@dimen/x20"
+        android:layout_marginRight="@dimen/x40"
+        android:layout_marginTop="@dimen/y26"
+        android:divider="@null"
+        android:scrollbars="none"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/flRemenChengshi" />
+
+    <TextView
+        android:id="@+id/tv_dialog"
+        android:layout_width="@dimen/y66"
+        android:layout_height="@dimen/y66"
+        android:gravity="center"
+        android:text="A"
+        android:textColor="@android:color/black"
+        android:textSize="@dimen/y36"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/flRemenChengshi"
+        tools:visibility="visible" />
+
+    <com.aibabel.food.custom.sticklist.SideBar
+        android:id="@+id/sbSort"
+        android:layout_width="@dimen/x30"
+        android:layout_height="0px"
+        android:layout_marginTop="@dimen/y85"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/flRemenChengshi" />
+</android.support.constraint.ConstraintLayout>

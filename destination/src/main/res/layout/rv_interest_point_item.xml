@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <ImageView
+        android:id="@+id/iv_img"
+        android:layout_width="@dimen/text_size145"
+        android:layout_height="@dimen/text_size145"
+        android:layout_marginLeft="@dimen/text_size20"
+        android:layout_marginTop="@dimen/px_28"
+        android:scaleType="fitXY"
+        android:src="@mipmap/no_tongyong3"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/tv_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/text_size20"
+        android:text="东京京王广场酒店"
+        android:textColor="#000000"
+        android:textSize="@dimen/text_size24"
+        app:layout_constraintLeft_toRightOf="@id/iv_img"
+        app:layout_constraintTop_toTopOf="@id/iv_img" />
+
+    <TextView
+        android:id="@+id/tv_english"
+        android:layout_width="@dimen/px0"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/text_size10"
+        android:ellipsize="end"
+        android:maxLines="1"
+        android:text="Kelo Plaz..."
+        android:textColor="#e3e3e3"
+        android:textSize="@dimen/text_size24"
+        app:layout_constraintLeft_toRightOf="@id/tv_name"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="@id/iv_img" />
+
+    <TextView
+
+        android:id="@+id/tv_praise"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/text_size20"
+        android:text="好评率 84%"
+        android:textColor="#fe5100"
+        android:textSize="@dimen/text_size22"
+        app:layout_constraintLeft_toLeftOf="@id/tv_name"
+        app:layout_constraintTop_toBottomOf="@id/tv_name" />
+
+    <TextView
+        android:id="@+id/tv_paiming"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/text_size10"
+        android:text="排名第1的住宿"
+        android:textColor="#fe5100"
+        android:textSize="@dimen/text_size22"
+        app:layout_constraintLeft_toRightOf="@id/tv_praise"
+        app:layout_constraintTop_toTopOf="@id/tv_praise" />
+
+    <TextView
+        android:id="@+id/tv_star"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text=""
+        android:textColor="#c6c6c6"
+        android:textSize="@dimen/text_size22"
+        app:layout_constraintLeft_toLeftOf="@id/tv_praise"
+        app:layout_constraintTop_toBottomOf="@id/tv_praise" />
+
+    <TextView
+        android:id="@+id/tv_evaluate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="spa/休闲|日式旅馆|隔音"
+        android:textColor="#c6c6c6"
+        android:textSize="@dimen/text_size22"
+        app:layout_constraintBottom_toBottomOf="@id/iv_img"
+        app:layout_constraintLeft_toLeftOf="@id/tv_praise"
+        app:layout_constraintTop_toBottomOf="@id/tv_star" />
+
+    <TextView
+        android:id="@+id/tv_introduce"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/text_size20"
+        android:layout_marginRight="@dimen/text_size20"
+        android:layout_marginTop="@dimen/text_size20"
+        android:ellipsize="end"
+        android:maxLines="2"
+        android:text="酒店有往返机场和迪士尼乐园的直达巴士，距离JR及各地铁都非常近，出行非常方便，房间装潢优雅而..."
+        android:textColor="#757575"
+        android:textSize="@dimen/text_size20"
+        app:layout_constraintLeft_toLeftOf="@id/iv_img"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/iv_img" />
+
+    <View
+        android:layout_width="@dimen/px0"
+        android:layout_height="@dimen/text_size12"
+        android:layout_marginTop="@dimen/text_size28"
+        android:background="#e3e3e3"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tv_introduce" />
+</android.support.constraint.ConstraintLayout>

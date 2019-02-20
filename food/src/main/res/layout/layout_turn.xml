@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/white">
+
+    <TextView
+        android:id="@+id/tvTurnTranslate"
+        android:layout_width="@dimen/x0"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:drawableTop="@mipmap/turn_translate"
+        android:gravity="center_horizontal"
+        android:padding="@dimen/y10"
+        android:text="语音翻译"
+        android:textColor="@color/c_33"
+        android:textSize="@dimen/y22" />
+
+    <TextView
+        android:id="@+id/tvTurnCamera"
+        android:layout_width="@dimen/x0"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:drawableTop="@mipmap/turn_camera"
+        android:gravity="center_horizontal"
+        android:padding="@dimen/y10"
+        android:text="菜单翻译"
+        android:textColor="@color/c_33"
+        android:textSize="@dimen/y22" />
+
+    <TextView
+        android:id="@+id/tvTurnHuilv"
+        android:layout_width="@dimen/x0"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:drawableTop="@mipmap/turn_huilv"
+        android:gravity="center_horizontal"
+        android:padding="@dimen/y10"
+        android:text="账单换算"
+        android:textColor="@color/c_33"
+        android:textSize="@dimen/y22" />
+
+</LinearLayout>

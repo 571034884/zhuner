@@ -1,0 +1,39 @@
+<resources>
+    <string name="app_name">目的地</string>
+
+    <string name="guojiaganlan">國家概覽</string>
+    <string name="ganlan">概覽</string>
+    <string name="rujingkazhinan">出入境卡指南</string>
+    <string name="fengsu">風俗</string>
+    <string name="anquan">安全</string>
+    <string name="jiankang">健康</string>
+    <string name="jieqing">節慶</string>
+    <string name="remenchengshi">熱門城市</string>
+    <string name="remen">熱門</string>
+    <string name="yazhou">亞洲</string>
+    <string name="ouzhou">歐洲</string>
+    <string name="feizhou">非洲</string>
+    <string name="beimeizhou">北美洲</string>
+    <string name="nanmeizhou">南美洲</string>
+    <string name="dayangzhou">大洋洲</string>
+    <string name="zhankaigengduo">查看更多</string>
+    <string name="suoyouchengshi">查看所有城市</string>
+    <string name="chengshigailan">城市概覽</string>
+    <string name="bendijiaotong">本地交通</string>
+    <string name="jingdian">景點</string>
+    <string name="canyin">餐飲</string>
+    <string name="zhusu">住宿</string>
+    <string name="gouwu">購物</string>
+    <string name="xingqudian">興趣點</string>
+    <string name="morenxianshi">國家、城市、景點</string>
+    <string name="zuijinsousuo">最近搜尋</string>
+    <string name="qingchulishi">清除歷史</string>
+    <string name="remenmudidi">熱門目的地</string>
+    <string name="quxiao">取消</string>
+
+    <!--toast-->
+    <string name="toast_wangluocuowu">服務器異常，請稍後再試</string>
+    <string name="toast_wushuju">未找到相關信息</string>
+    <string name="toast_zanwuxinxi">暫無信息</string>
+    <string name="toast_wuwangluo">網路不可用，請先連結網路</string>
+</resources>

@@ -1,0 +1,39 @@
+<resources>
+    <string name="app_name">목적지</string>
+
+    <string name="guojiaganlan">국가별 소개</string>
+    <string name="ganlan">소개</string>
+    <string name="rujingkazhinan">출입국 카드</string>
+    <string name="fengsu">풍습</string>
+    <string name="anquan">안전</string>
+    <string name="jiankang">겅강</string>
+    <string name="jieqing">축일</string>
+    <string name="remenchengshi">인기 도시</string>
+    <string name="remen">인기</string>
+    <string name="yazhou">아시아</string>
+    <string name="ouzhou">유럽</string>
+    <string name="feizhou">아프리카</string>
+    <string name="beimeizhou">북아메리카</string>
+    <string name="nanmeizhou">남아메리카</string>
+    <string name="dayangzhou">오세아니아</string>
+    <string name="zhankaigengduo">더 보기</string>
+    <string name="suoyouchengshi">모든 도시를 보기</string>
+    <string name="chengshigailan">도시별 소개</string>
+    <string name="bendijiaotong">지방 교통</string>
+    <string name="jingdian">관광 스폿</string>
+    <string name="canyin">음식</string>
+    <string name="zhusu">호텔</string>
+    <string name="gouwu">쇼핑</string>
+    <string name="xingqudian">시설명</string>
+    <string name="morenxianshi">국가, 도시, 관광 스폿</string>
+    <string name="zuijinsousuo">검색 기록</string>
+    <string name="qingchulishi">기록 삭제</string>
+    <string name="remenmudidi">인기 여행지</string>
+    <string name="quxiao">취소</string>
+
+    <!--toast-->
+    <string name="toast_wangluocuowu">서버 에러로 잠시후 다시 검색 바랍니다.</string>
+    <string name="toast_wushuju">검색한 정보 데이트가 없습니다.</string>
+    <string name="toast_zanwuxinxi">검색한 정보 데이트가 없습니다.</string>
+    <string name="toast_wuwangluo">네트워크가 불가하므로 연결하여 사용 바랍니다.</string>
+</resources>

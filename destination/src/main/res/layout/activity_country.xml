@@ -1,0 +1,335 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.aibabel.traveladvisory.utils.MyScrollview xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/hsv_scroll"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#ffffff"
+    tools:context=".activity.CountryActivity">
+
+    <android.support.constraint.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:focusable="true"
+        android:focusableInTouchMode="true">
+
+        <android.support.constraint.ConstraintLayout
+            android:id="@+id/cl"
+            android:layout_width="@dimen/px0"
+            android:layout_height="@dimen/px425"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <ImageView
+                android:id="@+id/iv_jingqu"
+                android:layout_width="@dimen/px0"
+                android:layout_height="@dimen/px0"
+                android:scaleType="centerCrop"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+
+            <!--<include layout="@layout/layout_for_country_city_title" />-->
+
+            <include
+                android:id="@+id/i_title"
+                layout="@layout/layout_unified_title" />
+
+            <TextView
+                android:id="@+id/tv_guojia"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/px160"
+                android:fontFamily="sans-serif"
+                android:text="日本"
+                android:textColor="#ffffff"
+                android:textSize="@dimen/px42"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/tv_guojia_en"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="sans-serif-light"
+                android:text="Japan"
+                android:textColor="#ffffff"
+                android:textSize="@dimen/px30"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tv_guojia" />
+
+
+        </android.support.constraint.ConstraintLayout>
+
+        <LinearLayout
+            android:id="@+id/ll2"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/px88"
+            android:background="#ffffff"
+            android:orientation="horizontal"
+            app:layout_constraintTop_toBottomOf="@id/cl">
+
+            <LinearLayout
+                android:id="@+id/ll_gailan"
+                android:layout_width="@dimen/px0"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="center">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@mipmap/lyzx_guojiagailan" />
+
+                <TextView
+                    android:id="@+id/tv_gailan"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/px10"
+                    android:text="@string/guojiaganlan"
+                    android:textColor="#000000"
+                    android:textSize="@dimen/px24" />
+            </LinearLayout>
+
+            <View
+                android:layout_width="@dimen/px1"
+                android:layout_height="match_parent"
+                android:layout_gravity="center_vertical"
+                android:layout_marginBottom="@dimen/px26"
+                android:layout_marginTop="@dimen/px26"
+                android:background="#d2d2d2" />
+
+            <LinearLayout
+                android:id="@+id/ll_rujing"
+                android:layout_width="@dimen/px0"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="center">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@mipmap/lyzx_rujingzhinan" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/px10"
+                    android:text="@string/rujingkazhinan"
+                    android:textColor="#000000"
+                    android:textSize="@dimen/px24" />
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <View
+            android:id="@+id/v1"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/px1"
+            android:background="@color/grayd2"
+            app:layout_constraintTop_toBottomOf="@id/ll2" />
+
+        <LinearLayout
+            android:id="@+id/ll3"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/px110"
+            android:background="#ffffff"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:paddingTop="@dimen/px24"
+            app:layout_constraintTop_toBottomOf="@id/v1">
+
+            <LinearLayout
+                android:id="@+id/ll_fengsu"
+                android:layout_width="@dimen/px0"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:orientation="vertical"
+                app:layout_constraintBottom_toTopOf="@id/gl_horizontal"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toLeftOf="@id/gl_vertical"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingBottom="@dimen/px2"
+                    android:paddingTop="@dimen/px2"
+                    android:src="@mipmap/lyzx_fengsu" />
+
+                <TextView
+                    style="@style/part"
+                    android:layout_marginTop="@dimen/text_size10"
+                    android:text="@string/fengsu" />
+            </LinearLayout>
+
+            <View
+                android:layout_width="@dimen/px1"
+                android:layout_height="@dimen/px44"
+                android:background="@color/grayd2" />
+
+            <LinearLayout
+                android:id="@+id/ll_anquan"
+                android:layout_width="@dimen/px0"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:orientation="vertical"
+                app:layout_constraintBottom_toTopOf="@id/gl_horizontal"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toLeftOf="@id/gl_vertical"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@mipmap/lyzx_anquan" />
+
+                <TextView
+                    style="@style/part"
+                    android:layout_marginTop="@dimen/px11"
+                    android:text="@string/anquan" />
+            </LinearLayout>
+
+            <View
+                android:layout_width="@dimen/px1"
+                android:layout_height="@dimen/px44"
+                android:background="@color/grayd2" />
+
+            <LinearLayout
+                android:id="@+id/ll_jiankang"
+                android:layout_width="@dimen/px0"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:orientation="vertical"
+                app:layout_constraintBottom_toTopOf="@id/gl_horizontal"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toLeftOf="@id/gl_vertical"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingBottom="@dimen/px2"
+                    android:paddingTop="@dimen/px2"
+                    android:src="@mipmap/lyzx_jiankang" />
+
+                <TextView
+                    style="@style/part"
+                    android:layout_marginTop="@dimen/px10"
+                    android:text="@string/jiankang" />
+            </LinearLayout>
+
+            <View
+                android:layout_width="@dimen/px1"
+                android:layout_height="@dimen/px44"
+                android:background="@color/grayd2" />
+
+            <LinearLayout
+                android:id="@+id/ll_jieqing"
+                android:layout_width="@dimen/px0"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:orientation="vertical"
+                app:layout_constraintBottom_toTopOf="@id/gl_horizontal"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toLeftOf="@id/gl_vertical"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingTop="@dimen/px3"
+                    android:src="@mipmap/lyzx_jieqing" />
+
+                <TextView
+                    style="@style/part"
+                    android:layout_marginTop="@dimen/px10"
+                    android:text="@string/jieqing" />
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <View
+            android:id="@+id/v2"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/px12"
+            android:layout_marginTop="@dimen/text_size20"
+            android:background="@color/gray_ef"
+            app:layout_constraintTop_toBottomOf="@id/ll3" />
+
+        <TextView
+            android:id="@+id/tv_hot_city"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/px30"
+            android:text="@string/remenchengshi"
+            android:textColor="#000000"
+            android:textSize="@dimen/text_size30"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/v2" />
+
+        <ImageView
+            android:id="@+id/iv_citys"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/text_size96"
+            android:layout_marginLeft="@dimen/text_size18"
+            android:layout_marginRight="@dimen/text_size18"
+            android:layout_marginTop="@dimen/text_size26"
+            android:scaleType="fitXY"
+            android:src="@mipmap/lyzx_citys"
+            android:visibility="gone"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_hot_city" />
+
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/rv_hot_citys"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/text_size18"
+            android:layout_marginRight="@dimen/text_size10"
+            android:layout_marginTop="@dimen/text_size15"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/iv_citys"></android.support.v7.widget.RecyclerView>
+
+        <LinearLayout
+            android:id="@+id/ll_Oceania"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/px40"
+            android:layout_marginTop="@dimen/px20"
+            android:gravity="center"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/rv_hot_citys">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="@dimen/text_size12"
+                android:src="@mipmap/moreicon" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/suoyouchengshi"
+                android:textColor="#c6c6c6"
+                android:textSize="@dimen/text_size24" />
+        </LinearLayout>
+    </android.support.constraint.ConstraintLayout>
+
+</com.aibabel.traveladvisory.utils.MyScrollview>
