@@ -5,15 +5,14 @@ import android.app.ActivityManager;
 import android.app.Application;
 import android.content.Context;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Looper;
 import android.util.DisplayMetrics;
 import android.util.Log;
 
+import com.aibabel.aidlaar.StatisticsManager;
+import com.aibabel.ocr.BuildConfig;
 import com.aibabel.ocr.utils.DensityHelper;
 import com.aibabel.ocr.utils.DevUtils;
 import com.lzy.okgo.OkGo;
-import com.lzy.okgo.model.HttpHeaders;
 import com.umeng.analytics.MobclickAgent;
 import com.umeng.commonsdk.UMConfigure;
 
@@ -49,6 +48,7 @@ public class BaseApplication extends Application {
         initAppExitConfig();
         configUmeng();
         initLayoutConfig();
+        StatisticsManager.getInstance(this).setConfig(getPackageName(), BuildConfig.VERSION_NAME);
     }
 
     /**

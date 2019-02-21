@@ -38,6 +38,7 @@ public class Guaguaka extends View {
     private RectF dstRect;//设置可涂抹区域
     private int dstWidth;
     private int dstHeight;
+    private Canvas canvas;
 
     private List<RectF> rects = new ArrayList<RectF>();//涂抹区域列表
     private RectF currRect;//当前涂抹区域
@@ -60,7 +61,8 @@ public class Guaguaka extends View {
     }
 
     private void init() {
-        mPaint.setColor(0x55ffffff);
+//        mPaint.setColor(Color.WHITE);
+        mPaint.setColor(0x55FFFFFF);
         //mPaint.setAntiAlias(true);
         //mPaint.setDither(true);
         mPaint.setStrokeWidth(DisplayUtil.dip2px(this.getContext(), 20));
@@ -86,8 +88,10 @@ public class Guaguaka extends View {
             return;
         //涂抹
         initDstRect();
-//        canvas.drawColor(0x55ffffff);
+//        canvas.drawColor(0x55000000);
+//        canvas.drawColor(0x00000000);
 
+        this.canvas = canvas;
         if (isSelectAll) {
             mPaint.setStyle(Paint.Style.FILL);
             canvas.drawRect(rects.get(0), mPaint);
@@ -95,9 +99,7 @@ public class Guaguaka extends View {
             mPaint.setStyle(Paint.Style.STROKE);
             canvas.drawPath(mPath, mPaint);
         }
-
-
-//        drawArea(canvas);
+        //drawArea(canvas);
     }
 
     /**
@@ -266,6 +268,20 @@ public class Guaguaka extends View {
         isSelectAll = true;
         this.invalidate();
     }
+
+    /**
+     *
+     */
+    public void changeFront() {
+        if(null!=canvas){
+            canvas.drawColor(0x55000000);
+            draw(canvas);
+        }
+        this.invalidate();
+    }
+
+
+
 
     /**
      * 设置可涂抹区域的宽度、高度

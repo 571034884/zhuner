@@ -16,7 +16,7 @@ import com.aibabel.ocr.R;
 
 public class CustomProgress extends Dialog {
 
-
+    ImageView ivLoading;
 
     private TextView tv_msg;
     private ImageView iv_loading;
@@ -43,14 +43,9 @@ public class CustomProgress extends Dialog {
 
         setTitle("");
         setContentView(R.layout.progress_custom);
-        tv_msg = (TextView) findViewById(R.id.message);
-//        if (message == null || message.length() == 0) {
-//            findViewById(R.id.message).setVisibility(View.GONE);
-//        } else {
-//            TextView txt = (TextView) dialog.findViewById(R.id.message);
-//            txt.setText(message);
-//        }
-        tv_msg.setText(context.getString(R.string.recogning));
+//        tv_msg = (TextView) findViewById(R.id.message);
+//        tv_msg.setText(context.getString(R.string.recogning));
+        ivLoading = findViewById(R.id.ivLoading);
 
         // 按返回键是否取消
         setCancelable(false);
@@ -70,11 +65,11 @@ public class CustomProgress extends Dialog {
      * 当窗口焦点改变时调用
      */
     public void onWindowFocusChanged(boolean hasFocus) {
-        ImageView imageView = (ImageView) findViewById(R.id.spinnerImageView);
-        // 获取ImageView上的动画背景
-        AnimationDrawable spinner = (AnimationDrawable) imageView.getBackground();
-        // 开始动画
-        spinner.start();
+//        ImageView imageView = (ImageView) findViewById(R.id.spinnerImageView);
+//        // 获取ImageView上的动画背景
+//        AnimationDrawable spinner = (AnimationDrawable) imageView.getBackground();
+//        // 开始动画
+//        spinner.start();
     }
 
     /**
@@ -129,15 +124,21 @@ public class CustomProgress extends Dialog {
 
     public void show() {
         super.show();
+        ivLoading.setImageResource(R.drawable.loading_anim1);
+        AnimationDrawable animationDrawable = (AnimationDrawable) ivLoading.getDrawable();
+        animationDrawable.start();
     }
-
 
     public void cancle() {
         super.cancel();
     }
 
     public void dismiss() {
+        ivLoading.setImageResource(R.drawable.loading_anim1);
+        AnimationDrawable animationDrawable = (AnimationDrawable) ivLoading.getDrawable();
+        animationDrawable.stop();
         super.dismiss();
+
     }
 
 

@@ -8,6 +8,7 @@ import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.ListView;
 
+import com.aibabel.aidlaar.StatisticsManager;
 import com.aibabel.ocr.R;
 import com.aibabel.ocr.adapter.Adapter_Language;
 import com.aibabel.ocr.bean.LanBean;
@@ -15,9 +16,11 @@ import com.aibabel.ocr.utils.Constant;
 import com.aibabel.ocr.utils.LanguageUtils;
 import com.aibabel.ocr.utils.SharePrefUtil;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
-public class SelectRightLanguageActivity extends BaseActivity implements AdapterView.OnItemClickListener,View.OnClickListener{
+public class SelectRightLanguageActivity extends BaseActivity implements AdapterView.OnItemClickListener, View.OnClickListener {
     private ImageView iv_close;
     private ListView lv_language;
     private Adapter_Language adapter;
@@ -49,13 +52,13 @@ public class SelectRightLanguageActivity extends BaseActivity implements Adapter
             current_lan_code = SharePrefUtil.getString(this, Constant.LAN_TR_CODE, "ch_ch");
         }
         list = LanguageUtils.getLanRightList(this);
-        for(LanBean bean : list){
+        for (LanBean bean : list) {
             String code = bean.getLang_code();
-            if(TextUtils.equals(code,current_lan_code)){
+            if (TextUtils.equals(code, current_lan_code)) {
                 bean.setChoice(1);
             }
         }
-        adapter = new Adapter_Language(this,list);
+        adapter = new Adapter_Language(this, list);
         lv_language.setAdapter(adapter);
 
     }
@@ -63,19 +66,21 @@ public class SelectRightLanguageActivity extends BaseActivity implements Adapter
 
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+        Map<String, String> map = new HashMap<>();
+        map.put("目标语言", Constant.LAN_TR);
+        StatisticsManager.getInstance(SelectRightLanguageActivity.this).addEventAidl( "选择语言", map);
         LanBean bean = list.get(position);
         String name = bean.getName();
         String name_code = bean.getLang_code();
-        saveLan(name,name_code);
+        saveLan(name, name_code);
     }
 
 
     /**
-     *
-     * @param name  语言
+     * @param name 语言
      * @param code 对应的code
      */
-    private void saveLan( String name, String code) {
+    private void saveLan(String name, String code) {
         switch (lan_type) {// 类型： 1、源语言， 2、 目标语言
             case 1:
                 SharePrefUtil.saveString(this, Constant.LAN_OR, name);
@@ -94,7 +99,7 @@ public class SelectRightLanguageActivity extends BaseActivity implements Adapter
 
     @Override
     public void onClick(View v) {
-        switch (v.getId()){
+        switch (v.getId()) {
             case R.id.iv_close:
                 this.finish();
                 break;

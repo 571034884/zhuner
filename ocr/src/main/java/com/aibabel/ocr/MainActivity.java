@@ -1,34 +1,27 @@
 package com.aibabel.ocr;
 
-import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.net.Uri;
-import android.support.v4.view.ViewPager;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v4.view.ViewPager;
 import android.text.TextUtils;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
-
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.aibabel.ocr.activity.BaseActivity;
 import com.aibabel.ocr.adapter.ViewPagerAdapter;
 import com.aibabel.ocr.bean.ResponseBean;
 import com.aibabel.ocr.utils.DisplayUtil;
 import com.aibabel.ocr.utils.FastJsonUtil;
-import com.aibabel.ocr.utils.PictureUtil;
 import com.aibabel.ocr.utils.StringUtils;
-import com.aibabel.ocr.utils.ThreadPoolManager;
 import com.aibabel.ocr.widgets.MyRelativeLayout;
+import com.bumptech.glide.Glide;
 import com.orhanobut.logger.Logger;
 
 import java.util.ArrayList;
@@ -51,7 +44,6 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
     private ViewPagerAdapter adapter;
     private List<View> listViews = null;
     private List<ResponseBean.ResultBean> list;
-    private Bitmap bitmap;
     private String result;
     private float x, y;
     private ResponseBean bean;
@@ -63,13 +55,14 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
         height = DisplayUtil.getScreenHeight(MainActivity.this);
-//        Toast.makeText(getApplicationContext(), di + "", Toast.LENGTH_SHORT).show();
         init();
     }
 
 
+    /**
+     * 初始化数据
+     */
     private void init() {
         tv_back = findViewById(R.id.tv_back);
         rl_image = findViewById(R.id.rl_image);
@@ -81,17 +74,18 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         screenWidth = dm.widthPixels;
         screenHeight = dm.heightPixels;
 
-        String uri_str = getIntent().getStringExtra("uri");
-        Log.e("path_uri_MainActivity", uri_str.toString());
+        String path = getIntent().getStringExtra("path");
+        Log.e("path", path+"");
         if (TextUtils.isEmpty(result)) {
             result = getIntent().getStringExtra("result");
             x = getIntent().getFloatExtra("x", 0);
+            if(x<0)x=0;
             y = getIntent().getFloatExtra("y", 0);
             bean = FastJsonUtil.changeJsonToBean(result, ResponseBean.class);
             mode = bean.getMode();
             list = bean.getResult();
         }
-        iv_image.setImageBitmap(BitmapFactory.decodeFile(uri_str));
+        Glide.with(this).load(BitmapFactory.decodeFile(path)).into(iv_image);
         tv_back.setOnClickListener(this);
         listViews = new ArrayList<View>();
         dots = new ArrayList<TextView>();
@@ -107,7 +101,15 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
                 v_dot.setBackgroundResource(R.drawable.dot_focused);
                 v_dot.setTextSize(10);
                 v_dot.setText("1");
-                rl_image.drawReat((int) (StringUtils.getRealWidth(list.get(i).getLocation().getX()) + x), (int) (StringUtils.getRealHeight(list.get(i).getLocation().getY()) + y + i * 0.2), StringUtils.getRealWidth(list.get(0).getLocation().getWidth()), StringUtils.getRealWidth(list.get(0).getLocation().getHeight()));
+                int left =(int) (StringUtils.getRealWidth(list.get(i).getLocation().getX()) + x);
+                if(left<0)left=0;
+                int top = (int) (StringUtils.getRealHeight(list.get(i).getLocation().getY()) + y + currentPosition * 0.2);
+                int width = StringUtils.getRealWidth(list.get(0).getLocation().getWidth());
+                int realWidth = StringUtils.isExceed(left,width,MainActivity.this);
+                int height = StringUtils.getRealWidth(list.get(0).getLocation().getHeight());
+
+                rl_image.drawReat(left,top,realWidth,height);
+//                rl_image.drawReat((int) (StringUtils.getRealWidth(list.get(i).getLocation().getX()) + x), (int) (StringUtils.getRealHeight(list.get(i).getLocation().getY()) + y + i * 0.2), StringUtils.getRealWidth(list.get(0).getLocation().getWidth()), StringUtils.getRealWidth(list.get(0).getLocation().getHeight()));
             } else {
                 docParams = new LinearLayout.LayoutParams(15, 15);
                 v_dot.setBackgroundResource(R.drawable.dot_normal);
@@ -182,9 +184,9 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
             int yPoint = (int) (list.get(arg0).getLocation().getY() + y);
             int areaHeight = screenHeight - 400;
             int bitmapHeight = rl_image.getHeight();
-            Log.e("yPoint", yPoint + "");
-            Log.e("areaHeight", areaHeight + "");
-            Log.e("bitmapHeight", bitmapHeight + "");
+//            Log.e("yPoint", yPoint + "");
+//            Log.e("areaHeight", areaHeight + "");
+//            Log.e("bitmapHeight", bitmapHeight + "");
             if (yPoint > areaHeight / 2 && (bitmapHeight - yPoint > areaHeight / 2)) {
                 sv_image.scrollTo(0, yPoint - areaHeight / 2);
             } else {
@@ -215,7 +217,16 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
             //将对应的位置背景变为focus形式
             lp_dots_normal = (LinearLayout.LayoutParams) (dots.get(oldPosition)).getLayoutParams();
             lp_dots_focused = (LinearLayout.LayoutParams) (dots.get(currentPosition)).getLayoutParams();
-            rl_image.drawReat((int) (StringUtils.getRealWidth(list.get(arg0).getLocation().getX()) + x), (int) (StringUtils.getRealHeight(list.get(arg0).getLocation().getY()) + y + currentPosition * 0.2), StringUtils.getRealWidth(list.get(arg0).getLocation().getWidth()), StringUtils.getRealWidth(list.get(arg0).getLocation().getHeight()));
+//            rl_image.drawReat((int) (StringUtils.getRealWidth(list.get(arg0).getLocation().getX()) + x), (int) (StringUtils.getRealHeight(list.get(arg0).getLocation().getY()) + y + currentPosition * 0.2), StringUtils.getRealWidth(list.get(arg0).getLocation().getWidth()), StringUtils.getRealWidth(list.get(arg0).getLocation().getHeight()));
+            int left =(int) (StringUtils.getRealWidth(list.get(arg0).getLocation().getX()) + x);
+            if(left<0)left=0;
+            int top = (int) (StringUtils.getRealHeight(list.get(arg0).getLocation().getY()) + y + currentPosition * 0.2);
+            int width = StringUtils.getRealWidth(list.get(arg0).getLocation().getWidth());
+            int realWidth = StringUtils.isExceed(left,width,MainActivity.this);
+            int height = StringUtils.getRealWidth(list.get(arg0).getLocation().getHeight());
+
+            rl_image.drawReat(left,top, realWidth, height);
+
             lp_dots_normal.width = 15;
             lp_dots_normal.height = 15;
             lp_dots_focused.width = 25;

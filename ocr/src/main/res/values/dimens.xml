@@ -35,6 +35,7 @@
     <dimen name="px50">50pt</dimen>
     <dimen name="px30">30pt</dimen>
     <dimen name="px320">320pt</dimen>
+    <dimen name="px180">180pt</dimen>
     <dimen name="px876">876pt</dimen>
     <dimen name="px400">400pt</dimen>
     <dimen name="px44">44pt</dimen>
@@ -54,6 +55,7 @@
     <dimen name="px10">10pt</dimen>
     <dimen name="px80">80pt</dimen>
     <dimen name="px16">16pt</dimen>
+    <dimen name="px18">18pt</dimen>
     <dimen name="px12">12pt</dimen>
     <dimen name="px8">8pt</dimen>
     <dimen name="px24">24pt</dimen>

@@ -20,5 +20,6 @@
 	<string name="photo_error">Would you like to retake the picture？</string>
 
 	<string name="more">More information ></string>
+	<string name="retry">Recognition failed. Please try again.</string>
 
 </resources>

@@ -7,6 +7,7 @@ import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.ListView;
 
+import com.aibabel.aidlaar.StatisticsManager;
 import com.aibabel.ocr.R;
 import com.aibabel.ocr.adapter.Adapter_Language;
 import com.aibabel.ocr.bean.LanBean;
@@ -14,7 +15,9 @@ import com.aibabel.ocr.utils.Constant;
 import com.aibabel.ocr.utils.LanguageUtils;
 import com.aibabel.ocr.utils.SharePrefUtil;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class SelectLanguageActivity extends BaseActivity implements AdapterView.OnItemClickListener{
     private ImageView iv_close;
@@ -67,10 +70,14 @@ public class SelectLanguageActivity extends BaseActivity implements AdapterView.
 
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+        Map<String, String> map = new HashMap<>();
+        map.put("源语言",Constant.LAN_OR);
+        StatisticsManager.getInstance(SelectLanguageActivity.this).addEventAidl("选择语言",map);
         LanBean bean = list.get(position);
         String name = bean.getName();
         String name_code = bean.getLang_code();
         saveLan(name,name_code);
+
     }
 
 

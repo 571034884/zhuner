@@ -6,10 +6,14 @@ import android.net.Uri;
 import android.text.TextUtils;
 import android.util.Log;
 
+import com.aibabel.ocr.app.BaseApplication;
 import com.aibabel.ocr.app.UrlConfig;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class ContentProviderUtil {
     /*获取当前定位城市和该地区的host地址*/
@@ -32,13 +36,13 @@ public class ContentProviderUtil {
                 String ips = cursor.getString(cursor.getColumnIndex("ips"));
                 String countryNameCN = cursor.getString(cursor.getColumnIndex("country"));
                 if (TextUtils.equals(countryNameCN,"中国")) {
-                    key = "中国_" + context.getPackageName() + "_ocr";
+                    key = "中国_" + context.getPackageName() + "_camera";
                 } else {
-                    key = "default_" + context.getPackageName() + "_ocr";
+                    key = "default_" + context.getPackageName() + "_camera";
                 }
                 JSONObject jsonObject = new JSONObject(ips);
                 JSONArray jsonArray = new JSONArray(jsonObject.getString(key));
-//                ip_host = jsonArray.getJSONObject(0).get("domain").toString();
+                ip_host = jsonArray.getJSONObject(0).get("domain").toString();
                 Log.d("ContentProviderUtil", ip_host);
             } else {
                 Log.d("ContentProviderUtil", "：没有获取到定位信息");
@@ -99,6 +103,37 @@ public class ContentProviderUtil {
                 cursor.close();
         }
         return countryName;
+
+    }
+
+
+    /**
+     * 获取经纬度
+     * @return
+     */
+    public static Map<String,Double> getLocation() {
+        Cursor cursor = BaseApplication.CONTEXT.getContentResolver().query(Constant.CONTENT_URI, null, null, null, null);
+        Map<String,Double> map = new HashMap<>();
+        try {
+            if (cursor != null && cursor.getCount() > 0) {
+                cursor.moveToFirst();
+                cursor.getString(cursor.getColumnIndex("city"));
+                int latId = cursor.getColumnIndex("latitude");
+                int lonId = cursor.getColumnIndex("longitude");
+                double latitude = cursor.getDouble(latId);
+                double longitude = cursor.getDouble(lonId);
+                map.put("latitude",latitude);
+                map.put("longitude",longitude);
+
+            } else {
+
+            }
+        } finally {
+            if (null != cursor)
+                cursor.close();
+        }
+
+        return map;
 
     }
 

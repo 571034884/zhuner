@@ -18,5 +18,6 @@
 	<string name="chongxin_photo">撮り直す</string>
 	<string name="photo_error">お撮り直しですか？</string>
 	<string name="more">もっと見る ></string>
+	<string name="retry">認識に失敗しました。もう一度お試し下さい。</string>
 
 </resources>

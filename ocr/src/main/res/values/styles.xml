@@ -4,11 +4,11 @@
     <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
         <item name="android:windowNoTitle">true</item>
         <item name="android:windowFullscreen">true</item>
-        <item name="android:windowBackground">@color/colorOrange</item>
+        <!--<item name="android:windowBackground">@color/colorOrange</item>-->
     </style>
 
     <style name="ThemeSplash" parent="Theme.AppCompat.Light.NoActionBar">
-        <item name="android:background">@mipmap/fy_paizhaofanyi</item>
+        <!--<item name="android:background">@mipmap/fy_paizhaofanyi</item>-->
         <item name="android:windowNoTitle">true</item>
         <item name="android:windowFullscreen">true</item>
 

@@ -27,7 +27,13 @@ public class Constant {
     public final static int REQUIRE_H = 1280;
     public final static String TYPE_MENU = "menu";
     public final static String TYPE_ARTICAL = "article";
-    public final static String TYPE_OBJECT = "object";
+    public final static String TYPE_OBJECT = "general";
 
 
+    /**预览**/
+    public final static int PREVIEW = 0;
+    /**拍照完成**/
+    public final static int IMAGED = 1;
+    /**显示翻译结果**/
+    public final static int TRANSLATE = 2;
 }

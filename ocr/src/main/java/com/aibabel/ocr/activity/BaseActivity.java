@@ -2,20 +2,17 @@ package com.aibabel.ocr.activity;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.WindowManager;
+import android.widget.Toast;
 
 import com.aibabel.ocr.app.BaseApplication;
+import com.aibabel.statisticalserver.SimpleStatisticsActivity;
 import com.umeng.analytics.MobclickAgent;
 
-import java.util.Calendar;
-
-public class BaseActivity extends AppCompatActivity implements View.OnClickListener {
-
-
+public class BaseActivity extends SimpleStatisticsActivity implements View.OnClickListener {
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -66,4 +63,24 @@ public class BaseActivity extends AppCompatActivity implements View.OnClickListe
     public void onClick(View v) {
 
     }
+
+
+
+    protected void toast(final String msg){
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                Toast.makeText(BaseActivity.this, msg, Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+    protected void toast(final int msg){
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                Toast.makeText(BaseActivity.this, msg, Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
 }

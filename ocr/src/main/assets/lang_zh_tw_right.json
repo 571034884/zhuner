@@ -1,12 +1,12 @@
 [
   {
     "id": 0,
-    "name_local": "中文",
+    "name_local": "简体中文",
     "lang_code": "ch_ch",
     "alert": "请说标准普通话。",
     "sound": 1,
     "child": [],
-    "name": "中文"
+    "name": "简体中文"
   },
   {
     "id": 1,

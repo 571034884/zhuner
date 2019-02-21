@@ -39,6 +39,8 @@ import android.view.View;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
+import com.aibabel.aidlaar.StatisticsManager;
+import com.aibabel.ocr.activity.TakePhoteActivity;
 import com.aibabel.ocr.app.BaseApplication;
 import com.aibabel.ocr.utils.Constant;
 import com.aibabel.ocr.utils.DisplayUtil;
@@ -47,9 +49,12 @@ import com.orhanobut.logger.Logger;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
-public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback, AutoFocusCallback, SensorControler.CameraFocusListener, IActivityLifiCycle {
+public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback, AutoFocusCallback, SensorControler.CameraFocusListener,
+        IActivityLifiCycle {
     private static final String TAG = "CameraPreview";
     private String isOpenFlashMode = Camera.Parameters.FLASH_MODE_OFF;//是否开启闪光灯 默认关闭闪光灯
     private int viewWidth = 0;
@@ -85,10 +90,12 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
     public boolean vertical = true;
     private OrientationEventListener mOrEventListener;
 
+    private Context mContext;
 
     // Preview类的构造方法
     public CameraPreview(Context context, AttributeSet attrs) {
         super(context, attrs);
+        mContext = context;
         // 获得SurfaceHolder对象
         holder = getHolder();
         //设置焦点对焦
@@ -178,6 +185,7 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
 
     }*/
 
+    long time;
     /**
      * 点击显示焦点区域
      */
@@ -191,6 +199,7 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
                     // 手指离开屏幕
                 case MotionEvent.ACTION_UP:
                     //设置聚焦
+                    time = System.currentTimeMillis();
                     Point point = new Point((int) event.getRawX(), (int) event.getRawY() - 84);
                     onCameraFocus(point, false);
                     break;
@@ -468,13 +477,19 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
 
     @Override
     public void onAutoFocus(boolean success, Camera camera) {
+        Map<String, String> map = new HashMap<>();
+        map.put("对焦时长", System.currentTimeMillis() - time + "");
         //聚焦之后根据结果修改图片
         if (success) {
+            map.put("是否成功", "成功");
             mFocusView.onFocusSuccess();
         } else {
             //聚焦失败显示的图片，由于未找到合适的资源，这里仍显示同一张图片
             mFocusView.onFocusFailed();
+            map.put("是否成功", "失败");
         }
+        StatisticsManager.getInstance(mContext).addEventAidl( "对焦", map);
+
         mHandler.postDelayed(new Runnable() {
             @Override
             public void run() {
@@ -731,7 +746,6 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
 //
 //        Log.i(TAG, "displayOrientation:" + displayOrientation);
 //    }
-
 
 
 //

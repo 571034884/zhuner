@@ -1,13 +1,14 @@
 apply plugin: 'com.android.application'
-
+apply plugin: 'com.aliyun.ams.emas-services'
 android {
     compileSdkVersion 28
+    buildToolsVersion '27.0.3'
     defaultConfig {
         applicationId "com.aibabel.ocr"
         minSdkVersion 21
         targetSdkVersion 28
-        versionCode 2
-        versionName "1.0.1"
+        versionCode 5
+        versionName "1.1.3"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
@@ -15,10 +16,6 @@ android {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
-    }
-    compileOptions {
-        targetCompatibility 1.8
-        sourceCompatibility 1.8
     }
 
     lintOptions {
@@ -31,21 +28,40 @@ android {
 }
 
 dependencies {
-    implementation project(path: ':baselibrary')
-
     implementation fileTree(include: ['*.jar'], dir: 'libs')
     androidTestImplementation('com.android.support.test.espresso:espresso-core:2.2.2', {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
+    /*logger日志*/
+    /*json解析*/
+    /*OKGO网络请求框架*/
+    //    implementation 'com.github.GeniusLiu:GestureViewBinder:v1.0.0'
+    implementation 'com.android.support:appcompat-v7:28.+'
     implementation 'com.android.support:design:28.+'
     implementation 'com.android.support:cardview-v7:28.+'
+    implementation 'com.android.support.constraint:constraint-layout:1.0.2'
     implementation 'com.orhanobut:logger:2.1.1'
     implementation 'com.google.code.gson:gson:2.2.4'
+    implementation 'com.alibaba:fastjson:1.2.2'
+    implementation 'com.lzy.net:okgo:3.0.4'
+    implementation 'com.jakewharton:butterknife:8.8.1'
     annotationProcessor 'com.jakewharton:butterknife-compiler:8.8.1'
+    implementation 'com.github.bumptech.glide:glide:4.4.0'
     implementation 'jp.wasabeef:glide-transformations:3.3.0'
     implementation 'top.zibin:Luban:1.1.8'
+    implementation 'com.umeng.sdk:common:1.5.0'
+    implementation 'com.umeng.sdk:analytics:7.5.0'
     implementation 'com.jiangyy:dialog:1.0.4'
     implementation 'jp.co.cyberagent.android.gpuimage:gpuimage-library:1.4.1'
     testImplementation 'junit:junit:4.12'
+    //    implementation files('libs/nineoldandroids-2.4.0.jar')
+    //    implementation files('libs/httpclient-4.5.5.jar')
+    //    implementation files('libs/httpcore-4.4.9.jar')
     implementation files('libs/jpeglibrary.jar')
+    implementation "com.aibabel:aidlaar:1.0.14"
+}
+repositories {
+    maven {
+        url "http://maven.aliyun.com/nexus/content/repositories/releases"
+    }
 }

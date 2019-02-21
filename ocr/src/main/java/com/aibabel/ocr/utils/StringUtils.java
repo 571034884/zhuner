@@ -1,7 +1,10 @@
 package com.aibabel.ocr.utils;
 
+import android.content.Context;
 import android.text.TextUtils;
+import android.util.Log;
 
+import com.aibabel.ocr.MainActivity;
 import com.aibabel.ocr.app.BaseApplication;
 import com.aibabel.ocr.bean.LanBean;
 
@@ -53,13 +56,20 @@ public class StringUtils {
     }
 
 
+    /**
+     * 获取真实高度
+     * @param height
+     * @return
+     */
     public static int getRealHeight(int height) {
         int realH = BaseApplication.screenH;
         if (BaseApplication.screenW == 540) {
             realH = height * BaseApplication.screenH / Constant.REQUIRE_H;
-//            realH = height*960/1168;
         } else if (BaseApplication.screenW == 480) {
             realH = height * 480 / (480 * 720 / 540);
+        }
+        if(realH<0){
+            realH=0;
         }
         return realH;
     }
@@ -93,4 +103,21 @@ public class StringUtils {
 //        System.out.println(array.length);
     }
 
+    /**
+     * 解决宽度超出屏幕问题
+     * @param left
+     * @param width
+     * @param context
+     * @return
+     */
+    public static int isExceed(int left, int width, Context context){
+        int realWidth = width;
+        int exceed = left+width;
+        if(exceed>=DisplayUtil.getScreenWidth(context)){
+            realWidth = width-(exceed-DisplayUtil.getScreenWidth(context))-3;
+        }
+        Log.e("realWidth","realWidth:"+realWidth+"---left:"+left+"-----+width:"+width);
+        return realWidth;
+
+    }
 }

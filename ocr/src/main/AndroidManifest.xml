@@ -14,13 +14,24 @@
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
 
     <application
-        android:name=".app.BaseApplication"
+        android:name=".app.SophixStubApplication"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+
+        <meta-data
+            android:name="com.taobao.android.hotfix.IDSECRET"
+            android:value="25606009" />
+        <meta-data
+            android:name="com.taobao.android.hotfix.APPSECRET"
+            android:value="0a03832798fbf8c00d72fe12a6c20d40" />
+        <meta-data
+            android:name="com.taobao.android.hotfix.RSASECRET"
+            android:value="MIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQC9Iz/qyy+K51qL6wHXtrWSyc1bV1wycpJjeKpE6UG1lHJboytklJQv06PQPiQtkyfM+1zLc8AOkZggdL9E55xuCFUfpVCE0uF9MRmoX5tts0TXZhCgezSHdV+oCngE2CqD7oHJ3f/qM0pUcQLBXqglPC8nL2Ev41yv2rRfHRHact35HD5AfOV++CsX0fga6ZHZ/o+orgeKNd7Y73+xqAYV3G5Jjo2LcWEJvaw3dgHHMQjcKs4zIqSeRfOSiJV3uZoKdJ8/Suny2/ywfW58OaqHp70B1QTdVH+VOrUlDo1Te0jY/m8FhTD7u1KuQPKvHRslNXigaHSSzU+HlS4J9kLbAgMBAAECggEAa6e/vu4uPnsXL+LxJo6J5WZWLDKaeOB78ICDMjwuuaMoQH6suVBU1LA7YtGsGADVu7grhmZ5IBHBLGAnapoGkR7PDPc00JWT4YVsHElnF9bdTVl8B0x5hszJSMXEsMU11eiRGYzyGKVfHpdAwT4WqTMLh9tRD0fzvujWl/jc66BRHxXFLbUop/WgCQ4IUYgzvoyt8zjZ7Ra5QgxdgMwXPmcu2Eq12zTghAcJvg6umYP7GpbU6duNlwHsxuk7p3lJUiiTD1ixiU/Qyjyf66uPmhYVpsxIUqhrzUyLRqM9RbYDhf/36jpYcn/RiWJHaL3cj2ijSlPdlFd6kJPGIdyXGQKBgQDrusdds0Bp0FbfQz3iJ4vYnPHUWVytwYxzrmLh027vB8gXn8CeHyTwVFRDKSCm5uNv4duiCKZ0Qj2ZoNfziKwLWr9OttTFe1QyCWV85EqO4hL0FN6QlkXkO1hnqkmWrkSNfconAABRTlDYqE0kvi0nmCCqa1ga2P54/f+dqC3s9wKBgQDNZtKEm8vwXHz+EjSIlqdw5nd911TUP9zdtOB37EfYOTHqRvFy5IkGuLH4sutJgxw60wADtJucN43B2Mc6RIBGpvdDiR16F9BNaiLR7woJEmRJr003/vBBudYOPQWf5qQYM69wtZLM6K/5pBdck2WHPCXaxCvLjmoimLiX4qqUPQKBgQDKGFV31Yexr/XqbwGM9A6G5PbG8N3t8XNycd1Acj43G1rGNiWy6kyG5iVfdtERhf0THHVp0zSxk2CwZx79IP0uttwwpbqAnB0w0LF7g1UQbm2FaKbvGoZNBzvhlDKGxlzrWR6IlQ2wpw3U0WVhzNF1kozeziy4x7RTEp+lEFxfPQKBgEp/krdaMpvZT9RvEfLAgbanQIu6ACCDkT4wjoGwh1ZbWElatdQwI6r2bkZ/zmr5TNHhGc4+QXplg9rdH1V45vW5NVGfd7uCy6BocHyoMIGd1BYNqPo4UzfjiUncxB987eOBS46brMT5WGo5I+gF5fsoy6oPILtRyhkGP12HbssZAoGAI9jbnzAxfiW1zaTd+CptJNAZ6fUvOHux0D//Kvjc8MmZAxJEsmecA2PHp5I6wAaBYLlFHiDaeYkY5U402o2eqJlIfhCNAqrRtEfK1srvlRNB/DVFxVX4N3Cq+iDQPYvLmFoZ7ETeDEvPhJovDHhv8MySBC5xs1QxEVBzMZpPNug=" />
+
         <activity
             android:name=".activity.LauncherActivity"
             android:theme="@style/ThemeSplash">

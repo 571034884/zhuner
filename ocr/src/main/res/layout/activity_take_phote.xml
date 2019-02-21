@@ -2,9 +2,9 @@
     xmlns:camera="http://schemas.android.com/apk/res-auto"
     android:id="@+id/root_layout"
     android:layout_width="match_parent"
+    android:layout_height="match_parent"
     android:background="#000000"
-    android:orientation="vertical"
-    android:layout_height="match_parent">
+    android:orientation="vertical">
 
 
     <!--返回和选择语言-->
@@ -17,15 +17,29 @@
         android:orientation="horizontal"
         android:visibility="visible">
 
-        <TextView
-            android:id="@+id/tv_back"
+        <RelativeLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:layout_marginRight="@dimen/px30"
-            android:background="@mipmap/ic_back"
-            android:layout_marginLeft="@dimen/px20"
-            android:visibility="invisible" />
+            android:layout_gravity="center_vertical">
+
+            <TextView
+                android:id="@+id/tv_back"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/px20"
+                android:layout_marginRight="@dimen/px30"
+                android:background="@mipmap/ic_back"
+                android:visibility="invisible" />
+
+            <TextView
+                android:id="@+id/tvFanhui"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/px20"
+                android:layout_marginRight="@dimen/px30"
+                android:background="@mipmap/ic_back"
+                android:visibility="gone" />
+        </RelativeLayout>
 
         <TextView
             android:id="@+id/tv_orLan"
@@ -69,14 +83,16 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
             android:layout_marginLeft="@dimen/px30"
-            android:background="@mipmap/ic_flashclose"
-            android:layout_marginRight="@dimen/px20" />
+            android:layout_marginRight="@dimen/px20"
+            android:background="@mipmap/ic_flashclose" />
     </LinearLayout>
+
     <RelativeLayout
         android:id="@+id/take_photo_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:visibility="visible">
+
         <com.aibabel.ocr.widgets.CameraPreview
             android:id="@+id/cameraPreview"
             android:layout_width="match_parent"
@@ -93,7 +109,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:scaleType="fitXY"
-            android:visibility="gone"/>
+            android:visibility="gone" />
         <!--  <View
               android:id="@+id/view_focus"
               android:layout_width="80dp"
@@ -104,16 +120,16 @@
             android:id="@+id/view_focus"
             android:layout_width="@dimen/px120"
             android:layout_height="@dimen/px120"
-            android:visibility="gone"
-            android:layout_centerInParent="true" />
+            android:layout_centerInParent="true"
+            android:visibility="gone" />
 
         <com.aibabel.ocr.widgets.FocusImageView
             android:id="@+id/fv_focus"
             android:layout_width="@dimen/px136"
             android:layout_height="@dimen/px136"
+            camera:focus_fail_id="@drawable/focus_focus_failed"
             camera:focus_focusing_id="@drawable/focus_focusing"
-            camera:focus_success_id="@drawable/focus_focused"
-            camera:focus_fail_id="@drawable/focus_focus_failed" />
+            camera:focus_success_id="@drawable/focus_focused" />
 
         <!--网格参考线-->
         <com.aibabel.ocr.widgets.ReferenceLine
@@ -125,13 +141,13 @@
             android:id="@+id/hint"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:gravity="center"
-            android:textSize="@dimen/px16"
             android:layout_centerInParent="true"
-            android:textColor="#60e0e0e0"
-            android:visibility="invisible"
+            android:gravity="center"
             android:lineSpacingMultiplier="1.0"
-            android:text="@string/keep_balance"/>
+            android:text="@string/keep_balance"
+            android:textColor="#60e0e0e0"
+            android:textSize="@dimen/px24"
+            android:visibility="gone" />
 
         <com.aibabel.ocr.widgets.Guaguaka
             android:id="@+id/guaguaka"
@@ -139,28 +155,22 @@
             android:layout_height="match_parent"
             android:visibility="gone" />
 
-        <com.aibabel.ocr.widgets.OcrDisplayView
-            android:id="@+id/ocrDisplayView"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:visibility="gone" />
 
         <FrameLayout
             android:id="@+id/fl_tran"
-            android:background="@color/transparent"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
-        </FrameLayout>
+            android:layout_height="match_parent"
+            android:background="@color/transparent"></FrameLayout>
 
         <android.support.v4.view.ViewPager
             android:id="@+id/viewPager"
             android:layout_width="match_parent"
             android:layout_height="@dimen/px515"
+            android:layout_alignParentBottom="true"
             android:layout_gravity="bottom"
+            android:layout_marginBottom="@dimen/px20"
             android:clipToPadding="false"
             android:overScrollMode="never"
-            android:layout_alignParentBottom="true"
-            android:layout_marginBottom="@dimen/px20"
             android:paddingLeft="@dimen/px60"
             android:paddingRight="@dimen/px60"
             android:paddingStart="@dimen/px60" />
@@ -212,8 +222,8 @@
                 android:layout_alignParentLeft="true"
                 android:layout_centerVertical="true"
                 android:padding="@dimen/px12"
-                android:visibility="gone"
-                android:src="@mipmap/ic_recamera" />
+                android:src="@mipmap/ic_recamera"
+                android:visibility="gone" />
 
 
             <ImageView
@@ -222,8 +232,8 @@
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
                 android:padding="@dimen/px12"
-                android:visibility="gone"
-                android:src="@mipmap/ic_translation" />
+                android:src="@mipmap/ic_translation"
+                android:visibility="gone" />
         </RelativeLayout>
         <!--文章和菜单-->
         <RelativeLayout
@@ -254,6 +264,7 @@
                     android:text="@string/object"
                     android:textColor="#F2F2F2"
                     android:textSize="@dimen/px24" />
+
                 <RadioButton
                     android:id="@+id/rb_menu"
                     android:layout_width="wrap_content"
@@ -281,12 +292,6 @@
                     android:textColor="#F2F2F2"
                     android:textSize="@dimen/px24" />
             </RadioGroup>
-            <Button
-                android:visibility="gone"
-                android:id="@+id/b_addr"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="选择服务器地址"/>
         </RelativeLayout>
     </RelativeLayout>
 
