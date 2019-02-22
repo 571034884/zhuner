@@ -48,6 +48,7 @@ public class AllCitysActivity extends BaseActivity implements BaseCallback {
     CommomRecyclerAdapter<CountryCitysBean.DataBean> adapter;
     private String countryName; //当前城市
     private CountryCitysBean countryCitysBean;
+
     private int page = 1;
     private int pageSize = 30;
     private boolean canLoadMore = true;
