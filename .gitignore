@@ -1,6 +1,6 @@
 *.iml
 /l
-/local.propertperties
+/local.properties
 /.idea/libraries
 /.idea/ea/modules.xml
 /.i
