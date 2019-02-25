@@ -37,6 +37,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.aibabel.aidlaar.StatisticsManager;
 import com.example.root.testhuaping.service.Getsystem_info;
 import com.linkfield.softsim.ISoftSIMCallback;
 import com.linkfield.softsim.ISoftSIMManager;
@@ -430,7 +431,7 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
                     mSoftSIMInfo = mSoftSIMManager.getSoftSIMInfo();
                     Toast.makeText(MainActivity.this, "启动过：" + mSoftSIMInfo.getIMSI(), Toast.LENGTH_SHORT).show();
                     //TODO 存储软卡信息
-
+                    StatisticsManager.getInstance(MainActivity.this).saveSharePreference("softSim","true");
                 } else {
                     mSoftSIMManager.setSoftSIMEnabled(true);
                 }
@@ -486,6 +487,7 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
                             SharePrefUtil.saveString(MainActivity.this, "soft_status", "2");
                             Toast.makeText(MainActivity.this, "启动成功：" + info.getIMSI(), Toast.LENGTH_SHORT).show();
                             //TODO 存储软卡信息
+                            StatisticsManager.getInstance(MainActivity.this).saveSharePreference("softSim","true");
                         }
                     } catch (RemoteException e) {
                         e.printStackTrace();
@@ -571,6 +573,8 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
                                     }
                                 }
                             } else {
+
+                                StatisticsManager.getInstance(MainActivity.this).saveSharePreference("softSim","false");
                                 Toast.makeText(MainActivity.this, "硬卡", Toast.LENGTH_SHORT).show();
                             }
                         } catch (Exception e) {
