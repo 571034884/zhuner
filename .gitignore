@@ -8,7 +8,10 @@
 .DS
 .DS_Store
 /build
+/.idea
+.idea/
 /captures
+
 *.apk
 .externalNativeBuild
 
