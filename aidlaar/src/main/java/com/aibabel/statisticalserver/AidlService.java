@@ -67,7 +67,7 @@ public class AidlService extends Service {
                 contentBean.setEntry(entryTime);
                 contentBean.setExit(exitTime);
                 contentBean.setInteractionTimes(interactions);
-                if (TextUtils.equals(keyWord,""))contentBean.setKeyWord(keyWord);
+                if (TextUtils.equals(keyWord, "")) contentBean.setKeyWord(keyWord);
                 pathContentBeanList.add(contentBean);
                 pathBean.setName(pageName);
                 pathBean.setContent(pathContentBeanList);
@@ -93,7 +93,7 @@ public class AidlService extends Service {
                 contentBean.setEntry(entryTime);
                 contentBean.setExit(exitTime);
                 contentBean.setInteractionTimes(interactions);
-                if (TextUtils.equals(keyWord,""))contentBean.setKeyWord(keyWord);
+                if (TextUtils.equals(keyWord, "")) contentBean.setKeyWord(keyWord);
                 pathContentBeanList.add(contentBean);
                 pathBean.setName(pageName);
                 pathBean.setContent(pathContentBeanList);
@@ -111,7 +111,7 @@ public class AidlService extends Service {
             contentBean.setEntry(entryTime);
             contentBean.setExit(exitTime);
             contentBean.setInteractionTimes(interactions);
-            if (TextUtils.equals(keyWord,""))contentBean.setKeyWord(keyWord);
+            if (TextUtils.equals(keyWord, "")) contentBean.setKeyWord(keyWord);
             statisticsDataList.get(indexApp).getPath().get(indexActivity).getContent().add(contentBean);
 
             Log.e(TAG, "addPath: " + FastJsonUtil.changListToString(statisticsDataList));
@@ -287,6 +287,38 @@ public class AidlService extends Service {
         public void getAllData() throws RemoteException {
             Log.e(TAG, "getAllData: " + FastJsonUtil.changListToString(statisticsDataList));
         }
+
+        @Override
+        public void saveSharePreference(String key, String value) throws RemoteException {
+            SharePrefUtil.put(getApplicationContext(), key, value, SharePrefUtil.MODE_SELF);
+        }
+
+        @Override
+        public String getStringSP(String key, String defaultValue) throws RemoteException {
+            return (String) SharePrefUtil.get(key, defaultValue);
+        }
+
+        @Override
+        public boolean getBooleanSP(String key, boolean defaultValue) throws RemoteException {
+            return (boolean) SharePrefUtil.get(key, defaultValue);
+        }
+
+        @Override
+        public int getIntSP(String key, int defaultValue) throws RemoteException {
+            return (int) SharePrefUtil.get(key, defaultValue);
+        }
+
+        @Override
+        public float getFloatSP(String key, float defaultValue) throws RemoteException {
+            return (float) SharePrefUtil.get(key, defaultValue);
+        }
+
+        @Override
+        public long getLongSP(String key, long defaultValue) throws RemoteException {
+            return (long) SharePrefUtil.get(key, defaultValue);
+        }
+
+
     };
 
     @Override

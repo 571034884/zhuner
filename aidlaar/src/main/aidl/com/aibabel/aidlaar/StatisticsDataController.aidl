@@ -19,4 +19,11 @@ interface StatisticsDataController {
     void setConsultedStatus(String appName, int type, long time);//修改查阅状态
     void sendDataToHost(String url,inout Map urlparams);//先后台发送一个统计周期的数据
     void getAllData();//获取全部数据
+
+    void saveSharePreference(String key, String value);//保存配置文件
+    String getStringSP(String key, String defaultValue);//保存配置文件
+    boolean getBooleanSP(String key, boolean defaultValue);//保存配置文件
+    int getIntSP(String key, int defaultValue);//保存配置文件
+    float getFloatSP(String key, float defaultValue);//保存配置文件
+    long getLongSP(String key, long defaultValue);//保存配置文件
 }

@@ -176,4 +176,68 @@ public class StatisticsManager {
         }
     }
 
+    public void saveSharePreference(String key, String value) {
+        try {
+            getService().saveSharePreference(key, value);
+        } catch (RemoteException e) {
+            e.printStackTrace();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public String getStringSP(String key, String defaultValue)  {
+        try {
+            return getService().getStringSP(key, defaultValue);
+        } catch (RemoteException e) {
+            e.printStackTrace();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return defaultValue;
+    }
+
+    public boolean getBooleanSP(String key, boolean defaultValue){
+        try {
+            return getService().getBooleanSP(key, defaultValue);
+        } catch (RemoteException e) {
+            e.printStackTrace();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return defaultValue;
+    }
+
+    public int getIntSP(String key, int defaultValue) {
+        try {
+            return getService().getIntSP(key, defaultValue);
+        } catch (RemoteException e) {
+            e.printStackTrace();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return defaultValue;
+    }
+
+    public float getFloatSP(String key, float defaultValue)   {
+        try {
+            return getService().getFloatSP(key, defaultValue);
+        } catch (RemoteException e) {
+            e.printStackTrace();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return defaultValue;
+    }
+
+    public long getLongSP(String key, long defaultValue)   {
+        try {
+            return getService().getLongSP(key, defaultValue);
+        } catch (RemoteException e) {
+            e.printStackTrace();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return defaultValue;
+    }
 }
