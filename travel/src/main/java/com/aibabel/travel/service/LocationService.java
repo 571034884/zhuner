@@ -415,10 +415,11 @@ public class LocationService extends Service {
                 intent.putExtra("name", notice_name);
                 intent.addFlags(Intent.FLAG_INCLUDE_STOPPED_PACKAGES);
 
-                sendBroadcast(intent);
+                if (TextUtils.equals((CommonUtils.getDeviceInfo().substring(0, 2)), "PL")){
+                    sendBroadcast(intent);
+                }
 //                isSendBroadcast = true;
             }
-
         }
     }
 

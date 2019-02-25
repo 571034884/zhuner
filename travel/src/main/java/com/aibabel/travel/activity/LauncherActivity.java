@@ -69,20 +69,23 @@ public class LauncherActivity extends BaseActivity implements ResponseCallback {
         if (TextUtils.equals(version, "PL") && TextUtils.equals(proVersion, "L")) {
             tv1.setVisibility(View.GONE);
             tv2.setVisibility(View.VISIBLE);
+//            ll.setBackgroundColor(Color.parseColor("#ffffff"));
             ll.setBackgroundColor(Color.parseColor("#ffffff"));
         } else {
             tv1.setVisibility(View.VISIBLE);
             tv2.setVisibility(View.GONE);
-            ll.setVisibility(Color.parseColor("#fe5000"));
+//            ll.setVisibility(Color.parseColor("#fe5000"));
+            ll.setBackgroundColor(Color.parseColor("#fe5000"));
         }
         initData();
         rexiufu();
     }
+
     public void rexiufu() {
         String latitude = WeizhiUtil.getInfo(this, WeizhiUtil.CONTENT_URI_WY, "latitude");
         String longitude = WeizhiUtil.getInfo(this, WeizhiUtil.CONTENT_URI_WY, "longitude");
-        String url =   Constant.RXF_URL+ "/v1/jonersystem/GetAppNew?sn=" + CommonUtils.getSN() + "&no=" + CommonUtils.getRandom() + "&sl=" + CommonUtils.getLocalLanguage() + "&av=" + BuildConfig.VERSION_NAME + "&app=" + getPackageName() + "&sv=" + Build.DISPLAY + "&lat=" + latitude + "&lng=" + longitude;
-        Log.e("热修复",url);
+        String url = Constant.RXF_URL + "/v1/jonersystem/GetAppNew?sn=" + CommonUtils.getSN() + "&no=" + CommonUtils.getRandom() + "&sl=" + CommonUtils.getLocalLanguage() + "&av=" + BuildConfig.VERSION_NAME + "&app=" + getPackageName() + "&sv=" + Build.DISPLAY + "&lat=" + latitude + "&lng=" + longitude;
+        Log.e("热修复", url);
         OkGo.<String>get(url)
                 .tag(this)
                 .execute(new StringCallback() {
@@ -194,6 +197,5 @@ public class LauncherActivity extends BaseActivity implements ResponseCallback {
         startActivity(intent);
         finish();
     }
-
 
 }

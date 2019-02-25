@@ -26,12 +26,11 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:drawablePadding="36px"
-        android:drawableTop="@mipmap/beijing"
+        android:drawableTop="@drawable/beijing"
         android:gravity="center"
         android:text="听见，时光背后的故事"
         android:textColor="#333333"
         android:textSize="28px"
         android:layout_marginTop="160px"
         android:layout_gravity="center" />
-
 </LinearLayout>
