@@ -21,8 +21,6 @@ import android.os.Handler;
 import android.os.IBinder;
 import android.os.Message;
 import android.os.RemoteException;
-import android.preference.PreferenceCategory;
-import android.preference.SwitchPreference;
 import android.support.annotation.RequiresApi;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.ViewPager;
@@ -80,13 +78,13 @@ import static com.example.root.testhuaping.DateUtils.dateToLong;
 import static com.example.root.testhuaping.DateUtils.stringToDate;
 
 
-public class MainActivity extends FragmentActivity implements View.OnClickListener,ViewPager.OnPageChangeListener{
+public class MainActivity extends FragmentActivity implements View.OnClickListener, ViewPager.OnPageChangeListener {
 
     private final Uri CONTENT_URI = Uri.parse("content://com.dommy.qrcode/aibabel_information");
-    private final String path="http://39.107.238.111:7001/v1/netflow/getCardPath?iccid=89860012018051816514&sn=1112121212121222&imei=12345678";
-    private View tv1,tv2,tv3,tv4,tv5,tv6;
-    private View tv11,tv12,tv13,tv14,tv15,tv16;
-    private View tv21,tv22,tv23,tv24,tv25,tv26,tvwww,tv_lixian;
+    private final String path = "http://39.107.238.111:7001/v1/netflow/getCardPath?iccid=89860012018051816514&sn=1112121212121222&imei=12345678";
+    private View tv1, tv2, tv3, tv4, tv5, tv6;
+    private View tv11, tv12, tv13, tv14, tv15, tv16;
+    private View tv21, tv22, tv23, tv24, tv25, tv26, tvwww, tv_lixian;
     private ViewPager vpager_one;
     private ArrayList<View> aList;
     private MyPagerAdapter mAdapter;
@@ -94,24 +92,25 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
     private LinearLayout ll_dots;
     private List<TextView> dots;
     private TextView tvDate;
-    public String startTime,endTime,date,ffdTime;
+    public String startTime, endTime, date, ffdTime;
     public SimpleDateFormat sdf;
-    public boolean shucode=false;
+    public boolean shucode = false;
     private MyReceiver receiver;
-    private mNetworkChangeListener mNetworkListener ;
+    private NetworkChangeListener mNetworkListener;
+    private IntentFilter intentFilter;
     private Receiver_yanqi msgReceiver;
     public String endTime_tt;
-    public String hao,hao_quan;
+    public String hao, hao_quan;
     public long endtttime;
     public String tt_wzf;
     public String delay_wzf;
-    public String time_day=null;
+    public String time_day = null;
     public String ttt;
     public ImageView imgview_tt;
     private LinearLayout ll;
-    private final String TAG="testhuaping";
-    private boolean isnet=false;
-    private final boolean DEG=true;
+    private final String TAG = "testhuaping";
+    private boolean isnet = false;
+    private final boolean DEG = true;
 
     @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
@@ -155,13 +154,13 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
             mAdapter = new MyPagerAdapter(aList);
             vpager_one.setAdapter(mAdapter);
 
-            tv1 =  aList.get(0).findViewById(R.id.tv_yuyin);
+            tv1 = aList.get(0).findViewById(R.id.tv_yuyin);
             tv2 = aList.get(0).findViewById(R.id.tv_paizhao);
             //tv3=(TextView) aList.get(0).findViewById(R.id.tv_quanqiu);
             //tv4=(TextView) aList.get(0).findViewById(R.id.tv_zhenren);
             tv5 = aList.get(0).findViewById(R.id.tv_duoji);
-            tv6 =  aList.get(0).findViewById(R.id.tv_wuti);
-            tv11 =  aList.get(0).findViewById(R.id.tv_shiyong);
+            tv6 = aList.get(0).findViewById(R.id.tv_wuti);
+            tv11 = aList.get(0).findViewById(R.id.tv_shiyong);
             tv1.setOnClickListener(this);
             tv2.setOnClickListener(this);
             //tv3.setOnClickListener(this);
@@ -176,7 +175,7 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
             tv14 = aList.get(1).findViewById(R.id.tv_tianqi);
             tv15 = aList.get(1).findViewById(R.id.tv_shijiezhong);
             tv16 = aList.get(1).findViewById(R.id.tv_sos);
-            tv4  = aList.get(1).findViewById(R.id.tv_kefu);
+            tv4 = aList.get(1).findViewById(R.id.tv_kefu);
             tv12.setOnClickListener(this);
             tv13.setOnClickListener(this);
             tv14.setOnClickListener(this);
@@ -185,19 +184,19 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
             tv4.setOnClickListener(this);
 
             //tv21 = (TextView) aList.get(2).findViewById(R.id.tv_zuche);
-            tv22 =  aList.get(2).findViewById(R.id.tv_jingqu);
-            tv23 =  aList.get(2).findViewById(R.id.tv_dangdi);
-            tv24 =  aList.get(2).findViewById(R.id.tv_daohang);
-            tv25 =  aList.get(2).findViewById(R.id.tv_meishi);
-            tvwww=  aList.get(2).findViewById(R.id.tv_quanqiu);
-            tv_lixian=  aList.get(2).findViewById(R.id.tv_xiazai);
+            tv22 = aList.get(2).findViewById(R.id.tv_jingqu);
+            tv23 = aList.get(2).findViewById(R.id.tv_dangdi);
+            tv24 = aList.get(2).findViewById(R.id.tv_daohang);
+            tv25 = aList.get(2).findViewById(R.id.tv_meishi);
+            tvwww = aList.get(2).findViewById(R.id.tv_quanqiu);
+            tv_lixian = aList.get(2).findViewById(R.id.tv_xiazai);
             tv_lixian.setOnClickListener(this);
             tv22.setOnClickListener(this);
             tv23.setOnClickListener(this);
             tv24.setOnClickListener(this);
             tv25.setOnClickListener(this);
             tvwww.setOnClickListener(this);
-        }else {
+        } else {
             setContentView(R.layout.activity_main);
             dots = new ArrayList<TextView>();
 
@@ -225,13 +224,13 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
             vpager_one.setAdapter(mAdapter);
 
 
-            tv1 =  aList.get(0).findViewById(R.id.tv_yuyin);
-            tv2 =  aList.get(0).findViewById(R.id.tv_paizhao);
-            tv3= aList.get(0).findViewById(R.id.tv_quanqiu);
+            tv1 = aList.get(0).findViewById(R.id.tv_yuyin);
+            tv2 = aList.get(0).findViewById(R.id.tv_paizhao);
+            tv3 = aList.get(0).findViewById(R.id.tv_quanqiu);
             //tv4=(TextView) aList.get(0).findViewById(R.id.tv_zhenren);
             //tv5 =  aList.get(0).findViewById(R.id.tv_duoji);
-            tv6 =  aList.get(0).findViewById(R.id.tv_wuti);
-            tv11 =  aList.get(0).findViewById(R.id.tv_huilv);
+            tv6 = aList.get(0).findViewById(R.id.tv_wuti);
+            tv11 = aList.get(0).findViewById(R.id.tv_huilv);
             tv1.setOnClickListener(this);
             tv2.setOnClickListener(this);
             tv3.setOnClickListener(this);
@@ -241,15 +240,15 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
             tv11.setOnClickListener(this);
 
 
-            tv12 =  aList.get(1).findViewById(R.id.tv_guditu);
-            tv13 =  aList.get(1).findViewById(R.id.tv_quan);
+            tv12 = aList.get(1).findViewById(R.id.tv_guditu);
+            tv13 = aList.get(1).findViewById(R.id.tv_quan);
             //tv14 =  aList.get(1).findViewById(R.id.tv_tianqi);
             //tv15 =  aList.get(1).findViewById(R.id.tv_shijiezhong);
-            tv16 =  aList.get(1).findViewById(R.id.tv_sos);
-            tv21 =  aList.get(1).findViewById(R.id.tv_zuche);
+            tv16 = aList.get(1).findViewById(R.id.tv_sos);
+            tv21 = aList.get(1).findViewById(R.id.tv_zuche);
             tv12.setOnClickListener(this);
             tv13.setOnClickListener(this);
-            tv_lixian=aList.get(1).findViewById(R.id.tv_xiazai);
+            tv_lixian = aList.get(1).findViewById(R.id.tv_xiazai);
             tv_lixian.setOnClickListener(this);
             //tv14.setOnClickListener(this);
             //tv15.setOnClickListener(this);
@@ -259,17 +258,17 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
 
         imageView = (ImageView) findViewById(R.id.imgview);
 
-         ll = (LinearLayout) findViewById(R.id.ll);
-        hao_quan=getDeviceInfo();
-        hao=hao_quan.substring(106,124);
+        ll = (LinearLayout) findViewById(R.id.ll);
+        hao_quan = getDeviceInfo();
+        hao = hao_quan.substring(106, 124);
         initOkGo();
-        if(TextUtils.equals("H",hao.substring(1,2))){
+        if (TextUtils.equals("H", hao.substring(1, 2))) {
 
             LinearLayout.LayoutParams lp = (LinearLayout.LayoutParams) imageView.getLayoutParams();
             lp.setMargins(0, 0, 0, 0);
             imageView.setLayoutParams(lp);
 //            imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
-        }else {
+        } else {
             TranslateAnimation translateAnimation = new TranslateAnimation(0, -200, 0, 0);
             translateAnimation.setDuration(15000);
             //translateAnimation.setRepeatCount(200000);
@@ -389,14 +388,14 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
         filter2.addAction("com.android.zhuner.time");
         MainActivity.this.registerReceiver(msgReceiver,filter2);*/
 
-        hao_quan=getDeviceInfo();
-        hao=hao_quan.substring(106,124);
+        hao_quan = getDeviceInfo();
+        hao = hao_quan.substring(106, 124);
         //Log.e("wzf","hao_quan="+hao_quan);
         //Log.e("wzf","hao="+hao);
 
-        if(TextUtils.equals("H",hao.substring(1,2))){
+        if (TextUtils.equals("H", hao.substring(1, 2))) {
 //        imgview.setImageResource((R.drawable.fly_launcher));
-        imageView.setImageResource(R.drawable.fly_launcher);
+            imageView.setImageResource(R.drawable.fly_launcher);
 
         }
 
@@ -408,14 +407,14 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
     }
 
     //1 硬卡   2软卡
-    public void get_okgo_net(){
+    public void get_okgo_net() {
         //String soft="1";
-        String soft=SharePrefUtil.getString(MainActivity.this,"soft_status","1");//启动过软卡
-        if(TextUtils.equals(soft,"2")) {
+        String soft = SharePrefUtil.getString(MainActivity.this, "soft_status", "1");//启动过软卡
+        if (TextUtils.equals(soft, "2")) {
             get_okgo();
             Toast.makeText(MainActivity.this, "启动过", Toast.LENGTH_SHORT).show();
-        }else {
-            isnet=true;
+        } else {
+            isnet = true;
             initReceiver();
             Toast.makeText(MainActivity.this, "没有启动过", Toast.LENGTH_SHORT).show();
         }
@@ -424,13 +423,15 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
     /**
      * 启动软卡 领科
      */
-    public void start_soft(){
+    public void start_soft() {
         try {
-            if (mSoftSIMManager != null){
-                if (mSoftSIMManager.isSoftSIMEnabled()){
+            if (mSoftSIMManager != null) {
+                if (mSoftSIMManager.isSoftSIMEnabled()) {
                     mSoftSIMInfo = mSoftSIMManager.getSoftSIMInfo();
-                    Toast.makeText(MainActivity.this,"启动过："+mSoftSIMInfo.getIMSI(),Toast.LENGTH_SHORT).show();
-                }else{
+                    Toast.makeText(MainActivity.this, "启动过：" + mSoftSIMInfo.getIMSI(), Toast.LENGTH_SHORT).show();
+                    //TODO 存储软卡信息
+
+                } else {
                     mSoftSIMManager.setSoftSIMEnabled(true);
                 }
             }
@@ -479,11 +480,12 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
         public void handleMessage(Message msg) {
             switch (msg.what) {
                 case 10000:
-                    SoftSIMInfo info = (SoftSIMInfo)msg.obj;
+                    SoftSIMInfo info = (SoftSIMInfo) msg.obj;
                     try {
-                        if (mSoftSIMManager.isSoftSIMEnabled()){
-                            SharePrefUtil.saveString(MainActivity.this,"soft_status","2");
-                            Toast.makeText(MainActivity.this, "启动成功："+info.getIMSI(), Toast.LENGTH_SHORT).show();
+                        if (mSoftSIMManager.isSoftSIMEnabled()) {
+                            SharePrefUtil.saveString(MainActivity.this, "soft_status", "2");
+                            Toast.makeText(MainActivity.this, "启动成功：" + info.getIMSI(), Toast.LENGTH_SHORT).show();
+                            //TODO 存储软卡信息
                         }
                     } catch (RemoteException e) {
                         e.printStackTrace();
@@ -519,6 +521,7 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
             }
         }
     }
+
     @Override
     protected void onPause() {
         super.onPause();
@@ -533,26 +536,20 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
     }
 
 
-
     //--------------------------------------------------------------------------------
-
-
 
 
     /**
      * 注册网络监听的广播
      */
     private void initReceiver() {
-
-        mNetworkListener = new mNetworkChangeListener();
-        IntentFilter filter = new IntentFilter();
-        filter.addAction(WifiManager.WIFI_STATE_CHANGED_ACTION);
-        filter.addAction(WifiManager.NETWORK_STATE_CHANGED_ACTION);
-        filter.addAction(ConnectivityManager.CONNECTIVITY_ACTION);
-        registerReceiver(mNetworkListener, filter);
-
+        intentFilter = new IntentFilter();
+        intentFilter.addAction("android.net.conn.CONNECTIVITY_CHANGE");
+        mNetworkListener = new NetworkChangeListener();
+        registerReceiver(mNetworkListener, intentFilter);
     }
-    public void get_okgo(){
+
+    public void get_okgo() {
         OkGo.<String>get(path)//
                 .tag(this)//
                 .headers("header1", "headerValue1")//
@@ -564,20 +561,19 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
                         String data_sim = response.body();//这个就是返回来的结果
                         try {
                             JSONObject mJsonObject = new JSONObject(data_sim);
-                            String data1=mJsonObject.getString("data");
+                            String data1 = mJsonObject.getString("data");
                             //Log.e("TAG","data="+data1);
-                            if (TextUtils.equals(data1,"2")){
+                            if (TextUtils.equals(data1, "2")) {
 
-                                if (TextUtils.equals(getVersionType(),"PL") || TextUtils.equals(getVersionType(),"PH")) {
-                                    if (TextUtils.equals(getVersionCode(),"S")){
-
+                                if (TextUtils.equals(getVersionType(), "PL") || TextUtils.equals(getVersionType(), "PH")) {
+                                    if (TextUtils.equals(getVersionCode(), "S")) {
                                         start_soft();
                                     }
                                 }
-                            }else {
+                            } else {
                                 Toast.makeText(MainActivity.this, "硬卡", Toast.LENGTH_SHORT).show();
                             }
-                        }catch (Exception e){
+                        } catch (Exception e) {
                             e.printStackTrace();
                         }
 
@@ -596,12 +592,13 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
      * PH fly
      * PL pro
      * PM go
+     *
      * @return
      */
     private String getVersionType() {
         try {
             String display = Build.DISPLAY;
-           return display.substring(0, 2);
+            return display.substring(0, 2);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -610,9 +607,10 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
 
     /**
      * S 销售   L租赁
+     *
      * @return
      */
-    private String getVersionCode(){
+    private String getVersionCode() {
         try {
             String display = Build.DISPLAY;
             return display.substring(9, 10);
@@ -627,7 +625,6 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
      */
    /* @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
-        // TODO Auto-generated method stub
         if (keyCode == KeyEvent.KEYCODE_BACK) {
             Toast.makeText(this, "后退键", Toast.LENGTH_SHORT).show();
             return true;
@@ -659,8 +656,10 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
         return super.onKeyDown(keyCode, event);
     }*/
 
-    /** * 判断当前网络是否可用(6.0以上版本) * 实时 * @param context * @return */
-    public static boolean isNetSystemUsable(Context context){
+    /**
+     * 判断当前网络是否可用(6.0以上版本) * 实时 * @param context * @return
+     */
+    public static boolean isNetSystemUsable(Context context) {
         boolean isNetUsable = false;
         try {
             ConnectivityManager manager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
@@ -669,7 +668,7 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
                 isNetUsable = networkCapabilities.hasCapability(NetworkCapabilities.NET_CAPABILITY_VALIDATED);
             }
 
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
         return isNetUsable;
@@ -771,12 +770,12 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
         }
     }
 
-    public static String getDateDelay(long data,int delay) {
-        long temp = data+86400000*delay;
+    public static String getDateDelay(long data, int delay) {
+        long temp = data + 86400000 * delay;
         Date d = new Date(temp);
         SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmmss");
         String format = sdf.format(d);
-        Log.e("wzf","format="+format);
+        Log.e("wzf", "format=" + format);
         return format;
     }
 
@@ -821,19 +820,19 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
         }
     };*/
 
-    public  void IsToday(){
+    public void IsToday() {
         //String date ="20180620";
         sdf = new SimpleDateFormat("yyyyMMddHHmmss", Locale.getDefault());
         date = sdf.format(new Date().getTime());
-        Log.e("wzf>>>>>>>>>>>>","date="+date);
+        Log.e("wzf>>>>>>>>>>>>", "date=" + date);
         try {
-            delay_wzf=(SharePrefUtil.getString(MainActivity.this,"delaytime",endTime)).toString();
-            if(DateUtils.isDateOneBigger(date,ffdTime,delay_wzf)){
+            delay_wzf = (SharePrefUtil.getString(MainActivity.this, "delaytime", endTime)).toString();
+            if (DateUtils.isDateOneBigger(date, ffdTime, delay_wzf)) {
 
                 //Toast.makeText(this, "可以用", Toast.LENGTH_SHORT).show();
-            }else{
+            } else {
                 Intent LaunchIntent = getPackageManager().getLaunchIntentForPackage("com.dommy.qrcode");
-                LaunchIntent.putExtra("erweima","daoqi");
+                LaunchIntent.putExtra("erweima", "daoqi");
                 startActivity(LaunchIntent);
 
                 Intent intent = new Intent();
@@ -842,9 +841,9 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
                 MainActivity.this.sendBroadcast(intent);
                 Toast.makeText(this, R.string.my_weizaizulinqi, Toast.LENGTH_SHORT).show();
             }
-        }catch (Exception e){
+        } catch (Exception e) {
 
-            Log.e("wzfff",e.getMessage());
+            Log.e("wzfff", e.getMessage());
         }
 
     }
@@ -868,9 +867,8 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
 
     @Override
     public void onClick(View v) {
-        // TODO Auto-generated method stub
-        Intent intent=new Intent();
-        ComponentName cmpName=null;
+        Intent intent = new Intent();
+        ComponentName cmpName = null;
         if (getCountryZipCode(this).equals("CN")) {
             switch (v.getId()) {
                 case R.id.tv_yuyin: {
@@ -900,38 +898,38 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
                     break;
                 }
                 case R.id.tv_quanqiu:
-                        try {
-                            if (hao.substring(9, 10).equals("L")) {
+                    try {
+                        if (hao.substring(9, 10).equals("L")) {
+                            ttt = SharePrefUtil.getString(MainActivity.this, "delaybole", "true");
+                            Log.e("wzf", "ttt=" + ttt);
+                            if (delay_wzf.equals("") || TextUtils.equals("true", ttt)) {
+                                Intent intentAction = new Intent("com.android.zhuner.wqhtime");
+                                intentAction.putExtra("Time_Start", ffdTime);
+                                intentAction.putExtra("Time_End", delay_wzf);
+                                intentAction.putExtra("Time_End_First", endTime);
+                                Log.e("wzfwqh", "endTime=" + endTime);
+                                SharePrefUtil.saveString(MainActivity.this, "delaybole", "false");
+                                MainActivity.this.sendBroadcast(intentAction);
+
+                            } else {
                                 ttt = SharePrefUtil.getString(MainActivity.this, "delaybole", "true");
                                 Log.e("wzf", "ttt=" + ttt);
-                                if (delay_wzf.equals("") || TextUtils.equals("true", ttt)) {
-                                    Intent intentAction = new Intent("com.android.zhuner.wqhtime");
-                                    intentAction.putExtra("Time_Start", ffdTime);
-                                    intentAction.putExtra("Time_End", delay_wzf);
-                                    intentAction.putExtra("Time_End_First", endTime);
-                                    Log.e("wzfwqh", "endTime=" + endTime);
-                                    SharePrefUtil.saveString(MainActivity.this, "delaybole", "false");
-                                    MainActivity.this.sendBroadcast(intentAction);
+                                Intent intentAction = new Intent("com.android.zhuner.wqhtime");
+                                intentAction.putExtra("Time_Start", ffdTime);
+                                intentAction.putExtra("Time_End", delay_wzf);
+                                intentAction.putExtra("Time_End_First", endTime);
+                                Log.e("wzfwqh", "Time_End=" + delay_wzf);
+                                MainActivity.this.sendBroadcast(intentAction);
 
-                                } else {
-                                    ttt = SharePrefUtil.getString(MainActivity.this, "delaybole", "true");
-                                    Log.e("wzf", "ttt=" + ttt);
-                                    Intent intentAction = new Intent("com.android.zhuner.wqhtime");
-                                    intentAction.putExtra("Time_Start", ffdTime);
-                                    intentAction.putExtra("Time_End", delay_wzf);
-                                    intentAction.putExtra("Time_End_First", endTime);
-                                    Log.e("wzfwqh", "Time_End=" + delay_wzf);
-                                    MainActivity.this.sendBroadcast(intentAction);
-
-                                }
-                                Intent LaunchIntent = getPackageManager().getLaunchIntentForPackage("com.aibabel.surfinternet");
-                                startActivity(LaunchIntent);
-                            }else {
-                                Intent LaunchIntent = getPackageManager().getLaunchIntentForPackage("com.aibabel.surfinternet");
-                                startActivity(LaunchIntent);
                             }
-                        } catch (Exception e) {
+                            Intent LaunchIntent = getPackageManager().getLaunchIntentForPackage("com.aibabel.surfinternet");
+                            startActivity(LaunchIntent);
+                        } else {
+                            Intent LaunchIntent = getPackageManager().getLaunchIntentForPackage("com.aibabel.surfinternet");
+                            startActivity(LaunchIntent);
                         }
+                    } catch (Exception e) {
+                    }
 
                     break;
                 case R.id.tv_wuti: {
@@ -962,8 +960,8 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
                     break;
                 }
                 case R.id.tv_tianqi: {
-                    tt_wzf=ContentProviderUtil.getCountry(MainActivity.this);
-                    if (TextUtils.equals("中国",tt_wzf)) {
+                    tt_wzf = ContentProviderUtil.getCountry(MainActivity.this);
+                    if (TextUtils.equals("中国", tt_wzf)) {
                         Log.e("wzf", "" + ContentProviderUtil.getCountry(MainActivity.this));
                         Intent intent1 = new Intent();
                         intent1.setClass(MainActivity.this, oneActivity.class);
@@ -979,7 +977,7 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
                         }
                     }
                 }
-                    break;
+                break;
                 case R.id.tv_shijiezhong: {
                     try {
                         Intent LaunchIntent = getPackageManager().getLaunchIntentForPackage("com.google.android.googlequicksearchbox");
@@ -1075,9 +1073,9 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
                 default:
                     break;
             }
-        }else {
+        } else {
             switch (v.getId()) {
-                case R.id.tv_yuyin:{
+                case R.id.tv_yuyin: {
                     try {
                      /*Intent intent1=new Intent();
                 intent1.setClass(MainActivity.this,oneActivity.class);
@@ -1085,14 +1083,16 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
                 //cmpName=new ComponentName("com.fyt.fyttranslateprj","com.fyt.fyttranslateprj.MainActivity");*/
                         Intent LaunchIntent = getPackageManager().getLaunchIntentForPackage("com.aibabel.translate");
                         startActivity(LaunchIntent);
-                    }catch (Exception e){}
+                    } catch (Exception e) {
+                    }
                     break;
                 }
-                case R.id.tv_paizhao:{
+                case R.id.tv_paizhao: {
                     try {
                         Intent LaunchIntent = getPackageManager().getLaunchIntentForPackage("com.aibabel.ocr");
                         startActivity(LaunchIntent);
-                    }catch (Exception e){}
+                    } catch (Exception e) {
+                    }
                     break;
                 }
                 case R.id.tv_quanqiu:
@@ -1122,29 +1122,31 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
                             }
                             Intent LaunchIntent = getPackageManager().getLaunchIntentForPackage("com.aibabel.surfinternet");
                             startActivity(LaunchIntent);
-                        }else {
+                        } else {
                             Intent LaunchIntent = getPackageManager().getLaunchIntentForPackage("com.aibabel.surfinternet");
                             startActivity(LaunchIntent);
                         }
                     } catch (Exception e) {
                     }
                     break;
-                case R.id.tv_duoji:{
+                case R.id.tv_duoji: {
                     try {
                         Intent LaunchIntent = getPackageManager().getLaunchIntentForPackage("com.aibabel.speech");
                         startActivity(LaunchIntent);
-                    }catch (Exception e){}
+                    } catch (Exception e) {
+                    }
                     break;
                 }
-                case R.id.tv_wuti:{
+                case R.id.tv_wuti: {
                     try {
                         Intent LaunchIntent = getPackageManager().getLaunchIntentForPackage("com.aibabel.ocrobject");
                         startActivity(LaunchIntent);
                         //cmpName=new ComponentName("com.fyt.ocrobject","com.fyt.ocrobject.activity.TakePhoteActivity");
-                    }catch (Exception e){}
+                    } catch (Exception e) {
+                    }
                     break;
                 }
-                case R.id.tv_guditu:{
+                case R.id.tv_guditu: {
                    /* try {
                         Intent LaunchIntent = getPackageManager().getLaunchIntentForPackage("com.google.android.apps.maps");
                         startActivity(LaunchIntent);
@@ -1154,71 +1156,77 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
                     }*/
 
                     try {
-                        tt_wzf=ContentProviderUtil.getCountry(MainActivity.this);
-                    if (TextUtils.equals("中国",tt_wzf)) {
+                        tt_wzf = ContentProviderUtil.getCountry(MainActivity.this);
+                        if (TextUtils.equals("中国", tt_wzf)) {
 
-                        Intent intent1 = new Intent();
-                        intent1.setClass(MainActivity.this, oneActivity.class);
-                        startActivity(intent1);
-                        //Toast.makeText(MainActivity.this, "中国哦", Toast.LENGTH_SHORT).show();
-                    } else {
+                            Intent intent1 = new Intent();
+                            intent1.setClass(MainActivity.this, oneActivity.class);
+                            startActivity(intent1);
+                            //Toast.makeText(MainActivity.this, "中国哦", Toast.LENGTH_SHORT).show();
+                        } else {
 
                             Intent LaunchIntent = getPackageManager().getLaunchIntentForPackage("com.google.android.apps.maps");
                             startActivity(LaunchIntent);
                             // Toast.makeText(MainActivity.this, "全新功能，敬请期待...", Toast.LENGTH_SHORT).show();
                             // Toast.makeText(MainActivity.this, "全新功能，敬请期待...", Toast.LENGTH_SHORT).show();
 
-                    }
+                        }
                     } catch (Exception e) {
                     }
                     break;
                 }
-                case R.id.tv_huilv:{
+                case R.id.tv_huilv: {
                     try {
                         Intent LaunchIntent = getPackageManager().getLaunchIntentForPackage("com.zhuner.administrator.settings");
                         startActivity(LaunchIntent);
                         //Toast.makeText(MainActivity.this, "全新功能，敬请期待...", Toast.LENGTH_SHORT).show();
-                    }catch (Exception e){}
+                    } catch (Exception e) {
+                    }
                     break;
                 }
-                case R.id.tv_tianqi:{
+                case R.id.tv_tianqi: {
                     try {
                         Intent LaunchIntent = getPackageManager().getLaunchIntentForPackage("com.aibabel.weather");
                         startActivity(LaunchIntent);
                         //Toast.makeText(MainActivity.this, "全新功能，敬请期待...", Toast.LENGTH_SHORT).show();
-                    }catch (Exception e){}
+                    } catch (Exception e) {
+                    }
                     break;
                 }
-                case R.id.tv_shijiezhong:{
+                case R.id.tv_shijiezhong: {
                     try {
                         Intent LaunchIntent = getPackageManager().getLaunchIntentForPackage("com.aibabel.alliedclock");
                         startActivity(LaunchIntent);
                         //Toast.makeText(MainActivity.this, "全新功能，敬请期待...", Toast.LENGTH_SHORT).show();
-                    }catch (Exception e){}
+                    } catch (Exception e) {
+                    }
                     break;
                 }
-                case R.id.tv_sos:{
+                case R.id.tv_sos: {
                     try {
                         Intent LaunchIntent = getPackageManager().getLaunchIntentForPackage("com.aibabel.sos");
                         startActivity(LaunchIntent);
                         //Toast.makeText(MainActivity.this, "全新功能，敬请期待...", Toast.LENGTH_SHORT).show();
-                    }catch (Exception e){}
+                    } catch (Exception e) {
+                    }
                     break;
                 }
-                case R.id.tv_zuche:{
+                case R.id.tv_zuche: {
                     try {
                         Intent LaunchIntent = getPackageManager().getLaunchIntentForPackage("com.google.android.googlequicksearchbox");
                         startActivity(LaunchIntent);
                         //Toast.makeText(MainActivity.this, "全新功能，敬请期待...", Toast.LENGTH_SHORT).show();
-                    }catch (Exception e){}
+                    } catch (Exception e) {
+                    }
                     break;
                 }
-                case R.id.tv_quan:{
+                case R.id.tv_quan: {
                     try {
                         Intent LaunchIntent = getPackageManager().getLaunchIntentForPackage("com.aibabel.currencyconversion");
                         startActivity(LaunchIntent);
                         //Toast.makeText(MainActivity.this, "全新功能，敬请期待...", Toast.LENGTH_SHORT).show();
-                    }catch (Exception e){}
+                    } catch (Exception e) {
+                    }
                     break;
                 }
                 case R.id.tv_xiazai: {
@@ -1233,12 +1241,12 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
                     break;
             }
         }
-        if(cmpName!=null){
+        if (cmpName != null) {
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             intent.setComponent(cmpName);
-            try{
+            try {
                 startActivity(intent);
-            }catch(ActivityNotFoundException e){
+            } catch (ActivityNotFoundException e) {
 
             }
         }
@@ -1263,7 +1271,7 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
     }
 
 
-    private void setbackGround(int postion){
+    private void setbackGround(int postion) {
         if (getCountryZipCode(this).equals("CN")) {
             for (int i = 0; i < 3; i++) {
                 if (i == postion) {
@@ -1272,7 +1280,7 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
                     dots.get(i).setBackground(getResources().getDrawable(R.drawable.dot_normal));
                 }
             }
-        }else {
+        } else {
             for (int i = 0; i < 2; i++) {
                 if (i == postion) {
                     dots.get(i).setBackground(getResources().getDrawable(R.drawable.dot_normal_current));
@@ -1283,6 +1291,7 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
         }
 
     }
+
     public static long stringToLong(String strTime, String formatType)
             throws ParseException {
         Date date = stringToDate(strTime, formatType); // String类型转成date类型
@@ -1293,6 +1302,7 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
             return currentTime;
         }
     }
+
     public boolean isCurrentInTimeScope1(int beginHour, int beginMin, int endHour, int endMin) {
         boolean result = false;
         final long aDayInMillis = 1000 * 60 * 60 * 24;
@@ -1327,47 +1337,45 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
         //Log.e("wzf","result="+result);
         return result;
     }
-public static long qianyitian(String specifiedDay) {
-    long qianyitiantime=5201314;
-    Calendar c = Calendar.getInstance();
-    Date date = null;
-    try {
-        date = new SimpleDateFormat("yyyyMMddHHmmss").parse(specifiedDay);
-    } catch (ParseException e) {
-        e.printStackTrace();
-    }
-    c.setTime(date);
-    int day = c.get(Calendar.DATE);
-    c.set(Calendar.DATE, day - 1);
 
-    String dayBefore = new SimpleDateFormat("yyyyMMddHHmmss").format(c.getTime());
-    //Log.e("wzf", "dayBefore=" + dayBefore);
-    try {
-        qianyitiantime = stringToLong(dayBefore, "yyyyMMddHHmmss");
-        //Log.e("wzf", "qianyitiantime=" + qianyitiantime);
+    public static long qianyitian(String specifiedDay) {
+        long qianyitiantime = 5201314;
+        Calendar c = Calendar.getInstance();
+        Date date = null;
+        try {
+            date = new SimpleDateFormat("yyyyMMddHHmmss").parse(specifiedDay);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        c.setTime(date);
+        int day = c.get(Calendar.DATE);
+        c.set(Calendar.DATE, day - 1);
+
+        String dayBefore = new SimpleDateFormat("yyyyMMddHHmmss").format(c.getTime());
+        //Log.e("wzf", "dayBefore=" + dayBefore);
+        try {
+            qianyitiantime = stringToLong(dayBefore, "yyyyMMddHHmmss");
+            //Log.e("wzf", "qianyitiantime=" + qianyitiantime);
+            return qianyitiantime;
+        } catch (Exception e) {
+        }
         return qianyitiantime;
-    } catch (Exception e) {
     }
-    return qianyitiantime;
-}
+
     /**
      * 判断当前系统时间是否在指定时间的范围内
      *
-     * @param beginHour
-     *            开始小时，例如22
-     * @param beginMin
-     *            开始小时的分钟数，例如30
-     * @param endHour
-     *            结束小时，例如 8
-     * @param endMin
-     *            结束小时的分钟数，例如0
+     * @param beginHour 开始小时，例如22
+     * @param beginMin  开始小时的分钟数，例如30
+     * @param endHour   结束小时，例如 8
+     * @param endMin    结束小时的分钟数，例如0
      * @return true表示在范围内，否则false
      */
-    public static boolean isCurrentInTimeScope(String specifiedDay,int beginHour, int beginMin, int endHour, int endMin) {
+    public static boolean isCurrentInTimeScope(String specifiedDay, int beginHour, int beginMin, int endHour, int endMin) {
         boolean result = false;
         final long aDayInMillis = 1000 * 60 * 60 * 24;
         //final long currentTimeMillis = System.currentTimeMillis();
-        final long currentTimeMillis =qianyitian(specifiedDay);
+        final long currentTimeMillis = qianyitian(specifiedDay);
 
 
         Time now = new Time();
@@ -1436,17 +1444,18 @@ public static long qianyitian(String specifiedDay) {
         return 0;
 
     }*/
-    /**TW    //繁体中文
-     *
-     * */
-    public static String getCountryZipCode(Context context)
-    {
+
+    /**
+     * TW    //繁体中文
+     */
+    public static String getCountryZipCode(Context context) {
         String CountryZipCode = "";
         Locale locale = context.getResources().getConfiguration().locale;
         CountryZipCode = locale.getCountry();
         //Log.e("wzf","CountryZipCode="+CountryZipCode);
         return CountryZipCode;
     }
+
     public class MyReceiver extends BroadcastReceiver {
         @Override
         public void onReceive(Context context, Intent intent) {
@@ -1454,11 +1463,11 @@ public static long qianyitian(String specifiedDay) {
                 if (hao != null && !hao.substring(9, 10).equals("L") && isnet) {
                     get_okgo();
                     isnet = false;
-                    if (DEG)Toast.makeText(MainActivity.this, "刚请求完！", Toast.LENGTH_SHORT).show();
+                    if (DEG) Toast.makeText(MainActivity.this, "刚请求完！", Toast.LENGTH_SHORT).show();
 
                 }
             } else {
-                if (DEG)Toast.makeText(MainActivity.this, "MY网", Toast.LENGTH_SHORT).show();
+                if (DEG) Toast.makeText(MainActivity.this, "MY网", Toast.LENGTH_SHORT).show();
                 /*IsToday();
                 if (DateUtils.dateDiff(delay_wzf) == 1 && isCurrentInTimeScope1(20, 00, 21, 00) && !shucode && getCountryZipCode(MainActivity.this).equals("CN")) {
                     shucode = true;
@@ -1482,13 +1491,13 @@ public static long qianyitian(String specifiedDay) {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        if (msgReceiver != null){
+        if (msgReceiver != null) {
             unregisterReceiver(msgReceiver);
         }
-        if (receiver != null){
+        if (receiver != null) {
             unregisterReceiver(receiver);
         }
-        if (mNetworkListener != null){
+        if (mNetworkListener != null) {
             unregisterReceiver(mNetworkListener);
         }
     }
@@ -1502,63 +1511,25 @@ public static long qianyitian(String specifiedDay) {
      * <p>
      * Created by xujun
      */
-    public  class mNetworkChangeListener extends BroadcastReceiver {
-
-        /**
-         * 获取连接类型
-         *
-         * @param type
-         * @return
-         */
-        private String getConnectionType(int type) {
-            String connType = "";
-            if (type == ConnectivityManager.TYPE_MOBILE) {
-                connType = "3G网络数据";
-            } else if (type == ConnectivityManager.TYPE_WIFI) {
-                connType = "WIFI网络";
-            }
-            return connType;
-        }
+    class NetworkChangeListener extends BroadcastReceiver {
 
         @Override
         public void onReceive(Context context, Intent intent) {
-            try {
-                if (WifiManager.WIFI_STATE_CHANGED_ACTION.equals(intent.getAction())) {// 监听wifi的打开与关闭，与wifi的连接无关
-                    int wifiState = intent.getIntExtra(WifiManager.EXTRA_WIFI_STATE, 0);
-                    Log.e("TAG", "wifiState:" + wifiState);
-                    switch (wifiState) {
-                        case WifiManager.WIFI_STATE_DISABLED:
-                            break;
-                        case WifiManager.WIFI_STATE_DISABLING:
-                            break;
-                    }
-                }
-
-            // 监听网络连接，包括wifi和移动数据的打开和关闭,以及连接上可用的连接都会接到监听
-            if (ConnectivityManager.CONNECTIVITY_ACTION.equals(intent.getAction())) {
-                //获取联网状态的NetworkInfo对象
-                NetworkInfo info = intent.getParcelableExtra(ConnectivityManager.EXTRA_NETWORK_INFO);
-                if (info != null) {
-                    //如果当前的网络连接成功并且网络连接可用
-                    if (NetworkInfo.State.CONNECTED == info.getState() && info.isAvailable()) {
-                        if (info.getType() == ConnectivityManager.TYPE_WIFI || info.getType() == ConnectivityManager.TYPE_MOBILE) {
-                            get_okgo();
-                            Toast.makeText(MainActivity.this, "连上了！", Toast.LENGTH_SHORT).show();
-                        }
-                    } else {
-                        Toast.makeText(MainActivity.this, "没有网络！", Toast.LENGTH_SHORT).show();
-                    }
-                }
-            }
-            }catch (Exception e){
-                e.printStackTrace();
+            ConnectivityManager connectivityManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+            NetworkInfo networkInfo = connectivityManager.getActiveNetworkInfo();
+            if (networkInfo != null && networkInfo.isAvailable()) {
+                Toast.makeText(context, "当前网络可用", Toast.LENGTH_SHORT).show();
+                get_okgo();
+            } else {
+                Toast.makeText(context, "当前网络不可用", Toast.LENGTH_SHORT).show();
             }
         }
 
     }
 
-    public class  Receiver_yanqi extends BroadcastReceiver{
+    public class Receiver_yanqi extends BroadcastReceiver {
         long t;
+
         @Override
         public void onReceive(Context context, Intent intent) {
             /*try {
