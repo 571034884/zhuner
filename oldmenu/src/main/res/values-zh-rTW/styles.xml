@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="yuyinfanyi">語音翻譯</string>
+    <string name="paizhaofanyi">拍照翻譯</string>
+    <string name="wutishibie">物體識別</string>
+    <string name="cidian">詞典　　</string>
+
+    <string name="jingqudaolan">景區導覽</string>
+    <string name="lvyouzixun">目的地　　</string>
+    <string name="quanqiushangawang">全球上網　</string>
+    <string name="baiduditu">百度地圖　</string>
+    <string name="gugeditu">Google地圖</string>
+    <string name="gugesousuo">Google搜尋</string>
+
+    <string name="yyinmishu">語音秘書</string>
+    <string name="huilvhuansuan">匯率換算</string>
+    <string name="tianqi">天氣　　</string>
+    <string name="shijiezhong">世界時鐘</string>
+    <string name="sos">SOS　　</string>
+    <string name="shezhi">設定　　</string>
+    <string name="mima">密碼:</string>
+    <string name="lixian">離線管理</string>
+
+    <string name="kaiqiredian">開啟熱點</string>
+    <string name="xiabokaiqi">下撥開啟</string>
+    <string name="fenxiangredian">分享熱點</string>
+    <string name="shangboguanbi">上撥關閉</string>
+    <string name="my_weizaizulinqi">未在租賃期內</string>
+    <string name="google_tishi">谷歌地圖僅支持在中國之外使用</string>
+    <string name="jiushiyong">繼續使用</string>
+</resources>

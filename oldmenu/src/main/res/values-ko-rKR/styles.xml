@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<resources>
+    <string name="yuyinfanyi">음성 번역　</string>
+    <string name="paizhaofanyi">카메라 번역</string>
+    <string name="wutishibie">사물 인식</string>
+    <string name="cidian">사전　　　　</string>
+
+    <string name="jingqudaolan">여행이드</string>
+    <string name="lvyouzixun">목적지　　</string>
+    <string name="quanqiushangawang">글로벌 WiFi</string>
+    <string name="baiduditu">Baidu　지도</string>
+    <string name="gugeditu">Google　지도</string>
+    <string name="gugesousuo">Google　검색</string>
+
+    <string name="yyinmishu">음성 어시스턴트</string>
+    <string name="huilvhuansuan">환율</string>
+    <string name="tianqi">날씨　　</string>
+    <string name="shijiezhong">세계 시계　</string>
+    <string name="sos">SOS　</string>
+    <string name="shezhi">설정　　</string>
+    <string name="lixian">오프라인 자원 (관리)</string>
+
+    <string name="mima">비밀번호:</string>
+    <string name="kaiqiredian">핫스팟 켜기</string>
+    <string name="xiabokaiqi">아래로 켜기</string>
+    <string name="fenxiangredian">인터넷 연결 공유</string>
+    <string name="shangboguanbi">위로 끄기</string>
+    <string name="my_weizaizulinqi">리스 기간이 아님</string>
+    <string name="google_tishi">Google지도는 중국 이외의 지역에서만 사용할 수 있습니다.</string>
+    <string name="jiushiyong">계속 사용하십시오.</string>
+</resources>

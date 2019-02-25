@@ -270,7 +270,7 @@ public class MainActivity extends MapBaseActivity implements SensorEventListener
         if (isFirstLoc) {
             isFirstLoc = false;
             LatLng ll = new LatLng(location.getLatitude(), location.getLongitude());
-//            LatLng ll = new LatLng(35.68107, 139.766967);
+//            LatLng ll = new LatLng(35.714764, 139.796665);
             MapStatus.Builder builder = new MapStatus.Builder();
             builder.target(ll).zoom(14.5f);
             mBaiduMap.animateMapStatus(MapStatusUpdateFactory.newMapStatus(builder.build()));
@@ -491,7 +491,7 @@ public class MainActivity extends MapBaseActivity implements SensorEventListener
         map.put("coord_type", mLocation.getCoorType());
         map.put("locationWhere", mLocation.getLocationWhere() + "");
 
-//        map.put("location", "35.711343,139.767111");
+//        map.put("location", "35.714764,139.796665");
 //        map.put("coord_type", "wgs84");
 //        map.put("locationWhere", "0");
 

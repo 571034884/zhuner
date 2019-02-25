@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="#000"
+    tools:context="com.example.root.testhuaping.MainActivity">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="0px"
+        android:gravity="right"
+        android:orientation="horizontal">
+        <TextView
+            android:id="@+id/fanhui2"
+            android:layout_width="wrap_content"
+            android:layout_height="60px"
+            android:layout_marginRight="20px"
+            android:layout_marginTop="20px"
+            android:drawablePadding="10px"
+            android:padding="10px"
+            android:drawableTop="@mipmap/guanbi"
+            android:gravity="left" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="100px"
+        android:gravity="center_horizontal"
+        android:orientation="horizontal">
+        <TextView
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:drawablePadding="25px"
+            android:drawableTop="@mipmap/fy_2paizhaoshibie"
+            android:text="物体识别"
+            android:textSize="36px"
+            android:textColor="#FFFFFF"
+            android:id="@+id/语音秘书" />
+
+    </LinearLayout>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="64px"
+        android:baselineAligned="false"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/fanyihanzi4"
+            android:layout_width="480px"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:lineSpacingExtra="12px"
+            android:text="首创翻译机AI识物拍照，即使拍摄动植物，也可通过AI识别进行信息详解；拍摄餐厅等消费场所，用户还可以获知点评及推荐信息。"
+            android:textSize="28px"
+            android:textScaleX="1.1"
+            android:textColor="#eeeeee"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="75px"
+        android:layout_marginTop="80px"
+        android:baselineAligned="false"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/jinru3"
+            android:layout_width="400px"
+            android:layout_height="72px"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"
+            android:background="@drawable/cirle_btn_bg"
+            android:text="点击进入"
+            android:textColor="#ffffff"
+            android:textSize="32px" />
+    </RelativeLayout>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="30px"
+        android:layout_marginTop="24px"
+        android:baselineAligned="false"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/fanyihanzi5"
+            android:layout_width="460px"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:textSize="24px"
+            android:textScaleX="1.0"
+            android:textColor="#fe5000"
+            android:layout_marginBottom="160px"/>
+    </RelativeLayout>
+    <!--android:text="本机为特别纪念版，正式版此功能可使用"-->
+</LinearLayout>
