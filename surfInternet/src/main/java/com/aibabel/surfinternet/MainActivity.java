@@ -24,6 +24,7 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.aibabel.aidlaar.StatisticsManager;
 import com.aibabel.surfinternet.activity.BaseActivity;
 import com.aibabel.surfinternet.activity.OrderActivity;
 import com.aibabel.surfinternet.activity.TrandActivity;
@@ -150,6 +151,11 @@ public class MainActivity extends BaseActivity implements BaseCallback {
                 }
             }
         });
+
+
+        //获取是领科的软卡还是硬卡
+
+
     }
 
     private void initView() {
