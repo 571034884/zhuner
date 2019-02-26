@@ -290,32 +290,32 @@ public class AidlService extends Service {
 
         @Override
         public void saveSharePreference(String key, String value) throws RemoteException {
-            SharePrefUtil.put(getApplicationContext(), key, value, SharePrefUtil.MODE_SELF);
+            SharePrefUtil.put(getApplicationContext(), key, value);
         }
 
         @Override
         public String getStringSP(String key, String defaultValue) throws RemoteException {
-            return (String) SharePrefUtil.get(key, defaultValue);
+            return (String) SharePrefUtil.get(getApplicationContext(), key, defaultValue);
         }
 
         @Override
         public boolean getBooleanSP(String key, boolean defaultValue) throws RemoteException {
-            return (boolean) SharePrefUtil.get(key, defaultValue);
+            return (boolean) SharePrefUtil.get(getApplicationContext(), key, defaultValue);
         }
 
         @Override
         public int getIntSP(String key, int defaultValue) throws RemoteException {
-            return (int) SharePrefUtil.get(key, defaultValue);
+            return (int) SharePrefUtil.get(getApplicationContext(), key, defaultValue);
         }
 
         @Override
         public float getFloatSP(String key, float defaultValue) throws RemoteException {
-            return (float) SharePrefUtil.get(key, defaultValue);
+            return (float) SharePrefUtil.get(getApplicationContext(), key, defaultValue);
         }
 
         @Override
         public long getLongSP(String key, long defaultValue) throws RemoteException {
-            return (long) SharePrefUtil.get(key, defaultValue);
+            return (long) SharePrefUtil.get(getApplicationContext(), key, defaultValue);
         }
 
 
