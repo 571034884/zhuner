@@ -2,9 +2,6 @@ package com.aibabel.baselibrary.utils;
 
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.os.RemoteException;
-
-import com.aibabel.aidlaar.StatisticsManager;
 
 import java.util.Map;
 
@@ -22,36 +19,9 @@ import java.util.Map;
 
 public class SharePrefUtil {
 
-    private static String TAG = SharePrefUtil.class.getSimpleName();
+    private static String TAG = com.aibabel.statisticalserver.SharePrefUtil.class.getSimpleName();
     private final static String SP_NAME = "config";
     private static SharedPreferences sp;
-    //存储方式
-    public static final String MODE_SELF = "self";
-    public static final String MODE_OTHER = "other";
-    public static final String MODE_DEFAULT = MODE_OTHER;
-
-
-    /**
-     * 使用默认方式存储
-     *
-     * @param context
-     * @param key
-     * @param value
-     */
-    public static void put(Context context, String key, Object value) {
-        put(context, key, value, MODE_DEFAULT);
-    }
-
-    /**
-     * 使用默认方式获取
-     *
-     * @param context
-     * @param key
-     * @param defaultValue
-     */
-    public static void get(Context context, String key, Object defaultValue) {
-        get(context, key, defaultValue, MODE_DEFAULT);
-    }
 
     /**
      * 判断存储方式
@@ -59,40 +29,23 @@ public class SharePrefUtil {
      * @param context
      * @param key
      * @param value
-     * @param mode
      */
-    public static void put(Context context, String key, Object value, String mode) {
-        switch (mode) {
-            case MODE_SELF:
-                putBySelf(context, key, value);
-                break;
-            case MODE_OTHER:
-                StatisticsManager.getInstance(context).saveSharePreference(key, value.toString());
-                break;
-        }
-    }
-
-    /**
-     * 存值
-     *
-     * @param key
-     * @param value
-     */
-    public static void putBySelf(Context context, String key, Object value) {
+    public static void put(Context context, String key, Object value) {
         if (sp == null)
             sp = context.getSharedPreferences(SP_NAME, 0);
         if (value instanceof Boolean) {
-            sp.edit().putBoolean(key, (Boolean) value);
+            sp.edit().putBoolean(key, (Boolean) value).commit();
         } else if (value instanceof Integer) {
-            sp.edit().putInt(key, (Integer) value);
+            sp.edit().putInt(key, (Integer) value).commit();
         } else if (value instanceof Float) {
-            sp.edit().putFloat(key, (Float) value);
+            sp.edit().putFloat(key, (Float) value).commit();
         } else if (value instanceof Long) {
-            sp.edit().putLong(key, (Long) value);
+            sp.edit().putLong(key, (Long) value).commit();
         } else if (value instanceof String) {
-            sp.edit().putString(key, (String) value);
+            sp.edit().putString(key, (String) value).commit();
         }
     }
+
 
     /**
      * 判断获取方式
@@ -100,37 +53,10 @@ public class SharePrefUtil {
      * @param context
      * @param key
      * @param defaultValue
-     * @param mode
      */
-    public static void get(Context context, String key, Object defaultValue, String mode) {
-        switch (mode) {
-            case MODE_SELF:
-                getBySelf(key, defaultValue);
-                break;
-            case MODE_OTHER:
-                if (defaultValue instanceof Boolean) {
-                    StatisticsManager.getInstance(context).getBooleanSP(key, Boolean.valueOf(defaultValue.toString()));
-                } else if (defaultValue instanceof Integer) {
-                    StatisticsManager.getInstance(context).getIntSP(key, Integer.valueOf(defaultValue.toString()));
-                } else if (defaultValue instanceof Float) {
-                    StatisticsManager.getInstance(context).getFloatSP(key, Float.valueOf(defaultValue.toString()));
-                } else if (defaultValue instanceof Long) {
-                    StatisticsManager.getInstance(context).getLongSP(key, Long.valueOf(defaultValue.toString()));
-                } else if (defaultValue instanceof String) {
-                    StatisticsManager.getInstance(context).getStringSP(key, defaultValue.toString());
-                }
-                break;
-        }
-    }
-
-    /**
-     * 取值
-     *
-     * @param key
-     * @param defaultValue 默认值
-     * @return
-     */
-    public static Object getBySelf(String key, Object defaultValue) {
+    public static Object get(Context context, String key, Object defaultValue) {
+        if (sp == null)
+            sp = context.getSharedPreferences(SP_NAME, 0);
         if (defaultValue instanceof Boolean) {
             return sp.getBoolean(key, (Boolean) defaultValue);
         } else if (defaultValue instanceof Integer) {
@@ -143,6 +69,7 @@ public class SharePrefUtil {
             return sp.getString(key, "");
         }
     }
+
 
     /**
      * 移除某个key值已经对应的值
