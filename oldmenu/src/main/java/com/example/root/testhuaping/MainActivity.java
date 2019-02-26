@@ -5,6 +5,7 @@ import android.app.ActionBar;
 import android.content.ActivityNotFoundException;
 import android.content.BroadcastReceiver;
 import android.content.ComponentName;
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
@@ -96,10 +97,8 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
     public String startTime, endTime, date, ffdTime;
     public SimpleDateFormat sdf;
     public boolean shucode = false;
-    private MyReceiver receiver;
     private NetworkChangeListener mNetworkListener;
     private IntentFilter intentFilter;
-    private Receiver_yanqi msgReceiver;
     public String endTime_tt;
     public String hao, hao_quan;
     public long endtttime;
@@ -403,16 +402,19 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
         String tt = Getsystem_info.getSN_SN();
         //Toast.makeText(MainActivity.this, "sn="+tt, Toast.LENGTH_SHORT).show();
 
-        get_okgo_net();
 
+
+//        boolean ss = StatisticsManager.getInstance(MainActivity.this).getBooleanSP("softSim",false);
+//        Toast.makeText(MainActivity.this,ss+"",Toast.LENGTH_SHORT).show();
+//        Log.e("simSoft===",ss+"-------");
+
+        get_okgo_net();
     }
 
     //1 硬卡   2软卡
     public void get_okgo_net() {
-        //String soft="1";
         String soft = SharePrefUtil.getString(MainActivity.this, "soft_status", "1");//启动过软卡
         if (TextUtils.equals(soft, "2")) {
-            get_okgo();
             Toast.makeText(MainActivity.this, "启动过", Toast.LENGTH_SHORT).show();
         } else {
             isnet = true;
@@ -421,21 +423,14 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
         }
     }
 
+
     /**
      * 启动软卡 领科
      */
     public void start_soft() {
         try {
-            if (mSoftSIMManager != null) {
-                if (mSoftSIMManager.isSoftSIMEnabled()) {
-                    mSoftSIMInfo = mSoftSIMManager.getSoftSIMInfo();
-                    Toast.makeText(MainActivity.this, "启动过：" + mSoftSIMInfo.getIMSI(), Toast.LENGTH_SHORT).show();
-                    //TODO 存储软卡信息
-                    StatisticsManager.getInstance(MainActivity.this).saveSharePreference("softSim","true");
-                } else {
-                    mSoftSIMManager.setSoftSIMEnabled(true);
-                }
-            }
+            mSoftSIMManager.setSoftSIMEnabled(true);
+            StatisticsManager.getInstance(MainActivity.this).saveSharePreference("softSim","true");
         } catch (RemoteException e) {
             e.printStackTrace();
         }
@@ -566,16 +561,14 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
                             String data1 = mJsonObject.getString("data");
                             //Log.e("TAG","data="+data1);
                             if (TextUtils.equals(data1, "2")) {
-
                                 if (TextUtils.equals(getVersionType(), "PL") || TextUtils.equals(getVersionType(), "PH")) {
                                     if (TextUtils.equals(getVersionCode(), "S")) {
+                                        SharePrefUtil.saveString(MainActivity.this, "soft_status", "2");//启动过软卡
                                         start_soft();
                                     }
                                 }
                             } else {
-
                                 StatisticsManager.getInstance(MainActivity.this).saveSharePreference("softSim","false");
-                                Toast.makeText(MainActivity.this, "硬卡", Toast.LENGTH_SHORT).show();
                             }
                         } catch (Exception e) {
                             e.printStackTrace();
@@ -588,6 +581,8 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
                     public void onError(Response<String> response) {
                         super.onError(response);
                         Toast.makeText(MainActivity.this, "出错了！", Toast.LENGTH_SHORT).show();
+                        //TODO 服务器出错
+                        StatisticsManager.getInstance(MainActivity.this).saveSharePreference("softSim","false");
                     }
                 });
     }
@@ -1460,47 +1455,9 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
         return CountryZipCode;
     }
 
-    public class MyReceiver extends BroadcastReceiver {
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            if (isNetSystemUsable(MainActivity.this)) {
-                if (hao != null && !hao.substring(9, 10).equals("L") && isnet) {
-                    get_okgo();
-                    isnet = false;
-                    if (DEG) Toast.makeText(MainActivity.this, "刚请求完！", Toast.LENGTH_SHORT).show();
-
-                }
-            } else {
-                if (DEG) Toast.makeText(MainActivity.this, "MY网", Toast.LENGTH_SHORT).show();
-                /*IsToday();
-                if (DateUtils.dateDiff(delay_wzf) == 1 && isCurrentInTimeScope1(20, 00, 21, 00) && !shucode && getCountryZipCode(MainActivity.this).equals("CN")) {
-                    shucode = true;
-                    try {
-                        Intent LaunchIntent = getPackageManager().getLaunchIntentForPackage("com.aibabel.tucao");
-                        startActivity(LaunchIntent);
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                    Log.e("wzfwzf", "love_you");
-                    //Log.e("wzfwzf","shucode="+shucode);
-                } else {
-                    Log.e("wzfwzf", "love_me");
-                }
-                //Log.e("====================", "111111111111111");*/
-
-            }
-        }
-    }
-
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        if (msgReceiver != null) {
-            unregisterReceiver(msgReceiver);
-        }
-        if (receiver != null) {
-            unregisterReceiver(receiver);
-        }
         if (mNetworkListener != null) {
             unregisterReceiver(mNetworkListener);
         }
@@ -1511,9 +1468,6 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
      * <p>
      * 监听网络的改变状态,只有在用户操作网络连接开关(wifi,mobile)的时候接受广播,
      * 然后对相应的界面进行相应的操作，并将 状态 保存在我们的APP里面
-     * <p>
-     * <p>
-     * Created by xujun
      */
     class NetworkChangeListener extends BroadcastReceiver {
 
@@ -1530,25 +1484,6 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
         }
 
     }
-
-    public class Receiver_yanqi extends BroadcastReceiver {
-        long t;
-
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            /*try {
-
-                    time_day = intent.getExtras().getString("Zhuner_Time");
-                    t = stringToLong(endTime, "yyyyMMddHHmmss");
-                    endTime = getDateDelay(t, time_day);
-                    Log.e("wzf", "延期到=" + time_day);
-                    SharePrefUtil.saveString(MainActivity.this, "delaytime", time_day);
-
-                }catch(Exception e){
-                }*/
-        }
-    }
-
 }
 
 
