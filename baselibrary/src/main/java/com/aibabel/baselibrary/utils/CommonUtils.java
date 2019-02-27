@@ -16,6 +16,9 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 
+/**
+ * cbb testbase--》master
+ */
 public class CommonUtils {
 
     private static final int MIN_CLICK_DELAY_TIME = 1000;
