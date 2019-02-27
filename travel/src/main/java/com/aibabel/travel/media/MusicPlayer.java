@@ -4,6 +4,10 @@ import android.content.Context;
 import android.content.Intent;
 import android.media.MediaPlayer;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
+import android.os.Messenger;
+import android.os.RemoteException;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.Toast;
@@ -11,10 +15,12 @@ import android.widget.Toast;
 import com.aibabel.travel.utils.Constant;
 import com.aibabel.travel.utils.DialogTools;
 import com.aibabel.travel.utils.NetworkUtils;
+import com.aibabel.travel.utils.ThreadPoolUtil;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+import java.util.concurrent.TimeUnit;
 
 import static android.media.MediaPlayer.OnCompletionListener;
 import static android.media.MediaPlayer.OnErrorListener;
@@ -32,21 +38,38 @@ public class MusicPlayer implements OnCompletionListener, OnErrorListener {
     private View view;
     private NextPlay nextPlay;
     private int wrongMusics;// 循环不超过总数的两倍，预防next播放引起的死循环
+    private Messenger mMessenger;
+    private Message mMessage;
+    private static volatile MusicPlayer singleton;
 
-    public MusicPlayer(Context context) {
-        mContext = context;
-        mMediaPlayer = new MediaPlayer();
-        mRandom = new Random();
-        mMusicFileList = new ArrayList<MusicData>();
-        mRandom.setSeed(System.currentTimeMillis());
-        mMediaPlayer.setOnCompletionListener(this);
-        mMediaPlayer.setOnErrorListener(this);
-        DefaultInitial();
+
+    public MusicPlayer() {
     }
 
-    public MusicPlayer(Context context, View view) {
-        mContext = context;
+
+    public static MusicPlayer getInstance() {
+        if (singleton == null) {
+            synchronized (MusicPlayer.class) {
+                if (singleton == null) {
+                    singleton = new MusicPlayer();
+                }
+            }
+        }
+        return singleton;
+    }
+
+    /**
+     * 初始化信息
+     *
+     * @param context
+     * @param view
+     * @param messenger
+     */
+    public void init(Context context, View view, Messenger messenger) {
+//        if (null == mMediaPlayer)
         mMediaPlayer = new MediaPlayer();
+        mContext = context;
+        this.mMessenger = messenger;
         mRandom = new Random();
         mMusicFileList = new ArrayList<MusicData>();
         mRandom.setSeed(System.currentTimeMillis());
@@ -61,17 +84,11 @@ public class MusicPlayer implements OnCompletionListener, OnErrorListener {
      * 默认配置
      */
     private void DefaultInitial() {
-
         mMusicFileList.clear();
         mCurMusicIndex = -1;
         mPlayState = MusicPlayState.S_NOFILE;
         mPlayMode = MusicPlayState.M_LIST_LOOP;// 列表循环
         wrongMusics = -1;
-        try {
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
         mMediaPlayer.reset();
     }
 
@@ -191,42 +208,6 @@ public class MusicPlayer implements OnCompletionListener, OnErrorListener {
             return Math.abs(mRandom.nextInt(length - 1));
     }
 
-//    /**
-//     * 准备资源播放
-//     */
-//    private boolean prepare(int index) {
-//        mCurMusicIndex = index;
-//        if (mMediaPlayer == null)
-//            mMediaPlayer = new MediaPlayer();
-//        else
-//            mMediaPlayer.reset();
-//
-//        String path = mMusicFileList.get(index).mMusicPath;
-//
-//        try {
-//            mMediaPlayer.setDataSource(path);
-//            mMediaPlayer.prepareAsync();// Async();// 异步的，不会阻塞当前UI线程
-//            mMediaPlayer.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
-//                @Override
-//                public void onPrepared(MediaPlayer mp) {
-//                    mPlayState = MusicPlayState.S_PREPARE;
-//                    wrongMusics = -1;
-//                    isPrepared = true;
-//                }
-//            });
-//
-//        } catch (Exception e) {
-//            mPlayState = MusicPlayState.S_INVALID;// 非法
-//            sendPlayStateBrocast();
-//            wrongMusics += 1;
-//            if (wrongMusics < 2 * mMusicFileList.size()) {// 统计错误次数
-//                playNext();
-//            }
-//            return false;
-//        }
-//        sendPlayStateBrocast();
-//        return true;
-//    }
 
     /**
      * 播放
@@ -260,6 +241,8 @@ public class MusicPlayer implements OnCompletionListener, OnErrorListener {
                     wrongMusics = -1;
                     isPrepared = true;
                     mMediaPlayer.start();
+                    sentPreparedMessageToMain();
+                    sentPositionToMainByTimer();
                     mPlayState = MusicPlayState.S_PLAYING;
                     sendPlayStateBrocast();
                     closeDialog();
@@ -267,6 +250,7 @@ public class MusicPlayer implements OnCompletionListener, OnErrorListener {
             });
 
         } catch (Exception e) {
+            e.printStackTrace();
             mPlayState = MusicPlayState.S_INVALID;// 非法
             sendPlayStateBrocast();
             wrongMusics += 1;
@@ -328,7 +312,7 @@ public class MusicPlayer implements OnCompletionListener, OnErrorListener {
             mMediaPlayer.pause();
             mPlayState = MusicPlayState.S_PAUSE;
             sendPlayStateBrocast();
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
 
@@ -342,7 +326,7 @@ public class MusicPlayer implements OnCompletionListener, OnErrorListener {
         try {
             if (mPlayState != MusicPlayState.S_PAUSE && mPlayState == MusicPlayState.S_PLAYING)
                 mMediaPlayer.stop();
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
 
@@ -505,6 +489,57 @@ public class MusicPlayer implements OnCompletionListener, OnErrorListener {
 
     public void setNextPlay(NextPlay nextPlay) {
         this.nextPlay = nextPlay;
+    }
+
+    private void sentPreparedMessageToMain() {
+        int totalDuration = mMediaPlayer.getDuration();
+        Message mMessage = new Message();
+        mMessage.what = Constant.MSG_PREPARED;
+        mMessage.arg1 = mCurMusicIndex;
+        mMessage.arg2 = totalDuration;
+        mMessage.obj = mMediaPlayer.isPlaying();
+        try {
+            //发送播放位置
+            mMessenger.send(mMessage);
+        } catch (RemoteException e) {
+            e.printStackTrace();
+        }
+    }
+
+
+    private void sentPlayStateToMain() {
+        mMessage = Message.obtain();
+        mMessage.what = Constant.MSG_PLAY_STATE;
+        mMessage.obj = mMediaPlayer.isPlaying();
+        try {
+            //发送播放状态
+            mMessenger.send(mMessage);
+        } catch (RemoteException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void sentPositionToMainByTimer() {
+        ThreadPoolUtil.getScheduledExecutor().scheduleAtFixedRate(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    if (mMediaPlayer.isPlaying()) {
+                        //1.准备好的时候.告诉activity,当前歌曲的总时长
+                        int currentPosition = mMediaPlayer.getCurrentPosition();
+                        int totalDuration = mMediaPlayer.getDuration();
+                        mMessage = Message.obtain();
+                        mMessage.what = Constant.MSG_PROGRESS;
+                        mMessage.arg1 = currentPosition;
+                        mMessage.arg2 = totalDuration;
+                        //2.发送消息
+                        mMessenger.send(mMessage);
+                    }
+                } catch (RemoteException e) {
+                    e.printStackTrace();
+                }
+            }
+        }, 0, 1000, TimeUnit.MILLISECONDS);
     }
 }
 

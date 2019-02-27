@@ -26,6 +26,10 @@ public class Constant {
     public static final String  DB_VERSION_CODE_KEY = "version_code";
     public static final String  DB_COUNTRY = "version_code";
 
+    public static final int MSG_PROGRESS = 001;
+    public static final int MSG_PREPARED = 002;
+    public static final int MSG_PLAY_STATE = 003;
+
     public static long EXIT_TIME = 0;
     public static long GET_TIME = 0;
 

@@ -181,6 +181,14 @@ public class CityActivity extends BaseActivity implements ResponseCallback, Adap
 
     }
 
+//    @Override
+//    protected void onNewIntent(Intent intent) {
+//        super.onNewIntent(intent);
+//        initView();
+//        initTitle();
+//        initData();
+//    }
+
     @Override
     protected void onResume() {
         super.onResume();

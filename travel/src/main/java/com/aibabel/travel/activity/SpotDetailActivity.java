@@ -10,6 +10,7 @@ import android.media.AudioManager;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.os.Messenger;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.OrientationHelper;
@@ -65,7 +66,8 @@ import jp.wasabeef.glide.transformations.RoundedCornersTransformation;
  *
  * @Author：CreateBy 张文颖
  * @Date：2018/6/19
- * @Desc：景点详细页面 ==========================================================================================
+ * @Desc：景点详细页面
+ * @==========================================================================================
  */
 public class SpotDetailActivity extends BaseActivity implements View.OnClickListener, AdapterView.OnItemClickListener, ExpireBroadcast.stopMp3, BaseApplication.BackGroundListener, MusicPlayer.NextPlay, MyDialog.Notice {
     @BindView(R.id.iv_scenery)
@@ -86,8 +88,8 @@ public class SpotDetailActivity extends BaseActivity implements View.OnClickList
     ImageView iv_start;
     @BindView(R.id.iv_next_one)
     ImageView iv_next_one;
-    @BindView(R.id.tv_total)
-    TextView tvTotal;
+    //    @BindView(R.id.tv_total)
+    static TextView tvTotal;
     @BindView(R.id.imgDialog)
     ImageView imgDialog;
     @BindView(R.id.dialog_view)
@@ -97,26 +99,21 @@ public class SpotDetailActivity extends BaseActivity implements View.OnClickList
 
 
     private List<DetailBean> children = new ArrayList<>();
-    private boolean iv_scenery_onclick = false;
-
     private boolean isPlay = false;
-    //    private int index = 0;
     private int position;
     private int mPlayState; // 播放器状态
 
     HeadsetPlugReceiver headsetPlugReceiver;
-    private boolean isFile_audio;
-    private boolean isNormal;
-    private String str;
     private static MyDialog myDialog = new MyDialog();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        // TODO: add setContentView(...) invocation
         ButterKnife.bind(this);
     }
 
+
+    Handler handler = new MyHandler(SpotDetailActivity.this);
 
     /**
      * 声明静态内部类不会持有外部类的隐式引用
@@ -132,17 +129,30 @@ public class SpotDetailActivity extends BaseActivity implements View.OnClickList
         public void handleMessage(Message msg) {
             SpotDetailActivity activity = mActivity.get();
             if (activity != null) {
-                int mCurrentPosition = musicPlayer.getCurPosition() / 1000;//获取player当前进度，毫秒表示
 
-                seekBar.setProgress(mCurrentPosition);//seekbar同步歌曲进度
+                if (msg.what == Constant.MSG_PROGRESS) {
+                    int currentPosition = msg.arg1;
+                    int totalDuration = msg.arg2;
+                    seekBar.setProgress(currentPosition / 1000);
+                    tvProgress.setText(StringUtil.formatTime(currentPosition));
+//                    tvTotal.setText(StringUtil.formatTime(totalDuration));
 
-                tvProgress.setText(StringUtil.calculateTime(mCurrentPosition));
-                sendEmptyMessageDelayed(0, 1000);
+                }
+                if (msg.what == Constant.MSG_PREPARED) {
+                    int totalDuration = msg.arg2;
+                    tvTotal.setText(StringUtil.formatTime(totalDuration));
+                    seekBar.setMax(totalDuration / 1000);
+                }
+
+//                int mCurrentPosition = musicPlayer.getCurPosition() / 1000;//获取player当前进度，毫秒表示
+//
+//                seekBar.setProgress(mCurrentPosition);//seekbar同步歌曲进度
+
+//                tvProgress.setText(StringUtil.calculateTime(mCurrentPosition));
+//                sendEmptyMessageDelayed(0, 1000);
             }
         }
     }
-
-    Handler handler = new MyHandler(SpotDetailActivity.this);
 
 
     private static MusicPlayer musicPlayer; //声频
@@ -151,7 +161,6 @@ public class SpotDetailActivity extends BaseActivity implements View.OnClickList
     private List<MusicData> mMusicFileList;
     private int total;
     private ExpireBroadcast expireBroadcast = new ExpireBroadcast();
-
 
     private LinearLayoutManager layoutManager;
     private CommomRecyclerAdapter adapter;
@@ -168,11 +177,12 @@ public class SpotDetailActivity extends BaseActivity implements View.OnClickList
     public void init() {
         seekBar = findViewById(R.id.seekber);
         tvProgress = findViewById(R.id.tv_progress);
+        tvTotal = findViewById(R.id.tv_total);
 
         audioManager = (AudioManager) getSystemService(Service.AUDIO_SERVICE);
 
         initView();
-        initData(isNormal, "");
+        initData();
         initOncliker();
 
         musicPlayer.setNextPlay(this);
@@ -223,7 +233,7 @@ public class SpotDetailActivity extends BaseActivity implements View.OnClickList
                 map3.put("内容名称", children.get(lastOnclick).getName());
                 map3.put("新内容名称", children.get(postion).getName());
 
-                StatisticsManager.getInstance(SpotDetailActivity.this).addEventAidl( "切换内容", map3);
+                StatisticsManager.getInstance(SpotDetailActivity.this).addEventAidl("切换内容", map3);
 
 
                 if (postion != lastOnclick) {
@@ -346,31 +356,25 @@ public class SpotDetailActivity extends BaseActivity implements View.OnClickList
 
     public void initView() {
         tv_title.setMovementMethod(ScrollingMovementMethod.getInstance());
-//        mHorizontalListView = (HorizontalListView) findViewById(R.id.horizontal_lv);
-//        mHorizontalListViewAdapter = new HorizontalListViewAdapter(this, children);
-//        mHorizontalListView.setAdapter(mHorizontalListViewAdapter);
+        //设置seekbar 不能拖动
         seekBar.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
                 return true;
             }
-        });//设置seekbar 不能拖动
+        });
         registerHeadsetPlugReceiver();
         initReseiver();
 //
     }
 
 
-    public void initData(boolean isNormal, String str) {
-
-
-        if (!isNormal) {
-            position = getIntent().getIntExtra("position", -1);
-            str = getIntent().getStringExtra("list");
-        }
+    public void initData() {
+        position = getIntent().getIntExtra("position", -1);
+        String str = getIntent().getStringExtra("list");
         Map map1 = new HashMap();
         map1.put("内容名称", str);
-        StatisticsManager.getInstance(SpotDetailActivity.this).addEventAidl( "进入页面", map1);
+        StatisticsManager.getInstance(SpotDetailActivity.this).addEventAidl("进入页面", map1);
         children = FastJsonUtil.changeJsonToList(str, DetailBean.class);
         initGallery(children);
         for (int i = 0; i < children.size(); i++) {
@@ -394,11 +398,7 @@ public class SpotDetailActivity extends BaseActivity implements View.OnClickList
             initGallery(children);
             adapter.updateData(children);
         }
-
-
         MoveToPosition(layoutManager, position);
-
-
         setSpotImage(children.get(position).getImageUrl());
         setSceneryName(children.get(position).getName());
 //        index = position;
@@ -408,8 +408,14 @@ public class SpotDetailActivity extends BaseActivity implements View.OnClickList
             musicData.mMusicPath = bean.getAudioUrl();
             mMusicFileList.add(musicData);
         }
-//        musicPlayer = new MusicPlayerBack(SpotDetailActivity.this);
-        musicPlayer = new MusicPlayer(SpotDetailActivity.this, dialogView);
+
+//        if (null != musicPlayer) {
+////            musicPlayer.exit();
+//            musicPlayer = null;
+//
+//        }
+        musicPlayer = MusicPlayer.getInstance();
+        musicPlayer.init(SpotDetailActivity.this, dialogView, new Messenger(handler));
         //
         ThreadPoolManager.getInstance().addTask(new Runnable() {
             @Override
@@ -418,11 +424,28 @@ public class SpotDetailActivity extends BaseActivity implements View.OnClickList
                 musicPlayer.playIndex(position);
             }
         });
-        //获取当前歌曲总时长
-        handler.sendEmptyMessage(0);
 
     }
 
+    @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+        Log.e("spotDetailActivity","onNewIntent");
+        setIntent(intent);
+        position = 0;
+        lastOnclick = 0;
+        lastItemPosition = 0;
+        last = -1;
+        if (null == musicPlayer) {
+            init();
+        } else {
+            position = intent.getIntExtra("position", -1);
+            String list = intent.getStringExtra("list");
+            noticePlay(list);
+        }
+
+
+    }
 
     private void registerHeadsetPlugReceiver() {
         headsetPlugReceiver = new HeadsetPlugReceiver();
@@ -528,7 +551,7 @@ public class SpotDetailActivity extends BaseActivity implements View.OnClickList
                         e.printStackTrace();
                     }
 
-                    StatisticsManager.getInstance(SpotDetailActivity.this).addEventAidl( "播放", map3);
+                    StatisticsManager.getInstance(SpotDetailActivity.this).addEventAidl("播放", map3);
 
                 }
 
@@ -540,7 +563,7 @@ public class SpotDetailActivity extends BaseActivity implements View.OnClickList
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
-                StatisticsManager.getInstance(SpotDetailActivity.this).addEventAidl( "播放", map4);
+                StatisticsManager.getInstance(SpotDetailActivity.this).addEventAidl("播放", map4);
 
 
                 musicPlayer.playNext();
@@ -727,9 +750,9 @@ public class SpotDetailActivity extends BaseActivity implements View.OnClickList
                 break;
                 case MusicPlayState.S_PLAYING: {// 播放
                     isPlay = true;
-                    total = musicPlayer.getDuration() / 1000;
-                    seekBar.setMax(total);
-                    tvTotal.setText(StringUtil.calculateTime(total));
+//                    total = musicPlayer.getDuration() / 1000;
+//                    seekBar.setMax(total);
+//                    tvTotal.setText(StringUtil.calculateTime(total));
                     iv_start.setBackgroundResource(R.mipmap.pause);
 
                 }

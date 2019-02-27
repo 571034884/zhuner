@@ -80,6 +80,7 @@
         <!-- 景点详情页 -->
         <activity
             android:name=".activity.SpotDetailActivity"
+            android:launchMode="singleTop"
             android:screenOrientation="portrait"
             android:exported="true"/>
         <!-- 城市页 -->
