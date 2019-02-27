@@ -277,8 +277,10 @@ public class TrandActivity extends BaseActivity implements BaseCallback {
         map.put("sysLanguage", Constans.SETCOUNTRYlANGUAGE);
         map.put("hasBaseDays", "true");
         map.put("iccid",Constans.PHONE_ICCID);
+        if (Constans.Lk_CARDTYPE){
 
-//        map.put("cardType","lksc");
+        map.put("cardType","lksc");
+        }
         OkGoUtil.<TrandBean>get(TrandActivity.this, Constans.METHOD_GUOJIALIEBIAO, map, TrandBean.class, this);
     }
 

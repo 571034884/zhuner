@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
@@ -91,6 +92,7 @@ public class ViewPagerActivity extends BaseActivity {
         });
     }
 
+
     private void initData() {
         Intent intent = getIntent();
         int type = intent.getIntExtra("type", 0);
@@ -130,8 +132,6 @@ public class ViewPagerActivity extends BaseActivity {
                     pager.setAdapter(new ViewPagerAdapter(list));
                     initViewPager();
                     initPoint(list);
-
-
                     break;
                 case 2:
                     for (int i = 0; i < paizhao.length; i++) {
@@ -184,9 +184,9 @@ public class ViewPagerActivity extends BaseActivity {
                     initPoint(list);
                     break;
                 case 7:
-                    for (int i = 0; i < quanqiu.length; i++) {
+                    for (int i = 0; i < quanqiu_proL.length; i++) {
                         ImageView imageView = new ImageView(this);
-                        imageView.setImageResource(quanqiu[i]);
+                        imageView.setImageResource(quanqiu_proL[i]);
                         list.add(imageView);
                     }
                     pager.setAdapter(new ViewPagerAdapter(list));
@@ -237,6 +237,16 @@ public class ViewPagerActivity extends BaseActivity {
                     for (int i = 0; i < sos.length; i++) {
                         ImageView imageView = new ImageView(this);
                         imageView.setImageResource(sos[i]);
+                        list.add(imageView);
+                    }
+                    pager.setAdapter(new ViewPagerAdapter(list));
+                    initViewPager();
+                    initPoint(list);
+                    break;
+                case 13:
+                    for (int i = 0; i < lixian_proL.length; i++) {
+                        ImageView imageView = new ImageView(this);
+                        imageView.setImageResource(lixian_proL[i]);
                         list.add(imageView);
                     }
                     pager.setAdapter(new ViewPagerAdapter(list));

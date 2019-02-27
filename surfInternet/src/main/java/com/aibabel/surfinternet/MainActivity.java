@@ -25,6 +25,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.aibabel.aidlaar.StatisticsManager;
+import com.aibabel.baselibrary.utils.ToastUtil;
 import com.aibabel.surfinternet.activity.BaseActivity;
 import com.aibabel.surfinternet.activity.OrderActivity;
 import com.aibabel.surfinternet.activity.TrandActivity;
@@ -125,7 +126,6 @@ public class MainActivity extends BaseActivity implements BaseCallback {
         initCountryLanguage();
 //        init_imei();
         getVersion();
-
         if (NetUtil.isNetworkAvailable(MainActivity.this)) {
             initData();
         } else {
@@ -151,11 +151,10 @@ public class MainActivity extends BaseActivity implements BaseCallback {
                 }
             }
         });
-
-
         //获取是领科的软卡还是硬卡
-
-
+        Constans.Lk_CARDTYPE = StatisticsManager.getInstance(MainActivity.this).getBooleanSP("softSim", false);
+        Log.e("LkcardType", Constans.Lk_CARDTYPE + "==");
+        ToastUtil.showLong(MainActivity.this,"领科==="+Constans.Lk_CARDTYPE);
     }
 
     private void initView() {
@@ -336,16 +335,26 @@ public class MainActivity extends BaseActivity implements BaseCallback {
 
     @RequiresApi(api = Build.VERSION_CODES.M)
     private void initData() {
-        initMtkDoubleSim();
+        if (Constans.Lk_CARDTYPE) {
+            init_imei();
+        } else {
+            initMtkDoubleSim();
+        }
+
 //         iccid = "89852022018041802362";
 //         Constans.PHONE_ICCID = "89860012017300216438";
         if (Constans.PHONE_ICCID == null) {
-            initMtkDoubleSim();
-//            init_imei();
+            if (Constans.Lk_CARDTYPE) {
+                init_imei();
+            } else {
+                initMtkDoubleSim();
+            }
         } else {
             Map<String, String> map = new HashMap<>();
             map.put("iccid", Constans.PHONE_ICCID);
-//            map.put("cardType", "lksc");
+            if (Constans.Lk_CARDTYPE) {
+                map.put("cardType", "lksc");
+            }
             Log.e("iccid", Constans.PHONE_ICCID + "===");
             OkGoUtil.<OrderitemBean>get(MainActivity.this, Constans.METHOD_KADINGDANXIANGQING, map, OrderitemBean.class, this);
         }
@@ -388,7 +397,7 @@ public class MainActivity extends BaseActivity implements BaseCallback {
         }
 
 
-        if (NetUtil.isNetworkAvailable(MainActivity.this)&&Constans.PHONE_ICCID!=null&&!TextUtils.equals(Constans.PHONE_ICCID,"")) {
+        if (NetUtil.isNetworkAvailable(MainActivity.this) && Constans.PHONE_ICCID != null && !TextUtils.equals(Constans.PHONE_ICCID, "")) {
             startActivity(intent);
             finish();
         } else {

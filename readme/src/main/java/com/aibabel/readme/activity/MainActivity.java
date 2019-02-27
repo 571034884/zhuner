@@ -93,7 +93,6 @@ public class MainActivity extends BaseActivity {
                             }
                         }
                     }
-
                     @Override
                     public void onError(Response<String> response) {
                     }
@@ -101,6 +100,8 @@ public class MainActivity extends BaseActivity {
 
 
     }
+
+
 
     private void initAdapter() {
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
@@ -197,6 +198,7 @@ public class MainActivity extends BaseActivity {
                 readmeList.add(new ReadmeItemBean(10, "天气"));
                 readmeList.add(new ReadmeItemBean(11, "世界钟"));
                 readmeList.add(new ReadmeItemBean(12, "sos"));
+                readmeList.add(new ReadmeItemBean(13, "离线管理"));
                 break;
         }
     }

@@ -360,7 +360,10 @@ public class DetailsActivity extends BaseActivity implements BaseCallback, View.
         map.put("days", days);
         map.put("payType", payType);
         map.put("language", Constans.SETCOUNTRYlANGUAGE);
-//        map.put("cardType","lksc");
+        if (Constans.Lk_CARDTYPE){
+
+            map.put("cardType","lksc");
+        }
         OkGoUtil.<PaymentBean>post(DetailsActivity.this, Constans.METHOD_CHUANGJIANDINGDAN, new JSONObject(map), PaymentBean.class, this);
         for (Map.Entry<String, String> entry : map.entrySet()) {
             Log.e("map_chuangjiandingdan", entry.getKey() + "====" + map.get(entry.getKey()));
@@ -396,7 +399,10 @@ public class DetailsActivity extends BaseActivity implements BaseCallback, View.
         map.put("sysLanguage", Constans.SETCOUNTRYlANGUAGE);
         map.put("hasBaseDays", "true");
         map.put("iccid", Constans.PHONE_ICCID);
-//        map.put("cardType", "lksc");
+        if (Constans.Lk_CARDTYPE){
+
+            map.put("cardType","lksc");
+        }
         OkGoUtil.<PriceBeans>get(DetailsActivity.this, Constans.METHOD_GUOJIALIEBIAOXIANQINGYEPIRCE, map, PriceBeans.class, this);
         for (Map.Entry<String, String> entry : map.entrySet()) {
             Log.e("map_gouwujiaqian", entry.getKey() + "====" + map.get(entry.getKey()));
@@ -421,7 +427,10 @@ public class DetailsActivity extends BaseActivity implements BaseCallback, View.
         Map<String, String> map = new HashMap<>();
         map.put("sysLanguage", Constans.SETCOUNTRYlANGUAGE);
         map.put("iccid", Constans.PHONE_ICCID);
-//        map.put("cardType", "lksc");
+        if (Constans.Lk_CARDTYPE){
+
+            map.put("cardType","lksc");
+        }
         OkGoUtil.<DetailsBean>get(DetailsActivity.this, Constans.METHOD_GUOJIALIEBIAOXIANQINGYE, map, DetailsBean.class, this);
 
         for (Map.Entry<String, String> entry : map.entrySet()) {

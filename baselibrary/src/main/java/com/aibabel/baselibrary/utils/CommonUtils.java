@@ -1,5 +1,6 @@
 package com.aibabel.baselibrary.utils;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.net.ConnectivityManager;
@@ -15,6 +16,9 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 
+/**
+ * cbb testbase--》master
+ */
 public class CommonUtils {
 
     private static final int MIN_CLICK_DELAY_TIME = 1000;
@@ -106,6 +110,7 @@ public class CommonUtils {
      *
      * @return 手机IMEI
      */
+    @SuppressLint("MissingPermission")
     public static String getIMEI(Context ctx) {
         TelephonyManager tm = (TelephonyManager) ctx.getSystemService(Activity.TELEPHONY_SERVICE);
         if (tm != null) {
