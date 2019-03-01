@@ -7,6 +7,7 @@
 	<string name="no_net">網路不可用，請先連結網路</string>
 	<string name="select_lan">選擇語言</string>
 	<string name="keep_balance">文字保持水平</string>
+	<string name="object">物体</string>
 	<string name="meau">菜單</string>
 	<string name="artical">文章</string>
 	<string name="recogning">正在識別中…</string>
@@ -21,4 +22,5 @@
 
 	<string name="more">更多介紹 ></string>
 	<string name="retry">識別失敗，請再試一次。</string>
+	<string name="camare_laucher">拍一下，就懂了</string>
 </resources>

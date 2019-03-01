@@ -6,7 +6,9 @@
 	<string name="no_same">Translation is not supported within the same language. Please select other language(s).</string>
 	<string name="no_net">No Internet access. Please connect to the network.</string>
 	<string name="select_lan">Select Language</string>
-	<string name="keep_balance">Please align the text horizontally or vertically.</string>
+	<string name="keep_balance">Please align the text horizontally.</string>
+	<!--<string name="keep_balance">Please align the text horizontally or vertically.</string>-->
+	<string name="object">Object</string>
 	<string name="meau">Menu</string>
 	<string name="artical">Document</string>
 	<string name="recogning">Recognizing…</string>
@@ -21,5 +23,5 @@
 
 	<string name="more">More information ></string>
 	<string name="retry">Recognition failed. Please try again.</string>
-
+	<string name="camare_laucher">Know it all in a flash</string>
 </resources>
