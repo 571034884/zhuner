@@ -24,9 +24,9 @@ public class AidlService extends Service {
     private static String TAG = "AidlService";
 
     //以下是要传到服务器的统计数据
-    private List<List<StatisticsData>> sendingList = new ArrayList<>();
-    private List<List<StatisticsData>> failureList = new ArrayList<>();
-    private List<StatisticsData> statisticsDataList;
+    private List<StatisticsData> sendingList = new ArrayList<>();
+    private List<StatisticsData> failureList = new ArrayList<>();
+//    private StatisticsData statisticsData;
     //是否正在上传标志
     private boolean isSending = false;
 
@@ -35,8 +35,7 @@ public class AidlService extends Service {
     }
 
     public void initDataList() {
-        statisticsDataList = new ArrayList<>();
-        sendingList.add(statisticsDataList);
+        sendingList.add(new StatisticsData());
     }
 
     public void clearDataList(boolean success) {
@@ -49,225 +48,51 @@ public class AidlService extends Service {
 
     StatisticsDataController.Stub controller = new StatisticsDataController.Stub() {
 
+
         @Override
-        public void addPath(String appName, String appVersion, String pageName, long entryTime, long exitTime, int interactions, String keyWord) throws RemoteException {
-            int indexApp = -1;
-            for (int i = 0; i < statisticsDataList.size(); i++) {
-                if (statisticsDataList.get(i).getAppName().equals(appName) && statisticsDataList.get(i).getAppVersion().equals(appVersion)) {
-                    indexApp = i;
-                    break;
-                }
-            }
-            if (indexApp == -1) {
-                StatisticsData data = new StatisticsData();
+        public void addPath(String appName, String appVersion, String pageName, long entryTime, long exitTime, int interactions, String param) throws RemoteException {
+            if (sendingList.get(sendingList.size()-1).getPath() == null) {
                 List<StatisticsData.PathBean> pathBeanList = new ArrayList<>();
-                StatisticsData.PathBean pathBean = new StatisticsData.PathBean();
-                List<StatisticsData.PathBean.PathContentBean> pathContentBeanList = new ArrayList<>();
-                StatisticsData.PathBean.PathContentBean contentBean = new StatisticsData.PathBean.PathContentBean();
-                contentBean.setEntry(entryTime);
-                contentBean.setExit(exitTime);
-                contentBean.setInteractionTimes(interactions);
-                if (TextUtils.equals(keyWord, "")) contentBean.setKeyWord(keyWord);
-                pathContentBeanList.add(contentBean);
-                pathBean.setName(pageName);
-                pathBean.setContent(pathContentBeanList);
-                pathBeanList.add(pathBean);
-                data.setAppName(appName);
-                data.setAppVersion(appVersion);
-                data.setPath(pathBeanList);
-                statisticsDataList.add(data);
-                Log.e(TAG, "addPath: " + FastJsonUtil.changListToString(statisticsDataList));
-                return;
+                sendingList.get(sendingList.size()-1).setPath(pathBeanList);
             }
-            int indexActivity = -1;
-            for (int j = 0; statisticsDataList.get(indexApp).getPath() != null && j < statisticsDataList.get(indexApp).getPath().size(); j++) {
-                if (statisticsDataList.get(indexApp).getPath().get(j).getName().equals(pageName)) {
-                    indexActivity = j;
-                    break;
-                }
+            int pathSize = sendingList.get(sendingList.size()-1).getPath().size();
+            //没有路径 或 与上一次路径不同则添加新路径
+            if (pathSize < 1 || !sendingList.get(sendingList.size()-1).getPath().get(pathSize - 1).getAn().equals(appName)) {
+                sendingList.get(sendingList.size()-1).getPath().add(buildOnePath(appName, appVersion));
+                pathSize++;
             }
-            if (indexActivity == -1) {
-                StatisticsData.PathBean pathBean = new StatisticsData.PathBean();
-                List<StatisticsData.PathBean.PathContentBean> pathContentBeanList = new ArrayList<>();
-                StatisticsData.PathBean.PathContentBean contentBean = new StatisticsData.PathBean.PathContentBean();
-                contentBean.setEntry(entryTime);
-                contentBean.setExit(exitTime);
-                contentBean.setInteractionTimes(interactions);
-                if (TextUtils.equals(keyWord, "")) contentBean.setKeyWord(keyWord);
-                pathContentBeanList.add(contentBean);
-                pathBean.setName(pageName);
-                pathBean.setContent(pathContentBeanList);
-                if (statisticsDataList.get(indexApp).getPath() != null) {
-                    statisticsDataList.get(indexApp).getPath().add(pathBean);
-                } else {
-                    List<StatisticsData.PathBean> pathBeanList = new ArrayList<>();
-                    pathBeanList.add(pathBean);
-                    statisticsDataList.get(indexApp).setPath(pathBeanList);
-                }
-                Log.e(TAG, "addPath: " + FastJsonUtil.changListToString(statisticsDataList));
-                return;
-            }
-            StatisticsData.PathBean.PathContentBean contentBean = new StatisticsData.PathBean.PathContentBean();
-            contentBean.setEntry(entryTime);
-            contentBean.setExit(exitTime);
-            contentBean.setInteractionTimes(interactions);
-            if (TextUtils.equals(keyWord, "")) contentBean.setKeyWord(keyWord);
-            statisticsDataList.get(indexApp).getPath().get(indexActivity).getContent().add(contentBean);
+            //将页面填入最后一次的路径中
+            sendingList.get(sendingList.size()-1).getPath().get(pathSize - 1).getC().add(buildOnePage(pageName, entryTime, exitTime, interactions, param));
 
-            Log.e(TAG, "addPath: " + FastJsonUtil.changListToString(statisticsDataList));
         }
 
         @Override
-        public void addEvent(String appName, String appVersion, String eventName, long time, String descirbe, String keyWord) throws RemoteException {
-            int indexApp = -1;
-            for (int i = 0; i < statisticsDataList.size(); i++) {
-                if (statisticsDataList.get(i).getAppName().equals(appName) && statisticsDataList.get(i).getAppVersion().equals(appVersion)) {
-                    indexApp = i;
-                    break;
-                }
-            }
-            if (indexApp == -1) {
-                StatisticsData data = new StatisticsData();
+        public void addEvent(int eventId, long time, String param) throws RemoteException {
+            if (sendingList.get(sendingList.size()-1).getEvent() == null) {
                 List<StatisticsData.EventBean> eventBeanList = new ArrayList<>();
-                StatisticsData.EventBean eventBean = new StatisticsData.EventBean();
-                List<StatisticsData.EventBean.EventContentBean> eventContentBeanList = new ArrayList<>();
-                StatisticsData.EventBean.EventContentBean contentBean = new StatisticsData.EventBean.EventContentBean();
-                contentBean.setTime(time);
-                if (!TextUtils.equals(descirbe, "")) contentBean.setDescirbe(descirbe);
-                if (!TextUtils.equals(keyWord, "")) contentBean.setKeyWord(keyWord);
-                eventContentBeanList.add(contentBean);
-                eventBean.setName(eventName);
-                eventBean.setContent(eventContentBeanList);
-                eventBeanList.add(eventBean);
-                data.setAppName(appName);
-                data.setAppVersion(appVersion);
-                data.setEvent(eventBeanList);
-                statisticsDataList.add(data);
-                Log.e(TAG, "addEvent:" + FastJsonUtil.changListToString(statisticsDataList));
-                return;
+                sendingList.get(sendingList.size()-1).setEvent(eventBeanList);
             }
-            int indexEvent = -1;
-            for (int j = 0; statisticsDataList.get(indexApp).getEvent() != null && j < statisticsDataList.get(indexApp).getEvent().size(); j++) {
-                if (statisticsDataList.get(indexApp).getEvent().get(j).getName().equals(eventName)) {
-                    indexEvent = j;
-                    break;
-                }
-            }
-            if (indexEvent == -1) {
-                StatisticsData.EventBean eventBean = new StatisticsData.EventBean();
-                List<StatisticsData.EventBean.EventContentBean> eventContentBeanList = new ArrayList<>();
-                StatisticsData.EventBean.EventContentBean contentBean = new StatisticsData.EventBean.EventContentBean();
-                contentBean.setTime(time);
-                if (!TextUtils.equals(descirbe, "")) contentBean.setDescirbe(descirbe);
-                if (!TextUtils.equals(keyWord, "")) contentBean.setKeyWord(keyWord);
-                eventContentBeanList.add(contentBean);
-                eventBean.setName(eventName);
-                eventBean.setContent(eventContentBeanList);
-                if (statisticsDataList.get(indexApp).getEvent() != null) {
-                    statisticsDataList.get(indexApp).getEvent().add(eventBean);
-                } else {
-                    List<StatisticsData.EventBean> eventBeanList = new ArrayList<>();
-                    eventBeanList.add(eventBean);
-                    statisticsDataList.get(indexApp).setEvent(eventBeanList);
-                }
-                Log.e(TAG, "addEvent:" + FastJsonUtil.changListToString(statisticsDataList));
-                return;
-            }
-            StatisticsData.EventBean.EventContentBean contentBean = new StatisticsData.EventBean.EventContentBean();
-            contentBean.setTime(time);
-            if (!TextUtils.equals(descirbe, "")) contentBean.setDescirbe(descirbe);
-            if (!TextUtils.equals(keyWord, "")) contentBean.setKeyWord(keyWord);
-            statisticsDataList.get(indexApp).getEvent().get(indexEvent).getContent().add(contentBean);
-
-            Log.e(TAG, "addEvent:" + FastJsonUtil.changListToString(statisticsDataList));
+            StatisticsData.EventBean eventBean = new StatisticsData.EventBean();
+            eventBean.setEid(eventId);
+            eventBean.setEt(time);
+            eventBean.setP(param);
+            sendingList.get(sendingList.size()-1).getEvent().add(eventBean);
         }
 
         @Override
-        public void addNotify(String appName, String appVersion, int type, long time, String scope, String descirbe) throws RemoteException {
-            int indexApp = -1;
-            for (int i = 0; i < statisticsDataList.size(); i++) {
-                if (statisticsDataList.get(i).getAppName().equals(appName) && statisticsDataList.get(i).getAppVersion().equals(appVersion)) {
-                    indexApp = i;
-                    break;
-                }
-            }
-            if (indexApp == -1) {
-                StatisticsData data = new StatisticsData();
+        public void addNotify(int notifyId, long time, int type, String param) throws RemoteException {
+            if (sendingList.get(sendingList.size()-1).getNotify() == null) {
                 List<StatisticsData.NotifyBean> notifyBeanList = new ArrayList<>();
-                StatisticsData.NotifyBean notifyBean = new StatisticsData.NotifyBean();
-                List<StatisticsData.NotifyBean.NotifyContentBean> notifyContentBeanList = new ArrayList<>();
-                StatisticsData.NotifyBean.NotifyContentBean contentBean = new StatisticsData.NotifyBean.NotifyContentBean();
-                contentBean.setTime(time);
-                contentBean.setDescirbe(descirbe);
-                contentBean.setScope(scope);
-                contentBean.setConsulted(false);
-                notifyContentBeanList.add(contentBean);
-                notifyBean.setType(type);
-                notifyBean.setContent(notifyContentBeanList);
-                notifyBeanList.add(notifyBean);
-                data.setAppName(appName);
-                data.setAppVersion(appVersion);
-                data.setNotify(notifyBeanList);
-                statisticsDataList.add(data);
-                return;
+                sendingList.get(sendingList.size()-1).setNotify(notifyBeanList);
             }
-            int indexType = -1;
-            for (int j = 0; statisticsDataList.get(indexApp).getNotify() != null && j < statisticsDataList.get(indexApp).getNotify().size(); j++) {
-                if (statisticsDataList.get(indexApp).getNotify().get(j).getType() == type) {
-                    indexType = j;
-                    break;
-                }
+            //没有通知 或 与上一次路径不同则添加新通知
+            int notifySize = sendingList.get(sendingList.size()-1).getNotify().size();
+            if (notifySize < 1 || sendingList.get(sendingList.size()-1).getNotify().get(notifySize - 1).getNid() != notifyId) {
+                sendingList.get(sendingList.size()-1).getNotify().add(buildOneNotify(notifyId, time));
+                notifySize++;
             }
-            if (indexType == -1) {
-                StatisticsData.NotifyBean notifyBean = new StatisticsData.NotifyBean();
-                List<StatisticsData.NotifyBean.NotifyContentBean> notifyContentBeanList = new ArrayList<>();
-                StatisticsData.NotifyBean.NotifyContentBean contentBean = new StatisticsData.NotifyBean.NotifyContentBean();
-                contentBean.setTime(time);
-                contentBean.setDescirbe(descirbe);
-                contentBean.setScope(scope);
-                contentBean.setConsulted(false);
-                notifyContentBeanList.add(contentBean);
-                notifyBean.setType(type);
-                notifyBean.setContent(notifyContentBeanList);
-                if (statisticsDataList.get(indexApp).getNotify() != null) {
-                    statisticsDataList.get(indexApp).getNotify().add(notifyBean);
-                } else {
-                    List<StatisticsData.NotifyBean> notifyBeanList = new ArrayList<>();
-                    notifyBeanList.add(notifyBean);
-                    statisticsDataList.get(indexApp).setNotify(notifyBeanList);
-                }
-                return;
-            }
-            StatisticsData.NotifyBean.NotifyContentBean contentBean = new StatisticsData.NotifyBean.NotifyContentBean();
-            contentBean.setTime(time);
-            contentBean.setDescirbe(descirbe);
-            contentBean.setScope(scope);
-            contentBean.setConsulted(false);
-            statisticsDataList.get(indexApp).getNotify().get(indexType).getContent().add(contentBean);
-        }
-
-        @Override
-        public void setConsultedStatus(String appName, int type, long time) throws RemoteException {
-            int indexApp = -1;
-            for (int i = 0; i < statisticsDataList.size(); i++) {
-                if (statisticsDataList.get(i).getAppName().equals(appName)) {
-                    indexApp = i;
-                    break;
-                }
-            }
-            int indexType = -1;
-            for (int i = 0; indexApp > -1 && i < statisticsDataList.get(indexApp).getNotify().size(); i++) {
-                if (statisticsDataList.get(indexApp).getNotify().get(i).getType() == type) {
-                    indexType = i;
-                    break;
-                }
-            }
-            for (int i = 0; indexType > -1 && i < statisticsDataList.get(indexApp).getNotify().get(indexType).getContent().size(); i++) {
-                if (statisticsDataList.get(indexApp).getNotify().get(indexType).getContent().get(i).getTime() == time) {
-                    statisticsDataList.get(indexApp).getNotify().get(indexType).getContent().get(i).setConsulted(true);
-                    break;
-                }
-            }
+            //将页面填入最后一次的通知中
+            sendingList.get(sendingList.size()-1).getNotify().get(notifySize - 1).getC().add(buildOneContent(type, param));
         }
 
         @Override
@@ -285,7 +110,7 @@ public class AidlService extends Service {
 
         @Override
         public void getAllData() throws RemoteException {
-            Log.e(TAG, "getAllData: " + FastJsonUtil.changListToString(statisticsDataList));
+            Log.e(TAG, "getAllData: " + FastJsonUtil.changObjectToString(sendingList));
         }
 
         @Override
@@ -329,7 +154,7 @@ public class AidlService extends Service {
     public void post(String url, Map<String, String> postMap) {
         PostRequest<String> postRequest = OkGo.<String>post(url).tag("JonerLogPush");
 //        PostRequest<String> postRequest = OkGo.<String>post("http://39.107.238.111:7001/v1/ddot/JonerLogPush").tag("JonerLogPush");
-        postRequest.params("data", FastJsonUtil.changObjectToString(statisticsDataList));
+        postRequest.params("data", FastJsonUtil.changObjectToString(sendingList));
         //公共参数
         for (Map.Entry<String, String> entry : postMap.entrySet()) {
             postRequest.params(entry.getKey(), entry.getValue());
@@ -370,4 +195,39 @@ public class AidlService extends Service {
             }
         });
     }
+
+    public StatisticsData.PathBean buildOnePath(String appName, String appVersion) {
+        StatisticsData.PathBean pathBean = new StatisticsData.PathBean();
+        pathBean.setAn(appName);
+        pathBean.setAv(appVersion);
+        List<StatisticsData.PathBean.CBean> cBeanList = new ArrayList<>();
+        pathBean.setC(cBeanList);
+        return pathBean;
+    }
+
+    public StatisticsData.PathBean.CBean buildOnePage(String pageName, long entryTime, long exitTime, int interactions, String param) {
+        StatisticsData.PathBean.CBean bean = new StatisticsData.PathBean.CBean();
+        bean.setPn(pageName);
+        bean.setIt(entryTime);
+        bean.setOt(exitTime);
+        bean.setI(interactions);
+        bean.setP(param);
+        return bean;
+    }
+    public StatisticsData.NotifyBean buildOneNotify(int notifyId, long time) {
+        StatisticsData.NotifyBean notifyBean = new StatisticsData.NotifyBean();
+        notifyBean.setNid(notifyId);
+        notifyBean.setTi(time);
+        List<StatisticsData.NotifyBean.CBeanX> cBeanXList = new ArrayList<>();
+        notifyBean.setC(cBeanXList);
+        return notifyBean;
+    }
+
+    public StatisticsData.NotifyBean.CBeanX buildOneContent(int type, String param) {
+        StatisticsData.NotifyBean.CBeanX cBeanX = new StatisticsData.NotifyBean.CBeanX();
+        cBeanX.setT(type);
+        cBeanX.setP(param);
+        return cBeanX;
+    }
+
 }

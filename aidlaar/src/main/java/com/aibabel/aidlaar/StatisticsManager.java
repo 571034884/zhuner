@@ -98,42 +98,64 @@ public class StatisticsManager {
     /**
      * 交互事件统计
      *
-     * @param eventName 事件名
-     * @param keyWord   相关参数
+     * @param eventId 事件id
+     * @param keyWord 相关参数
      */
-    public void addEventAidl(String eventName, Map keyWord) {
-        Log.e(TAG, "addEvent: " + eventName + keyWord);
+    public void addEventAidl(int eventId, Map keyWord) {
+        Log.e(TAG, "addEvent: " + eventId + keyWord);
         try {
-            getService().addEvent(mAppName, mAppVersion, eventName, System.currentTimeMillis(), "", JSONObject.toJSON(keyWord).toString());
+            getService().addEvent(eventId, System.currentTimeMillis(), JSONObject.toJSON(keyWord).toString());
         } catch (RemoteException e) {
             e.printStackTrace();
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
+//    public void addEventAidl(String eventName, Map keyWord) {
+//        Log.e(TAG, "addEvent: " + eventName + keyWord);
+//        try {
+//            getService().addEvent(mAppName, mAppVersion, eventName, System.currentTimeMillis(), "", JSONObject.toJSON(keyWord).toString());
+//        } catch (RemoteException e) {
+//            e.printStackTrace();
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
+//    }
 
-    public void addEventAidl(String eventName) {
-        addEventAidl(eventName, new HashMap());
+    public void addEventAidl(int eventId) {
+        addEventAidl(eventId, new HashMap());
     }
+//    public void addEventAidl(String eventName) {
+//        addEventAidl(eventName, new HashMap());
+//    }
 
     /**
      * 通知统计
      *
-     * @param scope    范围
-     * @param type     类型
-     * @param descirbe 描述
-     * @param time     时间戳
+     * @param type  类型
+     * @param param 参数
+     * @param time  时间戳
      */
-    public void addNotifyAidl(int type, long time, String scope, String descirbe) {
-        Log.e(TAG, "addNotifyAidl: " + type + time + scope + descirbe);
+    public void addNotifyAidl(int notifyId, int type, long time, Map param) {
+        Log.e(TAG, "addNotifyAidl: " + type + time + param);
         try {
-            getService().addNotify(mAppName, mAppVersion, type, time, scope, descirbe);
+            getService().addNotify(notifyId, time, type, JSONObject.toJSON(param).toString());
         } catch (RemoteException e) {
             e.printStackTrace();
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
+//    public void addNotifyAidl(int type, long time, String scope, String descirbe) {
+//        Log.e(TAG, "addNotifyAidl: " + type + time + scope + descirbe);
+//        try {
+//            getService().addNotify(mAppName, mAppVersion, type, time, scope, descirbe);
+//        } catch (RemoteException e) {
+//            e.printStackTrace();
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
+//    }
 
     public void getAllData() {
         Log.e(TAG, "getAllData: ");
@@ -146,22 +168,22 @@ public class StatisticsManager {
         }
     }
 
-    /**
-     * 修改通知阅读状态
-     *
-     * @param type 类型
-     * @param time 通知时间
-     */
-    public void setConsultedStatus(int type, long time) {
-        Log.e(TAG, "setConsultedStatus: ");
-        try {
-            getService().setConsultedStatus(mAppName, type, time);
-        } catch (RemoteException e) {
-            e.printStackTrace();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
+//    /**
+//     * 修改通知阅读状态
+//     *
+//     * @param type 类型
+//     * @param time 通知时间
+//     */
+//    public void setConsultedStatus(int type, long time) {
+//        Log.e(TAG, "setConsultedStatus: ");
+//        try {
+//            getService().setConsultedStatus(mAppName, type, time);
+//        } catch (RemoteException e) {
+//            e.printStackTrace();
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
+//    }
 
     /**
      * 数据发送
@@ -186,7 +208,7 @@ public class StatisticsManager {
         }
     }
 
-    public String getStringSP(String key, String defaultValue)  {
+    public String getStringSP(String key, String defaultValue) {
         try {
             return getService().getStringSP(key, defaultValue);
         } catch (RemoteException e) {
@@ -197,7 +219,7 @@ public class StatisticsManager {
         return defaultValue;
     }
 
-    public boolean getBooleanSP(String key, boolean defaultValue){
+    public boolean getBooleanSP(String key, boolean defaultValue) {
         try {
             return getService().getBooleanSP(key, defaultValue);
         } catch (RemoteException e) {
@@ -219,7 +241,7 @@ public class StatisticsManager {
         return defaultValue;
     }
 
-    public float getFloatSP(String key, float defaultValue)   {
+    public float getFloatSP(String key, float defaultValue) {
         try {
             return getService().getFloatSP(key, defaultValue);
         } catch (RemoteException e) {
@@ -230,7 +252,7 @@ public class StatisticsManager {
         return defaultValue;
     }
 
-    public long getLongSP(String key, long defaultValue)   {
+    public long getLongSP(String key, long defaultValue) {
         try {
             return getService().getLongSP(key, defaultValue);
         } catch (RemoteException e) {
