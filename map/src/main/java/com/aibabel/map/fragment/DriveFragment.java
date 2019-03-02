@@ -19,6 +19,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 import android.widget.ZoomControls;
 
 import com.aibabel.aidlaar.StatisticsManager;
@@ -535,7 +536,20 @@ public class DriveFragment extends BaseFragment implements SensorEventListener ,
                     return;
                 }
 
-                Map map = new HashMap();
+                if (routeBean.getLocationWhere() ==1){
+                    if (driveZhBean.getData().getResult().getRoutes().size() == 0){
+                        ToastUtil.showShort(mContext,"路线过短，请修改起点或终点");
+                        return;
+                    }
+                }else  if (routeBean.getLocationWhere() == 0){
+                    if (driveEnBean.getData().getResult().getRoutes().size() == 0){
+                        ToastUtil.showShort(mContext,"路线过短，请修改起点或终点");
+                        return;
+                    }
+                }
+
+
+                    Map map = new HashMap();
                 map.put("type",routeBean.getMode());
                 StatisticsManager.getInstance(mContext).addEventAidl("查看路线规划详情",map);
 
