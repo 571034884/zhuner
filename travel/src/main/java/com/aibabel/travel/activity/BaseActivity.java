@@ -2,6 +2,7 @@ package com.aibabel.travel.activity;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.media.AudioManager;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -19,6 +20,7 @@ import com.aibabel.travel.R;
 import com.aibabel.travel.app.BaseApplication;
 import com.aibabel.travel.http.OkGoUtils;
 import com.aibabel.travel.http.ResponseCallback;
+import com.aibabel.travel.service.LocationService;
 import com.aibabel.travel.utils.NetworkUtils;
 import com.umeng.analytics.MobclickAgent;
 
@@ -191,6 +193,7 @@ public abstract class BaseActivity extends SimpleStatisticsActivity implements V
         switch (keyCode) {
             case 133:
             case 134:
+                stopService(new Intent(this, LocationService.class));
                 BaseApplication.exit();
                 break;
             case KeyEvent.KEYCODE_VOLUME_UP:

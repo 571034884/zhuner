@@ -170,7 +170,7 @@ public class DetailsActivity extends BaseActivity implements BaseCallback, View.
             @Override
             public void onClick(View v) {
                 Map map1 = new HashMap();
-                map1.put("商品名称", name);
+                map1.put("p1", name);
                 StatisticsManager.getInstance(DetailsActivity.this).addEventAidl(1712, map1);
                 popup();
             }
@@ -249,7 +249,7 @@ public class DetailsActivity extends BaseActivity implements BaseCallback, View.
         mIsShowing = false;
 
         Map map1 = new HashMap();
-        map1.put("SKUID", skuid);
+        map1.put("p1", skuid);
         StatisticsManager.getInstance(DetailsActivity.this).addEventAidl(1720, map1);
 
         btnCancel.setOnClickListener(new View.OnClickListener() {
@@ -342,7 +342,7 @@ public class DetailsActivity extends BaseActivity implements BaseCallback, View.
 
     private void initPayment(String payType) {
         Map map1 = new HashMap();
-        map1.put("SKUID", skuid);
+        map1.put("p1", skuid);
         StatisticsManager.getInstance(DetailsActivity.this).addEventAidl(1722, map1);
 
 
@@ -516,21 +516,21 @@ public class DetailsActivity extends BaseActivity implements BaseCallback, View.
                 if (!TextUtils.equals(payType, "3")) {
 
                     Map map1 = new HashMap();
-                    map1.put("SKUID", skuid);
-                    map1.put("填写是否通过", "true");
+                    map1.put("p3", skuid);
+                    map1.put("p1", "true");
                     if (TextUtils.equals(payType, "2")) {
-                        map1.put("支付方式", "支付宝");
+                        map1.put("p2", "支付宝");
                     } else {
-                        map1.put("支付方式", "微信");
+                        map1.put("p2", "微信");
                     }
 
                     StatisticsManager.getInstance(DetailsActivity.this).addEventAidl(1723, map1);
                     intent = new Intent(DetailsActivity.this, CustomWebViewActivity.class);
                 } else {
                     Map map1 = new HashMap();
-                    map1.put("SKUID", skuid);
-                    map1.put("填写是否通过", "true");
-                    map1.put("支付方式", "paypal");
+                    map1.put("p3", skuid);
+                    map1.put("p1", "true");
+                    map1.put("p2", "paypal");
                     StatisticsManager.getInstance(DetailsActivity.this).addEventAidl(1723, map1);
 
                     intent = new Intent(DetailsActivity.this, PayPalActivity.class);

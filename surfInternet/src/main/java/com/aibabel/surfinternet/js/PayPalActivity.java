@@ -17,6 +17,7 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.aibabel.aidlaar.StatisticsManager;
 import com.aibabel.surfinternet.MainActivity;
 import com.aibabel.surfinternet.R;
 import com.aibabel.surfinternet.activity.BaseActivity;
@@ -24,6 +25,8 @@ import com.aibabel.surfinternet.utils.NetUtil;
 import com.bumptech.glide.Glide;
 
 import java.text.ParseException;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -50,6 +53,8 @@ public class PayPalActivity extends BaseActivity implements OnJSClickListener {
     private AdvancedWebView webView;
     private String time = "0";
     Uri uri = Uri.parse("content://icc/adn");
+    private String skuid;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -108,6 +113,12 @@ public class PayPalActivity extends BaseActivity implements OnJSClickListener {
         time = intent.getStringExtra("time");
         String subOrderNo = intent.getStringExtra("subOrderNo");
         Log.e("subOrderNo_pay", subOrderNo);
+        skuid = intent.getStringExtra("SKUID");
+
+        Map map1 = new HashMap();
+        map1.put("p1", skuid);
+        StatisticsManager.getInstance(PayPalActivity.this).addEventAidl(1730, map1);
+
         webView.loadUrl(url);
 
         webView.setWebChromeClient(new WebChromeClient() {
@@ -181,6 +192,10 @@ public class PayPalActivity extends BaseActivity implements OnJSClickListener {
                 tvError.setText(getResources().getString(R.string.success));
                 llIsnet.setVisibility(View.VISIBLE);
 //                insertContact("softsim","00001");
+
+                Map map1 = new HashMap();
+                map1.put("p2", skuid);
+                StatisticsManager.getInstance(PayPalActivity.this).addEventAidl(1732, map1);
             }
         });
 

@@ -34,6 +34,7 @@ import com.aibabel.travel.utils.Constant;
 import com.aibabel.travel.utils.FastJsonUtil;
 import com.aibabel.travel.utils.NetworkUtils;
 import com.aibabel.travel.utils.StringUtil;
+import com.alibaba.fastjson.JSONObject;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.RequestOptions;
@@ -183,9 +184,8 @@ public class SpotActivity extends BaseActivity implements ResponseCallback {
         setSpotImage(urlSpot);
 
         Map map1 = new HashMap();
-        map1.put("讲解点名称",name);
-        StatisticsManager.getInstance(SpotActivity.this).addEventAidl( "进入页面", map1);
-
+        map1.put("p1",name);
+        setPathParams(JSONObject.toJSON(map1).toString());
         if (!CommonUtils.isAvailable()) {
             list = DataDAO.querySpotsChildren(name, pageNum,id);
             initRecycleView();
@@ -398,8 +398,8 @@ public class SpotActivity extends BaseActivity implements ResponseCallback {
 
         String json = addList(list);
         Map map1 = new HashMap();
-        map1.put("点击内容",json);
-        StatisticsManager.getInstance(SpotActivity.this).addEventAidl( "内容名称", map1);
+        map1.put("p1",json);
+        StatisticsManager.getInstance(SpotActivity.this).addEventAidl( 1644, map1);
         Intent intent = new Intent(SpotActivity.this, SpotDetailActivity.class);
         intent.putExtra("position", position);
         intent.putExtra("list", json);

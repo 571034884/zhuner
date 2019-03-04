@@ -23,9 +23,11 @@ import com.aibabel.travel.utils.CommonUtils;
 import com.aibabel.travel.utils.NetworkUtils;
 import com.aibabel.travel.utils.StringUtil;
 import com.aibabel.travel.widgets.MyListView;
+import com.alibaba.fastjson.JSONObject;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.RequestOptions;
+import com.google.gson.JsonObject;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -128,9 +130,8 @@ public class CityActivity extends BaseActivity implements ResponseCallback, Adap
         offline = getIntent().getBooleanExtra("offline", false);
         first = getIntent().getIntExtra("first", 0);
         Map map1 = new HashMap();
-        map1.put("城市名称",name);
-        StatisticsManager.getInstance(CityActivity.this).addEventAidl( "进入页面", map1);
-
+        map1.put("p1",name);
+        setPathParams(JSONObject.toJSON(map1).toString());
         if (first == 1) {
             ivLeft.setVisibility(View.GONE);
         }
@@ -202,8 +203,8 @@ public class CityActivity extends BaseActivity implements ResponseCallback, Adap
 
     private void toWorld() {
         Map map = new HashMap();
-        map.put("城市名称",name);
-        StatisticsManager.getInstance(CityActivity.this).addEventAidl("点击世界页", map);
+        map.put("p1",name);
+        StatisticsManager.getInstance(CityActivity.this).addEventAidl(1621, map);
 
 
 
@@ -213,8 +214,8 @@ public class CityActivity extends BaseActivity implements ResponseCallback, Adap
 
     private void toSearch() {
         Map map = new HashMap();
-        map.put("城市名称",name);
-        StatisticsManager.getInstance(CityActivity.this).addEventAidl( "搜索", map);
+        map.put("p1",name);
+        StatisticsManager.getInstance(CityActivity.this).addEventAidl( 1622, map);
 
         Intent intent = new Intent(this, SearchPageActivity.class);
         startActivity(intent);
@@ -297,8 +298,8 @@ public class CityActivity extends BaseActivity implements ResponseCallback, Adap
      */
     private void toScenic(String id, String url, String count, String name, String audioUrl) {
         Map map = new HashMap();
-        map.put("景点名称",name);
-        StatisticsManager.getInstance(CityActivity.this).addEventAidl( "点击景点", map);
+        map.put("p1",name);
+        StatisticsManager.getInstance(CityActivity.this).addEventAidl( 1623, map);
 
 
         Intent intent = new Intent(CityActivity.this, SpotActivity.class);
