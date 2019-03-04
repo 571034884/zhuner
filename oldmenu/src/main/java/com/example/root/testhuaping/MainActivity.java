@@ -416,11 +416,11 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
     public void get_okgo_net() {
         boolean softSim = DataManager.getInstance().getBoolean("softSim");
         if (softSim) {
-            Toast.makeText(MainActivity.this, "启动过", Toast.LENGTH_SHORT).show();
+            Toast.makeText(MainActivity.this, "启动过软卡", Toast.LENGTH_SHORT).show();
         } else {
             isnet = true;
             initReceiver();
-            Toast.makeText(MainActivity.this, "没有启动过", Toast.LENGTH_SHORT).show();
+            Toast.makeText(MainActivity.this, "没有启动过软卡", Toast.LENGTH_SHORT).show();
         }
     }
 
