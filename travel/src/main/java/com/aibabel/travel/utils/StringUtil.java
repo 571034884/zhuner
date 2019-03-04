@@ -159,16 +159,16 @@ public class StringUtil {
      */
     public static Map<String, Integer> getOffline() {
         Map<String, Integer> map = new HashMap<>();
-        map.put("jqdl_aus", 13);
+//        map.put("jqdl_aus", 13);
         map.put("jqdl_fr", 5);
         map.put("jqdl_it", 6);
-        map.put("jqdl_en", 7);
+//        map.put("jqdl_en", 7);
         map.put("jqdl_ru", 31);
         map.put("jqdl_ch", 40);
         map.put("jqdl_jp", 8);
-        map.put("jqdl_ko", 9);
+//        map.put("jqdl_ko", 9);
         map.put("jqdl_th", 20);
-        map.put("jqdl_usa", 12);
+//        map.put("jqdl_usa", 12);
         return map;
     }
 

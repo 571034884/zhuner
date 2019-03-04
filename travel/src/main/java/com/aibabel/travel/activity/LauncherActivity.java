@@ -40,7 +40,8 @@ import butterknife.ButterKnife;
  *
  * @Author：CreateBy 张文颖
  * @Date：2018/5/31
- * @Desc：启动页 ==========================================================================================
+ * @Desc：启动页
+ * @==========================================================================================
  */
 public class LauncherActivity extends BaseActivity implements ResponseCallback {
 
@@ -118,8 +119,7 @@ public class LauncherActivity extends BaseActivity implements ResponseCallback {
     }
 
     public void initData() {
-        String version = CommonUtils.getDeviceInfo();
-        Log.e("version", version);
+        String version = CommonUtils.getSystemVersion();
         if (!CommonUtils.isAvailable()) {
             toWorld();
         } else {
@@ -132,9 +132,12 @@ public class LauncherActivity extends BaseActivity implements ResponseCallback {
 //        map.put("cityName","北京");
 //        map.put("CountryName","欧洲");
             get1(this, this, Country_City.class, map, UrlConfig.CMD_COUNTRY_CITY);
+            // TODO: 2019/3/2 fly, go上暂时不支持定位跟踪播放,不起动
+            if (TextUtils.equals(version, Constant.PL)) {
+                // TODO: 2019/3/2 pro支持定位跟踪播放
+                startService(new Intent(this, LocationService.class));
+            }
 
-
-            startService(new Intent(this, LocationService.class));
         }
 
     }

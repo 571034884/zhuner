@@ -87,6 +87,9 @@ import jp.wasabeef.glide.transformations.ColorFilterTransformation;
 public class TakePhoteActivity extends BaseActivity implements CameraPreview.OnCameraStatusListener, CardPagerAdapter.onClickListener {
     private static final String TAG = "TakePhoteActivity";
     private String pathName = PictureUtil.PATH + "ocrtemp.jpg"; //拍照后保存到内存中的地址
+
+    private int status = Constant.PREVIEW;
+    private int status_compress;
     CameraPreview mCameraPreview;
     RelativeLayout mTakePhotoLayout;
     private TextView tv_orLan;
@@ -127,8 +130,6 @@ public class TakePhoteActivity extends BaseActivity implements CameraPreview.OnC
     private RelativeLayout rl3;
     private RelativeLayout rl4;
 
-    private int status = Constant.PREVIEW;
-    private int status_compress;
     private int rg_tag = 0;
     private boolean isOpenFlashMode = false;
     private FocusImageView fv_focus;
@@ -455,7 +456,9 @@ public class TakePhoteActivity extends BaseActivity implements CameraPreview.OnC
     protected void onResume() {
         super.onResume();
         //如果是不是翻译状态，mCameraPreview，主要解决fly版本变红的问题
+        Log.e("status",status+"-----------------------------------");
         if (status == Constant.PREVIEW)
+            mCameraPreview.setVisibility(View.GONE);
             mCameraPreview.setVisibility(View.VISIBLE);
         //设置语言
         String or_code = SharePrefUtil.getString(this, Constant.LAN_OR_CODE, "en");

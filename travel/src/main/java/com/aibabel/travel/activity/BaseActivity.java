@@ -5,19 +5,16 @@ import android.content.Context;
 import android.media.AudioManager;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.SearchView;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
-import android.view.Window;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Toast;
 
 import com.aibabel.statisticalserver.SimpleStatisticsActivity;
-
 import com.aibabel.travel.R;
 import com.aibabel.travel.app.BaseApplication;
 import com.aibabel.travel.http.OkGoUtils;
@@ -47,8 +44,9 @@ public abstract class BaseActivity extends SimpleStatisticsActivity implements V
         setContentView(initLayout());
         mUnbinder = ButterKnife.bind(this);
         init();
-        audioManager =(AudioManager) getSystemService(Context.AUDIO_SERVICE);
+        audioManager = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
     }
+
     /**
      * 初始化布局
      */
@@ -61,26 +59,27 @@ public abstract class BaseActivity extends SimpleStatisticsActivity implements V
 
     /**
      * 网络请求
+     *
      * @param context
      * @param callback
      * @param cls
      * @param map
      * @param method
      */
-    protected void get(Context context, ResponseCallback callback, final Class<?> cls, Map<String,String> map, String method){
-        if(!NetworkUtils.isAvailable(this)){
+    protected void get(Context context, ResponseCallback callback, final Class<?> cls, Map<String, String> map, String method) {
+        if (!NetworkUtils.isAvailable(this)) {
             Toast.makeText(this, R.string.net_unavailable, Toast.LENGTH_SHORT).show();
             return;
         }
-        OkGoUtils.get(context,method,map,cls,callback);
+        OkGoUtils.get(context, method, map, cls, callback);
     }
 
-    protected void get1(Context context, ResponseCallback callback, final Class<?> cls, Map<String,String> map, String method){
-        if(!NetworkUtils.isAvailable(this)){
+    protected void get1(Context context, ResponseCallback callback, final Class<?> cls, Map<String, String> map, String method) {
+        if (!NetworkUtils.isAvailable(this)) {
             Toast.makeText(this, R.string.net_unavailable, Toast.LENGTH_SHORT).show();
             return;
         }
-        OkGoUtils.get1(context,method,map,cls,callback);
+        OkGoUtils.get1(context, method, map, cls, callback);
     }
 
     /**
@@ -100,11 +99,12 @@ public abstract class BaseActivity extends SimpleStatisticsActivity implements V
 
     /**
      * 显示长toast
+     *
      * @param msg
      */
-    public void toastLong(String msg){
+    public void toastLong(String msg) {
         if (null == toast) {
-            toast = Toast.makeText(getApplicationContext(),msg,Toast.LENGTH_SHORT);
+            toast = Toast.makeText(getApplicationContext(), msg, Toast.LENGTH_SHORT);
             toast.show();
         } else {
             toast.setText(msg);
@@ -114,11 +114,12 @@ public abstract class BaseActivity extends SimpleStatisticsActivity implements V
 
     /**
      * 显示短toast
+     *
      * @param msg
      */
-    public void toastShort(String msg){
+    public void toastShort(String msg) {
         if (null == toast) {
-            toast = Toast.makeText(getApplicationContext(),msg,Toast.LENGTH_SHORT);
+            toast = Toast.makeText(getApplicationContext(), msg, Toast.LENGTH_SHORT);
             toast.show();
         } else {
             toast.setText(msg);
@@ -187,13 +188,13 @@ public abstract class BaseActivity extends SimpleStatisticsActivity implements V
 
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
-        switch (keyCode){
+        switch (keyCode) {
             case 133:
             case 134:
                 BaseApplication.exit();
                 break;
             case KeyEvent.KEYCODE_VOLUME_UP:
-                audioManager.adjustStreamVolume(AudioManager.STREAM_MUSIC, AudioManager.ADJUST_RAISE,AudioManager.FX_FOCUS_NAVIGATION_UP);
+                audioManager.adjustStreamVolume(AudioManager.STREAM_MUSIC, AudioManager.ADJUST_RAISE, AudioManager.FX_FOCUS_NAVIGATION_UP);
                 return true;
             case KeyEvent.KEYCODE_VOLUME_DOWN:
                 audioManager.adjustStreamVolume(AudioManager.STREAM_MUSIC, AudioManager.ADJUST_LOWER, AudioManager.FX_FOCUS_NAVIGATION_UP);

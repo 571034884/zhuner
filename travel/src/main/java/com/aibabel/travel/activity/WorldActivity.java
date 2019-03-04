@@ -55,7 +55,8 @@ import butterknife.ButterKnife;
  *
  * @Author：CreateBy 张文颖
  * @Date：2018/6/19
- * @Desc：世界页 ==========================================================================================
+ * @Desc：世界页
+ * @==========================================================================================
  */
 public class WorldActivity extends BaseActivity implements ResponseCallback, NetBroadcastReceiver.NetListener {
 

@@ -15,6 +15,7 @@ import android.view.ViewGroup;
 import com.aibabel.travel.app.BaseApplication;
 
 import java.lang.reflect.Field;
+import java.lang.reflect.Method;
 import java.math.BigDecimal;
 import java.util.List;
 import java.util.Locale;
@@ -22,6 +23,7 @@ import java.util.Locale;
 public class CommonUtils {
     private static final int MIN_CLICK_DELAY_TIME = 1000;
     private static long lastClickTime;
+
 
     /**
      * 两次点击按钮之间的点击间隔不能少于1000毫秒
@@ -87,6 +89,21 @@ public class CommonUtils {
     }
 
 
+
+    /**
+     * 获取系统版本号前两位,用于区分go，fly，pro
+     *
+     * @return
+     */
+    public static String getSystemVersion() {
+        String versionCode = "PL";
+        String result = Build.DISPLAY;
+        if(!TextUtils.isEmpty(result)&&result.length()>=2)
+            versionCode = result.substring(0, 2);
+        return versionCode;
+    }
+
+
     /**
      * 判断网络是否可用
      *
@@ -112,11 +129,22 @@ public class CommonUtils {
      * @return
      */
     public static String getSN() {
-        String serialNum = Build.SERIAL;
-        if (TextUtils.isEmpty(serialNum)) {
-            return "0000000000000000";
+        String sn="0000000000000000";
+        try {
+            Class clz = Class.forName("android.os.SystemProperties");
+            Method method = clz.getMethod("get", String.class,String.class);
+            sn = (String) method.invoke(clz,"gsm.serial", "0000000000000000");
+            sn.trim();
+            if (sn.indexOf(" ") != -1) {
+                sn = sn.substring(0, sn.indexOf(" "));
+            }
+            Log.e("CommonUtils","sn="+sn);
+        } catch (Exception e) {
+            e.printStackTrace();
+            Log.e("CommonUtils",e.getMessage());
         }
-        return serialNum;
+
+        return sn;
     }
 
 

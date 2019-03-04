@@ -160,9 +160,15 @@ public class ContentProviderUtil {
                     OfflineBean bean = new OfflineBean();
                     String id = cursor.getString(cursor.getColumnIndex("Id"));
                     String status = cursor.getString(cursor.getColumnIndex("status"));
-                    bean.setId(id);
-                    bean.setStatus(status);
-                    list.add(bean);
+                    // TODO: 2019/3/2 由于业务逻辑修改为6个离线数据，改离线管理很麻烦，暂时从这里去掉4个国家 
+                    if(TextUtils.equals(id,"jqdl_aus")||TextUtils.equals(id,"jqdl_en")||TextUtils.equals(id,"jqdl_ko")||TextUtils.equals(id,"jqdl_usa")){
+    
+                    }else{
+                        bean.setId(id);
+                        bean.setStatus(status);
+                        list.add(bean);
+                    }
+
                 }
             } else {
                 Log.d("TAG", "：can not get offline data！");
