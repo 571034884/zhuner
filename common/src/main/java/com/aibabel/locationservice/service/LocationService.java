@@ -5,10 +5,12 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
+import android.net.TrafficStats;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.IBinder;
+import android.support.annotation.RequiresApi;
 import android.text.TextUtils;
 import android.util.Log;
 
@@ -19,11 +21,15 @@ import com.aibabel.locationservice.bean.ResultBean;
 import com.aibabel.locationservice.map.MapUtils;
 import com.aibabel.locationservice.map.ReLocationManager;
 import com.aibabel.locationservice.provider.LocationModel;
+import com.aibabel.locationservice.receiver.BootBroadcastReceiver;
+import com.aibabel.locationservice.receiver.CardBroadcastReceiver;
 import com.aibabel.locationservice.receiver.ScreenBroadcastReceiver;
 import com.aibabel.locationservice.utils.CommonUtils;
 import com.aibabel.locationservice.utils.Constants;
 import com.aibabel.locationservice.utils.ContentProviderUtil;
 import com.aibabel.locationservice.utils.FastJsonUtil;
+import com.aibabel.locationservice.utils.FlowUtil;
+import com.aibabel.locationservice.utils.SharePrefUtil;
 import com.baidu.location.BDAbstractLocationListener;
 import com.baidu.location.BDLocation;
 import com.baidu.location.LocationClient;
@@ -34,14 +40,17 @@ import com.taobao.sophix.SophixManager;
 
 import org.json.JSONObject;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import static com.lzy.okgo.utils.HttpUtils.runOnUiThread;
 
-public class LocationService extends Service implements ScreenListener {
+
+public class LocationService extends Service implements ScreenListener, CardBroadcastReceiver.Switch_Card {
     private String TAG = LocationService.class.getSimpleName().toString();
     private Handler handler_poi = new Handler();
     private Handler handler_server = new Handler();
@@ -71,6 +80,29 @@ public class LocationService extends Service implements ScreenListener {
     private int errorCode;
     private String coorType;
     private int locationWhere;
+
+    //========================流量统计=========================
+    private long now_flow;
+    private long zero_now_flow;
+    private long today_flow;
+    private long last_zero_now_flow;
+    private int TIME = 30000;
+    private long now_flow_num;
+    private long now_flow_last;
+    private String cur_card = "-1";
+    private Timer flowTimer;
+    private String str_date;
+    // 外置卡的 流量
+    public static long cardType_0 = 0;
+    // 内置卡的 流量
+    public static long cardType_1 = 0;
+    // 区间流量
+    public static long sectionFlow = 0;
+
+    public static long lastNumFlow = 0;
+    public static long sectionNumFlow = 0;
+    //====================流量统计结束===========================
+
 
     /**
      * 绑定服务时才会调用
@@ -102,6 +134,7 @@ public class LocationService extends Service implements ScreenListener {
      * @param startId
      * @return
      */
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP_MR1)
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         isFirst = true;
@@ -156,6 +189,16 @@ public class LocationService extends Service implements ScreenListener {
         };
         handler_poi.postDelayed(runnable_poi, 0);
 
+        //注册切换sim卡广播
+        CardBroadcastReceiver cardBroadcastReceiver = new CardBroadcastReceiver();
+        cardBroadcastReceiver.setSwitch_card(this);
+        FlowUtil.initMtkDoubleSim(LocationService.this);
+        if (FlowUtil.isMobileEnabled(this)) {
+            FlowUtil.getDefaultDataSubId(this);
+        }
+        //上传统计流量
+        uploadTraffic();
+        //向语音翻译发送广播
         sendTranslation();
         return super.onStartCommand(intent, flags, startId);
     }
@@ -244,8 +287,8 @@ public class LocationService extends Service implements ScreenListener {
         map.put("no", CommonUtils.getRandom() + "");
         map.put("lat", latitude + "");
         map.put("lng", longitude + "");
-        StatisticsManager.getInstance(this).sendDataAidl(ip+"/v1/ddot/JonerLogPush", map);
-        Log.e("sleep",ip);
+        StatisticsManager.getInstance(this).sendDataAidl(ip + "/v1/ddot/JonerLogPush", map);
+        Log.e("sleep", ip);
 //        isScreenOn = false;
 //        TimerTask task = new TimerTask() {
 //            @Override
@@ -410,16 +453,13 @@ public class LocationService extends Service implements ScreenListener {
         if (!CommonUtils.isAvailable(context)) {
             return;
         }
-        // TODO: 2018/12/12 测试数据
 //        latitude = 35.698432;
 //        longitude = 139.771639;
 //        latitude = 0.0;
-////        longitude = 0.0;
+//        longitude = 0.0;
         //String HOST = "http://api.joner.aibabel.cn:7001";
         String HOST = ContentProviderUtil.getHost(context);
         String url = HOST + "/v3/poi?lat=" + latitude + "&lng=" + longitude + "&r=" + Constants.RADIUS + "&sn=" + CommonUtils.getSN() + "&no=" + CommonUtils.getRandom() + "&sl=" + CommonUtils.getLocal() + "&errorCode=" + errorCode + "&sv=" + CommonUtils.getSystemFlag() + "&av=" + CommonUtils.getVerName(this);
-//        String url = "http://192.168.1.125:7001" + "/v3/poi?lat=" + latitude + "&lng=" + longitude + "&r=" + Constants.RADIUS + "&sn=" + CommonUtils.getSN() + "&no=" + CommonUtils.getRandom() + "&sl=" + CommonUtils.getLocal(context) + "&errorCode=" + errorCode + "&sv=" + CommonUtils.getSystemFlag() + "&av=" + CommonUtils.getVerName(this);
-
         Log.e(TAG, url);
         OkGo.<String>get(url)
                 .tag(this)
@@ -540,6 +580,195 @@ public class LocationService extends Service implements ScreenListener {
         }
 
     }
+//=======================================以下是获取流量方法===================================
 
+    /**
+     * 计算一段时间总流量
+     *
+     * @param context
+     * @return
+     */
+    public long get_flow_num(Context context) {
+        //获取关机前的流量
+        now_flow_last = SharePrefUtil.getLong(context, "now_flow", 0);
+        //开机到现在的流量（重启之后）
+        now_flow = flow();
+        now_flow_num = now_flow + now_flow_last;
+        return now_flow_num;
+    }
+
+    /**
+     * 获取今天使用流量
+     *
+     * @param context
+     */
+    public void get_flow(Context context) {
+        //上次的 流量(关机之前)
+        String date_old = SharePrefUtil.getString(context, "date", "");
+        SimpleDateFormat sdf_date = new SimpleDateFormat("yy-MM-dd");
+        Date date_new = new Date();
+        str_date = sdf_date.format(date_new);
+        now_flow_num = get_flow_num(context);
+//        SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss");
+//        Date data = new Date();
+//        str_time = sdf.format(data);
+
+        if (TextUtils.equals(date_old, str_date)) {
+            last_zero_now_flow = SharePrefUtil.getLong(context, "zero_now_flow", 0);
+            today_flow = now_flow_num - last_zero_now_flow;
+        } else {
+            last_zero_now_flow = SharePrefUtil.getLong(context, "now_flow", 0);
+            SharePrefUtil.saveLong(context, "zero_now_flow", last_zero_now_flow);
+            today_flow = now_flow_num - last_zero_now_flow;
+        }
+
+
+    }
+
+    /**
+     * 当前一段时间使用流量（从开机到现在）
+     *
+     * @return
+     */
+    public long flow() {
+        long mobileRxBytes = TrafficStats.getMobileRxBytes();
+        long mobileTxBytes = TrafficStats.getMobileTxBytes();
+        //开机到现在一共的流量
+        long now_flow = mobileRxBytes + mobileTxBytes;
+        return now_flow;
+    }
+
+
+    @Override
+    public void switch_Card() {
+        get_flow(LocationService.this);
+        lastNumFlow = SharePrefUtil.getLong(LocationService.this, "last_num_flow", 0);
+        sectionNumFlow = now_flow_num - lastNumFlow;
+        Log.e("sectionNumFlow", "总流量==" + now_flow_num + "===5分钟前的总流量==" + lastNumFlow + "===5分钟使用的流量==" + sectionNumFlow + "");
+        SharePrefUtil.saveLong(LocationService.this, "last_num_flow", now_flow_num);
+        if (FlowUtil.isMobileEnabled(LocationService.this)) {
+            BootBroadcastReceiver.CARD_TYPE = FlowUtil.getDefaultDataSubId(LocationService.this);
+            if (BootBroadcastReceiver.CARD_TYPE == 0) {
+                // TODO: 2019/2/25 切换card0发送流量统计到后台
+
+                send_sectionFlow(Constants.CARD_0, sectionNumFlow, BootBroadcastReceiver.CARD_TYPE);
+                Log.e("上传", "iccid ==" + Constants.CARD_0 + "====" + sectionNumFlow);
+            } else if (BootBroadcastReceiver.CARD_TYPE == 1) {
+                // TODO: 2019/2/25 切换card1发送流量统计到后台
+                send_sectionFlow(Constants.CARD_1, sectionNumFlow, BootBroadcastReceiver.CARD_TYPE);
+                Log.e("上传", "iccid ==" + Constants.CARD_1 + "====" + sectionNumFlow);
+            }
+        }
+
+
+        //区间流量
+        cardType_1 = SharePrefUtil.getLong(LocationService.this, "card1", 0);
+        cardType_0 = SharePrefUtil.getLong(LocationService.this, "card0", 0);
+        sectionFlow = today_flow - (cardType_0 + cardType_1);
+
+        if (BootBroadcastReceiver.CARD_TYPE == 0) {
+            cardType_1 = cardType_1 + sectionFlow;
+            SharePrefUtil.saveLong(LocationService.this, "card1", cardType_1);
+        } else if (BootBroadcastReceiver.CARD_TYPE == 1) {
+            cardType_0 = cardType_0 + sectionFlow;
+            SharePrefUtil.saveLong(LocationService.this, "card0", cardType_0);
+        }
+
+    }
+
+
+    /**
+     * 上传流量到服务器
+     */
+    private void uploadTraffic() {
+        Timer timer_date = new Timer();
+        TimerTask task = new TimerTask() {
+            @Override
+            public void run() {
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        get_flow(LocationService.this);
+                        if (CommonUtils.isAvailable(LocationService.this)) {
+
+                            lastNumFlow = SharePrefUtil.getLong(LocationService.this, "", 0);
+                            lastNumFlow = SharePrefUtil.getLong(LocationService.this, "last_num_flow", 0);
+                            sectionNumFlow = now_flow_num - lastNumFlow;
+                            Log.e("sectionNumFlow", "总流量：" + now_flow_num + "===5分钟前的总流量：" + lastNumFlow + "===5分钟使用的流量：" + sectionNumFlow + "");
+                            SharePrefUtil.saveLong(LocationService.this, "last_num_flow", now_flow_num);
+                            if (FlowUtil.isMobileEnabled(LocationService.this)) {
+                                BootBroadcastReceiver.CARD_TYPE = FlowUtil.getDefaultDataSubId(LocationService.this);
+                                if (BootBroadcastReceiver.CARD_TYPE == 0) {
+                                    send_sectionFlow(Constants.CARD_0, sectionNumFlow, BootBroadcastReceiver.CARD_TYPE);
+                                    cur_card = Constants.CARD_0;
+                                } else if (BootBroadcastReceiver.CARD_TYPE == 1) {
+                                    send_sectionFlow(Constants.CARD_1, sectionNumFlow, BootBroadcastReceiver.CARD_TYPE);
+                                    cur_card = Constants.CARD_1;
+                                }
+                                Log.e("上传", "iccid ==" + cur_card + "====" + sectionNumFlow);
+                            }
+                        }
+
+                    }
+                });
+
+            }
+        };
+        timer_date.schedule(task, 0, 60 * 1000 * 5);
+
+    }
+
+
+    /**
+     * 发送流量到服务器
+     *
+     * @param iccid
+     * @param sectionFlow
+     */
+    private void send_sectionFlow(String iccid, long sectionFlow, int cardType) {
+        String orderNo = "";
+
+
+
+        if (sectionFlow <= 0) {
+            Log.e(TAG, "=============当前未使用流量不上传统计处理==============");
+            return;
+        }
+
+        if (!CommonUtils.isAvailable(this)) {
+            Log.e(TAG, "=============当前网络断开了不上流量传统计数据==============");
+            return;
+        }
+
+        String url = "https://wx.aibabel.com:3002/common/api/flow/count";
+
+        Log.e(TAG, "============="+orderNo+"==============");
+        OkGo.<String>post(url)
+                .tag(this)
+                .params("orderNo", orderNo)
+                .params("sn", CommonUtils.getSN())
+                .params("iccid", iccid)
+                .params("cardType", cardType+1)
+                .params("count", sectionFlow)
+                .params("unit", "b")
+                .execute(new StringCallback() {
+                    @Override
+                    public void onSuccess(Response<String> response) {
+                        Log.e(TAG+"流量统计onSuccess：",response.body().toString());
+                    }
+
+                    @Override
+                    public void onError(Response<String> response) {
+                        Log.e(TAG+"流量统计onError：",response.body().toString());
+                    }
+
+                    @Override
+                    public void onFinish() {
+                        super.onFinish();
+                    }
+                });
+
+
+    }
 
 }

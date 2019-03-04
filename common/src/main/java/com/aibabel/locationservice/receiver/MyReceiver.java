@@ -1,19 +1,22 @@
 package com.aibabel.locationservice.receiver;
 
 
+import android.annotation.SuppressLint;
 import android.app.Notification;
 import android.content.BroadcastReceiver;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.content.pm.ResolveInfo;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
 
-import com.aibabel.locationservice.activity.DialogActivity;
 import com.aibabel.locationservice.R;
 import com.aibabel.locationservice.activity.JiGuangActivity;
 import com.aibabel.locationservice.bean.DetailBean;
+import com.aibabel.locationservice.bean.PushBean;
 import com.aibabel.locationservice.bean.PushMessageBean;
 import com.aibabel.locationservice.utils.CommonUtils;
 import com.aibabel.locationservice.utils.Constants;
@@ -56,6 +59,13 @@ public class MyReceiver extends BroadcastReceiver {
             Constants.CONTEXTS_JG = bundle.getString(JPushInterface.EXTRA_MESSAGE);
             Constants.TITLE_JG = bundle.getString(JPushInterface.EXTRA_TITLE);
             Constants.MESSAGE_JG = bundle.getString(JPushInterface.EXTRA_ALERT);
+            String id = bundle.getString(JPushInterface.EXTRA_MSG_ID);
+            PushBean push = new PushBean();
+            push.setContent(Constants.CONTEXTS_JG);
+            push.setMesId(id);
+            push.setMessage(Constants.MESSAGE_JG);
+            push.setTitle(Constants.TITLE_JG);
+            Constants.pushBeanList.add(push);
             Log.d(TAG, "[TITLE_JG]" + Constants.TITLE_JG + " /n[MESSAGE_JG]" + Constants.MESSAGE_JG);
             receivingNotification(context, bundle);
 
@@ -73,12 +83,30 @@ public class MyReceiver extends BroadcastReceiver {
 
 
         } else if (JPushInterface.ACTION_NOTIFICATION_OPENED.equals(intent.getAction())) {
-            Log.d(TAG, "[MyReceiver] 用户点击打开了通知");
+
 
 //            String jsonString = bundle.getString(JPushInterface.EXTRA_MESSAGE);
 //            String title = bundle.getString(JPushInterface.EXTRA_TITLE);
 //            String msg = bundle.getString(JPushInterface.EXTRA_ALERT);
-            openNotification(context, Constants.CONTEXTS_JG);
+
+            String msg_id = bundle.getString(JPushInterface.EXTRA_MSG_ID);
+            Log.d(TAG, "[MyReceiver] 用户点击打开了通知,id:" + msg_id);
+            for (int i = 0; i < Constants.pushBeanList.size(); i++) {
+                if (TextUtils.equals(msg_id, Constants.pushBeanList.get(i).getMesId())) {
+                    openNotification(context, Constants.pushBeanList.get(i).getContent());
+                    Constants.pushBeanList.remove(Constants.pushBeanList.get(i));
+                }
+            }
+
+
+//            for (PushBean push:Constants.pushBeanList){
+//                if(TextUtils.equals(msg_id,push.getMesId())){
+//                    openNotification(context, push.getContent());
+//                    Constants.pushBeanList.remove(push);
+//                }
+//
+//            }
+
 
             /**
              * 如果开发者在 AndroidManifest.xml 里未配置此 receiver action，那么，
@@ -145,11 +173,9 @@ public class MyReceiver extends BroadcastReceiver {
                 startDialog(context, Constants.TITLE_JG, Constants.MESSAGE_JG, bean);
 
             } else if (TextUtils.equals(bean.getType(), "2")) {
-                // TODO: 2019/1/10 弹出带确定提示框
                 startDialog(context, Constants.TITLE_JG, Constants.MESSAGE_JG, bean);
 
-            }else if (TextUtils.equals(bean.getType(), "1")) {
-                // TODO: 2019/1/10 弹出普通提示框
+            } else if (TextUtils.equals(bean.getType(), "1")) {
                 startDialog(context, Constants.TITLE_JG, Constants.MESSAGE_JG, bean);
             }
 
@@ -167,10 +193,6 @@ public class MyReceiver extends BroadcastReceiver {
      */
     private void startScenic(PushMessageBean bean, Context context) {
         try {
-            Intent mIntent = new Intent();
-            ComponentName componentName = new ComponentName("com.aibabel.travel", "com.aibabel.travel.activity.SpotDetailActivity");
-            mIntent.setComponent(componentName);
-            mIntent.putExtra("position", 0);
             List<DetailBean> list = new ArrayList<>();
             for (PushMessageBean.ResultDataBean data : bean.getResultData()) {
                 DetailBean detailBean = new DetailBean();
@@ -179,8 +201,16 @@ public class MyReceiver extends BroadcastReceiver {
                 detailBean.setName(data.getName());
                 list.add(detailBean);
             }
+
+            Intent mIntent = new Intent();
+            ComponentName componentName = new ComponentName(bean.getPackageName(), bean.getPath());
+            mIntent.setComponent(componentName);
+            mIntent.putExtra("position", 0);
             mIntent.putExtra("list", FastJsonUtil.changListToString(list));
-            mIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            mIntent.putExtra("from", "notification");
+            mIntent.putExtra("id", bean.getResultData().get(0).getIdstring());
+            mIntent.putExtra("url", bean.getResultData().get(0).getCover());
+            mIntent.putExtra("name", bean.getResultData().get(0).getName());
             context.startActivity(mIntent);
         } catch (Exception e) {
             e.printStackTrace();
@@ -190,12 +220,13 @@ public class MyReceiver extends BroadcastReceiver {
 
     /**
      * 启动一个dialog
+     *
      * @param context
      * @param title
      * @param msg
      * @param bean
      */
-    private void startDialog(Context context, String title, String msg,PushMessageBean bean) {
+    private void startDialog(Context context, String title, String msg, PushMessageBean bean) {
         try {
             Intent intent = new Intent();
             intent.setClass(context, JiGuangActivity.class);
@@ -290,4 +321,39 @@ public class MyReceiver extends BroadcastReceiver {
 //        }
 //    }
 //}
+
+
+    /**
+     * 调起应用  没有启动直接启动   启动过直接调起
+     *
+     * @param context
+     * @param packageName
+     * @return
+     */
+    public static Intent getAppOpenIntentByPackageName(Context context, String packageName) {
+        String mainAct = null;
+        PackageManager pkgMag = context.getPackageManager();
+        Intent intent = new Intent(Intent.ACTION_MAIN);
+        intent.addCategory(Intent.CATEGORY_LAUNCHER);
+        intent.setFlags(Intent.FLAG_ACTIVITY_RESET_TASK_IF_NEEDED | Intent.FLAG_ACTIVITY_NEW_TASK);
+
+        @SuppressLint("WrongConstant")
+        List<ResolveInfo> list = pkgMag.queryIntentActivities(intent, PackageManager.GET_ACTIVITIES);
+        for (int i = 0; i < list.size(); i++) {
+            ResolveInfo info = list.get(i);
+            if (info.activityInfo.packageName.equals(packageName)) {
+//                mainAct = info.activityInfo.name;
+                mainAct = "com.aibabel.travel.activity.SpotDetailActivity";
+                break;
+            }
+        }
+        if (TextUtils.isEmpty(mainAct)) {
+            return null;
+        }
+        intent.setComponent(new ComponentName(packageName, mainAct));
+        return intent;
+    }
 }
+
+
+

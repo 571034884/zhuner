@@ -10,6 +10,7 @@ public class PushBean {
     private String type;
     private String title ;
     private String mesId;
+    private String content;
 
     public PushBean() {
         super();
@@ -48,10 +49,19 @@ public class PushBean {
         this.title = title;
     }
 
-    public PushBean(String message, String type, String title, String mesId) {
+    public String getContent() {
+        return content;
+    }
+
+    public void setContent(String content) {
+        this.content = content;
+    }
+
+    public PushBean(String message, String type, String title, String mesId, String content) {
         this.message = message;
         this.type = type;
         this.title = title;
         this.mesId = mesId;
+        this.content = content;
     }
 }

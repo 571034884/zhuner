@@ -27,6 +27,8 @@ public class Constants {
     public static final String ADVISORY = "advisory";
     public static final String WEATHER = "weather";
     public static final String NOTICE = "notice";
+    public static  String CARD_1 = "";
+    public static  String CARD_0 = "";
 
     public static long LAST_TIME = 0;//上次定位时间
     public static boolean LAST_NET_CONNECT = false;

@@ -10,8 +10,8 @@ import android.net.Uri;
 import android.os.SystemClock;
 import android.support.v4.app.NotificationCompat;
 
-import com.aibabel.locationservice.activity.DialogActivity;
 import com.aibabel.locationservice.R;
+import com.aibabel.locationservice.activity.DialogActivity;
 import com.aibabel.locationservice.utils.CommonUtils;
 
 

@@ -3,22 +3,42 @@ package com.aibabel.locationservice.utils;
 import android.app.ActivityManager;
 import android.content.Context;
 import android.content.pm.ApplicationInfo;
-import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
+import android.database.Cursor;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.Build;
-import android.text.TextUtils;
 import android.util.Log;
 
 import com.aibabel.locationservice.R;
 
+import java.lang.reflect.Method;
 import java.util.List;
 import java.util.Locale;
 
 public class CommonUtils {
+    //    获取订单信息
+    private final static Uri CONTENT_URI = Uri.parse("content://com.dommy.qrcode/aibabel_information");
 
+
+    public static String getOrder(Context context) {
+        String oid = "";
+        try {
+            Cursor cursor = context.getContentResolver().query(CONTENT_URI, null, null, null, null);
+            if (cursor != null && cursor.moveToFirst()) {
+                do {
+                    oid = cursor.getString(cursor.getColumnIndex("oid"));
+                    Log.e("oid", "================" + oid + "=====================");
+
+                } while (cursor.moveToNext());
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return oid;
+
+    }
 
     /**
      * 判断某个服务是否正在运行的方法
@@ -73,18 +93,41 @@ public class CommonUtils {
     }
 
 
-    /**
-     * 获取本机SN 设备识别码
-     *
-     * @return
-     */
+//    /**
+//     * 获取本机SN 设备识别码
+//     *
+//     * @return
+//     */
+//    public static String getSN() {
+//        String serialNum = android.os.Build.SERIAL;
+//        if (TextUtils.isEmpty(serialNum)) {
+//            return "0000000000000000";
+//        }
+//        return serialNum;
+//    }
+
+
+
     public static String getSN() {
-        String serialNum = android.os.Build.SERIAL;
-        if (TextUtils.isEmpty(serialNum)) {
-            return "0000000000000000";
+        String sn="0000000000000000";
+        try {
+            Class clz = Class.forName("android.os.SystemProperties");
+            Method method = clz.getMethod("get", String.class,String.class);
+            sn = (String) method.invoke(clz,"gsm.serial", "0000000000000000");
+            sn.trim();
+            if (sn.indexOf(" ") != -1) {
+                sn = sn.substring(0, sn.indexOf(" "));
+            }
+            Log.e("CommonUtils","sn="+sn);
+        } catch (Exception e) {
+            e.printStackTrace();
+            Log.e("CommonUtils",e.getMessage());
         }
-        return serialNum;
+
+        return sn;
     }
+
+
 
     /*
      * 获取系统版本号 去除 “-” */
@@ -147,6 +190,7 @@ public class CommonUtils {
 
     /**
      * 获取系统语言
+     *
      * @return
      */
     public static String getLocal() {
@@ -191,6 +235,22 @@ public class CommonUtils {
     public static Uri getSound(Context context) {
         return Uri.parse("android.resource://" + context.getPackageName() + "/" + R.raw.sound);
 
+    }
+
+    /**
+     * @方法说明:判断是否是移动网络
+     * @方法名称:is4GNet
+     * @param context
+     * @return
+     * @返回值:boolean
+     */
+    public static boolean is4GNet(Context context) {
+        ConnectivityManager connectivityManager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetInfo = connectivityManager.getActiveNetworkInfo();
+        if (activeNetInfo != null && activeNetInfo.getType() == ConnectivityManager.TYPE_MOBILE) {
+            return true;
+        }
+        return false;
     }
 
 
