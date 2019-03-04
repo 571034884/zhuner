@@ -143,7 +143,7 @@ public class CustomWebViewActivity extends BaseActivity implements OnJSClickList
         skuid = intent.getStringExtra("SKUID");
         Map map1 = new HashMap();
         map1.put("SKUID", skuid);
-        StatisticsManager.getInstance(CustomWebViewActivity.this).addEventAidl("进入页面", map1);
+        StatisticsManager.getInstance(CustomWebViewActivity.this).addEventAidl(1720, map1);
 
         switch (payType){
             case "1":
@@ -270,7 +270,7 @@ public class CustomWebViewActivity extends BaseActivity implements OnJSClickList
 
                 Map map1 = new HashMap();
                 map1.put("SKUID", skuid);
-                StatisticsManager.getInstance(CustomWebViewActivity.this).addEventAidl("支付成功", map1);
+                StatisticsManager.getInstance(CustomWebViewActivity.this).addEventAidl(1732, map1);
 
 
 //                insertContact("softsim","00001");

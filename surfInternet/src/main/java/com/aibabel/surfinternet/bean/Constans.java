@@ -45,5 +45,6 @@ public class Constans {
     public static  String PRO_VERSION_NUMBER = "";
     // 领科卡类型
     public static  boolean Lk_CARDTYPE = false;
+//    public static  boolean Lk_CARDTYPE = true;
 
 }

@@ -210,7 +210,7 @@ public class TrandActivity extends BaseActivity implements BaseCallback {
 
                 Map map = new HashMap();
                 map.put("商品名称",name);
-                StatisticsManager.getInstance(TrandActivity.this).addEventAidl("点击商品", map);
+                StatisticsManager.getInstance(TrandActivity.this).addEventAidl(1702, map);
 
                 if (NetUtil.isNetworkAvailable(TrandActivity.this)) {
 
