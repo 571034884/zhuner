@@ -11,7 +11,9 @@ public class Constants {
     public static final long FIVE_MILLIS = 60 * 1000 * 5;//延时请求推送数据，单位毫秒
     public static final long SERVER_MILLIS = 60 * 1000 * 60;//延时请求服务器列表数据，单位毫秒
     public static final long POI_MILLIS = 60 * 1000 * 3;//延时请求服务器列表数据，单位毫秒
+    public static final long POI_MILLIS_S = 60 * 1000 * 60 * 2;//延时请求服务器列表数据，单位毫秒
     public static final int LOCATION_MILLIS = 60 * 1000 * 3;//默认请求间隔，单位毫秒
+    public static final int LOCATION_MILLIS_S = 60 * 1000 * 60 * 2;//默认请求间隔，单位毫秒
 //    public static final int LOCATION_MILLIS = 4 * 1000 ;//默认请求间隔，单位毫秒
     public static final int PERIOD = 30 * 1000 * 60;//给语音翻译发送广播时间间隔
     public static final String ACTION_ALARM = "action_alarm";//闹钟广播action

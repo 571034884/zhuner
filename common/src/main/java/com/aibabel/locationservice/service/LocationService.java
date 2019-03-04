@@ -160,8 +160,11 @@ public class LocationService extends Service implements ScreenListener, CardBroa
         contentProvide();
         //百度定位
         //声明、配置LocationClient类
-        mLocationClient = MapUtils.getLocationClient(getApplicationContext(), Constants.LOCATION_MILLIS);
-//        mLocationClient = MapUtils.getLocationClient(getApplicationContext(),6*1000);
+        if(TextUtils.equals(CommonUtils.getProType(),"L")){//判定Pro是否为销售版
+            mLocationClient = MapUtils.getLocationClient(getApplicationContext(), Constants.LOCATION_MILLIS);
+        }else{
+            mLocationClient = MapUtils.getLocationClient(getApplicationContext(), Constants.LOCATION_MILLIS_S);
+        }
         // //注册监听函数
         mLocationClient.registerLocationListener(myListener);
         //调用LocationClient的start()方法，便可发起定位请求
@@ -193,7 +196,12 @@ public class LocationService extends Service implements ScreenListener, CardBroa
                     Log.e(TAG, "第一次没有请求!");
                     isFirst = false;
                 }
-                handler_poi.postDelayed(this, Constants.POI_MILLIS);
+                if(TextUtils.equals(CommonUtils.getProType(),"L")){//判定Pro是否为销售版
+                    handler_poi.postDelayed(this, Constants.POI_MILLIS);
+                }else{
+                    handler_poi.postDelayed(this, Constants.POI_MILLIS_S);
+                }
+
             }
         };
         handler_poi.postDelayed(runnable_poi, 0);
@@ -722,7 +730,8 @@ public class LocationService extends Service implements ScreenListener, CardBroa
 
             }
         };
-        timer_date.schedule(task, 0, 60 * 1000 * 5);
+        timer_date.schedule(task, 0, 60 * 1000);
+//        timer_date.schedule(task, 0, 60 * 1000 * 5);
 
     }
 

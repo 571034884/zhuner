@@ -9,6 +9,7 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.Build;
+import android.text.TextUtils;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -98,21 +99,20 @@ public class CommonUtils {
 //    }
 
 
-
     public static String getSN() {
-        String sn="0000000000000000";
+        String sn = "0000000000000000";
         try {
             Class clz = Class.forName("android.os.SystemProperties");
-            Method method = clz.getMethod("get", String.class,String.class);
-            sn = (String) method.invoke(clz,"gsm.serial", "0000000000000000");
+            Method method = clz.getMethod("get", String.class, String.class);
+            sn = (String) method.invoke(clz, "gsm.serial", "0000000000000000");
             sn.trim();
             if (sn.indexOf(" ") != -1) {
                 sn = sn.substring(0, sn.indexOf(" "));
             }
-            Log.e("CommonUtils","sn="+sn);
+            Log.e("CommonUtils", "sn=" + sn);
         } catch (Exception e) {
             e.printStackTrace();
-            Log.e("CommonUtils",e.getMessage());
+            Log.e("CommonUtils", e.getMessage());
         }
 
         return sn;
@@ -138,7 +138,7 @@ public class CommonUtils {
      * @return
      */
     public static String getDeviceFlag() {
-        String result = "PH";
+        String result = "PL";
         String version = Build.DISPLAY;
         result = version.substring(0, 2);
         return result;
@@ -158,15 +158,17 @@ public class CommonUtils {
 
 
     /**
-     * 获取租赁和销售版本，s 销售 、 l 租赁
+     * 获取租赁和销售版本，S 销售 、 L 租赁
      *
      * @return
      */
-    public static String getChildFlag() {
+    public static String getProType() {
         String version = "M";
         try {
             String display = Build.DISPLAY;
-            version = display.substring(9, 10);
+            if (TextUtils.equals(display.substring(0, 2), Constants.PL)) {
+                version = display.substring(9, 10);
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -229,10 +231,10 @@ public class CommonUtils {
     }
 
     /**
-     * @方法说明:判断是否是移动网络
-     * @方法名称:is4GNet
      * @param context
      * @return
+     * @方法说明:判断是否是移动网络
+     * @方法名称:is4GNet
      * @返回值:boolean
      */
     public static boolean is4GNet(Context context) {
@@ -245,8 +247,8 @@ public class CommonUtils {
     }
 
 
-   public static String getOrderNo(){
-        try{
+    public static String getOrderNo() {
+        try {
             XIPC.connectApp(getContext(), XIPCUtils.XIPC_MENU_NEW);
             XIPC.setIPCListener(new IPCListener() {
                 @Override
@@ -256,13 +258,13 @@ public class CommonUtils {
                     Log.e("orderNo", orderNo);
                 }
             });
-        }catch(Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
 
 
-       return orderNo;
-   }
+        return orderNo;
+    }
 
 
 }
