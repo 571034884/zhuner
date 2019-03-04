@@ -171,7 +171,7 @@ public class DetailsActivity extends BaseActivity implements BaseCallback, View.
             public void onClick(View v) {
                 Map map1 = new HashMap();
                 map1.put("商品名称", name);
-                StatisticsManager.getInstance(DetailsActivity.this).addEventAidl("购买", map1);
+                StatisticsManager.getInstance(DetailsActivity.this).addEventAidl(1712, map1);
                 popup();
             }
         });
@@ -250,7 +250,7 @@ public class DetailsActivity extends BaseActivity implements BaseCallback, View.
 
         Map map1 = new HashMap();
         map1.put("SKUID", skuid);
-        StatisticsManager.getInstance(DetailsActivity.this).addEventAidl("进入页面", map1);
+        StatisticsManager.getInstance(DetailsActivity.this).addEventAidl(1720, map1);
 
         btnCancel.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -343,7 +343,7 @@ public class DetailsActivity extends BaseActivity implements BaseCallback, View.
     private void initPayment(String payType) {
         Map map1 = new HashMap();
         map1.put("SKUID", skuid);
-        StatisticsManager.getInstance(DetailsActivity.this).addEventAidl("填写信息", map1);
+        StatisticsManager.getInstance(DetailsActivity.this).addEventAidl(1722, map1);
 
 
         Map<String, String> map = new HashMap<>();
@@ -354,8 +354,8 @@ public class DetailsActivity extends BaseActivity implements BaseCallback, View.
         String s1 = tvPriceNum3.getText().toString();
         String s = bigDecimalDo(s1, 100);
         String s2 = s.substring(0, s.length() - 3);
-        map.put("spend", s2);
-//        map.put("spend", "1");
+//        map.put("spend", s2);
+        map.put("spend", "1");
         map.put("skuName", operator);
         map.put("days", days);
         map.put("payType", payType);
@@ -524,14 +524,14 @@ public class DetailsActivity extends BaseActivity implements BaseCallback, View.
                         map1.put("支付方式", "微信");
                     }
 
-                    StatisticsManager.getInstance(DetailsActivity.this).addEventAidl("支付", map1);
+                    StatisticsManager.getInstance(DetailsActivity.this).addEventAidl(1723, map1);
                     intent = new Intent(DetailsActivity.this, CustomWebViewActivity.class);
                 } else {
                     Map map1 = new HashMap();
                     map1.put("SKUID", skuid);
                     map1.put("填写是否通过", "true");
                     map1.put("支付方式", "paypal");
-                    StatisticsManager.getInstance(DetailsActivity.this).addEventAidl("支付", map1);
+                    StatisticsManager.getInstance(DetailsActivity.this).addEventAidl(1723, map1);
 
                     intent = new Intent(DetailsActivity.this, PayPalActivity.class);
                 }

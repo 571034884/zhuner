@@ -116,10 +116,7 @@
         </receiver>
 
         <service
-            android:name=".service.LocationService"
-            android:enabled="true"
-            android:exported="true"
-            android:process=":location" />
+            android:name=".service.LocationService" />
 
         <receiver
             android:name=".broadcastreceiver.NoticeBroadcastReceiver"

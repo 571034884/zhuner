@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.util.Log;
 
 import com.aibabel.aidlaar.StatisticsManager;
+import com.aibabel.baselibrary.http.OkGoUtil;
 import com.aibabel.surfinternet.utils.CommonUtils;
 import com.aibabel.surfinternet.utils.CrashHandler;
 import com.aibabel.surfinternet.utils.DensityHelper;
@@ -22,7 +23,7 @@ import okhttp3.OkHttpClient;
 /**
  * Created by Wuqinghua on 2018/6/28 0028.
  */
-public class BaseApplication  extends Application{
+public class BaseApplication  extends com.aibabel.baselibrary.base.BaseApplication{
     /**
      * 存储程序中所创建的activity
      */
@@ -56,6 +57,28 @@ public class BaseApplication  extends Application{
         StatisticsManager.getInstance(this).setConfig(getPackageName(), BuildConfig.VERSION_NAME);
 
     }
+
+    @Override
+    public String getAppVersionName() {
+        return null;
+    }
+
+    @Override
+    public String getAppPackageName() {
+        return null;
+    }
+
+    @Override
+    public void setServerUrlAndInterfaceGroup() {
+
+    }
+
+    @Override
+    public String setUmengKey() {
+        return null;
+    }
+
+
     /**
      * 初始化布局适配  布局中使用pt做位单位
      */

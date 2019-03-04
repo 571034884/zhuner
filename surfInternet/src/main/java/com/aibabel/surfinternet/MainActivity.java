@@ -23,9 +23,12 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.aibabel.aidlaar.StatisticsManager;
+import com.aibabel.baselibrary.impl.IDataManager;
 import com.aibabel.baselibrary.utils.ToastUtil;
+import com.aibabel.baselibrary.utils.XIPCUtils;
 import com.aibabel.surfinternet.activity.BaseActivity;
 import com.aibabel.surfinternet.activity.OrderActivity;
 import com.aibabel.surfinternet.activity.TrandActivity;
@@ -43,6 +46,9 @@ import com.lzy.okgo.callback.StringCallback;
 import com.lzy.okgo.model.Response;
 import com.taobao.sophix.SophixManager;
 import com.umeng.analytics.MobclickAgent;
+import com.xuexiang.xipc.XIPC;
+import com.xuexiang.xipc.core.channel.IPCListener;
+import com.xuexiang.xipc.core.channel.IPCService;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -55,6 +61,8 @@ import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+
+import static com.xuexiang.xipc.XIPC.getContext;
 
 public class MainActivity extends BaseActivity implements BaseCallback {
 
@@ -115,7 +123,7 @@ public class MainActivity extends BaseActivity implements BaseCallback {
                 Log.e("HOST_XW", Constans.HOST_XW + "---");
                 JSONArray jsonArray_xs = new JSONArray(jsonObject.getString(key_xs));
                 Constans.HOST_XS = jsonArray_xs.getJSONObject(0).get("domain").toString();
-//                Constans.HOST_XS = "http://api.web.aibabel.cn:7000";
+//                Constans.HOST_XS = "https://wx.aibabel.com:3002";
                 Log.e("HOST_XS", Constans.HOST_XS + "---");
             }
         } catch (Exception e) {
@@ -126,6 +134,18 @@ public class MainActivity extends BaseActivity implements BaseCallback {
         initCountryLanguage();
 //        init_imei();
         getVersion();
+
+        XIPC.connectApp(getContext(), XIPCUtils.XIPC_MENU);
+        XIPC.setIPCListener(new IPCListener() {
+            @Override
+            public void onIPCConnected(Class<? extends IPCService> service) {
+                Toast.makeText(MainActivity.this,"绑定成功",Toast.LENGTH_SHORT).show();
+                IDataManager dm = XIPC.getInstance(IDataManager.class);
+                 Constans.Lk_CARDTYPE= dm.getBoolean("softSim");
+                 Log.e("lingke",Constans.Lk_CARDTYPE+"");
+                 ToastUtil.showLong(MainActivity.this,Constans.Lk_CARDTYPE+"");
+            }
+        });
         if (NetUtil.isNetworkAvailable(MainActivity.this)) {
             initData();
         } else {
@@ -152,9 +172,8 @@ public class MainActivity extends BaseActivity implements BaseCallback {
             }
         });
         //获取是领科的软卡还是硬卡
-        Constans.Lk_CARDTYPE = StatisticsManager.getInstance(MainActivity.this).getBooleanSP("softSim", false);
+//        Constans.Lk_CARDTYPE = StatisticsManager.getInstance(MainActivity.this).getBooleanSP("softSim", false);
         Log.e("LkcardType", Constans.Lk_CARDTYPE + "==");
-        ToastUtil.showLong(MainActivity.this,"领科==="+Constans.Lk_CARDTYPE);
     }
 
     private void initView() {
