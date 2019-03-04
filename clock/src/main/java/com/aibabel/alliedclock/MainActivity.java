@@ -183,8 +183,8 @@ public class MainActivity extends BaseActivity {
             @Override
             public void onDeleteClick(int position) {
                 Map<String, String> map = new HashMap<>();
-                map.put("城市名称", adapter.getmList().get(position).getCityCN());
-                StatisticsManager.getInstance(MainActivity.this).addEventAidl("删除城市", map);
+                map.put("p1", adapter.getmList().get(position).getCityCN());
+                StatisticsManager.getInstance(MainActivity.this).addEventAidl(2410, map);
                 adapter.removeItem(position);
                 String json = FastJsonUtil.changListToString(clockBeanList);
                 SharePrefUtil.saveString(MainActivity.this, "clockBeanList", json);

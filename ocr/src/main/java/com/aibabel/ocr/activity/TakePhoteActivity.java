@@ -382,9 +382,6 @@ public class TakePhoteActivity extends BaseActivity implements CameraPreview.OnC
                 isDaubed++;
                 dialog.show();
                 startOcr();
-                Map<String, String> map = new HashMap<>();
-                map.put("选择语言", "左");
-                StatisticsManager.getInstance(TakePhoteActivity.this).addEventAidl("涂抹翻译", map);
             }
         });
     }
@@ -561,7 +558,7 @@ public class TakePhoteActivity extends BaseActivity implements CameraPreview.OnC
                 iv_camera.setClickable(false);
                 takePhoto();
                 Map<String, String> map = new HashMap<>();
-                StatisticsManager.getInstance(TakePhoteActivity.this).addEventAidl("拍照", map);
+                StatisticsManager.getInstance(TakePhoteActivity.this).addEventAidl(1405, map);
                 break;
             case R.id.rb_object:
                 selectArticleOrMeau(2);
@@ -640,15 +637,13 @@ public class TakePhoteActivity extends BaseActivity implements CameraPreview.OnC
             intent.putExtra("type", type);
             startActivity(intent);
             Map<String, String> map = new HashMap<>();
-            map.put("选择语言", "左");
-            StatisticsManager.getInstance(this).addEventAidl("点击事件", map);
+            StatisticsManager.getInstance(this).addEventAidl(1400, map);
         } else {
             Intent intent = new Intent(this, SelectRightLanguageActivity.class);
             intent.putExtra("type", type);
             startActivity(intent);
             Map<String, String> map = new HashMap<>();
-            map.put("选择语言", "右");
-            StatisticsManager.getInstance(this).addEventAidl("点击事件", map);
+            StatisticsManager.getInstance(this).addEventAidl(1401, map);
         }
     }
 
@@ -737,12 +732,12 @@ public class TakePhoteActivity extends BaseActivity implements CameraPreview.OnC
                             toObject(response.body(), downX, downY);
                         }
                         Map<String, String> map = new HashMap<>();
-                        map.put("翻译结果", "成功");
-                        map.put("翻译时长", (System.currentTimeMillis() - beginTime) + "");
-                        map.put("源语言", Constant.LAN_OR);
-                        map.put("目标语言", Constant.LAN_TR);
-                        map.put("翻译模式", rg_tag + "");
-                        StatisticsManager.getInstance(TakePhoteActivity.this).addEventAidl(isFull ? "全屏识别" : "涂抹识别", map);
+                        map.put("p1", "成功");
+                        map.put("p2", (System.currentTimeMillis() - beginTime) + "");
+                        map.put("p3", Constant.LAN_OR);
+                        map.put("p4", Constant.LAN_TR);
+                        map.put("p5", rg_tag + "");
+                        StatisticsManager.getInstance(TakePhoteActivity.this).addEventAidl(isFull ? 1403 : 1402, map);
                     }
 
                     @Override
@@ -756,12 +751,12 @@ public class TakePhoteActivity extends BaseActivity implements CameraPreview.OnC
                     public void onError(Response<String> response) {
 //                        reset();
                         Map<String, String> map = new HashMap<>();
-                        map.put("翻译结果", "失败");
-                        map.put("翻译时长", (System.currentTimeMillis() - beginTime) + "");
-                        map.put("源语言", Constant.LAN_OR);
-                        map.put("目标语言", Constant.LAN_TR);
-                        map.put("翻译模式", rg_tag + "");
-                        StatisticsManager.getInstance(TakePhoteActivity.this).addEventAidl(isFull ? "全屏识别" : "涂抹识别", map);
+                        map.put("p1", "失败");
+                        map.put("p2", (System.currentTimeMillis() - beginTime) + "");
+                        map.put("p3", Constant.LAN_OR);
+                        map.put("p4", Constant.LAN_TR);
+                        map.put("p5", rg_tag + "");
+                        StatisticsManager.getInstance(TakePhoteActivity.this).addEventAidl(isFull ? 1403 : 1402, map);
                         if (rg_tag != 2) showGuaguaka();
                         Toast.makeText(TakePhoteActivity.this, R.string.error_msg, Toast.LENGTH_SHORT).show();
                     }

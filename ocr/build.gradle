@@ -7,8 +7,8 @@ android {
         applicationId "com.aibabel.ocr"
         minSdkVersion 21
         targetSdkVersion 28
-        versionCode 6
-        versionName "1.1.4"
+        versionCode 7
+        versionName "1.1.5"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
@@ -58,7 +58,8 @@ dependencies {
     //    implementation files('libs/httpclient-4.5.5.jar')
     //    implementation files('libs/httpcore-4.4.9.jar')
     implementation files('libs/jpeglibrary.jar')
-    implementation "com.aibabel:aidlaar:1.0.14"
+//    implementation "com.aibabel:aidlaar:1.0.14"
+    api project(path: ':aidlaar')
 }
 repositories {
     maven {

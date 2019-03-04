@@ -66,12 +66,15 @@ public class SelectRightLanguageActivity extends BaseActivity implements Adapter
 
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-        Map<String, String> map = new HashMap<>();
-        map.put("目标语言", Constant.LAN_TR);
-        StatisticsManager.getInstance(SelectRightLanguageActivity.this).addEventAidl( "选择语言", map);
         LanBean bean = list.get(position);
         String name = bean.getName();
         String name_code = bean.getLang_code();
+        Map<String, String> map = new HashMap<>();
+
+        map.put("p1",Constant.LAN_OR);
+        map.put("p2", bean.getName());
+        StatisticsManager.getInstance(SelectRightLanguageActivity.this).addEventAidl( 1411, map);
+
         saveLan(name, name_code);
     }
 

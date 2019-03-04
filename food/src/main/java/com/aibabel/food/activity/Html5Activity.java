@@ -88,9 +88,9 @@ public class Html5Activity extends BaseActivity implements BaseCallback<Html5Url
         getIntentDate();
         initErrorPage();
         if (where.equals("filter") || where.equals("search"))
-            setPathParams("商家id" + shopId);//加载url
+            setPathParams("p1" + shopId);//加载url
         else
-            setPathParams("软文名称=" + bannerName);//加载url
+            setPathParams("p1" + bannerName);//加载url
 
         webView.addJavascriptInterface(this, "android");//添加js监听 这样html就能调用客户端
         webView.setWebChromeClient(webChromeClient);
@@ -238,8 +238,8 @@ public class Html5Activity extends BaseActivity implements BaseCallback<Html5Url
     @JavascriptInterface //仍然必不可少
     public void statisticsOpenCount(String foodName) {
         Map<String, String> map = new HashMap<>();
-        map.put("美食名称", foodName);
-        StatisticsManager.getInstance(this).addEventAidl("美食详情展开", map);
+        map.put("p1", foodName);
+        StatisticsManager.getInstance(this).addEventAidl(1015, map);
     }
 
     @Override
@@ -279,21 +279,21 @@ public class Html5Activity extends BaseActivity implements BaseCallback<Html5Url
     public void onViewClicked(View view) {
         Intent intent = null;
         Map<String, String> map = new HashMap<>();
-        map.put("店铺名称", shopName);
+        map.put("p1", shopId);
         switch (view.getId()) {
             case R.id.tvTurnTranslate:
-                StatisticsManager.getInstance(this).addEventAidl("跳转语音翻译", map);
+                StatisticsManager.getInstance(this).addEventAidl(1011, map);
                 intent = getAppOpenIntentByPackageName(mContext, "com.aibabel.translate");
                 intent.setClassName("com.aibabel.translate", "com.aibabel.translate.MainActivity");
 //                intent.setAction(Intent.ACTION_VIEW);
                 break;
             case R.id.tvTurnCamera:
-                StatisticsManager.getInstance(this).addEventAidl("跳转拍照翻译", map);
+                StatisticsManager.getInstance(this).addEventAidl(1012, map);
                 intent = getAppOpenIntentByPackageName(mContext, "com.aibabel.ocr");
                 intent.setClassName("com.aibabel.ocr", "com.aibabel.ocr.activity.LauncherActivity");
                 break;
             case R.id.tvTurnHuilv:
-                StatisticsManager.getInstance(this).addEventAidl("跳转汇率换算", map);
+                StatisticsManager.getInstance(this).addEventAidl(1013, map);
                 intent = getAppOpenIntentByPackageName(mContext, "com.aibabel.currencyconversion");
                 intent.setClassName("com.aibabel.currencyconversion", "com.aibabel" +
                         ".currencyconversion.MainActivity");

@@ -43,7 +43,7 @@ dependencies {
             repository(url: "http://101.200.231.195:8081/nexus/content/repositories/thirdparty") {
                 authentication(userName: "admin", password: "aibabel123")
             }
-            pom.version = "1.0.16"
+            pom.version = "1.0.17"
             pom.artifactId = "aidlaar"
             pom.groupId = "com.aibabel"
             pom.name = "aidlaar"

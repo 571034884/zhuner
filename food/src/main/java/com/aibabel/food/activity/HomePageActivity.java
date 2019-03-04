@@ -88,8 +88,8 @@ public class HomePageActivity extends BaseActivity implements  BaseCallback<Home
                         .putExtra("bannerName", ((HomePageAllBean.DataBean.BannerJsonBean) model).getNameCn())
                         .putExtra("where", "banner"));
                 Map<String, String> map = new HashMap<>();
-                map.put("banner名字", ((HomePageAllBean.DataBean.BannerJsonBean) model).getNameCn());
-                StatisticsManager.getInstance(mContext).addEventAidl("banner跳转", map);
+                map.put("p1", ((HomePageAllBean.DataBean.BannerJsonBean) model).getNameCn());
+                StatisticsManager.getInstance(mContext).addEventAidl(1002, map);
             }
         });
 
@@ -138,7 +138,7 @@ public class HomePageActivity extends BaseActivity implements  BaseCallback<Home
                 break;
             case R.id.dctvSearchOpen:
                 startActivity(SearchActivity.class);
-                StatisticsManager.getInstance(this).addEventAidl("搜索跳转", map);
+                StatisticsManager.getInstance(this).addEventAidl(1001, map);
                 break;
         }
     }
@@ -149,8 +149,8 @@ public class HomePageActivity extends BaseActivity implements  BaseCallback<Home
         if (resultCode == Constant.RESULT_CODE_AREA_SELECT) {
             dctvCityOpen.setText(data.getExtras().getString("cityName"));
             Map<String, String> map = new HashMap<>();
-            map.put("目的地名称", data.getExtras().getString("cityName"));
-            StatisticsManager.getInstance(this).addEventAidl( "切换城市", map);
+            map.put("p1", data.getExtras().getString("cityName"));
+            StatisticsManager.getInstance(this).addEventAidl( 1000, map);
             initDate();
         }
     }

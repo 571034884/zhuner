@@ -54,7 +54,7 @@ public class HomepageAdapter extends BaseRecyclercAdapter<HomePageAllBean.DataBe
                 public void onClick(View v) {
                     turnToAll(AllOffThingsActivity.class, AllOffThingsActivity.TAG_AREA);
                     Map<String, String> map = new HashMap<>();
-                    StatisticsManager.getInstance(mContext).addEventAidl("全部区域", map);
+                    StatisticsManager.getInstance(mContext).addEventAidl(1003, map);
                 }
             });
             adapter.setOnItemClickListener(new OnItemClickListener() {
@@ -63,8 +63,8 @@ public class HomepageAdapter extends BaseRecyclercAdapter<HomePageAllBean.DataBe
                     turnToList(FilterActivity.FILTER_TAG1, ((HomePageAllBean.DataBean
                             .BegionShoptypeJsonBean.ListBean) item).getName());
                     Map<String, String> map = new HashMap<>();
-                    map.put("区域名称", ((HomePageAllBean.DataBean.BegionShoptypeJsonBean.ListBean) item).getName());
-                    StatisticsManager.getInstance(mContext).addEventAidl("人气区域", map);
+                    map.put("p1", ((HomePageAllBean.DataBean.BegionShoptypeJsonBean.ListBean) item).getName());
+                    StatisticsManager.getInstance(mContext).addEventAidl(1004, map);
                 }
             });
         } else if (position == 1) {
@@ -79,7 +79,7 @@ public class HomepageAdapter extends BaseRecyclercAdapter<HomePageAllBean.DataBe
                 public void onClick(View v) {
                     turnToAll(AllOffThingsActivity.class, AllOffThingsActivity.TAG_KIND);
                     Map<String, String> map = new HashMap<>();
-                    StatisticsManager.getInstance(mContext).addEventAidl("全部分类", map);
+                    StatisticsManager.getInstance(mContext).addEventAidl(1005, map);
                 }
             });
             adapter.setOnItemClickListener(new OnItemClickListener() {
@@ -87,8 +87,8 @@ public class HomepageAdapter extends BaseRecyclercAdapter<HomePageAllBean.DataBe
                 public void onItemClick(View view, Object item, int position) {
                     turnToList(FilterActivity.FILTER_TAG2, ((HomePageAllBean.DataBean.BegionShoptypeJsonBean.ListBean) item).getName());
                     Map<String, String> map = new HashMap<>();
-                    map.put("分类名称", ((HomePageAllBean.DataBean.BegionShoptypeJsonBean.ListBean) item).getName());
-                    StatisticsManager.getInstance(mContext).addEventAidl("美食分类", map);
+                    map.put("p1", ((HomePageAllBean.DataBean.BegionShoptypeJsonBean.ListBean) item).getName());
+                    StatisticsManager.getInstance(mContext).addEventAidl(1006, map);
                 }
             });
         } else if (position == 2) {
