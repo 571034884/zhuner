@@ -10,35 +10,26 @@ import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.Build;
 import android.util.Log;
+import android.widget.Toast;
 
+import com.aibabel.baselibrary.impl.IDataManager;
+import com.aibabel.baselibrary.utils.XIPCUtils;
 import com.aibabel.locationservice.R;
+import com.aibabel.locationservice.service.LocationService;
+import com.xuexiang.xipc.XIPC;
+import com.xuexiang.xipc.core.channel.IPCListener;
+import com.xuexiang.xipc.core.channel.IPCService;
 
 import java.lang.reflect.Method;
 import java.util.List;
 import java.util.Locale;
 
+import static com.xuexiang.xipc.XIPC.getContext;
+
 public class CommonUtils {
     //    获取订单信息
-    private final static Uri CONTENT_URI = Uri.parse("content://com.dommy.qrcode/aibabel_information");
+    private static String orderNo = "";
 
-
-    public static String getOrder(Context context) {
-        String oid = "";
-        try {
-            Cursor cursor = context.getContentResolver().query(CONTENT_URI, null, null, null, null);
-            if (cursor != null && cursor.moveToFirst()) {
-                do {
-                    oid = cursor.getString(cursor.getColumnIndex("oid"));
-                    Log.e("oid", "================" + oid + "=====================");
-
-                } while (cursor.moveToNext());
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return oid;
-
-    }
 
     /**
      * 判断某个服务是否正在运行的方法
@@ -252,6 +243,26 @@ public class CommonUtils {
         }
         return false;
     }
+
+
+   public static String getOrderNo(){
+        try{
+            XIPC.connectApp(getContext(), XIPCUtils.XIPC_MENU_NEW);
+            XIPC.setIPCListener(new IPCListener() {
+                @Override
+                public void onIPCConnected(Class<? extends IPCService> service) {
+                    IDataManager dm = XIPC.getInstance(IDataManager.class);
+                    orderNo = dm.getString("order_oid");
+                    Log.e("orderNo", orderNo);
+                }
+            });
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+
+
+       return orderNo;
+   }
 
 
 }

@@ -6,5 +6,6 @@ package com.aibabel.baselibrary.utils;
 
 public class XIPCUtils {
     public static final String XIPC_MENU = "com.example.root.testhuaping";
+    public static final String XIPC_MENU_NEW  = "com.aibabel.menu";
 
 }

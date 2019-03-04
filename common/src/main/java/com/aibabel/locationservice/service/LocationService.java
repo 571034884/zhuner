@@ -13,8 +13,13 @@ import android.os.IBinder;
 import android.support.annotation.RequiresApi;
 import android.text.TextUtils;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.aibabel.aidlaar.StatisticsManager;
+import com.aibabel.baselibrary.impl.IDataManager;
+import com.aibabel.baselibrary.utils.ToastUtil;
+import com.aibabel.baselibrary.utils.XIPCUtils;
+import com.aibabel.locationservice.MainActivity;
 import com.aibabel.locationservice.alarm.ScreenListener;
 import com.aibabel.locationservice.bean.LocationBean;
 import com.aibabel.locationservice.bean.ResultBean;
@@ -37,6 +42,9 @@ import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.StringCallback;
 import com.lzy.okgo.model.Response;
 import com.taobao.sophix.SophixManager;
+import com.xuexiang.xipc.XIPC;
+import com.xuexiang.xipc.core.channel.IPCListener;
+import com.xuexiang.xipc.core.channel.IPCService;
 
 import org.json.JSONObject;
 
@@ -48,6 +56,7 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 import static com.lzy.okgo.utils.HttpUtils.runOnUiThread;
+import static com.xuexiang.xipc.XIPC.getContext;
 
 
 public class LocationService extends Service implements ScreenListener, CardBroadcastReceiver.Switch_Card {
@@ -726,7 +735,6 @@ public class LocationService extends Service implements ScreenListener, CardBroa
      * @param sectionFlow
      */
     private void send_sectionFlow(String iccid, long sectionFlow, int cardType) {
-        String orderNo = "";
 
 
 
@@ -742,6 +750,7 @@ public class LocationService extends Service implements ScreenListener, CardBroa
 
         String url = "https://wx.aibabel.com:3002/common/api/flow/count";
 
+        String orderNo = CommonUtils.getOrderNo();
         Log.e(TAG, "============="+orderNo+"==============");
         OkGo.<String>post(url)
                 .tag(this)
