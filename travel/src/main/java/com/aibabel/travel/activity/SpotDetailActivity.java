@@ -45,6 +45,7 @@ import com.aibabel.travel.utils.MyDialog;
 import com.aibabel.travel.utils.NetworkUtils;
 import com.aibabel.travel.utils.StringUtil;
 import com.aibabel.travel.utils.ThreadPoolManager;
+import com.alibaba.fastjson.JSONObject;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.bumptech.glide.request.target.SimpleTarget;
@@ -230,10 +231,10 @@ public class SpotDetailActivity extends BaseActivity implements View.OnClickList
 
                 Map map3 = new HashMap();
 
-                map3.put("内容名称", children.get(lastOnclick).getName());
-                map3.put("新内容名称", children.get(postion).getName());
+                map3.put("p1", children.get(lastOnclick).getName());
+                map3.put("p2", children.get(postion).getName());
 
-                StatisticsManager.getInstance(SpotDetailActivity.this).addEventAidl("切换内容", map3);
+                StatisticsManager.getInstance(SpotDetailActivity.this).addEventAidl(1655, map3);
 
 
                 if (postion != lastOnclick) {
@@ -373,8 +374,8 @@ public class SpotDetailActivity extends BaseActivity implements View.OnClickList
         position = getIntent().getIntExtra("position", -1);
         String str = getIntent().getStringExtra("list");
         Map map1 = new HashMap();
-        map1.put("内容名称", str);
-        StatisticsManager.getInstance(SpotDetailActivity.this).addEventAidl("进入页面", map1);
+        map1.put("p1", str);
+        setPathParams(JSONObject.toJSON(map1).toString());
         children = FastJsonUtil.changeJsonToList(str, DetailBean.class);
         initGallery(children);
         for (int i = 0; i < children.size(); i++) {
@@ -499,12 +500,12 @@ public class SpotDetailActivity extends BaseActivity implements View.OnClickList
 
                 Map map1 = new HashMap();
                 try {
-                    map1.put("上一条", children.get(musicPlayer.getCurIndex()).getName());
+                    map1.put("p1", children.get(musicPlayer.getCurIndex()).getName());
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
 
-                StatisticsManager.getInstance(SpotDetailActivity.this).addEventAidl("播放", map1);
+                StatisticsManager.getInstance(SpotDetailActivity.this).addEventAidl(1653, map1);
 
 
                 musicPlayer.playPre();
@@ -534,24 +535,24 @@ public class SpotDetailActivity extends BaseActivity implements View.OnClickList
 
                     Map map2 = new HashMap();
                     try {
-                        map2.put("暂停", children.get(musicPlayer.getCurIndex()).getName());
+                        map2.put("p1", children.get(musicPlayer.getCurIndex()).getName());
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
 
-                    StatisticsManager.getInstance(SpotDetailActivity.this).addEventAidl("暂停", map2);
+                    StatisticsManager.getInstance(SpotDetailActivity.this).addEventAidl(1652, map2);
 
                 } else if (musicPlayer.getPlayState() == MusicPlayState.S_PAUSE) {
                     musicPlayer.play();
 
                     Map map3 = new HashMap();
                     try {
-                        map3.put("播放", children.get(musicPlayer.getCurIndex()).getName());
+                        map3.put("p1", children.get(musicPlayer.getCurIndex()).getName());
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
 
-                    StatisticsManager.getInstance(SpotDetailActivity.this).addEventAidl("播放", map3);
+                    StatisticsManager.getInstance(SpotDetailActivity.this).addEventAidl(1651, map3);
 
                 }
 
@@ -559,11 +560,11 @@ public class SpotDetailActivity extends BaseActivity implements View.OnClickList
             case R.id.iv_next_one:
                 Map map4 = new HashMap();
                 try {
-                    map4.put("下一条", children.get(musicPlayer.getCurIndex()).getName());
+                    map4.put("p1", children.get(musicPlayer.getCurIndex()).getName());
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
-                StatisticsManager.getInstance(SpotDetailActivity.this).addEventAidl("播放", map4);
+                StatisticsManager.getInstance(SpotDetailActivity.this).addEventAidl(1654, map4);
 
 
                 musicPlayer.playNext();

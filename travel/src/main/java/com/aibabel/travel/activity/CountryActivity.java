@@ -30,6 +30,7 @@ import com.aibabel.travel.utils.StringUtil;
 import com.aibabel.travel.widgets.GridSpacingItemDecoration;
 import com.aibabel.travel.widgets.MyGridLayoutManager;
 import com.aibabel.travel.widgets.MyRecyclerView;
+import com.alibaba.fastjson.JSONObject;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.Priority;
 import com.bumptech.glide.load.DataSource;
@@ -166,9 +167,8 @@ public class CountryActivity extends BaseActivity implements ResponseCallback {
         offline = getIntent().getBooleanExtra("offline", false);
 
         Map map1 = new HashMap();
-        map1.put("国家名称",name);
-        StatisticsManager.getInstance(CountryActivity.this).addEventAidl("进入页面", map1);
-
+        map1.put("p1",name);
+        setPathParams(JSONObject.toJSON(map1).toString());
 
         if (first == 1) {
             ivLeft.setVisibility(View.GONE);
@@ -272,8 +272,8 @@ public class CountryActivity extends BaseActivity implements ResponseCallback {
     private void toSpots(String id, String url, String name) {
 
         Map map = new HashMap();
-        map.put("城市名称",name);
-        StatisticsManager.getInstance(CountryActivity.this).addEventAidl("点击城市", map);
+        map.put("p1",name);
+        StatisticsManager.getInstance(CountryActivity.this).addEventAidl(1613, map);
 
         Intent intent = new Intent(CountryActivity.this, CityActivity.class);
         intent.putExtra("id", id);
@@ -285,8 +285,8 @@ public class CountryActivity extends BaseActivity implements ResponseCallback {
 
     private void toWorld() {
         Map map = new HashMap();
-        map.put("国家名称",name);
-        StatisticsManager.getInstance(CountryActivity.this).addEventAidl( "点击世界页", map);
+        map.put("p1",name);
+        StatisticsManager.getInstance(CountryActivity.this).addEventAidl( 1611, map);
         Intent intent = new Intent(CountryActivity.this, WorldActivity.class);
         startActivity(intent);
     }
@@ -294,8 +294,8 @@ public class CountryActivity extends BaseActivity implements ResponseCallback {
 
     private void toSearch() {
         Map map = new HashMap();
-        map.put("国家名称",name);
-        StatisticsManager.getInstance(CountryActivity.this).addEventAidl( "搜索", map);
+        map.put("p1",name);
+        StatisticsManager.getInstance(CountryActivity.this).addEventAidl( 1612, map);
         Intent intent = new Intent(CountryActivity.this, SearchPageActivity.class);
         startActivity(intent);
     }

@@ -209,7 +209,7 @@ public class TrandActivity extends BaseActivity implements BaseCallback {
                 intent.putExtra("days", days);
 
                 Map map = new HashMap();
-                map.put("商品名称",name);
+                map.put("p1",name);
                 StatisticsManager.getInstance(TrandActivity.this).addEventAidl(1702, map);
 
                 if (NetUtil.isNetworkAvailable(TrandActivity.this)) {

@@ -188,8 +188,8 @@ public class DestinationFragment extends BaseFragment implements BaseCallback<Ba
             @Override
             public void onItemClick(CommonRecyclerViewHolder holder, int postion) {
                 Map map = new HashMap();
-                map.put("国家名称",countryBeanData.get(postion).getCountryname());
-                StatisticsManager.getInstance(mContext).addEventAidl( "点击国家", map);
+                map.put("p1",countryBeanData.get(postion).getCountryname());
+                StatisticsManager.getInstance(mContext).addEventAidl( 2600, map);
 
 
                 String country_name = countryBeanData.get(postion).getCountryname();

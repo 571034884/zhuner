@@ -347,8 +347,8 @@ public class AddCityActivity extends BaseActivity implements BaseCallback {
             public void onItemClick(AdapterView<?> parent, View view,
                                     int position, long id) {
                 Map<String, String> map = new HashMap<>();
-                map.put("城市名称", adapter.getData().get(position).getCityCn());
-                StatisticsManager.getInstance(AddCityActivity.this).addEventAidl( "添加城市", map);
+                map.put("p1", adapter.getData().get(position).getCityCn());
+                StatisticsManager.getInstance(AddCityActivity.this).addEventAidl( 2400, map);
                 Intent intent = new Intent();
                 intent.putExtra("cityCn", adapter.getData().get(position).getCityCn());
                 intent.putExtra("cityEn", adapter.getData().get(position).getCityEn());

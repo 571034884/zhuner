@@ -9,9 +9,11 @@ import android.os.Build;
 import android.os.PowerManager;
 import android.telephony.TelephonyManager;
 import android.text.TextUtils;
+import android.util.Log;
 
 import com.aibabel.baselibrary.base.BaseApplication;
 
+import java.lang.reflect.Method;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
@@ -66,12 +68,22 @@ public class CommonUtils {
      * @return
      */
     public static String getSN() {
-        String serialNum = Build.SERIAL;
-
-        if (TextUtils.isEmpty(serialNum)) {
-            return "0000000000000000";
+        String sn="0000000000000000";
+        try {
+            Class clz = Class.forName("android.os.SystemProperties");
+            Method method = clz.getMethod("get", String.class,String.class);
+            sn = (String) method.invoke(clz,"gsm.serial", "0000000000000000");
+            sn.trim();
+            if (sn.indexOf(" ") != -1) {
+                sn = sn.substring(0, sn.indexOf(" "));
+            }
+            Log.e("CommonUtils","sn="+sn);
+        } catch (Exception e) {
+            e.printStackTrace();
+            Log.e("CommonUtils",e.getMessage());
         }
-        return serialNum;
+
+        return sn;
     }
 
     public static int getRandom() {

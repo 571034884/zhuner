@@ -175,8 +175,7 @@ public class MainActivity extends BaseActivity implements BaseCallback {
                     startActivityForResult(intent, 888);
                 }
                 Map<String, String> map = new HashMap<>();
-                map.put(TAG, "添加");
-                StatisticsManager.getInstance(MainActivity.this).addEventAidl("点击事件", map);
+                StatisticsManager.getInstance(MainActivity.this).addEventAidl(2300, map);
             }
         });
         tvEdit.setOnClickListener(new OnMultiClickListener() {
@@ -188,8 +187,7 @@ public class MainActivity extends BaseActivity implements BaseCallback {
                     intent.putExtra("weatherUrlBeanList", (Serializable) weatherUrlBeanList);
                     startActivityForResult(intent, 888);
                     Map<String, String> map = new HashMap<>();
-                    map.put(TAG, "编辑");
-                    StatisticsManager.getInstance(MainActivity.this).addEventAidl("点击事件", map);
+                    StatisticsManager.getInstance(MainActivity.this).addEventAidl(2301, map);
                 }
             }
         });

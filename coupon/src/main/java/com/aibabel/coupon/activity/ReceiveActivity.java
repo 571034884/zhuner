@@ -283,7 +283,7 @@ public class ReceiveActivity extends BaseActivity implements BaseCallback<BaseBe
                     @Override
                     public void onClick(View view) {
                         Map map = new HashMap();
-                        StatisticsManager.getInstance(mContext).addEventAidl( "点击我的优惠券", map);
+                        StatisticsManager.getInstance(mContext).addEventAidl( 2612, map);
                         try {
                             popupWindowShow(position);
                         }catch (Exception e){
@@ -303,16 +303,16 @@ public class ReceiveActivity extends BaseActivity implements BaseCallback<BaseBe
                         Log.e("couponId", couponId + "");
                         if (TextUtils.equals(couponBeanData.get(position).getUserHasThisCoupon(), "false")) {
                             Map map = new HashMap();
-                            map.put("优惠券名称",couponBeanData.get(position).getCouponData().getTitle());
-                            StatisticsManager.getInstance(mContext).addEventAidl("领用", map);
+                            map.put("p1",couponBeanData.get(position).getCouponData().getTitle());
+                            StatisticsManager.getInstance(mContext).addEventAidl(2610, map);
                             userGetOneCoupon(couponId);
                             couponBeanData.get(position).setUserHasThisCoupon("true");
                             adapter.updateData(couponBeanData);
 
                         } else {
                             Map map = new HashMap();
-                            map.put("优惠券名称",couponBeanData.get(position).getCouponData().getTitle());
-                            StatisticsManager.getInstance(mContext).addEventAidl( "使用", map);
+                            map.put("p1",couponBeanData.get(position).getCouponData().getTitle());
+                            StatisticsManager.getInstance(mContext).addEventAidl( 2611, map);
 
                             Intent intent = new Intent(ReceiveActivity.this, DetailsActivity.class);
 

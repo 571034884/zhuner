@@ -142,8 +142,8 @@ public class CustomWebViewActivity extends BaseActivity implements OnJSClickList
         String payType = intent.getStringExtra("payType");
         skuid = intent.getStringExtra("SKUID");
         Map map1 = new HashMap();
-        map1.put("SKUID", skuid);
-        StatisticsManager.getInstance(CustomWebViewActivity.this).addEventAidl(1720, map1);
+        map1.put("p1", skuid);
+        StatisticsManager.getInstance(CustomWebViewActivity.this).addEventAidl(1730, map1);
 
         switch (payType){
             case "1":
@@ -269,7 +269,7 @@ public class CustomWebViewActivity extends BaseActivity implements OnJSClickList
                 llIsnet.setVisibility(View.VISIBLE);
 
                 Map map1 = new HashMap();
-                map1.put("SKUID", skuid);
+                map1.put("p2", skuid);
                 StatisticsManager.getInstance(CustomWebViewActivity.this).addEventAidl(1732, map1);
 
 

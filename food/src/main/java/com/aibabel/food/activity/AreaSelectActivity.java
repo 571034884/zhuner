@@ -8,6 +8,7 @@ import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.aibabel.aidlaar.StatisticsManager;
 import com.aibabel.baselibrary.base.BaseActivity;
 import com.aibabel.baselibrary.http.BaseCallback;
 import com.aibabel.baselibrary.http.OkGoUtil;
@@ -137,6 +138,9 @@ public class AreaSelectActivity extends BaseActivity implements BaseCallback<Cit
             @Override
             public void onItemClick(AdapterView<?> parent, View view,
                                     int position, long id) {
+                Map<String,String> map = new HashMap<>();
+                map.put("p1",adapter.getData().get(position).getName_cn());
+                StatisticsManager.getInstance(AreaSelectActivity.this).addEventAidl(1062,map);
                 Constant.CURRENT_CITY = adapter.getData().get(position).getName_cn();
                 Intent intent = new Intent();
                 intent.putExtra("cityId", adapter.getData().get(position).getCity_id());

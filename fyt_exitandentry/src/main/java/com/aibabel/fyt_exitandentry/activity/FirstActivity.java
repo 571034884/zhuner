@@ -51,8 +51,9 @@ public class FirstActivity extends BaseActivity implements BaseCallback<BaseBean
         setPathParams("目的地名称");
 
         Map map = new HashMap();
-        map.put("目的地名称", Constans.CITY);
-        StatisticsManager.getInstance(mContext).addEventAidl( "进入页面", map);
+        map.put("p1", Constans.CITY);
+        StatisticsManager.getInstance(mContext).addEventAidl( 1800, map);
+
 //        Constans.CITY = "东京";
 //        Constans.COUNTRY = "日本";
         if (NetUtil.isNetworkAvailable(this)) {

@@ -62,7 +62,8 @@ public class MainActivity extends BaseActivity {
         initAdapter();
         initData(version);
         Map map = new HashMap();
-        StatisticsManager.getInstance(MainActivity.this).addEventAidl( "进入页面", map);
+//        StatisticsManager.getInstance(MainActivity.this).addEventAidl( "进入页面", map);
+        setPathParams(com.alibaba.fastjson.JSONObject.toJSON(map).toString());
         rexiufu();
     }
 
@@ -115,11 +116,11 @@ public class MainActivity extends BaseActivity {
                 int type = readmeList.get(postion).getType();
 
                 Map map = new HashMap();
-                map.put("页面名称", readmeList.get(postion).getItem_name());
-                StatisticsManager.getInstance(MainActivity.this).addEventAidl( "进入页面", map);
+                map.put("p1", readmeList.get(postion).getItem_name());
+                StatisticsManager.getInstance(MainActivity.this).addEventAidl( 1900, map);
                 Map map1 = new HashMap();
-                map1.put("内容名称", readmeList.get(postion).getItem_name());
-                StatisticsManager.getInstance(MainActivity.this).addEventAidl( "点击内容", map1);
+                map1.put("p1", readmeList.get(postion).getItem_name());
+                StatisticsManager.getInstance(MainActivity.this).addEventAidl( 1900, map1);
                 Intent intent = new Intent(MainActivity.this, ViewPagerActivity.class);
                 intent.putExtra("type", type);
                 intent.putExtra("version", version);

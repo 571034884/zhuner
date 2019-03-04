@@ -37,11 +37,6 @@ public class CommonUtils {
      * 获取本机SN 设备识别码
      * @return
      */
-    /**
-     * 获取本机SN 设备识别码
-     *
-     * @return
-     */
     public static String getSN() {
         String sn="0000000000000000";
         try {
@@ -59,6 +54,7 @@ public class CommonUtils {
         }
 
         return sn;
+
     }
 
 

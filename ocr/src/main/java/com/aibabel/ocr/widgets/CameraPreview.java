@@ -478,17 +478,17 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
     @Override
     public void onAutoFocus(boolean success, Camera camera) {
         Map<String, String> map = new HashMap<>();
-        map.put("对焦时长", System.currentTimeMillis() - time + "");
+        map.put("p2", System.currentTimeMillis() - time + "");
         //聚焦之后根据结果修改图片
         if (success) {
-            map.put("是否成功", "成功");
+            map.put("p1", "成功");
             mFocusView.onFocusSuccess();
         } else {
             //聚焦失败显示的图片，由于未找到合适的资源，这里仍显示同一张图片
             mFocusView.onFocusFailed();
-            map.put("是否成功", "失败");
+            map.put("p1", "失败");
         }
-        StatisticsManager.getInstance(mContext).addEventAidl( "对焦", map);
+        StatisticsManager.getInstance(mContext).addEventAidl( 1404, map);
 
         mHandler.postDelayed(new Runnable() {
             @Override

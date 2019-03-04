@@ -85,14 +85,14 @@ public class AllOffThingsActivity extends BaseActivity implements BaseCallback<B
                 Map<String, String> map = new HashMap<>();
                 switch (activityTag) {
                     case TAG_AREA:
-                        map.put("区域名称", ((AreaBean.DataBean) item).getName_cn());
-                        StatisticsManager.getInstance(mContext).addEventAidl("选择区域", map);
+                        map.put("p1", ((AreaBean.DataBean) item).getName_cn());
+                        StatisticsManager.getInstance(mContext).addEventAidl(1021, map);
                         startActivity(new Intent(mContext, FilterActivity.class).putExtra(FilterActivity.FILTER_TAG1, ((AreaBean.DataBean) item)
                                 .getName_cn()));
                         break;
                     case TAG_KIND:
-                        map.put("分类名称", ((KindBean.DataBean) item).getName_cn());
-                        StatisticsManager.getInstance(mContext).addEventAidl( "选择分类", map);
+                        map.put("p1", ((KindBean.DataBean) item).getName_cn());
+                        StatisticsManager.getInstance(mContext).addEventAidl( 1032, map);
                         startActivity(new Intent(mContext, FilterActivity.class).putExtra(FilterActivity.FILTER_TAG2, ((KindBean.DataBean) item)
                                 .getName_cn()));
                         break;

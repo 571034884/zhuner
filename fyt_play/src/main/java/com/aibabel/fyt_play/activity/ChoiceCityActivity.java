@@ -80,8 +80,8 @@ public class ChoiceCityActivity extends BaseActivity implements BaseCallback<Bas
             public void onItemClick(CommonRecyclerViewHolder holder, final int postion) {
 
                 Map map = new HashMap();
-                map.put("目的地",cityBeanList.get(postion));
-                StatisticsManager.getInstance(mContext).addEventAidl("点击选择目的地",map);
+                map.put("p1",cityBeanList.get(postion));
+                StatisticsManager.getInstance(mContext).addEventAidl(1511,map);
 
 
                 Intent intent = new Intent(ChoiceCityActivity.this,MainActivity.class);

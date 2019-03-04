@@ -102,8 +102,8 @@ public class CouponFragment extends BaseFragment implements BaseCallback<BaseBea
                 couponId = couponQueryBeanData.get(postion).getCouponId();
                 Log.e("couponId", couponId + "");
                 Map map = new HashMap();
-                map.put("优惠券id",couponId);
-                StatisticsManager.getInstance(mContext).addEventAidl( "使用", map);
+                map.put("p1",couponId);
+                StatisticsManager.getInstance(mContext).addEventAidl( 2620, map);
                 Intent intent = new Intent(getActivity(), DetailsActivity.class);
                 intent.putExtra("couponId", couponId);
                 startActivity(intent);
@@ -144,7 +144,7 @@ public class CouponFragment extends BaseFragment implements BaseCallback<BaseBea
 //        }
 
         Map map = new HashMap();
-        StatisticsManager.getInstance(mContext).addEventAidl("点击目的地", map);
+        StatisticsManager.getInstance(mContext).addEventAidl(2621, map);
         int type = data.getIntExtra("type", 0);
         activity.showFragment(type);
 

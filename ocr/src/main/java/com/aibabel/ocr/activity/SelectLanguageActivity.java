@@ -19,7 +19,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class SelectLanguageActivity extends BaseActivity implements AdapterView.OnItemClickListener{
+public class SelectLanguageActivity extends BaseActivity implements AdapterView.OnItemClickListener {
     private ImageView iv_close;
     private ListView lv_language;
     private Adapter_Language adapter;
@@ -56,13 +56,13 @@ public class SelectLanguageActivity extends BaseActivity implements AdapterView.
             current_lan_code = SharePrefUtil.getString(this, Constant.LAN_TR_CODE, "ch_ch");
         }
         list = LanguageUtils.getLanList(this);
-        for(LanBean bean : list){
+        for (LanBean bean : list) {
             String code = bean.getLang_code();
-            if(TextUtils.equals(code,current_lan_code)){
+            if (TextUtils.equals(code, current_lan_code)) {
                 bean.setChoice(1);
             }
         }
-        adapter = new Adapter_Language(this,list);
+        adapter = new Adapter_Language(this, list);
         lv_language.setAdapter(adapter);
 
     }
@@ -70,23 +70,23 @@ public class SelectLanguageActivity extends BaseActivity implements AdapterView.
 
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-        Map<String, String> map = new HashMap<>();
-        map.put("源语言",Constant.LAN_OR);
-        StatisticsManager.getInstance(SelectLanguageActivity.this).addEventAidl("选择语言",map);
         LanBean bean = list.get(position);
         String name = bean.getName();
         String name_code = bean.getLang_code();
-        saveLan(name,name_code);
+        Map<String, String> map = new HashMap<>();
+        map.put("p2", Constant.LAN_TR);
+        map.put("p1", bean.getName());
+        StatisticsManager.getInstance(SelectLanguageActivity.this).addEventAidl(1411, map);
+        saveLan(name, name_code);
 
     }
 
 
     /**
-     *
-     * @param name  语言
+     * @param name 语言
      * @param code 对应的code
      */
-    private void saveLan( String name, String code) {
+    private void saveLan(String name, String code) {
         switch (lan_type) {// 类型： 1、源语言， 2、 目标语言
             case 1:
                 SharePrefUtil.saveString(this, Constant.LAN_OR, name);

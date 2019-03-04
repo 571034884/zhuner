@@ -675,8 +675,8 @@ public class MainActivity extends BaseActivity {
                 SharePrefUtil.saveString(this, Constant.CURRENCY_NAME_KEY_3, FastJsonUtil.changObjectToString(childBean));
             }
             Map<String, String> map = new HashMap<>();
-            map.put(requestCode + "", xuanzhongName);
-            StatisticsManager.getInstance(MainActivity.this).addEventAidl("点击事件", map);
+            map.put("p1", xuanzhongName);
+            StatisticsManager.getInstance(MainActivity.this).addEventAidl(2200, map);
             getCurrentExchangeRate();
         }
     }

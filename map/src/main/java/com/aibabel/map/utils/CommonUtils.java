@@ -12,6 +12,8 @@ import android.util.Log;
 
 import com.aibabel.baselibrary.utils.ToastUtil;
 
+import java.lang.reflect.Method;
+
 public class CommonUtils {
 
     private static final int MIN_CLICK_DELAY_TIME = 2000;
@@ -157,8 +159,22 @@ public class CommonUtils {
      * @return
      */
     public static String getSN() {
-        String serialNum = Build.SERIAL;
-        return TextUtils.isEmpty(serialNum)?"0000000000000000":serialNum;
+        String sn="0000000000000000";
+        try {
+            Class clz = Class.forName("android.os.SystemProperties");
+            Method method = clz.getMethod("get", String.class,String.class);
+            sn = (String) method.invoke(clz,"gsm.serial", "0000000000000000");
+            sn.trim();
+            if (sn.indexOf(" ") != -1) {
+                sn = sn.substring(0, sn.indexOf(" "));
+            }
+            Log.e("CommonUtils","sn="+sn);
+        } catch (Exception e) {
+            e.printStackTrace();
+            Log.e("CommonUtils",e.getMessage());
+        }
+
+        return sn;
     }
 
     public static boolean isNetworkAvailable(Context context) {

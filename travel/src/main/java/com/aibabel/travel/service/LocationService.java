@@ -272,7 +272,7 @@ public class LocationService extends Service {
                     }
                 }
             }
-            Log.e("定位", "errorCode：" + errorCode + " latitude：" + latitude + " longitude:" + longitude + " 国家：" + country + "，省：" + province + "，市：" + city + "，区：" + district + "，街道：" + street + "详细地址：" + addr);
+            Log.e("定位-景区导览", "errorCode：" + errorCode + " latitude：" + latitude + " longitude:" + longitude + " 国家：" + country + "，省：" + province + "，市：" + city + "，区：" + district + "，街道：" + street + "详细地址：" + addr);
         }
 
 

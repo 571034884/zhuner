@@ -44,4 +44,5 @@ android {
 dependencies {
     annotationProcessor 'com.jakewharton:butterknife-compiler:8.8.1'
     implementation project(':baselibrary')
+    implementation 'com.android.support.constraint:constraint-layout:1.0.2'
 }

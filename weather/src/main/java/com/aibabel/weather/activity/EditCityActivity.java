@@ -121,8 +121,8 @@ public class EditCityActivity extends BaseActivity {
             @Override
             public void onDeleteClick(int position) {
                 Map<String, String> map = new HashMap<>();
-                map.put("删除", adapter.getmUrlList().get(position).getCityCN() + adapter.getmUrlList().get(position).getCountryCN());
-                StatisticsManager.getInstance(EditCityActivity.this).addEventAidl("点击事件", map);
+                map.put("p1", adapter.getmUrlList().get(position).getCityCN() + adapter.getmUrlList().get(position).getCountryCN());
+                StatisticsManager.getInstance(EditCityActivity.this).addEventAidl(2320, map);
                 adapter.removeItem(position);
                 delPosition.add(position);
             }

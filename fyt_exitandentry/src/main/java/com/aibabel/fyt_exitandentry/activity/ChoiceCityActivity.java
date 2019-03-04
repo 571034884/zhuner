@@ -120,8 +120,8 @@ public class ChoiceCityActivity extends BaseActivity implements BaseCallback<Bas
             public void onItemClick(CommonRecyclerViewHolder holder, int postion) {
                 //热门城市点击
                 Map map = new HashMap();
-                map.put("热门城市",stringList.get(postion).getHotCity() );
-                StatisticsManager.getInstance(mContext).addEventAidl("点击热门位置（具体选项）",map);
+                map.put("p1",stringList.get(postion).getHotCity() );
+                StatisticsManager.getInstance(mContext).addEventAidl(1812,map);
 
                 Intent intent = new Intent(ChoiceCityActivity.this, MainActivity.class);
                 intent.putExtra("country", stringList.get(postion).getHotCountry());
@@ -279,8 +279,8 @@ public class ChoiceCityActivity extends BaseActivity implements BaseCallback<Bas
                                     int position, long id) {
 
                 Map map = new HashMap();
-                map.put("选择目的地",adapter.getData().get(position).getCityChj() );
-                StatisticsManager.getInstance(mContext).addEventAidl("点击列表（具体选项）",map);
+                map.put("p1",adapter.getData().get(position).getCityChj() );
+                StatisticsManager.getInstance(mContext).addEventAidl(1813,map);
 
                 Intent intent = new Intent(ChoiceCityActivity.this, MainActivity.class);
                 intent.putExtra("country", adapter.getData().get(position).getCountryChj());
