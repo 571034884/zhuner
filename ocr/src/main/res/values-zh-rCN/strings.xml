@@ -6,7 +6,9 @@
 	<string name="no_same">不能翻译同一种语言，请选择其它语言！</string>
 	<string name="no_net">当前无网络，请联网操作！</string>
 	<string name="select_lan">选择语言</string>
-	<string name="keep_balance">文字保持水平/垂直</string>
+	<string name="keep_balance">文字保持水平</string>
+	<!--<string name="keep_balance">文字保持水平/垂直</string>-->
+	<string name="object">物体</string>
 	<string name="meau">菜单</string>
 	<string name="artical">文章</string>
 	<string name="recogning">正在识别中…</string>
@@ -20,4 +22,5 @@
 
 	<string name="more">更多介绍 ></string>
 	<string name="retry">识别失败，请再试一次。</string>
+	<string name="camare_laucher">拍一下，就懂了</string>
 </resources>

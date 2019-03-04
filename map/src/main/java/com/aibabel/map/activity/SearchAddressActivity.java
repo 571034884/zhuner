@@ -223,7 +223,7 @@ public class SearchAddressActivity extends MapBaseActivity implements SensorEven
                 Map map = new HashMap();
                 map.put("latlon", addressResult.getLocation().getLat() + "," + addressResult.getLocation().getLng());
                 map.put("addr", addressResult.getName());
-                StatisticsManager.getInstance(mContext).addEventAidl("选择搜索结果", map);
+                StatisticsManager.getInstance(mContext).addEventAidl(1207, map);
 
                 tvName.setText(addressResult.getName());
                 flagSearch = true;
@@ -436,7 +436,7 @@ public class SearchAddressActivity extends MapBaseActivity implements SensorEven
         switch (view.getId()) {
             case R.id.iv_close:
                 Map map = new HashMap();
-                StatisticsManager.getInstance(mContext).addEventAidl( "搜索返回", map);
+                StatisticsManager.getInstance(mContext).addEventAidl( 1208, map);
 
                 this.finish();
                 overridePendingTransition(R.anim.fade_out, R.anim.fade_in);
@@ -577,7 +577,7 @@ public class SearchAddressActivity extends MapBaseActivity implements SensorEven
                 Map map = new HashMap();
                 map.put("latlon", mapPoi.getPosition() + "");
                 map.put("addr", mapPoi.getName());
-                StatisticsManager.getInstance(mContext).addEventAidl("选择搜索结果", map);
+                StatisticsManager.getInstance(mContext).addEventAidl(1207, map);
             }
         }
         return false;

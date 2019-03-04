@@ -110,7 +110,9 @@
             android:launchMode="singleTask"
             android:label="Activity">
         </activity><!--在这里注册-->
-
+        <service
+            android:name="com.xuexiang.xipc.core.channel.IPCService$IPCService0"
+            android:exported="true" />
     </application>
 
 </manifest>

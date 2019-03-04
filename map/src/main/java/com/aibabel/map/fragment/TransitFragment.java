@@ -129,7 +129,7 @@ public class TransitFragment extends BaseFragment implements View.OnClickListene
 
                 Map map = new HashMap();
                 map.put("type",routeBean.getMode());
-                StatisticsManager.getInstance(mContext).addEventAidl("查看路线规划详情",map);
+                StatisticsManager.getInstance(mContext).addEventAidl(1211,map);
 
                 Intent intent = new Intent(mContext, TransitRouteActivity.class);
                 switch (routeBean.getLocationWhere()) {
@@ -308,7 +308,7 @@ public class TransitFragment extends BaseFragment implements View.OnClickListene
         map.put("endLatLon",routeBean.getEndLoc().getLat()+","+routeBean.getEndLoc().getLng());
         map.put("endName",routeBean.getEndName());
         map.put("type",routeBean.getMode());
-        StatisticsManager.getInstance(mContext).addEventAidl("路线规划",map);
+        StatisticsManager.getInstance(mContext).addEventAidl(1210,map);
 
         String url = BaiDuUtil.getUrl(routeBean.getLocationWhere(), routeBean.getIndex());
         Map param = new HashMap();

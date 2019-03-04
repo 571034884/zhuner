@@ -199,7 +199,7 @@ public class DialogActivity extends Activity implements View.OnClickListener {
         Map map = new HashMap();
         switch (v.getId()) {
             case R.id.iv_close:
-                StatisticsManager.getInstance(this).addEventAidl("景点关闭", map);
+                StatisticsManager.getInstance(this).addEventAidl(1215, map);
 
                 finish();
                 //加动画避免闪屏
@@ -222,7 +222,7 @@ public class DialogActivity extends Activity implements View.OnClickListener {
                 map.put("name", data.getNameCh());
                 map.put("addr", data.getAddress());
                 map.put("latlon", lat + "," + lng);
-                StatisticsManager.getInstance(this).addEventAidl("点击景点详情", map);
+                StatisticsManager.getInstance(this).addEventAidl(1214, map);
                 toMore();
                 break;
             case R.id.tv_address:
@@ -266,7 +266,7 @@ public class DialogActivity extends Activity implements View.OnClickListener {
         map.put("endLatLon", bean.getEndLoc().getLat() + "," + bean.getEndLoc().getLng());
         map.put("endName", bean.getEndName());
         map.put("type", bean.getMode());
-        StatisticsManager.getInstance(this).addEventAidl("景点导航", map);
+        StatisticsManager.getInstance(this).addEventAidl(1216, map);
 
         intent.putExtra("routes", bean);
         startActivity(intent);

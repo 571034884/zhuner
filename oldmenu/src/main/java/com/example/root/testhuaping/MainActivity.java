@@ -39,6 +39,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.aibabel.aidlaar.StatisticsManager;
+import com.aibabel.baselibrary.mode.DataManager;
 import com.example.root.testhuaping.service.Getsystem_info;
 import com.linkfield.softsim.ISoftSIMCallback;
 import com.linkfield.softsim.ISoftSIMManager;
@@ -413,8 +414,8 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
 
     //1 硬卡   2软卡
     public void get_okgo_net() {
-        String soft = SharePrefUtil.getString(MainActivity.this, "soft_status", "1");//启动过软卡
-        if (TextUtils.equals(soft, "2")) {
+        boolean softSim = DataManager.getInstance().getBoolean("softSim");
+        if (softSim) {
             Toast.makeText(MainActivity.this, "启动过", Toast.LENGTH_SHORT).show();
         } else {
             isnet = true;
@@ -430,7 +431,7 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
     public void start_soft() {
         try {
             mSoftSIMManager.setSoftSIMEnabled(true);
-            StatisticsManager.getInstance(MainActivity.this).saveSharePreference("softSim","true");
+            DataManager.getInstance().setSaveBoolean("softSim",true);
         } catch (RemoteException e) {
             e.printStackTrace();
         }
@@ -479,10 +480,9 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
                     SoftSIMInfo info = (SoftSIMInfo) msg.obj;
                     try {
                         if (mSoftSIMManager.isSoftSIMEnabled()) {
-                            SharePrefUtil.saveString(MainActivity.this, "soft_status", "2");
                             Toast.makeText(MainActivity.this, "启动成功：" + info.getIMSI(), Toast.LENGTH_SHORT).show();
                             //TODO 存储软卡信息
-                            StatisticsManager.getInstance(MainActivity.this).saveSharePreference("softSim","true");
+                            DataManager.getInstance().setSaveBoolean("softSim",true);
                         }
                     } catch (RemoteException e) {
                         e.printStackTrace();
@@ -563,12 +563,12 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
                             if (TextUtils.equals(data1, "2")) {
                                 if (TextUtils.equals(getVersionType(), "PL") || TextUtils.equals(getVersionType(), "PH")) {
                                     if (TextUtils.equals(getVersionCode(), "S")) {
-                                        SharePrefUtil.saveString(MainActivity.this, "soft_status", "2");//启动过软卡
+                                        DataManager.getInstance().setSaveBoolean("softSim",true);
                                         start_soft();
                                     }
                                 }
                             } else {
-                                StatisticsManager.getInstance(MainActivity.this).saveSharePreference("softSim","false");
+                                DataManager.getInstance().setSaveBoolean("softSim",false);
                             }
                         } catch (Exception e) {
                             e.printStackTrace();
@@ -582,7 +582,7 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
                         super.onError(response);
                         Toast.makeText(MainActivity.this, "出错了！", Toast.LENGTH_SHORT).show();
                         //TODO 服务器出错
-                        StatisticsManager.getInstance(MainActivity.this).saveSharePreference("softSim","false");
+                        DataManager.getInstance().setSaveBoolean("softSim",false);
                     }
                 });
     }
