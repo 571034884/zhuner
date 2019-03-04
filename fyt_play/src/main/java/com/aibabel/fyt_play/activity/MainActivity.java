@@ -169,7 +169,7 @@ public class MainActivity extends BaseActivity implements AppBarLayout.OnOffsetC
             @Override
             public void onClick(View view) {
                 Map map = new HashMap();
-                StatisticsManager.getInstance(mContext).addEventAidl("进入订单页面", map);
+                StatisticsManager.getInstance(mContext).addEventAidl(1502, map);
 
                 Intent intent = new Intent(MainActivity.this, MyWebActivity.class);
                 intent.putExtra("leaseNo", dev_oid);
@@ -207,8 +207,8 @@ public class MainActivity extends BaseActivity implements AppBarLayout.OnOffsetC
             Constans.COUNTRY = data.getStringExtra("country");
 
             Map map1 = new HashMap();
-            map1.put("目的地", Constans.CITY );
-            StatisticsManager.getInstance(mContext).addEventAidl( "点击选择目的地", map1);
+            map1.put("p1", Constans.CITY );
+            StatisticsManager.getInstance(mContext).addEventAidl( 1500, map1);
 
             tvCityName.setText(Constans.CITY );
             Map<String, String> map = new HashMap<>();
@@ -279,8 +279,8 @@ public class MainActivity extends BaseActivity implements AppBarLayout.OnOffsetC
             public void onItemClick(CommonRecyclerViewHolder holder, final int postion) {
 
                 Map map = new HashMap();
-                map.put("内容ID", playItemBeanList.get(postion).getTitle());
-                StatisticsManager.getInstance(mContext).addEventAidl( "点击内容", map);
+                map.put("p1", playItemBeanList.get(postion).getTitle());
+                StatisticsManager.getInstance(mContext).addEventAidl( 1501, map);
 
                 Intent intent = new Intent(MainActivity.this, WebActivity.class);
                 intent.putExtra("city", tvCityName.getText().toString());

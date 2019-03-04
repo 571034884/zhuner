@@ -186,7 +186,7 @@ public class MainActivity extends BaseActivity implements TabLayout.OnTabSelecte
             @Override
             public void onClick(View view) {
                 Map map = new HashMap();
-                StatisticsManager.getInstance(mContext).addEventAidl("切换目的地",map);
+                StatisticsManager.getInstance(mContext).addEventAidl(1801,map);
                 Intent intent1 = new Intent(MainActivity.this, ChoiceCityActivity.class);
                 startActivityForResult(intent1, 10);
             }
@@ -195,7 +195,7 @@ public class MainActivity extends BaseActivity implements TabLayout.OnTabSelecte
             @Override
             public void onClick(View view) {
                 Map map = new HashMap();
-                StatisticsManager.getInstance(mContext).addEventAidl("切换目的地",map);
+                StatisticsManager.getInstance(mContext).addEventAidl(1801,map);
                 Intent intent1 = new Intent(MainActivity.this, ChoiceCityActivity.class);
                 startActivityForResult(intent1, 10);
             }

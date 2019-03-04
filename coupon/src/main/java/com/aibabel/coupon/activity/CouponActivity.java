@@ -148,7 +148,7 @@ public class CouponActivity extends BaseActivity {
                 break;
             case R.id.tv_coupon:
                 Map map = new HashMap();
-                StatisticsManager.getInstance(mContext).addEventAidl( "点击我的优惠券", map);
+                StatisticsManager.getInstance(mContext).addEventAidl( 2601, map);
                 showFragment(1);
                 break;
         }
