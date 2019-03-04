@@ -116,7 +116,7 @@ public class MainActivity extends BaseActivity implements AudioRecordUtil.OnDeal
     //绑定数据的业务类
     private BindDataPresenter bdp;
 
-//    public static WaveView wv;
+    //    public static WaveView wv;
     private EditText editText;
     private TextView myTv;
     private LinearLayout my_ll;
@@ -126,11 +126,11 @@ public class MainActivity extends BaseActivity implements AudioRecordUtil.OnDeal
 
     private Timer timerTTS;
     private TimerTask timerTaskTSS;
-    private boolean isFirst=false;
+    private boolean isFirst = false;
 
     private Callback.Cancelable post;
 
-    private boolean isNospeak=true;
+    private boolean isNospeak = true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -151,28 +151,27 @@ public class MainActivity extends BaseActivity implements AudioRecordUtil.OnDeal
         }
         bdp = new BindDataPresenter(this);
         //选择服务器
-      changeUrl();
+//        changeUrl();
         try {
-            String res=getIntent().getStringExtra("isFirst");
-            getIntent().putExtra("isFirst","false");
+            String res = getIntent().getStringExtra("isFirst");
+            getIntent().putExtra("isFirst", "false");
             if (res.equals("true")) {
-                isFirst=true;
-                Log.e("onCreate","diyici---------------"+res);
+                isFirst = true;
+                Log.e("onCreate", "diyici---------------" + res);
             }
         } catch (Exception e) {
         }
 
-        if (BaseApplication.tishi_num==1) {
-            BaseApplication.tishi_num=0;
+        if (BaseApplication.tishi_num == 1) {
+            BaseApplication.tishi_num = 0;
             new Handler().postDelayed(new Runnable() {
                 @Override
                 public void run() {
                     speakShiyong("请长按语音秘书键和准儿对话");
                 }
-            },500);
+            }, 500);
 
         }
-
 
 
     }
@@ -180,20 +179,20 @@ public class MainActivity extends BaseActivity implements AudioRecordUtil.OnDeal
     @Override
     protected void onRestart() {
         L.e("onRestart=====================================");
-       changeUrl();
+//       changeUrl();
         super.onRestart();
     }
 
 
     //去定位获取一次   语音识别和意图识别的  服务器地址
     public void changeUrl() {
-        String url=HostUtil.getHost(mContext,"pa");
+        String url = HostUtil.getHost(mContext, "pa");
         if (!url.equals("")) {
             Constants.getInstance().setBaseUrl(url);
-            L.e("----------------url:"+Constants.getInstance().getBaseUrl());
+            L.e("----------------url:" + Constants.getInstance().getBaseUrl());
         }
 
-        String shibieUrl=HostUtil.getHost(mContext,"function");
+        String shibieUrl = HostUtil.getHost(mContext, "function");
         if (!shibieUrl.equals("")) {
             try {
                 String[] arr = shibieUrl.split(":");
@@ -213,12 +212,12 @@ public class MainActivity extends BaseActivity implements AudioRecordUtil.OnDeal
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
         try {
-            String res=intent.getStringExtra("isFirst");
+            String res = intent.getStringExtra("isFirst");
 
-            intent.putExtra("isFirst","false");
+            intent.putExtra("isFirst", "false");
             if (res.equals("true")) {
-                isFirst=true;
-                Log.e("onNewIntent","diyici---------------"+res);
+                isFirst = true;
+                Log.e("onNewIntent", "diyici---------------" + res);
             }
 
         } catch (Exception e) {
@@ -232,9 +231,9 @@ public class MainActivity extends BaseActivity implements AudioRecordUtil.OnDeal
 
         main_ll = findViewById(R.id.main_ll);
         listView = findViewById(R.id.main_listview);
-        frame_amin=findViewById(R.id.main_framelayout);
+        frame_amin = findViewById(R.id.main_framelayout);
 
-        frameAnim= (AnimationDrawable) getResources().getDrawable(R.drawable.amin_list_huxi);
+        frameAnim = (AnimationDrawable) getResources().getDrawable(R.drawable.amin_list_huxi);
         frame_amin.setBackgroundDrawable(frameAnim);
         frameAnim.start();
 
@@ -280,7 +279,6 @@ public class MainActivity extends BaseActivity implements AudioRecordUtil.OnDeal
         mapLayoutId.put("rate", R.layout.item_result_exchange_rate);
 
 
-
     }
 
     ////////////////////////////////////////////监听回调////////////////////////////////////////////////////////
@@ -308,8 +306,6 @@ public class MainActivity extends BaseActivity implements AudioRecordUtil.OnDeal
     @Override
     public void dealwithComplete() {
         SocketManger.getInstance().sendMessage(new JsonDataBean(53, ""));
-
-
 
 
     }
@@ -340,7 +336,7 @@ public class MainActivity extends BaseActivity implements AudioRecordUtil.OnDeal
             if (!("" + count).equals(id)) {
                 return;
             }
-            if (post!=null) {
+            if (post != null) {
                 post.cancel();
             }
             bdp.cancelPost();
@@ -367,11 +363,11 @@ public class MainActivity extends BaseActivity implements AudioRecordUtil.OnDeal
     @Override
     protected void onPause() {
         L.e("onPause----------------");
-        if (timerTTS!=null) {
+        if (timerTTS != null) {
             timerTTS.cancel();
         }
         if (tts != null) {
-            isNospeak=false;
+            isNospeak = false;
             tts.setPitch(0);
             tts.stop();
         }
@@ -379,7 +375,7 @@ public class MainActivity extends BaseActivity implements AudioRecordUtil.OnDeal
         util.stopRecord();
 
 
-        if (mMapView!=null) {
+        if (mMapView != null) {
             mMapView.onPause();
         }
 
@@ -389,9 +385,9 @@ public class MainActivity extends BaseActivity implements AudioRecordUtil.OnDeal
     @Override
     protected void onResume() {
         super.onResume();
-        isNospeak=true;
+        isNospeak = true;
         L.e("onResume------------------");
-        if (mMapView!=null) {
+        if (mMapView != null) {
             mMapView.onResume();
         }
         if (isFirst) {
@@ -404,11 +400,11 @@ public class MainActivity extends BaseActivity implements AudioRecordUtil.OnDeal
         L.e("onStop------------------");
         SocketManger.getInstance().disconnect();
 
-        if (timerTTS!=null) {
+        if (timerTTS != null) {
             timerTTS.cancel();
         }
         if (tts != null) {
-            isNospeak=false;
+            isNospeak = false;
             tts.setPitch(0);
             tts.stop();
         }
@@ -416,7 +412,7 @@ public class MainActivity extends BaseActivity implements AudioRecordUtil.OnDeal
         util.stopRecord();
 
 
-        if (bdp!=null) {
+        if (bdp != null) {
             bdp.onStop();
         }
         L.e("onstop");
@@ -432,9 +428,9 @@ public class MainActivity extends BaseActivity implements AudioRecordUtil.OnDeal
     }
 
 
-
     /**
      * Map数据绑定在子布局上
+     *
      * @param t
      * @param holder
      */
@@ -512,7 +508,7 @@ public class MainActivity extends BaseActivity implements AudioRecordUtil.OnDeal
             final com.alibaba.fastjson.JSONObject body = data.getJSONObject("body");
             String answer = data.getString("answer");
             ((TextView) holder.getView(R.id.item_result_map_tv)).setText(answer);
-           speakTTS(answer);
+            speakTTS(answer);
             ((TextView) holder.getView(R.id.item_result_map_to)).setText(body.getString("user_nav_to"));
             ((TextView) holder.getView(R.id.item_result_map_form)).setText("出发点:" + BdMap.getInstance().getmAddress());
 
@@ -521,31 +517,29 @@ public class MainActivity extends BaseActivity implements AudioRecordUtil.OnDeal
             mBaiduMap.setMyLocationEnabled(true);
 
 
+            LatLng ll = new LatLng(BdMap.getInstance().getLat(mContext), BdMap.getInstance().getLong(mContext));
+            MyLocationData locData = new MyLocationData.Builder()
+                    .accuracy(7.0f)
+                    // 此处设置开发者获取到的方向信息，顺时针0-360
+                    .direction(0).latitude(ll.latitude)
+                    .longitude(ll.longitude).build();
+            L.e("--------------" + ll.latitude + "--" + ll.longitude);
 
-                    LatLng ll = new LatLng(BdMap.getInstance().getLat(mContext),BdMap.getInstance().getLong(mContext));
-                    MyLocationData locData = new MyLocationData.Builder()
-                            .accuracy(7.0f)
-                            // 此处设置开发者获取到的方向信息，顺时针0-360
-                            .direction(0).latitude(ll.latitude)
-                            .longitude(ll.longitude).build();
-                    L.e("--------------" + ll.latitude + "--" + ll.longitude);
+            mBaiduMap.setMyLocationData(locData);
+            MapStatus.Builder builder = new MapStatus.Builder();
+            builder.target(ll).zoom(18.0f);
 
-                    mBaiduMap.setMyLocationData(locData);
-                    MapStatus.Builder builder = new MapStatus.Builder();
-                    builder.target(ll).zoom(18.0f);
+            mBaiduMap.animateMapStatus(MapStatusUpdateFactory.newMapStatus(builder.build()));
 
-                    mBaiduMap.animateMapStatus(MapStatusUpdateFactory.newMapStatus(builder.build()));
-
-                    View child = mMapView.getChildAt(1);
-                    if (child != null && (child instanceof ImageView || child instanceof ZoomControls)) {
-                        child.setVisibility(View.INVISIBLE);
-                    }
-                    //隐藏地图上比例尺   禁止所有触摸事件
-                    mMapView.showScaleControl(false);
-                    mMapView.showZoomControls(false);
-                    mBaiduMap.getUiSettings().setAllGesturesEnabled(false);
-                    mCurrentMode = MyLocationConfiguration.LocationMode.NORMAL;
-
+            View child = mMapView.getChildAt(1);
+            if (child != null && (child instanceof ImageView || child instanceof ZoomControls)) {
+                child.setVisibility(View.INVISIBLE);
+            }
+            //隐藏地图上比例尺   禁止所有触摸事件
+            mMapView.showScaleControl(false);
+            mMapView.showZoomControls(false);
+            mBaiduMap.getUiSettings().setAllGesturesEnabled(false);
+            mCurrentMode = MyLocationConfiguration.LocationMode.NORMAL;
 
 
             BdMap.getInstance().getmSearch().geocode(new GeoCodeOption()
@@ -625,7 +619,7 @@ public class MainActivity extends BaseActivity implements AudioRecordUtil.OnDeal
 
             String answer = data.getString("answer");
             ((TextView) holder.getView(R.id.item_result_map_tv)).setText(answer);
-           speakTTS(answer);
+            speakTTS(answer);
             ((TextView) holder.getView(R.id.item_result_map_to)).setText("正在获取当前位置");
             ((TextView) holder.getView(R.id.item_result_map_form)).setText("当前");
             ((TextView) holder.getView(R.id.item_result_map_btn)).setText("当前位置");
@@ -674,6 +668,7 @@ public class MainActivity extends BaseActivity implements AudioRecordUtil.OnDeal
 
     /**
      * 景点介绍
+     *
      * @param t
      * @param holder
      */
@@ -814,7 +809,6 @@ public class MainActivity extends BaseActivity implements AudioRecordUtil.OnDeal
 
 
     /**
-     *
      * @param res
      */
     public void shibie(String res) {
@@ -870,14 +864,11 @@ public class MainActivity extends BaseActivity implements AudioRecordUtil.OnDeal
     }
 
 
-
-
-
     @Override
     protected void onDestroy() {
         super.onDestroy();
 
-        if (tts!=null) {
+        if (tts != null) {
             tts.shutdown();
         }
 
@@ -889,14 +880,14 @@ public class MainActivity extends BaseActivity implements AudioRecordUtil.OnDeal
             BdMap.getInstance().destroy();
 
         }
-        if (bdp!=null) {
+        if (bdp != null) {
             bdp.onDestory();
         }
         if (SocketManger.getInstance() != null) {
 
             SocketManger.getInstance().disconnect();
         }
-        if (mMapView!=null) {
+        if (mMapView != null) {
             // 关闭定位图层
             mBaiduMap.setMyLocationEnabled(false);
             mMapView.onDestroy();
@@ -918,15 +909,15 @@ public class MainActivity extends BaseActivity implements AudioRecordUtil.OnDeal
     @Override
     public boolean onKeyLongPress(int keyCode, KeyEvent event) {
         if (keyCode == 133) {
-
+            changeUrl();
 //            InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
 //            imm.toggleSoftInput(0, InputMethodManager.HIDE_NOT_ALWAYS);
             if (!SystemUtil.isScreenLocked(mContext)) {
-                L.e("是黑屏"+SystemUtil.isScreenLocked(mContext));
+                L.e("是黑屏" + SystemUtil.isScreenLocked(mContext));
                 return true;
             }
             shortPress = false;
-              ping();
+            ping();
             // TODO: 2018/5/24
             L.e("长按");
             playAnim(2);
@@ -938,7 +929,7 @@ public class MainActivity extends BaseActivity implements AudioRecordUtil.OnDeal
             hideInput();
             mDataList.clear();
             listView.setAdapter(null);
-            editText=null;
+            editText = null;
             tts.stop();
             JSONObject jsonObject = new JSONObject();
             try {
@@ -955,7 +946,7 @@ public class MainActivity extends BaseActivity implements AudioRecordUtil.OnDeal
             } catch (JSONException e) {
                 e.printStackTrace();
             }
-            changeUrl();
+//            changeUrl();
             SocketManger.getInstance().sendMessage(new JsonDataBean(51, jsonObject.toString()));
             util.startRecord(true);
             return true;
@@ -967,6 +958,7 @@ public class MainActivity extends BaseActivity implements AudioRecordUtil.OnDeal
 
     /**
      * 录音键 按下 时的操作
+     *
      * @param keyCode
      * @param event
      * @return
@@ -989,6 +981,7 @@ public class MainActivity extends BaseActivity implements AudioRecordUtil.OnDeal
 
     /**
      * 录音键 抬起的 事件
+     *
      * @param keyCode
      * @param event
      * @return
@@ -997,11 +990,11 @@ public class MainActivity extends BaseActivity implements AudioRecordUtil.OnDeal
     public boolean onKeyUp(int keyCode, KeyEvent event) {
         if (keyCode == 133) {
             if (!SystemUtil.isScreenLocked(mContext)) {
-                L.e("是黑屏"+SystemUtil.isScreenLocked(mContext));
+                L.e("是黑屏" + SystemUtil.isScreenLocked(mContext));
                 return true;
             }
             L.e("抬起");
-            if(!NetUtil.isNetworkConnected(mContext)){
+            if (!NetUtil.isNetworkConnected(mContext)) {
                 speakError("当前无网络!!!");
                 util.stopRecord();
                 // TODO: 2018/11/23
@@ -1015,7 +1008,7 @@ public class MainActivity extends BaseActivity implements AudioRecordUtil.OnDeal
             } else {
                 //// TODO: 2018/5/2
 
-             playAnim(3);
+                playAnim(3);
                 SocketManger.getInstance().setResponseTimeout(3000);
                 util.stopRecord();
 
@@ -1034,7 +1027,7 @@ public class MainActivity extends BaseActivity implements AudioRecordUtil.OnDeal
 
 
     public void again(String res) {
-        editText=null;
+        editText = null;
         mDataList.clear();
         mDataList.add(res);
         listView.setAdapter(null);
@@ -1042,7 +1035,7 @@ public class MainActivity extends BaseActivity implements AudioRecordUtil.OnDeal
             @Override
             public void convert(final ViewHolder holder, String t) {
                 try {
-                    if (t.trim().equals("")&&t!=null) {
+                    if (t.trim().equals("") && t != null) {
                         bdp.bindTxtItem("", holder, tts);
                         return;
                     }
@@ -1067,11 +1060,11 @@ public class MainActivity extends BaseActivity implements AudioRecordUtil.OnDeal
 
                         } else if (code.equals("003_0")) {
 
-                            bdp. bindSearchListItem(t, holder);
+                            bdp.bindSearchListItem(t, holder);
 
                         } else if (code.equals("003_1")) {
 
-                            bdp. bindSearchListItem(t, holder);
+                            bdp.bindSearchListItem(t, holder);
 
                         } else if (code.equals("004")) {
 
@@ -1156,19 +1149,19 @@ public class MainActivity extends BaseActivity implements AudioRecordUtil.OnDeal
                         }
                     } else {
 
-                        myTv= ((TextView) holder.getView(R.id.item_my_speech_tv));
-                        my_ll= ((LinearLayout) holder.getView(R.id.item_my_speech_ll));
+                        myTv = ((TextView) holder.getView(R.id.item_my_speech_tv));
+                        my_ll = ((LinearLayout) holder.getView(R.id.item_my_speech_ll));
                         editText = ((EditText) holder.getView(R.id.item_my_speech_et));
                         myTv.setText(t);
-                          my_ll.setOnClickListener(new View.OnClickListener() {
-                              @Override
-                              public void onClick(View view) {
-                                  editText.setText(myTv.getText().toString());
-                                  editText.setVisibility(View.VISIBLE);
-                                  myTv.setVisibility(View.GONE);
+                        my_ll.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                editText.setText(myTv.getText().toString());
+                                editText.setVisibility(View.VISIBLE);
+                                myTv.setVisibility(View.GONE);
 
-                              }
-                          });
+                            }
+                        });
 
 
                         editText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
@@ -1208,7 +1201,7 @@ public class MainActivity extends BaseActivity implements AudioRecordUtil.OnDeal
 
         } else {
 
-            L.e("---------------------"+Constants.getInstance().getIntentionUrl());
+            L.e("---------------------" + Constants.getInstance().getIntentionUrl());
             RequestParams rp = new RequestParams(Constants.getInstance().getIntentionUrl());
 
 
@@ -1227,7 +1220,7 @@ public class MainActivity extends BaseActivity implements AudioRecordUtil.OnDeal
             BaseApplication.is_dialog_end = null;
 
 
-            post= x.http().post(rp, new Callback.CommonCallback<String>() {
+            post = x.http().post(rp, new Callback.CommonCallback<String>() {
                 @Override
                 public void onSuccess(String result) {
 
@@ -1263,57 +1256,56 @@ public class MainActivity extends BaseActivity implements AudioRecordUtil.OnDeal
     }
 
 
-
-
-
     @Override
     public void onWindowFocusChanged(boolean hasFocus) {
         super.onWindowFocusChanged(hasFocus);
 
         L.e("onWindowFocusChanged");
-            if (isFirst) {
+        if (isFirst) {
 
-                L.e("onWindowFocusChanged====================进入");
-                if (!SystemUtil.isScreenLocked(mContext)) {
-                    L.e("是黑屏"+SystemUtil.isScreenLocked(mContext));
-                    return ;
-                }
-                isFirst=false;
+            L.e("onWindowFocusChanged====================进入");
+            if (!SystemUtil.isScreenLocked(mContext)) {
+                L.e("是黑屏" + SystemUtil.isScreenLocked(mContext));
+                return;
+            }
+            isFirst = false;
             try {
-                 ping();
+                ping();
                 SocketManger.getInstance().connect();
-                    BaseApplication.bot_session = "";
+                BaseApplication.bot_session = "";
 
-                    mDataList.clear();
-                    listView.setAdapter(null);
-                    tts.stop();
-                    JSONObject jsonObject = new JSONObject();
-                    try {
-                        jsonObject.put("id", count + "");
-                        jsonObject.put("f", "ch_ch");
-                        jsonObject.put("t", "en");
-                        jsonObject.put("audio", "mp3");
-                        jsonObject.put("speed", "speed");
-                        jsonObject.put("gender", "m");
-                        jsonObject.put("dev", BaseApplication.user_id);
-                        jsonObject.put("flag", "1");
-                        jsonObject.put("count", "0");
+                mDataList.clear();
+                listView.setAdapter(null);
+                tts.stop();
+                JSONObject jsonObject = new JSONObject();
+                try {
+                    jsonObject.put("id", count + "");
+                    jsonObject.put("f", "ch_ch");
+                    jsonObject.put("t", "en");
+                    jsonObject.put("audio", "mp3");
+                    jsonObject.put("speed", "speed");
+                    jsonObject.put("gender", "m");
+                    jsonObject.put("dev", BaseApplication.user_id);
+                    jsonObject.put("flag", "1");
+                    jsonObject.put("count", "0");
 
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
 
                 SocketManger.getInstance().sendMessage(new JsonDataBean(51, jsonObject.toString()));
-                    util.startRecord(true);
-                    playAnim(2);
+                util.startRecord(true);
+                playAnim(2);
                 CommonUtils.rexiufu(mContext);
             } catch (Exception e) {
                 L.e("第一次错误");
             }
         }
     }
+
     /**
      * 音量计算
+     *
      * @param buffer
      * @return
      */
@@ -1424,7 +1416,6 @@ public class MainActivity extends BaseActivity implements AudioRecordUtil.OnDeal
                         }
 
 
-
                     }
                 });
 
@@ -1444,7 +1435,7 @@ public class MainActivity extends BaseActivity implements AudioRecordUtil.OnDeal
 
     public void startTTimerTTS() {
         try {
-            if (timerTTS!=null) {
+            if (timerTTS != null) {
                 timerTTS.cancel();
             }
 
@@ -1456,7 +1447,7 @@ public class MainActivity extends BaseActivity implements AudioRecordUtil.OnDeal
                 }
             };
             timerTTS.schedule(timerTaskTSS, 3000);
-            Intent intent=new Intent(mContext,MainActivity.class);
+            Intent intent = new Intent(mContext, MainActivity.class);
 
 
         } catch (Exception e) {
@@ -1467,13 +1458,13 @@ public class MainActivity extends BaseActivity implements AudioRecordUtil.OnDeal
     public void ping() {
         RequestParams requestParams = new RequestParams(Constants.getInstance().getIntentionUrl());
 //        RequestParams requestParams = new RequestParams("http://192.168.5.242:3389");
-        final long start=System.currentTimeMillis();
+        final long start = System.currentTimeMillis();
         x.http().get(requestParams, new Callback.CommonCallback<String>() {
             @Override
             public void onSuccess(String result) {
                 L.e("pin通-------------");
-                long end=System.currentTimeMillis();
-                if ((end-start)>30*1000) {
+                long end = System.currentTimeMillis();
+                if ((end - start) > 30 * 1000) {
 
                     speakError("当前网络不佳!!!");
                     playAnim(1);
@@ -1482,17 +1473,19 @@ public class MainActivity extends BaseActivity implements AudioRecordUtil.OnDeal
 
             @Override
             public void onError(Throwable ex, boolean isOnCallback) {
-                L.e("pin失败--------------"+ex.getMessage());
-                long end=System.currentTimeMillis();
-                L.e("--------"+(end-start));
+                L.e("pin失败--------------" + ex.getMessage());
+                long end = System.currentTimeMillis();
+                L.e("--------" + (end - start));
                 if (ex.getMessage().equals("timeout")) {
                     speakError("当前网络不佳!!!");
                     playAnim(1);
                 }
             }
+
             @Override
             public void onCancelled(CancelledException cex) {
             }
+
             @Override
             public void onFinished() {
             }
@@ -1508,9 +1501,9 @@ public class MainActivity extends BaseActivity implements AudioRecordUtil.OnDeal
     }
 
     public boolean hideKeyboard() {
-        if (editText!=null) {
+        if (editText != null) {
             InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-            if (imm. isActive(editText)) {
+            if (imm.isActive(editText)) {
                 L.e("隐藏键盘");
                 //让某个控件获取焦点
 
@@ -1531,17 +1524,16 @@ public class MainActivity extends BaseActivity implements AudioRecordUtil.OnDeal
 
 
     public void hideInput() {
-        if (editText!=null) {
+        if (editText != null) {
             InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-            if (imm. isActive(editText)) {
+            if (imm.isActive(editText)) {
 
                 // TODO: 2018/11/23  把焦点放到动画控件上面
 //                wv. requestFocusFromTouch();
                 imm.hideSoftInputFromWindow(MainActivity.this.getCurrentFocus().getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
             }
+        }
     }
-    }
-
 
 
     public void speakTTS(String answer) {
@@ -1552,42 +1544,43 @@ public class MainActivity extends BaseActivity implements AudioRecordUtil.OnDeal
 
     /**
      * 语音动画  切换
+     *
      * @param index
      */
     public void playAnim(int index) {
         switch (index) {
             case 1:
                 frameAnim.stop();
-                frameAnim= (AnimationDrawable) getResources().getDrawable(R.drawable.amin_list_huxi);
+                frameAnim = (AnimationDrawable) getResources().getDrawable(R.drawable.amin_list_huxi);
                 frame_amin.setBackgroundDrawable(frameAnim);
                 frameAnim.start();
                 break;
             case 2:
                 frameAnim.stop();
-                frameAnim= (AnimationDrawable) getResources().getDrawable(R.drawable.amin_list_shuru);
+                frameAnim = (AnimationDrawable) getResources().getDrawable(R.drawable.amin_list_shuru);
                 frame_amin.setBackgroundDrawable(frameAnim);
                 frameAnim.start();
                 break;
             case 3:
                 frameAnim.stop();
-                frameAnim= (AnimationDrawable) getResources().getDrawable(R.drawable.amin_list_dengdai);
+                frameAnim = (AnimationDrawable) getResources().getDrawable(R.drawable.amin_list_dengdai);
                 frame_amin.setBackgroundDrawable(frameAnim);
                 frameAnim.start();
                 break;
             case 4:
                 frameAnim.stop();
-                frameAnim= (AnimationDrawable) getResources().getDrawable(R.drawable.amin_list_end);
+                frameAnim = (AnimationDrawable) getResources().getDrawable(R.drawable.amin_list_end);
                 frame_amin.setBackgroundDrawable(frameAnim);
                 frameAnim.start();
                 new Handler().postDelayed(new Runnable() {
                     @Override
                     public void run() {
                         frameAnim.stop();
-                        frameAnim= (AnimationDrawable) getResources().getDrawable(R.drawable.amin_list_huxi);
+                        frameAnim = (AnimationDrawable) getResources().getDrawable(R.drawable.amin_list_huxi);
                         frame_amin.setBackgroundDrawable(frameAnim);
                         frameAnim.start();
                     }
-                },30*80);
+                }, 30 * 80);
 
                 break;
         }

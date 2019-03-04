@@ -3,6 +3,9 @@ package com.aibabel.speech.tcp;
 import android.content.Context;
 import android.util.Log;
 
+import com.aibabel.speech.app.BaseApplication;
+import com.aibabel.speech.properites.Constants;
+import com.aibabel.speech.util.HostUtil;
 import com.aibabel.speech.util.L;
 import com.xuhao.android.libsocket.sdk.ConnectionInfo;
 import com.xuhao.android.libsocket.sdk.OkSocketOptions;
@@ -133,9 +136,9 @@ public class SocketManger implements ISocketActionListener {
 
 
     public IConnectionManager connect() {
-        if (mManager == null) {
+//        if (mManager == null) {
             initConfig();
-        }
+//        }
         mManager.registerReceiver(this);
         if (!mManager.isConnect()) {
             mManager.connect();
@@ -329,4 +332,6 @@ public class SocketManger implements ISocketActionListener {
         };
         timer.schedule(timerTask, timeout);
     }
+
+
 }

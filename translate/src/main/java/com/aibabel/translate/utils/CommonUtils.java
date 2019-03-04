@@ -25,6 +25,7 @@ import com.aibabel.translate.app.BaseApplication;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
@@ -254,13 +255,28 @@ public class CommonUtils {
      *
      * @return
      */
+    /**
+     * 获取本机SN 设备识别码
+     *
+     * @return
+     */
     public static String getSN() {
-        String serialNum = android.os.Build.SERIAL;
-
-        if (TextUtils.isEmpty(serialNum)) {
-            return "0000000000000000";
+        String sn="0000000000000000";
+        try {
+            Class clz = Class.forName("android.os.SystemProperties");
+            Method method = clz.getMethod("get", String.class,String.class);
+            sn = (String) method.invoke(clz,"gsm.serial", "0000000000000000");
+            sn.trim();
+            if (sn.indexOf(" ") != -1) {
+                sn = sn.substring(0, sn.indexOf(" "));
+            }
+            Log.e("CommonUtils","sn="+sn);
+        } catch (Exception e) {
+            e.printStackTrace();
+            Log.e("CommonUtils",e.getMessage());
         }
-        return serialNum;
+
+        return sn;
     }
 
     /**

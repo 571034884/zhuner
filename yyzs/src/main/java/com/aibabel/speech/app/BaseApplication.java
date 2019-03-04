@@ -46,7 +46,7 @@ public class BaseApplication extends Application {
 //    private static LinkedList<Activity> activityLinkedList;
     public static String bot_session="";
     public static String is_dialog_end="";
-    public static  String user_id="0000000000000000";
+    public static String user_id="0000000000000000";
 
 
     public  static int tishi_num=0;

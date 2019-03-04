@@ -1,18 +1,16 @@
 package com.aibabel.speech.properites;
 
-import java.util.IllegalFormatCodePointException;
-
 public class Constants {
     /**
-     *  RequestParams rp = new RequestParams("http://123.56.15.63:3389");
-     // RequestParams rp = new RequestParams("http://192.168.5.242:3389");
+     * RequestParams rp = new RequestParams("http://123.56.15.63:3389");
+     * // RequestParams rp = new RequestParams("http://192.168.5.242:3389");
      */
 
     private static Constants instance;
 
     public static Constants getInstance() {
-        if (instance==null) {
-            instance=new Constants();
+        if (instance == null) {
+            instance = new Constants();
             return instance;
         }
         return instance;
@@ -24,8 +22,8 @@ public class Constants {
 
     public void setBaseUrl(String baseUrl) {
         this.baseUrl = baseUrl;
-        this.intentionUrl=baseUrl;
-        this.getImgUrl=baseUrl+"/img";
+        this.intentionUrl = baseUrl;
+        this.getImgUrl = baseUrl + "/img";
     }
 
     public String getIntentionUrl() {
@@ -44,10 +42,10 @@ public class Constants {
         this.getImgUrl = getImgUrl;
     }
 
-    private String baseUrl="http://abroad.api.pa.aibabel.cn:6021";
+    private String baseUrl = "http://abroad.api.pa.aibabel.cn:6021";
 //    String baseUrl="http://192.168.5.242:3389";
 
 
-    private String intentionUrl=getBaseUrl();
-    private  String getImgUrl=getBaseUrl()+"/img";
+    private String intentionUrl = getBaseUrl();
+    private String getImgUrl = getBaseUrl() + "/img";
 }
