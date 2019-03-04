@@ -162,14 +162,14 @@ public class MainActivity extends MapBaseActivity implements SensorEventListener
                 Map map = new HashMap();
                 map.put("type","cate");
                 if (isChecked){
-                    StatisticsManager.getInstance(mContext).addEventAidl("选择分类", map);
+                    StatisticsManager.getInstance(mContext).addEventAidl(1203, map);
                     tag = "cate";
                     mMetro.setChecked(false);
                     mScenic.setChecked(false);
                     mShop.setChecked(false);
                     getPoi(mCate);
                 }else{
-                    StatisticsManager.getInstance(mContext).addEventAidl("取消分类", map);
+                    StatisticsManager.getInstance(mContext).addEventAidl(1204, map);
                     clear();
                 }
             }
@@ -192,14 +192,14 @@ public class MainActivity extends MapBaseActivity implements SensorEventListener
                 Map map = new HashMap();
                 map.put("type","metro");
                 if (isChecked){
-                    StatisticsManager.getInstance(mContext).addEventAidl("选择分类", map);
+                    StatisticsManager.getInstance(mContext).addEventAidl(1203, map);
                     tag = "metro";
                     mCate.setChecked(false);
                     mScenic.setChecked(false);
                     mShop.setChecked(false);
                     getPoi(mMetro);
                 }else{
-                    StatisticsManager.getInstance(mContext).addEventAidl("取消分类", map);
+                    StatisticsManager.getInstance(mContext).addEventAidl(1204, map);
                     clear();
                 }
             }
@@ -222,14 +222,14 @@ public class MainActivity extends MapBaseActivity implements SensorEventListener
                 Map map = new HashMap();
                 map.put("type","scenic");
                 if (isChecked){
-                    StatisticsManager.getInstance(mContext).addEventAidl("选择分类", map);
+                    StatisticsManager.getInstance(mContext).addEventAidl(1203, map);
                     tag = "scenic";
                     mCate.setChecked(false);
                     mMetro.setChecked(false);
                     mShop.setChecked(false);
                     getPoi(mScenic);
                 }else{
-                    StatisticsManager.getInstance(mContext).addEventAidl("取消分类", map);
+                    StatisticsManager.getInstance(mContext).addEventAidl(1204, map);
                     clear();
                 }
             }
@@ -252,14 +252,14 @@ public class MainActivity extends MapBaseActivity implements SensorEventListener
                 Map map = new HashMap();
                 map.put("type","shop");
                 if (isChecked){
-                    StatisticsManager.getInstance(mContext).addEventAidl("选择分类", map);
+                    StatisticsManager.getInstance(mContext).addEventAidl(1203, map);
                     tag = "shop";
                     mCate.setChecked(false);
                     mMetro.setChecked(false);
                     mScenic.setChecked(false);
                     getPoi(mShop);
                 }else{
-                    StatisticsManager.getInstance(mContext).addEventAidl("取消分类", map);
+                    StatisticsManager.getInstance(mContext).addEventAidl(1204, map);
                     clear();
                 }
             }
@@ -396,7 +396,7 @@ public class MainActivity extends MapBaseActivity implements SensorEventListener
                     ToastUtil.showShort(mContext,"请检查网络连接");
                     return;
                 }
-                StatisticsManager.getInstance(mContext).addEventAidl( "点当前位置", map);
+                StatisticsManager.getInstance(mContext).addEventAidl( 1205, map);
 
                 updateLocation();
                 break;
@@ -410,7 +410,7 @@ public class MainActivity extends MapBaseActivity implements SensorEventListener
                     return;
                 }
 
-                StatisticsManager.getInstance(mContext).addEventAidl( "搜索", map);
+                StatisticsManager.getInstance(mContext).addEventAidl( 1206, map);
 
                 Intent intent = new Intent(mContext, SearchAddressActivity.class);
                 startActivity(intent);
@@ -424,7 +424,7 @@ public class MainActivity extends MapBaseActivity implements SensorEventListener
                 }
 
                 if (mLocation != null) {
-                    StatisticsManager.getInstance(mContext).addEventAidl("点击打卡", new HashMap());
+                    StatisticsManager.getInstance(mContext).addEventAidl(1201, new HashMap());
 
                     Intent intents = new Intent(mContext, ActiveActivity.class);
                     intents.putExtra("locationWhere",mLocation.getLocationWhere()+"");
@@ -743,7 +743,7 @@ public class MainActivity extends MapBaseActivity implements SensorEventListener
             map.put("type", item.getTagType());
             map.put("scenicName", item.getNameCh());
             map.put("scenicAddr", item.getAddress());
-            StatisticsManager.getInstance(mContext).addEventAidl("点击景点", map);
+            StatisticsManager.getInstance(mContext).addEventAidl(1213, map);
 
             Intent intent = new Intent(this, DialogActivity.class);
             intent.putExtra("data", item);
