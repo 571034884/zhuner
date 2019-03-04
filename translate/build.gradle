@@ -99,11 +99,11 @@ dependencies {
     debugImplementation 'com.amitshekhar.android:debug-db:1.0.4'
     implementation files('libs/micarray.jar')
     implementation 'com.lzy.net:okgo:3.0.4'
-    implementation 'com.aibabel:aidlaar:1.0.14'
     repositories {
         maven {
             url "http://maven.aliyun.com/nexus/content/repositories/releases"
         }
     }
-
+    implementation project(':aidlaar')
+    implementation project(':baselibrary')
 }

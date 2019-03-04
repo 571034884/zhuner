@@ -25,6 +25,7 @@ import android.widget.TextView;
 import android.widget.ZoomControls;
 
 
+import com.aibabel.aidlaar.StatisticsManager;
 import com.aibabel.speech.util.CommonUtils;
 import com.aibabel.speech.util.HostUtil;
 import com.alibaba.fastjson.JSON;
@@ -145,6 +146,7 @@ public class MainActivity extends BaseActivity implements AudioRecordUtil.OnDeal
                     }
                 }
             });
+            StatisticsManager.getInstance(this).addEventAidl(2000);
 
         } catch (Exception e) {
 
@@ -222,6 +224,7 @@ public class MainActivity extends BaseActivity implements AudioRecordUtil.OnDeal
 
         } catch (Exception e) {
         }
+        StatisticsManager.getInstance(this).addEventAidl(2000);
 
     }
 

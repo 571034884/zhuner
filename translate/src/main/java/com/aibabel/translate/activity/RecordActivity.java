@@ -237,8 +237,8 @@ public class RecordActivity extends BaseActivity {
                         }
                         //添加统计
                         Map<String, String> map = new HashMap<>();
-                        map.put("删除数量",checkList.size()+"");
-                        StatisticsManager.getInstance(this).addEventAidl("删除",map);
+                        map.put("p1",checkList.size()+"");
+                        StatisticsManager.getInstance(this).addEventAidl(1321,map);
                         quxiao();
                     }
                 }catch(Exception e){
@@ -247,6 +247,7 @@ public class RecordActivity extends BaseActivity {
 
                 break;
             case R.id.iv_close:
+                StatisticsManager.getInstance(this).addEventAidl(1312);
                 finish();
                 break;
         }

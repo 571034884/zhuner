@@ -668,7 +668,7 @@ public class TranslateUtil implements MicArrayUtil.OnDealwithListener, SocketMan
                 listener.reset();
 //                L.e("reset","101");
             case 102://翻译失败
-                ToastUtil.showShort("服务器开小差了，请重试！");
+                ToastUtil.showShort(context.getResources().getString(R.string.error_response));
 //                listener.setMt("", Constant.FLAG_ONLINE);
 //                TTSUtil.getInstance().notUnderstand(context, 4, Constant.isSound);
 //                break;
@@ -686,23 +686,25 @@ public class TranslateUtil implements MicArrayUtil.OnDealwithListener, SocketMan
      * 统计（在线为主）
      */
     private void statistics(){
+        int key = 1303;
+
         try{
             Map<String, String> map = new HashMap<>();
-            map.put("录音时长",(endTime-startTime)+"");
-            map.put("翻译时长",(mtTime-endTime)+"");
-            map.put("合成时长",(soundTime-endTime)+"");
-            map.put("目标语言",to_lan_code+"");
-            map.put("源语言",from_lan_code+"");
-            map.put("翻译是否成功",isSuccess);
-            map.put("界面模式",currFrag);
-            map.put("在离线",mode);
-            String keyword  = "按下翻译键";
+            map.put("p2",(endTime-startTime)+"");
+            map.put("p3",(mtTime-endTime)+"");
+            map.put("p4",(soundTime-endTime)+"");
+            map.put("p6",to_lan_code+"");
+            map.put("p5",from_lan_code+"");
+            map.put("p1",isSuccess);
+            map.put("p7",currFrag);
+            map.put("p8",mode);
+
             if(key_press==132){
-                keyword="按下翻译键";
+                key=1302;
             }else{
-                keyword="按上翻译键";
+                key=1303;
             }
-//            StatisticsManager.getInstance(context).addEventAidl(keyword,map);
+            StatisticsManager.getInstance(context).addEventAidl(key,map);
         }catch(Exception e){
             e.printStackTrace();
         }

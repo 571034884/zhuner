@@ -1,6 +1,5 @@
 package com.aibabel.translate.fragment;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.AnimationDrawable;
@@ -9,7 +8,6 @@ import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.os.Handler;
 import android.text.TextUtils;
-import android.util.Log;
 import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.KeyEvent;
@@ -22,7 +20,6 @@ import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.aibabel.aidlaar.StatisticsManager;
 import com.aibabel.translate.R;
@@ -456,7 +453,7 @@ public class IpsilateralFragment extends BaseFragment implements OnResponseListe
      * @param event
      */
     public void onKeyUp(int keyCode, KeyEvent event) {
-        if (isTimeOut){
+        if (isTimeOut) {
             isRecording = false;
             return;
         }
@@ -464,7 +461,6 @@ public class IpsilateralFragment extends BaseFragment implements OnResponseListe
         switch (keyCode) {
             case DOWN_KEY:
                 isRecording = false;
-//                StatisticsManager.getInstance(context).addEventAidl("按下翻译键");
                 animationDrawableDown.stop();
                 stopCountDownTimer();
                 llUpSpeak.setVisibility(View.GONE);
@@ -476,7 +472,6 @@ public class IpsilateralFragment extends BaseFragment implements OnResponseListe
                 break;
             case UP_KEY:
                 isRecording = false;
-//                StatisticsManager.getInstance(context).addEventAidl("按上翻译键");
                 animationDrawableUp.stop();
                 stopCountDownTimer();
                 llUpSpeak.setVisibility(View.GONE);
@@ -670,7 +665,7 @@ public class IpsilateralFragment extends BaseFragment implements OnResponseListe
                 selectLan(UP_KEY, lan_up);
                 break;
             case R.id.iv_switch:
-                StatisticsManager.getInstance(context).addEventAidl("反转界面模式");
+                StatisticsManager.getInstance(context).addEventAidl(1305);
                 toOppos();
                 break;
             case R.id.iv_down_sound:
@@ -695,7 +690,7 @@ public class IpsilateralFragment extends BaseFragment implements OnResponseListe
 
                 break;
             case R.id.iv_record:
-                StatisticsManager.getInstance(context).addEventAidl("点击历史记录");
+                StatisticsManager.getInstance(context).addEventAidl(1306);
                 toRecord();
                 break;
 
@@ -708,8 +703,8 @@ public class IpsilateralFragment extends BaseFragment implements OnResponseListe
      */
     private void playAudio() {
         Map<String, String> map = new HashMap<>();
-        map.put("语种",code_to);
-        StatisticsManager.getInstance(context).addEventAidl("重新播放");
+        map.put("p1", code_to);
+        StatisticsManager.getInstance(context).addEventAidl(1304);
         if (isOnline) {
             MediaPlayerUtil.playMp3(SharePrefUtil.getString(context, "mp3_1", ""), context);
         } else {
@@ -970,9 +965,9 @@ public class IpsilateralFragment extends BaseFragment implements OnResponseListe
             }
             //添加统计
             Map<String, String> map = new HashMap<>();
-            map.put("源语言",lan_do);
-            map.put("目标语言",lan_up);
-            StatisticsManager.getInstance(context).addEventAidl("选择语种",map);
+            map.put("p1", lan_do);
+            map.put("p2", lan_up);
+            StatisticsManager.getInstance(context).addEventAidl(1311, map);
 
         } else if (requestCode == 101 && resultCode == 201) {//编辑修改页面返回设置参数
             String mt = data.getStringExtra("mt");
@@ -1067,7 +1062,7 @@ public class IpsilateralFragment extends BaseFragment implements OnResponseListe
     /**
      * 获取当前是否正在录音
      */
-    public boolean getIsRecording(){
+    public boolean getIsRecording() {
 
         return isRecording;
     }

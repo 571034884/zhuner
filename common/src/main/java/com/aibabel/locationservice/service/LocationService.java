@@ -659,7 +659,6 @@ public class LocationService extends Service implements ScreenListener, CardBroa
             BootBroadcastReceiver.CARD_TYPE = FlowUtil.getDefaultDataSubId(LocationService.this);
             if (BootBroadcastReceiver.CARD_TYPE == 0) {
                 // TODO: 2019/2/25 切换card0发送流量统计到后台
-
                 send_sectionFlow(Constants.CARD_0, sectionNumFlow, BootBroadcastReceiver.CARD_TYPE);
                 Log.e("上传", "iccid ==" + Constants.CARD_0 + "====" + sectionNumFlow);
             } else if (BootBroadcastReceiver.CARD_TYPE == 1) {

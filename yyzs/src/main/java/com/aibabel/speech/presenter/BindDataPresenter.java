@@ -45,6 +45,7 @@ import com.aibabel.speech.properites.Constants;
 import com.aibabel.speech.util.L;
 import com.aibabel.speech.util.SDCardUtils;
 import com.aibabel.speech.util.Utility;
+import com.bumptech.glide.request.RequestOptions;
 
 import org.xutils.common.Callback;
 import org.xutils.http.RequestParams;
@@ -616,7 +617,9 @@ public class BindDataPresenter {
                 L.e("图片：" + result);
                 com.alibaba.fastjson.JSONObject jsonObject = JSON.parseObject(result);
                 if (jsonObject.containsKey("img")) {
-                    Glide.with(context).load(jsonObject.get("img")).placeholder(R.mipmap.meishi).into(imageView);
+                    RequestOptions options = new RequestOptions().placeholder(R.mipmap.meishi);
+                    Glide.with(context).load(jsonObject.get("img")).apply(options).into(imageView);
+//                    Glide.with(context).load(jsonObject.get("img")).placeholder(R.mipmap.meishi).into(imageView);
                 } else if (jsonObject.getString("img").equals("")) {
                     Glide.with(context).load(R.mipmap.meishi).into(imageView);
                 } else {

@@ -481,7 +481,6 @@ public class OppositeFragment extends BaseFragment implements OnResponseListener
         switch (keyCode) {
             case DOWN_KEY:
                 isRecording = false;
-                StatisticsManager.getInstance(context).addEventAidl("按下翻译键");
                 animationDrawableDown.stop();
                 stopCountDownTimer();
                 llUpSpeak.setVisibility(View.GONE);
@@ -494,7 +493,6 @@ public class OppositeFragment extends BaseFragment implements OnResponseListener
                 break;
             case UP_KEY:
                 isRecording = false;
-                StatisticsManager.getInstance(context).addEventAidl("按上翻译键");
                 animationDrawableUp.stop();
                 stopCountDownTimer();
                 llUpSpeak.setVisibility(View.GONE);
@@ -677,7 +675,7 @@ public class OppositeFragment extends BaseFragment implements OnResponseListener
                 selectLan(UP_KEY, lan_up, true);
                 break;
             case R.id.iv_switch:
-                StatisticsManager.getInstance(context).addEventAidl("反转界面模式");
+                StatisticsManager.getInstance(context).addEventAidl(1305);
                 toIpsil();
                 break;
             case R.id.iv_down_sound:
@@ -701,7 +699,7 @@ public class OppositeFragment extends BaseFragment implements OnResponseListener
                 }
 
             case R.id.iv_record:
-                StatisticsManager.getInstance(context).addEventAidl("点击历史记录");
+                StatisticsManager.getInstance(context).addEventAidl(1306);
                 toRecord();
                 break;
         }
@@ -712,8 +710,8 @@ public class OppositeFragment extends BaseFragment implements OnResponseListener
      */
     private void playAudio() {
         Map<String, String> map = new HashMap<>();
-        map.put("语种",code_to);
-        StatisticsManager.getInstance(context).addEventAidl("重新播放");
+        map.put("p1",code_to);
+        StatisticsManager.getInstance(context).addEventAidl(1304);
         if (isOnline) {
             MediaPlayerUtil.playMp3(SharePrefUtil.getString(context, "mp3_1", ""), context);
         } else {
@@ -950,9 +948,9 @@ public class OppositeFragment extends BaseFragment implements OnResponseListener
 
             //添加统计
             Map<String, String> map = new HashMap<>();
-            map.put("源语言",lan_do);
-            map.put("目标语言",lan_up);
-            StatisticsManager.getInstance(context).addEventAidl("选择语种",map);
+            map.put("p1",lan_do);
+            map.put("p2",lan_up);
+            StatisticsManager.getInstance(context).addEventAidl(1311,map);
         } else if (requestCode == 101 && resultCode == 201) {
             String mt = data.getStringExtra("mt");
             String en = data.getStringExtra("en");
