@@ -94,6 +94,9 @@ dependencies {
             pom.packaging = 'aar'
         }
     }
+    //跨进程通信
+    compile 'com.github.xuexiangjys:XIPC:1.0.1'
+    compile 'com.google.code.gson:gson:2.2.4'
 
 }
 //repositories {

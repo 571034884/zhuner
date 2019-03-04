@@ -12,6 +12,8 @@ import com.aibabel.baselibrary.BuildConfig;
 import com.aibabel.baselibrary.http.OkGoUtil;
 import com.aibabel.baselibrary.imageloader.ImageLoader;
 import com.aibabel.baselibrary.imageloader.object.GlideLoader;
+import com.aibabel.baselibrary.impl.IDataManager;
+import com.aibabel.baselibrary.mode.DataManager;
 import com.aibabel.baselibrary.utils.CommonUtils;
 import com.aibabel.baselibrary.utils.ProviderUtils;
 import com.lzy.okgo.OkGo;
@@ -21,6 +23,7 @@ import com.orhanobut.logger.Logger;
 import com.orhanobut.logger.PrettyFormatStrategy;
 import com.umeng.analytics.MobclickAgent;
 import com.umeng.commonsdk.UMConfigure;
+import com.xuexiang.xipc.XIPC;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -96,6 +99,18 @@ public abstract class BaseApplication extends Application {
         initOkGoConfig();
         initImageLoaderConfig();
         initStatisticsConfig();
+        initXipc();
+
+    }
+
+    /**
+     * 跨进程初始化
+     */
+    private void initXipc() {
+        XIPC.init(this);
+//        XIPC.debug(BuildConfig.DEBUG);
+        XIPC.register(DataManager.class);
+        XIPC.register(IDataManager.class);
     }
 
     public void initStatisticsConfig() {

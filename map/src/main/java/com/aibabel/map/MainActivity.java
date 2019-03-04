@@ -23,12 +23,15 @@ import android.widget.CompoundButton;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 import android.widget.ZoomControls;
 
 import com.aibabel.aidlaar.StatisticsManager;
 import com.aibabel.baselibrary.http.BaseCallback;
 import com.aibabel.baselibrary.http.OkGoUtil;
+import com.aibabel.baselibrary.impl.IDataManager;
 import com.aibabel.baselibrary.utils.ToastUtil;
+import com.aibabel.baselibrary.utils.XIPCUtils;
 import com.aibabel.map.activity.ActiveActivity;
 import com.aibabel.map.activity.DialogActivity;
 import com.aibabel.map.activity.RouteLineActivity;
@@ -62,6 +65,9 @@ import com.baidu.mapapi.map.OverlayOptions;
 import com.baidu.mapapi.map.UiSettings;
 import com.baidu.mapapi.model.LatLng;
 import com.orhanobut.logger.Logger;
+import com.xuexiang.xipc.XIPC;
+import com.xuexiang.xipc.core.channel.IPCListener;
+import com.xuexiang.xipc.core.channel.IPCService;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -69,6 +75,8 @@ import java.util.List;
 import java.util.Map;
 
 import butterknife.BindView;
+
+import static com.xuexiang.xipc.XIPC.getContext;
 
 public class MainActivity extends MapBaseActivity implements SensorEventListener, BaiduMap.OnMarkerClickListener, CardPagerAdapter.onClickListener {
 
