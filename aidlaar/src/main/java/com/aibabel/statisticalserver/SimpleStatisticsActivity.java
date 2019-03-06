@@ -51,7 +51,7 @@ public class SimpleStatisticsActivity extends AppCompatActivity {
         switch (event.getAction()) {
             case MotionEvent.ACTION_DOWN:
                 interactionTimesGrowth();
-                System.out.println("Activity---dispatchTouchEvent---DOWN" + interactionTimes);
+//                System.out.println("Activity---dispatchTouchEvent---DOWN" + interactionTimes);
                 break;
 //            case MotionEvent.ACTION_MOVE:
 //                System.out.println("Activity---dispatchTouchEvent---MOVE");

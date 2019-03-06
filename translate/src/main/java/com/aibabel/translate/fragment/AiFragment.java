@@ -23,6 +23,7 @@ import com.aibabel.translate.utils.Constant;
 import com.aibabel.translate.utils.L;
 import com.aibabel.translate.utils.MediaPlayerUtil;
 import com.aibabel.translate.utils.SharePrefUtil;
+import com.aibabel.translate.utils.ToastUtil;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -72,6 +73,7 @@ public class AiFragment extends BaseFragment {
     @Override
     public void initView() {
         ivMenu.setOnClickListener(this);
+        llContent.setOnClickListener(this);
 
     }
 
@@ -239,14 +241,25 @@ public class AiFragment extends BaseFragment {
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.iv_menu:
-                if (BaseFragment.isOpen) {
-                    ivMenu.setImageDrawable(context.getDrawable(R.mipmap.ic_translate_back));
-                } else {
-                    ivMenu.setImageDrawable(context.getDrawable(R.mipmap.ic_translate_menu));
-                }
                 activity.drag();
                 break;
+            case R.id.llContent:
+                ToastUtil.showShort("11111111111111111111111");
+                break;
 
+        }
+    }
+
+    /**
+     * 切换图片
+     * @param isOpen
+     */
+    public void switchMenuIcon(boolean isOpen){
+        System.out.println(isOpen);
+        if (isOpen) {
+            ivMenu.setImageDrawable(context.getDrawable(R.mipmap.ic_translate_back));
+        } else {
+            ivMenu.setImageDrawable(context.getDrawable(R.mipmap.ic_translate_menu));
         }
     }
 
@@ -271,6 +284,11 @@ public class AiFragment extends BaseFragment {
         Constant.isSound = false;
         activity.showFragment(1);
     }
+
+
+
+
+
 
 
 //    /**
@@ -314,19 +332,6 @@ public class AiFragment extends BaseFragment {
         //翻译或者识别失败了重置界面
     }
 
-    /**
-     * 在这里去处sp里的东西   所以得使用startActivityForResult();  在onResume每次执行一遍效率低下
-     *
-     * @param requestCode
-     * @param resultCode
-     * @param data
-     */
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-
-
-    }
 
 
     @Override

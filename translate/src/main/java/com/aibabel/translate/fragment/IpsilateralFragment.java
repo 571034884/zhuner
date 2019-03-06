@@ -689,15 +689,28 @@ public class IpsilateralFragment extends BaseFragment implements OnResponseListe
 
                 break;
             case R.id.iv_record:
-                if (BaseFragment.isOpen) {
-                    ivRecord.setImageDrawable(context.getDrawable(R.mipmap.ic_translate_back));
-                } else {
-                    ivRecord.setImageDrawable(context.getDrawable(R.mipmap.ic_translate_menu));
-                }
+//                if (BaseFragment.isOpen) {
+//                    ivRecord.setImageDrawable(context.getDrawable(R.mipmap.ic_translate_back));
+//                } else {
+//                    ivRecord.setImageDrawable(context.getDrawable(R.mipmap.ic_translate_menu));
+//                }
                 activity.drag();
 //                toRecord();
                 break;
 
+        }
+    }
+
+    /**
+     * 切换图片
+     * @param isOpen
+     */
+    public void switchMenuIcon(boolean isOpen){
+        System.out.println(isOpen);
+        if (isOpen) {
+            ivRecord.setImageDrawable(context.getDrawable(R.mipmap.ic_translate_back));
+        } else {
+            ivRecord.setImageDrawable(context.getDrawable(R.mipmap.ic_translate_menu));
         }
     }
 

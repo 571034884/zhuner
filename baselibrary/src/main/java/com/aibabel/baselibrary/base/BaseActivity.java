@@ -350,7 +350,7 @@ public abstract class BaseActivity extends AppCompatActivity {
     public boolean onTouchEvent(MotionEvent event) {
         switch (event.getAction()) {
             case MotionEvent.ACTION_DOWN:
-                System.out.println("Activity---onTouchEvent---DOWN");
+//                System.out.println("Activity---onTouchEvent---DOWN");
                 break;
 //            case MotionEvent.ACTION_MOVE:
 //                System.out.println("Activity---onTouchEvent---MOVE");

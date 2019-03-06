@@ -339,22 +339,22 @@ public class DragLayout extends FrameLayout {
 	private int mWidth;
 	private int mRange;
 
-	// b.传递触摸事件
-	@Override
-	public boolean onInterceptTouchEvent(MotionEvent ev) {
-		// 传递给mDragHelper
-		return mDragHelper.shouldInterceptTouchEvent(ev);
-	}
-	@Override
-	public boolean onTouchEvent(MotionEvent event) {
-		try {
-			mDragHelper.processTouchEvent(event);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		// 返回true, 持续接受事件
-		return true;
-	}
+//	// b.传递触摸事件
+//	@Override
+//	public boolean onInterceptTouchEvent(MotionEvent ev) {
+//		// 传递给mDragHelper
+//		return mDragHelper.shouldInterceptTouchEvent(ev);
+//	}
+//	@Override
+//	public boolean onTouchEvent(MotionEvent event) {
+//		try {
+//			mDragHelper.processTouchEvent(event);
+//		} catch (Exception e) {
+//			e.printStackTrace();
+//		}
+//		// 返回true, 持续接受事件
+//		return true;
+//	}
 
 	@Override
 	protected void onFinishInflate() {
@@ -384,7 +384,7 @@ public class DragLayout extends FrameLayout {
 
 		// 移动的范围
 		mRange = (int) (mWidth * 0.45f);
-//		mRange = 242;
+
 
 	}
 

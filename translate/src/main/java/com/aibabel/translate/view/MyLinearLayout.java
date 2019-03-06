@@ -26,17 +26,18 @@ public class MyLinearLayout extends LinearLayout {
 	@Override
 	public boolean onInterceptTouchEvent(MotionEvent ev) {
 		// 如果当前是关闭状态, 按之前方法判断
-		if(mDragLayout.getStatus() == DragLayout.Status.Close){
+	/*	if(mDragLayout.getStatus() == DragLayout.Status.Close){
 			return super.onInterceptTouchEvent(ev);
 		}else {
 			return true;
-		}
+		}*/
+		return super.onInterceptTouchEvent(ev);
 	}
 	
 	@Override
 	public boolean onTouchEvent(MotionEvent event) {
 		// 如果当前是关闭状态, 按之前方法处理
-		if(mDragLayout.getStatus() == DragLayout.Status.Close){
+	/*	if(mDragLayout.getStatus() == DragLayout.Status.Close){
 			return super.onTouchEvent(event);
 		}else {
 			// 手指抬起, 执行关闭操作
@@ -44,7 +45,8 @@ public class MyLinearLayout extends LinearLayout {
 				mDragLayout.close();
 			}
 			return true;
-		}
+		}*/
+		return super.onTouchEvent(event);
 	}
 
 }

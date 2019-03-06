@@ -10,6 +10,7 @@ import android.hardware.SensorManager;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.text.TextUtils;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -699,8 +700,25 @@ public class OppositeFragment extends BaseFragment implements OnResponseListener
                 }
 
             case R.id.iv_record:
-                toRecord();
+//                toRecord();
+                activity.drag();
+
                 break;
+        }
+    }
+
+
+
+    /**
+     * 切换图片
+     * @param isOpen
+     */
+    public void switchMenuIcon(boolean isOpen){
+        System.out.println(isOpen);
+        if (isOpen) {
+            ivRecord.setImageDrawable(context.getDrawable(R.mipmap.ic_translate_back));
+        } else {
+            ivRecord.setImageDrawable(context.getDrawable(R.mipmap.ic_translate_menu));
         }
     }
 

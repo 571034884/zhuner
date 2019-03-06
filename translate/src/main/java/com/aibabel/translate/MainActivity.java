@@ -46,8 +46,8 @@ public class MainActivity extends BaseActivity implements NetBroadcastReceiver.N
     ImageView mianCloseImg;
     @BindView(R.id.lv_left)
     ListView mLeftList;
-    @BindView(R.id.ml_layout)
-    MyLinearLayout mLinearLayout;
+//    @BindView(R.id.ml_layout)
+//    MyLinearLayout mLinearLayout;
     @BindView(R.id.tv_menu)
     TextView tvMenu;
     @BindView(R.id.dl)
@@ -59,12 +59,30 @@ public class MainActivity extends BaseActivity implements NetBroadcastReceiver.N
     private IpsilateralFragment ipsiFragment;
     private OppositeFragment oppoFragment;
     private AiFragment aiFragment;
-    private int currentFragmentIndex = 0;
     private BaseFragment currentFragment;
+    /**
+     * 当前fragment标记，默认为0，语音翻译同侧模式
+     */
+    private int currentFragmentIndex = 0;
+    /**
+     * 网络变化广播监听
+     */
     public NetBroadcastReceiver broadcastReceiver;
+    /**
+     * 屏幕变化广播
+     */
     private ScreenBroadcastReceiver mScreenReceiver;
+    /**
+     * 判定是否为长安物理键调起
+     */
     private String isTranslateStart;
+    /**
+     * 调起的code
+     */
     private int isTranslateKeyCode;
+    /**
+     * 是否处于息屏状态
+     */
     private boolean isSleep = false;
 
     private LeftSetAdapter adapter = null;
@@ -132,7 +150,6 @@ public class MainActivity extends BaseActivity implements NetBroadcastReceiver.N
                 switch (position) {
                     case 0:
                         showFragment(lastIndex);
-//                        showFragment(1);
                         break;
                     case 1:
                         if (currentFragmentIndex == 1 || currentFragmentIndex == 0)
@@ -141,19 +158,21 @@ public class MainActivity extends BaseActivity implements NetBroadcastReceiver.N
                         SharePrefUtil.saveBoolean(mContext, "type", true);
                         break;
                     case 2:
-                        if(currentFragmentIndex == 0){
+                        if (currentFragmentIndex == 1 || currentFragmentIndex == 0)
+                            lastIndex = currentFragmentIndex;
+                        if (currentFragmentIndex == 0) {
                             ipsiFragment.toRecord();
-                        }else if(currentFragmentIndex==1){
+                        } else if (currentFragmentIndex == 1) {
                             oppoFragment.toRecord();
                         }
                         break;
                 }
-                mDragLayout.close(true);
+                mDragLayout.close();
             }
         });
 
         //首页图标的动效
-        mLinearLayout.setDraglayout(mDragLayout);
+//        mLinearLayout.setDraglayout(mDragLayout);
 
         mDragLayout.setDragStatusListener(new DragLayout.OnDragStatusChangeListener() {
             @Override
@@ -350,9 +369,12 @@ public class MainActivity extends BaseActivity implements NetBroadcastReceiver.N
                 currentFragment = oppoFragment;
                 break;
             case 2://智能翻译
-                fragmentTransaction.replace(R.id.fl_translate, aiFragment);
-                currentFragmentIndex = 2;
-                currentFragment = aiFragment;
+//                fragmentTransaction.replace(R.id.fl_translate, aiFragment);
+//                currentFragmentIndex = 2;
+//                currentFragment = aiFragment;
+                fragmentTransaction.replace(R.id.fl_translate, oppoFragment);
+                currentFragmentIndex = 1;
+                currentFragment = oppoFragment;
                 break;
         }
         save(currentFragmentIndex);
@@ -516,12 +538,27 @@ public class MainActivity extends BaseActivity implements NetBroadcastReceiver.N
      * 打开或关闭侧滑
      */
     public void drag() {
-        if (!BaseFragment.isOpen) {
-            BaseFragment.isOpen = true;
-            mDragLayout.open(true);
+        if (mDragLayout.getStatus().equals(DragLayout.Status.Close)) {
+            mDragLayout.open();
+            switchIcon(currentFragmentIndex,true);
         } else {
-            BaseFragment.isOpen = false;
-            mDragLayout.close(true);
+            switchIcon(currentFragmentIndex,false);
+            mDragLayout.close();
+        }
+    }
+
+
+    public void switchIcon(int type,boolean isOpen){
+        switch (type){
+            case 0:
+                ipsiFragment.switchMenuIcon(isOpen);
+                break;
+            case 1:
+                oppoFragment.switchMenuIcon(isOpen);
+                break;
+            case 2:
+                aiFragment.switchMenuIcon(isOpen);
+                break;
         }
     }
 
