@@ -48,21 +48,13 @@
         android:layout_weight="1"
         android:orientation="vertical">
 
-        <android.support.v4.widget.SwipeRefreshLayout
-            android:id="@+id/sl_chat"
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/rv_chat"
             android:layout_width="match_parent"
-            android:layout_height="0dp"
+            android:layout_height="match_parent"
             android:layout_weight="1"
-            android:orientation="vertical">
-
-            <android.support.v7.widget.RecyclerView
-                android:id="@+id/rv_chat"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:overScrollMode="never" />
-        </android.support.v4.widget.SwipeRefreshLayout>
-
-
+            android:overScrollMode="never" />
         <View
             android:layout_width="match_parent"
             android:layout_height="0.5dp"

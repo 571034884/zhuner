@@ -1,6 +1,8 @@
 package com.aibabel.translate.adapter;
 
 import android.content.Context;
+import android.util.SparseBooleanArray;
+
 import com.aibabel.translate.R;
 import com.aibabel.translate.bean.MessageBean;
 import com.chad.library.adapter.base.BaseQuickAdapter;
@@ -13,11 +15,17 @@ import java.util.List;
 public class ChatAdapter extends BaseQuickAdapter<MessageBean, BaseViewHolder> {
 
 
-    private static final int TYPE_SEND_TEXT = 1;
+    private static final int TYPE_SEND_CH = 1;
+    private static final int TYPE_SEND_EN = 1;
 
 
-    private static final int SEND_TEXT = R.layout.item_text_send;
-
+    private static final int SEND_CH = R.layout.item_send_ch;
+    private static final int SEND_EN = R.layout.item_send_en;
+    private static final int SEND_DATE = R.layout.item_send_en;
+    /**
+     * 防止Checkbox错乱 做setTag  getTag操作
+     */
+    private SparseBooleanArray mBooleanArray = new SparseBooleanArray();
 
 
     public ChatAdapter(Context context, List<MessageBean> data) {
@@ -25,10 +33,11 @@ public class ChatAdapter extends BaseQuickAdapter<MessageBean, BaseViewHolder> {
         setMultiTypeDelegate(new MultiTypeDelegate<MessageBean>() {
             @Override
             protected int getItemType(MessageBean entity) {
-            return 1;
+                return 1;
             }
         });
-        getMultiTypeDelegate().registerItemType(TYPE_SEND_TEXT, SEND_TEXT);
+        getMultiTypeDelegate().registerItemType(TYPE_SEND_CH, SEND_CH)
+                .registerItemType(TYPE_SEND_EN, SEND_EN);
     }
 
     @Override
@@ -36,6 +45,7 @@ public class ChatAdapter extends BaseQuickAdapter<MessageBean, BaseViewHolder> {
         setContent(helper, item);
         setStatus(helper, item);
         setOnClick(helper, item);
+        setOnLongClick(helper, item);
 
     }
 
@@ -58,5 +68,31 @@ public class ChatAdapter extends BaseQuickAdapter<MessageBean, BaseViewHolder> {
 //            helper.addOnClickListener(R.id.rlAudio);
 //        }
     }
+    private void setOnLongClick(BaseViewHolder helper, MessageBean item) {
+
+//        helper.addOnLongClickListener(R.id.rlAudio);
+    }
+
+
+    public void setItemChecked(int position) {
+
+//        if (mLastCheckedPosition == position)
+//
+//            return;
+//
+//        mBooleanArray.put(position, true);
+//
+//        if (mLastCheckedPosition  -1) {
+//            mBooleanArray.put(mLastCheckedPosition,false);
+//            mAdapter.notifyItemChanged(mLastCheckedPosition);
+//        }
+//
+//        mAdapter.notifyDataSetChanged();
+//
+//        mLastCheckedPosition = position;
+    }
+
+
+
 
 }

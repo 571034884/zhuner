@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="5dp">
+
+
+    <TextView
+        android:id="@+id/item_tv_time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:textColor="#999999"
+        android:textSize="12dp"
+        android:visibility="gone" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp">
+
+
+        <LinearLayout
+            android:id="@+id/item_layout_content"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="5dp"
+            android:background="@drawable/message_text_ch"
+            android:gravity="right|center_vertical"
+            android:orientation="vertical"
+            android:paddingBottom="24px"
+            android:paddingLeft="32px"
+            android:paddingRight="32px"
+            android:paddingTop="24px">
+
+            <TextView
+                android:id="@+id/item_content_asr"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="left"
+                android:text="你好jdfkajfkajdlfkafjkdajkfds"
+                android:textColor="@color/c_66"
+                android:textSize="28px" />
+
+            <view
+                android:layout_width="match_parent"
+                android:layout_height="1px"
+                android:layout_marginBottom="12px"
+                android:layout_marginTop="12px"
+                android:background="@color/c_d5" />
+
+            <TextView
+                android:id="@+id/item_content_mt"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="left"
+                android:text="hello"
+                android:textColor="@color/c_66"
+                android:textSize="28px" />
+
+        </LinearLayout>
+
+
+        <CheckBox
+            android:id="@+id/item_cb_select"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:button="@drawable/checkbox"
+            android:layout_alignParentLeft="true"
+            android:layout_marginRight="10dp"
+            android:visibility="gone" />
+    </RelativeLayout>
+
+
+</LinearLayout>

@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/c_e5">
+
+
+    <!--录音时显示-->
+    <LinearLayout
+        android:id="@+id/ll_audio"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="@dimen/px16"
+        android:layout_marginRight="@dimen/px60"
+        android:layout_marginTop="@dimen/px28"
+        android:background="@drawable/message_text_ch"
+        android:gravity="left|center_vertical"
+        android:orientation="vertical"
+        android:paddingBottom="24px"
+        android:paddingLeft="32px"
+        android:paddingRight="32px"
+        android:paddingTop="24px">
+
+        <android.support.constraint.ConstraintLayout
+            android:id="@+id/cl_ai_asr"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <ImageView
+                android:id="@+id/iv_audio_anmo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@mipmap/ic_launcher"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent" />
+
+
+            <ImageView
+                android:id="@+id/iv_count_anmo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@mipmap/ic_launcher"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent" />
+
+            <TextView
+                android:id="@+id/tv_ai_asr"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="你好jdfkajfkajdlfkafjkdajkfds"
+                android:textColor="@color/white"
+                android:textSize="28px"
+                android:visibility="gone"
+                app:layout_constraintLeft_toLeftOf="parent" />
+
+
+        </android.support.constraint.ConstraintLayout>
+
+
+        <view
+            android:layout_width="match_parent"
+            android:layout_height="1px"
+            android:layout_marginBottom="12px"
+            android:layout_marginTop="12px"
+            android:background="@color/white" />
+
+        <android.support.constraint.ConstraintLayout
+            android:id="@+id/cl_ai_mt"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <ImageView
+                android:id="@+id/iv_progress_anmo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@mipmap/ic_launcher"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent" />
+
+            <TextView
+                android:id="@+id/tv_ai_mt"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="left"
+                android:text="hello"
+                android:textColor="@color/white"
+                android:textSize="28px" />
+        </android.support.constraint.ConstraintLayout>
+    </LinearLayout>
+
+    <!--识别失败后显示-->
+    <LinearLayout
+        android:id="@+id/ll_failed"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="@dimen/px16"
+        android:layout_marginRight="@dimen/px60"
+        android:layout_marginTop="@dimen/px28"
+        android:background="@drawable/message_aduio_failed"
+        android:gravity="left|center_vertical"
+        android:orientation="vertical"
+        android:paddingBottom="24px"
+        android:paddingLeft="32px"
+        android:paddingRight="32px"
+        android:paddingTop="24px"
+        android:visibility="gone">
+
+        <TextView
+            android:id="@+id/tv_ai_asr_failed"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="left"
+            android:text="@string/notUnderstand"
+            android:textColor="@color/red"
+            android:textSize="28px" />
+
+        <view
+            android:layout_width="match_parent"
+            android:layout_height="1px"
+            android:layout_marginBottom="12px"
+            android:layout_marginTop="12px"
+            android:background="@color/red" />
+
+        <TextView
+            android:id="@+id/tv_ai_mt_failed"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="left"
+            android:text="@string/notUnderstand"
+            android:textColor="@color/red"
+            android:textSize="28px" />
+    </LinearLayout>
+
+
+</android.support.constraint.ConstraintLayout>

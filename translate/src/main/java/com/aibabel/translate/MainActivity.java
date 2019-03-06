@@ -369,15 +369,13 @@ public class MainActivity extends BaseActivity implements NetBroadcastReceiver.N
                 currentFragment = oppoFragment;
                 break;
             case 2://智能翻译
-//                fragmentTransaction.replace(R.id.fl_translate, aiFragment);
-//                currentFragmentIndex = 2;
-//                currentFragment = aiFragment;
-                fragmentTransaction.replace(R.id.fl_translate, oppoFragment);
-                currentFragmentIndex = 1;
-                currentFragment = oppoFragment;
+                fragmentTransaction.replace(R.id.fl_translate, aiFragment);
+                currentFragmentIndex = 2;
+                currentFragment = aiFragment;
                 break;
         }
         save(currentFragmentIndex);
+        mDragLayout.close();
         fragmentTransaction.commit();
     }
 

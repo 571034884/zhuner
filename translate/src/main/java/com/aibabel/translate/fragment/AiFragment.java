@@ -3,9 +3,11 @@ package com.aibabel.translate.fragment;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.AnimationDrawable;
+import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -17,13 +19,18 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.aibabel.translate.R;
+import com.aibabel.translate.adapter.ChatAdapter;
 import com.aibabel.translate.app.BaseApplication;
+import com.aibabel.translate.bean.MessageBean;
 import com.aibabel.translate.socket.TranslateUtil;
 import com.aibabel.translate.utils.Constant;
 import com.aibabel.translate.utils.L;
 import com.aibabel.translate.utils.MediaPlayerUtil;
 import com.aibabel.translate.utils.SharePrefUtil;
 import com.aibabel.translate.utils.ToastUtil;
+import com.chad.library.adapter.base.BaseQuickAdapter;
+
+import java.util.ArrayList;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -38,7 +45,7 @@ import static com.aibabel.translate.utils.Constant.DEFAULT;
  * @Desc：智能识别
  * @==========================================================================================
  */
-public class AiFragment extends BaseFragment {
+public class AiFragment extends BaseFragment implements SwipeRefreshLayout.OnRefreshListener {
 
     @BindView(R.id.llContent)
     LinearLayout llContent;
@@ -48,8 +55,8 @@ public class AiFragment extends BaseFragment {
     TextView tvTitle;
     @BindView(R.id.rv_chat)
     RecyclerView rvChat;
-    @BindView(R.id.sl_chat)
-    SwipeRefreshLayout slChat;
+//    @BindView(R.id.sl_chat)
+//    SwipeRefreshLayout slChat;
     Unbinder unbinder;
     private Context context;
     private AnimationDrawable animationCountDown;
@@ -60,6 +67,7 @@ public class AiFragment extends BaseFragment {
     public TranslateUtil translate;
     private int curr_press;
     private long oldTime;
+    private ChatAdapter mAdapter;
 
 
     @Override
@@ -72,15 +80,30 @@ public class AiFragment extends BaseFragment {
 
     @Override
     public void initView() {
+        context = getActivity();
         ivMenu.setOnClickListener(this);
         llContent.setOnClickListener(this);
+        mAdapter = new ChatAdapter(context, new ArrayList<MessageBean>());
+        LinearLayoutManager mLinearLayout = new LinearLayoutManager(context);
+        rvChat.setLayoutManager(mLinearLayout);
+        rvChat.setAdapter(mAdapter);
+
+
+//        slChat.setOnRefreshListener(this);
+//        initChatUi();
+//        mAdapter.setOnItemChildClickListener(new BaseQuickAdapter.OnItemChildClickListener() {
+//            @Override
+//            public void onItemChildClick(BaseQuickAdapter adapter, View view, int position) {
+//
+//            }
+//        });
 
     }
 
     @Override
     public void initData() {
 //        L.e("isl   indata=================================");
-        context = getActivity();
+
 
     }
 
@@ -252,9 +275,10 @@ public class AiFragment extends BaseFragment {
 
     /**
      * 切换图片
+     *
      * @param isOpen
      */
-    public void switchMenuIcon(boolean isOpen){
+    public void switchMenuIcon(boolean isOpen) {
         System.out.println(isOpen);
         if (isOpen) {
             ivMenu.setImageDrawable(context.getDrawable(R.mipmap.ic_translate_back));
@@ -284,11 +308,6 @@ public class AiFragment extends BaseFragment {
         Constant.isSound = false;
         activity.showFragment(1);
     }
-
-
-
-
-
 
 
 //    /**
@@ -333,6 +352,11 @@ public class AiFragment extends BaseFragment {
     }
 
 
+    @Override
+    public void onRefresh() {
+
+    }
+
 
     @Override
     public void onPause() {
@@ -356,6 +380,6 @@ public class AiFragment extends BaseFragment {
         unbinder.unbind();
 
     }
-
-
 }
+
+
