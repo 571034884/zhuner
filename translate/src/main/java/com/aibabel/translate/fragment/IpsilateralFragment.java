@@ -149,7 +149,6 @@ public class IpsilateralFragment extends BaseFragment implements OnResponseListe
     private String lan_do;//下面语言的值
     private Context context;
     private int DEFAULT;
-    private CountDownTimer timer;
     private AnimationDrawable animationCountUp;
     private AnimationDrawable animationCountDown;
     private AnimationDrawable animationDrawableUp;
@@ -690,8 +689,13 @@ public class IpsilateralFragment extends BaseFragment implements OnResponseListe
 
                 break;
             case R.id.iv_record:
-                StatisticsManager.getInstance(context).addEventAidl(1306);
-                toRecord();
+                if (BaseFragment.isOpen) {
+                    ivRecord.setImageDrawable(context.getDrawable(R.mipmap.ic_translate_back));
+                } else {
+                    ivRecord.setImageDrawable(context.getDrawable(R.mipmap.ic_translate_menu));
+                }
+                activity.drag();
+//                toRecord();
                 break;
 
         }
@@ -729,11 +733,12 @@ public class IpsilateralFragment extends BaseFragment implements OnResponseListe
     /**
      * 跳转历史记录
      */
-    private void toRecord() {
+    public void toRecord() {
         if (isRecording)
             return;
         if (!BaseApplication.isTran)
             return;
+        StatisticsManager.getInstance(context).addEventAidl(1306);
         Intent intent = new Intent();
         intent.setClass(context, RecordActivity.class);
         startActivity(intent);

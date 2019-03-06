@@ -699,7 +699,6 @@ public class OppositeFragment extends BaseFragment implements OnResponseListener
                 }
 
             case R.id.iv_record:
-                StatisticsManager.getInstance(context).addEventAidl(1306);
                 toRecord();
                 break;
         }
@@ -761,11 +760,12 @@ public class OppositeFragment extends BaseFragment implements OnResponseListener
     /**
      * 跳转历史记录
      */
-    private void toRecord() {
+    public void toRecord() {
         if (isRecording)
             return;
         if (!BaseApplication.isTran)
             return;
+        StatisticsManager.getInstance(context).addEventAidl(1306);
         Intent intent = new Intent();
         intent.setClass(context, RecordActivity.class);
         startActivity(intent);

@@ -1,6 +1,5 @@
 package com.aibabel.translate;
 
-import android.app.AlertDialog;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
@@ -9,13 +8,19 @@ import android.support.v4.app.FragmentTransaction;
 import android.text.TextUtils;
 import android.view.KeyEvent;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.ListView;
+import android.widget.TextView;
 
 import com.aibabel.translate.activity.BaseActivity;
+import com.aibabel.translate.adapter.LeftSetAdapter;
 import com.aibabel.translate.app.BaseApplication;
 import com.aibabel.translate.broadcast.NetBroadcastReceiver;
 import com.aibabel.translate.broadcast.ScreenBroadcastReceiver;
+import com.aibabel.translate.fragment.AiFragment;
+import com.aibabel.translate.fragment.BaseFragment;
 import com.aibabel.translate.fragment.IpsilateralFragment;
 import com.aibabel.translate.fragment.OppositeFragment;
 import com.aibabel.translate.offline.ChangeOffline;
@@ -23,6 +28,11 @@ import com.aibabel.translate.utils.CommonUtils;
 import com.aibabel.translate.utils.Constant;
 import com.aibabel.translate.utils.L;
 import com.aibabel.translate.utils.MyDialog;
+import com.aibabel.translate.utils.SharePrefUtil;
+import com.aibabel.translate.view.DragLayout;
+import com.aibabel.translate.view.MyLinearLayout;
+
+import java.util.Arrays;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -34,17 +44,32 @@ public class MainActivity extends BaseActivity implements NetBroadcastReceiver.N
     FrameLayout flTranslate;
     @BindView(R.id.mian_close_img)
     ImageView mianCloseImg;
+    @BindView(R.id.lv_left)
+    ListView mLeftList;
+    @BindView(R.id.ml_layout)
+    MyLinearLayout mLinearLayout;
+    @BindView(R.id.tv_menu)
+    TextView tvMenu;
+    @BindView(R.id.dl)
+    DragLayout mDragLayout;
+
+
     private FragmentManager fragmentManager;
     private FragmentTransaction fragmentTransaction;
-
     private IpsilateralFragment ipsiFragment;
     private OppositeFragment oppoFragment;
-    private int currentFragment = 0;
+    private AiFragment aiFragment;
+    private int currentFragmentIndex = 0;
+    private BaseFragment currentFragment;
     public NetBroadcastReceiver broadcastReceiver;
     private ScreenBroadcastReceiver mScreenReceiver;
     private String isTranslateStart;
     private int isTranslateKeyCode;
     private boolean isSleep = false;
+
+    private LeftSetAdapter adapter = null;
+    private Integer menuTitle[] = new Integer[]{R.string.m_translate, R.string.m_translate_ai, R.string.m_history};
+    private int lastIndex = 0;
 
 
     @Override
@@ -76,7 +101,6 @@ public class MainActivity extends BaseActivity implements NetBroadcastReceiver.N
 
         } catch (Exception e) {
             mianCloseImg.setVisibility(View.GONE);
-
         }
 
 
@@ -87,8 +111,70 @@ public class MainActivity extends BaseActivity implements NetBroadcastReceiver.N
         fragmentManager = getSupportFragmentManager();
         ipsiFragment = new IpsilateralFragment();
         oppoFragment = new OppositeFragment();
-        showFragment(0);
+        aiFragment = new AiFragment();
+//        showFragment(0);
+        initData();
     }
+
+
+    /**
+     * 数据的填充
+     */
+    public void initData() {
+
+        //左面板侧拉，内部数据填充
+        adapter = new LeftSetAdapter(Arrays.asList(menuTitle), mContext);
+        mLeftList.setAdapter(adapter);
+
+        mLeftList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                switch (position) {
+                    case 0:
+                        showFragment(lastIndex);
+//                        showFragment(1);
+                        break;
+                    case 1:
+                        if (currentFragmentIndex == 1 || currentFragmentIndex == 0)
+                            lastIndex = currentFragmentIndex;
+                        showFragment(2);
+                        SharePrefUtil.saveBoolean(mContext, "type", true);
+                        break;
+                    case 2:
+                        if(currentFragmentIndex == 0){
+                            ipsiFragment.toRecord();
+                        }else if(currentFragmentIndex==1){
+                            oppoFragment.toRecord();
+                        }
+                        break;
+                }
+                mDragLayout.close(true);
+            }
+        });
+
+        //首页图标的动效
+        mLinearLayout.setDraglayout(mDragLayout);
+
+        mDragLayout.setDragStatusListener(new DragLayout.OnDragStatusChangeListener() {
+            @Override
+            public void onClose() {
+
+            }
+
+            @Override
+            public void onOpen() {
+                adapter.notifyDataSetChanged();
+            }
+
+            @Override
+            public void onDraging(float percent) {
+
+            }
+        });
+
+        showFragment(SharePrefUtil.getInt(this, "translateType", 0));
+    }
+
 
     /**
      * 设置网络监听广播
@@ -125,9 +211,7 @@ public class MainActivity extends BaseActivity implements NetBroadcastReceiver.N
                 mianCloseImg.setVisibility(View.GONE);
             }
 
-
         } catch (Exception e) {
-
             mianCloseImg.setVisibility(View.GONE);
         }
         try {
@@ -167,7 +251,6 @@ public class MainActivity extends BaseActivity implements NetBroadcastReceiver.N
     public void onWindowFocusChanged(boolean hasFocus) {
         super.onWindowFocusChanged(hasFocus);
 
-
         L.e("onWindowFocusChanged isTranslateStart==============" + isTranslateStart);
 
         if (TextUtils.equals(isTranslateStart, "isTranslateStart")) {
@@ -187,20 +270,24 @@ public class MainActivity extends BaseActivity implements NetBroadcastReceiver.N
             }
 
             if (isTranslateKeyCode == 131) {
-                showFragment(currentFragment);
+                showFragment(currentFragmentIndex);
 //                L.e("当前显示 FRAG======================onWindowFocusChanged");
-                if (currentFragment == 0) {
+                if (currentFragmentIndex == 0) {
                     ipsiFragment.onKeyDown(131, null);
-                } else {
+                } else if (currentFragmentIndex == 1) {
                     oppoFragment.onKeyDown(131, null);
+                } else if (currentFragmentIndex == 2) {
+                    aiFragment.onKeyDown(131, null);
                 }
 
             } else if (isTranslateKeyCode == 132) {
-                showFragment(currentFragment);
-                if (currentFragment == 0) {
+                showFragment(currentFragmentIndex);
+                if (currentFragmentIndex == 0) {
                     ipsiFragment.onKeyDown(132, null);
-                } else {
+                } else if (currentFragmentIndex == 1) {
                     oppoFragment.onKeyDown(132, null);
+                } else if (currentFragmentIndex == 2) {
+                    aiFragment.onKeyDown(132, null);
                 }
 //                L.e("当前显示 FRAG======================onWindowFocusChanged dui");
             }
@@ -254,20 +341,34 @@ public class MainActivity extends BaseActivity implements NetBroadcastReceiver.N
         switch (type) {
             case 0://同侧
                 fragmentTransaction.replace(R.id.fl_translate, ipsiFragment);
-                currentFragment = 0;
+                currentFragmentIndex = 0;
+                currentFragment = ipsiFragment;
                 break;
             case 1://异侧
                 fragmentTransaction.replace(R.id.fl_translate, oppoFragment);
-                currentFragment = 1;
+                currentFragmentIndex = 1;
+                currentFragment = oppoFragment;
+                break;
+            case 2://智能翻译
+                fragmentTransaction.replace(R.id.fl_translate, aiFragment);
+                currentFragmentIndex = 2;
+                currentFragment = aiFragment;
                 break;
         }
-
-
+        save(currentFragmentIndex);
         fragmentTransaction.commit();
     }
 
 
-    AlertDialog dialog;
+    /**
+     * 保存当前翻译类型
+     *
+     * @param type
+     */
+    private void save(int type) {
+        SharePrefUtil.saveInt(this, "translateType", type);
+    }
+
 
     @Override
     protected void onResume() {
@@ -275,47 +376,6 @@ public class MainActivity extends BaseActivity implements NetBroadcastReceiver.N
         if (TextUtils.equals(CommonUtils.getDeviceInfo(), "PM") && !Constant.IS_NEED_SHOW && CommonUtils.isAvailable()) {
             MyDialog.dismiss();
         }
-//        Constant.IS_NEED_SHOW = true;
-
-
-//        try {
-//           String res= SharePrefUtil.getString(this,"isAgree","");
-//            if (!res.equals("true")) {
-//                if (dialog==null) {
-//                    dialog = new AlertDialog.Builder(this)
-//
-//                            .setTitle("服务条款")//设置对话框的标题
-//                            .setMessage("尊敬的用户，欢迎使用准儿翻译机，在使用前请您仔细阅读以下免责条款，" +
-//                                    "如您对本协议中的任何条款表示异议，您可以选择不使用准儿翻译机；但如您使用准儿翻译机，" +
-//                                    "您的使用行为将被视为对本协议全部内容的认可，本协议对用户和北京分音塔科技有限公司均具有法律效力。\n" +
-//                                    "1. 准儿翻译机—语音翻译以非人工方式提供翻译结果，北京分音塔科技有限公司对翻译结果的正确性、准确性、完整性和合法性不做任何形式的保证，亦不承担任何法律责任。\n" +
-//                                    "2. 在您使用语音翻译的时候，可能会获取您部分基本信息，以及网络权限(数据连接或WiFi连接)等等。")//设置对话框的内容
-//                            //设置对话框的按钮
-//                            .setNegativeButton("拒绝", new DialogInterface.OnClickListener() {
-//
-//                                @Override
-//                                public void onClick(DialogInterface dialog, int which) {
-//                                    System.exit(0);
-//                                    dialog.dismiss();
-//
-//                                }
-//                            })
-//                            .setPositiveButton("接受", new DialogInterface.OnClickListener() {
-//                                @Override
-//                                public void onClick(DialogInterface dialog, int which) {
-//
-//                                    SharePrefUtil.saveString(MainActivity.this, "isAgree", "true");
-//
-//                                    dialog.dismiss();
-//                                }
-//                            }).create();
-//                }
-//                dialog.show();
-//            }
-//
-//        } catch (Exception e) {
-//
-//        }
         super.onResume();
     }
 
@@ -339,7 +399,7 @@ public class MainActivity extends BaseActivity implements NetBroadcastReceiver.N
      * @return
      */
     public int getCurrentFragment() {
-        return currentFragment;
+        return currentFragmentIndex;
     }
 
 
@@ -350,12 +410,12 @@ public class MainActivity extends BaseActivity implements NetBroadcastReceiver.N
         switch (keyCode) {
             case 24:
             case 25:
-                if (currentFragment == 0) {
+                if (currentFragmentIndex == 0) {
                     if (null != ipsiFragment && ipsiFragment.getIsRecording()) {
                         return true;
                     }
                 }
-                if (currentFragment == 1) {
+                if (currentFragmentIndex == 1) {
                     if (null != oppoFragment && oppoFragment.getIsRecording()) {
                         return true;
                     }
@@ -373,7 +433,7 @@ public class MainActivity extends BaseActivity implements NetBroadcastReceiver.N
                 break;
         }
 
-        switch (currentFragment) {
+        switch (currentFragmentIndex) {
             case 0:
                 if (event.getAction() == KeyEvent.ACTION_DOWN) {
                     event.startTracking();
@@ -401,7 +461,7 @@ public class MainActivity extends BaseActivity implements NetBroadcastReceiver.N
     @Override
     public boolean onKeyUp(int keyCode, KeyEvent event) {
 
-        switch (currentFragment) {
+        switch (currentFragmentIndex) {
             case 0:
                 ipsiFragment.onKeyUp(keyCode, event);
                 break;
@@ -414,7 +474,7 @@ public class MainActivity extends BaseActivity implements NetBroadcastReceiver.N
 
     @Override
     public void netChanged() {
-        switch (currentFragment) {
+        switch (currentFragmentIndex) {
             case 0:
                 ipsiFragment.netChanged();
                 break;
@@ -451,4 +511,19 @@ public class MainActivity extends BaseActivity implements NetBroadcastReceiver.N
         isSleep = true;
         BaseApplication.isTran = true;
     }
+
+    /**
+     * 打开或关闭侧滑
+     */
+    public void drag() {
+        if (!BaseFragment.isOpen) {
+            BaseFragment.isOpen = true;
+            mDragLayout.open(true);
+        } else {
+            BaseFragment.isOpen = false;
+            mDragLayout.close(true);
+        }
+    }
+
+
 }

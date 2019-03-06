@@ -40,4 +40,10 @@
     <string name="timeout_connect">连接超时！</string>
     <string name="error_connect">服务器连接失败，请重试！</string>
 
+    <!---->
+    <string name="m_menu">菜单</string>
+    <string name="m_translate">语音翻译</string>
+    <string name="m_translate_ai">智能翻译</string>
+    <string name="m_history">历史记录</string>
+
 </resources>
