@@ -271,6 +271,8 @@ public class CustomWebViewActivity extends BaseActivity implements OnJSClickList
                 Map map1 = new HashMap();
                 map1.put("p2", skuid);
                 StatisticsManager.getInstance(CustomWebViewActivity.this).addEventAidl(1732, map1);
+                //TODO 下单成功  判断标识 是否重启设备
+
 
 
 //                insertContact("softsim","00001");

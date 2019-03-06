@@ -40,6 +40,7 @@ import android.widget.Toast;
 
 import com.aibabel.aidlaar.StatisticsManager;
 import com.aibabel.baselibrary.mode.DataManager;
+import com.aibabel.baselibrary.utils.ToastUtil;
 import com.example.root.testhuaping.service.Getsystem_info;
 import com.linkfield.softsim.ISoftSIMCallback;
 import com.linkfield.softsim.ISoftSIMManager;
@@ -56,6 +57,7 @@ import com.lzy.okgo.model.HttpHeaders;
 import com.lzy.okgo.model.HttpParams;
 import com.lzy.okgo.model.Response;
 import com.umeng.analytics.MobclickAgent;
+import com.xuexiang.xipc.XIPC;
 
 import org.json.JSONObject;
 
@@ -79,6 +81,7 @@ import okhttp3.OkHttpClient;
 
 import static com.example.root.testhuaping.DateUtils.dateToLong;
 import static com.example.root.testhuaping.DateUtils.stringToDate;
+import static com.xuexiang.xipc.XIPC.getContext;
 
 
 public class MainActivity extends FragmentActivity implements View.OnClickListener, ViewPager.OnPageChangeListener {
@@ -448,6 +451,7 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
             mSoftSIMManager = ISoftSIMManager.Stub.asInterface(iBinder);
             try {
                 mSoftSIMManager.registerCallback(mCallback);
+                mSoftSIMInfo = mSoftSIMManager.getSoftSIMInfo();
             } catch (RemoteException e) {
                 e.printStackTrace();
             }
@@ -467,6 +471,7 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
         @Override
         public void onSoftSIMStateChange(SoftSIMInfo info) {
             mSoftSIMInfo = info;
+            DataManager.getInstance().setSaveString("softSimType",mSoftSIMInfo.getType().toString());
             mHandler.sendMessage(mHandler.obtainMessage(10000, mSoftSIMInfo));
         }
     };
@@ -504,6 +509,8 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
         intent.setPackage("com.linkfield.softsim");
         bindService(intent, mConnection, Context.BIND_AUTO_CREATE);
     }
+
+
 
     @Override
     protected void onResume() {
@@ -1482,8 +1489,8 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
                 Toast.makeText(context, "当前网络不可用", Toast.LENGTH_SHORT).show();
             }
         }
-
     }
+
 }
 
 

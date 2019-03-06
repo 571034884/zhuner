@@ -25,7 +25,6 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.aibabel.aidlaar.StatisticsManager;
 import com.aibabel.baselibrary.impl.IDataManager;
 import com.aibabel.baselibrary.utils.ToastUtil;
 import com.aibabel.baselibrary.utils.XIPCUtils;
@@ -58,9 +57,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
-
-import butterknife.BindView;
-import butterknife.ButterKnife;
 
 import static com.xuexiang.xipc.XIPC.getContext;
 
@@ -139,20 +135,22 @@ public class MainActivity extends BaseActivity implements BaseCallback {
         XIPC.setIPCListener(new IPCListener() {
             @Override
             public void onIPCConnected(Class<? extends IPCService> service) {
-                Toast.makeText(MainActivity.this,"绑定成功",Toast.LENGTH_SHORT).show();
+                Toast.makeText(MainActivity.this, "绑定成功", Toast.LENGTH_SHORT).show();
                 IDataManager dm = XIPC.getInstance(IDataManager.class);
-                 Constans.Lk_CARDTYPE= dm.getBoolean("softSim");
-                 Log.e("lingke",Constans.Lk_CARDTYPE+"");
-                 ToastUtil.showLong(MainActivity.this,Constans.Lk_CARDTYPE+"");
+                Constans.Lk_CARDTYPE = dm.getBoolean("softSim");
+                ToastUtil.showLong(MainActivity.this, "全球上网数据：" + Constans.Lk_CARDTYPE);
+
+                if (NetUtil.isNetworkAvailable(MainActivity.this)) {
+                    initData();
+                } else {
+                    ivClose.setVisibility(View.GONE);
+                    ll.setVisibility(View.VISIBLE);
+                    llIsnet.setVisibility(View.VISIBLE);
+                }
+
             }
         });
-        if (NetUtil.isNetworkAvailable(MainActivity.this)) {
-            initData();
-        } else {
-            ivClose.setVisibility(View.GONE);
-            ll.setVisibility(View.VISIBLE);
-            llIsnet.setVisibility(View.VISIBLE);
-        }
+
         //关闭
         ivClose.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -176,6 +174,21 @@ public class MainActivity extends BaseActivity implements BaseCallback {
         Log.e("LkcardType", Constans.Lk_CARDTYPE + "==");
     }
 
+    //---------领科卡启动过程-------------------------------------------------------------------------------
+    @Override
+    protected void onResume() {
+        super.onResume();
+        MobclickAgent.onResume(this);
+        is_onclick = true;
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        XIPC.disconnect(getContext());
+    }
+
+    //----------------------------------------------------------------------------------------
     private void initView() {
         ivClose = findViewById(R.id.iv_close);
         ivError = findViewById(R.id.iv_error);
@@ -362,13 +375,7 @@ public class MainActivity extends BaseActivity implements BaseCallback {
 
 //         iccid = "89852022018041802362";
 //         Constans.PHONE_ICCID = "89860012017300216438";
-        if (Constans.PHONE_ICCID == null) {
-            if (Constans.Lk_CARDTYPE) {
-                init_imei();
-            } else {
-                initMtkDoubleSim();
-            }
-        } else {
+        if (Constans.PHONE_ICCID != null) {
             Map<String, String> map = new HashMap<>();
             map.put("iccid", Constans.PHONE_ICCID);
             if (Constans.Lk_CARDTYPE) {
@@ -379,12 +386,7 @@ public class MainActivity extends BaseActivity implements BaseCallback {
         }
     }
 
-    @Override
-    protected void onResume() {
-        super.onResume();
-        MobclickAgent.onResume(this);
-        is_onclick = true;
-    }
+
 
     @Override
     protected void onPause() {

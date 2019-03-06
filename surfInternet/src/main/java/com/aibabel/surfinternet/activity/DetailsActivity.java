@@ -354,6 +354,7 @@ public class DetailsActivity extends BaseActivity implements BaseCallback, View.
         String s1 = tvPriceNum3.getText().toString();
         String s = bigDecimalDo(s1, 100);
         String s2 = s.substring(0, s.length() - 3);
+        //TODO 订单价格
 //        map.put("spend", s2);
         map.put("spend", "1");
         map.put("skuName", operator);
