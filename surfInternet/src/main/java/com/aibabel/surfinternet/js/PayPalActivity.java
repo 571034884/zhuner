@@ -154,7 +154,7 @@ public class PayPalActivity extends BaseActivity implements OnJSClickListener {
     }
 
     /**
-     * 本地方法
+     * 下单成功
      */
     private void requestData() throws ParseException {
         Log.e("下单", "下单成功");
@@ -251,6 +251,9 @@ public class PayPalActivity extends BaseActivity implements OnJSClickListener {
 
     }
 
+    /**
+     * 下单失败
+     */
     private void FailData() {
 
         Log.e("下单", "下单失败");

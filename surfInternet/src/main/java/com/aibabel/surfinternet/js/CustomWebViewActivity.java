@@ -230,7 +230,7 @@ public class CustomWebViewActivity extends BaseActivity implements OnJSClickList
     }
 
     /**
-     * 本地方法
+     * 下单成功
      */
     private void requestData() throws ParseException {
         Log.e("下单", "下单成功");
@@ -332,6 +332,9 @@ public class CustomWebViewActivity extends BaseActivity implements OnJSClickList
 
     }
 
+    /**
+     * 下单失败
+     */
     private void FailData() {
 
         Log.e("下单", "下单失败");
