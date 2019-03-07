@@ -25,6 +25,7 @@ import com.aibabel.translate.app.BaseApplication;
 import com.aibabel.translate.bean.MessageBean;
 import com.aibabel.translate.socket.TranslateUtil;
 import com.aibabel.translate.utils.Constant;
+import com.aibabel.translate.utils.DensityHelper;
 import com.aibabel.translate.utils.L;
 import com.aibabel.translate.utils.MediaPlayerUtil;
 import com.aibabel.translate.utils.SharePrefUtil;
@@ -89,6 +90,10 @@ public class AiFragment extends BaseFragment implements SwipeRefreshLayout.OnRef
         mAdapter = new ChatAdapter(context, new ArrayList<MessageBean>());
         LinearLayoutManager mLinearLayout = new LinearLayoutManager(context);
         rvChat.setLayoutManager(mLinearLayout);
+        View footerView = getFooterView();
+        View emptyView = getEmptyView();
+        mAdapter.addFooterView(footerView, 0);
+        rvChat.setAdapter(mAdapter);
         mAdapter.setOnItemLongClickListener(new BaseQuickAdapter.OnItemLongClickListener() {
             @Override
             public boolean onItemLongClick(BaseQuickAdapter adapter, View view, int position) {
@@ -97,13 +102,8 @@ public class AiFragment extends BaseFragment implements SwipeRefreshLayout.OnRef
             }
 
         });
-        View footerView = getFooterView();
-        mAdapter.addFooterView(footerView, 0);
-        rvChat.setAdapter(mAdapter);
-
+        mAdapter.setEmptyView(emptyView);
 //        slChat.setOnRefreshListener(this);
-
-
     }
 
     @Override
@@ -115,15 +115,30 @@ public class AiFragment extends BaseFragment implements SwipeRefreshLayout.OnRef
 
     private View getFooterView() {
         View view = getLayoutInflater().inflate(R.layout.audio_layout, (ViewGroup) rvChat.getParent(), false);
+        LinearLayout.LayoutParams params = (LinearLayout.LayoutParams) view.getLayoutParams();
+        //获取当前控件的布局对象
+        params.height = DensityHelper.getSystemWH(activity).get("height") * 2 / 3;//设置当前控件布局的高度
+        view.setLayoutParams(params);//将设置好的布局参数应用到控件中
+
         ImageView audioAnim = view.findViewById(R.id.iv_audio_anim);
         ImageView countAnim = view.findViewById(R.id.iv_count_anim);
         ImageView progressAnim = view.findViewById(R.id.iv_progress_anim);
         TextView tv_asr = view.findViewById(R.id.tv_ai_asr);
         TextView tv_mt = view.findViewById(R.id.tv_ai_mt);
+        LinearLayout ll_audio = view.findViewById(R.id.ll_audio);
+        LinearLayout ll_failed = view.findViewById(R.id.ll_failed);
 
         return view;
     }
 
+    private View getEmptyView() {
+        View view = getLayoutInflater().inflate(R.layout.audio_layout, (ViewGroup) rvChat.getParent(), false);
+        LinearLayout.LayoutParams params = (LinearLayout.LayoutParams) view.getLayoutParams();
+        //获取当前控件的布局对象
+        params.height = DensityHelper.getSystemWH(activity).get("height") * 1 / 3;//设置当前控件布局的高度
+        view.setLayoutParams(params);//将设置好的布局参数应用到控件中
+        return view;
+    }
 
     @Override
     public void onResume() {
@@ -235,7 +250,6 @@ public class AiFragment extends BaseFragment implements SwipeRefreshLayout.OnRef
             @Override
             public void onTick(long millisUntilFinished) {
                 if (5 == millisUntilFinished / 1000) {
-                    animationAsr.stop();
                     animationDrawable.start();
                 }
 

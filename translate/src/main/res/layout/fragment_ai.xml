@@ -3,14 +3,13 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#f3f3f3"
+    android:background="@color/c_ec"
     android:orientation="vertical">
 
     <RelativeLayout
         android:id="@+id/common_toolbar"
         android:layout_width="match_parent"
-        android:layout_height="80px"
-        android:background="#fff">
+        android:layout_height="80px">
 
 
         <RelativeLayout
@@ -43,13 +42,14 @@
                 android:maxWidth="@dimen/px200"
                 android:singleLine="true"
                 android:text="中文"
+                android:layout_marginRight="@dimen/px10"
                 android:textColor="#fe5000"
                 android:textSize="30px" />
 
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@mipmap/ic_launcher" />
+                android:src="@mipmap/ic_translate_t" />
 
             <TextView
                 android:id="@+id/tv_right_lan"
@@ -57,6 +57,7 @@
                 android:layout_height="match_parent"
                 android:layout_alignParentTop="true"
                 android:layout_centerHorizontal="true"
+                android:layout_marginLeft="@dimen/px10"
                 android:ellipsize="end"
                 android:gravity="center"
                 android:maxWidth="@dimen/px200"
