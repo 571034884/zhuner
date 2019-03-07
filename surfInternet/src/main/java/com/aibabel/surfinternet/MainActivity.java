@@ -358,8 +358,9 @@ public class MainActivity extends BaseActivity implements BaseCallback {
             // for ActivityCompat#requestPermissions for more details.
             return;
         }
-        Constans.PHONE_ICCID = telephonyManager.getDeviceId(1);
-        Log.e("imei_2", Constans.PHONE_ICCID);
+        Constans.PHONE_ICCID = telephonyManager.getDeviceId(0);
+        Log.e("imei_1", Constans.PHONE_ICCID);
+//        Log.e("imei_2", telephonyManager.getDeviceId(1));
         //Toast.makeText(MainActivity.this, "slot=" + slot, Toast.LENGTH_LONG).show();
 
     }
