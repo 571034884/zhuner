@@ -16,7 +16,7 @@ public class ChatAdapter extends BaseQuickAdapter<MessageBean, BaseViewHolder> {
 
 
     private static final int TYPE_SEND_CH = 1;
-    private static final int TYPE_SEND_EN = 1;
+    private static final int TYPE_SEND_EN = 2;
 
 
     private static final int SEND_CH = R.layout.item_send_ch;
@@ -33,7 +33,8 @@ public class ChatAdapter extends BaseQuickAdapter<MessageBean, BaseViewHolder> {
         setMultiTypeDelegate(new MultiTypeDelegate<MessageBean>() {
             @Override
             protected int getItemType(MessageBean entity) {
-                return 1;
+                String from = entity.getFrom();
+                return from=="ch" ? TYPE_SEND_CH : TYPE_SEND_EN;
             }
         });
         getMultiTypeDelegate().registerItemType(TYPE_SEND_CH, SEND_CH)
@@ -43,22 +44,21 @@ public class ChatAdapter extends BaseQuickAdapter<MessageBean, BaseViewHolder> {
     @Override
     protected void convert(BaseViewHolder helper, MessageBean item) {
         setContent(helper, item);
-        setStatus(helper, item);
-        setOnClick(helper, item);
-        setOnLongClick(helper, item);
+//        setStatus(helper, item);
+//        setOnClick(helper, item);
+//        setOnLongClick(helper, item);
 
     }
 
 
-    private void setStatus(BaseViewHolder helper, MessageBean item) {
-
-
-    }
+//    private void setStatus(BaseViewHolder helper, MessageBean item) {
+//
+//
+//    }
 
     private void setContent(BaseViewHolder helper, MessageBean item) {
-
-
-//            helper.setText(R.id.chat_item_content_text, msgBody.getMessage());
+            helper.setText(R.id.tv_item_asr, item.getTrans_text());
+            helper.setText(R.id.tv_item_mt, item.getTrans_result());
     }
 
 
@@ -82,7 +82,7 @@ public class ChatAdapter extends BaseQuickAdapter<MessageBean, BaseViewHolder> {
 //
 //        mBooleanArray.put(position, true);
 //
-//        if (mLastCheckedPosition  -1) {
+//        if (mLastCheckedPosition-1) {
 //            mBooleanArray.put(mLastCheckedPosition,false);
 //            mAdapter.notifyItemChanged(mLastCheckedPosition);
 //        }

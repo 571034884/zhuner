@@ -177,11 +177,12 @@ public class MainActivity extends BaseActivity implements NetBroadcastReceiver.N
         mDragLayout.setDragStatusListener(new DragLayout.OnDragStatusChangeListener() {
             @Override
             public void onClose() {
-
+                switchIcon(currentFragmentIndex,false);
             }
 
             @Override
             public void onOpen() {
+                switchIcon(currentFragmentIndex,true);
                 adapter.notifyDataSetChanged();
             }
 
@@ -538,9 +539,7 @@ public class MainActivity extends BaseActivity implements NetBroadcastReceiver.N
     public void drag() {
         if (mDragLayout.getStatus().equals(DragLayout.Status.Close)) {
             mDragLayout.open();
-            switchIcon(currentFragmentIndex,true);
         } else {
-            switchIcon(currentFragmentIndex,false);
             mDragLayout.close();
         }
     }

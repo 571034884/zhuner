@@ -28,7 +28,7 @@
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
             android:layout_marginRight="5dp"
-            android:background="@drawable/message_text_ch"
+            android:background="@drawable/message_text_result"
             android:gravity="right|center_vertical"
             android:orientation="vertical"
             android:paddingBottom="24px"
@@ -37,7 +37,7 @@
             android:paddingTop="24px">
 
             <TextView
-                android:id="@+id/item_content_asr"
+                android:id="@+id/tv_item_asr"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="left"
@@ -53,7 +53,7 @@
                 android:background="@color/c_d5" />
 
             <TextView
-                android:id="@+id/item_content_mt"
+                android:id="@+id/tv_item_mt"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="left"
@@ -65,7 +65,7 @@
 
 
         <CheckBox
-            android:id="@+id/item_cb_select"
+            android:id="@+id/cb_item_select"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:button="@drawable/checkbox"

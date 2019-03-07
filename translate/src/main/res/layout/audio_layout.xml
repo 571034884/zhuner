@@ -29,7 +29,7 @@
             android:layout_height="match_parent">
 
             <ImageView
-                android:id="@+id/iv_audio_anmo"
+                android:id="@+id/iv_audio_anim"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:src="@mipmap/ic_launcher"
@@ -38,7 +38,7 @@
 
 
             <ImageView
-                android:id="@+id/iv_count_anmo"
+                android:id="@+id/iv_count_anim"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:src="@mipmap/ic_launcher"
@@ -59,7 +59,7 @@
         </android.support.constraint.ConstraintLayout>
 
 
-        <view
+        <View
             android:layout_width="match_parent"
             android:layout_height="1px"
             android:layout_marginBottom="12px"
@@ -72,7 +72,7 @@
             android:layout_height="match_parent">
 
             <ImageView
-                android:id="@+id/iv_progress_anmo"
+                android:id="@+id/iv_progress_anim"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:src="@mipmap/ic_launcher"
@@ -117,7 +117,7 @@
             android:textColor="@color/red"
             android:textSize="28px" />
 
-        <view
+        <View
             android:layout_width="match_parent"
             android:layout_height="1px"
             android:layout_marginBottom="12px"
@@ -129,7 +129,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="left"
-            android:text="@string/notUnderstand"
+            android:text="@string/notUnderstand_en"
             android:textColor="@color/red"
             android:textSize="28px" />
     </LinearLayout>

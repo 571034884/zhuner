@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#f3f3f3"
@@ -8,7 +9,7 @@
     <RelativeLayout
         android:id="@+id/common_toolbar"
         android:layout_width="match_parent"
-        android:layout_height="50dp"
+        android:layout_height="80px"
         android:background="#fff">
 
 
@@ -26,17 +27,60 @@
 
         </RelativeLayout>
 
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_centerInParent="true"
+            android:gravity="center">
+
+            <!--语言选择-->
+            <TextView
+                android:id="@+id/tv_left_lan"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:ellipsize="end"
+                android:gravity="center"
+                android:maxWidth="@dimen/px200"
+                android:singleLine="true"
+                android:text="中文"
+                android:textColor="#fe5000"
+                android:textSize="30px" />
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@mipmap/ic_launcher" />
+
+            <TextView
+                android:id="@+id/tv_right_lan"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_alignParentTop="true"
+                android:layout_centerHorizontal="true"
+                android:ellipsize="end"
+                android:gravity="center"
+                android:maxWidth="@dimen/px200"
+                android:singleLine="true"
+                android:text="英文"
+                android:textColor="#fe5000"
+                android:textSize="30px" />
+
+        </LinearLayout>
+
         <TextView
             android:id="@+id/tv_title"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
+            android:layout_height="match_parent"
+            android:layout_alignParentRight="true"
             android:ellipsize="end"
+            android:gravity="center"
             android:maxLength="10"
+            android:paddingLeft="20px"
+            android:paddingRight="26px"
             android:singleLine="true"
-            android:text="联系人"
-            android:textColor="#333"
-            android:textSize="16dp" />
+            android:text="@string/cancle"
+            android:textColor="#fe5000"
+            android:textSize="28px" />
 
 
     </RelativeLayout>
@@ -44,33 +88,23 @@
     <LinearLayout
         android:id="@+id/llContent"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
+        android:layout_height="match_parent"
         android:orientation="vertical">
 
 
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/rv_chat"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:overScrollMode="never" />
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="0.5dp"
-            android:background="#d9d9d9" />
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:background="#f3f3f3"
-            android:focusable="true"
-            android:focusableInTouchMode="true"
-            android:gravity="center_vertical"
-            android:orientation="horizontal">
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/rv_chat"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:overScrollMode="never" />
 
+            </LinearLayout>
 
-        </LinearLayout>
 
 
     </LinearLayout>

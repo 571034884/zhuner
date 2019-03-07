@@ -37,7 +37,7 @@
             android:layout_centerVertical="true"
             android:layout_marginRight="5dp"
             android:layout_toRightOf="@+id/item_cb_select"
-            android:background="@drawable/message_text_ch"
+            android:background="@drawable/message_text_result"
             android:gravity="left|center_vertical"
             android:orientation="vertical"
             android:paddingBottom="24px"

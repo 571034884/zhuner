@@ -17,6 +17,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.aibabel.translate.R;
 import com.aibabel.translate.adapter.ChatAdapter;
@@ -28,6 +29,7 @@ import com.aibabel.translate.utils.L;
 import com.aibabel.translate.utils.MediaPlayerUtil;
 import com.aibabel.translate.utils.SharePrefUtil;
 import com.aibabel.translate.utils.ToastUtil;
+import com.aibabel.translate.view.MyRecyclerView;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 
 import java.util.ArrayList;
@@ -55,12 +57,13 @@ public class AiFragment extends BaseFragment implements SwipeRefreshLayout.OnRef
     TextView tvTitle;
     @BindView(R.id.rv_chat)
     RecyclerView rvChat;
-//    @BindView(R.id.sl_chat)
+    //    @BindView(R.id.sl_chat)
 //    SwipeRefreshLayout slChat;
     Unbinder unbinder;
     private Context context;
     private AnimationDrawable animationCountDown;
-    private AnimationDrawable animationDrawableDown;
+    private AnimationDrawable animationAsr;
+    private AnimationDrawable animationMt;
     private boolean isTimeOut = false;
     private boolean isRecording = false;
     private CountDownTimer countDownTimer;
@@ -86,17 +89,20 @@ public class AiFragment extends BaseFragment implements SwipeRefreshLayout.OnRef
         mAdapter = new ChatAdapter(context, new ArrayList<MessageBean>());
         LinearLayoutManager mLinearLayout = new LinearLayoutManager(context);
         rvChat.setLayoutManager(mLinearLayout);
+        mAdapter.setOnItemLongClickListener(new BaseQuickAdapter.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(BaseQuickAdapter adapter, View view, int position) {
+                Toast.makeText(context, "长按了item", Toast.LENGTH_SHORT).show();
+                return false;
+            }
+
+        });
+        View footerView = getFooterView();
+        mAdapter.addFooterView(footerView, 0);
         rvChat.setAdapter(mAdapter);
 
-
 //        slChat.setOnRefreshListener(this);
-//        initChatUi();
-//        mAdapter.setOnItemChildClickListener(new BaseQuickAdapter.OnItemChildClickListener() {
-//            @Override
-//            public void onItemChildClick(BaseQuickAdapter adapter, View view, int position) {
-//
-//            }
-//        });
+
 
     }
 
@@ -107,11 +113,21 @@ public class AiFragment extends BaseFragment implements SwipeRefreshLayout.OnRef
 
     }
 
+    private View getFooterView() {
+        View view = getLayoutInflater().inflate(R.layout.audio_layout, (ViewGroup) rvChat.getParent(), false);
+        ImageView audioAnim = view.findViewById(R.id.iv_audio_anim);
+        ImageView countAnim = view.findViewById(R.id.iv_count_anim);
+        ImageView progressAnim = view.findViewById(R.id.iv_progress_anim);
+        TextView tv_asr = view.findViewById(R.id.tv_ai_asr);
+        TextView tv_mt = view.findViewById(R.id.tv_ai_mt);
+
+        return view;
+    }
+
 
     @Override
     public void onResume() {
         super.onResume();
-        BaseApplication.isIpsil = "Ipsil";
     }
 
 
@@ -219,17 +235,7 @@ public class AiFragment extends BaseFragment implements SwipeRefreshLayout.OnRef
             @Override
             public void onTick(long millisUntilFinished) {
                 if (5 == millisUntilFinished / 1000) {
-                    switch (key) {
-                        case DOWN_KEY:
-                            animationDrawableDown.stop();
-
-                            break;
-                        case UP_KEY:
-
-                            break;
-                        default:
-                            break;
-                    }
+                    animationAsr.stop();
                     animationDrawable.start();
                 }
 
@@ -256,7 +262,7 @@ public class AiFragment extends BaseFragment implements SwipeRefreshLayout.OnRef
             countDownTimer = null;
         }
         animationCountDown.stop();
-        animationDrawableDown.stop();
+        animationAsr.stop();
     }
 
 
@@ -295,45 +301,6 @@ public class AiFragment extends BaseFragment implements SwipeRefreshLayout.OnRef
         MediaPlayerUtil.playMp3(SharePrefUtil.getString(context, "mp3_1", ""), context);
 
     }
-
-    /**
-     * 跳转到异侧
-     */
-    private void toOppos() {
-        if (isRecording)
-            return;
-        if (!BaseApplication.isTran)
-            return;
-        BaseApplication.isIpsil = "Oppos";
-        Constant.isSound = false;
-        activity.showFragment(1);
-    }
-
-
-//    /**
-//     * 跳转编辑
-//     */
-//    private void toEdit(String from, String to, String text) {
-//        if (!CommonUtils.isAvailable()) {
-//            //判定模型是否加载成功
-//            if (isJumpLanguage()) {
-//                ChangeOffline.getInstance().test();
-//                return;
-//            }
-//        }
-//        if (isRecording)
-//            return;
-//        if (!BaseApplication.isTran)
-//            return;
-////        if (TextUtils.isEmpty(text))
-////            Toast.makeText(context, "不能为空！", Toast.LENGTH_SHORT).show();
-//        Intent intent = new Intent();
-//        intent.putExtra("text", text);
-//        intent.putExtra("from", from);
-//        intent.putExtra("to", to);
-//        intent.setClass(context, EditActivity.class);
-//        startActivityForResult(intent, 101);
-//    }
 
 
     public void setAsr(String text, int flag) {

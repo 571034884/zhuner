@@ -17,9 +17,9 @@ import android.view.View;
 public class MyRecyclerView extends RecyclerView {
 
 
-    float y1 = 0;
-    float y2 = 0;
-    CallBack callBack;
+//    float y1 = 0;
+//    float y2 = 0;
+//    CallBack callBack;
 
     private View emptyView;
     private static final String TAG = "MyRecyclerView";
@@ -89,41 +89,41 @@ public class MyRecyclerView extends RecyclerView {
 //    }
 
 
-    @Override
-    public boolean onTouchEvent(MotionEvent event) {
-        switch (event.getAction()) {
-            case MotionEvent.ACTION_DOWN:
-                y1 = event.getY();
-                break;
-            case MotionEvent.ACTION_MOVE:
-                y2 = event.getY();
-                if (y1 - y2 > 50) {
-                    //向上滑
-//                    MyScrollView.STATE = 2;
-//                    if (!MyScrollView.isFlowHead){
+//    @Override
+//    public boolean onTouchEvent(MotionEvent event) {
+//        switch (event.getAction()) {
+//            case MotionEvent.ACTION_DOWN:
+//                y1 = event.getY();
+//                break;
+//            case MotionEvent.ACTION_MOVE:
+//                y2 = event.getY();
+//                if (y1 - y2 > 50) {
+//                    //向上滑
+////                    MyScrollView.STATE = 2;
+////                    if (!MyScrollView.isFlowHead){
+////                        callBack.top();
+////                    }
+////                    Log.e("isTop", "向上滑"+MyScrollView.isFlowHead);
+//                } else if (y2 - y1 > 50) {
+//                    //向下滑
+////                    MyScrollView.STATE = 1;
+////                    Log.e("isTop", "向下滑");
+//                    if (computeVerticalScrollOffset() == 0) {
 //                        callBack.top();
 //                    }
-//                    Log.e("isTop", "向上滑"+MyScrollView.isFlowHead);
-                } else if (y2 - y1 > 50) {
-                    //向下滑
-//                    MyScrollView.STATE = 1;
-//                    Log.e("isTop", "向下滑");
-                    if (computeVerticalScrollOffset() == 0) {
-                        callBack.top();
-                    }
-                }
-                break;
-        }
-        return super.onTouchEvent(event);
-    }
-
-    public void setCallBack(CallBack callBack) {
-        this.callBack = callBack;
-    }
-
-    public interface CallBack {
-        void top();
-    }
+//                }
+//                break;
+//        }
+//        return super.onTouchEvent(event);
+//    }
+//
+//    public void setCallBack(CallBack callBack) {
+//        this.callBack = callBack;
+//    }
+//
+//    public interface CallBack {
+//        void top();
+//    }
 
 
 }
