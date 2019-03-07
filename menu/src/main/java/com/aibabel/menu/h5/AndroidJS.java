@@ -4,16 +4,12 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 import android.text.TextUtils;
-import android.util.Log;
-import android.view.View;
 import android.webkit.JavascriptInterface;
 
 import com.aibabel.aidlaar.StatisticsManager;
 import com.aibabel.menu.MainActivity;
-import com.aibabel.menu.R;
 import com.aibabel.menu.SearchActivity;
 import com.aibabel.menu.app.MyApplication;
-import com.aibabel.menu.dialog.CustomDialog;
 import com.aibabel.menu.util.AppStatusUtils;
 import com.aibabel.menu.util.CommonUtils;
 import com.aibabel.menu.util.L;
@@ -50,7 +46,7 @@ public class AndroidJS {
         L.e("webview>>>>>>>>>>>=================country:" + countryName + "==========city:" + cityName);
         //调起SOS
         mContext.startActivity(AppStatusUtils.getAppOpenIntentByPackageName(mContext, "com.aibabel.sos").putExtra("country", countryName).putExtra("city", cityName).putExtra("from","menu"));
-        StatisticsManager.getInstance(mContext).addEventAidl( "h5点击跳转SOS", new HashMap(){{
+        StatisticsManager.getInstance(mContext).addEventAidl( 1130, new HashMap(){{
             put("cityName",cityName);
         }});
     }
@@ -60,7 +56,7 @@ public class AndroidJS {
 
         //调起搜索页面
         ((MainActivity) mContext).startActivityForResult(new Intent(mContext, SearchActivity.class), 100);
-        StatisticsManager.getInstance(mContext).addEventAidl("h5点击进目的列表", new HashMap());
+        StatisticsManager.getInstance(mContext).addEventAidl(1131, new HashMap());
 
     }
 
@@ -106,7 +102,7 @@ public class AndroidJS {
 
     @JavascriptInterface
     public void tiShi() {
-      /*  CustomDialog.Builder builderChangeCity = new CustomDialog.Builder((MainActivity) mContext, R.layout.dialog_tishi_no_source);
+      /*  CustomDialog.Builder builderChangeCity = new CustomDialog.Builder((MainActivity) mContext, R.activity_rent_locked.dialog_tishi_no_source);
         builderChangeCity.setTvListener(R.id.dialog_tishi_sure, "", new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -139,7 +135,7 @@ public class AndroidJS {
         L.e("tongji h5:"+json);
         try {
             JSONObject jsonObject=JSON.parseObject(json);
-            StatisticsManager.getInstance(mContext).addEventAidl("h5点击事件播放音频", new HashMap() {{
+            StatisticsManager.getInstance(mContext).addEventAidl(1132, new HashMap() {{
                 put("videoName",jsonObject.get("videoName"));
                 put("cityName", jsonObject.get("cityName"));
 

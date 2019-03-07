@@ -112,7 +112,7 @@ public class SearchActivity extends BaseActivity implements View.OnClickListener
                                     int position, long id) {
                 //todo 选择城市后处理
                 finish();
-                StatisticsManager.getInstance(mContext).addEventAidl("关闭目的地列表", new HashMap());
+                StatisticsManager.getInstance(mContext).addEventAidl(1110, new HashMap());
 
             }
         });
@@ -122,7 +122,7 @@ public class SearchActivity extends BaseActivity implements View.OnClickListener
 
 //    @Override
 //    protected int getLayoutId() {
-//        return R.layout.activity_search;
+//        return R.activity_rent_locked.activity_search;
 //    }
 
     @Override
@@ -150,7 +150,7 @@ public class SearchActivity extends BaseActivity implements View.OnClickListener
                 intent1.setAction("com.aibabel.menu.MENULOCATION");
                 sendBroadcast(intent1);
                 finish();
-                StatisticsManager.getInstance(mContext).addEventAidl( "点击目的列表的当前城市", new HashMap());
+                StatisticsManager.getInstance(mContext).addEventAidl( 1113, new HashMap());
 
                 break;
 
@@ -291,7 +291,7 @@ public class SearchActivity extends BaseActivity implements View.OnClickListener
                 intent.putExtra("city_name", list.get(i).getCityChj());
                 intent.putExtra("country_name", list.get(i).getCountryChj());
                 setResult(200, intent);
-                StatisticsManager.getInstance(mContext).addEventAidl( "点击目的地列表城市", new HashMap(){{
+                StatisticsManager.getInstance(mContext).addEventAidl( 1113, new HashMap(){{
                     put("city",list.get(i).getCityChj());
                 }});
                 finish();
@@ -358,7 +358,7 @@ public class SearchActivity extends BaseActivity implements View.OnClickListener
                 intent.putExtra("country_name", list.get(position).getCountryChj());
                 setResult(200, intent);
                 finish();
-                StatisticsManager.getInstance(mContext).addEventAidl("点击目的地列表热门城市", new HashMap(){{
+                StatisticsManager.getInstance(mContext).addEventAidl(1112, new HashMap(){{
                     put("city",list.get(position).getCityChj());
                 }});
                 return true;
