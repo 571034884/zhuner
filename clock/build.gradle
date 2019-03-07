@@ -10,6 +10,14 @@ def buildTime() {
 }
 
 android {
+    signingConfigs {
+        config {
+            keyAlias 'Clock'
+            keyPassword 'aibabel*123'
+            storeFile file('Clock.jks')
+            storePassword 'aibabel*123'
+        }
+    }
     compileSdkVersion 28
     defaultConfig {
         applicationId "com.aibabel.alliedclock"

@@ -1,6 +1,14 @@
 apply plugin: 'com.android.application'
 apply plugin: 'com.aliyun.ams.emas-services'
 
+// 当前beta版本号
+ext.build_number = "beta1"
+
+// 显示的时间格式，形如20171110
+def buildTime() {
+    return new Date().format("MMddHHmmss", TimeZone.getDefault())
+}
+
 android {
     compileSdkVersion 28
     defaultConfig {
@@ -30,6 +38,31 @@ android {
         // Or, if you prefer, you can continue to check for errors in release builds,
         // but continue the build even when errors are found:
         abortOnError false
+    }
+    signingConfigs {
+        config {
+            keyAlias 'menu'
+            keyPassword 'aibabel*123'
+            storeFile file('menu.jks')
+            storePassword 'aibabel*123'
+        }
+    }
+
+    // 一定要写在android节点中
+    applicationVariants.all { variant ->
+        variant.outputs.each { output ->
+            def outputFile = output.outputFile
+            if (outputFile != null && outputFile.name.endsWith('.apk')) {
+
+                /// 输出apk名称为ForWatch_v1.1(2)_2016-09-28_15-54-35.apk
+                def version = "v${versionName}.${buildTime()}"
+                def endIndex = outputFile.name.indexOf('.apk')
+                def apkName = outputFile.name.substring(0, endIndex);
+                def fileName = "菜单_${version}.apk"
+                output.outputFileName = fileName
+
+            }
+        }
     }
 }
 
