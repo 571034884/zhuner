@@ -13,6 +13,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.aibabel.aidlaar.StatisticsManager;
+import com.aibabel.baselibrary.utils.DeviceUtils;
 import com.aibabel.readme.R;
 import com.aibabel.readme.adapter.ViewPagerAdapter;
 
@@ -117,7 +118,12 @@ public class ViewPagerActivity extends BaseActivity {
                 paizhao = new int[]{R.mipmap.p1, R.mipmap.photo2};
                 yuyinfanyi = new int[]{R.mipmap.yuyinfanyi_fly1, R.mipmap.yuyinfanyi_fly2,  R.mipmap.yuyinfanyi6,R.mipmap.yuyinfanyi3};
                 yuyinmishu = new int[]{R.mipmap.yuyinmishu_fly1};
-                shezhi = new int[]{R.mipmap.shezhi1, R.mipmap.shezhi_fly2, R.mipmap.shezhi3, R.mipmap.shezhi4};
+                if (DeviceUtils.getSystem()==DeviceUtils.System.FLY_Mobile){
+                    shezhi = new int[]{R.mipmap.shezhi1, R.mipmap.shezhi_fly2, R.mipmap.shezhi_fly_mobile3, R.mipmap.shezhi_fly_mobile4};
+                }else{
+                    shezhi = new int[]{R.mipmap.shezhi1, R.mipmap.shezhi_fly2, R.mipmap.shezhi3, R.mipmap.shezhi4};
+                }
+
                 break;
         }
         if (TextUtils.equals(proVersion, "S")) {
