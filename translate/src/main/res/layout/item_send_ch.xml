@@ -1,27 +1,32 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:padding="5dp">
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
 
     <TextView
         android:id="@+id/item_tv_time"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:textColor="#999999"
-        android:textSize="12dp"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/px48"
+        android:background="@color/c_e5"
+        android:gravity="center"
+        android:layout_marginTop="@dimen/px32"
+        android:layout_marginBottom="@dimen/px32"
+        android:text="2091-11-11"
+        android:textColor="@color/gray"
+        android:textSize="24px"
         android:visibility="gone" />
 
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp">
+        android:layout_marginLeft="@dimen/px16"
+        android:layout_marginRight="@dimen/px60"
+        android:layout_marginTop="@dimen/px32">
 
         <CheckBox
-            android:id="@+id/item_cb_select"
+            android:id="@+id/cb_item_select"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
@@ -36,7 +41,7 @@
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
             android:layout_marginRight="5dp"
-            android:layout_toRightOf="@+id/item_cb_select"
+            android:layout_toRightOf="@+id/cb_item_select"
             android:background="@drawable/message_text_result"
             android:gravity="left|center_vertical"
             android:orientation="vertical"
@@ -46,7 +51,7 @@
             android:paddingTop="24px">
 
             <TextView
-                android:id="@+id/item_content_asr"
+                android:id="@+id/tv_item_asr"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="left"
@@ -54,7 +59,7 @@
                 android:textColor="@color/c_66"
                 android:textSize="28px" />
 
-            <view
+            <View
                 android:layout_width="match_parent"
                 android:layout_height="1px"
                 android:layout_marginBottom="12px"
@@ -62,7 +67,7 @@
                 android:background="@color/c_d5" />
 
             <TextView
-                android:id="@+id/item_content_mt"
+                android:id="@+id/tv_item_mt"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="left"

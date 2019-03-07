@@ -1,26 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:padding="5dp">
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
 
 
     <TextView
         android:id="@+id/item_tv_time"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:textColor="#999999"
-        android:textSize="12dp"
+        android:layout_width="match_parent"
+        android:layout_height="48px"
+        android:background="@color/c_e5"
+        android:gravity="center"
+        android:text="2091-11-11"
+        android:layout_marginTop="@dimen/px32"
+        android:layout_marginBottom="@dimen/px32"
+        android:textColor="@color/gray"
+        android:textSize="24px"
         android:visibility="gone" />
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp">
-
-
+        android:layout_marginTop="@dimen/px32"
+        android:layout_marginLeft="@dimen/px60"
+        android:layout_marginRight="@dimen/px16">
         <LinearLayout
             android:id="@+id/item_layout_content"
             android:layout_width="wrap_content"
@@ -41,11 +44,10 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="left"
-                android:text="你好jdfkajfkajdlfkafjkdajkfds"
                 android:textColor="@color/c_66"
                 android:textSize="28px" />
 
-            <view
+            <View
                 android:layout_width="match_parent"
                 android:layout_height="1px"
                 android:layout_marginBottom="12px"
@@ -70,8 +72,7 @@
             android:layout_height="wrap_content"
             android:button="@drawable/checkbox"
             android:layout_alignParentLeft="true"
-            android:layout_marginRight="10dp"
-            android:visibility="gone" />
+            android:layout_marginRight="10dp" />
     </RelativeLayout>
 
 

@@ -24,5 +24,8 @@
     <dimen name="px32">32pt</dimen>
     <dimen name="px96">96pt</dimen>
     <dimen name="px8">8pt</dimen>
+    <dimen name="px80">80pt</dimen>
     <dimen name="px88">88pt</dimen>
+    <dimen name="px640">640pt</dimen>
+    <dimen name="px48">48pt</dimen>
 </resources>

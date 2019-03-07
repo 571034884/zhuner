@@ -1,7 +1,9 @@
 package com.aibabel.translate.adapter;
 
 import android.content.Context;
+import android.text.TextUtils;
 import android.util.SparseBooleanArray;
+import android.view.View;
 
 import com.aibabel.translate.R;
 import com.aibabel.translate.bean.MessageBean;
@@ -26,7 +28,7 @@ public class ChatAdapter extends BaseQuickAdapter<MessageBean, BaseViewHolder> {
      * 防止Checkbox错乱 做setTag  getTag操作
      */
     private SparseBooleanArray mBooleanArray = new SparseBooleanArray();
-
+    private boolean showCheckBox = false;
 
     public ChatAdapter(Context context, List<MessageBean> data) {
         super(data);
@@ -34,7 +36,7 @@ public class ChatAdapter extends BaseQuickAdapter<MessageBean, BaseViewHolder> {
             @Override
             protected int getItemType(MessageBean entity) {
                 String from = entity.getFrom();
-                return from=="ch" ? TYPE_SEND_CH : TYPE_SEND_EN;
+                return TextUtils.equals(from, "ch") ? TYPE_SEND_CH : TYPE_SEND_EN;
             }
         });
         getMultiTypeDelegate().registerItemType(TYPE_SEND_CH, SEND_CH)
@@ -44,21 +46,20 @@ public class ChatAdapter extends BaseQuickAdapter<MessageBean, BaseViewHolder> {
     @Override
     protected void convert(BaseViewHolder helper, MessageBean item) {
         setContent(helper, item);
-//        setStatus(helper, item);
-//        setOnClick(helper, item);
-//        setOnLongClick(helper, item);
-
     }
 
 
-//    private void setStatus(BaseViewHolder helper, MessageBean item) {
-//
-//
-//    }
-
     private void setContent(BaseViewHolder helper, MessageBean item) {
-            helper.setText(R.id.tv_item_asr, item.getTrans_text());
-            helper.setText(R.id.tv_item_mt, item.getTrans_result());
+        helper.setText(R.id.tv_item_asr, item.getTrans_text());
+        helper.setText(R.id.tv_item_mt, item.getTrans_result());
+
+        if (showCheckBox) {
+            helper.getView(R.id.cb_item_select).setVisibility(View.VISIBLE);
+            //防止显示错乱
+//            helper.setChecked(R.id.cb_item_select,item.isChecked());
+        } else {
+            helper.getView(R.id.cb_item_select).setVisibility(View.GONE);
+        }
     }
 
 
@@ -68,31 +69,15 @@ public class ChatAdapter extends BaseQuickAdapter<MessageBean, BaseViewHolder> {
 //            helper.addOnClickListener(R.id.rlAudio);
 //        }
     }
+
     private void setOnLongClick(BaseViewHolder helper, MessageBean item) {
 
 //        helper.addOnLongClickListener(R.id.rlAudio);
     }
 
 
-    public void setItemChecked(int position) {
-
-//        if (mLastCheckedPosition == position)
-//
-//            return;
-//
-//        mBooleanArray.put(position, true);
-//
-//        if (mLastCheckedPosition-1) {
-//            mBooleanArray.put(mLastCheckedPosition,false);
-//            mAdapter.notifyItemChanged(mLastCheckedPosition);
-//        }
-//
-//        mAdapter.notifyDataSetChanged();
-//
-//        mLastCheckedPosition = position;
+    public void setCheckBoxVisibility(boolean visibility) {
+        showCheckBox = visibility;
+        notifyDataSetChanged();
     }
-
-
-
-
 }

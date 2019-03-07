@@ -2,11 +2,20 @@
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:layout_marginLeft="@dimen/px16"
-    android:layout_marginRight="@dimen/px60"
-    android:background="@color/c_e5">
+    android:layout_height="wrap_content"
+    android:layout_alignParentBottom="true"
+    android:background="@color/c_ec"
+    android:paddingLeft="@dimen/px16"
+    android:paddingRight="@dimen/px60"
+    android:minWidth="@dimen/px200"
+    android:paddingTop="@dimen/px32"
+    app:layout_constraintHorizontal_bias="0.66">
 
+    <View
+        android:id="@+id/v_line"
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:background="@color/c_d2" />
 
     <!--录音时显示-->
     <LinearLayout
@@ -14,7 +23,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"
-
         android:layout_marginTop="@dimen/px28"
         android:background="@drawable/message_text_ch"
         android:gravity="left|center_vertical"
@@ -22,7 +30,8 @@
         android:paddingBottom="24px"
         android:paddingLeft="32px"
         android:paddingRight="32px"
-        android:paddingTop="24px">
+        android:paddingTop="24px"
+        app:layout_constraintTop_toBottomOf="@+id/v_line">
 
         <android.support.constraint.ConstraintLayout
             android:id="@+id/cl_ai_asr"
@@ -34,38 +43,41 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:src="@mipmap/ic_launcher"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent" />
-
-
-            <ImageView
-                android:id="@+id/iv_count_anim"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@mipmap/ic_launcher"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent" />
+                android:visibility="gone"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
                 android:id="@+id/tv_ai_asr"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="你好jdfkajfkajdlfkafjkdajkfds"
+                android:text="@string/hint_down"
                 android:textColor="@color/white"
                 android:textSize="28px"
-                android:visibility="gone"
-                app:layout_constraintLeft_toLeftOf="parent" />
-
-
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
         </android.support.constraint.ConstraintLayout>
 
+        <ImageView
+            android:id="@+id/iv_count_anim"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/px80"
+            android:src="@mipmap/ic_launcher"
+            android:visibility="gone"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tv_ai_asr" />
 
         <View
+            android:id="@+id/v_tran_line"
             android:layout_width="match_parent"
             android:layout_height="1px"
-            android:layout_marginBottom="12px"
-            android:layout_marginTop="12px"
+            android:layout_marginBottom="@dimen/px12"
+            android:layout_marginTop="@dimen/px12"
             android:background="@color/white" />
+
 
         <android.support.constraint.ConstraintLayout
             android:id="@+id/cl_ai_mt"
@@ -77,17 +89,20 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:src="@mipmap/ic_launcher"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent" />
+                android:visibility="gone"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
                 android:id="@+id/tv_ai_mt"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="left"
-                android:text="hello"
+                android:text="@string/hint_up"
                 android:textColor="@color/white"
-                android:textSize="28px" />
+                android:textSize="28px"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
         </android.support.constraint.ConstraintLayout>
     </LinearLayout>
 

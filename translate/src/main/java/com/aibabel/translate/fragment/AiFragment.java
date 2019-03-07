@@ -1,14 +1,15 @@
 package com.aibabel.translate.fragment;
 
 import android.content.Context;
-import android.content.Intent;
 import android.graphics.drawable.AnimationDrawable;
-import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.CountDownTimer;
+import android.support.constraint.ConstraintLayout;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
+import android.util.SparseBooleanArray;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -21,7 +22,6 @@ import android.widget.Toast;
 
 import com.aibabel.translate.R;
 import com.aibabel.translate.adapter.ChatAdapter;
-import com.aibabel.translate.app.BaseApplication;
 import com.aibabel.translate.bean.MessageBean;
 import com.aibabel.translate.socket.TranslateUtil;
 import com.aibabel.translate.utils.Constant;
@@ -30,10 +30,10 @@ import com.aibabel.translate.utils.L;
 import com.aibabel.translate.utils.MediaPlayerUtil;
 import com.aibabel.translate.utils.SharePrefUtil;
 import com.aibabel.translate.utils.ToastUtil;
-import com.aibabel.translate.view.MyRecyclerView;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -58,9 +58,14 @@ public class AiFragment extends BaseFragment implements SwipeRefreshLayout.OnRef
     TextView tvTitle;
     @BindView(R.id.rv_chat)
     RecyclerView rvChat;
-    //    @BindView(R.id.sl_chat)
-//    SwipeRefreshLayout slChat;
     Unbinder unbinder;
+    @BindView(R.id.tv_left_lan)
+    TextView tvLeftLan;
+    @BindView(R.id.tv_right_lan)
+    TextView tvRightLan;
+    @BindView(R.id.common_toolbar)
+    RelativeLayout commonToolbar;
+
     private Context context;
     private AnimationDrawable animationCountDown;
     private AnimationDrawable animationAsr;
@@ -72,7 +77,11 @@ public class AiFragment extends BaseFragment implements SwipeRefreshLayout.OnRef
     private int curr_press;
     private long oldTime;
     private ChatAdapter mAdapter;
-
+    private List<MessageBean> list = new ArrayList<MessageBean>();
+    private boolean isShowCheck;
+    private boolean isSelectAll;
+    private int mLastCheckedPosition;
+    private SparseBooleanArray mBooleanArray;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -84,25 +93,47 @@ public class AiFragment extends BaseFragment implements SwipeRefreshLayout.OnRef
 
     @Override
     public void initView() {
+
+        for (int i = 0; i < 10; i++) {
+            MessageBean bean = new MessageBean();
+            if (i == 3 || i == 5 || i == 7) {
+                bean.setFrom("ch");
+                bean.setTrans_result("Hello. Nice to meet you. Welcome to China");
+                bean.setTrans_text("你好很高兴认识你欢迎来到中国" + i);
+            } else {
+                bean.setFrom("en");
+                bean.setTrans_result("你好很高兴认识你欢迎来到中国");
+                bean.setTrans_text("Hello. Nice to meet you. Welcome to China" + i);
+            }
+            list.add(bean);
+        }
+
+
         context = getActivity();
         ivMenu.setOnClickListener(this);
         llContent.setOnClickListener(this);
-        mAdapter = new ChatAdapter(context, new ArrayList<MessageBean>());
+        mAdapter = new ChatAdapter(context, list);
         LinearLayoutManager mLinearLayout = new LinearLayoutManager(context);
         rvChat.setLayoutManager(mLinearLayout);
         View footerView = getFooterView();
-        View emptyView = getEmptyView();
+        View headerView = getHeaderView();
         mAdapter.addFooterView(footerView, 0);
+        if (list.size() == 0)
+            mAdapter.setHeaderView(headerView);
         rvChat.setAdapter(mAdapter);
+        rvChat.scrollToPosition(mAdapter.getItemCount() - 1);
         mAdapter.setOnItemLongClickListener(new BaseQuickAdapter.OnItemLongClickListener() {
             @Override
             public boolean onItemLongClick(BaseQuickAdapter adapter, View view, int position) {
+                if (!isShowCheck) {
+                    mAdapter.setCheckBoxVisibility(true);
+                }
                 Toast.makeText(context, "长按了item", Toast.LENGTH_SHORT).show();
                 return false;
             }
 
         });
-        mAdapter.setEmptyView(emptyView);
+
 //        slChat.setOnRefreshListener(this);
     }
 
@@ -119,25 +150,42 @@ public class AiFragment extends BaseFragment implements SwipeRefreshLayout.OnRef
         //获取当前控件的布局对象
         params.height = DensityHelper.getSystemWH(activity).get("height") * 2 / 3;//设置当前控件布局的高度
         view.setLayoutParams(params);//将设置好的布局参数应用到控件中
-
+        Log.e("height", "=" + params.height);
         ImageView audioAnim = view.findViewById(R.id.iv_audio_anim);
         ImageView countAnim = view.findViewById(R.id.iv_count_anim);
         ImageView progressAnim = view.findViewById(R.id.iv_progress_anim);
         TextView tv_asr = view.findViewById(R.id.tv_ai_asr);
         TextView tv_mt = view.findViewById(R.id.tv_ai_mt);
+        View line = view.findViewById(R.id.v_tran_line);
         LinearLayout ll_audio = view.findViewById(R.id.ll_audio);
         LinearLayout ll_failed = view.findViewById(R.id.ll_failed);
-
         return view;
     }
 
-    private View getEmptyView() {
-        View view = getLayoutInflater().inflate(R.layout.audio_layout, (ViewGroup) rvChat.getParent(), false);
+    private View getHeaderView() {
+        View view = getLayoutInflater().inflate(R.layout.empty_view, (ViewGroup) rvChat.getParent(), false);
         LinearLayout.LayoutParams params = (LinearLayout.LayoutParams) view.getLayoutParams();
+
         //获取当前控件的布局对象
-        params.height = DensityHelper.getSystemWH(activity).get("height") * 1 / 3;//设置当前控件布局的高度
+        params.height = (DensityHelper.getSystemWH(activity).get("height") * 1 / 3) - 80;//设置当前控件布局的高度
+
+        Log.e("EmptyViewHeight", "=" + params.height);
         view.setLayoutParams(params);//将设置好的布局参数应用到控件中
         return view;
+    }
+
+
+    public void setItemChecked(int position) {
+
+        if (mLastCheckedPosition == position)
+            return;
+        mBooleanArray.put(position, true);
+        if (mLastCheckedPosition - 1 == 0) {
+            mBooleanArray.put(mLastCheckedPosition, false);
+            mAdapter.notifyItemChanged(mLastCheckedPosition);
+        }
+        mAdapter.notifyDataSetChanged();
+        mLastCheckedPosition = position;
     }
 
     @Override
