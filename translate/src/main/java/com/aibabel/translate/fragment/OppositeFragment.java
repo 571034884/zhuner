@@ -133,6 +133,9 @@ public class OppositeFragment extends BaseFragment implements OnResponseListener
     Unbinder unbinder;
     @BindView(R.id.iv_record)
     ImageView ivRecord;
+    @BindView(R.id.iv_point)
+    ImageView ivPoint;
+
 
     private String code_from;//语言code
     private String code_to;//语言code
@@ -379,6 +382,11 @@ public class OppositeFragment extends BaseFragment implements OnResponseListener
         BaseApplication.isIpsil = "Oppos";
         manager.registerListener(this, sensor, SensorManager.SENSOR_DELAY_UI);
         netChanged();
+
+        if (BaseApplication.newPoint){
+            ivPoint.setVisibility(View.GONE);
+        }
+
     }
 
     public void onKeyDown(int keyCode, KeyEvent event) {
@@ -701,8 +709,7 @@ public class OppositeFragment extends BaseFragment implements OnResponseListener
 
             case R.id.iv_record:
 //                toRecord();
-                activity.drag();
-
+                activity.showDrawerLayout(0);
                 break;
         }
     }
@@ -747,7 +754,7 @@ public class OppositeFragment extends BaseFragment implements OnResponseListener
             return;
         BaseApplication.isIpsil = "Ipsil";
         Constant.isSound = false;
-        activity.showFragment(0);
+        activity.showFragment(0,1);
     }
 
     /**

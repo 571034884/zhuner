@@ -51,6 +51,7 @@ public class BaseApplication extends LitePalApplication {
 
     public static  boolean isTran=true;
     public static String isIpsil="Ipsil";
+    public static boolean newPoint = false;
 
     /**
      * DESIGN_WIDTH为设计图宽度
@@ -95,6 +96,9 @@ public class BaseApplication extends LitePalApplication {
                     null);
             MobclickAgent.setScenarioType(this, MobclickAgent.EScenarioType.E_UM_NORMAL);
         }
+
+        //获取点的状态
+        newPoint = SharePrefUtil.getBoolean(context,"typePoint",false);
 
         initLayoutConfig();
         initLogConfig();

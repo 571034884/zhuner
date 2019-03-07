@@ -125,6 +125,8 @@ public class IpsilateralFragment extends BaseFragment implements OnResponseListe
     ScrollView svDownText;
     @BindView(R.id.iv_record)
     ImageView ivRecord;
+    @BindView(R.id.iv_point)
+    ImageView ivPoint;
 
     /*引导页布局*/
     private Handler mHandler = new Handler();
@@ -250,9 +252,10 @@ public class IpsilateralFragment extends BaseFragment implements OnResponseListe
         rl4 = popu1.findViewById(R.id.rl4);
         rl5 = popu1.findViewById(R.id.rl5);
         rl1.setVisibility(View.VISIBLE);
-
-
     }
+
+
+
 
     private Runnable mRunnable = new Runnable() {
         public void run() {
@@ -356,6 +359,11 @@ public class IpsilateralFragment extends BaseFragment implements OnResponseListe
         super.onResume();
         BaseApplication.isIpsil = "Ipsil";
         netChanged();
+
+        if (BaseApplication.newPoint){
+            ivPoint.setVisibility(View.GONE);
+        }
+
     }
 
 
@@ -694,7 +702,7 @@ public class IpsilateralFragment extends BaseFragment implements OnResponseListe
 //                } else {
 //                    ivRecord.setImageDrawable(context.getDrawable(R.mipmap.ic_translate_menu));
 //                }
-                activity.drag();
+                activity.showDrawerLayout(0);
 //                toRecord();
                 break;
 
@@ -739,7 +747,7 @@ public class IpsilateralFragment extends BaseFragment implements OnResponseListe
             return;
         BaseApplication.isIpsil = "Oppos";
         Constant.isSound = false;
-        activity.showFragment(1);
+        activity.showFragment(1,1);
     }
 
 

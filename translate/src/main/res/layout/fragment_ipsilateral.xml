@@ -25,6 +25,14 @@
             android:layout_alignParentLeft="true"
             android:src="@mipmap/ic_translate_menu" />
 
+        <ImageView
+            android:id="@+id/iv_point"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignEnd="@+id/iv_record"
+            android:layout_below="@+id/tv_up_off"
+            android:layout_marginTop="15px"
+            android:src="@mipmap/fragment_point" />
         <!--语言选择-->
         <TextView
             android:id="@+id/tv_up_lan"

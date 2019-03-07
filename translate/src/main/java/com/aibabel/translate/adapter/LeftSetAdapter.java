@@ -7,6 +7,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.aibabel.translate.R;
+import com.aibabel.translate.app.BaseApplication;
 import com.aibabel.translate.utils.SharePrefUtil;
 
 import java.util.List;
@@ -45,8 +46,7 @@ public class LeftSetAdapter extends BaseListViewAdapter<Integer> {
 
         if (position == 1){
             holder.tv_slide_red.setVisibility(View.VISIBLE);
-            boolean type = SharePrefUtil.getBoolean(mContext,"type",false);
-            if (type){
+            if (BaseApplication.newPoint){
                 holder.tv_slide_red.setVisibility(View.INVISIBLE);
             }
         }else{

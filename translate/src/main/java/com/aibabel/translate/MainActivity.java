@@ -5,7 +5,9 @@ import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.widget.DrawerLayout;
 import android.text.TextUtils;
+import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.AdapterView;
@@ -46,13 +48,10 @@ public class MainActivity extends BaseActivity implements NetBroadcastReceiver.N
     ImageView mianCloseImg;
     @BindView(R.id.lv_left)
     ListView mLeftList;
-//    @BindView(R.id.ml_layout)
-//    MyLinearLayout mLinearLayout;
     @BindView(R.id.tv_menu)
     TextView tvMenu;
-    @BindView(R.id.dl)
-    DragLayout mDragLayout;
-
+    @BindView(R.id.drawer_layout)
+    DrawerLayout drawer;
 
     private FragmentManager fragmentManager;
     private FragmentTransaction fragmentTransaction;
@@ -126,11 +125,14 @@ public class MainActivity extends BaseActivity implements NetBroadcastReceiver.N
 
 
     private void initView() {
+
+        //禁止侧滑
+//        drawer.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
+
         fragmentManager = getSupportFragmentManager();
         ipsiFragment = new IpsilateralFragment();
         oppoFragment = new OppositeFragment();
         aiFragment = new AiFragment();
-//        showFragment(0);
         initData();
     }
 
@@ -139,7 +141,6 @@ public class MainActivity extends BaseActivity implements NetBroadcastReceiver.N
      * 数据的填充
      */
     public void initData() {
-
         //左面板侧拉，内部数据填充
         adapter = new LeftSetAdapter(Arrays.asList(menuTitle), mContext);
         mLeftList.setAdapter(adapter);
@@ -149,13 +150,18 @@ public class MainActivity extends BaseActivity implements NetBroadcastReceiver.N
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 switch (position) {
                     case 0:
-                        showFragment(lastIndex);
+                        showFragment(lastIndex,0);
                         break;
                     case 1:
+                        if (!BaseApplication.newPoint){
+                            adapter.notifyDataSetChanged();
+                            SharePrefUtil.saveBoolean(mContext, "typePoint", true);
+                            BaseApplication.newPoint = true;
+                        }
                         if (currentFragmentIndex == 1 || currentFragmentIndex == 0)
                             lastIndex = currentFragmentIndex;
-                        showFragment(2);
-                        SharePrefUtil.saveBoolean(mContext, "type", true);
+                        showFragment(2,0);
+
                         break;
                     case 2:
                         if (currentFragmentIndex == 1 || currentFragmentIndex == 0)
@@ -167,32 +173,25 @@ public class MainActivity extends BaseActivity implements NetBroadcastReceiver.N
                         }
                         break;
                 }
-                mDragLayout.close();
             }
         });
+        //打开APP 进入
+        showFragment(SharePrefUtil.getInt(this, "translateType", 0),1);
+    }
 
-        //首页图标的动效
-//        mLinearLayout.setDraglayout(mDragLayout);
-
-        mDragLayout.setDragStatusListener(new DragLayout.OnDragStatusChangeListener() {
-            @Override
-            public void onClose() {
-                switchIcon(currentFragmentIndex,false);
+    /**
+     * 是否打开菜单or关闭
+     * @param index 0打开or关闭     1不做操作
+     */
+    public void showDrawerLayout(int index) {
+        if (index == 0) {
+            if (!drawer.isDrawerOpen(Gravity.LEFT)) {
+                drawer.openDrawer(Gravity.LEFT);
+            } else {
+                drawer.closeDrawer(Gravity.LEFT);
             }
+        }
 
-            @Override
-            public void onOpen() {
-                switchIcon(currentFragmentIndex,true);
-                adapter.notifyDataSetChanged();
-            }
-
-            @Override
-            public void onDraging(float percent) {
-
-            }
-        });
-
-        showFragment(SharePrefUtil.getInt(this, "translateType", 0));
     }
 
 
@@ -290,7 +289,7 @@ public class MainActivity extends BaseActivity implements NetBroadcastReceiver.N
             }
 
             if (isTranslateKeyCode == 131) {
-                showFragment(currentFragmentIndex);
+                showFragment(currentFragmentIndex,0);
 //                L.e("当前显示 FRAG======================onWindowFocusChanged");
                 if (currentFragmentIndex == 0) {
                     ipsiFragment.onKeyDown(131, null);
@@ -301,7 +300,7 @@ public class MainActivity extends BaseActivity implements NetBroadcastReceiver.N
                 }
 
             } else if (isTranslateKeyCode == 132) {
-                showFragment(currentFragmentIndex);
+                showFragment(currentFragmentIndex,0);
                 if (currentFragmentIndex == 0) {
                     ipsiFragment.onKeyDown(132, null);
                 } else if (currentFragmentIndex == 1) {
@@ -349,14 +348,12 @@ public class MainActivity extends BaseActivity implements NetBroadcastReceiver.N
 
     /**
      * 展示不同的Fragment
-     *
-     * @param type
+     * @param type  当前Fragment页面
+     * @param os    点击同侧or异测    0 其他，1异测or同侧
      */
-    public void showFragment(int type) {
+    public void showFragment(int type,int os) {
 
         fragmentTransaction = fragmentManager.beginTransaction();
-
-
 //        L.e("当前显示 FRAG======================"+type);
         switch (type) {
             case 0://同侧
@@ -373,10 +370,11 @@ public class MainActivity extends BaseActivity implements NetBroadcastReceiver.N
                 fragmentTransaction.replace(R.id.fl_translate, aiFragment);
                 currentFragmentIndex = 2;
                 currentFragment = aiFragment;
+
                 break;
         }
+        showDrawerLayout(os);
         save(currentFragmentIndex);
-        mDragLayout.close();
         fragmentTransaction.commit();
     }
 
@@ -532,18 +530,6 @@ public class MainActivity extends BaseActivity implements NetBroadcastReceiver.N
         isSleep = true;
         BaseApplication.isTran = true;
     }
-
-    /**
-     * 打开或关闭侧滑
-     */
-    public void drag() {
-        if (mDragLayout.getStatus().equals(DragLayout.Status.Close)) {
-            mDragLayout.open();
-        } else {
-            mDragLayout.close();
-        }
-    }
-
 
     public void switchIcon(int type,boolean isOpen){
         switch (type){

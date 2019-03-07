@@ -332,7 +332,7 @@ public class AiFragment extends BaseFragment implements SwipeRefreshLayout.OnRef
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.iv_menu:
-                activity.drag();
+                activity.showDrawerLayout(0);
                 break;
             case R.id.llContent:
                 ToastUtil.showShort("11111111111111111111111");
@@ -363,8 +363,6 @@ public class AiFragment extends BaseFragment implements SwipeRefreshLayout.OnRef
         MediaPlayerUtil.playMp3(SharePrefUtil.getString(context, "mp3_1", ""), context);
 
     }
-
-
     public void setAsr(String text, int flag) {
 
     }
