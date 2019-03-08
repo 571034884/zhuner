@@ -1,11 +1,15 @@
 apply plugin: 'com.android.application'
 apply plugin: 'com.aliyun.ams.emas-services'
 
+def buildTime() {
+    return new Date().format("MMddHHmmss", TimeZone.getDefault())
+}
+
 android {
     compileSdkVersion 28
     defaultConfig {
         applicationId "com.aibabel.download.offline"
-        minSdkVersion 21
+        minSdkVersion 23
         targetSdkVersion 28
         versionCode 1
         versionName "1.0.1"
@@ -29,11 +33,36 @@ android {
         // but continue the build even when errors are found:
         abortOnError false
     }
+
+    signingConfigs {
+        config {
+            keyAlias 'download_offline'
+            keyPassword 'aibabel*123'
+            storeFile file('download_offline.jks')
+            storePassword 'aibabel*123'
+        }
+    }
+    // 一定要写在android节点中
+    applicationVariants.all { variant ->
+        variant.outputs.each { output ->
+            def outputFile = output.outputFile
+            if (outputFile != null && outputFile.name.endsWith('.apk')) {
+
+                /// 输出apk名称为ForWatch_v1.1(2)_2016-09-28_15-54-35.apk
+                def version = "v${versionName}.${buildTime()}"
+                def endIndex = outputFile.name.indexOf('.apk')
+                def apkName = outputFile.name.substring(0, endIndex);
+                def fileName = "离线管理_${version}.apk"
+                output.outputFileName = fileName
+
+            }
+        }
+    }
 }
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
-    implementation 'com.android.support:appcompat-v7:28.0.0'
+    implementation 'com.android.support:appcompat-v7:28.0.0-alpha1'
     implementation 'com.android.support:support-v4:28.0.0'
     implementation 'com.android.support.constraint:constraint-layout:1.1.3'
     testImplementation 'junit:junit:4.12'

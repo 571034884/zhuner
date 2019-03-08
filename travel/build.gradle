@@ -1,13 +1,19 @@
 apply plugin: 'com.android.application'
 apply plugin: 'com.aliyun.ams.emas-services'
 def buildTime() {
-    return System.currentTimeMillis()
+//    return System.currentTimeMillis()
+    return new Date().format("MMddHHmmss", TimeZone.getDefault())
 }
 android {
+    signingConfigs {
+        config {
+            keyAlias 'travel'
+            keyPassword 'aibabel*123'
+            storeFile file('travel.jks')
+            storePassword 'aibabel*123'
+        }
+    }
     compileSdkVersion 28
-
-
-
     defaultConfig {
         applicationId "com.aibabel.travel"
          minSdkVersion 21
@@ -43,10 +49,15 @@ android {
             if (outputFile != null && outputFile.name.endsWith('.apk')) {
 
                 /// 输出apk名称为ForWatch_v1.1(2)_2016-09-28_15-54-35.apk
+               // def version = "v${versionName}.${buildTime()}"
+                ///def endIndex = outputFile.name.indexOf('.apk')
+                ///def apkName = outputFile.name.substring(0, endIndex);
+               /// def fileName = "${applicationId}_${version}.apk"
+               // output.outputFileName = fileName
                 def version = "v${versionName}.${buildTime()}"
                 def endIndex = outputFile.name.indexOf('.apk')
                 def apkName = outputFile.name.substring(0, endIndex);
-                def fileName = "${applicationId}_${version}.apk"
+                def fileName = "景区导览_${version}.apk"
                 output.outputFileName = fileName
 
             }

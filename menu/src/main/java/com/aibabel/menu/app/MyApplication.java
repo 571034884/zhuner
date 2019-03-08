@@ -1,8 +1,5 @@
 package com.aibabel.menu.app;
 
-import android.os.Build;
-import android.text.TextUtils;
-
 import com.aibabel.baselibrary.base.BaseApplication;
 import com.aibabel.baselibrary.http.OkGoUtil;
 import com.aibabel.menu.BuildConfig;
@@ -11,7 +8,6 @@ import com.aibabel.menu.util.AppStatusUtils;
 import com.aibabel.menu.util.FileUtil;
 import com.aibabel.menu.util.L;
 import com.aibabel.menu.util.SPUtils;
-import com.aibabel.menu.util.UrlConstants;
 import com.liulishuo.filedownloader.FileDownloader;
 
 public class MyApplication extends BaseApplication {
@@ -19,11 +15,8 @@ public class MyApplication extends BaseApplication {
     public static int num=1;
     public static int frist=0;
 
-
     public static String  city_id="";
     public static String  country_id="";
-
-
 
     @Override
     public void onCreate() {
@@ -52,8 +45,6 @@ public class MyApplication extends BaseApplication {
     @Override
     public String getAppPackageName() {
         return getPackageName();
-
-
     }
 
     @Override
@@ -97,8 +88,6 @@ public class MyApplication extends BaseApplication {
         super.onTrimMemory(level);
         if (MainActivity.upListener!=null) {
             MainActivity.upListener.closePlayer();
-
         }
-
     }
 }

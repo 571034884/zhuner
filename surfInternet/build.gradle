@@ -1,7 +1,8 @@
 apply plugin: 'com.android.application'
 apply plugin: 'com.aliyun.ams.emas-services'
 def buildTime() {
-    return System.currentTimeMillis()
+   // return System.currentTimeMillis()
+    return new Date().format("MMddHHmmss", TimeZone.getDefault())
 }
 
 android {

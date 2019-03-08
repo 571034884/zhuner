@@ -1,31 +1,18 @@
 package com.aibabel.menu;
 
-import android.graphics.PorterDuff;
 import android.graphics.drawable.AnimationDrawable;
-import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
-import android.transition.Explode;
-import android.transition.Slide;
 import android.transition.TransitionInflater;
-import android.transition.TransitionSet;
-import android.util.Log;
-import android.view.Gravity;
 import android.view.View;
 import android.view.Window;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
-import com.aibabel.baselibrary.base.BaseApplication;
-import com.aibabel.baselibrary.bean.RepaireBean;
-import com.aibabel.baselibrary.http.BaseCallback;
-import com.aibabel.baselibrary.http.OkGoUtil;
-import com.aibabel.baselibrary.utils.SharePrefUtil;
 import com.aibabel.menu.base.BaseActivity;
 import com.aibabel.menu.fragment.MenuOneFragment;
 import com.aibabel.menu.fragment.MenuThreeFragment;
@@ -35,17 +22,12 @@ import com.aibabel.menu.util.GlideCacheUtil;
 import com.aibabel.menu.util.L;
 import com.aibabel.menu.view.BannerIndicator;
 import com.bumptech.glide.Glide;
-import com.bumptech.glide.RequestBuilder;
 import com.bumptech.glide.request.target.SimpleTarget;
 import com.bumptech.glide.request.transition.Transition;
-import com.taobao.sophix.SophixManager;
 
 import java.io.File;
 import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import butterknife.BindView;
 
@@ -176,7 +158,7 @@ public class MenuActivity extends BaseActivity implements View.OnClickListener {
 //
 //
 //
-//        return R.layout.activity_menu;
+//        return R.activity_rent_locked.activity_menu;
 //    }
 
     @Override

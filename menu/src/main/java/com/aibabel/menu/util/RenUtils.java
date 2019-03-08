@@ -14,7 +14,6 @@ import android.util.Log;
 import android.widget.Toast;
 
 import com.aibabel.baselibrary.utils.SharePrefUtil;
-import com.aibabel.menu.MainActivity;
 import com.aibabel.menu.R;
 import com.aibabel.menu.service.MyService;
 
@@ -42,7 +41,7 @@ public class RenUtils {
     private Activity mActivity;
 
     public RenUtils(Activity activity) {
-        mActivity=activity;
+        mActivity = activity;
     }
 
 
@@ -54,7 +53,7 @@ public class RenUtils {
                 Intent intent = new Intent();
                 intent.setPackage("com.aibabel.locationservice");
                 intent.setAction("android.intent.action.START_B_SERVICE");
-               mActivity. startService(intent);
+                mActivity.startService(intent);
                 Log.d("weiqidong", "yiqidong");
                 //Toast.makeText(MainActivity.this, "未启动", Toast.LENGTH_SHORT).show();
             }
@@ -67,7 +66,7 @@ public class RenUtils {
             Log.e("wzf_device", "tt=" + tt);
             mActivity.startService(new Intent(mActivity, MyService.class));
             //注册广播接收器
-        receiver = new MyReceiver();
+            receiver = new MyReceiver();
             IntentFilter filter1 = new IntentFilter();
             filter1.addAction("com.example.root.testhuaping.service.MyService");
             mActivity.registerReceiver(receiver, filter1);
@@ -147,7 +146,7 @@ public class RenUtils {
     /**
      * 判断是否到期
      */
-    public  void IsToday() {
+    public void IsToday() {
 
         //Log.e("wzf>>>>>>>>>>>>","服务已启动");
         //String date ="20180620";
@@ -173,28 +172,29 @@ public class RenUtils {
                 } while (cursor.moveToNext());
             }
 
-            Log.e("wzf","现"+date);
-            Log.e("wzf","从"+ffdTime);
-            Log.e("wzf","到"+endTime);
-            long time_ef=(stringToLong(endTime,"yyyyMMddHHmmss")-stringToLong(ffdTime,"yyyyMMddHHmmss"));
-            Log.e("wzf","time_ef="+time_ef);
-            long time_df= (stringToLong(date,"yyyyMMddHHmmss")-stringToLong(ffdTime,"yyyyMMddHHmmss"));
-            long time_ed= (stringToLong(endTime,"yyyyMMddHHmmss")-stringToLong(date,"yyyyMMddHHmmss")-time_ef);
-            Log.e("wzf","time_df="+time_df);
-            Log.e("wzf","time_ed="+time_ed);
-            if (time_df > time_ef || time_ed > time_ef){
+            Log.e("wzf", "现" + date);
+            Log.e("wzf", "从" + ffdTime);
+            Log.e("wzf", "到" + endTime);
+            long time_ef = (stringToLong(endTime, "yyyyMMddHHmmss") - stringToLong(ffdTime, "yyyyMMddHHmmss"));
+            Log.e("wzf", "time_ef=" + time_ef);
+            long time_df = (stringToLong(date, "yyyyMMddHHmmss") - stringToLong(ffdTime, "yyyyMMddHHmmss"));
+            long time_ed = (stringToLong(endTime, "yyyyMMddHHmmss") - stringToLong(date, "yyyyMMddHHmmss") - time_ef);
+            Log.e("wzf", "time_df=" + time_df);
+            Log.e("wzf", "time_ed=" + time_ed);
+            if (time_df > time_ef || time_ed > time_ef) {
 
 
                 Intent LaunchIntent = mActivity.getPackageManager().getLaunchIntentForPackage("com.dommy.qrcode");
                 LaunchIntent.putExtra("erweima", "daoqi");
-               mActivity. startActivity(LaunchIntent);
+                mActivity.startActivity(LaunchIntent);
 
                 Intent intent = new Intent();
                 intent.setAction("com.android.zhuner");
                 intent.putExtra("Zhuner_devices", "time_end");
-               mActivity.sendBroadcast(intent);
+                mActivity.sendBroadcast(intent);
                 Toast.makeText(mActivity, R.string.my_weizaizulinqi, Toast.LENGTH_SHORT).show();
-            }else {}
+            } else {
+            }
         } catch (Exception e) {
 
             // Log.e("wzfff",e.getMessage());
@@ -212,6 +212,7 @@ public class RenUtils {
             return currentTime;
         }
     }
+
     public static Date stringToDate(String strTime, String formatType)
             throws ParseException {
         SimpleDateFormat formatter = new SimpleDateFormat(formatType);
@@ -261,16 +262,17 @@ public class RenUtils {
 
     public void destroyRes() {
         try {
-            if (receiver!=null) {
+            mActivity.stopService(new Intent(mActivity, MyService.class));
+            if (receiver != null) {
                 mActivity.unregisterReceiver(receiver);
             }
-            if (msgReceiver!=null) {
+            if (msgReceiver != null) {
                 mActivity.unregisterReceiver(msgReceiver);
             }
         } catch (Exception e) {
         }
-
-        mActivity=null;
+        mActivity = null;
     }
+
 
 }
