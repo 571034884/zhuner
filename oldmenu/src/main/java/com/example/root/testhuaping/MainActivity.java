@@ -415,6 +415,7 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
         boolean softSim = DataManager.getInstance().getBoolean("softSim");
         if (softSim) {
             Toast.makeText(MainActivity.this, "启动过软卡", Toast.LENGTH_SHORT).show();
+//            mSoftSIMManager.isSoftSIMEnabled();
         } else {
             isnet = true;
             initReceiver();

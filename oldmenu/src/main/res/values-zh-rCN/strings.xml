@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="app_name">menu</string>
     <string name="yuyinfanyi">语音翻译</string>
     <string name="paizhaofanyi">拍照翻译</string>
     <string name="wutishibie">物体识别</string>
