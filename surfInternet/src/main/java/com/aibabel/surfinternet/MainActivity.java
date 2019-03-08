@@ -138,8 +138,9 @@ public class MainActivity extends BaseActivity implements BaseCallback {
                 Toast.makeText(MainActivity.this, "绑定成功", Toast.LENGTH_SHORT).show();
                 IDataManager dm = XIPC.getInstance(IDataManager.class);
                 Constans.Lk_CARDTYPE = dm.getBoolean("softSim");
-                ToastUtil.showLong(MainActivity.this, "全球上网数据：" + Constans.Lk_CARDTYPE);
-
+                String softType = dm.getString("softSimType");
+                ToastUtil.showLong(MainActivity.this, "全球上网数据：" + Constans.Lk_CARDTYPE+"---"+softType);
+                Log.e("SOFTSIM-01",Constans.Lk_CARDTYPE+"---"+softType);
                 if (NetUtil.isNetworkAvailable(MainActivity.this)) {
                     initData();
                 } else {
@@ -360,6 +361,7 @@ public class MainActivity extends BaseActivity implements BaseCallback {
         }
         Constans.PHONE_ICCID = telephonyManager.getDeviceId(0);
         Log.e("imei_1", Constans.PHONE_ICCID);
+        Log.e("SOFTSIM-01",Constans.PHONE_ICCID);
 //        Log.e("imei_2", telephonyManager.getDeviceId(1));
         //Toast.makeText(MainActivity.this, "slot=" + slot, Toast.LENGTH_LONG).show();
 
@@ -381,6 +383,7 @@ public class MainActivity extends BaseActivity implements BaseCallback {
             map.put("iccid", Constans.PHONE_ICCID);
             if (Constans.Lk_CARDTYPE) {
                 map.put("cardType", "lksc");
+                Log.e("SOFTSIM-01",Constans.PHONE_ICCID+"lksc");
             }
             Log.e("iccid", Constans.PHONE_ICCID + "===");
             OkGoUtil.<OrderitemBean>get(MainActivity.this, Constans.METHOD_KADINGDANXIANGQING, map, OrderitemBean.class, this);

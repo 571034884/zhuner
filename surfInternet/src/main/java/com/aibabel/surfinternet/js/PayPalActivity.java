@@ -1,6 +1,8 @@
 package com.aibabel.surfinternet.js;
 
+import android.app.AlertDialog;
 import android.content.ContentValues;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Build;
@@ -16,13 +18,19 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.aibabel.aidlaar.StatisticsManager;
+import com.aibabel.baselibrary.impl.IDataManager;
+import com.aibabel.baselibrary.utils.XIPCUtils;
 import com.aibabel.surfinternet.MainActivity;
 import com.aibabel.surfinternet.R;
 import com.aibabel.surfinternet.activity.BaseActivity;
 import com.aibabel.surfinternet.utils.NetUtil;
 import com.bumptech.glide.Glide;
+import com.xuexiang.xipc.XIPC;
+import com.xuexiang.xipc.core.channel.IPCListener;
+import com.xuexiang.xipc.core.channel.IPCService;
 
 import java.text.ParseException;
 import java.util.HashMap;
@@ -32,6 +40,8 @@ import java.util.TimerTask;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+
+import static com.xuexiang.xipc.XIPC.getContext;
 
 public class PayPalActivity extends BaseActivity implements OnJSClickListener {
 
@@ -196,11 +206,34 @@ public class PayPalActivity extends BaseActivity implements OnJSClickListener {
                 Map map1 = new HashMap();
                 map1.put("p2", skuid);
                 StatisticsManager.getInstance(PayPalActivity.this).addEventAidl(1732, map1);
-                //TODO 下单成功  判断标识 是否重启设备
+                //TODO 下单成功  判断标识 是否重置Siftsim
+                XIPC.connectApp(getContext(), XIPCUtils.XIPC_MENU);
+                XIPC.setIPCListener(new IPCListener() {
+                    @Override
+                    public void onIPCConnected(Class<? extends IPCService> service) {
+                        IDataManager dm = XIPC.getInstance(IDataManager.class);
+                        String softType = dm.getString("softSimType");
+                        Toast.makeText(PayPalActivity.this, "绑定成功---状态："+softType, Toast.LENGTH_SHORT).show();
+                        isShowDialog(softType);
+
+                    }
+                });
+
+
+
             }
         });
+    }
 
 
+    private void isShowDialog(String softType) {
+        //关闭连接
+        XIPC.disconnect(getContext());
+        if (softType.equals("LOCAL")){
+            //重置SoftSim
+            Toast.makeText(PayPalActivity.this, "状态："+softType+"开始重置", Toast.LENGTH_SHORT).show();
+            insertContact("softsim","00001");
+        }
         Timer timer = new Timer();
         timer.schedule(new TimerTask() {
             @Override
@@ -209,6 +242,7 @@ public class PayPalActivity extends BaseActivity implements OnJSClickListener {
             }
         }, 3000);
     }
+
     public void insertContact(String name, String phoneNumber) {
         ContentValues values = new ContentValues();
         values.put("tag", name);
