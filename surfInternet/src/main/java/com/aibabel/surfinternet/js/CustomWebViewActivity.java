@@ -302,10 +302,14 @@ public class CustomWebViewActivity extends BaseActivity implements OnJSClickList
     private void isShowDialog(String softType) {
         //关闭连接
         XIPC.disconnect(getContext());
-        if (softType.equals("LOCAL")){
+        if (!softType.equals("LOCAL")){
             //重置softSim
             Toast.makeText(CustomWebViewActivity.this, "状态："+softType+"开始重置", Toast.LENGTH_SHORT).show();
-            insertContact("softsim","00001");
+
+            Intent intent = new Intent();
+            intent.setAction("com.lingke.oldmenu");
+            intent.putExtra("type", "lingke");
+            sendBroadcast(intent);
         }
         Timer timer = new Timer();
         timer.schedule(new TimerTask() {

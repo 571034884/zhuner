@@ -5,7 +5,6 @@ import android.app.ActionBar;
 import android.content.ActivityNotFoundException;
 import android.content.BroadcastReceiver;
 import android.content.ComponentName;
-import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
@@ -15,7 +14,6 @@ import android.net.ConnectivityManager;
 import android.net.NetworkCapabilities;
 import android.net.NetworkInfo;
 import android.net.Uri;
-import android.net.wifi.WifiManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
@@ -38,7 +36,6 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.aibabel.aidlaar.StatisticsManager;
 import com.aibabel.baselibrary.mode.DataManager;
 import com.aibabel.baselibrary.utils.ToastUtil;
 import com.example.root.testhuaping.service.Getsystem_info;
@@ -57,7 +54,6 @@ import com.lzy.okgo.model.HttpHeaders;
 import com.lzy.okgo.model.HttpParams;
 import com.lzy.okgo.model.Response;
 import com.umeng.analytics.MobclickAgent;
-import com.xuexiang.xipc.XIPC;
 
 import org.json.JSONObject;
 
@@ -81,7 +77,6 @@ import okhttp3.OkHttpClient;
 
 import static com.example.root.testhuaping.DateUtils.dateToLong;
 import static com.example.root.testhuaping.DateUtils.stringToDate;
-import static com.xuexiang.xipc.XIPC.getContext;
 
 
 public class MainActivity extends FragmentActivity implements View.OnClickListener, ViewPager.OnPageChangeListener {
@@ -452,6 +447,9 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
             try {
                 mSoftSIMManager.registerCallback(mCallback);
                 mSoftSIMInfo = mSoftSIMManager.getSoftSIMInfo();
+                if (mSoftSIMInfo != null && mSoftSIMInfo.getType() != null){
+                    DataManager.getInstance().setSaveString("softSimType",mSoftSIMInfo.getType().toString());
+                }
             } catch (RemoteException e) {
                 e.printStackTrace();
             }
@@ -500,7 +498,6 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
             }
         }
     };
-
     @Override
     protected void onStart() {
         Log.d(TAG, "onStart");
@@ -508,9 +505,40 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
         Intent intent = new Intent("com.linkfield.softsim.service.SoftSIMService");
         intent.setPackage("com.linkfield.softsim");
         bindService(intent, mConnection, Context.BIND_AUTO_CREATE);
+
+        //注册动态广播
+        receiveBroadCast = new ReceiveBroadCast();
+        IntentFilter filter = new IntentFilter();
+        filter.addAction("com.oldmenu");
+        registerReceiver(receiveBroadCast, filter);
+
     }
+    private ReceiveBroadCast receiveBroadCast;
+    class ReceiveBroadCast extends BroadcastReceiver {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            //得到广播中得到的数据，并显示出来
+            ToastUtil.showShort(context,"来自全球上网--进行refreshProfile刷新");
 
+            String type = intent.getExtras().getString("type");
+            if (type.equals("refresh")){
+                try {
+                    if (mSoftSIMManager != null){
+                        boolean flag = mSoftSIMManager.refreshProfile();
+                        if (!flag){
+                            ToastUtil.showShort(context,"请重启设备，激活套餐");
+                        }
+                    }else{
+                        ToastUtil.showShort(context,"请重启设备，激活套餐");
+                    }
 
+                } catch (RemoteException e) {
+                    ToastUtil.showShort(context,"请重启设备，激活套餐");
+                    e.printStackTrace();
+                }
+            }
+        }
+    }
 
     @Override
     protected void onResume() {
@@ -530,13 +558,6 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
     protected void onPause() {
         super.onPause();
         MobclickAgent.onPause(this);
-        if (mSoftSIMManager != null) {
-            try {
-                mSoftSIMManager.deregisterCallback(mCallback);
-            } catch (RemoteException e) {
-                e.printStackTrace();
-            }
-        }
     }
 
 
