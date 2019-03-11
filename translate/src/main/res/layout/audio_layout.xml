@@ -6,8 +6,7 @@
     android:layout_alignParentBottom="true"
     android:background="@color/c_ec"
     android:paddingLeft="@dimen/px16"
-    android:paddingRight="@dimen/px60"
-    android:minWidth="@dimen/px200"
+    android:paddingRight="@dimen/px16"
     android:paddingTop="@dimen/px32"
     app:layout_constraintHorizontal_bias="0.66">
 
@@ -20,8 +19,9 @@
     <!--录音时显示-->
     <LinearLayout
         android:id="@+id/ll_audio"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:minWidth="@dimen/px240"
         android:layout_centerVertical="true"
         android:layout_marginTop="@dimen/px28"
         android:background="@drawable/message_text_ch"
@@ -40,9 +40,9 @@
 
             <ImageView
                 android:id="@+id/iv_audio_anim"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@mipmap/ic_launcher"
+                android:layout_width="124px"
+                android:layout_height="32px"
+                android:src="@drawable/ai_waiting"
                 android:visibility="gone"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -51,9 +51,10 @@
                 android:id="@+id/tv_ai_asr"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/hint_down"
+                android:hint="@string/hint_down"
+                android:textColorHint="@color/white"
                 android:textColor="@color/white"
-                android:textSize="28px"
+                android:textSize="18sp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -63,9 +64,10 @@
             android:id="@+id/iv_count_anim"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/px80"
-            android:src="@mipmap/ic_launcher"
+            android:src="@drawable/ai_count"
+            android:layout_marginTop="@dimen/px16"
             android:visibility="gone"
+            android:layout_gravity="center_horizontal"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/tv_ai_asr" />
@@ -86,9 +88,9 @@
 
             <ImageView
                 android:id="@+id/iv_progress_anim"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@mipmap/ic_launcher"
+                android:layout_width="124px"
+                android:layout_height="32px"
+                android:src="@drawable/ai_waiting"
                 android:visibility="gone"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -98,7 +100,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="left"
-                android:text="@string/hint_up"
+                android:hint="@string/hint_up"
+                android:textColorHint="@color/white"
                 android:textColor="@color/white"
                 android:textSize="28px"
                 app:layout_constraintBottom_toBottomOf="parent"

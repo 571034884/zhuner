@@ -1,78 +1,86 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/ll_item_root"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical">
 
 
     <TextView
-        android:id="@+id/item_tv_time"
+        android:id="@+id/tv_item_time"
         android:layout_width="match_parent"
         android:layout_height="48px"
+        android:layout_marginTop="@dimen/px32"
         android:background="@color/c_e5"
         android:gravity="center"
-        android:text="2091-11-11"
-        android:layout_marginTop="@dimen/px32"
-        android:layout_marginBottom="@dimen/px32"
+        android:text="2011-11-11"
         android:textColor="@color/gray"
         android:textSize="24px"
         android:visibility="gone" />
 
+
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/px32"
-        android:layout_marginLeft="@dimen/px60"
-        android:layout_marginRight="@dimen/px16">
-        <LinearLayout
-            android:id="@+id/item_layout_content"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
-            android:layout_marginRight="5dp"
-            android:background="@drawable/message_text_result"
-            android:gravity="right|center_vertical"
-            android:orientation="vertical"
-            android:paddingBottom="24px"
-            android:paddingLeft="32px"
-            android:paddingRight="32px"
-            android:paddingTop="24px">
-
-            <TextView
-                android:id="@+id/tv_item_asr"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="left"
-                android:textColor="@color/c_66"
-                android:textSize="28px" />
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1px"
-                android:layout_marginBottom="12px"
-                android:layout_marginTop="12px"
-                android:background="@color/c_d5" />
-
-            <TextView
-                android:id="@+id/tv_item_mt"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="left"
-                android:text="hello"
-                android:textColor="@color/c_66"
-                android:textSize="28px" />
-
-        </LinearLayout>
-
+        android:layout_marginTop="@dimen/px32">
 
         <CheckBox
-            android:id="@+id/cb_item_select"
+            android:id="@+id/cb_item_check"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:button="@drawable/checkbox"
             android:layout_alignParentLeft="true"
-            android:layout_marginRight="10dp" />
+            android:button="@drawable/checkbox"
+            android:visibility="invisible" />
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="@dimen/px16"
+            android:layout_toRightOf="@+id/cb_item_check">
+
+            <LinearLayout
+                android:id="@+id/item_layout_content"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="@dimen/px60"
+                android:background="@drawable/message_text_result"
+                android:gravity="right|center_vertical"
+                android:orientation="vertical"
+                android:paddingBottom="24px"
+                android:paddingLeft="32px"
+                android:paddingRight="32px"
+                android:paddingTop="24px">
+
+                <TextView
+                    android:id="@+id/tv_item_asr"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="left"
+                    android:textColor="@color/c_66"
+                    android:textSize="28px" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1px"
+                    android:layout_marginBottom="12px"
+                    android:layout_marginTop="12px"
+                    android:background="@color/c_d5" />
+
+                <TextView
+                    android:id="@+id/tv_item_mt"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="left"
+                    android:text="hello"
+                    android:textColor="@color/c_66"
+                    android:textSize="28px" />
+
+            </LinearLayout>
+
+        </RelativeLayout>
     </RelativeLayout>
 
 

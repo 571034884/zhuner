@@ -125,10 +125,8 @@ public class MainActivity extends BaseActivity implements NetBroadcastReceiver.N
 
 
     private void initView() {
-
         //禁止侧滑
 //        drawer.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
-
         fragmentManager = getSupportFragmentManager();
         ipsiFragment = new IpsilateralFragment();
         oppoFragment = new OppositeFragment();
@@ -469,6 +467,14 @@ public class MainActivity extends BaseActivity implements NetBroadcastReceiver.N
                     }
                 }
                 break;
+            case 2:
+                if (event.getAction() == KeyEvent.ACTION_DOWN) {
+                    event.startTracking();
+                    if (event.getRepeatCount() == 0) {
+                        aiFragment.onKeyDown(keyCode, event);
+                    }
+                }
+                break;
 
         }
 
@@ -486,6 +492,9 @@ public class MainActivity extends BaseActivity implements NetBroadcastReceiver.N
                 break;
             case 1:
                 oppoFragment.onKeyUp(keyCode, event);
+                break;
+            case 2:
+                aiFragment.onKeyUp(keyCode, event);
                 break;
         }
         return super.onKeyUp(keyCode, event);
@@ -531,19 +540,6 @@ public class MainActivity extends BaseActivity implements NetBroadcastReceiver.N
         BaseApplication.isTran = true;
     }
 
-    public void switchIcon(int type,boolean isOpen){
-        switch (type){
-            case 0:
-                ipsiFragment.switchMenuIcon(isOpen);
-                break;
-            case 1:
-                oppoFragment.switchMenuIcon(isOpen);
-                break;
-            case 2:
-                aiFragment.switchMenuIcon(isOpen);
-                break;
-        }
-    }
 
 
 }

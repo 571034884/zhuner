@@ -1,11 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/c_ec"
     android:orientation="vertical">
-
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/c_ec"
+        android:orientation="vertical">
     <RelativeLayout
         android:id="@+id/common_toolbar"
         android:layout_width="match_parent"
@@ -69,7 +73,7 @@
         </LinearLayout>
 
         <TextView
-            android:id="@+id/tv_title"
+            android:id="@+id/tv_cancel"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_alignParentRight="true"
@@ -78,6 +82,7 @@
             android:maxLength="10"
             android:paddingLeft="20px"
             android:paddingRight="26px"
+            android:visibility="gone"
             android:singleLine="true"
             android:text="@string/cancle"
             android:textColor="#fe5000"
@@ -105,6 +110,47 @@
                     android:overScrollMode="never" />
             </LinearLayout>
     </LinearLayout>
+    </LinearLayout>
+
+    <android.support.constraint.ConstraintLayout
+        android:id="@+id/cl_delete"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/px80"
+        android:background="@color/white"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/flCenter">
+
+        <TextView
+            android:id="@+id/tv_all"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:paddingLeft="@dimen/px20"
+            android:paddingRight="@dimen/px20"
+            android:text="@string/select_all"
+            android:textColor="@color/fe5000"
+            android:gravity="center"
+            android:textSize="@dimen/px28"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/tv_delete"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:paddingLeft="@dimen/px20"
+            android:paddingRight="@dimen/px20"
+            android:text="@string/delete"
+            android:gravity="center"
+            android:textColor="@color/offline_list_999"
+            android:textSize="@dimen/px28"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+    </android.support.constraint.ConstraintLayout>
 
 
-</LinearLayout>
+</android.support.constraint.ConstraintLayout>

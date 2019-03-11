@@ -2,44 +2,81 @@ package com.aibabel.translate.fragment;
 
 import android.content.Context;
 import android.graphics.drawable.AnimationDrawable;
+import android.media.AudioFormat;
+import android.media.AudioRecord;
+import android.media.MediaRecorder;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.CountDownTimer;
+import android.os.Handler;
+import android.os.Message;
+import android.os.Process;
+import android.support.annotation.RequiresApi;
 import android.support.constraint.ConstraintLayout;
-import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.util.Log;
 import android.util.SparseBooleanArray;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.HeaderViewListAdapter;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.aibabel.aidlaar.StatisticsManager;
 import com.aibabel.translate.R;
 import com.aibabel.translate.adapter.ChatAdapter;
 import com.aibabel.translate.bean.MessageBean;
-import com.aibabel.translate.socket.TranslateUtil;
-import com.aibabel.translate.utils.Constant;
+import com.aibabel.translate.bean.Returnjson;
+import com.aibabel.translate.sqlite.AiSqlUtils;
+import com.aibabel.translate.sqlite.SqlUtils;
+import com.aibabel.translate.utils.CommonUtils;
 import com.aibabel.translate.utils.DensityHelper;
+import com.aibabel.translate.utils.FastJsonUtil;
 import com.aibabel.translate.utils.L;
 import com.aibabel.translate.utils.MediaPlayerUtil;
 import com.aibabel.translate.utils.SharePrefUtil;
+import com.aibabel.translate.utils.StringUtils;
 import com.aibabel.translate.utils.ToastUtil;
+import com.alibaba.fastjson.JSON;
 import com.chad.library.adapter.base.BaseQuickAdapter;
+import com.google.protobuf.ByteString;
+import com.google.protobuf.InvalidProtocolBufferException;
 
+import org.java_websocket.client.WebSocketClient;
+import org.java_websocket.handshake.ServerHandshake;
+import org.w3c.dom.Text;
+
+import java.io.IOException;
+import java.net.URI;
+import java.nio.ByteBuffer;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Random;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
+import okhttp3.Call;
+import okhttp3.Callback;
+import okhttp3.FormBody;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
+import proto.Dls;
+import proto.ResultOuterClass;
 
 import static com.aibabel.translate.utils.Constant.DEFAULT;
+import static com.lzy.okgo.utils.HttpUtils.runOnUiThread;
 
 /**
  * @==========================================================================================
@@ -48,14 +85,14 @@ import static com.aibabel.translate.utils.Constant.DEFAULT;
  * @Desc：智能识别
  * @==========================================================================================
  */
-public class AiFragment extends BaseFragment implements SwipeRefreshLayout.OnRefreshListener {
+public class AiFragment extends BaseFragment implements BaseQuickAdapter.OnItemLongClickListener, ChatAdapter.ChatOnItemClickListener {
 
     @BindView(R.id.llContent)
     LinearLayout llContent;
     @BindView(R.id.iv_menu)
     ImageView ivMenu;
-    @BindView(R.id.tv_title)
-    TextView tvTitle;
+    @BindView(R.id.tv_cancel)
+    TextView tvCancel;
     @BindView(R.id.rv_chat)
     RecyclerView rvChat;
     Unbinder unbinder;
@@ -65,23 +102,54 @@ public class AiFragment extends BaseFragment implements SwipeRefreshLayout.OnRef
     TextView tvRightLan;
     @BindView(R.id.common_toolbar)
     RelativeLayout commonToolbar;
+    @BindView(R.id.cl_delete)
+    ConstraintLayout clDelete;
+    @BindView(R.id.tv_all)
+    TextView tvAll;
+    @BindView(R.id.tv_delete)
+    TextView tvDelete;
+
+
+    private ImageView ivAudioAnim;
+    private ImageView ivCountAnim;
+    private ImageView ivProgressAnim;
+    private TextView tvAsr;
+    private TextView tvMt;
+    private View line;
+    private ConstraintLayout clMt;
+    private ConstraintLayout clAsr;
+    private LinearLayout llAudio;
+    private LinearLayout llFailed;
 
     private Context context;
     private AnimationDrawable animationCountDown;
     private AnimationDrawable animationAsr;
     private AnimationDrawable animationMt;
+    private CountDownTimer countDownTimer;
     private boolean isTimeOut = false;
     private boolean isRecording = false;
-    private CountDownTimer countDownTimer;
-    public TranslateUtil translate;
-    private int curr_press;
     private long oldTime;
     private ChatAdapter mAdapter;
     private List<MessageBean> list = new ArrayList<MessageBean>();
     private boolean isShowCheck;
     private boolean isSelectAll;
-    private int mLastCheckedPosition;
-    private SparseBooleanArray mBooleanArray;
+    private List<Integer> checkList = new ArrayList<>();
+    private int page = 1;
+    private int pagesize = 50;
+    //======================以下部分以后再替换========================
+    List<byte[]> array_record_data_blank = new ArrayList<byte[]>();
+    private AudioRecord mRecorder;
+    private int mMinBufferSize;
+    private int id;
+    //数据存储类变量
+    private Dls.SpeechInfo speechInfo;
+    private Date time;
+    private View headerView;
+    private View footerView;
+    private String from;
+    private String to;
+    private long returnTime;
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -93,57 +161,47 @@ public class AiFragment extends BaseFragment implements SwipeRefreshLayout.OnRef
 
     @Override
     public void initView() {
-
-        for (int i = 0; i < 10; i++) {
-            MessageBean bean = new MessageBean();
-            if (i == 3 || i == 5 || i == 7) {
-                bean.setFrom("ch");
-                bean.setTrans_result("Hello. Nice to meet you. Welcome to China");
-                bean.setTrans_text("你好很高兴认识你欢迎来到中国" + i);
-            } else {
-                bean.setFrom("en");
-                bean.setTrans_result("你好很高兴认识你欢迎来到中国");
-                bean.setTrans_text("Hello. Nice to meet you. Welcome to China" + i);
-            }
-            list.add(bean);
-        }
-
-
         context = getActivity();
         ivMenu.setOnClickListener(this);
         llContent.setOnClickListener(this);
+        tvAll.setOnClickListener(this);
+        tvCancel.setOnClickListener(this);
+        tvDelete.setOnClickListener(this);
+        list = AiSqlUtils.retrieve(page,pagesize);
         mAdapter = new ChatAdapter(context, list);
         LinearLayoutManager mLinearLayout = new LinearLayoutManager(context);
         rvChat.setLayoutManager(mLinearLayout);
-        View footerView = getFooterView();
-        View headerView = getHeaderView();
+        footerView = getFooterView();
+        headerView = getHeaderView();
         mAdapter.addFooterView(footerView, 0);
         if (list.size() == 0)
             mAdapter.setHeaderView(headerView);
         rvChat.setAdapter(mAdapter);
         rvChat.scrollToPosition(mAdapter.getItemCount() - 1);
-        mAdapter.setOnItemLongClickListener(new BaseQuickAdapter.OnItemLongClickListener() {
-            @Override
-            public boolean onItemLongClick(BaseQuickAdapter adapter, View view, int position) {
-                if (!isShowCheck) {
-                    mAdapter.setCheckBoxVisibility(true);
-                }
-                Toast.makeText(context, "长按了item", Toast.LENGTH_SHORT).show();
-                return false;
-            }
+        mAdapter.setOnItemLongClickListener(this);
+        mAdapter.setChatOnItemClickListener(this);
 
-        });
-
-//        slChat.setOnRefreshListener(this);
+        animationAsr = (AnimationDrawable) ivAudioAnim.getDrawable();
+        animationMt = (AnimationDrawable) ivProgressAnim.getDrawable();
+        animationCountDown = (AnimationDrawable) ivCountAnim.getDrawable();
     }
 
     @Override
     public void initData() {
-//        L.e("isl   indata=================================");
-
-
+        //初始化录音的硬件
+        initRecord();
     }
 
+    private void initRecord() {
+        mMinBufferSize = AudioRecord.getMinBufferSize(16000, AudioFormat.CHANNEL_IN_MONO, AudioFormat.ENCODING_PCM_16BIT);
+        mRecorder = new AudioRecord(MediaRecorder.AudioSource.MIC, 16000, AudioFormat.CHANNEL_IN_MONO, AudioFormat.ENCODING_PCM_16BIT, mMinBufferSize * 2);
+    }
+
+    /**
+     * 获取footer布局
+     *
+     * @return
+     */
     private View getFooterView() {
         View view = getLayoutInflater().inflate(R.layout.audio_layout, (ViewGroup) rvChat.getParent(), false);
         LinearLayout.LayoutParams params = (LinearLayout.LayoutParams) view.getLayoutParams();
@@ -151,17 +209,24 @@ public class AiFragment extends BaseFragment implements SwipeRefreshLayout.OnRef
         params.height = DensityHelper.getSystemWH(activity).get("height") * 2 / 3;//设置当前控件布局的高度
         view.setLayoutParams(params);//将设置好的布局参数应用到控件中
         Log.e("height", "=" + params.height);
-        ImageView audioAnim = view.findViewById(R.id.iv_audio_anim);
-        ImageView countAnim = view.findViewById(R.id.iv_count_anim);
-        ImageView progressAnim = view.findViewById(R.id.iv_progress_anim);
-        TextView tv_asr = view.findViewById(R.id.tv_ai_asr);
-        TextView tv_mt = view.findViewById(R.id.tv_ai_mt);
-        View line = view.findViewById(R.id.v_tran_line);
-        LinearLayout ll_audio = view.findViewById(R.id.ll_audio);
-        LinearLayout ll_failed = view.findViewById(R.id.ll_failed);
+        ivAudioAnim = view.findViewById(R.id.iv_audio_anim);
+        ivCountAnim = view.findViewById(R.id.iv_count_anim);
+        ivProgressAnim = view.findViewById(R.id.iv_progress_anim);
+        tvAsr = view.findViewById(R.id.tv_ai_asr);
+        tvMt = view.findViewById(R.id.tv_ai_mt);
+        line = view.findViewById(R.id.v_tran_line);
+        llAudio = view.findViewById(R.id.ll_audio);
+        clAsr = view.findViewById(R.id.cl_ai_asr);
+        clMt = view.findViewById(R.id.cl_ai_mt);
+        llFailed = view.findViewById(R.id.ll_failed);
         return view;
     }
 
+    /**
+     * 获取空布局
+     *
+     * @return
+     */
     private View getHeaderView() {
         View view = getLayoutInflater().inflate(R.layout.empty_view, (ViewGroup) rvChat.getParent(), false);
         LinearLayout.LayoutParams params = (LinearLayout.LayoutParams) view.getLayoutParams();
@@ -175,19 +240,6 @@ public class AiFragment extends BaseFragment implements SwipeRefreshLayout.OnRef
     }
 
 
-    public void setItemChecked(int position) {
-
-        if (mLastCheckedPosition == position)
-            return;
-        mBooleanArray.put(position, true);
-        if (mLastCheckedPosition - 1 == 0) {
-            mBooleanArray.put(mLastCheckedPosition, false);
-            mAdapter.notifyItemChanged(mLastCheckedPosition);
-        }
-        mAdapter.notifyDataSetChanged();
-        mLastCheckedPosition = position;
-    }
-
     @Override
     public void onResume() {
         super.onResume();
@@ -199,8 +251,8 @@ public class AiFragment extends BaseFragment implements SwipeRefreshLayout.OnRef
         switch (keyCode) {
             case DOWN_KEY:
             case UP_KEY:
-                sendAudio(DOWN_KEY);
-                L.e("=======================down=========================");
+                sendAudio();
+
                 break;
             default:
                 break;
@@ -222,8 +274,6 @@ public class AiFragment extends BaseFragment implements SwipeRefreshLayout.OnRef
 
         switch (keyCode) {
             case DOWN_KEY:
-                isRecording = false;
-                break;
             case UP_KEY:
                 isRecording = false;
                 stopCountDownTimer();
@@ -238,55 +288,49 @@ public class AiFragment extends BaseFragment implements SwipeRefreshLayout.OnRef
     /**
      * 发送语音
      *
-     * @param key
      */
-    private void sendAudio(int key) {
+    private void sendAudio() {
+
+        if(!CommonUtils.isAvailable()){
+            ToastUtil.showShort("当前网络状况不佳,请切换到语音翻译!");
+            return;
+        }
+        // TODO: 2019/3/10 更新UI 并请求新的识别翻译
+        updateMsg();
 
         isTimeOut = false;
-        isRecording = true;
-        Constant.isSound = true;
+        //启动实时录音功能
+        if (!isRecording) {
+            Log.e("123", ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
+            isRecording = true;
+            connect();
+        }
+        time = new Date();
+        startAnimation();
 
-
-        stopCountDownTimer();
-        //判定当前点击的是上键还是下键
-        curr_press = key;
-        //启动录音动画和屏幕比例变化动画和倒计时
-        startAnimation(key);
-
-
-//        translate.sendAudio(code_from, code_to, key, "Ipsil");
     }
+
 
     /**
      * 执行动画
      *
-     * @param key
      */
-    private void startAnimation(int key) {
-
-//        if (key == DOWN_KEY) {
-//            //对方人物动画消失
-//            llUpSpeak.setVisibility(View.GONE);
-//            //启动录音动画
-//            animationDrawableDown.start();
-//            //启动倒计时
-//            countDown(key, animationCountDown);
-//        } else {
-//            //对方人物动画消失
-//            llDownSpeak.setVisibility(View.GONE);
-//            //启动录音动画
-//            animationDrawableUp.start();
-//            //启动倒计时
-//            countDown(key, animationCountUp);
-//        }
+    private void startAnimation() {
+        /**
+         * 录音等待动画
+         */
+        ivAudioAnim.setVisibility(View.VISIBLE);
+        tvAsr.setVisibility(View.GONE);
+        clMt.setVisibility(View.GONE);
+        line.setVisibility(View.GONE);
+        animationAsr.start();
+        countDown();
     }
 
     /**
      * 倒计时动画
-     *
-     * @param key
      */
-    private void countDown(final int key, final AnimationDrawable animationDrawable) {
+    private void countDown() {
         long currTime = System.currentTimeMillis();
         if (currTime - oldTime < 500) {
             oldTime = currTime;
@@ -298,7 +342,9 @@ public class AiFragment extends BaseFragment implements SwipeRefreshLayout.OnRef
             @Override
             public void onTick(long millisUntilFinished) {
                 if (5 == millisUntilFinished / 1000) {
-                    animationDrawable.start();
+                    stopAnimAsr();
+                    ivCountAnim.setVisibility(View.VISIBLE);
+                    animationCountDown.start();
                 }
 
             }
@@ -306,12 +352,39 @@ public class AiFragment extends BaseFragment implements SwipeRefreshLayout.OnRef
             @Override
             public void onFinish() {
                 stopCountDownTimer();
-                translate.stop("", "", 0);
                 isTimeOut = true;
                 isRecording = false;
             }
         };
         countDownTimer.start();
+    }
+
+
+    /**
+     * 停止录音动画
+     */
+    private void stopAnimAsr() {
+        animationAsr.stop();
+        ivAudioAnim.setVisibility(View.GONE);
+    }
+
+    /**
+     * 开始翻译等待动画
+     */
+    private void startAnimMt() {
+        line.setVisibility(View.VISIBLE);
+        clMt.setVisibility(View.VISIBLE);
+        ivProgressAnim.setVisibility(View.VISIBLE);
+        animationMt.start();
+    }
+
+
+    /**
+     * 停止翻译等待动画
+     */
+    private void stopAnimMt() {
+        animationMt.stop();
+        ivProgressAnim.setVisibility(View.GONE);
     }
 
 
@@ -323,6 +396,7 @@ public class AiFragment extends BaseFragment implements SwipeRefreshLayout.OnRef
             countDownTimer.cancel();
             countDownTimer = null;
         }
+        ivCountAnim.setVisibility(View.GONE);
         animationCountDown.stop();
         animationAsr.stop();
     }
@@ -334,24 +408,16 @@ public class AiFragment extends BaseFragment implements SwipeRefreshLayout.OnRef
             case R.id.iv_menu:
                 activity.showDrawerLayout(0);
                 break;
-            case R.id.llContent:
-                ToastUtil.showShort("11111111111111111111111");
+            case R.id.tv_cancel:
+                cancel();
+                break;
+            case R.id.tv_all:
+                selectAll();
+                break;
+            case R.id.tv_delete:
+                delete();
                 break;
 
-        }
-    }
-
-    /**
-     * 切换图片
-     *
-     * @param isOpen
-     */
-    public void switchMenuIcon(boolean isOpen) {
-        System.out.println(isOpen);
-        if (isOpen) {
-            ivMenu.setImageDrawable(context.getDrawable(R.mipmap.ic_translate_back));
-        } else {
-            ivMenu.setImageDrawable(context.getDrawable(R.mipmap.ic_translate_menu));
         }
     }
 
@@ -361,27 +427,91 @@ public class AiFragment extends BaseFragment implements SwipeRefreshLayout.OnRef
      */
     private void playAudio() {
         MediaPlayerUtil.playMp3(SharePrefUtil.getString(context, "mp3_1", ""), context);
-
-    }
-    public void setAsr(String text, int flag) {
-
-    }
-
-
-    public void setMt(String text, int flag) {
-
-
     }
 
 
     public void reset() {
-        //翻译或者识别失败了重置界面
+        //重置界面
+
     }
 
 
-    @Override
-    public void onRefresh() {
+    /**
+     * 全选
+     */
+    private void selectAll() {
+        checkList.clear();
+        mAdapter.checkAll(true);
+        for (int i = 0; i < list.size(); i++) {
+            checkList.add(i);
+        }
+        mAdapter.notifyDataSetChanged();
+    }
 
+    /**
+     * 取消
+     */
+    public void cancel() {
+        clDelete.setVisibility(View.GONE);
+        tvCancel.setVisibility(View.GONE);
+        if (isRecording)
+            return;
+        isShowCheck = false;
+        for (MessageBean bean : list) {
+            bean.setChecked(false);
+        }
+        mAdapter.setNewData(list);
+        mAdapter.setCheckBoxVisibility(false);
+    }
+
+    /**
+     * 删除
+     */
+    private void delete() {
+        ToastUtil.showShort("删除了");
+        try {
+            if (checkList.size() > 0) {
+                for (int i = 0, j = 0; i < checkList.size(); i++, j++) {
+                    int index = checkList.get(i);
+                    AiSqlUtils.deleteById(list.remove(index - j).getId());
+                }
+                mAdapter.setNewData(list);
+                if(list.size()==0)
+                    headerView.setVisibility(View.VISIBLE);
+                mAdapter.setCheckBoxVisibility(false);
+                checkList.clear();
+                isShowCheck = false;
+
+            }else{
+                ToastUtil.showShort("您还没有选中任何记录！");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public void onItemClick(View view, int position) {
+        if (isShowCheck) {
+            if (checkList.contains(Integer.valueOf(position))) {
+                checkList.remove(Integer.valueOf(position));
+            } else {
+                checkList.add(position);
+            }
+        }
+    }
+
+    @Override
+    public boolean onItemLongClick(BaseQuickAdapter adapter, View view, int position) {
+
+        if (!isShowCheck) {
+            tvCancel.setVisibility(View.VISIBLE);
+            mAdapter.setCheckBoxVisibility(true);
+            clDelete.setVisibility(View.VISIBLE);
+            isShowCheck = true;
+        }
+        Toast.makeText(context, "长按了item", Toast.LENGTH_SHORT).show();
+        return false;
     }
 
 
@@ -389,6 +519,7 @@ public class AiFragment extends BaseFragment implements SwipeRefreshLayout.OnRef
     public void onPause() {
         super.onPause();
         L.e("Ipsil==========================onPause============================");
+
     }
 
 
@@ -407,6 +538,262 @@ public class AiFragment extends BaseFragment implements SwipeRefreshLayout.OnRef
         unbinder.unbind();
 
     }
+
+
+    /**
+     * 开始录音，并且实时检测当前是否有人在讲话（实时静音检测）。
+     *
+     * @param webSocket
+     */
+    public void startRecord(final WebSocketClient webSocket) {
+        isRecording = true;
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+
+                Process.setThreadPriority(Process.THREAD_PRIORITY_URGENT_AUDIO);
+                int readSize;
+                if (mRecorder.getState() != AudioRecord.STATE_INITIALIZED) {
+                    return;
+                }
+                mRecorder.startRecording();
+
+                while (isRecording) {
+                    byte[] audioData = new byte[mMinBufferSize];
+                    if (null != mRecorder) {
+                        readSize = mRecorder.read(audioData, 0, mMinBufferSize);
+                        if (readSize != 0 && readSize != -1) {
+                            //发送数据
+                            Dls.Speech speech = Dls.Speech.newBuilder().setFinished(false).setVoice(ByteString.copyFrom(audioData)).build();
+                            webSocket.send(speech.toByteArray());
+
+                            if (array_record_data_blank.size() > 10) {
+                                array_record_data_blank.remove(0);
+                            }
+                            array_record_data_blank.add(audioData);
+
+
+                            if (new Date().getTime() - time.getTime() > 50000) {
+                                isRecording = false;
+                            }
+                        }
+                    }
+                }
+                Dls.Speech speech_end = Dls.Speech.newBuilder().setFinished(true).setVoice(ByteString.copyFrom(new byte[1])).build();
+                webSocket.send(speech_end.toByteArray());
+                if (mRecorder != null) {
+                    mRecorder.stop();
+                    mRecorder = null;
+                    initRecord();
+                }
+                if (isRecording) {
+                    activity.runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+
+                            connect();
+                        }
+                    });
+                }
+            }
+        }).start();
+    }
+
+
+    private void connect() {
+        final WebSocketClient webSocket = new WebSocketClient(URI.create("ws://52.192.220.183:8082/stream/audio/dls/v1")) {
+            //                    final WebSocketClient webSocket = new WebSocketClient(URI.create("ws://192.168.3.3:8082/stream/audio/dls/v1")) {
+            @Override
+            public void onOpen(ServerHandshake serverHandshake) {
+                Log.e(">>>>>>>>>>>>>>", "connect success");
+                id++;
+                speechInfo = StringUtils.getSpeechInfo(id, "", "", context);
+                this.send(speechInfo.toByteArray());
+                for (int i = 0; i < array_record_data_blank.size(); i++) {
+                    Dls.Speech speech = Dls.Speech.newBuilder().setFinished(false).setVoice(ByteString.copyFrom(array_record_data_blank.get(i))).build();
+                    this.send(speech.toByteArray());
+                }
+                array_record_data_blank.clear();
+                time = new Date();
+                startRecord(this);
+            }
+
+            @Override
+            public void onMessage(String s) {
+                Log.e(">>>>>>>>>>>>>>", "connect msg" + s);
+            }
+
+            @Override
+            public void onMessage(ByteBuffer s) {
+                try {
+                    //解析数据
+                    ResultOuterClass.Result result = ResultOuterClass.Result.parseFrom(s.array());
+                    Log.e(">>>>>>>>>>>>>>>>>>>", "================" + result.getMsg());
+                    Returnjson returnjson = JSON.parseObject(result.getMsg(), Returnjson.class);
+                    Message msg = new Message();
+                    //判断数据
+                    if (returnjson.getResults().get(0).isIs_final()) {
+                        msg.arg2 = 2;
+                    } else {
+                        msg.arg2 = 1;
+                    }
+
+
+                    if (StringUtils.isChinese(returnjson.getResults().get(0).getAlternatives().get(0).getTranscript())) {
+                        msg.arg1 = 1;
+                    } else {
+                        msg.arg1 = 2;
+                    }
+                    msg.obj = returnjson.getResults().get(0).getAlternatives().get(0).getTranscript();
+                    handler.sendMessage(msg);
+                } catch (InvalidProtocolBufferException e) {
+                    e.printStackTrace();
+                }
+
+            }
+
+            @Override
+            public void onClose(int i, String s, boolean b) {
+                Log.e(">>>>>>>>>>>>>>", "connect cloose" + s);
+            }
+
+            @Override
+            public void onError(Exception e) {
+                Log.e(">>>>>>>>>>>>>>", "connect error" + e.getMessage());
+//                ToastUtil.showShort("服务器连接出错了，请稍候重试！");
+            }
+        };
+        webSocket.connect();
+    }
+
+
+    private String temp = "";
+    //用于线程接收数据，处理识别返回的结果
+    Handler handler = new Handler() {
+        @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
+        @Override
+        public void handleMessage(final Message msg) {
+
+            if (!msg.obj.equals("")) {
+                temp = (String) msg.obj;
+            }
+            //判断是否是已经识别结束了，识别未结束直接显示，识别结束调用翻译
+            if (msg.arg2 == 1) {
+
+                //控件显示结果
+                setAsr(temp);
+
+            } else if (msg.arg2 == 2) {
+                //控件显示结果
+                setAsr(temp);
+                //设置翻译的源语言和目标语言
+                from = "zh";
+                to = "en";
+                if (msg.arg1 == 2) {
+                    from = "en";
+                    to = "zh";
+                }
+
+                //调用翻译
+                translation(from, to, temp);
+
+            }
+
+        }
+    };
+
+
+    private void translation(String from, String to, String text) {
+        if(!CommonUtils.isAvailable()){
+            ToastUtil.showShort("当前网络状况不佳,请切换到语音翻译!");
+            return;
+        }
+        startAnimMt();
+        OkHttpClient client = new OkHttpClient();
+        FormBody formBody = new FormBody
+                .Builder()
+                .add("from", from)
+                .add("to", to)
+                .add("text", text)
+                .build();
+        final Request request = new Request.Builder()
+                .url("http://47.94.21.248:5050/trans")
+                .post(formBody)
+                .build();
+        Call call = client.newCall(request);
+        call.enqueue(new Callback() {
+
+            @Override
+            public void onFailure(Call call, IOException e) {
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        stopAnimMt();
+                        Log.e("123", "");
+                    }
+                });
+
+            }
+
+            @Override
+            public void onResponse(Call call, final Response response) throws IOException {
+                final String responseStr = response.body().string();
+                final MessageBean transBean = FastJsonUtil.changeJsonToBean(responseStr, MessageBean.class);
+                Log.e("123", transBean.getTrans_result());
+                runOnUiThread(new Runnable() {
+                    @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
+                    @Override
+                    public void run() {
+
+                        setMt(transBean.getTrans_result());
+                    }
+                });
+            }
+        });
+    }
+
+    public void setAsr(String text) {
+        // TODO: 2019/3/7 在回来数据的地方调用这个这些方法
+        ivAudioAnim.setVisibility(View.GONE);
+        animationAsr.stop();
+        tvAsr.setVisibility(View.VISIBLE);
+        tvAsr.setText(text);
+    }
+
+
+    public void setMt(String text) {
+        stopAnimMt();
+        returnTime = System.currentTimeMillis();
+        tvMt.setVisibility(View.VISIBLE);
+        tvMt.setText(text);
+    }
+
+
+    private void updateMsg() {
+        MessageBean bean = new MessageBean();
+        String mt = tvMt.getText().toString();
+        String asr = tvAsr.getText().toString();
+        bean.setTrans_text(asr);
+        bean.setTrans_result(mt);
+        bean.setFrom(from);
+        bean.setTo(to);
+        bean.setTime(returnTime);
+        if(TextUtils.isEmpty(asr)||TextUtils.isEmpty(mt)){
+            return;
+        }
+
+        list.add(bean);
+        mAdapter.setNewData(list);
+        L.e("======================="+(mAdapter.getItemCount() - 1)+"=========================");
+        rvChat.scrollToPosition(mAdapter.getItemCount() - 1);
+        // TODO: 2019/3/10存入数据库
+        AiSqlUtils.insertData(bean);
+        if(list.size()>0)
+            headerView.setVisibility(View.GONE);
+
+    }
+
+
 }
 
 

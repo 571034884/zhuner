@@ -5,6 +5,14 @@ import android.text.TextUtils;
 
 import org.json.JSONObject;
 
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.UUID;
+
+import proto.Dls;
+
 public class StringUtils {
 
     public static String getAsrJson(String from, String to, String asr, Context context) {
@@ -36,6 +44,83 @@ public class StringUtils {
 
     }
 
+    /**
+     * 识别请求必要参数
+     * @param id
+     * @param from
+     * @param to
+     * @param context
+     * @return
+     */
+    public static Dls.SpeechInfo getSpeechInfo(int id, String from, String to, Context context) {
+
+        String uuid = UUID.randomUUID().toString();
+        String md5 = "id=" + id + "&context=" + uuid + "&secret=aibabel";
+        Dls.SpeechInfo speechInfo = Dls.SpeechInfo.newBuilder()
+                .setId(String.valueOf(id))
+                .setF("ch_ch")
+                .setT("en_ch")
+                .setSpeed("normal")
+                .setDev(CommonUtils.getSN())
+                .setAudio("mp3")
+                .setFlag("0")
+                .setFunc("3")
+                .setGps(CommonUtils.getGps(context))
+                .setLocation(CommonUtils.getCountry(context))
+                .setIssell(CommonUtils.getChildFlag())
+                .setSv(CommonUtils.getSysVersion(context))
+                .setAv(CommonUtils.getVersionName(context))
+                .setIntelinfo(CommonUtils.getNetworkType(context))
+                .setContext(uuid)
+                .setSign(md5(md5))
+                .build();
+        return speechInfo;
+
+    }
+
+
+    /**
+     * 格式化日期
+     * @param time
+     * @return
+     */
+    public static String formatDate(long time) {
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        Date date = new Date(time);
+        String dateStr = simpleDateFormat.format(date);
+        return dateStr;
+    }
+
+
+    /**
+     * md5对字符串进行加密
+     *
+     * @param string
+     * @return
+     */
+    public static String md5(String string) {
+        if (TextUtils.isEmpty(string)) {
+            return "";
+        }
+        MessageDigest md5 = null;
+        try {
+            md5 = MessageDigest.getInstance("MD5");
+            byte[] bytes = md5.digest(string.getBytes());
+            String result = "";
+            for (byte b : bytes) {
+                String temp = Integer.toHexString(b & 0xff);
+                if (temp.length() == 1) {
+                    temp = "0" + temp;
+                }
+                result += temp;
+            }
+            return result;
+        } catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();
+        }
+        return "";
+    }
+
 
     public static String split(String text, String regex) {
         String result = "";
@@ -56,7 +141,6 @@ public class StringUtils {
 
 
     /**
-     *
      * @param text
      * @return
      */
@@ -73,5 +157,21 @@ public class StringUtils {
         return result;
     }
 
+
+    // 判断一个字符是否是中文
+    public static boolean isChinese(char c) {
+        return c >= 0x4E00 && c <= 0x9FA5;// 根据字节码判断
+    }
+
+    // 判断一个字符串是否含有中文
+    public static boolean isChinese(String str) {
+        if (str == null)
+            return false;
+        for (char c : str.toCharArray()) {
+            if (isChinese(c))
+                return true;// 有一个中文字符就返回
+        }
+        return false;
+    }
 
 }
