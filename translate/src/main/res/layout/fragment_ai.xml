@@ -5,111 +5,107 @@
     android:layout_height="match_parent"
     android:background="@color/c_ec"
     android:orientation="vertical">
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/c_ec"
         android:orientation="vertical">
-    <RelativeLayout
-        android:id="@+id/common_toolbar"
-        android:layout_width="match_parent"
-        android:layout_height="80px">
-
 
         <RelativeLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true">
+            android:id="@+id/common_toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="80px">
 
-            <ImageView
-                android:id="@+id/iv_menu"
+
+            <RelativeLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
-                android:src="@mipmap/ic_translate_menu" />
+                android:layout_centerVertical="true">
+
+                <ImageView
+                    android:id="@+id/iv_menu"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:src="@mipmap/ic_translate_menu" />
+
+            </RelativeLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_centerInParent="true"
+                android:gravity="center">
+
+                <!--语言选择-->
+                <TextView
+                    android:id="@+id/tv_left_lan"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_marginRight="@dimen/px10"
+                    android:ellipsize="end"
+                    android:gravity="center"
+                    android:maxWidth="@dimen/px200"
+                    android:singleLine="true"
+                    android:text="中文"
+                    android:textColor="#fe5000"
+                    android:textSize="30px" />
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@mipmap/ic_translate_t" />
+
+                <TextView
+                    android:id="@+id/tv_right_lan"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_alignParentTop="true"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginLeft="@dimen/px10"
+                    android:ellipsize="end"
+                    android:gravity="center"
+                    android:maxWidth="@dimen/px200"
+                    android:singleLine="true"
+                    android:text="英文"
+                    android:textColor="#fe5000"
+                    android:textSize="30px" />
+
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/tv_cancel"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_alignParentRight="true"
+                android:ellipsize="end"
+                android:gravity="center"
+                android:maxLength="10"
+                android:paddingLeft="20px"
+                android:paddingRight="26px"
+                android:singleLine="true"
+                android:text="@string/cancle"
+                android:textColor="#fe5000"
+                android:textSize="28px"
+                android:visibility="gone" />
+
 
         </RelativeLayout>
 
-        <LinearLayout
-            android:layout_width="wrap_content"
+
+        <android.support.v4.widget.SwipeRefreshLayout
+            android:id="@+id/swipeLayout"
+            android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_centerInParent="true"
-            android:gravity="center">
+            android:orientation="vertical">
 
-            <!--语言选择-->
-            <TextView
-                android:id="@+id/tv_left_lan"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:ellipsize="end"
-                android:gravity="center"
-                android:maxWidth="@dimen/px200"
-                android:singleLine="true"
-                android:text="中文"
-                android:layout_marginRight="@dimen/px10"
-                android:textColor="#fe5000"
-                android:textSize="30px" />
-
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@mipmap/ic_translate_t" />
-
-            <TextView
-                android:id="@+id/tv_right_lan"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_alignParentTop="true"
-                android:layout_centerHorizontal="true"
-                android:layout_marginLeft="@dimen/px10"
-                android:ellipsize="end"
-                android:gravity="center"
-                android:maxWidth="@dimen/px200"
-                android:singleLine="true"
-                android:text="英文"
-                android:textColor="#fe5000"
-                android:textSize="30px" />
-
-        </LinearLayout>
-
-        <TextView
-            android:id="@+id/tv_cancel"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_alignParentRight="true"
-            android:ellipsize="end"
-            android:gravity="center"
-            android:maxLength="10"
-            android:paddingLeft="20px"
-            android:paddingRight="26px"
-            android:visibility="gone"
-            android:singleLine="true"
-            android:text="@string/cancle"
-            android:textColor="#fe5000"
-            android:textSize="28px" />
-
-
-    </RelativeLayout>
-
-    <LinearLayout
-        android:id="@+id/llContent"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
-
-
-            <LinearLayout
-                android:orientation="vertical"
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/rv_chat"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
-
-                <android.support.v7.widget.RecyclerView
-                    android:id="@+id/rv_chat"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:overScrollMode="never" />
-            </LinearLayout>
-    </LinearLayout>
+                android:layout_height="match_parent"
+                android:overScrollMode="never" />
+        </android.support.v4.widget.SwipeRefreshLayout>
     </LinearLayout>
 
     <android.support.constraint.ConstraintLayout
@@ -127,11 +123,11 @@
             android:id="@+id/tv_all"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
+            android:gravity="center"
             android:paddingLeft="@dimen/px20"
             android:paddingRight="@dimen/px20"
             android:text="@string/select_all"
             android:textColor="@color/fe5000"
-            android:gravity="center"
             android:textSize="@dimen/px28"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
@@ -141,10 +137,10 @@
             android:id="@+id/tv_delete"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
+            android:gravity="center"
             android:paddingLeft="@dimen/px20"
             android:paddingRight="@dimen/px20"
             android:text="@string/delete"
-            android:gravity="center"
             android:textColor="@color/offline_list_999"
             android:textSize="@dimen/px28"
             app:layout_constraintBottom_toBottomOf="parent"

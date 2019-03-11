@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     style="@style/bg"
-    android:background="@color/c_e5"
+    android:background="@color/c_ec"
     android:gravity="center"
     android:orientation="vertical">
 

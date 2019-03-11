@@ -13,29 +13,26 @@ import android.os.Message;
 import android.os.Process;
 import android.support.annotation.RequiresApi;
 import android.support.constraint.ConstraintLayout;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.util.Log;
-import android.util.SparseBooleanArray;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.HeaderViewListAdapter;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.aibabel.aidlaar.StatisticsManager;
 import com.aibabel.translate.R;
 import com.aibabel.translate.adapter.ChatAdapter;
 import com.aibabel.translate.bean.MessageBean;
 import com.aibabel.translate.bean.Returnjson;
 import com.aibabel.translate.sqlite.AiSqlUtils;
-import com.aibabel.translate.sqlite.SqlUtils;
 import com.aibabel.translate.utils.CommonUtils;
 import com.aibabel.translate.utils.DensityHelper;
 import com.aibabel.translate.utils.FastJsonUtil;
@@ -51,17 +48,13 @@ import com.google.protobuf.InvalidProtocolBufferException;
 
 import org.java_websocket.client.WebSocketClient;
 import org.java_websocket.handshake.ServerHandshake;
-import org.w3c.dom.Text;
 
 import java.io.IOException;
 import java.net.URI;
 import java.nio.ByteBuffer;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.Random;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -85,10 +78,8 @@ import static com.lzy.okgo.utils.HttpUtils.runOnUiThread;
  * @Desc：智能识别
  * @==========================================================================================
  */
-public class AiFragment extends BaseFragment implements BaseQuickAdapter.OnItemLongClickListener, ChatAdapter.ChatOnItemClickListener {
+public class AiFragment extends BaseFragment implements BaseQuickAdapter.OnItemLongClickListener, ChatAdapter.ChatOnItemClickListener, SwipeRefreshLayout.OnRefreshListener {
 
-    @BindView(R.id.llContent)
-    LinearLayout llContent;
     @BindView(R.id.iv_menu)
     ImageView ivMenu;
     @BindView(R.id.tv_cancel)
@@ -108,6 +99,8 @@ public class AiFragment extends BaseFragment implements BaseQuickAdapter.OnItemL
     TextView tvAll;
     @BindView(R.id.tv_delete)
     TextView tvDelete;
+    @BindView(R.id.swipeLayout)
+    SwipeRefreshLayout swipeLayout;
 
 
     private ImageView ivAudioAnim;
@@ -135,7 +128,7 @@ public class AiFragment extends BaseFragment implements BaseQuickAdapter.OnItemL
     private boolean isSelectAll;
     private List<Integer> checkList = new ArrayList<>();
     private int page = 1;
-    private int pagesize = 50;
+    private int pagesize = 5;
     //======================以下部分以后再替换========================
     List<byte[]> array_record_data_blank = new ArrayList<byte[]>();
     private AudioRecord mRecorder;
@@ -161,13 +154,12 @@ public class AiFragment extends BaseFragment implements BaseQuickAdapter.OnItemL
 
     @Override
     public void initView() {
+        list = AiSqlUtils.retrieve(page, pagesize);
         context = getActivity();
         ivMenu.setOnClickListener(this);
-        llContent.setOnClickListener(this);
         tvAll.setOnClickListener(this);
         tvCancel.setOnClickListener(this);
         tvDelete.setOnClickListener(this);
-        list = AiSqlUtils.retrieve(page,pagesize);
         mAdapter = new ChatAdapter(context, list);
         LinearLayoutManager mLinearLayout = new LinearLayoutManager(context);
         rvChat.setLayoutManager(mLinearLayout);
@@ -175,11 +167,12 @@ public class AiFragment extends BaseFragment implements BaseQuickAdapter.OnItemL
         headerView = getHeaderView();
         mAdapter.addFooterView(footerView, 0);
         if (list.size() == 0)
-            mAdapter.setHeaderView(headerView);
+            mAdapter.addHeaderView(headerView);
         rvChat.setAdapter(mAdapter);
         rvChat.scrollToPosition(mAdapter.getItemCount() - 1);
         mAdapter.setOnItemLongClickListener(this);
         mAdapter.setChatOnItemClickListener(this);
+        swipeLayout.setOnRefreshListener(this);
 
         animationAsr = (AnimationDrawable) ivAudioAnim.getDrawable();
         animationMt = (AnimationDrawable) ivProgressAnim.getDrawable();
@@ -204,7 +197,7 @@ public class AiFragment extends BaseFragment implements BaseQuickAdapter.OnItemL
      */
     private View getFooterView() {
         View view = getLayoutInflater().inflate(R.layout.audio_layout, (ViewGroup) rvChat.getParent(), false);
-        LinearLayout.LayoutParams params = (LinearLayout.LayoutParams) view.getLayoutParams();
+        SwipeRefreshLayout.LayoutParams params = view.getLayoutParams();
         //获取当前控件的布局对象
         params.height = DensityHelper.getSystemWH(activity).get("height") * 2 / 3;//设置当前控件布局的高度
         view.setLayoutParams(params);//将设置好的布局参数应用到控件中
@@ -229,7 +222,7 @@ public class AiFragment extends BaseFragment implements BaseQuickAdapter.OnItemL
      */
     private View getHeaderView() {
         View view = getLayoutInflater().inflate(R.layout.empty_view, (ViewGroup) rvChat.getParent(), false);
-        LinearLayout.LayoutParams params = (LinearLayout.LayoutParams) view.getLayoutParams();
+        SwipeRefreshLayout.LayoutParams params = view.getLayoutParams();
 
         //获取当前控件的布局对象
         params.height = (DensityHelper.getSystemWH(activity).get("height") * 1 / 3) - 80;//设置当前控件布局的高度
@@ -287,22 +280,19 @@ public class AiFragment extends BaseFragment implements BaseQuickAdapter.OnItemL
 
     /**
      * 发送语音
-     *
      */
     private void sendAudio() {
 
-        if(!CommonUtils.isAvailable()){
+        if (!CommonUtils.isAvailable()) {
             ToastUtil.showShort("当前网络状况不佳,请切换到语音翻译!");
             return;
         }
         // TODO: 2019/3/10 更新UI 并请求新的识别翻译
         updateMsg();
-
         isTimeOut = false;
         //启动实时录音功能
         if (!isRecording) {
             Log.e("123", ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
-            isRecording = true;
             connect();
         }
         time = new Date();
@@ -313,7 +303,6 @@ public class AiFragment extends BaseFragment implements BaseQuickAdapter.OnItemL
 
     /**
      * 执行动画
-     *
      */
     private void startAnimation() {
         /**
@@ -323,6 +312,8 @@ public class AiFragment extends BaseFragment implements BaseQuickAdapter.OnItemL
         tvAsr.setVisibility(View.GONE);
         clMt.setVisibility(View.GONE);
         line.setVisibility(View.GONE);
+        tvAsr.setText(" ");
+        tvMt.setText(" ");
         animationAsr.start();
         countDown();
     }
@@ -364,8 +355,14 @@ public class AiFragment extends BaseFragment implements BaseQuickAdapter.OnItemL
      * 停止录音动画
      */
     private void stopAnimAsr() {
-        animationAsr.stop();
-        ivAudioAnim.setVisibility(View.GONE);
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                animationAsr.stop();
+                ivAudioAnim.setVisibility(View.GONE);
+            }
+        });
+
     }
 
     /**
@@ -440,12 +437,13 @@ public class AiFragment extends BaseFragment implements BaseQuickAdapter.OnItemL
      * 全选
      */
     private void selectAll() {
+        mAdapter.setNewData(list);
         checkList.clear();
-        mAdapter.checkAll(true);
         for (int i = 0; i < list.size(); i++) {
             checkList.add(i);
         }
-        mAdapter.notifyDataSetChanged();
+        Log.e("list的size,ai", list.size() + "");
+        mAdapter.checkAll(true);
     }
 
     /**
@@ -454,21 +452,17 @@ public class AiFragment extends BaseFragment implements BaseQuickAdapter.OnItemL
     public void cancel() {
         clDelete.setVisibility(View.GONE);
         tvCancel.setVisibility(View.GONE);
-        if (isRecording)
-            return;
+        checkList.clear();
         isShowCheck = false;
-        for (MessageBean bean : list) {
-            bean.setChecked(false);
-        }
         mAdapter.setNewData(list);
         mAdapter.setCheckBoxVisibility(false);
+
     }
 
     /**
      * 删除
      */
     private void delete() {
-        ToastUtil.showShort("删除了");
         try {
             if (checkList.size() > 0) {
                 for (int i = 0, j = 0; i < checkList.size(); i++, j++) {
@@ -476,13 +470,13 @@ public class AiFragment extends BaseFragment implements BaseQuickAdapter.OnItemL
                     AiSqlUtils.deleteById(list.remove(index - j).getId());
                 }
                 mAdapter.setNewData(list);
-                if(list.size()==0)
-                    headerView.setVisibility(View.VISIBLE);
+                if (list.size() == 0)
+                    mAdapter.addHeaderView(headerView);
                 mAdapter.setCheckBoxVisibility(false);
                 checkList.clear();
                 isShowCheck = false;
-
-            }else{
+                cancel();
+            } else {
                 ToastUtil.showShort("您还没有选中任何记录！");
             }
         } catch (Exception e) {
@@ -590,7 +584,6 @@ public class AiFragment extends BaseFragment implements BaseQuickAdapter.OnItemL
                     activity.runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
-
                             connect();
                         }
                     });
@@ -602,7 +595,7 @@ public class AiFragment extends BaseFragment implements BaseQuickAdapter.OnItemL
 
     private void connect() {
         final WebSocketClient webSocket = new WebSocketClient(URI.create("ws://52.192.220.183:8082/stream/audio/dls/v1")) {
-            //                    final WebSocketClient webSocket = new WebSocketClient(URI.create("ws://192.168.3.3:8082/stream/audio/dls/v1")) {
+            //final WebSocketClient webSocket = new WebSocketClient(URI.create("ws://192.168.3.3:8082/stream/audio/dls/v1")) {
             @Override
             public void onOpen(ServerHandshake serverHandshake) {
                 Log.e(">>>>>>>>>>>>>>", "connect success");
@@ -629,6 +622,8 @@ public class AiFragment extends BaseFragment implements BaseQuickAdapter.OnItemL
                     //解析数据
                     ResultOuterClass.Result result = ResultOuterClass.Result.parseFrom(s.array());
                     Log.e(">>>>>>>>>>>>>>>>>>>", "================" + result.getMsg());
+                    Log.e(">>>>>>>>>>>>>>>>>>>", "================" + result.getCode());
+                    if(null!=result&&result.getCode()!=500){
                     Returnjson returnjson = JSON.parseObject(result.getMsg(), Returnjson.class);
                     Message msg = new Message();
                     //判断数据
@@ -637,8 +632,6 @@ public class AiFragment extends BaseFragment implements BaseQuickAdapter.OnItemL
                     } else {
                         msg.arg2 = 1;
                     }
-
-
                     if (StringUtils.isChinese(returnjson.getResults().get(0).getAlternatives().get(0).getTranscript())) {
                         msg.arg1 = 1;
                     } else {
@@ -646,6 +639,9 @@ public class AiFragment extends BaseFragment implements BaseQuickAdapter.OnItemL
                     }
                     msg.obj = returnjson.getResults().get(0).getAlternatives().get(0).getTranscript();
                     handler.sendMessage(msg);
+                    }else{
+
+                    }
                 } catch (InvalidProtocolBufferException e) {
                     e.printStackTrace();
                 }
@@ -654,13 +650,15 @@ public class AiFragment extends BaseFragment implements BaseQuickAdapter.OnItemL
 
             @Override
             public void onClose(int i, String s, boolean b) {
-                Log.e(">>>>>>>>>>>>>>", "connect cloose" + s);
+                Log.e(">>>>>>>>>>>>>>", "connect close" + s);
+                stopAnimAsr();
             }
 
             @Override
             public void onError(Exception e) {
-                Log.e(">>>>>>>>>>>>>>", "connect error" + e.getMessage());
+                Log.e(">>>>>>>>>>>>>>", "connect error:" + e.getMessage());
 //                ToastUtil.showShort("服务器连接出错了，请稍候重试！");
+                stopAnimAsr();
             }
         };
         webSocket.connect();
@@ -693,7 +691,6 @@ public class AiFragment extends BaseFragment implements BaseQuickAdapter.OnItemL
                     from = "en";
                     to = "zh";
                 }
-
                 //调用翻译
                 translation(from, to, temp);
 
@@ -704,7 +701,7 @@ public class AiFragment extends BaseFragment implements BaseQuickAdapter.OnItemL
 
 
     private void translation(String from, String to, String text) {
-        if(!CommonUtils.isAvailable()){
+        if (!CommonUtils.isAvailable()) {
             ToastUtil.showShort("当前网络状况不佳,请切换到语音翻译!");
             return;
         }
@@ -778,22 +775,35 @@ public class AiFragment extends BaseFragment implements BaseQuickAdapter.OnItemL
         bean.setFrom(from);
         bean.setTo(to);
         bean.setTime(returnTime);
-        if(TextUtils.isEmpty(asr)||TextUtils.isEmpty(mt)){
+        L.e("=======================asr：" + asr + "=========================");
+        L.e("=======================Mt：" + mt + "=========================");
+        if (TextUtils.isEmpty(asr) || TextUtils.isEmpty(mt) || TextUtils.equals(asr, " ") || TextUtils.equals(mt, " ")) {
             return;
         }
 
         list.add(bean);
         mAdapter.setNewData(list);
-        L.e("======================="+(mAdapter.getItemCount() - 1)+"=========================");
         rvChat.scrollToPosition(mAdapter.getItemCount() - 1);
         // TODO: 2019/3/10存入数据库
         AiSqlUtils.insertData(bean);
-        if(list.size()>0)
-            headerView.setVisibility(View.GONE);
+        if (list.size() > 0)
+            mAdapter.removeHeaderView(headerView);
 
     }
 
 
+    @Override
+    public void onRefresh() {
+        //下拉刷新获取历史消息
+        page++;
+        List<MessageBean> mReceiveMsgList = AiSqlUtils.retrieve(page, pagesize);
+        swipeLayout.setRefreshing(false);
+        if(mReceiveMsgList.size()<=0){
+            ToastUtil.showShort("没有更多数据了");
+            return;
+        }
+        mAdapter.addData(0, mReceiveMsgList);
+    }
 }
 
 

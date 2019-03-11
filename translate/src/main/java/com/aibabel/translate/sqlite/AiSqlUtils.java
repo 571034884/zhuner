@@ -65,7 +65,7 @@ public class AiSqlUtils {
     //遍历查询所有数据，保存到List里面
     public static List<MessageBean> retrieve(int page, int pagesize) {
 
-        return DataSupport.order("time desc").limit(pagesize).offset(pagesize * (page - 1)).find(MessageBean.class);
+        return DataSupport.order("time asc").limit(pagesize).offset(pagesize * (page - 1)).find(MessageBean.class);
 
     }
 }

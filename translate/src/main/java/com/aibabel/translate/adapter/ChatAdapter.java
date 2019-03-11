@@ -2,6 +2,7 @@ package com.aibabel.translate.adapter;
 
 import android.content.Context;
 import android.text.TextUtils;
+import android.util.Log;
 import android.util.SparseBooleanArray;
 import android.view.View;
 import android.widget.CheckBox;
@@ -46,7 +47,7 @@ public class ChatAdapter extends BaseQuickAdapter<MessageBean, BaseViewHolder> {
             @Override
             protected int getItemType(MessageBean entity) {
                 String from = entity.getFrom();
-                return TextUtils.equals(from, "ch") ? TYPE_SEND_CH : TYPE_SEND_EN;
+                return TextUtils.equals(from, "zh") ? TYPE_SEND_CH : TYPE_SEND_EN;
             }
         });
         getMultiTypeDelegate().registerItemType(TYPE_SEND_CH, SEND_CH)
@@ -59,6 +60,7 @@ public class ChatAdapter extends BaseQuickAdapter<MessageBean, BaseViewHolder> {
         final CheckBox cb = helper.getView(R.id.cb_item_check);
         final LinearLayout llRoot = helper.getView(R.id.ll_item_root);
         final int position = helper.getLayoutPosition();
+        Log.e("postiosn:",position+"");
         cb.setTag(position);
         //判断当前checkbox的状态
         if (showCheckBox) {
@@ -93,7 +95,6 @@ public class ChatAdapter extends BaseQuickAdapter<MessageBean, BaseViewHolder> {
                 } else {
                     mCheckStates.delete(pos);
                 }
-
             }
         });
 
@@ -127,11 +128,18 @@ public class ChatAdapter extends BaseQuickAdapter<MessageBean, BaseViewHolder> {
         notifyDataSetChanged();
     }
 
+
+    /**
+     * 全选
+     * @param isCheckAll
+     */
     public void checkAll(boolean isCheckAll) {
         mCheckStates.clear();
         for (int i = 0; i < list.size(); i++) {
             mCheckStates.put(i, isCheckAll);
         }
+        notifyDataSetChanged();
+        Log.e("list的size,adapter",list.size()+"");
     }
 
     //接口回调设置点击事件

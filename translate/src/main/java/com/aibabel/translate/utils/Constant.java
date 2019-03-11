@@ -37,6 +37,12 @@ public class Constant {
     public static final int RESPONSE_MT = 56;//翻译结果flag
     public static final int RESPONSE_TTS = 57;//tts合成结果flag
     public static final int RESPONSE_EN = 65;//英语结果flag
+    public static final int RESPONSE_FINAL = 70;//最后一句
+    public static final int RESPONSE_NULL = 500;//没有识别到音频
+    public static final int TRAN_SUCCESS = 0;//没有识别到音频
+    public static final int TRAN_EROOR_JSON = 1;//上传json解析失败
+    public static final int TRAN_EROOR_PARMS = 2;//没有找到语言参数
+    public static final int TRAN_EROOR_TEXT = 3;//没有翻译文本 /或者翻译失败
     public static final int TIMEOUT_READ = 11;//读取结果超时flag
     public static final int TIMEOUT_CONNECTION = 12;//连接超时flag
     public static final int CONNECTION_FAILED = 13;//连接失败flag
@@ -46,7 +52,6 @@ public class Constant {
     public static final String AUDIO = "spx16";
     public static final String SPEED = "normal";
     public static final String GENDER = "m";
-    public static final String DEV = "AAAAAAAAAAAA";
 
     //离线模型是否创建完成
     public static  boolean IS_OFFLINE_CREATE_COMPLETE = false ;
