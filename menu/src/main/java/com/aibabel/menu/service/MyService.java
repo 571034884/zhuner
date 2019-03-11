@@ -22,9 +22,11 @@ public class MyService extends Service {
      */
     public ScheduledExecutorService scheduledExecutor;
     private final static int LOOPER_CODE = 0x00100;
-    public static final int LoopTimeRate = 4;
+    public static final int LoopTimeRate = 10;
 
+    private  static WorkerThread worker   = new WorkerThread();
     public MyService() {
+
     }
 
     @Override
@@ -38,10 +40,18 @@ public class MyService extends Service {
                     Intent intent = new Intent();
                     intent.setAction("com.example.root.testhuaping.service.MyService");
                     sendBroadcast(intent);
+
+
                     try {
                         Thread.sleep(1000 * 60 * 10);
+                        //Thread.sleep(1000 * 2);
                     } catch (InterruptedException e) {
                         e.printStackTrace();
+                    }
+                    if(worker!=null){
+                        worker.run();
+                    }else{
+                        worker = new WorkerThread();
                     }
                 }
             }
@@ -57,7 +67,7 @@ public class MyService extends Service {
         super.onCreate();
         Log.e("====================", "com.example.root.testhuaping.service.MyService");
         Log.e("hjs", "MyServic=onCreate-");
-        startLoopRent();
+//        startLoopRent();
 //        SharePrefUtil.saveString(getApplicationContext(),"","");
     }
 
@@ -75,18 +85,28 @@ public class MyService extends Service {
     }
 
 
-    public class WorkerThread implements Runnable {
+    private static int startloop=0;
+    public static class WorkerThread implements Runnable {
         public WorkerThread() {
+            startloop = 0;
         }
 
         @Override
         public void run() {
             try {
+
                 LogUtil.d(Thread.currentThread().getName() + " Start. Time = ");
-                processCommand();
+                LogUtil.d(" startloop ="+startloop);
+                if(startloop>=24) {
+                    processCommand();
+                    startloop = 0;
+                    LogUtil.d("发送handle");
+                }
+                startloop++;
                 LogUtil.d(Thread.currentThread().getName() + " End. Time = ");
             } catch (Exception e) {
                 e.printStackTrace();
+                LogUtil.d("");
             }
         }
 
@@ -103,17 +123,18 @@ public class MyService extends Service {
     /***
      * 这是一个静态,loop轮询机制
      */
-    private static Handler LooptempHandler = new Handler(msg -> {
+   /* private static Handler LooptempHandler = new Handler(msg -> {
         if (msg.what == LOOPER_CODE) {
             LogUtil.d("LOOPER_CODE_start");
         }
         return false;
-    });
+    });*/
 
     /**
      * 循环获取轮询
      */
     public void startLoopRent() {
+
         LogUtil.d("startLoopRent");
         if (scheduledExecutor == null) {
             scheduledExecutor = Executors.newSingleThreadScheduledExecutor();
@@ -122,9 +143,9 @@ public class MyService extends Service {
         }
 
         WorkerThread worker = new WorkerThread();
-        scheduledExecutor.scheduleWithFixedDelay((worker), 1, LoopTimeRate, TimeUnit.HOURS);//.HOURS
-//        scheduledExecutor.scheduleWithFixedDelay(() ->
-//                LooptempHandler.sendEmptyMessage(LOOPER_CODE), LoopTimeRate, LoopTimeRate, TimeUnit.SECONDS);
+        scheduledExecutor.scheduleWithFixedDelay((worker), LoopTimeRate, LoopTimeRate, TimeUnit.MILLISECONDS);//.HOURS
+
+
     }
 
     /**
