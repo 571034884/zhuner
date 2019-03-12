@@ -13,6 +13,7 @@ import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
 
+import com.aibabel.baselibrary.utils.ToastUtil;
 import com.aibabel.locationservice.R;
 import com.aibabel.locationservice.activity.JiGuangActivity;
 import com.aibabel.locationservice.bean.DetailBean;
@@ -68,6 +69,7 @@ public class MyReceiver extends BroadcastReceiver {
                     if (code == 1) {
                         Intent stopIntent = new Intent("com.android.qrcode.unlock.ok");
                         context.sendBroadcast(stopIntent);
+                        ToastUtil.showShort(context,"发送了广播！");
                     }
                 } catch (JSONException e) {
                     Log.e(TAG, "Get message extra JSON error!");
@@ -97,6 +99,24 @@ public class MyReceiver extends BroadcastReceiver {
             int notifactionId = bundle.getInt(JPushInterface.EXTRA_NOTIFICATION_ID);
             Log.d(TAG, "[MyReceiver] 接收到推送下来的通知的ID: " + notifactionId);
             setNotification(context, Constants.TITLE_JG, Constants.MESSAGE_JG);
+
+            String extra_ = bundle.getString(JPushInterface.EXTRA_EXTRA);
+            if (!TextUtils.isEmpty(extra_)) {
+                try {
+                    JSONObject json = new JSONObject(extra_);
+                    String relet = (String) json.get("relet");
+
+                    JSONObject jsonRelet = new JSONObject(relet);
+                    int code = (Integer) jsonRelet.get("code");
+                    if (code == 1) {
+                        Intent stopIntent = new Intent("com.android.qrcode.unlock.ok");
+                        context.sendBroadcast(stopIntent);
+                        ToastUtil.showShort(context,"发送了广播！");
+                    }
+                } catch (JSONException e) {
+                    Log.e(TAG, "Get message extra JSON error!");
+                }
+            }
 
 
         } else if (JPushInterface.ACTION_NOTIFICATION_OPENED.equals(intent.getAction())) {
