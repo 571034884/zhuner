@@ -68,7 +68,7 @@ public class OkGoUtil {
 //                response.getException()
 
                 mCallback.onError(method, response);
-                Log.e("onError",response.message());
+                Log.e("onError",response.message().toString()+"");
 
             }
         });
