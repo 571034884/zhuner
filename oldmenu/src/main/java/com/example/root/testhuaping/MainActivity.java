@@ -525,16 +525,20 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
             if (type.equals("refresh")){
                 try {
                     if (mSoftSIMManager != null){
+                        Log.e("SOFTSIM-01","桌面收到来自全球上网的refreshProfile-lksc");
                         boolean flag = mSoftSIMManager.refreshProfile();
                         if (!flag){
                             ToastUtil.showShort(context,"请重启设备，激活套餐");
+                            Log.e("SOFTSIM-01","refreshProfile-lksc----失败");
                         }
                     }else{
                         ToastUtil.showShort(context,"请重启设备，激活套餐");
+                        Log.e("SOFTSIM-01","refreshProfile-lksc----没有拿到引用mSoftSIMManager");
                     }
 
                 } catch (RemoteException e) {
                     ToastUtil.showShort(context,"请重启设备，激活套餐");
+                    Log.e("SOFTSIM-01","refreshProfile-lksc----异常");
                     e.printStackTrace();
                 }
             }
