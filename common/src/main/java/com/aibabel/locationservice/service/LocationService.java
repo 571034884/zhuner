@@ -775,8 +775,6 @@ public class LocationService extends Service implements ScreenListener, CardBroa
                         super.onFinish();
                     }
                 });
-
-
     }
 
 }
