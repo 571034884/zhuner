@@ -1,10 +1,13 @@
 package com.aibabel.translate.sqlite;
 
+import android.util.Log;
+
 import com.aibabel.translate.bean.MessageBean;
 import com.aibabel.translate.bean.RecordBean;
 
 import org.litepal.crud.DataSupport;
 
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -16,10 +19,9 @@ public class AiSqlUtils {
 
     //插入数据
     public static boolean insertData(MessageBean bean) {
-
+        Log.e("ai_insert", String.valueOf(bean.save()));
         return bean.save();
     }
-
 
 
     //删除指定Id 的数据
@@ -39,8 +41,8 @@ public class AiSqlUtils {
      * @param type 0：ID  1：时间
      */
     public static int deleteMore(List<Integer> list, int type) {
-        int result=0;
-        if(null!=list&&list.size()>0){
+        int result = 0;
+        if (null != list && list.size() > 0) {
             return result;
         }
         for (Integer integer : list) {
@@ -49,7 +51,7 @@ public class AiSqlUtils {
                     result = deleteById(integer);
                     break;
                 case 1:
-                    result =deleteByTime(integer);
+                    result = deleteByTime(integer);
                     break;
             }
         }
@@ -64,7 +66,12 @@ public class AiSqlUtils {
 
     //遍历查询所有数据，保存到List里面
     public static List<MessageBean> retrieve(int page, int pagesize) {
-        return DataSupport.order("time asc").limit(pagesize).offset(pagesize * (page - 1)).find(MessageBean.class);
+        List<MessageBean> list = DataSupport.order("time desc").limit(pagesize).offset(pagesize * (page - 1)).find(MessageBean.class);
+        //做一次倒叙排列
+        if (list.size() > 0)
+            Collections.reverse(list);
+        return list;
+
 
     }
 }

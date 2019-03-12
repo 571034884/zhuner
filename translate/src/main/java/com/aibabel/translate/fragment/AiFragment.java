@@ -148,6 +148,8 @@ public class AiFragment extends BaseFragment implements BaseQuickAdapter.OnItemL
     private long returnTime;
     private Timer timer;
     private CheckTimerTask task;
+    private WebSocketClient webSocket;
+    //    private WebSocketClient webSocket;
 
 
     @Override
@@ -160,26 +162,20 @@ public class AiFragment extends BaseFragment implements BaseQuickAdapter.OnItemL
 
     @Override
     public void initView() {
-        list = AiSqlUtils.retrieve(page, pagesize);
         context = getActivity();
-        ivMenu.setOnClickListener(this);
-        tvAll.setOnClickListener(this);
-        tvCancel.setOnClickListener(this);
-        tvDelete.setOnClickListener(this);
-        mAdapter = new ChatAdapter(context, list);
         LinearLayoutManager mLinearLayout = new LinearLayoutManager(context);
         rvChat.setLayoutManager(mLinearLayout);
+        page = 1;
+        list = AiSqlUtils.retrieve(page, pagesize);
+        mAdapter = new ChatAdapter(context, list);
+        rvChat.setAdapter(mAdapter);
         footerView = getFooterView();
         headerView = getHeaderView();
         mAdapter.addFooterView(footerView, 0);
         if (list.size() == 0)
             mAdapter.addHeaderView(headerView);
-        rvChat.setAdapter(mAdapter);
-        rvChat.scrollToPosition(mAdapter.getItemCount() - 1);
-        mAdapter.setOnItemLongClickListener(this);
-        mAdapter.setChatOnItemClickListener(this);
-        swipeLayout.setOnRefreshListener(this);
 
+        rvChat.scrollToPosition(mAdapter.getItemCount() - 1);
         animationAsr = (AnimationDrawable) ivAudioAnim.getDrawable();
         animationMt = (AnimationDrawable) ivProgressAnim.getDrawable();
         animationCountDown = (AnimationDrawable) ivCountAnim.getDrawable();
@@ -187,6 +183,13 @@ public class AiFragment extends BaseFragment implements BaseQuickAdapter.OnItemL
 
     @Override
     public void initData() {
+        ivMenu.setOnClickListener(this);
+        tvAll.setOnClickListener(this);
+        tvCancel.setOnClickListener(this);
+        tvDelete.setOnClickListener(this);
+        mAdapter.setOnItemLongClickListener(this);
+        mAdapter.setChatOnItemClickListener(this);
+        swipeLayout.setOnRefreshListener(this);
         //初始化录音的硬件
         initRecord();
     }
@@ -250,9 +253,7 @@ public class AiFragment extends BaseFragment implements BaseQuickAdapter.OnItemL
         switch (keyCode) {
             case DOWN_KEY:
             case UP_KEY:
-
                 sendAudio();
-
                 break;
             default:
                 break;
@@ -602,8 +603,8 @@ public class AiFragment extends BaseFragment implements BaseQuickAdapter.OnItemL
 
 
     private void connect() {
-        final WebSocketClient webSocket = new WebSocketClient(URI.create("ws://52.192.220.183:8082/cnSpeechV1/audio/dls")) {
-            //final WebSocketClient webSocket = new WebSocketClient(URI.create("ws://192.168.3.3:8082/stream/audio/dls/v1")) {
+        webSocket = null;
+        webSocket = new WebSocketClient(URI.create("ws://52.192.220.183:8082/cnSpeechV1/audio/dls")) {
             @Override
             public void onOpen(ServerHandshake serverHandshake) {
                 Log.e(">>>>>>>>>>>>>>", "connect success");
@@ -636,7 +637,6 @@ public class AiFragment extends BaseFragment implements BaseQuickAdapter.OnItemL
                         case Constant.RESPONSE_ASR://识别结果
                             AsrAndMtBean bean = FastJsonUtil.changeJsonToBean(result.getMsg(), AsrAndMtBean.class);
                             Returnjson returnjson = FastJsonUtil.changeJsonToBean(bean.getInfo(), Returnjson.class);
-//                            Returnjson returnjson = JSON.parseObject(result.getMsg(), Returnjson.class);
                             msg.what = Constant.RESPONSE_ASR;
                             //判断数据是否为最后一句
                             if (returnjson.getResults().get(0).isIs_final()) {
@@ -655,6 +655,7 @@ public class AiFragment extends BaseFragment implements BaseQuickAdapter.OnItemL
                             msg.obj = returnjson.getResults().get(0).getAlternatives().get(0).getTranscript();
                             break;
                         case Constant.RESPONSE_MT://翻译
+                            cancelTimer();
                             msg.what = Constant.RESPONSE_MT;
                             AsrAndMtBean mtBean = FastJsonUtil.changeJsonToBean(result.getMsg(), AsrAndMtBean.class);
                             //String类型
@@ -753,8 +754,6 @@ public class AiFragment extends BaseFragment implements BaseQuickAdapter.OnItemL
 
 
             }
-
-
         }
     };
 
@@ -784,6 +783,7 @@ public class AiFragment extends BaseFragment implements BaseQuickAdapter.OnItemL
                     @Override
                     public void run() {
                         stopAnimMt();
+                        cancelTimer();
                         Log.e("123", "");
                     }
                 });
@@ -879,9 +879,11 @@ public class AiFragment extends BaseFragment implements BaseQuickAdapter.OnItemL
     }
 
     private void cancelTimer() {
-        if (null != timer) {
+        if (null != timer)
             timer.cancel();
-        }
+        if(null!=webSocket)
+            webSocket.close();
+
     }
 
 
@@ -903,17 +905,18 @@ public class AiFragment extends BaseFragment implements BaseQuickAdapter.OnItemL
      * @param code
      */
     private void ServerError(int code) {
-
+        cancelTimer();
         L.e("cmd:", String.valueOf(code));
         switch (code) {
             case 101://识别失败
 //                TTSUtil.getInstance().notUnderstand(context, 1, Constant.isSound);
-                ToastUtil.showShort(context.getResources().getString(R.string.error_response));
+//                ToastUtil.showShort(context.getResources().getString(R.string.error_response));
+                showerrorUI(true);
                 break;
             case 102://翻译失败
-                cancelTimer();
                 stopAnimMt();
-                ToastUtil.showShort(context.getResources().getString(R.string.error_response));
+//                ToastUtil.showShort(context.getResources().getString(R.string.error_response));
+                showerrorUI(true);
                 break;
             case 103://合成失败
 
