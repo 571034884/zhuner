@@ -58,36 +58,19 @@ public class MyReceiver extends BroadcastReceiver {
 
         } else if (JPushInterface.ACTION_MESSAGE_RECEIVED.equals(intent.getAction())) {
             Log.d(TAG, "[MyReceiver] 接收到推送下来的自定义消息: " + bundle.getString(JPushInterface.EXTRA_MESSAGE));
-            String extra_ = bundle.getString(JPushInterface.EXTRA_EXTRA);
-            if (!TextUtils.isEmpty(extra_)) {
-                try {
-                    JSONObject json = new JSONObject(extra_);
-                    String relet = (String) json.get("relet");
 
-                    JSONObject jsonRelet = new JSONObject(relet);
-                    int code = (Integer) jsonRelet.get("code");
-                    if (code == 1) {
-                        Intent stopIntent = new Intent("com.android.qrcode.unlock.ok");
-                        context.sendBroadcast(stopIntent);
-                        ToastUtil.showShort(context,"发送了广播！");
-                    }
-                } catch (JSONException e) {
-                    Log.e(TAG, "Get message extra JSON error!");
-                }
-            } else {
-                Constants.CONTEXTS_JG = bundle.getString(JPushInterface.EXTRA_MESSAGE);
-                Constants.TITLE_JG = bundle.getString(JPushInterface.EXTRA_TITLE);
-                Constants.MESSAGE_JG = bundle.getString(JPushInterface.EXTRA_ALERT);
-                String id = bundle.getString(JPushInterface.EXTRA_MSG_ID);
-                PushBean push = new PushBean();
-                push.setContent(Constants.CONTEXTS_JG);
-                push.setMesId(id);
-                push.setMessage(Constants.MESSAGE_JG);
-                push.setTitle(Constants.TITLE_JG);
-                Constants.pushBeanList.add(push);
-                Log.d(TAG, "[TITLE_JG]" + Constants.TITLE_JG + " /n[MESSAGE_JG]" + Constants.MESSAGE_JG);
-                receivingNotification(context, bundle);
-            }
+            Constants.CONTEXTS_JG = bundle.getString(JPushInterface.EXTRA_MESSAGE);
+            Constants.TITLE_JG = bundle.getString(JPushInterface.EXTRA_TITLE);
+            Constants.MESSAGE_JG = bundle.getString(JPushInterface.EXTRA_ALERT);
+            String id = bundle.getString(JPushInterface.EXTRA_MSG_ID);
+            PushBean push = new PushBean();
+            push.setContent(Constants.CONTEXTS_JG);
+            push.setMesId(id);
+            push.setMessage(Constants.MESSAGE_JG);
+            push.setTitle(Constants.TITLE_JG);
+            Constants.pushBeanList.add(push);
+            Log.d(TAG, "[TITLE_JG]" + Constants.TITLE_JG + " /n[MESSAGE_JG]" + Constants.MESSAGE_JG);
+            receivingNotification(context, bundle);
 
 
         } else if (JPushInterface.ACTION_NOTIFICATION_RECEIVED.equals(intent.getAction())) {
@@ -111,7 +94,7 @@ public class MyReceiver extends BroadcastReceiver {
                     if (code == 1) {
                         Intent stopIntent = new Intent("com.android.qrcode.unlock.ok");
                         context.sendBroadcast(stopIntent);
-                        ToastUtil.showShort(context,"发送了广播！");
+//                        ToastUtil.showShort(context,"发送了广播！");
                     }
                 } catch (JSONException e) {
                     Log.e(TAG, "Get message extra JSON error!");
