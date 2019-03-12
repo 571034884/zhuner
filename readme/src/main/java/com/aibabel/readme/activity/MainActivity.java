@@ -3,17 +3,15 @@ package com.aibabel.readme.activity;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.OrientationHelper;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.util.Log;
-import android.view.View;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.aibabel.aidlaar.StatisticsManager;
+import com.aibabel.baselibrary.utils.DeviceUtils;
 import com.aibabel.readme.BuildConfig;
 import com.aibabel.readme.R;
 import com.aibabel.readme.adapter.CommomRecyclerAdapter;
@@ -28,7 +26,6 @@ import com.taobao.sophix.SophixManager;
 
 import org.json.JSONObject;
 
-import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -193,7 +190,9 @@ public class MainActivity extends BaseActivity {
                 readmeList.add(new ReadmeItemBean(4, "目的地"));
                 readmeList.add(new ReadmeItemBean(5, "设置"));
 //                readmeList.add(new ReadmeItemBean(6, "物体识别"));
-                readmeList.add(new ReadmeItemBean(7, "全球上网"));
+                if (DeviceUtils.getSystem()!= DeviceUtils.System.FLY_Mobile){
+                    readmeList.add(new ReadmeItemBean(7, "全球上网"));
+                }
                 readmeList.add(new ReadmeItemBean(8, "语音秘书"));
                 readmeList.add(new ReadmeItemBean(9, "汇率换算"));
                 readmeList.add(new ReadmeItemBean(10, "天气"));
