@@ -82,10 +82,10 @@ public class Constant {
     public static boolean isSound = true;
 
     //录音状态
-    public static final int STOP = 0;
-    public static final int IS_RECORDING = 1;
-    public static final int START = 2;
-    public static final int TIME_OUT = 3;
+//    public static final int STOP = 0;
+//    public static final int IS_RECORDING = 1;
+//    public static final int START = 2;
+//    public static final int TIME_OUT = 3;
 
     public static boolean IS_NEED_SHOW = true;
 
@@ -94,6 +94,7 @@ public class Constant {
     public static final int OFFLINE_DEFAULT = 7 * 1000 + 10;
     //当前机器类型0：pro ，1：go ，2：fly
     public static int DEVICE_CATEGORY = 0;
+    public static final long TIME_OUT = 5000;
 
 
 

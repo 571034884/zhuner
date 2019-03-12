@@ -105,7 +105,8 @@ public class ChatAdapter extends BaseQuickAdapter<MessageBean, BaseViewHolder> {
     private void setContent(BaseViewHolder helper, MessageBean item) {
         helper.setText(R.id.tv_item_asr, item.getTrans_text());
         helper.setText(R.id.tv_item_mt, item.getTrans_result());
-
+        helper.setText(R.id.tv_item_time,StringUtils.formatDate(item.getTime()));
+        //控制显示时间
         if (helper.getLayoutPosition() == 0&&list.size()>0) {
             helper.getView(R.id.tv_item_time).setVisibility(View.VISIBLE);
             helper.itemView.setTag(FIRST_STICKY_VIEW);

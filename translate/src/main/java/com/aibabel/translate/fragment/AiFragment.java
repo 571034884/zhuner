@@ -30,10 +30,14 @@ import android.widget.Toast;
 
 import com.aibabel.translate.R;
 import com.aibabel.translate.adapter.ChatAdapter;
+import com.aibabel.translate.bean.ErrorResultBean;
 import com.aibabel.translate.bean.MessageBean;
 import com.aibabel.translate.bean.Returnjson;
+import com.aibabel.translate.bean.AsrAndMtBean;
 import com.aibabel.translate.sqlite.AiSqlUtils;
+import com.aibabel.translate.utils.CheckTimerTask;
 import com.aibabel.translate.utils.CommonUtils;
+import com.aibabel.translate.utils.Constant;
 import com.aibabel.translate.utils.DensityHelper;
 import com.aibabel.translate.utils.FastJsonUtil;
 import com.aibabel.translate.utils.L;
@@ -41,7 +45,6 @@ import com.aibabel.translate.utils.MediaPlayerUtil;
 import com.aibabel.translate.utils.SharePrefUtil;
 import com.aibabel.translate.utils.StringUtils;
 import com.aibabel.translate.utils.ToastUtil;
-import com.alibaba.fastjson.JSON;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.google.protobuf.ByteString;
 import com.google.protobuf.InvalidProtocolBufferException;
@@ -55,6 +58,7 @@ import java.nio.ByteBuffer;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Timer;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -142,6 +146,8 @@ public class AiFragment extends BaseFragment implements BaseQuickAdapter.OnItemL
     private String from;
     private String to;
     private long returnTime;
+    private Timer timer;
+    private CheckTimerTask task;
 
 
     @Override
@@ -244,6 +250,7 @@ public class AiFragment extends BaseFragment implements BaseQuickAdapter.OnItemL
         switch (keyCode) {
             case DOWN_KEY:
             case UP_KEY:
+
                 sendAudio();
 
                 break;
@@ -282,7 +289,7 @@ public class AiFragment extends BaseFragment implements BaseQuickAdapter.OnItemL
      * 发送语音
      */
     private void sendAudio() {
-
+        showerrorUI(false);
         if (!CommonUtils.isAvailable()) {
             ToastUtil.showShort("当前网络状况不佳,请切换到语音翻译!");
             return;
@@ -512,7 +519,8 @@ public class AiFragment extends BaseFragment implements BaseQuickAdapter.OnItemL
     @Override
     public void onPause() {
         super.onPause();
-        L.e("Ipsil==========================onPause============================");
+        L.e("ai==========================onPause============================");
+        cancelTimer();
 
     }
 
@@ -594,7 +602,7 @@ public class AiFragment extends BaseFragment implements BaseQuickAdapter.OnItemL
 
 
     private void connect() {
-        final WebSocketClient webSocket = new WebSocketClient(URI.create("ws://52.192.220.183:8082/stream/audio/dls/v1")) {
+        final WebSocketClient webSocket = new WebSocketClient(URI.create("ws://52.192.220.183:8082/cnSpeechV1/audio/dls")) {
             //final WebSocketClient webSocket = new WebSocketClient(URI.create("ws://192.168.3.3:8082/stream/audio/dls/v1")) {
             @Override
             public void onOpen(ServerHandshake serverHandshake) {
@@ -623,25 +631,48 @@ public class AiFragment extends BaseFragment implements BaseQuickAdapter.OnItemL
                     ResultOuterClass.Result result = ResultOuterClass.Result.parseFrom(s.array());
                     Log.e(">>>>>>>>>>>>>>>>>>>", "================" + result.getMsg());
                     Log.e(">>>>>>>>>>>>>>>>>>>", "================" + result.getCode());
-                    if(null!=result&&result.getCode()!=500){
-                    Returnjson returnjson = JSON.parseObject(result.getMsg(), Returnjson.class);
                     Message msg = new Message();
-                    //判断数据
-                    if (returnjson.getResults().get(0).isIs_final()) {
-                        msg.arg2 = 2;
-                    } else {
-                        msg.arg2 = 1;
+                    switch (result.getCode()) {
+                        case Constant.RESPONSE_ASR://识别结果
+                            AsrAndMtBean bean = FastJsonUtil.changeJsonToBean(result.getMsg(), AsrAndMtBean.class);
+                            Returnjson returnjson = FastJsonUtil.changeJsonToBean(bean.getInfo(), Returnjson.class);
+//                            Returnjson returnjson = JSON.parseObject(result.getMsg(), Returnjson.class);
+                            msg.what = Constant.RESPONSE_ASR;
+                            //判断数据是否为最后一句
+                            if (returnjson.getResults().get(0).isIs_final()) {
+                                msg.arg2 = 2;
+                                checkTimeOut();
+                            } else {
+                                msg.arg2 = 1;
+                            }
+                            //判断数据是否从中文翻译到英文
+                            if (StringUtils.isChinese(returnjson.getResults().get(0).getAlternatives().get(0).getTranscript())) {
+                                msg.arg1 = 1;
+                            } else {
+                                msg.arg1 = 2;
+                            }
+                            //String类型
+                            msg.obj = returnjson.getResults().get(0).getAlternatives().get(0).getTranscript();
+                            break;
+                        case Constant.RESPONSE_MT://翻译
+                            msg.what = Constant.RESPONSE_MT;
+                            AsrAndMtBean mtBean = FastJsonUtil.changeJsonToBean(result.getMsg(), AsrAndMtBean.class);
+                            //String类型
+                            msg.obj = mtBean.getInfo();
+                            break;
+                        case Constant.RESPONSE_NULL://没有识别到任何音频
+                            msg.what = Constant.RESPONSE_NULL;
+                            break;
+                        case Constant.RESPONSE_ERROR://后台返回错误
+                            msg.what = Constant.RESPONSE_ERROR;
+                            ErrorResultBean errorResultBean = FastJsonUtil.changeJsonToBean(result.getMsg(), ErrorResultBean.class);
+                            //int 类型
+                            msg.obj = errorResultBean.getCode();
+                            break;
+                        default:
+                            break;
                     }
-                    if (StringUtils.isChinese(returnjson.getResults().get(0).getAlternatives().get(0).getTranscript())) {
-                        msg.arg1 = 1;
-                    } else {
-                        msg.arg1 = 2;
-                    }
-                    msg.obj = returnjson.getResults().get(0).getAlternatives().get(0).getTranscript();
                     handler.sendMessage(msg);
-                    }else{
-
-                    }
                 } catch (InvalidProtocolBufferException e) {
                     e.printStackTrace();
                 }
@@ -657,7 +688,6 @@ public class AiFragment extends BaseFragment implements BaseQuickAdapter.OnItemL
             @Override
             public void onError(Exception e) {
                 Log.e(">>>>>>>>>>>>>>", "connect error:" + e.getMessage());
-//                ToastUtil.showShort("服务器连接出错了，请稍候重试！");
                 stopAnimAsr();
             }
         };
@@ -672,29 +702,58 @@ public class AiFragment extends BaseFragment implements BaseQuickAdapter.OnItemL
         @Override
         public void handleMessage(final Message msg) {
 
-            if (!msg.obj.equals("")) {
-                temp = (String) msg.obj;
+            switch (msg.what) {
+                case Constant.RESPONSE_ASR:
+                    if (!msg.obj.equals("")) {
+                        temp = (String) msg.obj;
+                    }
+                    //判断是否是已经识别结束了，识别未结束直接显示，识别结束调用翻译
+                    if (msg.arg2 == 1) {
+                        //控件显示结果
+                        setAsr(temp);
+
+                    } else if (msg.arg2 == 2) {
+                        //控件显示结果
+                        setAsr(temp);
+                        //设置翻译的源语言和目标语言
+                        from = "zh";
+                        to = "en";
+                        if (msg.arg1 == 2) {
+                            from = "en";
+                            to = "zh";
+                        }
+                        startAnimMt();
+                        //调用翻译
+//                        translation(from, to, temp);
+
+                    }
+                    break;
+                case Constant.RESPONSE_NULL:
+                    ToastUtil.showShort("没有检测到音频输入，请您再说一次！");
+                    break;
+                case Constant.RESPONSE_MT:
+                    String mt = (String) msg.obj;
+                    if (!TextUtils.isEmpty(mt)) {
+                        setMt(mt);
+                    } else {
+                        ServerError(102);
+                    }
+                    break;
+                case Constant.RESPONSE_ERROR:
+                    int code = (Integer) msg.obj;
+                    ServerError(code);
+                    break;
+                case Constant.TIMEOUT_READ:
+                    ToastUtil.showShort("网络请求超时了，请重新尝试！");
+                    showerrorUI(true);
+                    stopAnimMt();
+                    break;
+                default:
+                    break;
+
+
             }
-            //判断是否是已经识别结束了，识别未结束直接显示，识别结束调用翻译
-            if (msg.arg2 == 1) {
 
-                //控件显示结果
-                setAsr(temp);
-
-            } else if (msg.arg2 == 2) {
-                //控件显示结果
-                setAsr(temp);
-                //设置翻译的源语言和目标语言
-                from = "zh";
-                to = "en";
-                if (msg.arg1 == 2) {
-                    from = "en";
-                    to = "zh";
-                }
-                //调用翻译
-                translation(from, to, temp);
-
-            }
 
         }
     };
@@ -705,7 +764,6 @@ public class AiFragment extends BaseFragment implements BaseQuickAdapter.OnItemL
             ToastUtil.showShort("当前网络状况不佳,请切换到语音翻译!");
             return;
         }
-        startAnimMt();
         OkHttpClient client = new OkHttpClient();
         FormBody formBody = new FormBody
                 .Builder()
@@ -798,11 +856,74 @@ public class AiFragment extends BaseFragment implements BaseQuickAdapter.OnItemL
         page++;
         List<MessageBean> mReceiveMsgList = AiSqlUtils.retrieve(page, pagesize);
         swipeLayout.setRefreshing(false);
-        if(mReceiveMsgList.size()<=0){
+        if (mReceiveMsgList.size() <= 0) {
             ToastUtil.showShort("没有更多数据了");
             return;
         }
         mAdapter.addData(0, mReceiveMsgList);
+        mAdapter.notifyDataSetChanged();
+    }
+
+
+    /**
+     * 检查翻译是否超时，时间为5秒钟
+     */
+    private void checkTimeOut() {
+        try {
+            timer = new Timer();
+            task = new CheckTimerTask(handler);
+            timer.schedule(task, Constant.TIME_OUT);
+        } catch (Exception e) {
+            Log.e("timer", e.getMessage());
+        }
+    }
+
+    private void cancelTimer() {
+        if (null != timer) {
+            timer.cancel();
+        }
+    }
+
+
+    private void showerrorUI(boolean isShow) {
+        if (isShow) {
+            llAudio.setVisibility(View.GONE);
+            llFailed.setVisibility(View.VISIBLE);
+        } else {
+            llAudio.setVisibility(View.VISIBLE);
+            llFailed.setVisibility(View.GONE);
+        }
+
+    }
+
+
+    /**
+     * 服务器返回错误54中 包含的101/102/103/104
+     *
+     * @param code
+     */
+    private void ServerError(int code) {
+
+        L.e("cmd:", String.valueOf(code));
+        switch (code) {
+            case 101://识别失败
+//                TTSUtil.getInstance().notUnderstand(context, 1, Constant.isSound);
+                ToastUtil.showShort(context.getResources().getString(R.string.error_response));
+                break;
+            case 102://翻译失败
+                cancelTimer();
+                stopAnimMt();
+                ToastUtil.showShort(context.getResources().getString(R.string.error_response));
+                break;
+            case 103://合成失败
+
+                break;
+            case 104://参数不对
+
+                break;
+            default:
+                break;
+        }
     }
 }
 
