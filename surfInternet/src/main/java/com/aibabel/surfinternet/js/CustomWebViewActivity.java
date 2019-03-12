@@ -304,8 +304,7 @@ public class CustomWebViewActivity extends BaseActivity implements OnJSClickList
         XIPC.disconnect(getContext());
         if (!softType.equals("LOCAL")){
             //重置softSim
-            Toast.makeText(CustomWebViewActivity.this, "状态："+softType+"开始重置", Toast.LENGTH_SHORT).show();
-
+            Log.e("LK---001","状态："+softType+"开始重置");
             Intent intent = new Intent();
             intent.setAction("com.lingke.oldmenu");
             intent.putExtra("type", "lingke");

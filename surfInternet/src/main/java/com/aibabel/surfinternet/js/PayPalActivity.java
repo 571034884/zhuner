@@ -231,7 +231,7 @@ public class PayPalActivity extends BaseActivity implements OnJSClickListener {
         XIPC.disconnect(getContext());
         if (!softType.equals("LOCAL")){
             //重置SoftSim
-            Toast.makeText(PayPalActivity.this, "状态："+softType+"开始重置", Toast.LENGTH_SHORT).show();
+            Log.e("LK---001","状态："+softType+"开始重置");
             Intent intent = new Intent();
             intent.setAction("com.lingke.oldmenu");
             intent.putExtra("type", "lingke");
