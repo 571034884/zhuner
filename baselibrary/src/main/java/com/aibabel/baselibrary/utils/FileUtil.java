@@ -13,7 +13,7 @@ public class FileUtil {
     /**
      * 保存操作完成监听事件
      */
-    interface SaveCompleteListener {
+    public interface SaveCompleteListener {
         void Success(String filePath);
 
         void failure(String error);
@@ -22,7 +22,7 @@ public class FileUtil {
     /**
      * 读取操作完成监听事件
      */
-    interface GetCompleteListener {
+    public interface GetCompleteListener {
         void Success(byte[] bytes);
 
         void failure(String error);
@@ -44,7 +44,7 @@ public class FileUtil {
      * @param data     文件数据
      * @param listener 操作完成监听
      */
-    public void save(String filePath, byte[] data, SaveCompleteListener listener) {
+    public static void save(String filePath, byte[] data, SaveCompleteListener listener) {
         save(filePath, data, false, listener);
     }
 
@@ -56,7 +56,7 @@ public class FileUtil {
      * @param append   是否追加
      * @param listener 操作完成监听
      */
-    public void save(String filePath, byte[] data, boolean append, SaveCompleteListener listener) {
+    public static void save(String filePath, byte[] data, boolean append, SaveCompleteListener listener) {
         if (!createOrExistsDir(filePath)) {
             listener.failure("目录创建失败");
             return;
@@ -73,7 +73,7 @@ public class FileUtil {
      * @param filePath 文件路径
      * @param listener 读取完成监听
      */
-    public void get(String filePath, GetCompleteListener listener) {
+    public static void get(String filePath, GetCompleteListener listener) {
         get(getFileByPath(filePath), listener);
     }
 
@@ -83,7 +83,7 @@ public class FileUtil {
      * @param file     文件
      * @param listener 读取完成监听
      */
-    public void get(File file, GetCompleteListener listener) {
+    public static void get(File file, GetCompleteListener listener) {
         if (!isFileExists(file)) {
             listener.failure("文件不存在");
             return;

@@ -16,6 +16,7 @@ import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
 import android.os.Handler;
 import android.os.IBinder;
 import android.os.Message;
@@ -23,6 +24,8 @@ import android.os.RemoteException;
 import android.support.annotation.RequiresApi;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.ViewPager;
+import android.telephony.SubscriptionInfo;
+import android.telephony.SubscriptionManager;
 import android.text.TextUtils;
 import android.text.format.Time;
 import android.util.Log;
@@ -37,8 +40,12 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.aibabel.baselibrary.mode.DataManager;
+import com.aibabel.baselibrary.utils.FileUtil;
+import com.aibabel.baselibrary.utils.FilesUtil;
 import com.aibabel.baselibrary.utils.ToastUtil;
 import com.example.root.testhuaping.service.Getsystem_info;
+import com.example.root.testhuaping.util.CommonUtils;
+import com.example.root.testhuaping.util.Constans;
 import com.linkfield.softsim.ISoftSIMCallback;
 import com.linkfield.softsim.ISoftSIMManager;
 import com.linkfield.softsim.model.SoftSIMInfo;
@@ -82,7 +89,6 @@ import static com.example.root.testhuaping.DateUtils.stringToDate;
 public class MainActivity extends FragmentActivity implements View.OnClickListener, ViewPager.OnPageChangeListener {
 
     private final Uri CONTENT_URI = Uri.parse("content://com.dommy.qrcode/aibabel_information");
-    private final String path = "http://39.107.238.111:7001/v1/netflow/getCardPath?iccid=89860012018051816514&sn=1112121212121222&imei=12345678";
     private View tv1, tv2, tv3, tv4, tv5, tv6;
     private View tv11, tv12, tv13, tv14, tv15, tv16;
     private View tv21, tv22, tv23, tv24, tv25, tv26, tvwww, tv_lixian;
@@ -122,7 +128,6 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
         //Intent intent1=new Intent();
         //intent1.setClass(MainActivity.this,MainActivity2.class);
         //startActivity(intent1);
-
         if (getCountryZipCode(this).equals("CN")) {
             setContentView(R.layout.activity_main);
             Log.e("====================", "wotewode");
@@ -412,17 +417,17 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
 
     //1 硬卡   2软卡
     public void get_okgo_net() {
-        boolean softSim = DataManager.getInstance().getBoolean("softSim");
+        boolean softSim = FilesUtil.readToFile();
         if (softSim) {
-            Toast.makeText(MainActivity.this, "启动过软卡", Toast.LENGTH_SHORT).show();
+            saveFile(true);
+            Log.e("LK---001","启动成功");
 //            mSoftSIMManager.isSoftSIMEnabled();
         } else {
             isnet = true;
             initReceiver();
-            Toast.makeText(MainActivity.this, "没有启动过软卡", Toast.LENGTH_SHORT).show();
+            Log.e("LK---001","没有启动过软卡");
         }
     }
-
 
     /**
      * 启动软卡 领科
@@ -430,13 +435,31 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
     public void start_soft() {
         try {
             mSoftSIMManager.setSoftSIMEnabled(true);
-            DataManager.getInstance().setSaveBoolean("softSim",true);
+            saveFile(true);
         } catch (RemoteException e) {
             e.printStackTrace();
         }
 
     }
     //--------------------------------------------------------------------------------
+
+    /**
+     * 单独存储
+     * @param flag
+     */
+    public void saveFile(boolean flag){
+        FilesUtil.saveToFile(flag+"", new FilesUtil.SaveCompleteListener() {
+            @Override
+            public void Success(String body) {
+                Log.e("LK---001",body);
+            }
+
+            @Override
+            public void failure(String error) {
+                Log.e("LK---001",error);
+            }
+        });
+    }
 
     private ISoftSIMManager mSoftSIMManager;
     private SoftSIMInfo mSoftSIMInfo;
@@ -471,6 +494,7 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
         public void onSoftSIMStateChange(SoftSIMInfo info) {
             mSoftSIMInfo = info;
             DataManager.getInstance().setSaveString("softSimType",mSoftSIMInfo.getType().toString());
+            Log.e("LK---001","存储LK标识"+mSoftSIMInfo.getType().toString());
             mHandler.sendMessage(mHandler.obtainMessage(10000, mSoftSIMInfo));
         }
     };
@@ -484,15 +508,13 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
                     SoftSIMInfo info = (SoftSIMInfo) msg.obj;
                     try {
                         if (mSoftSIMManager.isSoftSIMEnabled()) {
-                            Toast.makeText(MainActivity.this, "启动成功：" + info.getIMSI(), Toast.LENGTH_SHORT).show();
+                            Log.e("LK---001","启动成功"+info.getIMSI());
                             //TODO 存储软卡信息
-                            DataManager.getInstance().setSaveBoolean("softSim",true);
+                            saveFile(true);
                         }
                     } catch (RemoteException e) {
                         e.printStackTrace();
                     }
-
-
                     break;
                 default:
                     break;
@@ -519,26 +541,25 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
         @Override
         public void onReceive(Context context, Intent intent) {
             //得到广播中得到的数据，并显示出来
-            ToastUtil.showShort(context,"来自全球上网--进行refreshProfile刷新");
-
+            Log.e("LK---001","来自全球上网--进行refreshProfile刷新");
             String type = intent.getExtras().getString("type");
             if (type.equals("refresh")){
                 try {
                     if (mSoftSIMManager != null){
-                        Log.e("SOFTSIM-01","桌面收到来自全球上网的refreshProfile-lksc");
+                        Log.e("LK---001","桌面收到来自全球上网的refreshProfile-lksc");
                         boolean flag = mSoftSIMManager.refreshProfile();
                         if (!flag){
                             ToastUtil.showShort(context,"请重启设备，激活套餐");
-                            Log.e("SOFTSIM-01","refreshProfile-lksc----失败");
+                            Log.e("LK---001","refreshProfile-lksc----失败");
                         }
                     }else{
                         ToastUtil.showShort(context,"请重启设备，激活套餐");
-                        Log.e("SOFTSIM-01","refreshProfile-lksc----没有拿到引用mSoftSIMManager");
+                        Log.e("LK---001","refreshProfile-lksc----没有拿到引用mSoftSIMManager");
                     }
 
                 } catch (RemoteException e) {
                     ToastUtil.showShort(context,"请重启设备，激活套餐");
-                    Log.e("SOFTSIM-01","refreshProfile-lksc----异常");
+                    Log.e("LK---001","refreshProfile-lksc----异常");
                     e.printStackTrace();
                 }
             }
@@ -580,10 +601,23 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
     }
 
     public void get_okgo() {
-        OkGo.<String>get(path)//
-                .tag(this)//
-                .headers("header1", "headerValue1")//
-                .params("param1", "paramValue1")//
+
+        String imei = CommonUtils.getIMEI(this);
+        String sn = CommonUtils.getSN();
+        String iccid = CommonUtils.getICCID(this);
+
+        Log.e("DEBUG_E_TYPE","imei = "+imei+"-----sn = "+sn+"------iccid = "+iccid);
+
+        if (TextUtils.isEmpty(imei) || TextUtils.isEmpty(sn) || TextUtils.isEmpty(iccid)){
+            ToastUtil.showShort(this,"无法获取到重要标识，请联系客服");
+            return;
+        }
+
+        OkGo.<String>get(Constans.MENU_LK)
+                .tag(this)
+                .params("imei",imei)
+                .params("sn",sn)
+                .params("iccid",iccid)
                 .execute(new StringCallback() {
                     @Override
                     public void onSuccess(Response<String> response) {
@@ -596,12 +630,12 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
                             if (TextUtils.equals(data1, "2")) {
                                 if (TextUtils.equals(getVersionType(), "PL") || TextUtils.equals(getVersionType(), "PH")) {
                                     if (TextUtils.equals(getVersionCode(), "S")) {
-                                        DataManager.getInstance().setSaveBoolean("softSim",true);
+                                        saveFile(true);
                                         start_soft();
                                     }
                                 }
                             } else {
-                                DataManager.getInstance().setSaveBoolean("softSim",false);
+                                saveFile(false);
                             }
                         } catch (Exception e) {
                             e.printStackTrace();
@@ -615,7 +649,7 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
                         super.onError(response);
                         Toast.makeText(MainActivity.this, "出错了！", Toast.LENGTH_SHORT).show();
                         //TODO 服务器出错
-                        DataManager.getInstance().setSaveBoolean("softSim",false);
+                        saveFile(false);
                     }
                 });
     }
@@ -1509,10 +1543,10 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
             ConnectivityManager connectivityManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
             NetworkInfo networkInfo = connectivityManager.getActiveNetworkInfo();
             if (networkInfo != null && networkInfo.isAvailable()) {
-                Toast.makeText(context, "当前网络可用", Toast.LENGTH_SHORT).show();
+                Log.e("LK---001","当前网络可用请求接口get_okgo");
                 get_okgo();
             } else {
-                Toast.makeText(context, "当前网络不可用", Toast.LENGTH_SHORT).show();
+                Log.e("LK---001","当前网络不可用");
             }
         }
     }

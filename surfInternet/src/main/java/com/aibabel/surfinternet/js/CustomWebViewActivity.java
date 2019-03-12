@@ -289,7 +289,7 @@ public class CustomWebViewActivity extends BaseActivity implements OnJSClickList
                     public void onIPCConnected(Class<? extends IPCService> service) {
                         IDataManager dm = XIPC.getInstance(IDataManager.class);
                         String softType = dm.getString("softSimType");
-                        Toast.makeText(CustomWebViewActivity.this, "绑定成功---状态："+softType, Toast.LENGTH_SHORT).show();
+                        Log.e("LK---001","当前LK卡状态:"+softType);
                         isShowDialog(softType);
 
                     }
