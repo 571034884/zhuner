@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="app_name">menu</string>
     <string name="yuyinfanyi">Voice Translation</string>
     <string name="paizhaofanyi">Camera Translation</string>
     <string name="wutishibie">Object Recognition</string>
@@ -29,5 +30,4 @@
     <string name="my_weizaizulinqi">Not in the lease term</string>
     <string name="google_tishi">Google Maps only supports use outside of China</string>
     <string name="jiushiyong">continue</string>
-
 </resources>

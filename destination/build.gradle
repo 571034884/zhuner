@@ -5,8 +5,8 @@ ext.build_number = "beta1"
 
 // 显示的时间格式，形如20171110
 def buildTime() {
-    return System.currentTimeMillis()
-//    return new Date().format("MMddHHmmss", TimeZone.getDefault())
+    //return System.currentTimeMillis()
+    return new Date().format("MMddHHmmss", TimeZone.getDefault())
 }
 
 Properties props = new Properties()
@@ -25,7 +25,7 @@ android {
     }
     signingConfigs {
         release {
-            storeFile file('TravelAd')
+            storeFile file('TravelAd.jks')
             storePassword 'aibabel*123'
             keyAlias 'travelad'
             keyPassword 'aibabel*123'

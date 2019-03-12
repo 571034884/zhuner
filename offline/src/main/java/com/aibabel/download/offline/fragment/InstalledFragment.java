@@ -191,9 +191,11 @@ public class InstalledFragment extends Fragment {
 
 
         }
-
+        DownLoadListActivity base = ((DownLoadListActivity) getActivity());
         //本地数据分组   当前类型
-        String currId = ((DownLoadListActivity) getActivity()).key;
+        if(base == null)return;
+        //本地数据分组   当前类型
+        String currId = base.key;
         final List<Offline_database> newList = new ArrayList<>();
 
         for (int j = 0; j < list.size(); j++) {

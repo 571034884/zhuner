@@ -1,6 +1,8 @@
 package com.aibabel.menu;
 
 import android.animation.ObjectAnimator;
+import android.annotation.TargetApi;
+import android.app.Activity;
 import android.app.ActivityOptions;
 import android.content.Context;
 import android.content.Intent;
@@ -10,9 +12,14 @@ import android.graphics.Rect;
 import android.graphics.drawable.AnimationDrawable;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
+import android.net.ConnectivityManager;
+import android.net.Network;
+import android.net.NetworkInfo;
+import android.net.NetworkRequest;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Message;
 import android.support.annotation.Nullable;
 import android.support.annotation.RequiresApi;
 import android.text.Spannable;
@@ -40,25 +47,33 @@ import android.widget.TextView;
 import com.aibabel.aidlaar.StatisticsManager;
 import com.aibabel.baselibrary.http.BaseCallback;
 import com.aibabel.baselibrary.http.OkGoUtil;
+import com.aibabel.baselibrary.mode.DataManager;
+import com.aibabel.baselibrary.utils.FastJsonUtil;
 import com.aibabel.baselibrary.utils.ProviderUtils;
+import com.aibabel.baselibrary.utils.SharePrefUtil;
 import com.aibabel.baselibrary.utils.ToastUtil;
 import com.aibabel.menu.app.MyApplication;
 import com.aibabel.menu.base.BaseActivity;
 import com.aibabel.menu.bean.MenuDataBean;
+import com.aibabel.menu.bean.SyncOrder;
 import com.aibabel.menu.bitmap.MyTransformtion;
 import com.aibabel.menu.broadcast.NetBroadcastReceiver;
 import com.aibabel.menu.dialog.CustomDialog;
 import com.aibabel.menu.h5.AndroidJS;
 import com.aibabel.menu.inf.UpdateMenu;
+import com.aibabel.menu.rent.RentDialogActivity;
+import com.aibabel.menu.rent.RentLockedActivity;
 import com.aibabel.menu.util.AppStatusUtils;
+import com.aibabel.menu.util.CalenderUtil;
 import com.aibabel.menu.util.CommonUtils;
-import com.aibabel.menu.util.DBUtils;
+import com.aibabel.menu.util.DetectUtil;
 import com.aibabel.menu.util.DoubleClickUtil;
 import com.aibabel.menu.util.FileUtil;
 import com.aibabel.menu.util.GlideCacheUtil;
 import com.aibabel.menu.util.I18NUtils;
 import com.aibabel.menu.util.L;
 import com.aibabel.menu.util.LocationUtils;
+import com.aibabel.menu.util.LogUtil;
 import com.aibabel.menu.util.NetUtil;
 import com.aibabel.menu.util.RenUtils;
 import com.aibabel.menu.util.SPUtils;
@@ -68,8 +83,13 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.bumptech.glide.request.target.SimpleTarget;
 import com.bumptech.glide.request.transition.Transition;
+import com.lzy.okgo.OkGo;
+import com.lzy.okgo.callback.StringCallback;
+import com.lzy.okgo.model.Response;
 import com.umeng.analytics.MobclickAgent;
 
+import java.io.IOException;
+import java.lang.ref.WeakReference;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -162,9 +182,30 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
     //泽峰  租赁逻辑类
     RenUtils renUtils;
 
+    private final String moren_error = "file:///sdcard/offline/menu/moren_error.html";
+
+
+    public static final int toast_rent_Time = 16;
+    public static final String bunder_iszhuner = "zhuner";
+    public static final String bunder_qudao = "kefu";
+    public static final String order_channelName = "order_channelName";
+    public static final String order_oid = "order_oid";
+    public static final String order_uid = "order_uid";
+    public static final String order_uname = "order_uname";
+    public static final String order_sn = "order_sn";
+    public static final String order_from = "order_from_time";
+    public static final String order_endttime = "orderendttime";
+    public static final String order_islock = "order_islock";
+    public static final String order_lockattime = "order_at";
+    public static final String order_isZhuner = "order_isZhuner";
+
+    private static final String neverUseNet_start = "never_user_start_time";
+    private static final String neverUseNet_end = "never_user_end_time";
+    private static final String neverUseNetflag = "never_user_flag";
+
+
     @Override
     public View onCreateView(String name, Context context, AttributeSet attrs) {
-
         return super.onCreateView(name, context, attrs);
 
     }
@@ -173,7 +214,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         L.e("MainActivity  onCreate========================");
-
+        LogUtil.e("MainActivity_onCreate");
 //        DBUtils.copyAssetsToSd(mContext,"index.html");
 
         //城市切换后 更新界面
@@ -278,8 +319,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
 
     @Override
     public void init() {
-
-
+        loopHandler = new LooptempHandler(this);
     }
 
 
@@ -320,7 +360,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         getWindow().requestFeature(Window.FEATURE_CONTENT_TRANSITIONS);
 //        getWindow().setExitTransition(new Slide().setDuration(400));
 //        getWindow().setReenterTransition(new Slide().setDuration(400));
-        return R.layout.activity_main;
+        return R.activity_rent_locked.activity_main;
     }*/
 
     @Override
@@ -342,7 +382,279 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
 
         renUtils = new RenUtils(this);
         renUtils.startZl(); //启动租赁
+
+
+        try {
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    init_neveruser();
+                    requestNetwork();
+
+                   // boot_start_lock();
+                    lock90day();
+                }
+            }).start();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
+
+    /**
+     * 清除所有sharep 订单信息
+     */
+    public void clearALlsharePreutil() {
+
+        SharePrefUtil.removeByKey(mContext, neverUseNetflag);
+        SharePrefUtil.removeByKey(mContext, neverUseNet_start);
+        SharePrefUtil.removeByKey(mContext, neverUseNet_end);
+        SharePrefUtil.removeByKey(mContext, order_channelName);
+        SharePrefUtil.removeByKey(mContext, order_oid);
+        SharePrefUtil.removeByKey(mContext, order_uid);
+        SharePrefUtil.removeByKey(mContext, order_uname);
+        SharePrefUtil.removeByKey(mContext, order_sn);
+        SharePrefUtil.removeByKey(mContext, order_from);
+        SharePrefUtil.removeByKey(mContext, order_endttime);
+        SharePrefUtil.removeByKey(mContext, order_islock);
+        SharePrefUtil.removeByKey(mContext, order_lockattime);
+        SharePrefUtil.removeByKey(mContext, order_isZhuner);
+
+    }
+
+    /**
+     * 初始化从来未使用的函数
+     */
+    private void init_neveruser() {
+        try {
+            String get_starttime = "";
+            String get_endtime = "";
+            try {
+                get_starttime = SharePrefUtil.getString(mContext, neverUseNet_start, "");
+                get_endtime = SharePrefUtil.getString(mContext, neverUseNet_end, "");
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            LogUtil.e("start__= "+get_starttime + " = init_neveruser = " + get_endtime);
+            if (TextUtils.isEmpty(get_starttime) || (TextUtils.isEmpty(get_endtime))) {
+                String[] startstr = CalenderUtil.calculateTimeDifferenceByDuration();
+                if (startstr != null) {
+                    String starttime = startstr[0];
+                    String end_time = startstr[1];
+
+                    LogUtil.e(" = init_neveruser starttime= " + starttime);
+                    LogUtil.e(" =  end_time= " + end_time);
+
+                    SharePrefUtil.saveString(mContext, neverUseNet_start, starttime);
+                    SharePrefUtil.saveString(mContext, neverUseNet_end, end_time);
+
+                    get_starttime = SharePrefUtil.getString(mContext, neverUseNet_start, "");
+                    LogUtil.e("  starttime= " + get_starttime);
+
+                    get_endtime = SharePrefUtil.getString(mContext, neverUseNet_end, "");
+                    LogUtil.e("  get_endtime= " + get_endtime);
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    private static final String url_sync_order = "https://wx.aibabel.com:3002/common/api/machine/syncOrder";
+
+    /**
+     * 同步订单， hjs
+     *
+     * @param context
+     */
+    private void syncOrder(Context context) {
+        try {
+            LogUtil.e("sn = " + CommonUtils.getSN());
+            OkGo.<String>post(url_sync_order)
+                    .tag(this)
+                    .params("sn", CommonUtils.getSN())
+                    .params("isInChina", LocationUtils.locationWhere(context))
+                    .execute(new StringCallback() {
+                        @Override
+                        public void onSuccess(com.lzy.okgo.model.Response<String> response) {
+                            if ((response != null) && (response.body() != null)) {
+                                String reposStr = response.body().toString();
+                                LogUtil.e("sync = " + reposStr);
+                                try {
+                                    SyncOrder syncOrderObj = FastJsonUtil.changeJsonToBean(reposStr, SyncOrder.class);
+                                    if ((syncOrderObj != null)) {
+                                        LogUtil.e("synorder != null");
+                                        Locklogic(context, syncOrderObj);
+                                        //SharePrefUtil.saveString();
+                                    }
+                                } catch (Exception e) {
+                                    e.printStackTrace();
+
+                                }
+                            }
+                        }
+
+                        @Override
+                        public void onError(Response<String> response) {
+                            super.onError(response);
+                            LogUtil.e("reposStr onError = ");
+                            ////okgerror();
+                        }
+                    });
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+
+    /**
+     * 90天锁机逻辑,或者
+     */
+    public void lock90day() {
+        ///没有网络情况下
+        try {
+
+            int lock_type = boot_start_lock();
+            LogUtil.e("lock_type ="+lock_type);
+            if(lock_type==1 )return;
+
+            String spnettemp = SharePrefUtil.getString(mContext, neverUseNetflag, "");
+            LogUtil.e("neverUseNetflag ="+spnettemp);
+            if (TextUtils.isEmpty(spnettemp)) {
+                String endtime = SharePrefUtil.getString(mContext, neverUseNet_end, "");//90天未使用
+                LogUtil.e(" neverUseNet_end ="+endtime);
+                if (!TextUtils.isEmpty(endtime)) {
+                    if (CalenderUtil.compaeTimeWithAfter24(endtime) <= 0) {
+                        LogUtil.e(" compaeTimeWithAfter24  lockloopmsg()  <=0");
+                        lockloopmsg();
+                    }
+                } else {
+                    LogUtil.e("neverUseNet_end=endtime = null");
+                }
+            } else if (spnettemp.equalsIgnoreCase("net_ok")) {
+                lockloopmsg();//以前连接过网络，快到期断网，4个小时检测一次
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    /**
+     * 锁机逻辑，hjs
+     */
+    public void Locklogic(Context context, SyncOrder synorder) {
+        SyncOrder.Body OrderBody = synorder.getBody();
+        if (OrderBody != null) {
+            String chanelname = OrderBody.getChannelName();
+            String oid = OrderBody.getOid();
+            String uid = OrderBody.getUid();
+            String uname = OrderBody.getUname();
+            String sn = OrderBody.getSn();
+            String from_time = OrderBody.getF();
+            String end_time = OrderBody.getT();
+            int islock = OrderBody.getIsLock();
+            int attime = OrderBody.getAt();
+            int isZhuner = OrderBody.getIsZhuner();
+
+            if (!TextUtils.isEmpty(chanelname)) {
+                SharePrefUtil.saveString(context, order_channelName, chanelname);
+            } else LogUtil.e("chanelname empty");
+
+            if (!TextUtils.isEmpty(oid)) {
+                SharePrefUtil.saveString(context, order_oid, oid);
+                DataManager.getInstance().setSaveString(order_oid, oid);
+
+            } else LogUtil.e("oid empty");
+            if (!TextUtils.isEmpty(uid)) {
+                SharePrefUtil.saveString(context, order_uid, uid);
+            } else LogUtil.e("uid = null");
+            if (!TextUtils.isEmpty(uname)) {
+                SharePrefUtil.saveString(context, order_uname, uname);
+            } else LogUtil.e("uname = null");
+
+            if (!TextUtils.isEmpty(from_time)) {
+                SharePrefUtil.saveString(context, order_from, from_time);
+            } else LogUtil.e("from_time = null");
+            if (!TextUtils.isEmpty(end_time)) {
+                SharePrefUtil.saveString(context, order_endttime, end_time);
+            } else LogUtil.e("end_time = null");
+            if (!TextUtils.isEmpty(sn)) {
+                SharePrefUtil.saveString(context, order_sn, sn);
+            } else LogUtil.e("sn = null");
+            if (islock >= 0) {
+                SharePrefUtil.saveInt(context, order_islock, islock);
+            } else LogUtil.e("order_islock = null");
+            if (attime >= 0) {
+                SharePrefUtil.saveInt(context, order_lockattime, attime);
+            } else LogUtil.e("order_lockattime == null;");
+
+            if (isZhuner >= 0) {
+                SharePrefUtil.saveInt(context, order_isZhuner, isZhuner);
+            } else LogUtil.e("order_isZhuner == null;");
+
+            try {
+                Message message = new Message();
+                message.what = 100;
+                Bundle bun = new Bundle();
+                if ((isZhuner == 1)) {
+                    bun.putString(bunder_iszhuner, "zhuner");
+                } else if (isZhuner == 0) {
+                    bun.putString(bunder_qudao, chanelname);
+                } else {
+                    if (TextUtils.isEmpty(chanelname)) {
+                        bun.putString(bunder_iszhuner, "zhuner");
+                        bun.putString(bunder_qudao, "");
+                    } else {
+                        bun.putString(bunder_iszhuner, "zz");
+                        bun.putString(bunder_qudao, chanelname);
+                    }
+                }
+                message.setData(bun);
+
+
+                int comparetime = CalenderUtil.compaeTimeWithNow(end_time);
+
+                LogUtil.e("服务器锁机 ");
+                ///服务器锁机
+                if (islock == 1) {
+                    if (loopHandler != null) loopHandler.sendMessage(message);
+                    return;
+                }
+
+                LogUtil.e("提醒续租 ");
+                //提醒续租
+                if (((comparetime <= toast_rent_Time) && (comparetime >= 11))) {
+                    if (loopHandler != null) loopHandler.sendEmptyMessage(120);
+                    return;
+                }
+                LogUtil.e("到期后24小时内锁机 ");
+                ////到期后24小时内锁机
+//                if ( CalenderUtil.compaeTimeWithAfter24(end_time)<=0) {
+//                    if (loopHandler != null) loopHandler.sendMessage(message);
+//                    return;
+//                }
+
+                LogUtil.e("到期后24小时内锁机 _fail ");
+
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+        } else {
+            String order_id = SharePrefUtil.getString(context, order_oid, "");
+            ///国外 并且无订单
+            if ((LocationUtils.locationWhere(context) == 0) && (TextUtils.isEmpty(order_id))) {
+                //lockloopmsg();
+                //f;
+                LogUtil.e("国外 并且无订单  ");
+            }
+
+        }
+
+
+    }
+
 
     public void getMenuData(Context mContext, String type, String getType) {
         Map<String, String> mapPram = new HashMap<>();
@@ -375,8 +687,6 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
     }
 
 
-
-
     @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
     public void onClick(View view) {
@@ -386,54 +696,52 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
                     ActivityOptions compat = ActivityOptions.makeSceneTransitionAnimation(this);
                     startActivity(new Intent(mContext, MenuActivity.class), compat.toBundle());
 //                startActivity(intent,ActivityOptions.makeCustomAnimation(mContext,R.transition.tran_menu_in,R.transition.tran_menu_out).toBundle());
-                    StatisticsManager.getInstance(mContext).addEventAidl( "点击菜单首页更多", new HashMap<>());
+                    StatisticsManager.getInstance(mContext).addEventAidl(1109, new HashMap<>());
                     break;
                 case R.id.main_middle_time_ll:
                     //调起时钟
                     startActivity(AppStatusUtils.getAppOpenIntentByPackageName(mContext, "com.aibabel.alliedclock"));
-                    StatisticsManager.getInstance(mContext).addEventAidl( "点击菜单首页时间", new HashMap<>());
+                    StatisticsManager.getInstance(mContext).addEventAidl(1102, new HashMap<>());
 
                     break;
                 case R.id.main_middle_tianqi_ll:
                     //调起天气
                     startActivity(AppStatusUtils.getAppOpenIntentByPackageName(mContext, "com.aibabel.weather"));
-                    StatisticsManager.getInstance(mContext).addEventAidl( "点击菜单首页天气", new HashMap<>());
+                    StatisticsManager.getInstance(mContext).addEventAidl(1103, new HashMap<>());
 
                     break;
                 case R.id.main_middle_huilv_ll:
                     //调起汇率
                     startActivity(AppStatusUtils.getAppOpenIntentByPackageName(mContext, "com.aibabel.currencyconversion"));
-                    StatisticsManager.getInstance(mContext).addEventAidl( "点击菜单首页汇率", new HashMap<>());
+                    StatisticsManager.getInstance(mContext).addEventAidl(1104, new HashMap<>());
 
                     break;
                 case R.id.main_map_rl:
                     //调起地图
                     startActivity(AppStatusUtils.getAppOpenIntentByPackageName(mContext, "com.aibabel.map"));
-                    StatisticsManager.getInstance(mContext).addEventAidl( "点击菜单首页地图", new HashMap<>());
+                    StatisticsManager.getInstance(mContext).addEventAidl(1105, new HashMap<>());
 
 
                     break;
                 case R.id.bttom_menu_ll_yyfy:
                     //调起语音翻译
                     startActivity(AppStatusUtils.getAppOpenIntentByPackageName(mContext, "com.aibabel.translate"));
-                    StatisticsManager.getInstance(mContext).addEventAidl( "点击菜单首页语音翻译", new HashMap<>());
+                    StatisticsManager.getInstance(mContext).addEventAidl(1106, new HashMap<>());
 
 //                    startActivity(AppStatusUtils.getAppOpenIntentByPackageName(mContext, "com.aibabel.translate").putExtra("from","food"));
-
 //                    startActivity(new Intent().setPackage("com.aibabel.translate").putExtra("from", "food"));
-
 
                     break;
                 case R.id.bttom_menu_ll_pzfy:
                     //调起拍照翻译
                     startActivity(AppStatusUtils.getAppOpenIntentByPackageName(mContext, "com.aibabel.ocr"));
-                    StatisticsManager.getInstance(mContext).addEventAidl( "点击菜单首页拍照翻译", new HashMap<>());
+                    StatisticsManager.getInstance(mContext).addEventAidl(1107, new HashMap<>());
 
                     break;
                 case R.id.bttom_menu_ll_ddwl:
                     //调起当地玩乐
                     startActivity(AppStatusUtils.getAppOpenIntentByPackageName(mContext, "com.aibabel.fyt_play"));
-                    StatisticsManager.getInstance(mContext).addEventAidl( "点击菜单首页当地玩乐", new HashMap<>());
+                    StatisticsManager.getInstance(mContext).addEventAidl(1108, new HashMap<>());
 
                     break;
                 case R.id.main_top_ctiy_ll:
@@ -444,7 +752,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
                     //调起搜索页面
                     ((MainActivity) mContext).startActivityForResult(new Intent(mContext, SearchActivity.class), 100);
                     L.e("1111111111111111111111111111111");
-                    StatisticsManager.getInstance(mContext).addEventAidl( "点击菜单首页进入选择目的地", new HashMap<>());
+                    StatisticsManager.getInstance(mContext).addEventAidl(1101, new HashMap<>());
 
 
                     break;
@@ -453,7 +761,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
                     L.e("fanhuidonghua===============================");
 //     top_ll.getGlobalVisibleRect(new Rect());
                     showPanel();
-                    StatisticsManager.getInstance(mContext).addEventAidl("点击h5关闭面板h5不可见", new HashMap());
+                    StatisticsManager.getInstance(mContext).addEventAidl(1133, new HashMap());
                     break;
 
             }
@@ -549,7 +857,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         ObjectAnimator.ofFloat(top_ll, "alpha", 1f, 0.5f).setDuration(300).start();
         ObjectAnimator.ofFloat(bottom_ll, "translationY", 500).setDuration(300).start();
         ObjectAnimator.ofFloat(bottom_ll, "alpha", 1f, 0.4f).setDuration(300).start();
-        StatisticsManager.getInstance(mContext).addEventAidl( "滑动进入目的地", new HashMap<>());
+        StatisticsManager.getInstance(mContext).addEventAidl(1140, new HashMap<>());
 
 
     }
@@ -562,7 +870,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         ObjectAnimator.ofFloat(top_ll, "alpha", 1f, 0.5f).setDuration(10).start();
         ObjectAnimator.ofFloat(bottom_ll, "translationY", 500).setDuration(10).start();
         ObjectAnimator.ofFloat(bottom_ll, "alpha", 1f, 0.4f).setDuration(10).start();
-        StatisticsManager.getInstance(mContext).addEventAidl( "滑动不过度动画进入目的地", new HashMap<>());
+        StatisticsManager.getInstance(mContext).addEventAidl(1141, new HashMap<>());
 
     }
 
@@ -575,8 +883,6 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         ObjectAnimator.ofFloat(bottom_ll, "translationY", 0).setDuration(300).start();
         ObjectAnimator.ofFloat(bottom_ll, "alpha", 0.5f, 1f).setDuration(300).start();
         L.e("菜单画面合并 showPanel=======================");
-
-
     }
 
     /**
@@ -637,7 +943,6 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         webSettings.setBuiltInZoomControls(false);
         webSettings.setSupportZoom(false);
 
-
         webView.addJavascriptInterface(new AndroidJS(mContext), "menuApp");
         webView.setWebViewClient(new WebViewClient() {
             @Override
@@ -662,6 +967,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         }
 
         webView.setWebViewClient(new WebViewClient() {
+
             //设置在webView点击打开的新网页在当前界面显示,而不跳转到新的浏览器中
             @Override
             public boolean shouldOverrideUrlLoading(WebView view, String url) {
@@ -678,7 +984,20 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
             @Override
             public void onReceivedError(WebView view, int errorCode, String description, String failingUrl) {
                 super.onReceivedError(view, errorCode, description, failingUrl);
-                view.loadUrl("file:///sdcard/offline/menu/moren_error.html");
+                /**
+                 * 防止死循环
+                 */
+                //if(!TextUtils.isEmpty(description)){
+                //   if((description).contains("ERR")){
+                if (view == null) return;
+                if ((view != null) && (view.getUrl() != null)) {
+                    if ((view.getUrl().equalsIgnoreCase(moren_error))) {
+                        return;
+                    }
+                }
+                // }
+                //}
+                view.loadUrl(moren_error);
                 L.e("1111111111111111111" + errorCode + "--------" + description);
                 isError = true;
             }
@@ -686,11 +1005,23 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
             @Override
             public void onReceivedError(WebView view, WebResourceRequest request, WebResourceError error) {
                 super.onReceivedError(view, request, error);
+                /**
+                 * 防止死循环
+                 */
+
+                if (view == null) return;
+                if ((view != null) && (view.getUrl() != null)) {
+                    if ((view.getUrl().equalsIgnoreCase(moren_error))) {
+                        return;
+                    }
+                }
+
+
                 if (request.isForMainFrame()) { // 或者： if(request.getUrl().toString() .equals(getUrl()))
                     // 在这里显示自定义错误页
-                    view.loadUrl("file:///sdcard/offline/menu/moren_error.html");
+                    view.loadUrl(moren_error);
                 }
-                L.e("1111111111111111111" + error + "--------");
+                L.e("webViewo nReceivedError(view, request, error);" + error + "--------");
                 isError = true;
             }
 
@@ -698,7 +1029,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
             public void onPageFinished(WebView view, String url) {
                 super.onPageFinished(view, url);
                 if (isError) {
-                    view.loadUrl("file:///sdcard/offline/menu/moren_error.html");
+                    view.loadUrl(moren_error);
                 }
             }
         });
@@ -724,22 +1055,30 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
     String oldCity = ""; //城市相同  部分内容不更新
 
     public void bindMenuData(MenuDataBean bean) {
-        MyApplication.city_id = bean.getData().getCityId();
-        MyApplication.country_id = bean.getData().getCountryId();
-        if (!TextUtils.equals(oldCity, bean.getData().getCityNameCn())) {
-            if (TextUtils.equals("-10000", bean.getCode())) {
-                StatisticsManager.getInstance(mContext).addEventAidl( "切换目的地", new HashMap() {{
-                    put("type", "离线");
-                    put("city", bean.getData().getCityNameCn());
+        if (bean == null) return;
+        if (mContext == null) return;
+        if (StatisticsManager.getInstance(mContext) == null) return;
 
-                }});
-            } else {
-                StatisticsManager.getInstance(mContext).addEventAidl( "切换目的地", new HashMap() {{
-                    put("type", "在线");
-                    put("city", bean.getData().getCityNameCn());
+        try {
+            MyApplication.city_id = bean.getData().getCityId();
+            MyApplication.country_id = bean.getData().getCountryId();
+            if (!TextUtils.equals(oldCity, bean.getData().getCityNameCn())) {
+                if (TextUtils.equals("-10000", bean.getCode())) {
+                    StatisticsManager.getInstance(mContext).addEventAidl(1142, new HashMap() {{
+                        put("type", "离线");
+                        put("city", bean.getData().getCityNameCn());
 
-                }});
+                    }});
+                } else {
+                    StatisticsManager.getInstance(mContext).addEventAidl(1142, new HashMap() {{
+                        put("type", "在线");
+                        put("city", bean.getData().getCityNameCn());
+
+                    }});
+                }
             }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
 
         try {
@@ -915,7 +1254,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
                     if (!top_ll.getGlobalVisibleRect(rect)) {
                         showPanel1();
                     }
-                  break;
+                    break;
                 case 134:
                     L.e("134===================");
                     if (!top_ll.getGlobalVisibleRect(rect)) {
@@ -999,11 +1338,181 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
 
     }
 
+    @Override
+    protected void onStart() {
+        super.onStart();
+        LogUtil.e("Main Activity onStart");
+    }
+
+    /**
+     * 扫码解锁后 清除标志位、清楚90天未联网日期、关闭lock按钮界面
+     */
+    private void unlock_ok_clear() {
+        try {
+            boolean RentLocked_fore = DetectUtil.isForeground(this, RentLockedActivity.class);
+            LogUtil.e("RentLocked_fore = " + RentLocked_fore);
+            if (RentLocked_fore) {
+                RentLockedActivity.finsRentlock();
+            }
+            clearALlsharePreutil();
+            init_neveruser();
+
+            LogUtil.e("onRestart = RentLocked_fore");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+        LogUtil.e("MainAcitivyt = onRestart");
+
+    }
+
+    public static LooptempHandler loopHandler;
+
+    /***
+     * 这是一个静态,loop轮询机制
+     */
+    public class LooptempHandler extends Handler {
+        WeakReference<Activity> mWeakReference;
+
+        public LooptempHandler(Activity activity) {
+            mWeakReference = new WeakReference<Activity>(activity);
+        }
+
+        @TargetApi(Build.VERSION_CODES.O)
+        @Override
+        public void handleMessage(Message msg) {
+            try {
+
+                LogUtil.e("msg.what = " + msg.what);
+
+                final Activity activity = mWeakReference.get();
+                if (activity != null) {
+
+                    switch (msg.what) {
+                        case 100:
+                            try {
+                                boolean RentLocked_fore = DetectUtil.isForeground(activity, RentLockedActivity.class);
+                                // boolean qrcode_isAlive = DetectUtil.isProessRunning(activity,"com.dommy.qrcode");
+                                // LogUtil.e("qrcode_isAlive " + qrcode_isAlive);
+                                LogUtil.e("RentLocked_fore " + RentLocked_fore);
+
+                                if (RentLocked_fore) return;
+
+                                Bundle getbundle = msg.getData();
+                                if (getbundle != null) {
+                                    String zhuner_str = getbundle.getString(bunder_iszhuner);
+                                    String qudao_str = getbundle.getString(bunder_qudao);
+
+                                    LogUtil.e("RentLockedActivity start"+zhuner_str+qudao_str);
+                                    Intent keepuse = new Intent(activity, RentLockedActivity.class); //已经到期
+                                    keepuse.putExtra(bunder_iszhuner, zhuner_str);
+                                    keepuse.putExtra(bunder_qudao, qudao_str);
+                                    startActivity(keepuse);
+                                } else {
+                                    Intent keepuse = new Intent(activity, RentLockedActivity.class); //已经到期
+                                    String zhuner_str = getbundle.getString(bunder_iszhuner);
+                                    String qudao_str = getbundle.getString(bunder_qudao);
+                                    LogUtil.e("start zhuner_str qudao_str"+zhuner_str+qudao_str);
+                                    keepuse.putExtra(bunder_iszhuner, ""+zhuner_str);
+                                    keepuse.putExtra(bunder_qudao, ""+qudao_str);
+                                    startActivity(keepuse);
+                                }
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            }
+                            break;
+
+                        case 110:
+
+                            boolean isForeground = DetectUtil.isForeground(activity, SimDetectActivity.class);
+                            LogUtil.e("isForeground:" + isForeground);
+                            if (!isForeground) {
+                                Intent simdetect = new Intent(activity, SimDetectActivity.class);
+                                startActivity(simdetect);
+                            }
+                            break;
+                        case 120:
+                            boolean Foreground = DetectUtil.isForeground(activity, RentDialogActivity.class);
+                            if (!Foreground) {
+                                Intent RentLocked = new Intent(activity, RentDialogActivity.class); //即将到期
+                                startActivity(RentLocked);
+                            }
+                            break;
+                        case 130: ////同步订单
+                            if (isNetworkConnected()) {
+                                LogUtil.e("isNetworkConnected = true");
+                                SharePrefUtil.saveString(mContext, neverUseNetflag, "net_ok");
+                                syncOrder(activity);
+                            } else {
+                                ///没有网络情况下
+                                lock90day();
+                            }
+                            break;
+                        case 200:
+                            unlock_ok_clear();  //清除flag等
+                            if (loopHandler != null)
+                                loopHandler.sendEmptyMessageDelayed(130, 10000);
+                            break;
+                        default:
+                            break;
+
+                    }
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    /**
+     * 跳转 100 handler
+     */
+    private void lockloopmsg() {
+        String order_end = SharePrefUtil.getString(mContext, order_endttime, "");
+        String channelName = SharePrefUtil.getString(mContext, order_channelName, "");
+        int isZhuner = SharePrefUtil.getInt(mContext, order_isZhuner, -1);
+
+
+        try {
+            LogUtil.e("lockloopmsg="+(order_end));
+            //负数的话为已经过期{
+            if(TextUtils.isEmpty(order_end)||(CalenderUtil.compaeTimeWithAfter24(order_end) <= 0)) {
+                Message message = new Message();
+                message.what = 100;
+                Bundle bun = new Bundle();
+
+                if ((isZhuner == 1)) {
+                    bun.putString(bunder_iszhuner, "zhuner");
+                } else if (isZhuner == 0) {
+                    bun.putString(bunder_qudao, channelName);
+                } else {
+                    if (TextUtils.isEmpty(channelName)) {
+                        bun.putString(bunder_iszhuner, "zhuner");
+                        bun.putString(bunder_qudao, "");
+                    } else {
+                        bun.putString(bunder_iszhuner, "zz");
+                        bun.putString(bunder_qudao, channelName);
+                    }
+                }
+                message.setData(bun);
+                if (loopHandler != null) loopHandler.sendMessage(message);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+
     public void onResume() {
         super.onResume();
         MobclickAgent.onResume(this);
 
-
+        L.e("MainActivity  onResume========================");
+//        if(loopHandler!=null)loopHandler.sendEmptyMessageDelayed(100,4000);
     }
 
     @Override
@@ -1021,9 +1530,9 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         super.onStop();
 
         //        L.e("rect==================="+top_ll.getGlobalVisibleRect(rect)+"========top_ll.getY()==========="+top_ll.getY()+"========top_ll.getY()111==========="+top_ll.getY()+"======(int)top_ll.getY()>0===="+((int)top_ll.getY()>0)+"=====(int)top_ll.getY()<700====="+((int)top_ll.getY()<700));
-        int top_y=Math.abs((int)top_ll.getY()) ;
-        L.e("top_y==========================="+top_y);
-        if (top_ll.getGlobalVisibleRect(rect)&&top_y>0&&top_y<700) {
+        int top_y = Math.abs((int) top_ll.getY());
+        L.e("top_y===========================" + top_y);
+        if (top_ll.getGlobalVisibleRect(rect) && top_y > 0 && top_y < 700) {
             L.e("onResume==========================");
             hidePanel1();
 
@@ -1032,8 +1541,168 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
 
     @Override
     protected void onPause() {
-
-
         super.onPause();
     }
+
+
+   /* public void showdialog(){
+        builderChangeCity = new CustomDialog.Builder(MainActivity.this, R.layout.dialog_change_city)
+                .setTv(R.id.dialog_change_content, "123")
+                .setTvListener(R.id.dialog_change_btm_cancle, "", new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        builderChangeCity.dismiss();
+                    }
+                })
+                .setTvListener(R.id.dialog_change_btm_sure, "", new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        builderChangeCity.dismiss();
+                    }
+                }).setCanceledOnTouchOutside(false);
+        builderChangeCity.show();
+    }*/
+
+    private void requestNetwork() {
+        ConnectivityManager connectivityManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+
+        NetworkInfo network = connectivityManager.getActiveNetworkInfo();
+        int type = ConnectivityManager.TYPE_DUMMY;
+        if (network != null) {
+            type = network.getType();
+        }
+
+        if (type == ConnectivityManager.TYPE_MOBILE) {
+            LogUtil.v(TAG, " mobile data is connected: " + network.isConnected());
+
+        } else if (type == ConnectivityManager.TYPE_WIFI) {
+            LogUtil.v(TAG, "wifi is connected: " + network.isConnected());
+        }
+
+        connectivityManager.requestNetwork(new NetworkRequest.Builder().build(), new ConnectivityManager.NetworkCallback() {
+            @Override
+            public void onAvailable(Network network) {
+                super.onAvailable(network);
+
+                LogUtil.v("void onAvailable(Network network:");
+                NetworkInfo networkinfo = connectivityManager.getActiveNetworkInfo();
+                int type = ConnectivityManager.TYPE_DUMMY;
+                if (networkinfo != null) {
+                    type = networkinfo.getType();
+                }
+
+                if (type == ConnectivityManager.TYPE_MOBILE) {
+                    LogUtil.v("onAvailable mobile data is connected: " + networkinfo.isConnected());
+
+                } else if (type == ConnectivityManager.TYPE_WIFI) {
+                    LogUtil.v("onAvailable wifi is connected: " + networkinfo.isConnected());
+                }
+
+                if (loopHandler != null) loopHandler.sendEmptyMessageDelayed(130, 10000);
+            }
+
+            @Override
+            public void onLost(Network network) {
+                super.onLost(network);
+                LogUtil.v("onLost(Network network)  ");
+
+                NetworkInfo networkinfo = connectivityManager.getActiveNetworkInfo();
+                int type = ConnectivityManager.TYPE_DUMMY;
+                if (networkinfo != null) {
+                    type = networkinfo.getType();
+                }
+
+                if (type == ConnectivityManager.TYPE_MOBILE) {
+                    LogUtil.v("onLost mobile data is lost: " + networkinfo.isConnected());
+
+                } else if (type == ConnectivityManager.TYPE_WIFI) {
+                    LogUtil.v("onLost wifi is lost: " + networkinfo.isConnected());
+                }
+
+            }
+        });
+
+    }
+
+    /*
+    * 是否连接
+    * */
+    private boolean isNetworkConnected() {
+        ConnectivityManager connectivityManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo networkInfo = connectivityManager.getActiveNetworkInfo();
+        return (networkInfo != null && networkInfo.isConnected());
+    }
+
+    /*
+    * 外网是否可以访问
+    * */
+    public boolean isNetworkOnline() {
+        Runtime runtime = Runtime.getRuntime();
+        try {
+            Process ipProcess = runtime.exec("ping -c 1 47.93.177.251");
+            int exitValue = ipProcess.waitFor();
+
+            return (exitValue == 0);
+        } catch (IOException | InterruptedException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    public int  boot_start_lock(){
+        int lockflag= SharePrefUtil.getInt(mContext,order_islock,0);
+        if(lockflag==1){
+            Log.e("hjs","上次锁机，开机继续锁机");
+            if (loopHandler != null) loopHandler.sendEmptyMessageDelayed(100,1000);
+            return 1;
+        }
+
+        return -1;
+    }
+
+//public void okgerror(){
+        /*String reposStr = "{\n" +
+                                "      \"code\": 1,\n" +
+                                "      \"status\": \"ok\",\n" +
+                                "      \"msg\": \"国外，无订单\",\n" +
+                                "      \"body\": {\n" +
+                                "        \"isLock\": 1,\n" +
+                                "        \"oid\": \"\",\n" +
+                                "        \"uid\": \"\",\n" +
+                                "        \"channelName\": \"\",\n" +
+                                "        \"uname\": \"\",\n" +
+                                "        \"sn\": \"\",\n" +
+                                "        \"f\": \"\",\n" +
+                                "        \"t\": \"\",\n" +
+                                "        \"d\": \"\",\n" +
+                                "        \"at\": 24,\n" +
+                                "        \"isZhuner\": 0\n" +
+                                "      }\n" +
+                                "    }";
+                        try {
+                            SyncOrder synorder = JSON.parseObject(reposStr, SyncOrder.class);
+                            if ((synorder != null)) {
+                                LogUtil.e("synorder != null");
+                                Locklogic(context, synorder);
+                                //SharePrefUtil.saveString();
+                            }
+
+                        }catch (Exception e){
+                            e.printStackTrace();
+                        }*/
+//}
+
+//        OkHttp3Util.doPost("",mapPram, new Callback() {
+//            @Override
+//            public void onFailure(@NonNull Call call, @NonNull IOException e) {
+//
+//            }
+//
+//            @Override
+//            public void onResponse(@NonNull Call call, @NonNull Response response) throws IOException {
+//
+//                String  res = JSON.toJSONString(response.body().toString());
+//                SyncOrder synorder = JSON.parseObject(res, new TypeReference<SyncOrder>() {});
+//            }
+//        });
 }

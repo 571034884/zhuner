@@ -3,23 +3,19 @@ package com.aibabel.readme.activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
-import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.aibabel.aidlaar.StatisticsManager;
+import com.aibabel.baselibrary.utils.DeviceUtils;
 import com.aibabel.readme.R;
 import com.aibabel.readme.adapter.ViewPagerAdapter;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -48,7 +44,7 @@ public class ViewPagerActivity extends BaseActivity {
 
     private int[] churujin_proL = {R.mipmap.churujin1, R.mipmap.churujin2, R.mipmap.churujin3};
     private int[] ditu_proL = {R.mipmap.ditu1, R.mipmap.ditu2, R.mipmap.ditu3, R.mipmap.ditu4, R.mipmap.ditu5, R.mipmap.ditu6, R.mipmap.ditu7, R.mipmap.ditu8};
-    private int[] shezhi_proL = {R.mipmap.shezhi1, R.mipmap.shezhi2, R.mipmap.shezhi3, R.mipmap.shezhi4,R.mipmap.shezhi5,R.mipmap.shezhi6,R.mipmap.shezhi7};
+    private int[] shezhi_proL = {R.mipmap.shezhi1, R.mipmap.shezhi2, R.mipmap.shezhi3, R.mipmap.shezhi4, R.mipmap.shezhi5, R.mipmap.shezhi6, R.mipmap.shezhi7};
     private int[] huilu_proL = {R.mipmap.huilv1};
     private int[] jinqu_proL = {R.mipmap.jinqu1, R.mipmap.jinqu2, R.mipmap.jinqu3, R.mipmap.jinqu4, R.mipmap.jinqu5, R.mipmap.jinqu6, R.mipmap.jinqu7, R.mipmap.jinqu8};
     private int[] lixian_proL = {R.mipmap.lixian1, R.mipmap.lixian2};
@@ -64,8 +60,8 @@ public class ViewPagerActivity extends BaseActivity {
 //    private int[] yuyinfanyi_proL = {R.mipmap.yuyinfanyi1, R.mipmap.yuyinfanyi4, R.mipmap.yuyinfanyi5, R.mipmap.yuyinfanyi6, R.mipmap.yuyinfanyi3};
     private int[] yuyinfanyi_proL = {R.mipmap.yuyinfanyi1, R.mipmap.yuyinfanyi4, R.mipmap.yuyinfanyi7, R.mipmap.yuyinfanyi6, R.mipmap.yuyinfanyi3};
     private int[] yuyinmishu_proL = {R.mipmap.yuyinmishu1};
-    private int[] wanle_proL = {R.mipmap.play1,R.mipmap.play2,R.mipmap.play3,R.mipmap.play4,R.mipmap.play5,R.mipmap.play6,R.mipmap.play7};
-    private int[] meishi_proL = {R.mipmap.meishi1,R.mipmap.meishi2,R.mipmap.meishi3,R.mipmap.meishi4,R.mipmap.meishi5};
+    private int[] wanle_proL = {R.mipmap.play1, R.mipmap.play2, R.mipmap.play3, R.mipmap.play4, R.mipmap.play5, R.mipmap.play6, R.mipmap.play7};
+    private int[] meishi_proL = {R.mipmap.meishi1, R.mipmap.meishi2, R.mipmap.meishi3, R.mipmap.meishi4, R.mipmap.meishi5};
 
     private List<View> list = new ArrayList<>();
     private List<TextView> dots = new ArrayList<>();
@@ -115,9 +111,14 @@ public class ViewPagerActivity extends BaseActivity {
                 break;
             case "PH":
                 paizhao = new int[]{R.mipmap.p1, R.mipmap.photo2};
-                yuyinfanyi = new int[]{R.mipmap.yuyinfanyi_fly1, R.mipmap.yuyinfanyi_fly2,  R.mipmap.yuyinfanyi6,R.mipmap.yuyinfanyi3};
+                yuyinfanyi = new int[]{R.mipmap.yuyinfanyi_fly1, R.mipmap.yuyinfanyi_fly2,  R.mipmap.yuyinfanyi6, R.mipmap.yuyinfanyi3};
                 yuyinmishu = new int[]{R.mipmap.yuyinmishu_fly1};
-                shezhi = new int[]{R.mipmap.shezhi1, R.mipmap.shezhi_fly2, R.mipmap.shezhi3, R.mipmap.shezhi4};
+                if (DeviceUtils.getSystem()== DeviceUtils.System.FLY_Mobile){
+                    shezhi = new int[]{R.mipmap.shezhi1, R.mipmap.shezhi_fly2, R.mipmap.shezhi_fly_mobile4};
+                }else{
+                    shezhi = new int[]{R.mipmap.shezhi1, R.mipmap.shezhi_fly2, R.mipmap.shezhi3, R.mipmap.shezhi4};
+                }
+
                 break;
         }
         if (TextUtils.equals(proVersion, "S")) {

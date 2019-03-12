@@ -3,6 +3,7 @@ package com.aibabel.menu.util;
 import android.content.Context;
 import android.database.Cursor;
 import android.os.Build;
+import android.text.TextUtils;
 
 import com.aibabel.baselibrary.utils.ProviderUtils;
 
@@ -12,6 +13,37 @@ import java.util.Map;
 import static com.aibabel.baselibrary.http.OkGoUtil.appVersionName;
 
 public class LocationUtils {
+
+
+    /**
+     * is in china
+     int 0 不在中国 1 在中国
+     */
+    public static int locationWhere(Context context){
+        String mLocation = "";
+        try {
+            Cursor cursor = context.getContentResolver().query(ProviderUtils.CONTENT_URI_LOCATION, null, null, null, null);
+            if (cursor != null && cursor.moveToFirst()) {
+                mLocation = cursor.getString(cursor.getColumnIndex("locationWhere"));
+            }
+            cursor.close();
+        } catch (Exception e) {
+            L.e("getLocation--------" + e.getMessage());
+        }
+        if(!TextUtils.isEmpty(mLocation)){
+            try{
+                int isinchain = Integer.valueOf(mLocation);
+                L.e("isinchain--------" + isinchain);
+                return  isinchain;
+            }catch (Exception e){
+                e.printStackTrace();
+            }
+        }else{
+            return  -1;
+        }
+
+        return -1;
+    }
 
     /**
      * 获取坐标

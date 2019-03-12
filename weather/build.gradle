@@ -10,6 +10,14 @@ def buildTime() {
 }
 
 android {
+    signingConfigs {
+        config {
+            keyAlias 'Weather'
+            keyPassword 'aibabel*123'
+            storeFile file('Weather.jks')
+            storePassword 'aibabel*123'
+        }
+    }
     compileSdkVersion 28
     defaultConfig {
         applicationId "com.aibabel.weather"

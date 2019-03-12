@@ -5,7 +5,6 @@ import android.content.pm.ApplicationInfo;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Build;
-import android.text.TextUtils;
 import android.util.Log;
 
 import java.lang.reflect.Method;
@@ -26,10 +25,23 @@ public class CommonUtils {
 
 
 
+//    /**
+//     * 获取本机SN 设备识别码
+//     * @return
+//     */
+//    public static String getSN() {
+//        String serialNum = android.os.Build.SERIAL;
+//        if(TextUtils.isEmpty(serialNum)){
+//            return "0000000000000000";
+//        }
+//        return serialNum;
+//    }
     /**
      * 获取本机SN 设备识别码
+     *
      * @return
      */
+
     public static String getSN() {
         String sn="0000000000000000";
         try {
@@ -40,7 +52,6 @@ public class CommonUtils {
             if (sn.indexOf(" ") != -1) {
                 sn = sn.substring(0, sn.indexOf(" "));
             }
-            Log.e("CommonUtils","sn="+sn);
         } catch (Exception e) {
             e.printStackTrace();
             Log.e("CommonUtils",e.getMessage());

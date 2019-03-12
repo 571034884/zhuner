@@ -66,7 +66,6 @@ public class LocationDao {
         Cursor cursor = db.rawQuery("select * from " + TABLE_NAME,null);
         if (!cursor.moveToFirst()) {
             cursor.close();
-
         }
 
         String strVal = cursor.getString(0);

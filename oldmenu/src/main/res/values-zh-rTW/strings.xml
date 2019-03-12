@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="app_name">menu</string>
     <string name="yuyinfanyi">語音翻譯</string>
     <string name="paizhaofanyi">拍照翻譯</string>
     <string name="wutishibie">物體識別</string>
@@ -11,6 +12,7 @@
     <string name="baiduditu">百度地圖　</string>
     <string name="gugeditu">Google地圖</string>
     <string name="gugesousuo">Google搜尋</string>
+    <string name="shiyong">使用说明书</string>
 
     <string name="yyinmishu">語音秘書</string>
     <string name="huilvhuansuan">匯率換算</string>
