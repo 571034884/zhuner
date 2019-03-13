@@ -45,7 +45,7 @@ public class OkGoUtil {
         for (Map.Entry<String, String> entry : param.entrySet()) {
             getRequest.params(entry.getKey(), entry.getValue());
         }
-
+        Log.e("LK---001","url = "+Constans.HOST_XW + Constans.METHOD_GROUP_XW + method);
         getRequest.params("sn", CommonUtils.getSN());
         getRequest.params("sl", CommonUtils.getLocal(context));
         getRequest.params("no", CommonUtils.getRandom());

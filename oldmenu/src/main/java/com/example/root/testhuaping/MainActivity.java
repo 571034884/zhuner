@@ -668,7 +668,7 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
 
         String sn = CommonUtils.getSN();
 
-        Log.e("LK---001","imei = "+imei+"-----sn = "+sn+"------iccid = "+iccid);
+        Log.e("LK---001","url = "+Constans.MENU_LK+"-----imei = "+imei+"-----sn = "+sn+"------iccid = "+iccid);
 
         if (TextUtils.isEmpty(imei) || TextUtils.isEmpty(sn) || TextUtils.isEmpty(iccid)){
             ToastUtil.showShort(this,"无法获取到重要标识，请联系客服");
