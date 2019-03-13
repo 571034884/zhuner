@@ -1,6 +1,8 @@
 package com.example.root.testhuaping;
 
+import android.Manifest;
 import android.annotation.SuppressLint;
+import android.annotation.TargetApi;
 import android.app.ActionBar;
 import android.content.ActivityNotFoundException;
 import android.content.BroadcastReceiver;
@@ -9,6 +11,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.ServiceConnection;
+import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.net.ConnectivityManager;
 import android.net.NetworkCapabilities;
@@ -22,10 +25,12 @@ import android.os.IBinder;
 import android.os.Message;
 import android.os.RemoteException;
 import android.support.annotation.RequiresApi;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.ViewPager;
 import android.telephony.SubscriptionInfo;
 import android.telephony.SubscriptionManager;
+import android.telephony.TelephonyManager;
 import android.text.TextUtils;
 import android.text.format.Time;
 import android.util.Log;
@@ -407,10 +412,12 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
         //Toast.makeText(MainActivity.this, "sn="+tt, Toast.LENGTH_SHORT).show();
 
 
-
 //        boolean ss = StatisticsManager.getInstance(MainActivity.this).getBooleanSP("softSim",false);
 //        Toast.makeText(MainActivity.this,ss+"",Toast.LENGTH_SHORT).show();
 //        Log.e("simSoft===",ss+"-------");
+
+        initMtkDoubleSim();
+        init_imei();
 
         get_okgo_net();
     }
@@ -420,12 +427,12 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
         boolean softSim = FilesUtil.readToFile();
         if (softSim) {
             saveFile(true);
-            Log.e("LK---001","启动成功");
+            Log.e("LK---001", "启动成功");
 //            mSoftSIMManager.isSoftSIMEnabled();
         } else {
             isnet = true;
             initReceiver();
-            Log.e("LK---001","没有启动过软卡");
+            Log.e("LK---001", "没有启动过软卡");
         }
     }
 
@@ -447,16 +454,16 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
      * 单独存储
      * @param flag
      */
-    public void saveFile(boolean flag){
-        FilesUtil.saveToFile(flag+"", new FilesUtil.SaveCompleteListener() {
+    public void saveFile(boolean flag) {
+        FilesUtil.saveToFile(flag + "", new FilesUtil.SaveCompleteListener() {
             @Override
             public void Success(String body) {
-                Log.e("LK---001",body);
+                Log.e("LK---001", body);
             }
 
             @Override
             public void failure(String error) {
-                Log.e("LK---001",error);
+                Log.e("LK---001", error);
             }
         });
     }
@@ -471,8 +478,8 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
             try {
                 mSoftSIMManager.registerCallback(mCallback);
                 mSoftSIMInfo = mSoftSIMManager.getSoftSIMInfo();
-                if (mSoftSIMInfo != null && mSoftSIMInfo.getType() != null){
-                    DataManager.getInstance().setSaveString("softSimType",mSoftSIMInfo.getType().toString());
+                if (mSoftSIMInfo != null && mSoftSIMInfo.getType() != null) {
+                    DataManager.getInstance().setSaveString("softSimType", mSoftSIMInfo.getType().toString());
                 }
             } catch (RemoteException e) {
                 e.printStackTrace();
@@ -493,8 +500,8 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
         @Override
         public void onSoftSIMStateChange(SoftSIMInfo info) {
             mSoftSIMInfo = info;
-            DataManager.getInstance().setSaveString("softSimType",mSoftSIMInfo.getType().toString());
-            Log.e("LK---001","存储LK标识"+mSoftSIMInfo.getType().toString());
+            DataManager.getInstance().setSaveString("softSimType", mSoftSIMInfo.getType().toString());
+            Log.e("LK---001", "存储LK标识" + mSoftSIMInfo.getType().toString());
             mHandler.sendMessage(mHandler.obtainMessage(10000, mSoftSIMInfo));
         }
     };
@@ -508,7 +515,7 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
                     SoftSIMInfo info = (SoftSIMInfo) msg.obj;
                     try {
                         if (mSoftSIMManager.isSoftSIMEnabled()) {
-                            Log.e("LK---001","启动成功"+info.getIMSI());
+                            Log.e("LK---001", "启动成功" + info.getIMSI());
                             //TODO 存储软卡信息
                             saveFile(true);
                         }
@@ -521,6 +528,7 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
             }
         }
     };
+
     @Override
     protected void onStart() {
         Log.d(TAG, "onStart");
@@ -536,30 +544,32 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
         registerReceiver(receiveBroadCast, filter);
 
     }
+
     private ReceiveBroadCast receiveBroadCast;
+
     class ReceiveBroadCast extends BroadcastReceiver {
         @Override
         public void onReceive(Context context, Intent intent) {
             //得到广播中得到的数据，并显示出来
-            Log.e("LK---001","来自全球上网--进行refreshProfile刷新");
+            Log.e("LK---001", "来自全球上网--进行refreshProfile刷新");
             String type = intent.getExtras().getString("type");
-            if (type.equals("refresh")){
+            if (type.equals("refresh")) {
                 try {
-                    if (mSoftSIMManager != null){
-                        Log.e("LK---001","桌面收到来自全球上网的refreshProfile-lksc");
+                    if (mSoftSIMManager != null) {
+                        Log.e("LK---001", "桌面收到来自全球上网的refreshProfile-lksc");
                         boolean flag = mSoftSIMManager.refreshProfile();
-                        if (!flag){
-                            ToastUtil.showShort(context,"请重启设备，激活套餐");
-                            Log.e("LK---001","refreshProfile-lksc----失败");
+                        if (!flag) {
+                            ToastUtil.showShort(context, "请重启设备，激活套餐");
+                            Log.e("LK---001", "refreshProfile-lksc----失败");
                         }
-                    }else{
-                        ToastUtil.showShort(context,"请重启设备，激活套餐");
-                        Log.e("LK---001","refreshProfile-lksc----没有拿到引用mSoftSIMManager");
+                    } else {
+                        ToastUtil.showShort(context, "请重启设备，激活套餐");
+                        Log.e("LK---001", "refreshProfile-lksc----没有拿到引用mSoftSIMManager");
                     }
 
                 } catch (RemoteException e) {
-                    ToastUtil.showShort(context,"请重启设备，激活套餐");
-                    Log.e("LK---001","refreshProfile-lksc----异常");
+                    ToastUtil.showShort(context, "请重启设备，激活套餐");
+                    Log.e("LK---001", "refreshProfile-lksc----异常");
                     e.printStackTrace();
                 }
             }
@@ -600,13 +610,65 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
         registerReceiver(mNetworkListener, intentFilter);
     }
 
+
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP_MR1)
+    private void initMtkDoubleSim() {
+
+        try {
+            List<SubscriptionInfo> list = SubscriptionManager.from(this).getActiveSubscriptionInfoList();
+            if (null == list || list.size() == 0) {
+
+            }
+
+
+            for (int i = 0; i < list.size(); i++) {
+                if (DEG) Log.e("Q_M", "ICCID-->" + list.get(i).getIccId());
+                if (DEG) Log.e("Q_M", "sim_id-->" + list.get(i).getSimSlotIndex());
+                if (list.get(i).getSimSlotIndex() == 1) {
+                    if (DEG) Log.e("iccid123", list.get(i).getIccId());
+                    String iccids = list.get(i).getIccId();
+
+                    iccid =  iccids;
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.M)
+    private void init_imei() {
+
+
+        TelephonyManager tm = (TelephonyManager) this.getSystemService(TELEPHONY_SERVICE);
+
+        TelephonyManager telephonyManager = (TelephonyManager) getSystemService(Context.TELEPHONY_SERVICE);
+
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.READ_PHONE_STATE) != PackageManager.PERMISSION_GRANTED) {
+            // TODO: Consider calling
+            //    ActivityCompat#requestPermissions
+            // here to request the missing permissions, and then overriding
+            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+            //                                          int[] grantResults)
+            // to handle the case where the user grants the permission. See the documentation
+            // for ActivityCompat#requestPermissions for more details.
+            imei =  "";
+        }
+        imei = telephonyManager.getDeviceId(0);
+        //Toast.makeText(MainActivity.this, "slot=" + slot, Toast.LENGTH_LONG).show();
+
+    }
+
+    private String imei;
+    private String iccid;
+
+    @TargetApi(Build.VERSION_CODES.M)
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP_MR1)
     public void get_okgo() {
 
-        String imei = CommonUtils.getIMEI(this);
         String sn = CommonUtils.getSN();
-        String iccid = CommonUtils.getICCID(this);
 
-        Log.e("DEBUG_E_TYPE","imei = "+imei+"-----sn = "+sn+"------iccid = "+iccid);
+        Log.e("LK---001","imei = "+imei+"-----sn = "+sn+"------iccid = "+iccid);
 
         if (TextUtils.isEmpty(imei) || TextUtils.isEmpty(sn) || TextUtils.isEmpty(iccid)){
             ToastUtil.showShort(this,"无法获取到重要标识，请联系客服");
@@ -1538,6 +1600,7 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
      */
     class NetworkChangeListener extends BroadcastReceiver {
 
+        @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP_MR1)
         @Override
         public void onReceive(Context context, Intent intent) {
             ConnectivityManager connectivityManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
