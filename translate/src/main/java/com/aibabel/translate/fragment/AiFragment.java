@@ -1,5 +1,6 @@
 package com.aibabel.translate.fragment;
 
+import android.app.Activity;
 import android.content.Context;
 import android.graphics.drawable.AnimationDrawable;
 import android.media.AudioFormat;
@@ -45,6 +46,7 @@ import com.aibabel.translate.utils.MediaPlayerUtil;
 import com.aibabel.translate.utils.SharePrefUtil;
 import com.aibabel.translate.utils.StringUtils;
 import com.aibabel.translate.utils.ToastUtil;
+import com.aibabel.translate.view.CommonDialog;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.google.protobuf.ByteString;
 import com.google.protobuf.InvalidProtocolBufferException;
@@ -471,25 +473,42 @@ public class AiFragment extends BaseFragment implements BaseQuickAdapter.OnItemL
      * 删除
      */
     private void delete() {
-        try {
-            if (checkList.size() > 0) {
-                for (int i = 0, j = 0; i < checkList.size(); i++, j++) {
-                    int index = checkList.get(i);
-                    AiSqlUtils.deleteById(list.remove(index - j).getId());
-                }
-                mAdapter.setNewData(list);
-                if (list.size() == 0)
-                    mAdapter.addHeaderView(headerView);
-                mAdapter.setCheckBoxVisibility(false);
-                checkList.clear();
-                isShowCheck = false;
-                cancel();
-            } else {
-                ToastUtil.showShort("您还没有选中任何记录！");
+        final CommonDialog dialog = new CommonDialog(activity);
+        dialog.setMessage(activity.getString(R.string.delete_record));
+        dialog.setOnBtnClickListener(new CommonDialog.OnBtnClickListener() {
+            @Override
+            public void onCancelClick() {
+                if (dialog.isShowing())
+                    dialog.dismiss();
             }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+
+            @Override
+            public void onConfirmClick() {
+                try {
+                    if (checkList.size() > 0) {
+                        for (int i = 0, j = 0; i < checkList.size(); i++, j++) {
+                            int index = checkList.get(i);
+                            AiSqlUtils.deleteById(list.remove(index - j).getId());
+                        }
+                        mAdapter.setNewData(list);
+                        if (list.size() == 0)
+                            mAdapter.addHeaderView(headerView);
+                        mAdapter.setCheckBoxVisibility(false);
+                        checkList.clear();
+                        isShowCheck = false;
+                        cancel();
+                        if (dialog.isShowing())
+                            dialog.dismiss();
+                    } else {
+                        ToastUtil.showShort("您还没有选中任何记录！");
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+        dialog.show();
+
     }
 
     @Override
@@ -825,6 +844,9 @@ public class AiFragment extends BaseFragment implements BaseQuickAdapter.OnItemL
 
 
     private void updateMsg() {
+        rvChat.setFocusable(true);
+        rvChat.requestFocus();
+
         MessageBean bean = new MessageBean();
         String mt = tvMt.getText().toString();
         String asr = tvAsr.getText().toString();
@@ -836,6 +858,7 @@ public class AiFragment extends BaseFragment implements BaseQuickAdapter.OnItemL
         L.e("=======================asr：" + asr + "=========================");
         L.e("=======================Mt：" + mt + "=========================");
         if (TextUtils.isEmpty(asr) || TextUtils.isEmpty(mt) || TextUtils.equals(asr, " ") || TextUtils.equals(mt, " ")) {
+            rvChat.scrollToPosition(mAdapter.getItemCount() - 1);
             return;
         }
 
@@ -881,7 +904,7 @@ public class AiFragment extends BaseFragment implements BaseQuickAdapter.OnItemL
     private void cancelTimer() {
         if (null != timer)
             timer.cancel();
-        if(null!=webSocket)
+        if (null != webSocket)
             webSocket.close();
 
     }

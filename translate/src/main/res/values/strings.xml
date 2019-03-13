@@ -36,6 +36,7 @@
     <string name="select_null">全不选</string>
     <string name="delete">删除</string>
     <string name="cancle">取消</string>
+    <string name="delete_record">是否确定永久删除？</string>
     <string name="error_response">服务器开小差了，请重试！</string>
     <string name="timeout_read">网络超时，请重试！</string>
     <string name="timeout_connect">连接超时！</string>
