@@ -13,6 +13,7 @@ import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
 
+import com.aibabel.baselibrary.utils.ToastUtil;
 import com.aibabel.locationservice.R;
 import com.aibabel.locationservice.activity.JiGuangActivity;
 import com.aibabel.locationservice.bean.DetailBean;
@@ -21,6 +22,7 @@ import com.aibabel.locationservice.bean.PushMessageBean;
 import com.aibabel.locationservice.utils.CommonUtils;
 import com.aibabel.locationservice.utils.Constants;
 import com.aibabel.locationservice.utils.FastJsonUtil;
+import com.alibaba.fastjson.JSON;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -56,6 +58,7 @@ public class MyReceiver extends BroadcastReceiver {
 
         } else if (JPushInterface.ACTION_MESSAGE_RECEIVED.equals(intent.getAction())) {
             Log.d(TAG, "[MyReceiver] 接收到推送下来的自定义消息: " + bundle.getString(JPushInterface.EXTRA_MESSAGE));
+
             Constants.CONTEXTS_JG = bundle.getString(JPushInterface.EXTRA_MESSAGE);
             Constants.TITLE_JG = bundle.getString(JPushInterface.EXTRA_TITLE);
             Constants.MESSAGE_JG = bundle.getString(JPushInterface.EXTRA_ALERT);
@@ -69,6 +72,7 @@ public class MyReceiver extends BroadcastReceiver {
             Log.d(TAG, "[TITLE_JG]" + Constants.TITLE_JG + " /n[MESSAGE_JG]" + Constants.MESSAGE_JG);
             receivingNotification(context, bundle);
 
+
         } else if (JPushInterface.ACTION_NOTIFICATION_RECEIVED.equals(intent.getAction())) {
             /**
              * 如果通知的内容为空，则在通知栏上不会展示通知。
@@ -77,9 +81,25 @@ public class MyReceiver extends BroadcastReceiver {
             Log.d(TAG, "[MyReceiver] 接收到推送下来的自定义消息: " + bundle.getString(JPushInterface.EXTRA_MESSAGE));
             int notifactionId = bundle.getInt(JPushInterface.EXTRA_NOTIFICATION_ID);
             Log.d(TAG, "[MyReceiver] 接收到推送下来的通知的ID: " + notifactionId);
-//            string = bundle.getString(JPushInterface.EXTRA_ALERT);
-//            Log.e("消息", string);
             setNotification(context, Constants.TITLE_JG, Constants.MESSAGE_JG);
+
+            String extra_ = bundle.getString(JPushInterface.EXTRA_EXTRA);
+            if (!TextUtils.isEmpty(extra_)) {
+                try {
+                    JSONObject json = new JSONObject(extra_);
+                    String relet = (String) json.get("relet");
+
+                    JSONObject jsonRelet = new JSONObject(relet);
+                    int code = (Integer) jsonRelet.get("code");
+                    if (code == 1) {
+                        Intent stopIntent = new Intent("com.android.qrcode.unlock.ok");
+                        context.sendBroadcast(stopIntent);
+//                        ToastUtil.showShort(context,"发送了广播！");
+                    }
+                } catch (JSONException e) {
+                    Log.e(TAG, "Get message extra JSON error!");
+                }
+            }
 
 
         } else if (JPushInterface.ACTION_NOTIFICATION_OPENED.equals(intent.getAction())) {
@@ -97,15 +117,6 @@ public class MyReceiver extends BroadcastReceiver {
                     Constants.pushBeanList.remove(Constants.pushBeanList.get(i));
                 }
             }
-
-
-//            for (PushBean push:Constants.pushBeanList){
-//                if(TextUtils.equals(msg_id,push.getMesId())){
-//                    openNotification(context, push.getContent());
-//                    Constants.pushBeanList.remove(push);
-//                }
-//
-//            }
 
 
             /**
