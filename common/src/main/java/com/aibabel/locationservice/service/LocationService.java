@@ -721,8 +721,8 @@ public class LocationService extends Service implements ScreenListener, CardBroa
 
             }
         };
-        timer_date.schedule(task, 0, 60 * 1000);
-//        timer_date.schedule(task, 0, 60 * 1000 * 5);
+//        timer_date.schedule(task, 0, 60 * 1000);
+        timer_date.schedule(task, 0, 60 * 1000 * 5);
 
     }
 
@@ -734,8 +734,6 @@ public class LocationService extends Service implements ScreenListener, CardBroa
      * @param sectionFlow
      */
     private void send_sectionFlow(String iccid, long sectionFlow, int cardType) {
-
-
 
         if (sectionFlow <= 0) {
             Log.e(TAG, "=============当前未使用流量不上传统计处理==============");

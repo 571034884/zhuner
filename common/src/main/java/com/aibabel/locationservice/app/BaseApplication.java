@@ -16,7 +16,7 @@ import cn.jpush.android.api.JPushInterface;
 import okhttp3.OkHttpClient;
 
 
-public class BaseApplication extends Application {
+public class BaseApplication extends com.aibabel.baselibrary.base.BaseApplication {
 
     public static Application CONTEXT;
 
@@ -31,7 +31,27 @@ public class BaseApplication extends Application {
 
     }
 
-   private void configOKGo(){
+    @Override
+    public String getAppVersionName() {
+        return null;
+    }
+
+    @Override
+    public String getAppPackageName() {
+        return null;
+    }
+
+    @Override
+    public void setServerUrlAndInterfaceGroup() {
+
+    }
+
+    @Override
+    public String setUmengKey() {
+        return null;
+    }
+
+    private void configOKGo(){
         OkHttpClient.Builder builder = new OkHttpClient.Builder();
         //全局的读取超时时间
         builder.readTimeout(30*1000, TimeUnit.MILLISECONDS);
