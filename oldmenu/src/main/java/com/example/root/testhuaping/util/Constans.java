@@ -5,12 +5,18 @@ package com.example.root.testhuaping.util;
  */
 
 public class Constans {
-//    private final String path = "http://39.107.238.111:7001/v1/netflow/getCardPath?iccid=89860012018051816514&sn=1112121212121222&imei=12345678";
 
-    public static final String HOST_DEBUG = "http://39.107.238.111:7001";//测试服务器
-//    public static final String HOST_RELEASE = "";//正式服务器
+    public static String HOST_EN= "http://abroad.api.joner.aibabel.cn:7001";
+    public static String HOST_ZH= "http://api.joner.aibabel.cn:7001";
+
+//    public static final String HOST_DEBUG = "http://39.107.238.111:7001";//测试服务器
+
+    public static String HOST = "http://abroad.api.joner.aibabel.cn:7001";//正式服务器
 
 
-    public static final String MENU_LK = HOST_DEBUG + "/v1/netflow/getCardPath";
+    public static final String MENU_LK = HOST + "/v1/netflow/getCardPath";
+
+
+
 
 }

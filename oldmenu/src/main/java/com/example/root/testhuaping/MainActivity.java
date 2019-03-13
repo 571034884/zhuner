@@ -78,6 +78,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
+import java.util.TimeZone;
 import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
 
@@ -416,7 +417,9 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
 //        Toast.makeText(MainActivity.this,ss+"",Toast.LENGTH_SHORT).show();
 //        Log.e("simSoft===",ss+"-------");
 
+        //获取iccid
         initMtkDoubleSim();
+        //获取imei
         init_imei();
 
         get_okgo_net();
@@ -427,6 +430,7 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
         boolean softSim = FilesUtil.readToFile();
         if (softSim) {
             saveFile(true);
+            initService();
             Log.e("LK---001", "启动成功");
 //            mSoftSIMManager.isSoftSIMEnabled();
         } else {
@@ -1607,11 +1611,29 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
             NetworkInfo networkInfo = connectivityManager.getActiveNetworkInfo();
             if (networkInfo != null && networkInfo.isAvailable()) {
                 Log.e("LK---001","当前网络可用请求接口get_okgo");
+                //获取国内or国外 服务器
+                initService();
                 get_okgo();
+
             } else {
                 Log.e("LK---001","当前网络不可用");
             }
         }
+    }
+
+    /**
+     * 判断时区 进行服务器筛选
+     */
+    private void initService() {
+        String timerID = TimeZone.getDefault().getID();
+        if (timerID.equals("Asia/Shanghai")){
+            Constans.HOST = Constans.HOST_ZH;
+        }else{
+            Constans.HOST = Constans.HOST_EN;
+        }
+
+        Log.e("LK---001","时区："+timerID+"----选择服务器:"+Constans.HOST);
+
     }
 
 }
