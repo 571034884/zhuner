@@ -218,7 +218,7 @@ public class SearchActivity extends BaseActivity{
         }
         OkGo.cancelAll(OkGo.getInstance().getOkHttpClient());
         Map param = new HashMap();
-        param.put("query",loca);
+        param.put("query",loca.trim());
         param.put("region",city);
         param.put("city_limit","true");
         param.put("coord_type",coorType+"");
