@@ -4,6 +4,8 @@ import android.Manifest;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.pm.PackageManager;
+import android.database.Cursor;
+import android.net.Uri;
 import android.os.Build;
 import android.support.annotation.RequiresApi;
 import android.support.v4.app.ActivityCompat;
@@ -11,6 +13,8 @@ import android.telephony.SubscriptionInfo;
 import android.telephony.SubscriptionManager;
 import android.telephony.TelephonyManager;
 import android.util.Log;
+
+import com.aibabel.baselibrary.utils.ToastUtil;
 
 import java.lang.reflect.Method;
 import java.util.List;
@@ -105,8 +109,33 @@ public class CommonUtils {
         return "";
     }
 
-
-
+    private static final Uri CITY_URI = Uri.parse("content://com.aibabel.locationservice.provider.AibabelProvider/aibabel_location");
+    /**
+     * 获取当前国内外
+     *  1国内  0国外
+     * @param context
+     * @return
+     */
+    public static String getLocationWhere(Context context) {
+        Cursor cursor = context.getContentResolver().query(CITY_URI, null, null, null, null);
+        String where = "";
+        try {
+            if (cursor != null && cursor.getCount() > 0) {
+                cursor.moveToFirst();
+                int whereIndex = cursor.getColumnIndex("locationWhere");
+                where = cursor.getString(whereIndex);
+            } else {
+                Log.e("LK---001", "：没有获取到国内外数据");
+            }
+        }catch (Exception e){
+//            ToastUtil.showShort(context,"没有获取到国内外数据");
+            Log.e("LK---001", e.getMessage().toString()+"");
+        } finally {
+            if (null != cursor)
+                cursor.close();
+        }
+        return where;
+    }
 
 
 

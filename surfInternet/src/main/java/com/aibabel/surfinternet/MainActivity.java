@@ -117,11 +117,11 @@ public class MainActivity extends BaseActivity implements BaseCallback {
                 JSONArray jsonArray_xw = new JSONArray(jsonObject.getString(key_xw));
                 Constans.HOST_XW = jsonArray_xw.getJSONObject(0).get("domain").toString();
 //                Constans.HOST_XW = "http://39.107.238.111:7001";
-                Log.e("HOST_XW", Constans.HOST_XW + "---");
+                Log.e("LK---001", Constans.HOST_XW + "---");
                 JSONArray jsonArray_xs = new JSONArray(jsonObject.getString(key_xs));
                 Constans.HOST_XS = jsonArray_xs.getJSONObject(0).get("domain").toString();
 //                Constans.HOST_XS = "https://wx.aibabel.com:3002";
-                Log.e("HOST_XS", Constans.HOST_XS + "---");
+                Log.e("LK---001", Constans.HOST_XS + "---");
             }
         } catch (Exception e) {
             e.printStackTrace();
