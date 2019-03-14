@@ -152,7 +152,7 @@ public class AiFragment extends BaseFragment implements BaseQuickAdapter.OnItemL
     private CheckTimerTask task;
     private WebSocketClient webSocket;
     //    private WebSocketClient webSocket;
-
+    private String TAG = AiFragment.class.getSimpleName();
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -623,7 +623,7 @@ public class AiFragment extends BaseFragment implements BaseQuickAdapter.OnItemL
 
     private void connect() {
         webSocket = null;
-        webSocket = new WebSocketClient(URI.create("ws://52.192.220.183:8082/cnSpeechV1/audio/dls")) {
+        webSocket = new WebSocketClient(URI.create("ws://52.192.220.183:8082/cnSpeechV1test/audio/dls")) {
             @Override
             public void onOpen(ServerHandshake serverHandshake) {
                 Log.e(">>>>>>>>>>>>>>", "connect success");
@@ -679,6 +679,15 @@ public class AiFragment extends BaseFragment implements BaseQuickAdapter.OnItemL
                             AsrAndMtBean mtBean = FastJsonUtil.changeJsonToBean(result.getMsg(), AsrAndMtBean.class);
                             //String类型
                             msg.obj = mtBean.getInfo();
+                            break;
+                        case Constant.RESPONSE_TTS://合成
+                            msg.what = Constant.RESPONSE_TTS;
+                            AsrAndMtBean ttsBean = FastJsonUtil.changeJsonToBean(result.getMsg(), AsrAndMtBean.class);
+                            //String类型
+                            msg.obj = ttsBean.getInfo();
+                            Log.e(TAG,ttsBean.getInfo()+"----");
+                            result.getBuffer();
+                            Log.e(TAG,  String.valueOf(result.getBuffer()) +"----");
                             break;
                         case Constant.RESPONSE_NULL://没有识别到任何音频
                             msg.what = Constant.RESPONSE_NULL;
@@ -904,8 +913,8 @@ public class AiFragment extends BaseFragment implements BaseQuickAdapter.OnItemL
     private void cancelTimer() {
         if (null != timer)
             timer.cancel();
-        if (null != webSocket)
-            webSocket.close();
+//        if (null != webSocket)
+//            webSocket.close();
 
     }
 
