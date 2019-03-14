@@ -292,7 +292,7 @@ public class AiFragment extends BaseFragment implements BaseQuickAdapter.OnItemL
      * 发送语音
      */
     private void sendAudio() {
-        showerrorUI(false);
+        showErrorUI(false);
         if (!CommonUtils.isAvailable()) {
             ToastUtil.showShort("当前网络状况不佳,请切换到语音翻译!");
             return;
@@ -774,7 +774,7 @@ public class AiFragment extends BaseFragment implements BaseQuickAdapter.OnItemL
                     break;
                 case Constant.TIMEOUT_READ:
                     ToastUtil.showShort("网络请求超时了，请重新尝试！");
-                    showerrorUI(true);
+                    showErrorUI(true);
                     stopAnimMt();
                     break;
                 default:
@@ -919,7 +919,7 @@ public class AiFragment extends BaseFragment implements BaseQuickAdapter.OnItemL
     }
 
 
-    private void showerrorUI(boolean isShow) {
+    private void showErrorUI(boolean isShow) {
         if (isShow) {
             llAudio.setVisibility(View.GONE);
             llFailed.setVisibility(View.VISIBLE);
@@ -941,14 +941,11 @@ public class AiFragment extends BaseFragment implements BaseQuickAdapter.OnItemL
         L.e("cmd:", String.valueOf(code));
         switch (code) {
             case 101://识别失败
-//                TTSUtil.getInstance().notUnderstand(context, 1, Constant.isSound);
-//                ToastUtil.showShort(context.getResources().getString(R.string.error_response));
-                showerrorUI(true);
+                showErrorUI(true);
                 break;
             case 102://翻译失败
                 stopAnimMt();
-//                ToastUtil.showShort(context.getResources().getString(R.string.error_response));
-                showerrorUI(true);
+                showErrorUI(true);
                 break;
             case 103://合成失败
 
