@@ -47,6 +47,7 @@ import com.aibabel.translate.utils.SharePrefUtil;
 import com.aibabel.translate.utils.StringUtils;
 import com.aibabel.translate.utils.ToastUtil;
 import com.aibabel.translate.view.CommonDialog;
+import com.aibabel.translate.view.MyAlertDialog;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.google.protobuf.ByteString;
 import com.google.protobuf.InvalidProtocolBufferException;
@@ -165,6 +166,10 @@ public class AiFragment extends BaseFragment implements BaseQuickAdapter.OnItemL
     @Override
     public void initView() {
         context = getActivity();
+
+        //TODO 测试弹出 上线请注释
+        SharePrefUtil.saveBoolean(context,"guideView",false);
+
         LinearLayoutManager mLinearLayout = new LinearLayoutManager(context);
         rvChat.setLayoutManager(mLinearLayout);
         page = 1;
@@ -181,6 +186,68 @@ public class AiFragment extends BaseFragment implements BaseQuickAdapter.OnItemL
         animationAsr = (AnimationDrawable) ivAudioAnim.getDrawable();
         animationMt = (AnimationDrawable) ivProgressAnim.getDrawable();
         animationCountDown = (AnimationDrawable) ivCountAnim.getDrawable();
+
+        /**
+         * 1.获取引导标识
+         * 2.判断引导标识进行是否显示Dialog
+         */
+        isShowDialogOne();
+
+
+    }
+
+    private void isShowDialogOne() {
+        boolean guideView = SharePrefUtil.getBoolean(context,"guideView",false);
+        if (guideView){
+            return;
+        }
+        View view = getLayoutInflater().inflate(R.layout.dialog_guide_one, null);
+        final MyAlertDialog builders = new MyAlertDialog(context, 0, 0, view, R.style.dialog);
+        builders.setCancelable(false);
+        TextView mDialogOk = view.findViewById(R.id.dialog_ok);
+        mDialogOk.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                builders.dismiss();
+                isShowDialogTwo();
+            }
+        });
+
+        builders.show();
+    }
+
+    private void isShowDialogTwo() {
+        View view = getLayoutInflater().inflate(R.layout.dialog_guide_two, null);
+        final MyAlertDialog builders = new MyAlertDialog(context, 0, 0, view, R.style.dialog);
+        builders.setCancelable(false);
+        TextView mDialogOk = view.findViewById(R.id.dialog_ok);
+        LinearLayout mLayoutIs = view.findViewById(R.id.dialog_isshow);
+        final ImageView mImageIs = view.findViewById(R.id.dialog_is);
+        final TextView mTextDes = view.findViewById(R.id.dialog_des);
+
+        mLayoutIs.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                boolean isShow = SharePrefUtil.getBoolean(context,"guideView",false);
+                if (isShow){
+                    mImageIs.setImageResource(R.mipmap.ic_checket_default);
+                    mTextDes.setTextColor(context.getResources().getColor(R.color.gray));
+                    SharePrefUtil.saveBoolean(context,"guideView",false);
+                }else{
+                    mImageIs.setImageResource(R.mipmap.ic_checket_select);
+                    mTextDes.setTextColor(context.getResources().getColor(R.color.c_33));
+                    SharePrefUtil.saveBoolean(context,"guideView",true);
+                }
+            }
+        });
+        mDialogOk.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                builders.dismiss();
+            }
+        });
+
+        builders.show();
     }
 
     @Override
