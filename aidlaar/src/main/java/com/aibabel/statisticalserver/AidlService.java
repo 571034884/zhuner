@@ -51,32 +51,42 @@ public class AidlService extends Service {
 
         @Override
         public void addPath(String appName, String appVersion, String pageName, long entryTime, long exitTime, int interactions, String param) throws RemoteException {
-            if (sendingList.get(sendingList.size()-1).getPath() == null) {
-                List<StatisticsData.PathBean> pathBeanList = new ArrayList<>();
-                sendingList.get(sendingList.size()-1).setPath(pathBeanList);
+            try {
+                if (sendingList.get(sendingList.size()-1).getPath() == null) {
+                    List<StatisticsData.PathBean> pathBeanList = new ArrayList<>();
+                    sendingList.get(sendingList.size()-1).setPath(pathBeanList);
+                }
+                int pathSize = sendingList.get(sendingList.size()-1).getPath().size();
+                //没有路径 或 与上一次路径不同则添加新路径
+                if (pathSize < 1 || !sendingList.get(sendingList.size()-1).getPath().get(pathSize - 1).getAn().equals(appName)) {
+                    sendingList.get(sendingList.size()-1).getPath().add(buildOnePath(appName, appVersion));
+                    pathSize++;
+                }
+                //将页面填入最后一次的路径中
+                sendingList.get(sendingList.size()-1).getPath().get(pathSize - 1).getC().add(buildOnePage(pageName, entryTime, exitTime, interactions, param));
+            }catch (Exception e){
+                e.printStackTrace();
             }
-            int pathSize = sendingList.get(sendingList.size()-1).getPath().size();
-            //没有路径 或 与上一次路径不同则添加新路径
-            if (pathSize < 1 || !sendingList.get(sendingList.size()-1).getPath().get(pathSize - 1).getAn().equals(appName)) {
-                sendingList.get(sendingList.size()-1).getPath().add(buildOnePath(appName, appVersion));
-                pathSize++;
-            }
-            //将页面填入最后一次的路径中
-            sendingList.get(sendingList.size()-1).getPath().get(pathSize - 1).getC().add(buildOnePage(pageName, entryTime, exitTime, interactions, param));
+
 
         }
 
         @Override
         public void addEvent(int eventId, long time, String param) throws RemoteException {
-            if (sendingList.get(sendingList.size()-1).getEvent() == null) {
-                List<StatisticsData.EventBean> eventBeanList = new ArrayList<>();
-                sendingList.get(sendingList.size()-1).setEvent(eventBeanList);
+            try {
+                if (sendingList.get(sendingList.size()-1).getEvent() == null) {
+                    List<StatisticsData.EventBean> eventBeanList = new ArrayList<>();
+                    sendingList.get(sendingList.size()-1).setEvent(eventBeanList);
+                }
+                StatisticsData.EventBean eventBean = new StatisticsData.EventBean();
+                eventBean.setEid(eventId);
+                eventBean.setEt(time);
+                eventBean.setP(param);
+                sendingList.get(sendingList.size()-1).getEvent().add(eventBean);
+            }catch (Exception e){
+                e.printStackTrace();
             }
-            StatisticsData.EventBean eventBean = new StatisticsData.EventBean();
-            eventBean.setEid(eventId);
-            eventBean.setEt(time);
-            eventBean.setP(param);
-            sendingList.get(sendingList.size()-1).getEvent().add(eventBean);
+
         }
 
         @Override

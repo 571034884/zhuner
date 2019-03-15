@@ -170,7 +170,7 @@ public class WeatherFragment extends Fragment {
             tvJiangshuiliang.setText("--");
 
         } else {
-            tvJiangshuiliang.setText(NumberFormat.getPercentInstance().format(Double.valueOf(jianshuilian)));
+            tvJiangshuiliang.setText(Double.valueOf(jianshuilian)+"mm");
         }
 
         tvFengsu.setText(weatherBean.getWeatherNowData().getWind_degrees() + "");
