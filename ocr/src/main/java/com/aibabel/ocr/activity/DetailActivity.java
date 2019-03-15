@@ -78,7 +78,7 @@ public class DetailActivity extends BaseActivity {
     private String audioUrl;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detail);
         ButterKnife.bind(this);
@@ -88,7 +88,7 @@ public class DetailActivity extends BaseActivity {
     /**
      * 初始化
      */
-    private void init() {
+    public void init() {
         title = getIntent().getStringExtra("title");
         detail = getIntent().getStringExtra("detail");
         url = getIntent().getStringExtra("url");

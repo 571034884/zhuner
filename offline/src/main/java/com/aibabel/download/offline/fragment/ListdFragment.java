@@ -722,7 +722,7 @@ public class ListdFragment extends Fragment {
 
                                 //下载
                                     downloadFile(dataBean,status,tv_id.getText().toString());
-                                    StatisticsManager.getInstance(mContext).addEventAidl("下载"+dataBean.getName());
+                                    StatisticsManager.getInstance(mContext).addEventAidl(2502);
 
 
 

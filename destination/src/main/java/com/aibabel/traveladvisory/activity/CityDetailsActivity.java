@@ -32,6 +32,7 @@ import com.aibabel.traveladvisory.utils.OffLineUtil;
 import com.aibabel.traveladvisory.utils.ToastUtil;
 import com.aibabel.traveladvisory.utils.WeizhiUtil;
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -123,7 +124,7 @@ public class CityDetailsActivity extends BaseActivity implements BaseCallback {
     private String imgPath;
 
     @Override
-    public int initLayout() {
+    public int getLayout(Bundle savedInstanceState){
         return R.layout.activity_city_details;
     }
 
@@ -139,12 +140,15 @@ public class CityDetailsActivity extends BaseActivity implements BaseCallback {
             OkGoUtil.<PoiBean>get(CityDetailsActivity.this, Constans.METHOD_GET_POI_MSG, map, PoiBean.class, this);
         }
     }
-
+    RequestOptions options = new RequestOptions().placeholder(R.mipmap.no_tongyong2).error(R.mipmap.error_h);
     public void initData() {
         if (isOfflineSupport) {
-            Glide.with(CityDetailsActivity.this).load(new File(imgPath +detailBean.getPoi_image(true, 540, 320))).placeholder(R.mipmap.no_tongyong2).error(R.mipmap.error_h).into(ivImg);
+            Glide.with(CityDetailsActivity.this).load(new File(imgPath +detailBean.getPoi_image(true, 540, 320)))
+                    .apply(options).into(ivImg);
+//                    .placeholder(R.mipmap.no_tongyong2).error(R.mipmap.error_h).into(ivImg);
         } else
-            Glide.with(CityDetailsActivity.this).load(detailBean.getPoi_image(false, 540, 320)).placeholder(R.mipmap.no_tongyong2).error(R.mipmap.error_h).into(ivImg);
+            Glide.with(CityDetailsActivity.this).load(detailBean.getPoi_image(false, 540, 320)).apply(options).into(ivImg);
+//                    .placeholder(R.mipmap.no_tongyong2).error(R.mipmap.error_h).into(ivImg);
         tvName.setText(detailBean.getCnName());
         tvNameEn.setText(detailBean.getEnName());
 
@@ -186,7 +190,8 @@ public class CityDetailsActivity extends BaseActivity implements BaseCallback {
     }
 
     public void initPoiData() {
-        Glide.with(CityDetailsActivity.this).load(dataBean.getPoi_image()).placeholder(R.mipmap.no_tongyong2).error(R.mipmap.error_h).into(ivImg);
+        Glide.with(CityDetailsActivity.this).load(dataBean.getPoi_image()).apply(options).into(ivImg);
+//                .placeholder(R.mipmap.no_tongyong2).error(R.mipmap.error_h).into(ivImg);
         tvName.setText(dataBean.getCnName());
         tvNameEn.setText(dataBean.getEnName());
         if (dataBean.getRanking() != 999999) {

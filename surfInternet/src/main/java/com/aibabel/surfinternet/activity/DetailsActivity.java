@@ -152,7 +152,7 @@ public class DetailsActivity extends BaseActivity implements BaseCallback, View.
     private String country;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_details);
         ButterKnife.bind(this);

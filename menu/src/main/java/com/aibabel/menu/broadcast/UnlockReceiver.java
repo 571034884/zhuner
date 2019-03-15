@@ -15,11 +15,15 @@ public class UnlockReceiver extends BroadcastReceiver {
         // TODO: This method is called when the BroadcastReceiver is receiving
         // an Intent broadcast.
         final String action = intent.getAction();
-        LogUtil.e("hjs","UnlockReceiver Action:"+action);
-        if (intent.getAction().equals(ACTION_unlock_ok)) {
-            if(MainActivity.loopHandler!=null){
-                MainActivity.loopHandler.sendEmptyMessage(200);
+        LogUtil.e("hjs", "UnlockReceiver Action:" + action);
+        try {
+            if (intent.getAction().equals(ACTION_unlock_ok)) {
+                if (MainActivity.loopHandler != null) {
+                    MainActivity.loopHandler.sendEmptyMessage(200);
+                }
             }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 }

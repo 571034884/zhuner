@@ -33,6 +33,7 @@ import com.aibabel.traveladvisory.okgo.OkGoUtil;
 import com.aibabel.traveladvisory.utils.MyScrollview;
 import com.aibabel.traveladvisory.utils.ToastUtil;
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 import com.zhy.adapter.recyclerview.CommonAdapter;
 import com.zhy.adapter.recyclerview.MultiItemTypeAdapter;
 import com.zhy.adapter.recyclerview.base.ViewHolder;
@@ -110,12 +111,14 @@ public class SearchResultFragment extends Fragment implements BaseCallback {
                 TextView tv_name = holder.getView(R.id.tv_name);
                 TextView tv_title = holder.getView(R.id.tv_title);
                 TextView tv_branch = holder.getView(R.id.tv_branch);
+                RequestOptions options_no_tongyong3 = new RequestOptions().placeholder(R.mipmap.no_tongyong3).error(R.mipmap.error_h);
                 tv_name.setText(bean.getCnName());
                 tv_title.setText(bean.getExplain());
                 tv_branch.setText(bean.getCnCityName() + "/" + bean.getPoiTypeName());
                 Glide.with(getActivity())
                         .load(bean.getPoi_image(136,136))
-                        .placeholder(R.mipmap.no_tongyong3).error(R.mipmap.error_v)
+                        .apply(options_no_tongyong3)
+//                        .placeholder(R.mipmap.no_tongyong3).error(R.mipmap.error_v)
                         .into(iv_destination);
 //
                 if (TextUtils.equals(bean.getExplain(), "")) {

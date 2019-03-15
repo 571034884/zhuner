@@ -39,7 +39,7 @@ public class DownLoadListActivity extends BaseActivity {
 
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         L.e("DownLoadListActivity onCreate=======================");
         MyApplication.isFile=false;

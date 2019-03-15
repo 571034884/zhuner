@@ -20,7 +20,8 @@ import butterknife.Unbinder;
  * 功能：
  * 版本：1.0
  */
-public abstract class BaseActivity extends SimpleStatisticsActivity {
+//public abstract class BaseActivity extends SimpleStatisticsActivity {
+public abstract class BaseActivity extends com.aibabel.baselibrary.base.BaseActivity {
 
     private Unbinder mUnbinder;
 
@@ -34,6 +35,10 @@ public abstract class BaseActivity extends SimpleStatisticsActivity {
         setContentView(initLayout());
         mUnbinder = ButterKnife.bind(this);
         init();
+    }
+
+    public  int getLayout(Bundle savedInstanceState){
+        return -1;
     }
 
     /**
@@ -85,5 +90,6 @@ public abstract class BaseActivity extends SimpleStatisticsActivity {
         }
         return super.onKeyDown(keyCode, event);
     }
-
 }
+//public abstract class BaseActivity extends com.aibabel.baselibrary.base.BaseActivity {
+//}

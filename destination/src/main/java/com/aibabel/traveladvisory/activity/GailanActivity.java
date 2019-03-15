@@ -36,7 +36,7 @@ public class GailanActivity extends BaseActivity implements BaseCallback {
     ImageView ivFanhui;
 
     @Override
-    public int initLayout() {
+    public int getLayout(Bundle savedInstanceState){
         return R.layout.activity_gailan;
     }
 

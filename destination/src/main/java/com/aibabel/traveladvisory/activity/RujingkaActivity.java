@@ -27,7 +27,7 @@ public class RujingkaActivity extends BaseActivity {
     private String countryName;
 
     @Override
-    public int initLayout() {
+    public int getLayout(Bundle savedInstanceState){
         return R.layout.activity_rujingka;
     }
 

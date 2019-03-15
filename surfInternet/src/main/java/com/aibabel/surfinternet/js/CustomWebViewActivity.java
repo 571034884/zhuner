@@ -78,7 +78,7 @@ public class CustomWebViewActivity extends BaseActivity implements OnJSClickList
     private String skuid;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_custom_web_view);
         ButterKnife.bind(this);

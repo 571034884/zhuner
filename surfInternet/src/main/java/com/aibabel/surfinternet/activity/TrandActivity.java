@@ -76,7 +76,7 @@ public class TrandActivity extends BaseActivity implements BaseCallback {
     private boolean is_onclick = true;
     private String iccid;
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);// 设置全屏
         setNavigationBarVisibility(false);

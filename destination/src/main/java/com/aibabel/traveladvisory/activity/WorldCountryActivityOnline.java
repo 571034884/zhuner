@@ -1,6 +1,7 @@
 package com.aibabel.traveladvisory.activity;
 
 import android.content.Intent;
+import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.ImageView;
@@ -22,6 +23,7 @@ import com.aibabel.traveladvisory.utils.MyGridLayoutManager;
 import com.aibabel.traveladvisory.utils.MyScrollview;
 import com.aibabel.traveladvisory.utils.OffLineUtil;
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -101,7 +103,7 @@ public class WorldCountryActivityOnline extends BaseActivity implements BaseCall
     private CommomRecyclerAdapter oceaniaAdapter;
 
     @Override
-    public int initLayout() {
+    public int getLayout(Bundle savedInstanceState){
         return R.layout.activity_world__city;
     }
 
@@ -163,8 +165,11 @@ public class WorldCountryActivityOnline extends BaseActivity implements BaseCall
                 ImageView iv_item_icon = holder.getView(R.id.iv_item_icon);
                 TextView tv_item = holder.getView(R.id.tv_item);
                 WorldCountryBean.DataBean.CountryStateBean bean = (WorldCountryBean.DataBean.CountryStateBean) o;
+                RequestOptions options = new RequestOptions().placeholder(R.mipmap.no_tongyong3);
                 Glide.with(mContext)//图片@后面的截取操作拿到bean里面操作
-                        .load(OffLineUtil.getInstance().getCountryImage(bean.getImageCountryUrl(164, 150))).placeholder(R.mipmap.no_tongyong3)
+                        .load(OffLineUtil.getInstance().getCountryImage(bean.getImageCountryUrl(164, 150)))
+                        .apply(options)
+//                        .placeholder(R.mipmap.no_tongyong3)
 //                        .load(bean.getImageCountryUrl(164, 150)).placeholder(R.mipmap.no_tongyong3)
                         .into(iv_item_icon);
                 tv_item.setText(bean.getCountryname());
@@ -197,12 +202,14 @@ public class WorldCountryActivityOnline extends BaseActivity implements BaseCall
         }, null) {
             @Override
             public void convert(CommonRecyclerViewHolder holder, Object o, int position) {
-
+                RequestOptions options = new RequestOptions().placeholder(R.mipmap.no_tongyong3);
                 ImageView iv_item_icon = holder.getView(R.id.iv_item_icon);
                 TextView tv_item = holder.getView(R.id.tv_item);
                 HotBean.DataBean bean = (HotBean.DataBean) o;
                 Glide.with(mContext)
-                        .load(bean.getImageCountryUrl(240, 150)).placeholder(R.mipmap.no_tongyong3)
+                        .load(bean.getImageCountryUrl(240, 150))
+                        .apply(options)
+//                        .placeholder(R.mipmap.no_tongyong3)
                         .into(iv_item_icon);
 //                if ((Locale.getDefault().getLanguage() + "-" + Locale.getDefault().getCountry()).contains("en-") || (Locale.getDefault().getLanguage() + "-" + Locale.getDefault().getCountry()).equals("US")) {
 //                    tv_item.setText(bean.getCountryEnName());

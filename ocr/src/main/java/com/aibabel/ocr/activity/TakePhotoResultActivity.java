@@ -39,7 +39,7 @@ public class TakePhotoResultActivity extends BaseActivity {
     private String filePath;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         getIntentData();
         setRequestedOrientation(screenOritation);

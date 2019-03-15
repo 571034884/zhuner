@@ -6,13 +6,21 @@ def buildTime() {
 }
 
 android {
+    signingConfigs {
+        config {
+            keyAlias 'surfInternet'
+            keyPassword 'aibabel*123'
+            storeFile file('surfInternet.jks')
+            storePassword 'aibabel*123'
+        }
+    }
     compileSdkVersion 28
     defaultConfig {
         applicationId "com.aibabel.surfinternet"
         minSdkVersion 21
         targetSdkVersion 28
         versionCode 13
-        versionName "1.1.3"
+        versionName "1.1.4"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
     // 一定要写在android节点中
@@ -24,7 +32,7 @@ android {
                 def version = "v${versionName}.${buildTime()}"
                 def endIndex = outputFile.name.indexOf('.apk')
                 def apkName = outputFile.name.substring(0, endIndex);
-                def fileName = "${applicationId}_${version}.apk"
+                def fileName = "全球上网_${version}.apk"
                 output.outputFileName = fileName
             }
         }
@@ -33,6 +41,7 @@ android {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.config
         }
     }
     lintOptions {

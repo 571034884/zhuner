@@ -14,10 +14,11 @@ import android.view.WindowManager;
 import com.aibabel.statisticalserver.SimpleStatisticsActivity;
 
 
-public abstract class BaseActivity extends SimpleStatisticsActivity {
+//public abstract class BaseActivity extends SimpleStatisticsActivity {
+public abstract class BaseActivity extends com.aibabel.baselibrary.base.BaseActivity {
     protected Context mContext;
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         //设置去除ActionBar
         requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -46,6 +47,16 @@ public abstract class BaseActivity extends SimpleStatisticsActivity {
         mContext=c;
 
     }
+    public int getLayout(Bundle savedInstanceState){
+        return  -1;
+    }
+
+    /**
+     * 初始化其他内容
+     */
+    public  void init(){
+
+    }
 
 //    @Override
 //    protected void onResume() {
@@ -59,10 +70,10 @@ public abstract class BaseActivity extends SimpleStatisticsActivity {
 //        MobclickAgent.onPause(this);
 //    }
 
-    @Override
-    protected void onStop() {
-        super.onStop();
-
-    }
+//    @Override
+//    protected void onStop() {
+//        super.onStop();
+//
+//    }
 
 }

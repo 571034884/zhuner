@@ -1,6 +1,18 @@
 apply plugin: 'com.android.application'
 apply plugin: 'com.aliyun.ams.emas-services'
+
+def buildTime() {
+    return new Date().format("MMddHHmmss", TimeZone.getDefault())
+}
 android {
+    signingConfigs {
+        config {
+            keyAlias 'ocr'
+            keyPassword 'aibabel*123'
+            storeFile file('ocr.jks')
+            storePassword 'aibabel*123'
+        }
+    }
     compileSdkVersion 28
     buildToolsVersion '27.0.3'
     defaultConfig {
@@ -8,16 +20,29 @@ android {
         minSdkVersion 21
         targetSdkVersion 28
         versionCode 7
-        versionName "1.1.5"
+        versionName "1.1.6"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.config
         }
     }
-
+    applicationVariants.all { variant ->
+        variant.outputs.each { output ->
+            def outputFile = output.outputFile
+            if (outputFile != null && outputFile.name.endsWith('.apk')) {
+                /// 输出apk名称为ForWatch_v1.1(2)_2016-09-28_15-54-35.apk
+                def version = "v${versionName}.${buildTime()}"
+                def endIndex = outputFile.name.indexOf('.apk')
+                def apkName = outputFile.name.substring(0, endIndex);
+                def fileName = "拍照翻译_${version}.apk"
+                output.outputFileName = fileName
+            }
+        }
+    }
     lintOptions {
         checkReleaseBuilds false
         // Or, if you prefer, you can continue to check for errors in release builds,
@@ -60,6 +85,7 @@ dependencies {
     implementation files('libs/jpeglibrary.jar')
 //    implementation "com.aibabel:aidlaar:1.0.14"
     api project(path: ':aidlaar')
+    compile project(path: ':baselibrary')
 }
 repositories {
     maven {

@@ -1,6 +1,7 @@
 package com.aibabel.traveladvisory.activity;
 
 import android.graphics.drawable.Drawable;
+import android.os.Bundle;
 import android.text.Html;
 import android.text.TextUtils;
 import android.text.method.ScrollingMovementMethod;
@@ -30,7 +31,7 @@ public class HtmlActivity extends BaseActivity {
     TextView tvContent;
 
     @Override
-    public int initLayout() {
+    public int getLayout(Bundle savedInstanceState){
         return R.layout.activity_html;
     }
 

@@ -75,13 +75,23 @@ public abstract class BaseActivity extends AppCompatActivity {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+        mContext = this;
+        //setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         setNavigationBarVisibility();
 
-        setContentView(getLayout(savedInstanceState));
-        mUnbinder = ButterKnife.bind(this);
-        mContext = this;
-        init();
+        int getlayout = getLayout(savedInstanceState);
+
+        Log.e("hjs","BaseAcitivyt="+getlayout);
+        if(getlayout>0) {
+            setContentView(getlayout);
+            mUnbinder = ButterKnife.bind(this);
+            init();
+        }
+
+        //mUnbinder = ButterKnife.bind(this);
+
+
+
         if (repairEnable && CommonUtils.getRequestHotRepaireEnable(repairCount)) {
             Map<String, String> map = new HashMap<>();
             map.put("app", getPackageName());

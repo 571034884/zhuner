@@ -70,9 +70,11 @@ public class EditCityActivity extends BaseActivity {
     ConstraintLayout clDingwei;
 
     @Override
-    public int initLayout() {
+    public int getLayout(Bundle savedInstanceState) {
         return R.layout.activity_edit_city;
     }
+
+
 
     @Override
     public void init() {

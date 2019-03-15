@@ -28,14 +28,14 @@ public class SelectLanguageActivity extends BaseActivity implements AdapterView.
     private String current_lan_code;//当前选中语言的code
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_select_language);
         init();
         initData();
     }
 
-    private void init() {
+    public void init() {
         iv_close = findViewById(R.id.iv_close);
         lv_language = findViewById(R.id.lv_language);
         lv_language.setOnItemClickListener(this);

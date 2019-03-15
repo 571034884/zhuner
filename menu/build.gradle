@@ -10,6 +10,14 @@ def buildTime() {
 }
 
 android {
+    signingConfigs {
+        config {
+            keyAlias 'menu'
+            keyPassword 'aibabel*123'
+            storeFile file('menu.jks')
+            storePassword 'aibabel*123'
+        }
+    }
     compileSdkVersion 28
     defaultConfig {
         applicationId "com.aibabel.menu"
@@ -23,6 +31,7 @@ android {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.config
         }
     }
     compileOptions {
@@ -39,14 +48,7 @@ android {
         // but continue the build even when errors are found:
         abortOnError false
     }
-    signingConfigs {
-        config {
-            keyAlias 'menu'
-            keyPassword 'aibabel*123'
-            storeFile file('menu.jks')
-            storePassword 'aibabel*123'
-        }
-    }
+
 
     // 一定要写在android节点中
     applicationVariants.all { variant ->
@@ -79,7 +81,8 @@ dependencies {
     //    implementation 'jp.wasabeef:glide-transformations:4.+'
     implementation 'jp.wasabeef:glide-transformations:4.0.1'
     //公司基本库
-    implementation 'com.aibabel:base:1.4.12'
+    //implementation 'com.aibabel:base:1.4.12'
+    implementation project(':baselibrary')
     annotationProcessor 'com.jakewharton:butterknife-compiler:8.8.1'
     annotationProcessor 'com.github.bumptech.glide:compiler:4.8.0'
     //db 调试查看

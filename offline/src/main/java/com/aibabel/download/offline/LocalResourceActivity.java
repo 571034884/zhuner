@@ -28,7 +28,7 @@ public class LocalResourceActivity extends BaseActivity {
     private FragmentManager manager;
     private FragmentTransaction transaction;
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         MyApplication.dbHelper.shutdownUPdateDB();

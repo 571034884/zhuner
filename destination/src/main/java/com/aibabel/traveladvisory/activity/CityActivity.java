@@ -2,6 +2,7 @@ package com.aibabel.traveladvisory.activity;
 
 import android.content.Context;
 import android.content.Intent;
+import android.os.Bundle;
 import android.support.constraint.ConstraintLayout;
 import android.support.constraint.Guideline;
 import android.text.TextUtils;
@@ -23,6 +24,7 @@ import com.aibabel.traveladvisory.utils.FastJsonUtil;
 import com.aibabel.traveladvisory.utils.OffLineUtil;
 import com.aibabel.traveladvisory.utils.ToastUtil;
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 
 import java.io.File;
 import java.util.HashMap;
@@ -84,7 +86,7 @@ public class CityActivity extends BaseActivity implements BaseCallback {
     private String countryName;
 
     @Override
-    public int initLayout() {
+    public int getLayout(Bundle savedInstanceState){
         return R.layout.activity_city;
     }
 
@@ -134,7 +136,7 @@ public class CityActivity extends BaseActivity implements BaseCallback {
         tvChengshiEn.setText(cityNameEn);
 
     }
-
+    RequestOptions options = new RequestOptions().placeholder(R.mipmap.no_tongyong1).error(R.mipmap.error_h);
     public void initData() {
         if (isOfflineSupport) {
             String filePath = OffLineUtil.offlinePath + OffLineUtil.offlineSupportMap.get(countryName) + "/" + countryName + "/" + cityName + "/" + cityName + "ID" + cityId + ".txt";
@@ -144,8 +146,12 @@ public class CityActivity extends BaseActivity implements BaseCallback {
                     dataBean = FastJsonUtil.changeJsonToBean(json, ChengshigailanBean.DataBean.class);
                     String filePath = OffLineUtil.offlinePath + OffLineUtil.offlineSupportMap.get(countryName) + "/" + countryName + "/"+ cityName + "/";
                     String imgPath = dataBean.getPlace_picture(true, 1, 1);
-                    Glide.with(mContext).load(new File(filePath + imgPath)).placeholder(R.mipmap.no_tongyong1).error(R.mipmap.error_h)
-                            .bitmapTransform(new ColorFilterTransformation(CityActivity.this, 0x4d000000)).into(ivJingqu);
+                    Glide.with(mContext).load(new File(filePath + imgPath))
+                            .apply(options)
+                            .apply(RequestOptions.bitmapTransform(new ColorFilterTransformation(CityActivity.this, 0x4d000000)))
+                            .into(ivJingqu);
+//                            \.placeholder(R.mipmap.no_tongyong1).error(R.mipmap.error_h)
+//                            .bitmapTransform(new ColorFilterTransformation(CityActivity.this, 0x4d000000)).into(ivJingqu);
                 }
                 @Override
                 public void error() {
@@ -241,8 +247,12 @@ public class CityActivity extends BaseActivity implements BaseCallback {
             case Constans.METHOD_CHEGNSHIGAILAN_ID:
                 chengshigailanBean = (ChengshigailanBean) model;
                 dataBean = chengshigailanBean.getData().get(0);
-                Glide.with(mContext).load(dataBean.getPlace_picture(false, 540, 425)).placeholder(R.mipmap.no_tongyong1).error(R.mipmap.error_h)
-                        .bitmapTransform(new ColorFilterTransformation(this, 0x4d000000)).into(ivJingqu);
+                Glide.with(mContext).load(dataBean.getPlace_picture(false, 540, 425))
+                        .apply(options)
+                        .apply( RequestOptions.bitmapTransform(new ColorFilterTransformation(this, 0x4d000000))).into(ivJingqu);
+//                        .placeholder(R.mipmap.no_tongyong1).error(R.mipmap.error_h)
+//                        RequestOptions.bitmapTransform(new ColorFilterTransformation(this, 0x4d000000)).into(ivJingqu);
+
                 break;
         }
     }

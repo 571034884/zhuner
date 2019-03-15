@@ -66,7 +66,7 @@ public class PayPalActivity extends BaseActivity implements OnJSClickListener {
     private String skuid;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_paypal);
         ButterKnife.bind(this);

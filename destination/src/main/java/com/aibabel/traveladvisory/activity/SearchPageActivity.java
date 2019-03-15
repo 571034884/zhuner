@@ -2,6 +2,7 @@ package com.aibabel.traveladvisory.activity;
 
 import android.app.Activity;
 import android.graphics.Color;
+import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -47,7 +48,7 @@ public class SearchPageActivity extends BaseActivity {
     private TextView tv;
 
     @Override
-    public int initLayout() {
+    public int getLayout(Bundle savedInstanceState){
         return R.layout.activity_search_page;
     }
 

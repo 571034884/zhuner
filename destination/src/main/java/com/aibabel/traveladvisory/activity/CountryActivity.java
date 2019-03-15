@@ -2,6 +2,7 @@ package com.aibabel.traveladvisory.activity;
 
 import android.content.Context;
 import android.content.Intent;
+import android.os.Bundle;
 import android.support.constraint.ConstraintLayout;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -30,6 +31,7 @@ import com.aibabel.traveladvisory.utils.OffLineUtil;
 import com.aibabel.traveladvisory.utils.ToastUtil;
 import com.aibabel.traveladvisory.utils.TravelAdDbUtil;
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 import com.lzy.okgo.OkGo;
 
 import java.io.File;
@@ -104,7 +106,7 @@ public class CountryActivity extends BaseActivity implements BaseCallback {
     private boolean isOfflineSupport;
 
     @Override
-    public int initLayout() {
+    public int getLayout(Bundle savedInstanceState){
         return R.layout.activity_country;
     }
 
@@ -131,6 +133,8 @@ public class CountryActivity extends BaseActivity implements BaseCallback {
         ivRight1.setImageResource(R.mipmap.shijie);
     }
 
+    RequestOptions options_no_tongyong1 = new RequestOptions().placeholder(R.mipmap.no_tongyong1).error(R.mipmap.error_h);
+    RequestOptions options_no_tongyong3 = new RequestOptions().placeholder(R.mipmap.no_tongyong3).error(R.mipmap.error_h);
     public void initData() {
         hotCityBeanList = TravelAdDbUtil.getReMen(countryName);
         adapter.updateData(hotCityBeanList);
@@ -142,8 +146,12 @@ public class CountryActivity extends BaseActivity implements BaseCallback {
                     dataBean = FastJsonUtil.changeJsonToBean(json, GuojiagailanBean.DataBean.class);
                     String filePath = OffLineUtil.offlinePath + OffLineUtil.offlineSupportMap.get(countryName) + "/" + countryName + "/";
                     String imgPath = dataBean.getPlace_picture(true, 1, 1);
-                    Glide.with(mContext).load(new File(filePath + imgPath)).placeholder(R.mipmap.no_tongyong1).error(R.mipmap.error_h)
-                            .bitmapTransform(new ColorFilterTransformation(CountryActivity.this, 0x4d000000)).into(ivJingqu);
+                    Glide.with(mContext).load(new File(filePath + imgPath))
+                            .apply(options_no_tongyong1)
+                            .apply(RequestOptions.bitmapTransform(new ColorFilterTransformation(CountryActivity.this, 0x4d000000)))
+                            .into(ivJingqu);
+
+                //.placeholder(R.mipmap.no_tongyong1).error(R.mipmap.error_h).bitmapTransform(new ColorFilterTransformation(CountryActivity.this, 0x4d000000)).into(ivJingqu);
                 }
                 @Override
                 public void error() {
@@ -211,11 +219,17 @@ public class CountryActivity extends BaseActivity implements BaseCallback {
                 tv_city.setText(bean.getName());
 //                }
                  if (!isOfflineSupport) {
-                    Glide.with(mContext).load(bean.getImageCityUrl(false, 162, 150)).placeholder(R.mipmap.no_tongyong3).error(R.mipmap.error_v).into(iv_city);
+                    Glide.with(mContext).load(bean.getImageCityUrl(false, 162, 150))
+                            .apply(options_no_tongyong3)
+//                            .placeholder(R.mipmap.no_tongyong3).error(R.mipmap.error_v)
+                            .into(iv_city);
                 } else {
                     String imgPath = bean.getImageCityUrl(true, 1, 1);
                     String filePath = OffLineUtil.offlinePath + OffLineUtil.offlineSupportMap.get(countryName) + "/" + countryName + "/";
-                    Glide.with(mContext).load(new File(filePath + bean.getName() + "/" + imgPath)).placeholder(R.mipmap.no_tongyong3).error(R.mipmap.error_v).into(iv_city);
+                    Glide.with(mContext).load(new File(filePath + bean.getName() + "/" + imgPath))
+                            .apply(options_no_tongyong3)
+//                            .placeholder(R.mipmap.no_tongyong3).error(R.mipmap.error_v)
+                            .into(iv_city);
                 }
             }
 
@@ -353,8 +367,13 @@ public class CountryActivity extends BaseActivity implements BaseCallback {
                 guojiagailanBean = (GuojiagailanBean) model;
                 dataBean = guojiagailanBean.getData().get(0);
                 Log.e( "onSuccess: " ,dataBean.getPlace_picture(false, 540, 425));
-                Glide.with(mContext).load(dataBean.getPlace_picture(false, 540, 425)).placeholder(R.mipmap.no_tongyong1).error(R.mipmap.error_h)
-                        .bitmapTransform(new ColorFilterTransformation(this, 0x4d000000)).into(ivJingqu);
+                Glide.with(mContext).load(dataBean.getPlace_picture(false, 540, 425))
+                        .apply(options_no_tongyong1)
+                        .apply(RequestOptions.bitmapTransform(new ColorFilterTransformation(this, 0x4d000000)))
+                        .into(ivJingqu);
+
+//                        .placeholder(R.mipmap.no_tongyong1).error(R.mipmap.error_h)
+//                        .bitmapTransform(new ColorFilterTransformation(this, 0x4d000000)).into(ivJingqu);
                 break;
             case Constans.METHOD_GET_HOT_CITY:
                 hotCityBeanList = ((HotCityBean) model).getData();

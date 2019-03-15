@@ -47,7 +47,7 @@ private List<String> titleList;
 
 
 @Override
-protected void onCreate(Bundle savedInstanceState) {
+public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         L.e("=====================MainActivity onCreate");
 

@@ -21,8 +21,8 @@ import butterknife.Unbinder;
 
 
 public abstract class BaseActivity extends com.aibabel.baselibrary.base.BaseActivity {
-    protected Context mContext;
-    public Unbinder mUnbinder;
+//    protected Context mContext;
+//    public Unbinder mUnbinder;
     @Override
     public void onCreate(Bundle savedInstanceState) {
 
@@ -43,8 +43,8 @@ public abstract class BaseActivity extends com.aibabel.baselibrary.base.BaseActi
 
 
 //        setContentView(getLayout(savedInstanceState));
-        setContext(this);
-        mUnbinder = ButterKnife.bind(this);
+//        setContext(this);
+//        mUnbinder = ButterKnife.bind(this);
         assignView();
         initView();
         initListener();
@@ -64,10 +64,10 @@ public abstract class BaseActivity extends com.aibabel.baselibrary.base.BaseActi
 
     protected abstract void initData();
 
-    protected void setContext(Context c) {
-        mContext=c;
-
-    }
+//    protected void setContext(Context c) {
+//        mContext=c;
+//
+//    }
 
     @Override
     protected void onResume() {

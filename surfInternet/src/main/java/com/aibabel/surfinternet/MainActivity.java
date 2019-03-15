@@ -90,12 +90,14 @@ public class MainActivity extends BaseActivity implements BaseCallback {
 
     @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);// 设置全屏
         setContentView(R.layout.activity_main);
         initView();
+
+        Log.e("hjs","surfinternet");
 
 //        sendBroadcast(new Intent("com.android.zhuner.wqhtime"));
         try {
@@ -131,7 +133,7 @@ public class MainActivity extends BaseActivity implements BaseCallback {
 //        init_imei();
         getVersion();
 
-        XIPC.connectApp(getContext(), XIPCUtils.XIPC_MENU);
+        XIPC.connectApp(getContext(), XIPCUtils.XIPC_MENU_NEW);
         XIPC.setIPCListener(new IPCListener() {
             @Override
             public void onIPCConnected(Class<? extends IPCService> service) {
@@ -142,8 +144,10 @@ public class MainActivity extends BaseActivity implements BaseCallback {
                 ToastUtil.showLong(MainActivity.this, "全球上网数据：" + Constans.Lk_CARDTYPE+"---"+softType);
                 Log.e("SOFTSIM-01",Constans.Lk_CARDTYPE+"---"+softType);
                 if (NetUtil.isNetworkAvailable(MainActivity.this)) {
+                    Log.e("hjs","initData");
                     initData();
                 } else {
+                    Log.e("hjs","  llIsnet.setVisibility(View.VISIBLE);");
                     ivClose.setVisibility(View.GONE);
                     ll.setVisibility(View.VISIBLE);
                     llIsnet.setVisibility(View.VISIBLE);

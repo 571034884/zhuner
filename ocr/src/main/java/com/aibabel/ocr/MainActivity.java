@@ -52,7 +52,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
 
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         height = DisplayUtil.getScreenHeight(MainActivity.this);
@@ -63,7 +63,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
     /**
      * 初始化数据
      */
-    private void init() {
+    public void init() {
         tv_back = findViewById(R.id.tv_back);
         rl_image = findViewById(R.id.rl_image);
         iv_image = findViewById(R.id.iv_image);

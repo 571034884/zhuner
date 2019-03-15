@@ -564,7 +564,6 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
             if (!TextUtils.isEmpty(oid)) {
                 SharePrefUtil.saveString(context, order_oid, oid);
                 DataManager.getInstance().setSaveString(order_oid, oid);
-
             } else LogUtil.e("oid empty");
             if (!TextUtils.isEmpty(uid)) {
                 SharePrefUtil.saveString(context, order_uid, uid);
