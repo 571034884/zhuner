@@ -26,6 +26,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.aibabel.baselibrary.impl.IDataManager;
+import com.aibabel.baselibrary.utils.FilesUtil;
 import com.aibabel.baselibrary.utils.ToastUtil;
 import com.aibabel.baselibrary.utils.XIPCUtils;
 import com.aibabel.surfinternet.activity.BaseActivity;
@@ -90,14 +91,12 @@ public class MainActivity extends BaseActivity implements BaseCallback {
 
     @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
-    public void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);// 设置全屏
         setContentView(R.layout.activity_main);
         initView();
-
-        Log.e("hjs","surfinternet");
 
 //        sendBroadcast(new Intent("com.android.zhuner.wqhtime"));
         try {
@@ -116,13 +115,13 @@ public class MainActivity extends BaseActivity implements BaseCallback {
                 }
                 JSONObject jsonObject = new JSONObject(ips);
                 JSONArray jsonArray_xw = new JSONArray(jsonObject.getString(key_xw));
-//                Constans.HOST_XW = jsonArray_xw.getJSONObject(0).get("domain").toString();
-                Constans.HOST_XW = "http://39.107.238.111:7001";
-                Log.e("HOST_XW", Constans.HOST_XW + "---");
+                Constans.HOST_XW = jsonArray_xw.getJSONObject(0).get("domain").toString();
+//                Constans.HOST_XW = "http://39.107.238.111:7001";
+                Log.e("LK---001", Constans.HOST_XW + "---");
                 JSONArray jsonArray_xs = new JSONArray(jsonObject.getString(key_xs));
-//                Constans.HOST_XS = jsonArray_xs.getJSONObject(0).get("domain").toString();
-                Constans.HOST_XS = "https://wx.aibabel.com:3002";
-                Log.e("HOST_XS", Constans.HOST_XS + "---");
+                Constans.HOST_XS = jsonArray_xs.getJSONObject(0).get("domain").toString();
+//                Constans.HOST_XS = "https://wx.aibabel.com:3002";
+                Log.e("LK---001", Constans.HOST_XS + "---");
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -133,26 +132,27 @@ public class MainActivity extends BaseActivity implements BaseCallback {
 //        init_imei();
         getVersion();
 
-        XIPC.connectApp(getContext(), XIPCUtils.XIPC_MENU_NEW);
+        //读取LK标识--- 桌面进行存储
+        Constans.Lk_CARDTYPE = FilesUtil.readToFile();
+        Log.e("LK---001","LK标识符："+Constans.Lk_CARDTYPE);
+        if (NetUtil.isNetworkAvailable(MainActivity.this)) {
+            initData();
+        } else {
+            ivClose.setVisibility(View.GONE);
+            ll.setVisibility(View.VISIBLE);
+            llIsnet.setVisibility(View.VISIBLE);
+        }
+
+
+
+        XIPC.connectApp(getContext(), XIPCUtils.XIPC_MENU);
         XIPC.setIPCListener(new IPCListener() {
             @Override
             public void onIPCConnected(Class<? extends IPCService> service) {
-                Toast.makeText(MainActivity.this, "绑定成功", Toast.LENGTH_SHORT).show();
+//                Toast.makeText(MainActivity.this, "绑定成功", Toast.LENGTH_SHORT).show();
                 IDataManager dm = XIPC.getInstance(IDataManager.class);
-                Constans.Lk_CARDTYPE = dm.getBoolean("softSim");
                 String softType = dm.getString("softSimType");
-                ToastUtil.showLong(MainActivity.this, "全球上网数据：" + Constans.Lk_CARDTYPE+"---"+softType);
-                Log.e("SOFTSIM-01",Constans.Lk_CARDTYPE+"---"+softType);
-                if (NetUtil.isNetworkAvailable(MainActivity.this)) {
-                    Log.e("hjs","initData");
-                    initData();
-                } else {
-                    Log.e("hjs","  llIsnet.setVisibility(View.VISIBLE);");
-                    ivClose.setVisibility(View.GONE);
-                    ll.setVisibility(View.VISIBLE);
-                    llIsnet.setVisibility(View.VISIBLE);
-                }
-
+                Log.e("LK---001","LK标识符："+Constans.Lk_CARDTYPE+"---LK当前卡状态："+softType);
             }
         });
 
@@ -174,9 +174,6 @@ public class MainActivity extends BaseActivity implements BaseCallback {
                 }
             }
         });
-        //获取是领科的软卡还是硬卡
-//        Constans.Lk_CARDTYPE = StatisticsManager.getInstance(MainActivity.this).getBooleanSP("softSim", false);
-        Log.e("LkcardType", Constans.Lk_CARDTYPE + "==");
     }
 
     //---------领科卡启动过程-------------------------------------------------------------------------------
@@ -322,7 +319,7 @@ public class MainActivity extends BaseActivity implements BaseCallback {
 
                     Constans.PHONE_ICCID = list.get(i).getIccId();
 //                    Constans.PHONE_ICCID = "89860012018051816514";
-
+                    Log.e("LK---001","硬卡："+Constans.PHONE_ICCID);
                     Log.e("iccid", Constans.PHONE_ICCID);
                     isFind = true;
                     return;
@@ -364,8 +361,7 @@ public class MainActivity extends BaseActivity implements BaseCallback {
             return;
         }
         Constans.PHONE_ICCID = telephonyManager.getDeviceId(0);
-        Log.e("imei_1", Constans.PHONE_ICCID);
-        Log.e("SOFTSIM-01",Constans.PHONE_ICCID);
+        Log.e("LK---001","LK卡IMEI获取成功："+Constans.PHONE_ICCID);
 //        Log.e("imei_2", telephonyManager.getDeviceId(1));
         //Toast.makeText(MainActivity.this, "slot=" + slot, Toast.LENGTH_LONG).show();
 
@@ -375,8 +371,10 @@ public class MainActivity extends BaseActivity implements BaseCallback {
     @RequiresApi(api = Build.VERSION_CODES.M)
     private void initData() {
         if (Constans.Lk_CARDTYPE) {
+            Log.e("LK---001","LK卡是否启动："+Constans.Lk_CARDTYPE+";开始获取imei");
             init_imei();
         } else {
+            Log.e("LK---001","LK卡是否启动："+Constans.Lk_CARDTYPE+";开始获取iccid");
             initMtkDoubleSim();
         }
 
@@ -387,9 +385,9 @@ public class MainActivity extends BaseActivity implements BaseCallback {
             map.put("iccid", Constans.PHONE_ICCID);
             if (Constans.Lk_CARDTYPE) {
                 map.put("cardType", "lksc");
-                Log.e("SOFTSIM-01",Constans.PHONE_ICCID+"lksc");
+                Log.e("LK---001","请求数据："+Constans.PHONE_ICCID+"---lksc");
             }
-            Log.e("iccid", Constans.PHONE_ICCID + "===");
+            Log.e("LK---001","请求数据："+Constans.PHONE_ICCID);
             OkGoUtil.<OrderitemBean>get(MainActivity.this, Constans.METHOD_KADINGDANXIANGQING, map, OrderitemBean.class, this);
         }
     }
@@ -404,16 +402,22 @@ public class MainActivity extends BaseActivity implements BaseCallback {
 
     @Override
     public void onSuccess(String method, BaseBean model) {
+
+        Log.e("LK---001","请求成功，是否LK："+Constans.Lk_CARDTYPE);
         orderitemBean = (OrderitemBean) model;
         datalist = orderitemBean.getData();
         if (datalist != null) {
             //如果 在订单存在的情况下 订单长度为0  则跳转 国家页
             if (datalist.size() == 0) {
+
+                Log.e("LK---001","有订单,但订单长度为0:"+Constans.Lk_CARDTYPE);
                 intent = new Intent(MainActivity.this, TrandActivity.class);
                 intent.putExtra("first", 1);
             }
             // 否则 跳转 订单页
             else {
+
+                Log.e("LK---001","有订单:"+Constans.Lk_CARDTYPE);
                 intent = new Intent(MainActivity.this, OrderActivity.class);
                 intent.putExtra("orderitemBean", orderitemBean);
                 intent.putExtra("first", 1);
@@ -421,6 +425,7 @@ public class MainActivity extends BaseActivity implements BaseCallback {
 
             //如果 在订单不存在的情况下 则跳转 国家页
         } else {
+            Log.e("LK---001","没有订单:"+Constans.Lk_CARDTYPE);
             intent = new Intent(MainActivity.this, TrandActivity.class);
             intent.putExtra("first", 1);
         }
@@ -438,6 +443,7 @@ public class MainActivity extends BaseActivity implements BaseCallback {
 
     @Override
     public void onError(String method, Response<String> response) {
+        Log.e("LK---001","请求失败:"+Constans.Lk_CARDTYPE);
         ivClose.setVisibility(View.GONE);
         llIsnet.setVisibility(View.VISIBLE);
         ll.setVisibility(View.VISIBLE);

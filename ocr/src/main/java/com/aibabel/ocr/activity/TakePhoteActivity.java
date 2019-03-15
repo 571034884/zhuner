@@ -454,9 +454,11 @@ public class TakePhoteActivity extends BaseActivity implements CameraPreview.OnC
         super.onResume();
         //如果是不是翻译状态，mCameraPreview，主要解决fly版本变红的问题
         Log.e("status",status+"-----------------------------------");
-        if (status == Constant.PREVIEW)
+        if (status == Constant.PREVIEW){
             mCameraPreview.setVisibility(View.GONE);
             mCameraPreview.setVisibility(View.VISIBLE);
+        }
+
         //设置语言
         String or_code = SharePrefUtil.getString(this, Constant.LAN_OR_CODE, "en");
         String tr_code = SharePrefUtil.getString(this, Constant.LAN_TR_CODE, "ch_ch");

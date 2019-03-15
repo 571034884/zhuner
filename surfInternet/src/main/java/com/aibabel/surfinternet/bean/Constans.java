@@ -22,10 +22,10 @@ public class Constans {
      * 线上环境
      */
     public final static int ONLINE = 2;
-//    public static String HOST_XW = "http://abroad.api.joner.aibabel.cn:7001";
-    public static String HOST_XW = "http://39.107.238.111:7001";
-//    public static String HOST_XS = "http://abroad.api.web.aibabel.cn:7002";
-    public static String HOST_XS = " https://wx.aibabel.com:3002";
+    public static String HOST_XW = "http://abroad.api.joner.aibabel.cn:7001";
+//    public static String HOST_XW = "http://39.107.238.111:7001";
+    public static String HOST_XS = "http://abroad.api.web.aibabel.cn:7002";
+//    public static String HOST_XS = " https://wx.aibabel.com:3002";
     public static String PHONE_ICCID = "";
 //    public static String PHONE_ICCID = "860729040093513";
     public static String PHONE_IMEI = "";

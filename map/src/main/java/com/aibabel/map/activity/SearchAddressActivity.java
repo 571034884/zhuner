@@ -305,7 +305,7 @@ public class SearchAddressActivity extends MapBaseActivity implements SensorEven
     private void searchOkGo(String loca) {
         OkGo.cancelAll(OkGo.getInstance().getOkHttpClient());
         Map param = new HashMap();
-        param.put("query", loca);
+        param.put("query", loca.trim());
         param.put("region", mLocation.getAddress().city);
         param.put("city_limit", "true");
         param.put("coord_type", mLocation.getCoorType());
