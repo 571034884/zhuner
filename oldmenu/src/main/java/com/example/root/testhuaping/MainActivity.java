@@ -713,7 +713,7 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
                     @Override
                     public void onError(Response<String> response) {
                         super.onError(response);
-                        Toast.makeText(MainActivity.this, "出错了！", Toast.LENGTH_SHORT).show();
+//                        Toast.makeText(MainActivity.this, "出错了！", Toast.LENGTH_SHORT).show();
                         //TODO 服务器出错
                         saveFile(false);
                     }
