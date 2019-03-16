@@ -12,6 +12,7 @@ public class DeviceUtils {
         PRO_SELL,// pro销售版
         FLY_CHINA,// fly中国大陆版
         FLY_Mobile,// fly中国移动版
+        FLY_TAIWAN,// fly台湾订制版
         FLY_INTERNATIONAL,// fly国际版
         GO// GO版
 
@@ -41,6 +42,9 @@ public class DeviceUtils {
                         break;
                     case "L08"://  l01 国内版  05国际版  0607订制
                         system = System.FLY_Mobile;
+                        break;
+                    case "L09"://  FLY_台湾定制版
+                        system = System.FLY_TAIWAN;
                         break;
                     default:
                         system = System.FLY_CHINA;
