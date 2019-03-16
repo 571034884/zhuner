@@ -22,18 +22,10 @@
     "name_local": "日本語",
     "lang_code": "jpa",
     "alert": "標準語で話してください。",
-    "name": "日本語 横書き",
+    "name": "日本語",
     "sound": 1,
     "child": []
-  }, {
-  "id": 2,
-  "name_local": "日本語",
-  "lang_code": "jpa_v",
-  "alert": "標準語で話してください。",
-  "name": "日本語 縦書き",
-  "sound": 1,
-  "child": []
-},
+  },
   {
     "id": 3,
     "name_local": "ภาษาไทย",

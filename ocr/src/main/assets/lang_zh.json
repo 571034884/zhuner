@@ -19,18 +19,9 @@
   },
   {
     "id": 2,
-    "name": "日语-横",
+    "name": "日语",
     "name_local": "日本語",
     "lang_code": "jpa",
-    "alert": "標準語で話してください。",
-    "sound": 1,
-    "child": []
-  },
-  {
-    "id": 2,
-    "name": "日语-纵",
-    "name_local": "日本語",
-    "lang_code": "jpa_v",
     "alert": "標準語で話してください。",
     "sound": 1,
     "child": []

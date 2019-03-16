@@ -24,16 +24,7 @@
     "alert": "標準語で話してください。",
     "sound": 1,
     "child": [],
-    "name": "日文-橫"
-  },
-  {
-    "id": 2,
-    "name_local": "日本語",
-    "lang_code": "jpa_v",
-    "alert": "標準語で話してください。",
-    "sound": 1,
-    "child": [],
-    "name": "日文-縱"
+    "name": "日文"
   },
   {
     "id": 3,

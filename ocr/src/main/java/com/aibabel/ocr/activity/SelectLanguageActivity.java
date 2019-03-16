@@ -91,6 +91,7 @@ public class SelectLanguageActivity extends BaseActivity implements AdapterView.
             case 1:
                 SharePrefUtil.saveString(this, Constant.LAN_OR, name);
                 SharePrefUtil.saveString(this, Constant.LAN_OR_CODE, code);
+                setResult(200);
                 break;
             case 2:
                 SharePrefUtil.saveString(this, Constant.LAN_TR, name);
