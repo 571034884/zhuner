@@ -203,6 +203,7 @@ public abstract class BaseActivity extends AppCompatActivity {
     protected void onDestroy() {
         super.onDestroy();
         try {
+            
             if(mUnbinder!=null)mUnbinder.unbind();
         }catch (Exception e){
             e.printStackTrace();

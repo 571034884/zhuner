@@ -41,7 +41,11 @@ public class SimDetectActivity extends Activity implements View.OnClickListener 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        if (mUnbinder != null) mUnbinder.unbind();
+        try {
+            if(mUnbinder!=null)mUnbinder.unbind();
+        }catch (Exception e){
+            e.printStackTrace();
+        }
     }
 
     @Override
