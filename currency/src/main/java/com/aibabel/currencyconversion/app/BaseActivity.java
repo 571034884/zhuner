@@ -68,7 +68,11 @@ public abstract class BaseActivity extends com.aibabel.baselibrary.base.BaseActi
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        mUnbinder.unbind();
+        try {
+            if(mUnbinder!=null)mUnbinder.unbind();
+        }catch (Exception e){
+            e.printStackTrace();
+        }
     }
 
     /**
