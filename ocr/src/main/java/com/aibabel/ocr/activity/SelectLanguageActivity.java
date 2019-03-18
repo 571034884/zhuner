@@ -52,6 +52,8 @@ public class SelectLanguageActivity extends BaseActivity implements AdapterView.
         lan_type = getIntent().getIntExtra("type", 0);
         if (lan_type == 1) {
             current_lan_code = SharePrefUtil.getString(this, Constant.LAN_OR_CODE, "en");
+            if (current_lan_code.contains("jpa"))
+                current_lan_code = "jpa";
         } else if (lan_type == 2) {
             current_lan_code = SharePrefUtil.getString(this, Constant.LAN_TR_CODE, "ch_ch");
         }
