@@ -2,6 +2,7 @@ package com.aibabel.traveladvisory.activity;
 
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.Gravity;
@@ -25,6 +26,7 @@ import com.aibabel.traveladvisory.utils.OffLineUtil;
 import com.aibabel.traveladvisory.utils.SharePrefUtil;
 import com.aibabel.traveladvisory.utils.ToastUtil;
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 import com.jiangyy.easydialog.OtherDialog;
 
 import java.io.BufferedReader;
@@ -105,7 +107,7 @@ public class WorldCountryActivity extends BaseActivity {
     private CommomRecyclerAdapter oceaniaAdapter;
 
     @Override
-    public int initLayout() {
+    public int getLayout(Bundle savedInstanceState){
         return R.layout.activity_world__city;
     }
 
@@ -311,8 +313,10 @@ public class WorldCountryActivity extends BaseActivity {
                 } else {
                     iv_offline.setVisibility(View.GONE);
                 }
+                RequestOptions options = new RequestOptions().placeholder(R.mipmap.no_tongyong3).error(R.mipmap.error_v);
                 Glide.with(mContext)//图片@后面的截取操作拿到bean里面操作
-                        .load(OffLineUtil.getInstance().getCountryImage(bean.getImageCountryUrl(164, 150))).placeholder(R.mipmap.no_tongyong3).error(R.mipmap.error_v)
+                        .load(OffLineUtil.getInstance().getCountryImage(bean.getImageCountryUrl(164, 150))).apply(options)
+                        //.placeholder(R.mipmap.no_tongyong3).error(R.mipmap.error_v)
 //                        .load(bean.getImageCountryUrl(164, 150)).placeholder(R.mipmap.no_tongyong3)
                         .into(iv_item_icon);
                 tv_item.setText(bean.getCountryname());
@@ -382,8 +386,11 @@ public class WorldCountryActivity extends BaseActivity {
                 } else {
                     iv_offline.setVisibility(View.GONE);
                 }
+
+                RequestOptions options = new RequestOptions().placeholder(R.mipmap.no_tongyong3).error(R.mipmap.error_v);
                 Glide.with(mContext)
-                        .load(OffLineUtil.getInstance().getCountryImage(bean.getImageCountryUrl(240, 150))).placeholder(R.mipmap.no_tongyong3).error(R.mipmap.error_v)
+                        .load(OffLineUtil.getInstance().getCountryImage(bean.getImageCountryUrl(240, 150))).apply(options)
+//                        .placeholder(R.mipmap.no_tongyong3).error(R.mipmap.error_v)
 //                        .load(bean.getImageCountryUrl(240, 150)).placeholder(R.mipmap.no_tongyong3)
                         .into(iv_item_icon);
 //                if ((Locale.getDefault().getLanguage() + "-" + Locale.getDefault().getCountry()).contains("en-") || (Locale.getDefault().getLanguage() + "-" + Locale.getDefault().getCountry()).equals("US")) {

@@ -6,34 +6,6 @@ def buildTime() {
 }
 
 android {
-    compileSdkVersion 28
-    defaultConfig {
-        applicationId "com.aibabel.download.offline"
-        minSdkVersion 23
-        targetSdkVersion 28
-        versionCode 1
-        versionName "1.0.1"
-        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
-    }
-    buildTypes {
-        release {
-            minifyEnabled false
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-            resValue("string", "PORT_NUMBER", "9999")
-        }
-
-        debug {
-            resValue("string", "PORT_NUMBER", "9999")
-        }
-
-    }
-    lintOptions {
-        checkReleaseBuilds false
-        // Or, if you prefer, you can continue to check for errors in release builds,
-        // but continue the build even when errors are found:
-        abortOnError false
-    }
-
     signingConfigs {
         config {
             keyAlias 'download_offline'
@@ -41,6 +13,38 @@ android {
             storeFile file('download_offline.jks')
             storePassword 'aibabel*123'
         }
+    }
+    compileSdkVersion 28
+    defaultConfig {
+        applicationId "com.aibabel.download.offline"
+        minSdkVersion 23
+        targetSdkVersion 28
+        versionCode 1
+        versionName "1.0.2"
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        multiDexEnabled true
+    }
+
+    lintOptions {
+        checkReleaseBuilds false
+        // Or, if you prefer, you can continue to check for errors in release builds,
+        // but continue the build even when errors are found:
+        abortOnError false
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            resValue("string", "PORT_NUMBER", "9999")
+            signingConfig signingConfigs.config
+        }
+
+        debug {
+            resValue("string", "PORT_NUMBER", "9999")
+            signingConfig signingConfigs.config
+        }
+
     }
     // 一定要写在android节点中
     applicationVariants.all { variant ->
@@ -90,7 +94,9 @@ dependencies {
     implementation 'com.lzy.net:okgo:3.0.4'
 
     //埋点库
-    implementation 'com.aibabel:aidlaar:1.0.14'
+    //implementation 'com.aibabel:aidlaar:1.0.14'
+    api project(path: ':aidlaar')
+    compile project(path: ':baselibrary')
 
 
 }

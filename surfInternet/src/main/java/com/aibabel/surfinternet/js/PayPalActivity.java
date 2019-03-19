@@ -66,7 +66,7 @@ public class PayPalActivity extends BaseActivity implements OnJSClickListener {
     private String skuid;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_paypal);
         ButterKnife.bind(this);
@@ -213,12 +213,11 @@ public class PayPalActivity extends BaseActivity implements OnJSClickListener {
                     public void onIPCConnected(Class<? extends IPCService> service) {
                         IDataManager dm = XIPC.getInstance(IDataManager.class);
                         String softType = dm.getString("softSimType");
-                        Log.e("LK---001","当前LK卡状态:"+softType);
+                        Log.e("LK---001", "当前LK卡状态:" + softType);
                         isShowDialog(softType);
 
                     }
                 });
-
 
 
             }
@@ -229,9 +228,9 @@ public class PayPalActivity extends BaseActivity implements OnJSClickListener {
     private void isShowDialog(String softType) {
         //关闭连接
         XIPC.disconnect(getContext());
-        if (!softType.equals("LOCAL")){
+        if (!softType.equals("LOCAL")) {
             //重置SoftSim
-            Log.e("LK---001","状态："+softType+"开始重置");
+            Log.e("LK---001", "状态：" + softType + "开始重置");
             Intent intent = new Intent();
             intent.setAction("com.lingke.oldmenu");
             intent.putExtra("type", "lingke");
@@ -251,9 +250,10 @@ public class PayPalActivity extends BaseActivity implements OnJSClickListener {
         values.put("tag", name);
         values.put("number", phoneNumber);
         Uri insertInfo = getContentResolver().insert(uri, values);
-        Log.e("1023",">>>>>>" + "new sim contact uri, "
+        Log.e("1023", ">>>>>>" + "new sim contact uri, "
                 + insertInfo.toString());
     }
+
     @Override
     public void onJSClick(final JsClickInfo jsInfo) {
         Log.e("js", "回结果");

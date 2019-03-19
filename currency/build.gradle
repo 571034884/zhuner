@@ -9,19 +9,28 @@ def buildTime() {
 }
 
 android {
+    signingConfigs {
+        config {
+            keyAlias 'Currency'
+            keyPassword 'aibabel*123'
+            storeFile file('Currency.jks')
+            storePassword 'aibabel*123'
+        }
+    }
     compileSdkVersion 28
     defaultConfig {
         applicationId "com.aibabel.currencyconversion"
         minSdkVersion 23
         targetSdkVersion 28
         versionCode 17
-        versionName "1.0.17"
+        versionName "1.0.18"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.config
         }
         beta {
             //关键代码，release， debug为library中已有buildType
@@ -65,6 +74,7 @@ dependencies {
     annotationProcessor 'com.jakewharton:butterknife-compiler:8.8.1'
     implementation files('libs/pinyin4j-2.5.0.jar')
     implementation 'de.hdodenhof:circleimageview:2.1.0'
+    testImplementation 'junit:junit:4.12'
 }
 repositories {
     maven {

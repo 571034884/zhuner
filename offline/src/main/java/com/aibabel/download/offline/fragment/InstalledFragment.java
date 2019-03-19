@@ -373,7 +373,7 @@ public class InstalledFragment extends Fragment {
                                                 id = dataBean.getId();
                                                 deleteFile(dataBean, tv_tishi,"13");
 
-                                                StatisticsManager.getInstance(mContext).addEventAidl("卸载"+dataBean.getName());
+                                                StatisticsManager.getInstance(mContext).addEventAidl(2501);
 
 
                                             }

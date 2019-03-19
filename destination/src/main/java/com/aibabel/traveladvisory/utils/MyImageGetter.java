@@ -8,8 +8,8 @@ import android.graphics.drawable.Drawable;
 import android.text.Html;
 import android.widget.TextView;
 
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.request.animation.GlideAnimation;
+//import com.bumptech.glide.Glide;
+//import com.bumptech.glide.request.animation.GlideAnimation;
 
 import java.util.logging.Logger;
 

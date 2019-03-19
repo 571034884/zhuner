@@ -12,37 +12,50 @@ import com.aibabel.ocr.app.BaseApplication;
 import com.aibabel.statisticalserver.SimpleStatisticsActivity;
 import com.umeng.analytics.MobclickAgent;
 
-public class BaseActivity extends SimpleStatisticsActivity implements View.OnClickListener {
+//public class BaseActivity extends SimpleStatisticsActivity implements View.OnClickListener {
+public class BaseActivity extends com.aibabel.baselibrary.base.BaseActivity implements View.OnClickListener {
 
     @Override
-    protected void onCreate(@Nullable Bundle savedInstanceState) {
+    public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);// 设置全屏
         setNavigationBarVisibility(false);
-
-    }
-    @Override
-    protected void onResume() {
-        super.onResume();
-        MobclickAgent.onResume(this);
     }
 
+
+
     @Override
-    protected void onPause() {
-        super.onPause();
-        MobclickAgent.onPause(this);
+    public int getLayout(Bundle savedInstanceState) {
+        Log.e("hjs","ocr.activity.getLayout=");
+        return -1;
     }
 
     @Override
-    public boolean onKeyDown(int keyCode, KeyEvent event) {
-        switch (keyCode){
-            case 133:
-                Log.e("onKeyDown","11111111111111111111111111111111111111");
-                BaseApplication.exit();
-                break;
-        }
-        return super.onKeyDown(keyCode, event);
+    public void init() {
+        Log.e("hjs","ocr.activity.init=");
     }
+//    @Override
+//    protected void onResume() {
+//        super.onResume();
+//        MobclickAgent.onResume(this);
+//    }
+//
+//    @Override
+//    protected void onPause() {
+//        super.onPause();
+//        MobclickAgent.onPause(this);
+//    }
+//
+//    @Override
+//    public boolean onKeyDown(int keyCode, KeyEvent event) {
+//        switch (keyCode){
+//            case 133:
+//                Log.e("onKeyDown","11111111111111111111111111111111111111");
+//                BaseApplication.exit();
+//                break;
+//        }
+//        return super.onKeyDown(keyCode, event);
+//    }
 
     /**
      * 设置导航栏显示状态

@@ -47,9 +47,10 @@ public class MainActivity extends BaseActivity implements BaseCallback {
     ShouyeBean shouyeBean;
 
     @Override
-    public int initLayout() {
+    public int getLayout(Bundle savedInstanceState){
         return R.layout.activity_main;
     }
+
 
     @Override
     public void init() {

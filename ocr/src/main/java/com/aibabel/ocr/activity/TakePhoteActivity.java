@@ -152,7 +152,7 @@ public class TakePhoteActivity extends BaseActivity implements CameraPreview.OnC
 
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_take_phote);
         setPathParams(Constant.LAN_OR + " " + Constant.LAN_TR);
@@ -175,7 +175,7 @@ public class TakePhoteActivity extends BaseActivity implements CameraPreview.OnC
     /**
      * 初始化控件
      */
-    private void init() {
+    public void init() {
         root_layout = findViewById(R.id.root_layout);
         tvHint = findViewById(R.id.hint);
         fl_tran = findViewById(R.id.fl_tran);

@@ -44,7 +44,7 @@ public class MyService extends Service {
 
                     try {
                         Thread.sleep(1000 * 60 * 10);
-                        //Thread.sleep(1000 * 2);
+                        //Thread.sleep(1000 * 5);
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     }

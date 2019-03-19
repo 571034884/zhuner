@@ -2,6 +2,7 @@ package com.aibabel.weather.activity;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
@@ -69,10 +70,15 @@ public class AddCityActivity extends BaseActivity implements BaseCallback {
     //二级列表数据集合
     List<CityBean> cityBeanList = new ArrayList<>();
 
-    @Override
+
     public int initLayout() {
         return R.layout.activity_add_city;
     }
+    @Override
+    public int getLayout(Bundle savedInstanceState) {
+        return initLayout();
+    }
+
 
     @Override
     public void init() {

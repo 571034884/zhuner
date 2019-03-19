@@ -13,10 +13,11 @@ import com.aibabel.statisticalserver.SimpleStatisticsActivity;
 import com.umeng.analytics.MobclickAgent;
 
 
-public abstract class BaseActivity extends SimpleStatisticsActivity {
+public abstract class BaseActivity extends  com.aibabel.baselibrary.base.BaseActivity {
+//public abstract class BaseActivity extends SimpleStatisticsActivity {
     protected Context mContext;
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(getLayoutId());
         setContext(this);
@@ -41,23 +42,33 @@ public abstract class BaseActivity extends SimpleStatisticsActivity {
         mContext=c;
 
     }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        MobclickAgent.onResume(this);
+    public int getLayout(Bundle savedInstanceState){
+        return  -1;
     }
 
-    @Override
-    protected void onPause() {
-        super.onPause();
-        MobclickAgent.onPause(this);
-    }
-
-    @Override
-    protected void onStop() {
-        super.onStop();
+    /**
+     * 初始化其他内容
+     */
+    public  void init(){
 
     }
+
+//    @Override
+//    protected void onResume() {
+//        super.onResume();
+//        MobclickAgent.onResume(this);
+//    }
+//
+//    @Override
+//    protected void onPause() {
+//        super.onPause();
+//        MobclickAgent.onPause(this);
+//    }
+//
+//    @Override
+//    protected void onStop() {
+//        super.onStop();
+//
+//    }
 
 }

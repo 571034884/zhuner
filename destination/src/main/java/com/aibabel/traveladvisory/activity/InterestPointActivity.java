@@ -1,8 +1,13 @@
 package com.aibabel.traveladvisory.activity;
 
+import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
+import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v7.widget.GridLayoutManager;
 import android.text.TextUtils;
 import android.util.Log;
@@ -32,9 +37,15 @@ import com.aibabel.traveladvisory.utils.FastJsonUtil;
 import com.aibabel.traveladvisory.utils.OffLineUtil;
 import com.aibabel.traveladvisory.utils.ToastUtil;
 import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.resource.drawable.GlideDrawable;
+import com.bumptech.glide.load.DataSource;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.load.engine.GlideException;
+//import com.bumptech.glide.load.resource.drawable.GlideDrawable;
 import com.bumptech.glide.request.RequestListener;
+import com.bumptech.glide.request.RequestOptions;
+import com.bumptech.glide.request.target.SimpleTarget;
 import com.bumptech.glide.request.target.Target;
+import com.bumptech.glide.request.transition.Transition;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -104,7 +115,7 @@ public class InterestPointActivity extends BaseActivity implements BaseCallback 
     String imgPath;
 
     @Override
-    public int initLayout() {
+    public int getLayout(Bundle savedInstanceState){
         return R.layout.activity_interest_point;
     }
 
@@ -319,34 +330,39 @@ public class InterestPointActivity extends BaseActivity implements BaseCallback 
                     tv_praise.setText("好评率" + bean.getPositive());
                 }
 //                tv_praise.setText(bean.getPositive().equals("") ? "" : "好评率" + bean.getPositive());
+
+                RequestOptions options = new RequestOptions().placeholder(R.mipmap.no_tongyong3).error(R.mipmap.error_v);
                 if (isOfflineSupport) {
+
+
                     Glide.with(InterestPointActivity.this)
                             .load(new File(imgPath + bean.getPoi_image(true, 1, 1)))
-                            .placeholder(R.mipmap.no_tongyong3).error(R.mipmap.error_v)
-                            .listener(new RequestListener<File, GlideDrawable>() {
-                                @Override
-                                public boolean onException(Exception e, File model, Target<GlideDrawable> target, boolean isFirstResource) {
-                                    Log.e(TAG, "onException: " + e);
-                                    return false;
-                                }
+                            .apply(options).listener(new RequestListener<Drawable>() {
+                        @Override
+                        public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
+                            Log.e(TAG, "onException: " + e);
+                            return false;
+                        }
 
-                                @Override
-                                public boolean onResourceReady(GlideDrawable resource, File model, Target<GlideDrawable> target, boolean isFromMemoryCache, boolean isFirstResource) {
-                                    return false;
-                                }
-                            })
-                            .into(iv_img);
+                        @Override
+                        public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
+                            return false;
+                        }
+                    }).into(iv_img);
                 } else {
                     Glide.with(InterestPointActivity.this)
                             .load(bean.getPoi_image(false, 145, 145))
-                            .placeholder(R.mipmap.no_tongyong3).error(R.mipmap.error_v)
+                            .apply(options)
                             .into(iv_img);
+
                 }
             }
         };
         rvInterestPoint.setEmptyView(tvNo);
         rvInterestPoint.setAdapter(adapter);
     }
+
+
 
     @OnClick({R.id.iv_back, R.id.iv_chaozhao, R.id.ll_type, R.id.ll_ranking})
     public void onViewClicked(View view) {

@@ -78,7 +78,7 @@ public class CustomWebViewActivity extends BaseActivity implements OnJSClickList
     private String skuid;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_custom_web_view);
         ButterKnife.bind(this);
@@ -156,7 +156,7 @@ public class CustomWebViewActivity extends BaseActivity implements OnJSClickList
         map1.put("p1", skuid);
         StatisticsManager.getInstance(CustomWebViewActivity.this).addEventAidl(1730, map1);
 
-        switch (payType){
+        switch (payType) {
             case "1":
                 tvPayType.setText(getResources().getString(R.string.weixin));
                 break;
@@ -289,7 +289,7 @@ public class CustomWebViewActivity extends BaseActivity implements OnJSClickList
                     public void onIPCConnected(Class<? extends IPCService> service) {
                         IDataManager dm = XIPC.getInstance(IDataManager.class);
                         String softType = dm.getString("softSimType");
-                        Log.e("LK---001","当前LK卡状态:"+softType);
+                        Log.e("LK---001", "当前LK卡状态:" + softType);
                         isShowDialog(softType);
 
                     }
@@ -302,9 +302,9 @@ public class CustomWebViewActivity extends BaseActivity implements OnJSClickList
     private void isShowDialog(String softType) {
         //关闭连接
         XIPC.disconnect(getContext());
-        if (!softType.equals("LOCAL")){
+        if (!softType.equals("LOCAL")) {
             //重置softSim
-            Log.e("LK---001","状态："+softType+"开始重置");
+            Log.e("LK---001", "状态：" + softType + "开始重置");
             Intent intent = new Intent();
             intent.setAction("com.lingke.oldmenu");
             intent.putExtra("type", "lingke");
@@ -324,7 +324,7 @@ public class CustomWebViewActivity extends BaseActivity implements OnJSClickList
         values.put("tag", name);
         values.put("number", phoneNumber);
         Uri insertInfo = getContentResolver().insert(uri, values);
-        Log.e("1023",">>>>>>" + "new sim contact uri, "
+        Log.e("1023", ">>>>>>" + "new sim contact uri, "
                 + insertInfo.toString());
     }
 

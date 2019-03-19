@@ -88,9 +88,14 @@ public class MainActivity extends BaseActivity implements BaseCallback {
     private String key = "";
     private Context context;
 
-    @Override
+
     public int initLayout() {
         return R.layout.activity_main;
+    }
+
+    @Override
+    public int getLayout(Bundle savedInstanceState) {
+        return initLayout();
     }
 
     @Override

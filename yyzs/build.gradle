@@ -5,13 +5,21 @@ def buildTime() {
     return new Date().format("MMddHHmmss", TimeZone.getDefault())
 }
 android {
+    signingConfigs {
+        config {
+            keyAlias 'speech'
+            keyPassword 'aibabel*123'
+            storeFile file('speech.jks')
+            storePassword 'aibabel*123'
+        }
+    }
     compileSdkVersion 28
     defaultConfig {
         applicationId "com.aibabel.speech"
         minSdkVersion 21
         targetSdkVersion 28
         versionCode 1
-        versionName "1.0.2"
+        versionName "1.0.3"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
 
         ndk {
@@ -23,6 +31,7 @@ android {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.config
         }
     }
 
@@ -42,7 +51,7 @@ android {
                 def version = "v${versionName}.${buildTime()}"
                 def endIndex = outputFile.name.indexOf('.apk')
                 def apkName = outputFile.name.substring(0, endIndex);
-                def fileName = "${applicationId}_${version}.apk"
+                def fileName = "YYZS_${version}.apk"
                 output.outputFileName = fileName
 
             }

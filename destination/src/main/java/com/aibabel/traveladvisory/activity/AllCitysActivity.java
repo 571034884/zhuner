@@ -1,6 +1,7 @@
 package com.aibabel.traveladvisory.activity;
 
 import android.content.Intent;
+import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
@@ -23,6 +24,7 @@ import com.aibabel.traveladvisory.utils.OffLineUtil;
 import com.aibabel.traveladvisory.utils.ToastUtil;
 import com.aibabel.traveladvisory.utils.TravelAdDbUtil;
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -55,7 +57,7 @@ public class AllCitysActivity extends BaseActivity implements BaseCallback {
     private boolean isOfflineSupport;
 
     @Override
-    public int initLayout() {
+    public int getLayout(Bundle savedInstanceState){
         return R.layout.activity_all_citys;
     }
 
@@ -82,20 +84,29 @@ public class AllCitysActivity extends BaseActivity implements BaseCallback {
         }, null) {
             @Override
             public void convert(CommonRecyclerViewHolder holder, Object o, int position) {
+
                 TextView tv_city_name = holder.getView(R.id.tv_city_name);
                 TextView tv_city_attractions = holder.getView(R.id.tv_city_attractions);
                 ImageView iv_city_pic = holder.getView(R.id.iv_city_pic);
+
+                RequestOptions options = new RequestOptions().placeholder(R.mipmap.no_tongyong3).error(R.mipmap.error_v);
 //                CitysBean.DataBean.ListBean bean = (CitysBean.DataBean.ListBean) o;
                 tv_city_name.setText(((CountryCitysBean.DataBean) o).getCnName());
                 tv_city_attractions.setText(((CountryCitysBean.DataBean) o).getTravelTime().getBusy().getMonth() + ((CountryCitysBean.DataBean) o).getTravelTime().getBusy().getDesc() + "\n"
                         + ((CountryCitysBean.DataBean) o).getTravelTime().getCommon().getMonth() + ((CountryCitysBean.DataBean) o).getTravelTime().getCommon().getDesc() + "\n"
                         + ((CountryCitysBean.DataBean) o).getTravelTime().getSlack().getMonth() + ((CountryCitysBean.DataBean) o).getTravelTime().getSlack().getDesc() + "\n");
                 if (!isOfflineSupport) {
-                    Glide.with(mContext).load(((CountryCitysBean.DataBean) o).getImageUrl(false, 144, 164)).placeholder(R.mipmap.no_tongyong3).error(R.mipmap.error_v).into(iv_city_pic);
+                    Glide.with(mContext).load(((CountryCitysBean.DataBean) o).getImageUrl(false, 144, 164))
+                            .apply(options)
+//                            .placeholder(R.mipmap.no_tongyong3).error(R.mipmap.error_v)
+                            .into(iv_city_pic);
                 } else {
                     String imgPath = ((CountryCitysBean.DataBean) o).getImageUrl(true, 1, 1);
                     String filePath = OffLineUtil.offlinePath + OffLineUtil.offlineSupportMap.get(countryName) + "/" + countryName + "/";
-                    Glide.with(mContext).load(new File(filePath + ((CountryCitysBean.DataBean) o).getCnName() + "/" + imgPath)).placeholder(R.mipmap.no_tongyong3).error(R.mipmap.error_v).into(iv_city_pic);
+                    Glide.with(mContext).load(new File(filePath + ((CountryCitysBean.DataBean) o).getCnName() + "/" + imgPath))
+                            .apply(options)
+//                            .placeholder(R.mipmap.no_tongyong3).error(R.mipmap.error_v)
+                            .into(iv_city_pic);
                 }
             }
         };

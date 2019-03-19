@@ -379,7 +379,7 @@ public class PreloadInstalledFragment extends Fragment {
                                                         .show();
                                                 id = dataBean.getId();
                                                 deleteFile(dataBean, tv_tishi,"13");
-                                                StatisticsManager.getInstance(mContext).addEventAidl("本地资源卸载"+dataBean.getName());
+                                                StatisticsManager.getInstance(mContext).addEventAidl(2503);
 
                                             }
                                         }).setOnClickListener(R.id.dialog_tv_cancel, MyApplication.mContext.getString(R.string.quxiao), null).show();
