@@ -51,4 +51,14 @@
     <string name="zhifubao_pay">支付宝</string>
     <string name="paypal_pay">paypal</string>
     <string name="pay_type">请选择付款方式</string>
+
+    <string name="channelname">购买渠道</string>
+    <string name="close">关闭</string>
+    <string name="zhunerkefu">请联系准儿翻译机客服进行续租,\n扫描二维码或直接拨打客户电话</string>
+    <string name="hotline_tel">400-9966525</string>
+    <string name="qinlianxi_str">请联系</string>
+    <string name="kefu_keepuse">客服进行续租</string>
+
+    <string name="activi_starttime">生效时间</string>
+    <string name="activi_endtime">截止时间</string>
 </resources>
