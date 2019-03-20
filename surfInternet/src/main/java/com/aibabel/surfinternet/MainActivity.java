@@ -145,7 +145,7 @@ public class MainActivity extends BaseActivity implements BaseCallback {
 
 
 
-        XIPC.connectApp(getContext(), XIPCUtils.XIPC_MENU);
+        XIPC.connectApp(getContext(), XIPCUtils.XIPC_MENU_NEW);
         XIPC.setIPCListener(new IPCListener() {
             @Override
             public void onIPCConnected(Class<? extends IPCService> service) {

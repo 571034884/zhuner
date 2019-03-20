@@ -38,6 +38,7 @@ import android.webkit.WebResourceRequest;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -79,6 +80,7 @@ import com.aibabel.menu.util.RenUtils;
 import com.aibabel.menu.util.SPUtils;
 import com.aibabel.menu.util.UrlConstants;
 import com.aibabel.menu.view.MagicTextView;
+import com.aibabel.messagemanage.sqlite.SqlUtils;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.bumptech.glide.request.target.SimpleTarget;
@@ -86,6 +88,7 @@ import com.bumptech.glide.request.transition.Transition;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.StringCallback;
 import com.lzy.okgo.model.Response;
+import com.matrixxun.starry.badgetextview.MaterialBadgeTextView;
 import com.umeng.analytics.MobclickAgent;
 
 import java.io.IOException;
@@ -163,10 +166,11 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
     @BindView(R.id.main_return_img_ll)
     LinearLayout mainReturnImgLl;
 
-
     private LinearLayout bottom_menu_gd;
     private LinearLayout bottom_ll;
     private RelativeLayout top_ll;
+    private FrameLayout notice_start_activity;
+
     private WebView webView;
     WebSettings webSettings = null;
     int num;
@@ -216,6 +220,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         L.e("MainActivity  onCreate========================");
         LogUtil.e("MainActivity_onCreate");
 //        DBUtils.copyAssetsToSd(mContext,"index.html");
+
 
         //城市切换后 更新界面
         upListener = new UpdateMenu() {
@@ -322,12 +327,19 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         loopHandler = new LooptempHandler(this);
     }
 
-
+    MaterialBadgeTextView home_badge;
     @Override
     protected void assignView() {
         top_ll = findViewById(R.id.main_topPanel);
         bottom_ll = findViewById(R.id.main_bottomPanel);
         bottom_menu_gd = findViewById(R.id.bttom_menu_ll_gd);
+        home_badge = findViewById(R.id.home_badge);
+//        home_badge.setText("100");
+        home_badge.setBadgeCount(0);
+        notice_start_activity = findViewById(R.id.notice_start_activity);
+
+
+
     }
 
     @Override
@@ -351,7 +363,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
 
         mainTopCtiyLl.setOnClickListener(this);
         mainReturnImgLl.setOnClickListener(this);
-
+        notice_start_activity.setOnClickListener(this);
 
     }
 
@@ -418,6 +430,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         SharePrefUtil.removeByKey(mContext, order_islock);
         SharePrefUtil.removeByKey(mContext, order_lockattime);
         SharePrefUtil.removeByKey(mContext, order_isZhuner);
+        SqlUtils.deleteDataAll();
 
     }
 
@@ -761,6 +774,9 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
 //     top_ll.getGlobalVisibleRect(new Rect());
                     showPanel();
                     StatisticsManager.getInstance(mContext).addEventAidl(1133, new HashMap());
+                    break;
+                case R.id.notice_start_activity:
+                    startActivity(new Intent(this,com.aibabel.messagemanage.MainActivity.class));
                     break;
 
             }
@@ -1399,6 +1415,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
                                 // LogUtil.e("qrcode_isAlive " + qrcode_isAlive);
                                 LogUtil.e("RentLocked_fore " + RentLocked_fore);
 
+                                SqlUtils.deleteDataAll();
                                 if (RentLocked_fore) return;
 
                                 Bundle getbundle = msg.getData();
@@ -1455,6 +1472,15 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
                             unlock_ok_clear();  //清除flag等
                             if (loopHandler != null)
                                 loopHandler.sendEmptyMessageDelayed(130, 10000);
+                            break;
+                        case 300:
+                             //接受到文颖的消息
+                            if(msg!=null) {
+                                Bundle getdata =   msg.getData();
+
+
+                            }
+
                             break;
                         default:
                             break;

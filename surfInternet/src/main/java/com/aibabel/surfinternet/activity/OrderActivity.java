@@ -1,11 +1,20 @@
 package com.aibabel.surfinternet.activity;
 
 import android.annotation.SuppressLint;
+import android.content.ComponentName;
+import android.content.Context;
 import android.content.Intent;
+import android.content.ServiceConnection;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.IBinder;
+import android.os.Message;
+import android.os.Messenger;
+import android.os.RemoteException;
+import android.provider.Settings;
 import android.support.annotation.RequiresApi;
 import android.support.constraint.ConstraintLayout;
 import android.support.v7.widget.LinearLayoutManager;
@@ -22,6 +31,7 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.aibabel.surfinternet.MainActivity;
 import com.aibabel.surfinternet.R;
 import com.aibabel.surfinternet.adapter.CommomRecyclerAdapter;
 import com.aibabel.surfinternet.adapter.CommonRecyclerViewHolder;
@@ -74,6 +84,8 @@ public class OrderActivity extends BaseActivity {
     @BindView(R.id.tv_net_help)
     TextView tvNetHelp;
 
+
+
     private CommomRecyclerAdapter adapter;
     private List<OrderitemBean.DataBean> datalist = new ArrayList<>();
     private OrderitemBean orderitemBean;
@@ -118,7 +130,14 @@ public class OrderActivity extends BaseActivity {
             }
         });
 
+        bindMessage();
+    }
 
+    private  void bindMessage(){
+        Intent intent = new Intent();
+        intent.setAction("action.menu.MenuMessengerService");
+        intent.setPackage("com.aibabel.menu");
+        bindService(intent, mServiceConnection, Context.BIND_AUTO_CREATE);
     }
 
     private void initCountry() {
@@ -195,9 +214,22 @@ public class OrderActivity extends BaseActivity {
                 LinearLayout ll_xq = holder.getView(R.id.ll_xq);
                 LinearLayout ll_jihuo = holder.getView(R.id.lin_jihuo);
                 TextView dingdan_zhuyi = holder.getView(R.id.dingdan_zhuyi);
+                LinearLayout ll_channel = holder.getView(R.id.ll_channel);
+                TextView  tv_channel_name = holder.getView(R.id.tv_channel_name);
+
+                LinearLayout ll_starttime = holder.getView(R.id.ll_starttime);
+                TextView  tv_start_time = holder.getView(R.id.tv_start_time);
+
+                LinearLayout ll_stop_time = holder.getView(R.id.ll_stop_time);
+                TextView  tv_stoptime = holder.getView(R.id.tv_stoptime);
+
+
                 int type = ((OrderitemBean.DataBean) o).getState();
                 dingdan.setText(((OrderitemBean.DataBean) o).getChannelSubOrderId());
                 String describe = ((OrderitemBean.DataBean) o).getDescribe();
+                String channel = ((OrderitemBean.DataBean) o).getChannel_name();
+
+
                 Log.e("describe", describe);
                 String chaka = describe.replaceAll("插卡", "");
                 dingdan_zhuyi.setText(chaka);
@@ -206,10 +238,18 @@ public class OrderActivity extends BaseActivity {
                 tv_help.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
+                        Log.e("hjs", "startActivity_APN");
+//                        if(Constans.PRO_VERSION_NUMBER.equalsIgnoreCase("L")) {
+//                            Log.e("hjs", "APN_L");
+//
+//                            startActivity_APN();
+//                        }else
+                            {
                         if (is_onclick) {
                             onClickable(tvNetHelp, is_onclick);
                             startActivity(new Intent(OrderActivity.this, ViewPagerActivity.class));
                             is_onclick = false;
+                        }
                         }
                     }
                 });
@@ -217,26 +257,30 @@ public class OrderActivity extends BaseActivity {
                 tv_xuzu.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
+
+                        Log.e("hjs","pro:"+Constans.PRO_VERSION_NUMBER);
+                       if(Constans.PRO_VERSION_NUMBER.equalsIgnoreCase("L")) {
+                           startacitivy_rent(1,channel);
+                       }else{
+
+
                         if (NetUtil.isNetworkAvailable(OrderActivity.this)) {
                             if (is_onclick) {
                                 onClickable(tvPurchase, is_onclick);
-
-
                                 Intent intent = new Intent(OrderActivity.this, TrandActivity.class);
-
-
                                 startActivity(intent);
                                 is_onclick = false;
                             }
-
 
                         } else {
                             clOrder.setVisibility(View.GONE);
                             rlNoNet.setVisibility(View.VISIBLE);
 
                         }
+                       }
 
                     }
+
                 });
 
                 switch (Constans.PRO_VERSION_NUMBER) {
@@ -257,6 +301,7 @@ public class OrderActivity extends BaseActivity {
                     ll_xq.setVisibility(View.VISIBLE);
                     String days = ((OrderitemBean.DataBean) o).getDays();
                     String copies = ((OrderitemBean.DataBean) o).getCopies();
+
                     Integer days1 = Integer.valueOf(days);
                     Integer copies1 = Integer.valueOf(copies);
                     int days2 = Math.multiplyExact(days1, copies1);
@@ -269,6 +314,8 @@ public class OrderActivity extends BaseActivity {
                         tv_jihuozhuantai.setText(getResources().getString(R.string.weijihuo));
                         ll_jihuo.setVisibility(View.VISIBLE);
                         tv_jihuo_help.setVisibility(View.VISIBLE);
+                        if(ll_channel!=null)ll_channel.setVisibility(View.VISIBLE);
+                        tv_channel_name.setText(channel);
                         tv_jihuo_help.setText(getResources().getString(R.string.jihuo_help));
                         tv_jihuo_help.setTextColor(getColor(R.color.yellow));
                     }
@@ -278,6 +325,18 @@ public class OrderActivity extends BaseActivity {
                     dingdan_data.setText(((OrderitemBean.DataBean) o).getStopTime());
                     tv_dingdan_number.setText(getResources().getString(R.string.dingdan) + ((OrderitemBean.DataBean) o).getSkuName());
                     ll_jihuo.setVisibility(View.GONE);
+
+
+                    if(ll_channel!=null)ll_channel.setVisibility(View.VISIBLE);
+                    tv_channel_name.setText(channel);
+
+                    if(ll_starttime!=null)ll_starttime.setVisibility(View.VISIBLE);
+                    tv_start_time.setText(((OrderitemBean.DataBean) o).getStartTime());
+
+                    if(ll_stop_time!=null)ll_stop_time.setVisibility(View.VISIBLE);
+                    tv_stoptime.setText(((OrderitemBean.DataBean) o).getStopTime());
+
+
                     tv_jihuozhuantai.setText(getResources().getString(R.string.yijihuo));
                     tv_jihuozhuantai.setTextColor(getColor(R.color.green));
                     tv_jihuo_help.setVisibility(View.GONE);
@@ -290,6 +349,31 @@ public class OrderActivity extends BaseActivity {
         ;
         rvDingdan.setAdapter(adapter);
     }
+
+
+    public void startacitivy_rent(int isZhuner,String channelName){
+        try {
+            sendtoServer(channelName);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void startActivity_APN(){
+//        Intent intent =  new Intent(android.provider.Settings.ACTION_APN_SETTINGS);
+////        //intent.setAction("android.intent.action.INSERT");
+////        startActivity(intent);
+//
+//        ComponentName componentName = new ComponentName("com.android.settings", "com.android.settings.Settings");
+//        intent.setComponent(componentName);
+//        //intent.putExtra("", "");//这里Intent传值
+//        startActivity(intent);
+
+//        Intent intent = new Intent();
+//        intent.setClassName("com.android.settings", "com.android.settings.ApnSettings");
+//        startActivity(intent);
+    }
+
 
     public static String getDateDelay(long data, int delay) {
         long temp = data + 86400000 * delay;
@@ -364,4 +448,106 @@ public class OrderActivity extends BaseActivity {
         return date.getTime();
     }
 
+
+    private static final int MSG_TO_SERVER = 20;
+    private static final int MSG_FROM_SERVER = 21;
+
+    private Message mMessage;
+    private Messenger mMessenger;
+    @SuppressLint("HandlerLeak")
+    private Messenger getMessenger = new Messenger(new Handler() {
+        @Override
+        public void handleMessage(Message msg) {
+            if (msg == null) return;
+            if (msg.what == MSG_FROM_SERVER) {
+                Log.e("hjs2", "MSG_FROM_SERVER");
+                try {
+                    Bundle bundle = msg.getData();
+
+                    int iszhuner = bundle.getInt("iszhuner",-1);
+                   String  spchannel = bundle.getString("channel");
+                    Log.e("hjs2", ""+spchannel+":"+iszhuner);
+
+                    rentdialog(iszhuner,spchannel);
+
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+            super.handleMessage(msg);
+        }
+    });
+    private final ServiceConnection mServiceConnection = new ServiceConnection() {
+        @Override
+        public void onServiceConnected(ComponentName name, IBinder service) {
+            mMessenger = new Messenger(service);
+            mMessage = Message.obtain(null, 0);
+            mMessage.replyTo = getMessenger;
+        }
+
+        @Override
+        public void onServiceDisconnected(ComponentName name) {
+        }
+    };
+
+    private  void sendtoServer(String channel){
+        if (mMessenger != null) {
+            Log.e("hjs", "order开始发送：");
+            mMessage.what = MSG_TO_SERVER;
+            Bundle bundle = new Bundle();
+            bundle.putString("channel", ""+channel);
+            mMessage.setData(bundle);
+            try {
+                mMessenger.send(mMessage);
+            } catch (RemoteException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    private   final String bunder_iszhuner = "zhuner";
+    private  final String bunder_qudao = "kefu";
+    private  final String order_channelName = "order_channelName";
+
+    /**
+     * 跳转
+     */
+    private void rentdialog(int isZhuner,String channelName){
+
+        try {
+            Message message = new Message();
+            Bundle bun = new Bundle();
+
+            if((isZhuner==1)) {
+                bun.putString(bunder_iszhuner, "zhuner");
+            }else if(isZhuner==0) {
+                bun.putString(bunder_qudao,channelName);
+            }else{
+                if(TextUtils.isEmpty(channelName)){
+                    bun.putString(bunder_iszhuner, "zhuner");
+                    bun.putString(bunder_qudao,"");
+                }else{
+                    bun.putString(bunder_iszhuner, "zz");
+                    bun.putString(bunder_qudao,channelName);
+                }
+            }
+            message.setData(bun);
+            Intent keepuse =   new Intent(this, RentKeepUseActivity.class);
+            keepuse.putExtras(bun);
+            startActivity(keepuse);
+
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        try{
+            unbindService(mServiceConnection);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+    }
 }

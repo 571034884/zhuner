@@ -30,6 +30,7 @@ public class MenuMessengerService extends Service {
 
     private static final int msg_from_wy_gotoReny = 10;
 
+    private static final int msg_gotoRent = 20;
 
     myMessageHander msg_object = new myMessageHander();
 
@@ -67,11 +68,31 @@ public class MenuMessengerService extends Service {
                     case msg_from_wy_gotoReny:   //推送清除订单
                         try{
                             if(MainActivity.loopHandler!=null) MainActivity.loopHandler.sendEmptyMessage(130);
+                        }catch (Exception e){
+                            e.printStackTrace();
+                        }
+                        break;
+                    case msg_gotoRent:
+                        try{
+                            String spchannel = SharePrefUtil.getString(context, MainActivity.order_channelName, "");
+                            int iszhuner =  SharePrefUtil.getInt(context, MainActivity.order_isZhuner, -1);
+                            LogUtil.e("hjs", "spchannel = " + spchannel+" iszhuner: "+iszhuner);
+
+                            Messenger messenger = msg.replyTo;
+                            Message message = Message.obtain(null, 21);
+                            Bundle bundle = new Bundle();
+                            bundle.putString("channel", "" + spchannel);
+                            bundle.putInt("iszhuner",iszhuner);
+                            message.setData(bundle);
+                            messenger.send(message);
+
+                          // if(MainActivity.loopHandler!=null) MainActivity.loopHandler.sendEmptyMessage(300);
+
+
 
                         }catch (Exception e){
                             e.printStackTrace();
                         }
-
                         break;
                     default:
                         break;

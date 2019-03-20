@@ -91,6 +91,7 @@ dependencies {
     implementation 'com.liulishuo.filedownloader:library:1.7.5'
     implementation files('libs/pinyin4j-2.5.0.jar')
     implementation 'com.zhy:flowlayout-lib:1.0.3'
+    compile project(path: ':badgelibrary')
 
 }
 

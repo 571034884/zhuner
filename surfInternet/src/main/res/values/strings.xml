@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">全球上网</string>
+    <string name="app_name">租赁订单</string>
 
     <string name="goumaitaochang">购买套餐</string>
     <string name="shiyongzhuyi">使用注意:</string>
@@ -14,6 +14,16 @@
     <string name="shangwangshuoming">上网说明</string>
     <string name="goumaitianshu"> 购买数量（单位：天）</string>
     <string name="lijikaitong">立即开通</string>
+
+    <string name="channelname">购买渠道</string>
+    <string name="close">关闭</string>
+    <string name="zhunerkefu">请联系准儿翻译机客服进行续租,\n扫描二维码或直接拨打客户电话</string>
+    <string name="hotline_tel">400-9966525</string>
+    <string name="qinlianxi_str">请联系</string>
+    <string name="kefu_keepuse">客服进行续租</string>
+
+    <string name="activi_starttime">生效时间</string>
+    <string name="activi_endtime">截止时间</string>
 
     <string name="day_num1">该产品下单天数不支持30天以上，请修改</string>
     <string name="day_num2">该产品下单天数最小为1天，请修改</string>
