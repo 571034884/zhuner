@@ -60,8 +60,8 @@ public class FYTApplication extends BaseApplication {
     @Override
     public void setServerUrlAndInterfaceGroup() {
         //设置服务器地址
-        OkGoUtil.setDefualtServerUrl("http://abroad.api.joner.aibabel.cn:7001");
-//        OkGoUtil.setDefualtServerUrl("http://39.107.238.111:7001");
+//        OkGoUtil.setDefualtServerUrl("http://abroad.api.joner.aibabel.cn:7001");
+        OkGoUtil.setDefualtServerUrl("http://39.107.238.111:7001");
         OkGoUtil.setDefaultInterfaceGroup("/v1/baiduMap/");
         //如果需要其他接口组
 //        OkGoUtil.addOtherInterfaceGroup("/v1/destination/");

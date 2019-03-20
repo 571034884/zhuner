@@ -12,6 +12,7 @@ import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.aibabel.baselibrary.utils.DeviceUtils;
 import com.aibabel.download.offline.adapter.MyAdapter;
 import com.aibabel.download.offline.adapter.ViewHolder;
 
@@ -186,9 +187,15 @@ public class MainActivity extends BaseActivity {
             if (adapter!=null) {
                 adapter.fresh(menuList);
             }
-        }else{
-
-
+        }else if (DeviceUtils.getSystem() == DeviceUtils.System.FLY_TAIWAN){
+            menuList=new ArrayList(){{
+                add("yyfy_"+MyApplication.mContext.getString(R.string.yuyinfanyi));
+                add("jqdl_"+MyApplication.mContext.getString(R.string.jingqudaolan));
+            }};
+            if (adapter!=null) {
+                adapter.fresh(menuList);
+            }
+        } else{
             if (CommonUtils.getLocal(mContext).equals("zh_CN")) {
                 if (menuList.size()<4) {
                     menuList=new ArrayList(){{
@@ -201,8 +208,7 @@ public class MainActivity extends BaseActivity {
                         adapter.fresh(menuList);
                     }
                 }
-
-            } else {
+            }else{
                 if (menuList.size()!=2) {
                     menuList=new ArrayList(){{
                         add("yyfy_"+MyApplication.mContext.getString(R.string.yuyinfanyi));

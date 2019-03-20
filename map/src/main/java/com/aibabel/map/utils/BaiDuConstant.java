@@ -34,4 +34,8 @@ public class BaiDuConstant {
 
     //后台定位时间间隔
     public static final int locationService = 1000;
+
+    //用于设置个性化地图的样式文件
+    public static final String CUSTOM_FILE_NAME = "custom_map_config.json";
+
 }

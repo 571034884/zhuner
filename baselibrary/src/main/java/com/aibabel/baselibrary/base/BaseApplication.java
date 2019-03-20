@@ -13,7 +13,9 @@ import com.aibabel.baselibrary.http.OkGoUtil;
 import com.aibabel.baselibrary.imageloader.ImageLoader;
 import com.aibabel.baselibrary.imageloader.object.GlideLoader;
 import com.aibabel.baselibrary.impl.IDataManager;
+import com.aibabel.baselibrary.impl.IServerManager;
 import com.aibabel.baselibrary.mode.DataManager;
+import com.aibabel.baselibrary.mode.ServerManager;
 import com.aibabel.baselibrary.utils.CommonUtils;
 import com.aibabel.baselibrary.utils.ProviderUtils;
 import com.lzy.okgo.OkGo;
@@ -110,7 +112,9 @@ public abstract class BaseApplication extends Application {
         XIPC.init(this);
 //        XIPC.debug(BuildConfig.DEBUG);
         XIPC.register(DataManager.class);
+        XIPC.register(ServerManager.class);
         XIPC.register(IDataManager.class);
+        XIPC.register(IServerManager.class);
     }
 
     public void initStatisticsConfig() {
