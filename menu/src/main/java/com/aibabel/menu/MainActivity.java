@@ -4,6 +4,7 @@ import android.animation.ObjectAnimator;
 import android.annotation.TargetApi;
 import android.app.Activity;
 import android.app.ActivityOptions;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
@@ -43,18 +44,24 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextClock;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.aibabel.aidlaar.StatisticsManager;
 import com.aibabel.baselibrary.http.BaseCallback;
 import com.aibabel.baselibrary.http.OkGoUtil;
 import com.aibabel.baselibrary.mode.DataManager;
+import com.aibabel.baselibrary.mode.ServerManager;
 import com.aibabel.baselibrary.utils.FastJsonUtil;
 import com.aibabel.baselibrary.utils.ProviderUtils;
+import com.aibabel.baselibrary.utils.ServerKeyUtils;
 import com.aibabel.baselibrary.utils.SharePrefUtil;
 import com.aibabel.baselibrary.utils.ToastUtil;
 import com.aibabel.menu.app.MyApplication;
 import com.aibabel.menu.base.BaseActivity;
+import com.aibabel.menu.bean.Domain;
 import com.aibabel.menu.bean.MenuDataBean;
+import com.aibabel.menu.bean.PublicBean;
+import com.aibabel.menu.bean.ServerBean;
 import com.aibabel.menu.bean.SyncOrder;
 import com.aibabel.menu.bitmap.MyTransformtion;
 import com.aibabel.menu.broadcast.NetBroadcastReceiver;
@@ -66,6 +73,7 @@ import com.aibabel.menu.rent.RentLockedActivity;
 import com.aibabel.menu.util.AppStatusUtils;
 import com.aibabel.menu.util.CalenderUtil;
 import com.aibabel.menu.util.CommonUtils;
+import com.aibabel.menu.util.Constans;
 import com.aibabel.menu.util.DetectUtil;
 import com.aibabel.menu.util.DoubleClickUtil;
 import com.aibabel.menu.util.FileUtil;
@@ -77,6 +85,7 @@ import com.aibabel.menu.util.LogUtil;
 import com.aibabel.menu.util.NetUtil;
 import com.aibabel.menu.util.RenUtils;
 import com.aibabel.menu.util.SPUtils;
+import com.aibabel.menu.util.ServerUtils;
 import com.aibabel.menu.util.UrlConstants;
 import com.aibabel.menu.view.MagicTextView;
 import com.bumptech.glide.Glide;
@@ -88,10 +97,15 @@ import com.lzy.okgo.callback.StringCallback;
 import com.lzy.okgo.model.Response;
 import com.umeng.analytics.MobclickAgent;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.IOException;
 import java.lang.ref.WeakReference;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.TimeZone;
 
 import butterknife.BindView;
 
@@ -216,7 +230,8 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         L.e("MainActivity  onCreate========================");
         LogUtil.e("MainActivity_onCreate");
 //        DBUtils.copyAssetsToSd(mContext,"index.html");
-
+        //根据时区选择服务器
+        initService();
         //城市切换后 更新界面
         upListener = new UpdateMenu() {
 
@@ -389,9 +404,9 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
                 @Override
                 public void run() {
                     init_neveruser();
+                    Log.e("SERVICE_FUWU","开启网络监听");
                     requestNetwork();
-
-                   // boot_start_lock();
+                    // boot_start_lock();
                     lock90day();
                 }
             }).start();
@@ -785,7 +800,6 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
 
             @Override
             public boolean onTouch(View v, MotionEvent event) {
-                // TODO Auto-generated method stub
                 switch (event.getAction()) {
 
                     case MotionEvent.ACTION_DOWN:
@@ -1336,7 +1350,6 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         }
 
     }
-
     @Override
     protected void onStart() {
         super.onStart();
@@ -1355,7 +1368,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
             }
             clearALlsharePreutil();
             init_neveruser();
-
+            //TODO 清除服务器域名
             LogUtil.e("onRestart = RentLocked_fore");
         } catch (Exception e) {
             e.printStackTrace();
@@ -1597,6 +1610,8 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
                     LogUtil.v("onAvailable wifi is connected: " + networkinfo.isConnected());
                 }
 
+                Log.e("SERVICE_FUWU","监听到当前有网");
+                getInternetService();
                 if (loopHandler != null) loopHandler.sendEmptyMessageDelayed(130, 10000);
             }
 
@@ -1606,6 +1621,8 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
                 LogUtil.v("onLost(Network network)  ");
 
                 NetworkInfo networkinfo = connectivityManager.getActiveNetworkInfo();
+
+
                 int type = ConnectivityManager.TYPE_DUMMY;
                 if (networkinfo != null) {
                     type = networkinfo.getType();
@@ -1620,6 +1637,82 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
 
             }
         });
+
+    }
+
+
+    /**
+     * 判断时区 进行服务器筛选
+     */
+    private void initService() {
+        String timerID = TimeZone.getDefault().getID();
+        if (timerID.equals("Asia/Shanghai")){
+            Constans.HOST_SERVER = Constans.HOST_SERVER_CH;
+        }else{
+            Constans.HOST_SERVER = Constans.HOST_SERVER_EN;
+        }
+        Log.e("SERVICE_FUWU","时区："+timerID+"----选择服务器:"+Constans.HOST_SERVER);
+    }
+
+
+    /**
+     * 1.获取服务器域名
+     * 2.存储
+     * 3.开启定时轮询
+     *      1.判断容错是否达到3次
+     *          1.达到三次
+     *              判断时区，切换域名   容错清零
+     *          2.未达到三次
+     *              判断时区，域名不做变动     超时容错清零
+     *
+     */
+    private void getInternetService() {
+        Log.e("SERVICE_FUWU","开始请求域名接口");
+        if (!CommonUtils.isAvailable(this)) {
+            Log.e("SERVICE_FUWU","当前网络不可用");
+            return;
+        }
+        Log.e("SERVICE_FUWU", "URL:"+Constans.GET_HOST_SERVER);
+        Log.e("SERVICE_FUWU", "sn:"+CommonUtils.getSN());
+        Log.e("SERVICE_FUWU", "no:"+CommonUtils.getRandom());
+        Log.e("SERVICE_FUWU", "sl:"+CommonUtils.getLocal(mContext));
+
+        OkGo.<String>get(Constans.GET_HOST_SERVER)
+                .tag(this)
+                .params("sn",CommonUtils.getSN())
+                .params("no",CommonUtils.getRandom())
+                .params("sl",CommonUtils.getLocal(mContext))
+                .execute(new StringCallback() {
+                    @Override
+                    public void onSuccess(Response<String> response) {
+                        if (!TextUtils.isEmpty(response.body().toString())){
+                            Log.e("SERVICE_FUWU", "onSuccess:"+response.body().toString());
+                            saveService(response.body().toString());
+                        }else{
+                            //TODO 获取服务列表空
+                            Log.e("SERVICE_FUWU", "onSuccess:数据空");
+                        }
+                    }
+
+                    @Override
+                    public void onError(Response<String> response) {
+                        super.onError(response);
+                        Log.e("SERVICE_FUWU", "onError:"+response.getException().toString());
+                    }
+                });
+
+    }
+
+    private void saveService(String response) {
+        try{
+            PublicBean bean =  FastJsonUtil.changeJsonToBean(response, PublicBean.class);
+            //备份所有服务器数据，使用,分割
+            ServerUtils.saveAllServer(bean.data.server);
+            ServerManager.getInstance().setPingServerError(ServerKeyUtils.serverKeyChatJoner);
+            //TODO 任务
+        }catch (Exception e){
+            ToastUtil.showShort(mContext,"解析服务器列表出错，请重启设备");
+        }
 
     }
 
