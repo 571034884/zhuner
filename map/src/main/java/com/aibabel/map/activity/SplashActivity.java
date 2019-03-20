@@ -78,7 +78,7 @@ public class SplashActivity extends BaseActivity implements View.OnClickListener
     private void onSwitchView() {
 //        Intent intent = new Intent(mContext, TestActivity.class);
         Intent intent = new Intent(mContext, MainActivity.class);
-//        Intent intent = new Intent(mContext, LocationActivity.class);
+//        Intent intent = new Intent(mContext, MapTestActivity.class);
         startActivity(intent);
         this.finish();
     }

@@ -12,6 +12,7 @@ import android.text.InputFilter;
 import android.text.Spanned;
 import android.text.TextUtils;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
@@ -119,6 +120,7 @@ public class SearchAddressActivity extends MapBaseActivity implements SensorEven
     SearchAddressAdapter addressAdapter = null;
     CollectStarBean collectStarBean = null;
     BDLocation mLocation;
+    private String lat,lon;
 
     @Override
     public int getLayoutMap(Bundle bundle) {

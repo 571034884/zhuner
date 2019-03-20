@@ -3,6 +3,7 @@ package com.aibabel.map;
 import android.animation.Animator;
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.PointF;
@@ -27,6 +28,7 @@ import android.widget.Toast;
 import android.widget.ZoomControls;
 
 import com.aibabel.aidlaar.StatisticsManager;
+import com.aibabel.baselibrary.base.BaseApplication;
 import com.aibabel.baselibrary.http.BaseCallback;
 import com.aibabel.baselibrary.http.OkGoUtil;
 import com.aibabel.baselibrary.impl.IDataManager;
@@ -41,6 +43,7 @@ import com.aibabel.map.base.MapBaseActivity;
 import com.aibabel.map.bean.BusinessBean;
 import com.aibabel.map.bean.LocationBean;
 import com.aibabel.map.bean.RouteBean;
+import com.aibabel.map.bean.search.AddressResult;
 import com.aibabel.map.utils.ApiConstant;
 import com.aibabel.map.utils.BaiDuConstant;
 import com.aibabel.map.utils.BaiDuUtil;
@@ -69,6 +72,12 @@ import com.xuexiang.xipc.XIPC;
 import com.xuexiang.xipc.core.channel.IPCListener;
 import com.xuexiang.xipc.core.channel.IPCService;
 
+import org.litepal.LitePal;
+
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -101,6 +110,8 @@ public class MainActivity extends MapBaseActivity implements SensorEventListener
     CheckRadioButton mShop;
     @BindView(R.id.cb_metro)
     CheckRadioButton mMetro;
+    @BindView(R.id.main_close_app)
+    ImageView mCloseApp;
 
     BaiduMap mBaiduMap;
 
@@ -264,7 +275,12 @@ public class MainActivity extends MapBaseActivity implements SensorEventListener
                 }
             }
         });
-
+        mCloseApp.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                BaseApplication.exit();
+            }
+        });
     }
 
     @Override
@@ -276,6 +292,7 @@ public class MainActivity extends MapBaseActivity implements SensorEventListener
 //        Log.e("MainActivity-LatLon", mLocation.getLatitude() + "," + mLocation.getLongitude());
         setLocData();
         if (isFirstLoc) {
+            mScenic.setChecked(true);
             isFirstLoc = false;
             LatLng ll = new LatLng(location.getLatitude(), location.getLongitude());
 //            LatLng ll = new LatLng(35.714764, 139.796665);
@@ -348,12 +365,18 @@ public class MainActivity extends MapBaseActivity implements SensorEventListener
         double lat = markers.get(currentId).getPosition().latitude;
         double lng = markers.get(currentId).getPosition().longitude;
         changeZoom(lat, lng);
-
-        tv_current.setText((currentId + 1) + "");
+        if(currentId+1>10){
+            tv_current.setText("");
+        }else{
+            tv_current.setText((currentId + 1) + "");
+        }
         BitmapDescriptor curMarker = BitmapDescriptorFactory.fromView(curView);
         markers.get(currentId).setIcon(curMarker);
-
-        tv_pre.setText((preId + 1) + "");
+        if(preId+1>10){
+            tv_pre.setText("");
+        }else{
+            tv_pre.setText((preId + 1) + "");
+        }
         BitmapDescriptor preMarker = BitmapDescriptorFactory.fromView(preView);
         markers.get(preId).setIcon(preMarker);
         //在地图上批量添加
@@ -411,8 +434,23 @@ public class MainActivity extends MapBaseActivity implements SensorEventListener
                 }
 
                 StatisticsManager.getInstance(mContext).addEventAidl( 1206, map);
-
                 Intent intent = new Intent(mContext, SearchAddressActivity.class);
+                //TODO 存储当前位置
+                List<AddressResult> resultList = LitePal.findAll(AddressResult.class, true);
+                if (resultList.size() == 0){
+                    AddressResult result = new AddressResult();
+                    result.setAddr(mLocation.getAddrStr());
+                    result.setCity(mLocation.getCity());
+                    result.setCityid(mLocation.getCityCode());
+                    result.setDistrict(mLocation.getDistrict());
+                    result.setName("我的位置");
+                    result.setProvince(mLocation.getProvince());
+                    result.setLocation(new LocationBean(mLocation.getLatitude(),mLocation.getLongitude()));
+                    result.setUid("");
+                    result.setTag("");
+                    result.save();
+                    result.getLocation().save();
+                }
                 startActivity(intent);
                 overridePendingTransition(R.anim.fade_out, R.anim.fade_in);
                 break;
@@ -583,9 +621,9 @@ public class MainActivity extends MapBaseActivity implements SensorEventListener
                 View view = LayoutInflater.from(MainActivity.this).inflate(R.layout.marker, null);
                 TextView tv_index = view.findViewById(R.id.tv_index);
                 ImageView iv_marker = view.findViewById(R.id.iv_marker);
-                tv_index.setText((i + 1) + "");
-
-
+                if (i < 10){
+                    tv_index.setText((i + 1) + "");
+                }
                 switch (bean.getTagType()) {
                     case "cate":
                         iv_marker.setImageResource(R.mipmap.marker_cate_normal);

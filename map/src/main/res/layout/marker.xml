@@ -21,7 +21,7 @@
         android:layout_width="@dimen/x80"
         android:layout_height="@dimen/y80"
         android:gravity="center"
-        android:text="1"
+        android:text=""
         android:paddingBottom="@dimen/y15"
         android:textColor="@color/c_ff"
         android:textSize="@dimen/s14"
