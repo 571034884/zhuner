@@ -13,6 +13,7 @@ import android.util.Log;
 import android.view.WindowManager;
 
 import com.aibabel.aidlaar.StatisticsManager;
+import com.aibabel.baselibrary.utils.XIPCUtils;
 import com.aibabel.translate.BuildConfig;
 import com.aibabel.translate.MainActivity;
 import com.aibabel.translate.offline.ChangeOffline;
@@ -29,6 +30,7 @@ import com.lzy.okgo.model.Response;
 import com.taobao.sophix.SophixManager;
 import com.umeng.analytics.MobclickAgent;
 import com.umeng.commonsdk.UMConfigure;
+import com.xuexiang.xipc.XIPC;
 import com.xuhao.android.libsocket.sdk.OkSocket;
 
 import org.json.JSONObject;
@@ -124,7 +126,6 @@ public class BaseApplication extends LitePalApplication {
         rexiufu();
         //
         StatisticsManager.getInstance(this).setConfig(getPackageName(),BuildConfig.VERSION_NAME);
-
     }
 
     private void initCountryLanguage() {

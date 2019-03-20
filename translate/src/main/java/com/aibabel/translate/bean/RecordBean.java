@@ -1,14 +1,14 @@
 package com.aibabel.translate.bean;
 
 
-import org.litepal.crud.DataSupport;
+import org.litepal.crud.LitePalSupport;
 
 /**
  * 作者：wuqinghua_fyt on 2018/10/15 18:07
  * 功能：
  * 版本：1.0
  */
-public class RecordBean extends DataSupport {
+public class RecordBean extends LitePalSupport {
 
     private int id ;
     private String from;

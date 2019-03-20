@@ -19,8 +19,14 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 
+import com.aibabel.baselibrary.impl.IDataManager;
+import com.aibabel.baselibrary.utils.ServerKeyUtils;
+import com.aibabel.baselibrary.utils.XIPCUtils;
 import com.aibabel.translate.R;
 import com.aibabel.translate.app.BaseApplication;
+import com.xuexiang.xipc.XIPC;
+import com.xuexiang.xipc.core.channel.IPCListener;
+import com.xuexiang.xipc.core.channel.IPCService;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -37,12 +43,14 @@ public class CommonUtils {
 
     /*获取当前定位城市和该地区的host地址*/
     private static final Uri CITY_URI = Uri.parse("content://com.aibabel.locationservice.provider.AibabelProvider/aibabel_location");
+    private static String ip_host  = "abroad.api.function.aibabel.cn";
 
     /**
      * 获取当前地区的host地址
      *
      * @return
      */
+    @Deprecated
     public static String getHost() {
         Cursor cursor = BaseApplication.getContext().getContentResolver().query(CITY_URI, null, null, null, null);
         String ip_host = "abroad.api.function.aibabel.cn";
@@ -77,7 +85,40 @@ public class CommonUtils {
 
 
     /**
+     * 获取当前地区的host地址
+     *
+     * @return
+     */
+    public synchronized static String getTranslateHost() {
+        try {
+            synchronized (ip_host) {
+                XIPC.connectApp(BaseApplication.getContext(), XIPCUtils.XIPC_MENU_NEW);
+                XIPC.setIPCListener(new IPCListener() {
+                    @Override
+                    public void onIPCConnected(Class<? extends IPCService> service) {
+                        IDataManager dm = XIPC.getInstance(IDataManager.class);
+                        ip_host = dm.getString(ServerKeyUtils.serverKeyTranslateFunction);
+                        Log.e("返回的：ip_host", ip_host + "-------");
+                    }
+                });
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+
+        if (TextUtils.isEmpty(ip_host)) {
+            Log.d("最终的：ip_host", ip_host + "-------");
+            ip_host = "abroad.api.function.aibabel.cn";
+        }
+        return ip_host;
+
+    }
+
+    /**
      * 获取热修复地址
+     *
      * @return
      */
     public static String getHotFixHost() {
@@ -186,10 +227,10 @@ public class CommonUtils {
      * @param context
      * @return
      */
-    public static  Map<String,String> getLatAndLng(Context context) {
+    public static Map<String, String> getLatAndLng(Context context) {
         Cursor cursor = context.getContentResolver().query(CITY_URI, null, null, null, null);
 
-        Map<String,String> map = new HashMap<>();
+        Map<String, String> map = new HashMap<>();
         try {
             if (cursor != null && cursor.getCount() > 0) {
                 cursor.moveToFirst();
@@ -197,8 +238,8 @@ public class CommonUtils {
                 int longitudeIndex = cursor.getColumnIndex("longitude");
                 double lat = cursor.getDouble(latitudeIndex);
                 double lng = cursor.getDouble(longitudeIndex);
-                map.put("lat",lat+"");
-                map.put("lng",lng+"");
+                map.put("lat", lat + "");
+                map.put("lng", lng + "");
             } else {
                 Log.d("TAG", "：没有获取到定位信息");
             }
@@ -261,19 +302,19 @@ public class CommonUtils {
      * @return
      */
     public static String getSN() {
-        String sn="0000000000000000";
+        String sn = "0000000000000000";
         try {
             Class clz = Class.forName("android.os.SystemProperties");
-            Method method = clz.getMethod("get", String.class,String.class);
-            sn = (String) method.invoke(clz,"gsm.serial", "0000000000000000");
+            Method method = clz.getMethod("get", String.class, String.class);
+            sn = (String) method.invoke(clz, "gsm.serial", "0000000000000000");
             sn.trim();
             if (sn.indexOf(" ") != -1) {
                 sn = sn.substring(0, sn.indexOf(" "));
             }
-            Log.e("CommonUtils","sn="+sn);
+            Log.e("CommonUtils", "sn=" + sn);
         } catch (Exception e) {
             e.printStackTrace();
-            Log.e("CommonUtils",e.getMessage());
+            Log.e("CommonUtils", e.getMessage());
         }
 
         return sn;
