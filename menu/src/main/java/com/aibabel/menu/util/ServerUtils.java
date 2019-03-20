@@ -6,6 +6,7 @@ import com.aibabel.baselibrary.mode.DataManager;
 import com.aibabel.baselibrary.utils.ServerKeyUtils;
 import com.aibabel.menu.bean.Domain;
 import com.aibabel.menu.bean.ServerBean;
+import com.tencent.mmkv.MMKV;
 
 import java.util.List;
 import java.util.TimeZone;
@@ -36,8 +37,9 @@ public class ServerUtils {
         }
         return 0;
     }
-
+    public static MMKV mk = null;
     public static void saveAllServer(ServerBean serverBean){
+        mk = MMKV.defaultMMKV();
         DataManager.getInstance().setSaveString("_com_aibabel_alliedclock_joner",getSerVerInfo(serverBean.default_com_aibabel_alliedclock_joner, ServerKeyUtils.serverKeyAlliedClockJoner));
         DataManager.getInstance().setSaveString("_com_aibabel_chat_joner",getSerVerInfo(serverBean.default_com_aibabel_chat_joner,ServerKeyUtils.serverKeyChatJoner));
         DataManager.getInstance().setSaveString("_com_aibabel_coupon",getSerVerInfo(serverBean.default_com_aibabel_coupon,ServerKeyUtils.serverKeyAibabelCoupon));
@@ -90,8 +92,10 @@ public class ServerUtils {
      */
     public static void saveDefaultService(String infos, String key) {
         String[] infosServer = infos.split(",");
-        DataManager.getInstance().setSaveString(key,infosServer[ServerUtils.getTimerType()]);
-        Log.e("SERVICE_FUWU","当前APP存储的域名"+key+":"+DataManager.getInstance().getString(key));
+        if (mk != null){
+            mk.encode(key,infosServer[ServerUtils.getTimerType()]);
+        }
+        Log.e("SERVICE_FUWU","当前APP存储的域名MMKV--:"+key+":"+mk.decodeString(key));
     }
 
 }

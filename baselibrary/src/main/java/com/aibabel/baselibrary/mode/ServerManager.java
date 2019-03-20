@@ -22,6 +22,7 @@ import com.aibabel.baselibrary.impl.IDataManager;
 import com.aibabel.baselibrary.impl.IServerManager;
 import com.aibabel.baselibrary.utils.SharePrefUtil;
 import com.aibabel.baselibrary.utils.ToastUtil;
+import com.tencent.mmkv.MMKV;
 import com.xuexiang.xipc.annotation.ClassName;
 import com.xuexiang.xipc.annotation.MethodName;
 import com.xuexiang.xipc.annotation.Singleton;
@@ -137,11 +138,15 @@ public class ServerManager implements IServerManager {
                     String[] twoServer = allServer[2].split(":");
                     boolean s = pingServer(oneServer[0], twoServer[0]);
                     if (s){
-                        SharePrefUtil.saveString(getContext(),key,allServer[1]);
-                        Log.e("SERVICE_FUWU", "当前服务器："+allServer[1]+","+SharePrefUtil.getString(getContext(),key,""));
+                        MMKV mmkv = MMKV.defaultMMKV();
+                        Log.e("SERVICE_FUWU", "当前服务器11222233333："+mmkv.decodeString(key));
+                        mmkv.encode(key,allServer[1]);
+                        Log.e("SERVICE_FUWU", "当前服务器："+mmkv.decodeString(key));
                     }else{
-                        SharePrefUtil.saveString(getContext(),key,allServer[2]);
-                        Log.e("SERVICE_FUWU", "当前服务器："+allServer[2]+","+SharePrefUtil.getString(getContext(),key,""));
+                        MMKV mmkv = MMKV.defaultMMKV();
+                        Log.e("SERVICE_FUWU", "当前服务器44445555666："+mmkv.decodeString(key));
+                        mmkv.encode(key,allServer[2]);
+                        Log.e("SERVICE_FUWU", "当前服务器11222233333："+mmkv.decodeString(key));
                     }
                 } else if (allServer.length == 2) {
                     Log.e("SERVICE_FUWU", "国内没有备用服务器");

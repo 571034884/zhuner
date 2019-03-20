@@ -23,6 +23,7 @@ import com.orhanobut.logger.AndroidLogAdapter;
 import com.orhanobut.logger.FormatStrategy;
 import com.orhanobut.logger.Logger;
 import com.orhanobut.logger.PrettyFormatStrategy;
+import com.tencent.mmkv.MMKV;
 import com.umeng.analytics.MobclickAgent;
 import com.umeng.commonsdk.UMConfigure;
 import com.xuexiang.xipc.XIPC;
@@ -102,7 +103,7 @@ public abstract class BaseApplication extends Application {
         initImageLoaderConfig();
         initStatisticsConfig();
         initXipc();
-
+        MMKV.initialize(this);
     }
 
     /**
