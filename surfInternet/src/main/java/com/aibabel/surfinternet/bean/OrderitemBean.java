@@ -61,11 +61,22 @@ public class OrderitemBean extends BaseBean implements Serializable{
         private String Describe;
         private String OrderIdPay;
         private int PayState;
-        private String CreatedAt;
+        private String CreatedAt;        //下单时间
         private int State;
         private String days;
         private String orderFrom;
+        private String channel_name;   //渠道名称
 
+
+
+
+        public String getChannel_name() {
+            return channel_name;
+        }
+
+        public void setChannel_name(String channel_name) {
+            this.channel_name = channel_name;
+        }
         public int getId() {
             return id;
         }

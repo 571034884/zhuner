@@ -1,5 +1,7 @@
 package com.aibabel.menu.app;
 
+import android.database.sqlite.SQLiteDatabase;
+
 import com.aibabel.baselibrary.base.BaseApplication;
 import com.aibabel.baselibrary.http.OkGoUtil;
 import com.aibabel.menu.BuildConfig;
@@ -9,6 +11,10 @@ import com.aibabel.menu.util.FileUtil;
 import com.aibabel.menu.util.L;
 import com.aibabel.menu.util.SPUtils;
 import com.liulishuo.filedownloader.FileDownloader;
+
+import org.litepal.LitePal;
+import org.litepal.LitePalApplication;
+import org.litepal.tablemanager.Connector;
 
 public class MyApplication extends BaseApplication {
     //一个小时更新一下桌面天气
@@ -27,7 +33,8 @@ public class MyApplication extends BaseApplication {
 //        SPUtils.put(getApplicationContext(),"isChange","");
         FileDownloader.setup(this);
         //适配类初始化
-
+        LitePal.initialize(this);
+        initSQLite();
 
 //        Thread.setDefaultUncaughtExceptionHandler(new CrashHandler(this.getApplicationContext()));
 
@@ -35,6 +42,11 @@ public class MyApplication extends BaseApplication {
 
         }
 
+    }
+
+    private void initSQLite() {
+        //创建表,如果存在就不会在创建了
+        SQLiteDatabase db = Connector.getDatabase();
     }
 
     @Override

@@ -7,6 +7,7 @@
     <uses-permission android:name="android.permission.GET_TASKS" /> <!-- 创建和删除文件 -->
     <uses-permission android:name="android.permission.MOUNT_UNMOUNT_FILESYSTEMS" />
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" /> <!-- 允许读取wifi网络状态 -->
@@ -104,6 +105,13 @@
             android:name=".rent.RentLockedActivity"
             android:launchMode="singleTop"
             android:theme="@android:style/Theme.Translucent" />
+
+        <activity
+            android:name="com.aibabel.messagemanage.MainActivity"
+            android:launchMode="singleTop" />
+
+
+
 
         <service
             android:name=".service.MyAidlMessageService">
