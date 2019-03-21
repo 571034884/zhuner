@@ -16,6 +16,7 @@ import com.aibabel.baselibrary.impl.IDataManager;
 import com.aibabel.baselibrary.impl.IServerManager;
 import com.aibabel.baselibrary.mode.DataManager;
 import com.aibabel.baselibrary.mode.ServerManager;
+import com.aibabel.baselibrary.sphelper.SPHelper;
 import com.aibabel.baselibrary.utils.CommonUtils;
 import com.aibabel.baselibrary.utils.ProviderUtils;
 import com.lzy.okgo.OkGo;
@@ -23,7 +24,6 @@ import com.orhanobut.logger.AndroidLogAdapter;
 import com.orhanobut.logger.FormatStrategy;
 import com.orhanobut.logger.Logger;
 import com.orhanobut.logger.PrettyFormatStrategy;
-import com.tencent.mmkv.MMKV;
 import com.umeng.analytics.MobclickAgent;
 import com.umeng.commonsdk.UMConfigure;
 import com.xuexiang.xipc.XIPC;
@@ -103,7 +103,7 @@ public abstract class BaseApplication extends Application {
         initImageLoaderConfig();
         initStatisticsConfig();
         initXipc();
-        MMKV.initialize(this);
+        SPHelper.init(this);
     }
 
     /**
