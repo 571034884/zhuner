@@ -796,7 +796,7 @@ public class TakePhoteActivity extends BaseActivity implements CameraPreview.OnC
                 .params("from", from)
                 .params("to", to)
                 .params("image", image)
-                .params("id", DevUtils.getSN())
+                .params("id", CommonUtils.getSN())
                 .params("type", type)
                 .params("location", StringUtils.getLocation(latitude, longitude))
                 //object 参数,这个参数为物体识别用的
