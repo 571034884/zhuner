@@ -80,6 +80,27 @@ public class DetectUtil {
         return false;
     }
 
+
+    /**
+     * 判断APP是否在前台
+     * @param context
+     * @param packname
+     * @return
+     */
+    public static boolean isAppInForeground(Context context,String packname) {
+        ActivityManager am = (ActivityManager) context
+                .getSystemService(Context.ACTIVITY_SERVICE);
+        List<ActivityManager.RunningTaskInfo> tasks = am.getRunningTasks(1);
+        if (!tasks.isEmpty()) {
+            ComponentName topActivity = tasks.get(0).topActivity;
+            if (topActivity.getPackageName().equals(packname)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+
 //    /**
 //     * 返回app运行状态
 //     *

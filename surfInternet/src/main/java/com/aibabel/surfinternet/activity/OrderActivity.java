@@ -146,6 +146,11 @@ public class OrderActivity extends BaseActivity {
         } else {
             tv_help.setVisibility(View.GONE);
         }
+
+        if(Constans.PRO_VERSION_NUMBER.equalsIgnoreCase("L")) {
+            tv_help.setVisibility(View.GONE);
+        }
+
     }
 
     /**

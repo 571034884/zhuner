@@ -48,8 +48,12 @@ android {
         // but continue the build even when errors are found:
         abortOnError false
     }
-
-
+    sourceSets {
+        main {
+            jniLibs.srcDirs = ['libs']
+            jni.srcDirs = []
+        }
+    }
     // 一定要写在android节点中
     applicationVariants.all { variant ->
         variant.outputs.each { output ->
@@ -92,7 +96,8 @@ dependencies {
     implementation files('libs/pinyin4j-2.5.0.jar')
     implementation 'com.zhy:flowlayout-lib:1.0.3'
     compile project(path: ':badgelibrary')
-
+    implementation files('libs/jpush-android-3.2.0.jar')
+    implementation files('libs/jcore-android-1.2.7.jar')
 }
 
 repositories {

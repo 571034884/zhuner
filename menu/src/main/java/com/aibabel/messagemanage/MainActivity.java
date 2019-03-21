@@ -10,14 +10,18 @@ import android.view.WindowManager;
 import android.widget.ImageView;
 
 import com.aibabel.menu.R;
+import com.aibabel.menu.bean.PushMessageBean;
+import com.aibabel.menu.util.LogUtil;
 import com.aibabel.messagemanage.sqlite.SqlUtils;
+
+import org.litepal.LitePal;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class MainActivity extends com.aibabel.baselibrary.base.BaseActivity {
 
-    private ArrayList<MessageBean> msglist = new ArrayList<>();
+    private ArrayList<PushMessageBean> msglist = new ArrayList<>();
     RecyclerViewAdapter adapter;
 
     @Override
@@ -57,7 +61,7 @@ public class MainActivity extends com.aibabel.baselibrary.base.BaseActivity {
         super.onResume();
     }
 
-    private void initRecyclerView(){
+    private void initRecyclerView() {
         Log.d(TAG, "initRecyclerView: init recyclerview.");
         RecyclerView recyclerView = findViewById(R.id.recyclerv_view);
 
@@ -70,35 +74,68 @@ public class MainActivity extends com.aibabel.baselibrary.base.BaseActivity {
         adapter = new RecyclerViewAdapter(this, msglist);
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(layout);
+
+
     }
 
-    private void addItem(){
-        MessageBean msgbean = new MessageBean();
-        msgbean.setTitle("你有附近3个景点");
-        msgbean.setInfo("雍和宫、天坛、故宫，12345667890");
-        msgbean.setTime("2019-1-09");
-        msgbean.setBadge(false);
-        MessageBean msgbean2= new MessageBean();
-        msgbean2.setTitle("你有附近3个景点");
-        msgbean2.setInfo("雍和宫、天坛、故宫，12345667890");
-        msgbean2.setTime("2018-2-2");
+    private void addItem() {
+//        PushMessageBean msgbean = new PushMessageBean();
+//        msgbean.setTitle("你有附近3个景点");
+//        msgbean.setContent("雍和宫、天坛、故宫，12345667890");
+//        msgbean.setTimeCode("");
+//        msgbean.setBadge(false);
+//        PushMessageBean msgbean2= new PushMessageBean();
+//        msgbean2.setTitle("你有附近3个景点");
+//        msgbean2.setContent("雍和宫、天坛、故宫，12345667890");
+//        msgbean2.setTimeCode("");
+//
+//        PushMessageBean msgbean3= new PushMessageBean();
+//        msgbean3.setTitle("你有附近3个景点");
+//        msgbean3.setContent("雍和宫、天坛、故宫，12345667890");
+//        msgbean3.setTimeCode("");
+//        msgbean3.setBadge(true);
+//
+//        msglist.add(msgbean2);
+//        msglist.add(msgbean);
+//        msglist.add(msgbean3);
 
-        MessageBean msgbean3= new MessageBean();
-        msgbean3.setTitle("你有附近3个景点");
-        msgbean3.setInfo("雍和宫、天坛、故宫，12345667890");
-        msgbean3.setTime("1-10 14:45");
-        msgbean3.setBadge(true);
+        List<PushMessageBean> tt = SqlUtils.queryMethed();
+        if (tt != null) {
+            for (PushMessageBean pushobj : tt) {
+            }
 
-        msglist.add(msgbean2);
-        msglist.add(msgbean);
-        msglist.add(msgbean3);
-        adapter.notifyDataSetChanged();
+            msglist.addAll(tt);
+            if (adapter != null) adapter.notifyDataSetChanged();
+        }
 
-//        SqlUtils.insertData(msgbean);
-//        SqlUtils.insertData(msgbean2);
-//        SqlUtils.insertData(msgbean3);
-        List<MessageBean>  tt =  SqlUtils.queryMethed();
-        Log.e("hjs","tt+"+tt.size());
+
+//        updateMessBean(tt.get(0),tt.get(0).getId());
+//        PushMessageBean tttttt = tt.get(0);
+//        tttttt.setContent("update ");
+//        tttttt.setBadge(false);
+//        tttttt.update(tttttt.getId());
+
+//        tt = SqlUtils.queryMethed();
+//        if (tt != null) {
+//            for (PushMessageBean pushobj : tt) {
+//                LogUtil.e("new pushobj = " + pushobj.isBadge());
+//                LogUtil.e("new pushobj id= " + pushobj.getId());
+//            }
+//        }
+
+    }
+
+    public  static void updateMessBean(PushMessageBean sqlbean,Long ID) {
+        sqlbean.setBadge(false);
+        sqlbean.update(ID);
+        sqlbean.save();
+
+        List<PushMessageBean> tt = SqlUtils.queryMethed();
+        if (tt != null) {
+            for (PushMessageBean pushobj : tt) {
+                LogUtil.e("query = id" + pushobj.getId() + " new  = " + pushobj.isBadge());
+            }
+        }
 
     }
 
