@@ -18,11 +18,9 @@ package com.aibabel.baselibrary.mode;
 
 import android.util.Log;
 
-import com.aibabel.baselibrary.impl.IDataManager;
 import com.aibabel.baselibrary.impl.IServerManager;
+import com.aibabel.baselibrary.sphelper.SPHelper;
 import com.aibabel.baselibrary.utils.SharePrefUtil;
-import com.aibabel.baselibrary.utils.ToastUtil;
-import com.tencent.mmkv.MMKV;
 import com.xuexiang.xipc.annotation.ClassName;
 import com.xuexiang.xipc.annotation.MethodName;
 import com.xuexiang.xipc.annotation.Singleton;
@@ -30,8 +28,6 @@ import com.xuexiang.xipc.annotation.Singleton;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.TimeZone;
 
 import static com.xuexiang.xipc.XIPC.getContext;
@@ -138,15 +134,13 @@ public class ServerManager implements IServerManager {
                     String[] twoServer = allServer[2].split(":");
                     boolean s = pingServer(oneServer[0], twoServer[0]);
                     if (s){
-                        MMKV mmkv = MMKV.defaultMMKV();
-                        Log.e("SERVICE_FUWU", "当前服务器11222233333："+mmkv.decodeString(key));
-                        mmkv.encode(key,allServer[1]);
-                        Log.e("SERVICE_FUWU", "当前服务器："+mmkv.decodeString(key));
+                        Log.e("SERVICE_FUWU", "当前服务器11222233333："+ SPHelper.getString(key,""));
+                        SPHelper.save(key,allServer[1]);
+                        Log.e("SERVICE_FUWU", "当前服务器44555566666："+ SPHelper.getString(key,""));
                     }else{
-                        MMKV mmkv = MMKV.defaultMMKV();
-                        Log.e("SERVICE_FUWU", "当前服务器44445555666："+mmkv.decodeString(key));
-                        mmkv.encode(key,allServer[2]);
-                        Log.e("SERVICE_FUWU", "当前服务器11222233333："+mmkv.decodeString(key));
+                        Log.e("SERVICE_FUWU", "当前服务器77777777777："+ SPHelper.getString(key,""));
+                        SPHelper.save(key,allServer[2]);
+                        Log.e("SERVICE_FUWU", "当前服务器88888888888："+ SPHelper.getString(key,""));
                     }
                 } else if (allServer.length == 2) {
                     Log.e("SERVICE_FUWU", "国内没有备用服务器");
