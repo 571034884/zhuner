@@ -156,8 +156,6 @@ public class TakePhoteActivity extends BaseActivity implements CameraPreview.OnC
     private ViewPager mViewPager;
     private int requsetCode = 1111;
     private Bitmap bitmapData;//相机拍照返回的图片
-    private String jpaCode;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -171,11 +169,6 @@ public class TakePhoteActivity extends BaseActivity implements CameraPreview.OnC
         } else {
             tv_close.setVisibility(View.GONE);
         }
-
-
-//        屏幕按钮随屏幕旋转
-//        setOrientationChangeListener();
-
         rexiufu();
 
     }
@@ -325,11 +318,9 @@ public class TakePhoteActivity extends BaseActivity implements CameraPreview.OnC
             public void onCheckedChanged(RadioGroup group, int checkedId) {
                 switch (checkedId) {
                     case R.id.rb_h:
-//                        jpaCode = "jpa";
                         SharePrefUtil.saveString(TakePhoteActivity.this, Constant.LAN_OR_CODE, "jpa");
                         break;
                     case R.id.rb_v:
-//                        jpaCode = "jpa_v";
                         SharePrefUtil.saveString(TakePhoteActivity.this, Constant.LAN_OR_CODE, "jpa_v");
                         break;
 
@@ -408,10 +399,6 @@ public class TakePhoteActivity extends BaseActivity implements CameraPreview.OnC
 
             @Override
             public void onUp(View view) {
-//                BitmapFactory.Options options = new BitmapFactory.Options();
-//                options.inPreferredConfig = Bitmap.Config.RGB_565;
-//                options.inDither = true;
-//                startOcr(BitmapFactory.decodeFile(pathName, options));
                 isDaubed++;
                 dialog.show();
                 startOcr();
@@ -699,6 +686,7 @@ public class TakePhoteActivity extends BaseActivity implements CameraPreview.OnC
         if (resultCode == 200) {
             String or_code = SharePrefUtil.getString(this, Constant.LAN_OR_CODE, "en");
             if (TextUtils.equals(or_code, "jpa")) {
+
                 ShowHVDialog();
             } else {
                 rl_hv.setVisibility(View.GONE);
@@ -721,7 +709,7 @@ public class TakePhoteActivity extends BaseActivity implements CameraPreview.OnC
             @Override
             public void onClick(View v) {
                 builders.dismiss();
-                jpaCode = "jpa";
+                String jpaCode = "jpa";
                 rl_hv.setVisibility(View.VISIBLE);
                 rb_h.setChecked(true);
                 SharePrefUtil.saveString(TakePhoteActivity.this, Constant.LAN_OR_CODE, jpaCode);
@@ -732,7 +720,7 @@ public class TakePhoteActivity extends BaseActivity implements CameraPreview.OnC
             @Override
             public void onClick(View v) {
                 builders.dismiss();
-                jpaCode = "jpa_v";
+                String jpaCode = "jpa_v";
                 rl_hv.setVisibility(View.VISIBLE);
                 rb_v.setChecked(true);
                 SharePrefUtil.saveString(TakePhoteActivity.this, Constant.LAN_OR_CODE, jpaCode);
