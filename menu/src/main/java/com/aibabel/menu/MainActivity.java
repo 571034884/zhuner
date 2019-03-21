@@ -1795,7 +1795,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
             PublicBean bean =  FastJsonUtil.changeJsonToBean(response, PublicBean.class);
             //备份所有服务器数据，使用,分割
             ServerUtils.saveAllServer(bean.data.server);
-            ServerManager.getInstance().setPingServerError(ServerKeyUtils.serverKeyChatJoner);
+//            ServerManager.getInstance().setPingServerError(ServerKeyUtils.serverKeyChatJoner);
             //TODO 任务
         }catch (Exception e){
             ToastUtil.showShort(mContext,"解析服务器列表出错，请重启设备");

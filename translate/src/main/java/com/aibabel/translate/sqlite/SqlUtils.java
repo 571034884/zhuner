@@ -2,7 +2,8 @@ package com.aibabel.translate.sqlite;
 
 import com.aibabel.translate.bean.RecordBean;
 
-import org.litepal.crud.DataSupport;
+
+import org.litepal.LitePal;
 
 import java.util.List;
 
@@ -36,12 +37,12 @@ public class SqlUtils {
 
     //删除指定Id 的数据
     public static int deleteById(int id) {
-        return DataSupport.deleteAll(RecordBean.class, "id = ?", String.valueOf(id));
+        return LitePal.deleteAll(RecordBean.class, "id = ?", String.valueOf(id));
     }
 
     //删除当前时间的数据
     public static int deleteByTime(long time) {
-        return DataSupport.deleteAll(RecordBean.class, "time = ?", String.valueOf(time));
+        return LitePal.deleteAll(RecordBean.class, "time = ?", String.valueOf(time));
     }
 
     /**
@@ -71,13 +72,13 @@ public class SqlUtils {
 
     // 删除所有的数据，
     public static void deleteDataAll() {
-        DataSupport.deleteAll(RecordBean.class);
+        LitePal.deleteAll(RecordBean.class);
     }
 
     //遍历查询所有数据，保存到List里面
     public static List<RecordBean> retrieve(int page, int pagesize) {
 
-        return DataSupport.order("time desc").limit(pagesize).offset(pagesize * (page - 1)).find(RecordBean.class);
+        return LitePal.order("time desc").limit(pagesize).offset(pagesize * (page - 1)).find(RecordBean.class);
 
     }
 }

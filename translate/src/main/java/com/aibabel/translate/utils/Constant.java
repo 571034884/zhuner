@@ -24,7 +24,8 @@ public class Constant {
 
     public static String DEFAULT_HOST = "api.function.aibabel.cn";
 //    public static String HOST = "39.107.238.111";
-    public static String HOST = CommonUtils.getHost();
+//    public static String HOST = CommonUtils.getHost();
+    public static String HOST = CommonUtils.getTranslateHost();
     public static String HOST_HOTFIX = CommonUtils.getHotFixHost();
     public static int PORT = 5005;
     public static final int RECOGNIZER_INIT = 60;//识别器初始化命令（标志）

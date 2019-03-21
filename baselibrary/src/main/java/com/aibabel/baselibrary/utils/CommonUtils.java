@@ -20,6 +20,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
+import java.util.TimeZone;
 
 /**
  * cbb testbase--》master
@@ -172,4 +173,27 @@ public class CommonUtils {
 
         return isSameDate;
     }
+
+
+    /**
+     * 获取当前时区
+     *
+     * @return 1国内服务器，0国外服务器
+     */
+    public static int getTimerType() {
+        try {
+            String timerID = TimeZone.getDefault().getID();
+            if (timerID.equals("Asia/Shanghai")) {
+                Log.e("SERVICE_FUWU", "时区:" + 1);
+                return 1;
+            } else {
+                Log.e("SERVICE_FUWU", "时区:" + 0);
+                return 0;
+            }
+        } catch (Exception e) {
+            Log.e("SERVICE_FUWU", "获取时区报错");
+        }
+        return 0;
+    }
+
 }

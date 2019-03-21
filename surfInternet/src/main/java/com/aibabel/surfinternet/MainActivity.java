@@ -301,10 +301,13 @@ public class MainActivity extends BaseActivity implements BaseCallback {
     @SuppressLint({"MissingPermission", "NewApi"})
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP_MR1)
     private void initMtkDoubleSim() {
+        String ss = CommonUtils.getSN();
+        Log.e("LK---001","SN:"+ss);
         try {
             List<SubscriptionInfo> list = SubscriptionManager.from(this).getActiveSubscriptionInfoList();
             //如果没有取到
             if (null == list || list.size() == 0) {
+                Log.e("LK---001","硬卡ICCID：null");
                 ivClose.setVisibility(View.GONE);
                 ll.setVisibility(View.VISIBLE);
                 llIsnet.setVisibility(View.VISIBLE);
@@ -318,9 +321,8 @@ public class MainActivity extends BaseActivity implements BaseCallback {
                 if (list.get(i).getSimSlotIndex() == 1) {
 
                     Constans.PHONE_ICCID = list.get(i).getIccId();
-//                    Constans.PHONE_ICCID = "89860012018051816514";
-                    Log.e("LK---001","硬卡："+Constans.PHONE_ICCID);
-                    Log.e("iccid", Constans.PHONE_ICCID);
+//                 LK---001   Constans.PHONE_ICCID = "89860012018051816514";
+                    Log.e("LK---001","硬卡ICCID："+Constans.PHONE_ICCID);
                     isFind = true;
                     return;
                 }
@@ -380,7 +382,7 @@ public class MainActivity extends BaseActivity implements BaseCallback {
 
 //         iccid = "89852022018041802362";
 //         Constans.PHONE_ICCID = "89860012017300216438";
-        if (Constans.PHONE_ICCID != null) {
+        if (!TextUtils.isEmpty(Constans.PHONE_ICCID)) {
             Map<String, String> map = new HashMap<>();
             map.put("iccid", Constans.PHONE_ICCID);
             if (Constans.Lk_CARDTYPE) {

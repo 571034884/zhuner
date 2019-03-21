@@ -16,6 +16,7 @@ import com.aibabel.baselibrary.impl.IDataManager;
 import com.aibabel.baselibrary.impl.IServerManager;
 import com.aibabel.baselibrary.mode.DataManager;
 import com.aibabel.baselibrary.mode.ServerManager;
+import com.aibabel.baselibrary.sphelper.SPHelper;
 import com.aibabel.baselibrary.utils.CommonUtils;
 import com.aibabel.baselibrary.utils.ProviderUtils;
 import com.lzy.okgo.OkGo;
@@ -102,7 +103,7 @@ public abstract class BaseApplication extends Application {
         initImageLoaderConfig();
         initStatisticsConfig();
         initXipc();
-
+        SPHelper.init(this);
     }
 
     /**

@@ -18,10 +18,9 @@ package com.aibabel.baselibrary.mode;
 
 import android.util.Log;
 
-import com.aibabel.baselibrary.impl.IDataManager;
 import com.aibabel.baselibrary.impl.IServerManager;
+import com.aibabel.baselibrary.sphelper.SPHelper;
 import com.aibabel.baselibrary.utils.SharePrefUtil;
-import com.aibabel.baselibrary.utils.ToastUtil;
 import com.xuexiang.xipc.annotation.ClassName;
 import com.xuexiang.xipc.annotation.MethodName;
 import com.xuexiang.xipc.annotation.Singleton;
@@ -29,8 +28,6 @@ import com.xuexiang.xipc.annotation.Singleton;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.TimeZone;
 
 import static com.xuexiang.xipc.XIPC.getContext;
@@ -137,11 +134,13 @@ public class ServerManager implements IServerManager {
                     String[] twoServer = allServer[2].split(":");
                     boolean s = pingServer(oneServer[0], twoServer[0]);
                     if (s){
-                        SharePrefUtil.saveString(getContext(),key,allServer[1]);
-                        Log.e("SERVICE_FUWU", "当前服务器："+allServer[1]+","+SharePrefUtil.getString(getContext(),key,""));
+                        Log.e("SERVICE_FUWU", "当前服务器11222233333："+ SPHelper.getString(key,""));
+                        SPHelper.save(key,allServer[1]);
+                        Log.e("SERVICE_FUWU", "当前服务器44555566666："+ SPHelper.getString(key,""));
                     }else{
-                        SharePrefUtil.saveString(getContext(),key,allServer[2]);
-                        Log.e("SERVICE_FUWU", "当前服务器："+allServer[2]+","+SharePrefUtil.getString(getContext(),key,""));
+                        Log.e("SERVICE_FUWU", "当前服务器77777777777："+ SPHelper.getString(key,""));
+                        SPHelper.save(key,allServer[2]);
+                        Log.e("SERVICE_FUWU", "当前服务器88888888888："+ SPHelper.getString(key,""));
                     }
                 } else if (allServer.length == 2) {
                     Log.e("SERVICE_FUWU", "国内没有备用服务器");
@@ -219,7 +218,7 @@ public class ServerManager implements IServerManager {
         int s = 0;
         Process p = null;
         try {
-            p = Runtime.getRuntime().exec("/system/bin/ping -w 2 " + ips);
+            p = Runtime.getRuntime().exec("/system/bin/ping -w 1 " + ips);
             BufferedReader buf = new BufferedReader(new InputStreamReader(p.getInputStream()));
             String str = new String();
             while ((str = buf.readLine()) != null) {

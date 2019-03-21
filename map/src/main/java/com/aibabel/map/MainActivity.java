@@ -342,23 +342,41 @@ public class MainActivity extends MapBaseActivity implements SensorEventListener
         switch (category) {
             case "cate":
                 tv_current.setTextColor(Color.parseColor("#ff7e00"));
-                iv_current.setImageResource(R.mipmap.marker_cate_select);
+
                 iv_pre.setImageResource(R.mipmap.marker_cate_normal);
+                if (currentId+1>10){
+                    iv_current.setImageResource(R.mipmap.marker_cate_select_after);
+                }else{
+                    iv_current.setImageResource(R.mipmap.marker_cate_select);
+                }
+
                 break;
             case "metro":
                 tv_current.setTextColor(Color.parseColor("#0095d3"));
-                iv_current.setImageResource(R.mipmap.marker_metro_select);
                 iv_pre.setImageResource(R.mipmap.marker_metro_normal);
+                if (currentId+1>10){
+                    iv_current.setImageResource(R.mipmap.marker_metro_select_after);
+                }else{
+                    iv_current.setImageResource(R.mipmap.marker_metro_select);
+                }
                 break;
             case "scenic":
-                iv_current.setImageResource(R.mipmap.marker_scenic_select);
                 tv_current.setTextColor(Color.parseColor("#1ed200"));
                 iv_pre.setImageResource(R.mipmap.marker_scenic_normal);
+                if (currentId+1>10){
+                    iv_current.setImageResource(R.mipmap.marker_scenic_select_after);
+                }else{
+                    iv_current.setImageResource(R.mipmap.marker_scenic_select);
+                }
                 break;
             case "shop":
                 tv_current.setTextColor(Color.parseColor("#0bb7ff"));
-                iv_current.setImageResource(R.mipmap.marker_shop_select);
                 iv_pre.setImageResource(R.mipmap.marker_shop_normal);
+                if (currentId+1>10){
+                    iv_current.setImageResource(R.mipmap.marker_shop_select_after);
+                }else{
+                    iv_current.setImageResource(R.mipmap.marker_shop_select);
+                }
                 break;
         }
 
@@ -535,6 +553,7 @@ public class MainActivity extends MapBaseActivity implements SensorEventListener
         map.put("radius", BaiDuConstant.accuracyCircleSize+"");
         map.put("location", mLocation.getLatitude() + "," + mLocation.getLongitude());
         map.put("coord_type", mLocation.getCoorType());
+        map.put("poiNum", 20+"");
         map.put("locationWhere", mLocation.getLocationWhere() + "");
 
 //        map.put("location", "35.714764,139.796665");
