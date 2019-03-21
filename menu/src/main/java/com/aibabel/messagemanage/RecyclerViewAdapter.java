@@ -85,7 +85,9 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
                         push_bean.save();
 
                         notifyItemChanged(position, push_bean);
-                        MessageUtil.openNotification_pushbean(mContext, push_bean);
+
+                        PushMessageBean new_push_bean = SqlUtils.queryjsonById(push_bean.getId());
+                        MessageUtil.openNotification_pushbean(mContext, new_push_bean);
 
                     } catch (Exception e) {
                         e.printStackTrace();

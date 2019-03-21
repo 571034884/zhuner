@@ -35,6 +35,9 @@ public class ResidentNotificationHelper {
     public static final String NOTICE_ID_KEY = "NOTICE_ID";
     public static int NOTICE_ID_TYPE_0 = -1;
 
+    public static final String intentjson = "json";
+    public static final String intenttitle = "title";
+
 
     public static void sendResidentNotice(Context context, String title, String content, Intent intent) {
         if (NOTICE_ID_TYPE_0 > 10000) {
@@ -49,7 +52,7 @@ public class ResidentNotificationHelper {
         intent.putExtra(NOTICE_ID_KEY, NOTICE_ID_TYPE_0);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         intent.setClass(context, NotificationClickReceiver.class);
-        intent.putExtra("title", title);
+        intent.putExtra(intenttitle, title);
         int requestCode = (int) SystemClock.uptimeMillis();
 //        PendingIntent pendingIntent = PendingIntent.getActivity(context, requestCode, intent, PendingIntent.FLAG_UPDATE_CURRENT);
 
@@ -60,11 +63,16 @@ public class ResidentNotificationHelper {
         intentClick.setAction("notification_clicked");
         intentClick.putExtra(NotificationClickReceiver.TYPE, NOTICE_ID_TYPE_0);
         intentClick.putExtra("MESSAGE", "消息");
+        intentClick.putExtra(intenttitle, title);
+        intentClick.putExtra(intentjson, intent.getStringExtra(intentjson));
+
         PendingIntent pendingIntentClick = PendingIntent.getBroadcast(context, 0, intentClick, PendingIntent.FLAG_ONE_SHOT);
         //cancle广播监听
         Intent intentCancel = new Intent(context, NotificationClickReceiver.class);
         intentCancel.setAction("notification_cancelled");
         intentCancel.putExtra(NotificationClickReceiver.TYPE, NOTICE_ID_TYPE_0);
+        intentCancel.putExtra(intenttitle, title);
+        intentCancel.putExtra(intentjson, intent.getStringExtra(intentjson));
         PendingIntent pendingIntentCancel = PendingIntent.getBroadcast(context, 0, intentCancel, PendingIntent.FLAG_ONE_SHOT);
 
 

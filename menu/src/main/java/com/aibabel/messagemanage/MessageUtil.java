@@ -10,6 +10,10 @@ import com.aibabel.baselibrary.utils.FastJsonUtil;
 import com.aibabel.menu.MainActivity;
 import com.aibabel.menu.bean.DetailBean;
 import com.aibabel.menu.bean.PushMessageBean;
+import com.aibabel.menu.util.LogUtil;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -37,6 +41,8 @@ public class MessageUtil {
             if(bean==null)return;
 
             MESSAGE_JG = bean.getContent();
+            TITLE_JG = bean.getTitle();
+            LogUtil.e("openNotification = ");
 
             if (TextUtils.equals(bean.getType(), "5")) {
                 // TODO: 2019/1/10 打开链接地址
@@ -58,6 +64,8 @@ public class MessageUtil {
 
             } else if (TextUtils.equals(bean.getType(), "2")) {
                 startDialog(context, TITLE_JG, MESSAGE_JG, bean);
+
+                LogUtil.e("openNotification =2222222 ");
 
             } else if (TextUtils.equals(bean.getType(), "1")) {
                 startDialog(context, TITLE_JG, MESSAGE_JG, bean);
@@ -123,7 +131,8 @@ public class MessageUtil {
         try {
             Intent intent = new Intent();
             intent.setClass(context, JiGuangActivity.class);
-            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+//            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             intent.putExtra("msg", bean.getContent());
             intent.putExtra("title", title);
             intent.putExtra("type", bean.getType());
@@ -145,12 +154,15 @@ public class MessageUtil {
     public static void startScenic(PushMessageBean bean, Context context) {
         try {
             List<DetailBean> list = new ArrayList<>();
+
+            if(bean!=null && (bean.getResultData().size()>0)){
             for (PushMessageBean.ResultDataBean data : bean.getResultData()) {
                 DetailBean detailBean = new DetailBean();
                 detailBean.setAudioUrl(data.getAudiosurl());
                 detailBean.setImageUrl(data.getCover());
                 detailBean.setName(data.getName());
                 list.add(detailBean);
+            }
             }
 
             Intent mIntent = new Intent();
@@ -200,6 +212,42 @@ public class MessageUtil {
     public static void main(String args[]){
         System.out.println(getShowRealtime("1553136506886"));
         //System.out.println(System.currentTimeMillis());
+    }
+
+
+
+    public static void Testmain(){
+        // 嵌套的json字符串
+        try {
+            String JSON_MULTI = "{'name':'tom','score':{'Math':98,'English':90}}";
+            JSONObject obj = new JSONObject(JSON_MULTI);
+            System.out.println("name is : " + obj.get("name"));
+            System.out.println("score is : " + obj.get("score"));
+
+            JSONObject scoreObj = (JSONObject) obj.get("score");
+            System.out.println("Math score is : " + scoreObj.get("Math"));
+            System.out.println("English score is : " + scoreObj.get("English"));
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        String extra_ = "{\"sn\": \"0000000000000000\", \"no\": 3163, \"relet\": {\"code\": 1, \"msg\": \"请同步订单\"}}";
+        try {
+            JSONObject json = new JSONObject(extra_);
+            String relet = (String) json.get("relet");
+
+            JSONObject jsonRelet = new JSONObject(relet);
+            int code = (Integer) jsonRelet.get("code");
+            if (code == 1) {
+                Intent stopIntent = new Intent("com.android.qrcode.unlock.ok");
+
+                System.out.println("code  = 1");
+            }
+        } catch (JSONException e) {
+            System.out.println("Get message extra JSON error!");
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+
     }
 
 }

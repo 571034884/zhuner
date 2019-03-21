@@ -15,6 +15,7 @@ import android.util.Log;
 import android.widget.Button;
 
 import com.aibabel.baselibrary.utils.FastJsonUtil;
+import com.aibabel.menu.MainActivity;
 import com.aibabel.menu.R;
 import com.aibabel.menu.bean.DetailBean;
 import com.aibabel.menu.bean.PushBean;
@@ -85,9 +86,15 @@ public class MyReceiver extends BroadcastReceiver {
             int notifactionId = bundle.getInt(JPushInterface.EXTRA_NOTIFICATION_ID);
             Log.d(TAG, "[MyReceiver] 接收到推送下来的通知的ID: " + notifactionId);
 //            setNotification(context, Constants.TITLE_JG, Constants.MESSAGE_JG);
+            MenuonReceive(context, bundle);
 
+
+            /**解锁推送**/
             String extra_ = bundle.getString(JPushInterface.EXTRA_EXTRA);
+            LogUtil.e(" ====extra_====="+(!TextUtils.isEmpty(extra_)));
+            LogUtil.e(" ====extra_====="+extra_);
             if (!TextUtils.isEmpty(extra_)) {
+                LogUtil.e("public static final String EXTRA_EXTRA = cn.jpush.android.EXTRA;");
                 try {
                     JSONObject json = new JSONObject(extra_);
                     String relet = (String) json.get("relet");
@@ -98,9 +105,13 @@ public class MyReceiver extends BroadcastReceiver {
                         Intent stopIntent = new Intent("com.android.qrcode.unlock.ok");
                         context.sendBroadcast(stopIntent);
 //                        ToastUtil.showShort(context,"发送了广播！");
+
+                        LogUtil.e("code  = 1");
                     }
                 } catch (JSONException e) {
                     Log.e(TAG, "Get message extra JSON error!");
+                }catch (Exception e){
+                    e.printStackTrace();
                 }
             }
 
@@ -282,6 +293,8 @@ public class MyReceiver extends BroadcastReceiver {
                     }
                 } catch (JSONException e) {
                     Log.e(TAG, "Get message extra JSON error!");
+                }catch (Exception e){
+                    e.printStackTrace();
                 }
 
             } else {
@@ -375,8 +388,13 @@ public class MyReceiver extends BroadcastReceiver {
 
             PushMessageBean bean = FastJsonUtil.changeJsonToBean(json, PushMessageBean.class);
             if (bean != null) {
+                bean.setJson(json);
                 SqlUtils.insertData(bean);
-            }
+            }else return;
+
+
+            if(MainActivity.loopHandler!=null)MainActivity.loopHandler.sendEmptyMessage(301);
+
 
             String pushcontent = bean.getContent();
             if (TextUtils.isEmpty(pushcontent)) pushcontent = "";
@@ -414,7 +432,10 @@ public class MyReceiver extends BroadcastReceiver {
                             ResidentNotificationHelper.sendResidentNotice(context, ""+title, ""+pushcontent, noticeIntent);
                         }
                     }
-
+                }else{
+                    Intent noticeIntent = new Intent();
+                    noticeIntent.putExtra("json", json);
+                    ResidentNotificationHelper.sendResidentNotice(context, "" + title, "" + pushcontent, noticeIntent);
                 }
 
             }
@@ -423,6 +444,31 @@ public class MyReceiver extends BroadcastReceiver {
         }
 
     }
+
+//    public static void main(String args[]){
+////        String jsonstr="{\"type\":\"4\",\"dialogType\":\"\",\"content\":\"向您推荐景点清华大学\",\"apk\":\"travel\",\"num\":\"10\",\"packageName\":\"com.aibabel.travel\",\"path\":\"com.aibabel.travel.activity.SpotDetailActivity\",\"timeCode\":\"1553155357\",\"resultData\":[{\"idstring\":\"3836\",\"name\":\"清华大学\",\"cover\":\"https://music.gowithtommy.com/mjtt_backend_server%2Fprod%2Fdata%2Fd255e9e79b76c5cfb486829ddc50451ba013bf59.jpg\",\"Audiosurl\":\"https://mjtt.gowithtommy.com/mjtt_backend_server/prod/data/705ab5abbf4277dfa698d8ac41ac7170ca7793a3.mp3\"}],\"level\":\"2\",\"title\":\"景点\"}";
+////        PushMessageBean bean = FastJsonUtil.changeJsonToBean(jsonstr, PushMessageBean.class);
+////       System.out.println(bean.getLevel());
+////        System.out.println(bean.getResultData().get(0).getIdstring());
+//
+//        String extra_ = "[relet - {\"code\":1,\"msg\":\"请同步订单\"}]";
+//        try {
+//            JSONObject json = new JSONObject(extra_);
+//            String relet = (String) json.get("relet");
+//
+//            JSONObject jsonRelet = new JSONObject(relet);
+//            int code = (Integer) jsonRelet.get("code");
+//            if (code == 1) {
+//                Intent stopIntent = new Intent("com.android.qrcode.unlock.ok");
+//
+//                System.out.println("code  = 1");
+//            }
+//        } catch (JSONException e) {
+//            Log.e(TAG, "Get message extra JSON error!");
+//        }
+//
+//    }
+
 
 
 }

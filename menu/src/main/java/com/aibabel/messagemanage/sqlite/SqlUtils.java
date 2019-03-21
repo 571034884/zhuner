@@ -2,6 +2,7 @@ package com.aibabel.messagemanage.sqlite;
 
 import android.content.ContentValues;
 
+import com.aibabel.baselibrary.utils.FastJsonUtil;
 import com.aibabel.menu.bean.PushMessageBean;
 
 import org.litepal.LitePal;
@@ -87,6 +88,31 @@ public class SqlUtils {
             e.printStackTrace();
         }
         return  null;
+    }
+
+    public static  PushMessageBean queryById(Long Id){
+        try {
+            PushMessageBean pusbbean = LitePal.find(PushMessageBean.class, Id);
+            return pusbbean;
+        }catch (Exception e){
+            e.printStackTrace();;
+        }
+        return null;
+    }
+
+
+    public static  PushMessageBean queryjsonById(Long Id){
+        try {
+            PushMessageBean pusbbean = LitePal.find(PushMessageBean.class, Id);
+           String  sqljson = pusbbean.getJson();
+
+            PushMessageBean bean = FastJsonUtil.changeJsonToBean(sqljson, PushMessageBean.class);
+
+            return bean;
+        }catch (Exception e){
+            e.printStackTrace();;
+        }
+        return null;
     }
 
 }

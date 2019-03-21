@@ -13,6 +13,7 @@ public class PushMessageBean extends LitePalSupport {
         return "PushMessageBean{" +
                 "badge=" + badge +
                 ", id=" + id +
+                ", json='" + json + '\'' +
                 ", title='" + title + '\'' +
                 ", level='" + level + '\'' +
                 ", type='" + type + '\'' +
@@ -24,6 +25,16 @@ public class PushMessageBean extends LitePalSupport {
                 ", resultData=" + resultData +
                 '}';
     }
+
+    public String getJson() {
+        return json;
+    }
+
+    public void setJson(String json) {
+        this.json = json;
+    }
+
+    private String json;
 
     public long getId() {
         return id;

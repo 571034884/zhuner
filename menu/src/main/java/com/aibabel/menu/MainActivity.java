@@ -63,6 +63,7 @@ import com.aibabel.menu.bean.Domain;
 import com.aibabel.menu.bean.MenuDataBean;
 import com.aibabel.menu.bean.PublicBean;
 import com.aibabel.menu.bean.PushMessageBean;
+import com.aibabel.menu.bean.ReletSn;
 import com.aibabel.menu.bean.ServerBean;
 import com.aibabel.menu.bean.SyncOrder;
 import com.aibabel.menu.bitmap.MyTransformtion;
@@ -294,7 +295,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
 
             @Override
             public void updateAddr(String addr) {
-                mainMapLocalTv.setText(addr);
+                if(mainMapLocalTv!=null)mainMapLocalTv.setText(addr);
 
             }
 
@@ -435,6 +436,41 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
 
         JPushInterface.setAlias(this, 1, CommonUtils.getSN());
         LogUtil.e("getSN:"+CommonUtils.getSN());
+
+        Testmain();
+    }
+
+    public static void Testmain(){
+        // 嵌套的json字符串
+        try {
+            String JSON_MULTI = "{'name':'tom','score':{'Math':98,'English':90}}";
+            JSONObject obj = new JSONObject(JSON_MULTI);
+            System.out.println("name is : " + obj.get("name"));
+            System.out.println("score is : " + obj.get("score"));
+
+            JSONObject scoreObj = (JSONObject) obj.get("score");
+            System.out.println("Math score is : " + scoreObj.get("Math"));
+            System.out.println("English score is : " + scoreObj.get("English"));
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+    String extra_ = "{\"sn\": \"0000000000000000\", \"no\": 3163, \"relet\": {\"code\": 1, \"msg\": \"请同步订单\"}}";
+        try {
+            JSONObject json = new JSONObject(extra_);
+            String relet = (String) json.get("relet");
+
+            JSONObject jsonRelet = new JSONObject(relet);
+            int code = (Integer) jsonRelet.get("code");
+            if (code == 1) {
+                Intent stopIntent = new Intent("com.android.qrcode.unlock.ok");
+
+                System.out.println("code  = 1");
+            }
+        } catch (JSONException e) {
+            System.out.println("Get message extra JSON error!");
+        }catch (Exception e){
+            e.printStackTrace();
+        }
 
     }
 
@@ -1509,8 +1545,6 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
                             }
                             break;
                         case 301:
-                            //testfun(activity);
-                            //loopHandler.sendEmptyMessageDelayed(301,60000);
                             set_BadgeCount+=1;
                             home_badge.setBadgeCount(set_BadgeCount);
                             break;

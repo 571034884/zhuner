@@ -42,7 +42,7 @@ public class NotificationClickReceiver extends BroadcastReceiver {
 
                 Log.i("hjs", "userClick:我被点击啦！！！ ");
 
-                String extjson = intent.getStringExtra("json");
+                String extjson = intent.getStringExtra(ResidentNotificationHelper.intentjson);
                 String title = intent.getStringExtra("title");
                 MessageUtil.TITLE_JG = title;
 
