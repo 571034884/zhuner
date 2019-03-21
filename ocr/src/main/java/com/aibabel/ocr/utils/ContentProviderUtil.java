@@ -14,6 +14,7 @@ import org.json.JSONObject;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.TimeZone;
 
 public class ContentProviderUtil {
     /*获取当前定位城市和该地区的host地址*/
@@ -35,11 +36,16 @@ public class ContentProviderUtil {
                 cursor.moveToFirst();
                 String ips = cursor.getString(cursor.getColumnIndex("ips"));
                 String countryNameCN = cursor.getString(cursor.getColumnIndex("country"));
-                if (TextUtils.equals(countryNameCN,"中国")) {
+                if(getTimerType()==1){
                     key = "中国_" + context.getPackageName() + "_camera";
-                } else {
+                }else{
                     key = "default_" + context.getPackageName() + "_camera";
                 }
+//                if (TextUtils.equals(countryNameCN,"中国")) {
+//                    key = "中国_" + context.getPackageName() + "_camera";
+//                } else {
+//                    key = "default_" + context.getPackageName() + "_camera";
+//                }
                 JSONObject jsonObject = new JSONObject(ips);
                 JSONArray jsonArray = new JSONArray(jsonObject.getString(key));
                 ip_host = jsonArray.getJSONObject(0).get("domain").toString();
@@ -80,6 +86,29 @@ public class ContentProviderUtil {
         }
        return cityName;
     }
+
+
+    /**
+     * 获取当前时区
+     *
+     * @return 1国内服务器，0国外服务器
+     */
+    public static int getTimerType() {
+        try {
+            String timerID = TimeZone.getDefault().getID();
+            if (timerID.equals("Asia/Shanghai")) {
+                Log.e("SERVICE_FUWU", "时区:" + 1);
+                return 1;
+            } else {
+                Log.e("SERVICE_FUWU", "时区:" + 0);
+                return 0;
+            }
+        } catch (Exception e) {
+            Log.e("SERVICE_FUWU", "获取时区报错");
+        }
+        return 0;
+    }
+
 
 
     /**
