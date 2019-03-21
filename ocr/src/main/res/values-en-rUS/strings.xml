@@ -24,4 +24,6 @@
 	<string name="more">More information ></string>
 	<string name="retry">Recognition failed. Please try again.</string>
 	<string name="camare_laucher">Know it all in a flash</string>
+    <string name="str_h">Horizontal</string>
+    <string name="str_v">Vertical</string>
 </resources>

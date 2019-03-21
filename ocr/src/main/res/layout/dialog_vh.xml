@@ -24,7 +24,11 @@
                 android:id="@+id/tv_horizontal"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:background="@mipmap/ic_launcher" />
+                android:drawableTop="@mipmap/ic_h"
+                android:drawablePadding="5px"
+                android:text="@string/str_h"
+                android:textSize="28px"
+                android:textColor="@color/colorOrange" />
 
         </LinearLayout>
 
@@ -36,9 +40,13 @@
 
             <TextView
                 android:id="@+id/tv_vertical"
+                android:drawableTop="@mipmap/ic_v"
+                android:drawablePadding="5px"
+                android:text="@string/str_v"
+                android:textSize="28px"
+                android:textColor="@color/colorOrange"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="@mipmap/ic_launcher" />
+                android:layout_height="wrap_content" />
         </LinearLayout>
     </LinearLayout>
 
