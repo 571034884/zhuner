@@ -13,6 +13,7 @@ import android.util.Log;
 import android.view.WindowManager;
 
 import com.aibabel.aidlaar.StatisticsManager;
+import com.aibabel.baselibrary.utils.XIPCUtils;
 import com.aibabel.translate.BuildConfig;
 import com.aibabel.translate.MainActivity;
 import com.aibabel.translate.offline.ChangeOffline;
@@ -27,6 +28,7 @@ import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.StringCallback;
 import com.lzy.okgo.model.Response;
 import com.taobao.sophix.SophixManager;
+import com.tencent.mmkv.MMKV;
 import com.umeng.analytics.MobclickAgent;
 import com.umeng.commonsdk.UMConfigure;
 import com.xuhao.android.libsocket.sdk.OkSocket;
@@ -45,7 +47,7 @@ import static android.content.ContentValues.TAG;
  * Created by SunSH on 2018/3/14.
  */
 
-public class BaseApplication extends LitePalApplication {
+public class BaseApplication extends com.aibabel.baselibrary.base.BaseApplication {
 
 
 
@@ -95,7 +97,7 @@ public class BaseApplication extends LitePalApplication {
                     null);
             MobclickAgent.setScenarioType(this, MobclickAgent.EScenarioType.E_UM_NORMAL);
         }
-
+        MMKV.initialize(this);
         initLayoutConfig();
         initLogConfig();
         initOkSocketConfig();
@@ -124,7 +126,26 @@ public class BaseApplication extends LitePalApplication {
         rexiufu();
         //
         StatisticsManager.getInstance(this).setConfig(getPackageName(),BuildConfig.VERSION_NAME);
+    }
 
+    @Override
+    public String getAppVersionName() {
+        return null;
+    }
+
+    @Override
+    public String getAppPackageName() {
+        return null;
+    }
+
+    @Override
+    public void setServerUrlAndInterfaceGroup() {
+
+    }
+
+    @Override
+    public String setUmengKey() {
+        return null;
     }
 
     private void initCountryLanguage() {

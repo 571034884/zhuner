@@ -202,13 +202,15 @@ public class Adapter_Record extends RecyclerView.Adapter<Adapter_Record.MainView
             }
         }
 
-        if (position == 0) {
+        if (position == 0 && list.size() > 0) {
             holder.header_view.setVisibility(View.VISIBLE);
             holder.itemView.setTag(FIRST_STICKY_VIEW);
         } else {
             if (!initDate(bean.getTime()).equals(initDate(list.get(position - 1).getTime()))) {
-                holder.header_view.setVisibility(View.VISIBLE);
-                holder.itemView.setTag(HAS_STICKY_VIEW);
+                if (null != list && list.size() > 0) {
+                    holder.header_view.setVisibility(View.VISIBLE);
+                    holder.itemView.setTag(HAS_STICKY_VIEW);
+                }
             } else {
                 holder.header_view.setVisibility(View.GONE);
                 holder.itemView.setTag(NONE_STICKY_VIEW);

@@ -10,4 +10,4 @@
     android:text=""
     android:textColor="#888"
     android:textSize="24px"
-    android:visibility="visible" />
+    android:visibility="gone" />

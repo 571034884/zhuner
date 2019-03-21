@@ -7,6 +7,10 @@ import android.text.TextUtils;
 import android.util.Log;
 
 import com.aibabel.aidlaar.StatisticsManager;
+import com.aibabel.baselibrary.impl.IDataManager;
+import com.aibabel.baselibrary.impl.IServerManager;
+import com.aibabel.baselibrary.utils.ServerKeyUtils;
+import com.aibabel.baselibrary.utils.XIPCUtils;
 import com.aibabel.translate.R;
 import com.aibabel.translate.app.BaseApplication;
 import com.aibabel.translate.audio.MicArrayUtil;
@@ -30,6 +34,9 @@ import com.qinghuaofflineasr.api.SpeechBase;
 import com.qinghuaofflineasr.api.SpeechType;
 import com.qinghuaofflineasr.api.TranBase;
 import com.qinghuaofflineasr.inf.ResultListener;
+import com.xuexiang.xipc.XIPC;
+import com.xuexiang.xipc.core.channel.IPCListener;
+import com.xuexiang.xipc.core.channel.IPCService;
 
 import org.json.JSONObject;
 
@@ -624,16 +631,21 @@ public class TranslateUtil implements MicArrayUtil.OnDealwithListener, SocketMan
     @Override
     public void onError(int flag, String json) {
         isSuccess = "failed";
+        Log.e("111111","请求换服务器！");
+        sendErrorServer();
         switch (flag) {
             case Constant.CONNECTION_FAILED://
                 ToastUtil.showShort(context.getString(R.string.error_connect));
+//                sendErrorServer();
                 break;
             case Constant.TIMEOUT_CONNECTION:
                 ToastUtil.showShort(context.getString(R.string.timeout_connect));
+//                sendErrorServer();
                 break;
             case Constant.TIMEOUT_READ:
                 listener.reset();
                 TTSUtil.getInstance().notUnderstand(context, 1, Constant.isSound);
+
                 break;
             case Constant.RESPONSE_ERROR:
                 ServerError(json);
@@ -651,6 +663,24 @@ public class TranslateUtil implements MicArrayUtil.OnDealwithListener, SocketMan
 
 
 
+    private void sendErrorServer(){
+        XIPC.connectApp(XIPC.getContext(), XIPCUtils.XIPC_MENU_NEW);
+        XIPC.setIPCListener(new IPCListener() {
+            @Override
+            public void onIPCConnected(Class<? extends IPCService> service) {
+                new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        IServerManager dsm = XIPC.getInstance(IServerManager.class);
+                        dsm.setPingServerError(ServerKeyUtils.serverKeyTranslateFunction);
+                        Log.e("http","请求换服务器！");
+                        XIPC.disconnect(XIPC.getContext());
+                    }
+                }).start();
+
+            }
+        });
+    }
 
 
     /**
@@ -661,17 +691,18 @@ public class TranslateUtil implements MicArrayUtil.OnDealwithListener, SocketMan
     private void ServerError(String json) {
         ErrorResultBean bean = FastJsonUtil.changeJsonToBean(json, ErrorResultBean.class);
         int cmd = Integer.parseInt(bean.getEcode());
-//        L.e("cmd:", bean.getEcode());
+        L.e("cmd:", bean.getEcode());
         switch (cmd) {
             case 101://识别失败
                 TTSUtil.getInstance().notUnderstand(context, 1, Constant.isSound);
                 listener.reset();
+                break;
 //                L.e("reset","101");
             case 102://翻译失败
                 ToastUtil.showShort(context.getResources().getString(R.string.error_response));
 //                listener.setMt("", Constant.FLAG_ONLINE);
 //                TTSUtil.getInstance().notUnderstand(context, 4, Constant.isSound);
-//                break;
+                break;
             case 103://合成失败
             case 104://参数不对
                 MediaPlayerUtil.playMp3(null, context);

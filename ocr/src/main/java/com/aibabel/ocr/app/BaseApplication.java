@@ -25,7 +25,7 @@ import okhttp3.OkHttpClient;
 import static android.content.ContentValues.TAG;
 
 
-public class BaseApplication extends Application {
+public class BaseApplication extends com.aibabel.baselibrary.base.BaseApplication {
 
     public static Application CONTEXT;
     public static int stateCount = 0;
@@ -49,6 +49,26 @@ public class BaseApplication extends Application {
         configUmeng();
         initLayoutConfig();
         StatisticsManager.getInstance(this).setConfig(getPackageName(), BuildConfig.VERSION_NAME);
+    }
+
+    @Override
+    public String getAppVersionName() {
+        return null;
+    }
+
+    @Override
+    public String getAppPackageName() {
+        return null;
+    }
+
+    @Override
+    public void setServerUrlAndInterfaceGroup() {
+
+    }
+
+    @Override
+    public String setUmengKey() {
+        return null;
     }
 
     /**

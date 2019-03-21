@@ -218,7 +218,7 @@ public class ServerManager implements IServerManager {
         int s = 0;
         Process p = null;
         try {
-            p = Runtime.getRuntime().exec("/system/bin/ping -w 2 " + ips);
+            p = Runtime.getRuntime().exec("/system/bin/ping -w 1 " + ips);
             BufferedReader buf = new BufferedReader(new InputStreamReader(p.getInputStream()));
             String str = new String();
             while ((str = buf.readLine()) != null) {
