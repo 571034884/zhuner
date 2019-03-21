@@ -47,7 +47,7 @@ import static android.content.ContentValues.TAG;
  * Created by SunSH on 2018/3/14.
  */
 
-public class BaseApplication extends LitePalApplication {
+public class BaseApplication extends com.aibabel.baselibrary.base.BaseApplication {
 
 
 
@@ -126,6 +126,26 @@ public class BaseApplication extends LitePalApplication {
         rexiufu();
         //
         StatisticsManager.getInstance(this).setConfig(getPackageName(),BuildConfig.VERSION_NAME);
+    }
+
+    @Override
+    public String getAppVersionName() {
+        return null;
+    }
+
+    @Override
+    public String getAppPackageName() {
+        return null;
+    }
+
+    @Override
+    public void setServerUrlAndInterfaceGroup() {
+
+    }
+
+    @Override
+    public String setUmengKey() {
+        return null;
     }
 
     private void initCountryLanguage() {

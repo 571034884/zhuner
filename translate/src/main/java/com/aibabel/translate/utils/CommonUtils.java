@@ -20,6 +20,7 @@ import android.util.Log;
 import android.view.View;
 
 import com.aibabel.baselibrary.impl.IDataManager;
+import com.aibabel.baselibrary.sphelper.SPHelper;
 import com.aibabel.baselibrary.utils.ServerKeyUtils;
 import com.aibabel.baselibrary.utils.XIPCUtils;
 import com.aibabel.translate.R;
@@ -44,7 +45,7 @@ public class CommonUtils {
 
     /*获取当前定位城市和该地区的host地址*/
     private static final Uri CITY_URI = Uri.parse("content://com.aibabel.locationservice.provider.AibabelProvider/aibabel_location");
-    private static String ip_host  = "abroad.api.function.aibabel.cn";
+    private static String ip_host = "abroad.api.function.aibabel.cn:5005";
 
     /**
      * 获取当前地区的host地址
@@ -91,23 +92,25 @@ public class CommonUtils {
      * @return
      */
     public static String getTranslateHost() {
-        try {
-
-            MMKV mmkv = MMKV.mmkvWithID("commonId",MMKV.MULTI_PROCESS_MODE);
-            ip_host = mmkv.decodeString(ServerKeyUtils.serverKeyTranslateFunction,"abroad.api.function.aibabel.cn");
-            Log.d("返回的：ip_host", ip_host + "-------");
-        } catch (Exception e) {
-            e.printStackTrace();
-            Log.d("返回的：ip_host",  "-------");
-        }
-
-
-        if (TextUtils.isEmpty(ip_host)) {
-
-            ip_host = "abroad.api.function.aibabel.cn";
-        }
-        Log.d("最终的：ip_host", ip_host + "-------");
+//        try {
+//
+//            MMKV mmkv = MMKV.mmkvWithID("commonId", MMKV.MULTI_PROCESS_MODE);
+//            ip_host = mmkv.decodeString(ServerKeyUtils.serverKeyTranslateFunction, "abroad.api.function.aibabel.cn");
+//            Log.d("返回的：ip_host", ip_host + "-------");
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//            Log.d("返回的：ip_host", "-------");
+//        }
+//
+//
+//        if (TextUtils.isEmpty(ip_host)) {
+//            ip_host = "abroad.api.function.aibabel.cn";
+//        }
+//        Log.d("最终的：ip_host", ip_host + "-------");
+        String ip_host =SPHelper.getString(ServerKeyUtils.serverKeyTranslateFunction,"abroad.api.function.aibabel.cn:5005");
+        ip_host = StringUtils.split(ip_host, ":");
         return ip_host;
+//        return ip_host;
 
     }
 

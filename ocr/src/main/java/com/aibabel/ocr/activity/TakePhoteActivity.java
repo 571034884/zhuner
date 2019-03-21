@@ -704,7 +704,7 @@ public class TakePhoteActivity extends BaseActivity implements CameraPreview.OnC
         });
         String image = PictureUtil.bitmapToString(path);
         final long beginTime = System.currentTimeMillis();
-        OkGo.<String>post(rg_tag == 2 ? ContentProviderUtil.getHost(this) + "/v1/object" : ContentProviderUtil.getHost(this) + "/v1/ocr")
+        OkGo.<String>post(rg_tag == 2 ? ContentProviderUtil.getServerHost() + "/v1/object" : ContentProviderUtil.getServerHost() + "/v1/ocr")
                 .tag(this)
                 .headers("X-Progress-ID", UUID.randomUUID().toString().toLowerCase())
                 .params("from", from)
@@ -713,8 +713,7 @@ public class TakePhoteActivity extends BaseActivity implements CameraPreview.OnC
                 .params("id", DevUtils.getSN())
                 .params("type", type)
                 .params("location", StringUtils.getLocation(latitude, longitude))
-                //object 参数，与上边相同的省略
-//                .params("type", "general")
+                .params("type", "general")
                 .params("locale", LanguageUtils.getLang())
                 .execute(new StringCallback() {
                     @Override
@@ -761,6 +760,8 @@ public class TakePhoteActivity extends BaseActivity implements CameraPreview.OnC
                         StatisticsManager.getInstance(TakePhoteActivity.this).addEventAidl(isFull ? 1403 : 1402, map);
                         if (rg_tag != 2) showGuaguaka();
                         Toast.makeText(TakePhoteActivity.this, R.string.error_msg, Toast.LENGTH_SHORT).show();
+                        //切换服务器
+                        ContentProviderUtil.sendErrorServer();
                     }
                 });
     }
