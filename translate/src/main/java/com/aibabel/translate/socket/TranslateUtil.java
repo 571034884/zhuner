@@ -666,12 +666,14 @@ public class TranslateUtil implements MicArrayUtil.OnDealwithListener, SocketMan
             case 101://识别失败
                 TTSUtil.getInstance().notUnderstand(context, 1, Constant.isSound);
                 listener.reset();
+                break;
 //                L.e("reset","101");
             case 102://翻译失败
                 ToastUtil.showShort(context.getResources().getString(R.string.error_response));
+
 //                listener.setMt("", Constant.FLAG_ONLINE);
 //                TTSUtil.getInstance().notUnderstand(context, 4, Constant.isSound);
-//                break;
+                break;
             case 103://合成失败
             case 104://参数不对
                 MediaPlayerUtil.playMp3(null, context);

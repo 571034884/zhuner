@@ -28,9 +28,9 @@ import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.StringCallback;
 import com.lzy.okgo.model.Response;
 import com.taobao.sophix.SophixManager;
+import com.tencent.mmkv.MMKV;
 import com.umeng.analytics.MobclickAgent;
 import com.umeng.commonsdk.UMConfigure;
-import com.xuexiang.xipc.XIPC;
 import com.xuhao.android.libsocket.sdk.OkSocket;
 
 import org.json.JSONObject;
@@ -97,7 +97,7 @@ public class BaseApplication extends LitePalApplication {
                     null);
             MobclickAgent.setScenarioType(this, MobclickAgent.EScenarioType.E_UM_NORMAL);
         }
-
+        MMKV.initialize(this);
         initLayoutConfig();
         initLogConfig();
         initOkSocketConfig();

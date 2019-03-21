@@ -24,6 +24,7 @@ import com.aibabel.baselibrary.utils.ServerKeyUtils;
 import com.aibabel.baselibrary.utils.XIPCUtils;
 import com.aibabel.translate.R;
 import com.aibabel.translate.app.BaseApplication;
+import com.tencent.mmkv.MMKV;
 import com.xuexiang.xipc.XIPC;
 import com.xuexiang.xipc.core.channel.IPCListener;
 import com.xuexiang.xipc.core.channel.IPCService;
@@ -89,29 +90,23 @@ public class CommonUtils {
      *
      * @return
      */
-    public synchronized static String getTranslateHost() {
+    public static String getTranslateHost() {
         try {
-            synchronized (ip_host) {
-                XIPC.connectApp(BaseApplication.getContext(), XIPCUtils.XIPC_MENU_NEW);
-                XIPC.setIPCListener(new IPCListener() {
-                    @Override
-                    public void onIPCConnected(Class<? extends IPCService> service) {
-                        IDataManager dm = XIPC.getInstance(IDataManager.class);
-                        ip_host = dm.getString(ServerKeyUtils.serverKeyTranslateFunction);
-                        Log.e("返回的：ip_host", ip_host + "-------");
-                    }
-                });
-            }
 
+            MMKV mmkv = MMKV.mmkvWithID("commonId",MMKV.MULTI_PROCESS_MODE);
+            ip_host = mmkv.decodeString(ServerKeyUtils.serverKeyTranslateFunction,"abroad.api.function.aibabel.cn");
+            Log.d("返回的：ip_host", ip_host + "-------");
         } catch (Exception e) {
             e.printStackTrace();
+            Log.d("返回的：ip_host",  "-------");
         }
 
 
         if (TextUtils.isEmpty(ip_host)) {
-            Log.d("最终的：ip_host", ip_host + "-------");
+
             ip_host = "abroad.api.function.aibabel.cn";
         }
+        Log.d("最终的：ip_host", ip_host + "-------");
         return ip_host;
 
     }
