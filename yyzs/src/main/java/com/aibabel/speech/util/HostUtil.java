@@ -25,7 +25,7 @@ public class HostUtil {
             if (cursor != null && cursor.getCount() > 0) {
                 cursor.moveToFirst();
                 String ips = cursor.getString(cursor.getColumnIndex("ips"));
-                String countryNameCN = cursor.getString(cursor.getColumnIndex("country"));
+//                String countryNameCN = cursor.getString(cursor.getColumnIndex("country"));
 
                /* if (countryNameCN.equals("中国")) {
 
