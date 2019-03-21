@@ -673,7 +673,7 @@ public class TranslateUtil implements MicArrayUtil.OnDealwithListener, SocketMan
                     public void run() {
                         IServerManager dsm = XIPC.getInstance(IServerManager.class);
                         dsm.setPingServerError(ServerKeyUtils.serverKeyTranslateFunction);
-                        Log.e("2222222","请求换服务器！");
+                        Log.e("http","请求换服务器！");
                         XIPC.disconnect(XIPC.getContext());
                     }
                 }).start();

@@ -26,6 +26,7 @@ import android.widget.ZoomControls;
 
 
 import com.aibabel.aidlaar.StatisticsManager;
+import com.aibabel.baselibrary.utils.ServerKeyUtils;
 import com.aibabel.speech.util.CommonUtils;
 import com.aibabel.speech.util.HostUtil;
 import com.alibaba.fastjson.JSON;
@@ -188,13 +189,13 @@ public class MainActivity extends BaseActivity implements AudioRecordUtil.OnDeal
 
     //去定位获取一次   语音识别和意图识别的  服务器地址
     public void changeUrl() {
-        String url = HostUtil.getHost(mContext, "pa");
+        String url = HostUtil.getServerHost("pa");
         if (!url.equals("")) {
             Constants.getInstance().setBaseUrl(url);
             L.e("----------------url:" + Constants.getInstance().getBaseUrl());
         }
 
-        String shibieUrl = HostUtil.getHost(mContext, "function");
+        String shibieUrl = HostUtil.getServerHost("function");
         if (!shibieUrl.equals("")) {
             try {
                 String[] arr = shibieUrl.split(":");
@@ -354,6 +355,7 @@ public class MainActivity extends BaseActivity implements AudioRecordUtil.OnDeal
     @Override
     public void onError(int flag) {
 
+        HostUtil.sendErrorServer(ServerKeyUtils.serverKeySpeechFunctionError);
     }
 
     @Override
@@ -1242,6 +1244,7 @@ public class MainActivity extends BaseActivity implements AudioRecordUtil.OnDeal
                 @Override
                 public void onError(Throwable ex, boolean isOnCallback) {
                     L.e("onError----------" + ex.getMessage());
+                    HostUtil.sendErrorServer(ServerKeyUtils.serverKeySpeechPaError);
                 }
 
                 @Override

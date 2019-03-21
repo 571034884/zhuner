@@ -80,6 +80,9 @@ public class ContentProviderUtil {
     }
 
 
+    /**
+     * 请求切换服务器
+     */
     public static void sendErrorServer() {
         XIPC.connectApp(XIPC.getContext(), XIPCUtils.XIPC_MENU_NEW);
         XIPC.setIPCListener(new IPCListener() {
@@ -89,8 +92,8 @@ public class ContentProviderUtil {
                     @Override
                     public void run() {
                         IServerManager dsm = XIPC.getInstance(IServerManager.class);
-                        dsm.setPingServerError(ServerKeyUtils.serverKeyTranslateFunction);
-                        Log.e("2222222", "请求换服务器！");
+                        dsm.setPingServerError(ServerKeyUtils.serverKeyOcrCameraError);
+                        Log.e("http", "请求换服务器！");
                         XIPC.disconnect(XIPC.getContext());
                     }
                 }).start();
