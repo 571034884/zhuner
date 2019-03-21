@@ -553,6 +553,7 @@ public class MainActivity extends MapBaseActivity implements SensorEventListener
         map.put("radius", BaiDuConstant.accuracyCircleSize+"");
         map.put("location", mLocation.getLatitude() + "," + mLocation.getLongitude());
         map.put("coord_type", mLocation.getCoorType());
+        map.put("poiNum", 20+"");
         map.put("locationWhere", mLocation.getLocationWhere() + "");
 
 //        map.put("location", "35.714764,139.796665");
