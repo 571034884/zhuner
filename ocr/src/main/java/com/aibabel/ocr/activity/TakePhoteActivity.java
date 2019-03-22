@@ -508,7 +508,6 @@ public class TakePhoteActivity extends BaseActivity implements CameraPreview.OnC
         if (null != dialog && dialog.isShowing()) {
             dialog.cancle();
         }
-//        mOrEventListener.disable();
     }
 
 
