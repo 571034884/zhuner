@@ -208,6 +208,7 @@ public class LocationService extends Service implements ScreenListener, CardBroa
 
                 if (DeviceUtils.getSystem() == DeviceUtils.System.PRO_LEASE) {
                     uploadTraffic();
+                    Log.e(TAG, "=================流量统计执行了=================");
                     handler_flow.postDelayed(this, Constants.FIVE_MILLIS);
                 }
 
