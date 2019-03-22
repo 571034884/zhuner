@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:background="@drawable/dialog_round"
+        android:gravity="center"
+        android:minHeight="262px"
+        android:orientation="horizontal">
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@drawable/dialog_round"
+            android:gravity="center">
+
+            <TextView
+                android:id="@+id/tv_horizontal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:drawablePadding="5px"
+                android:drawableTop="@mipmap/ic_h"
+                android:text="@string/str_h"
+                android:textColor="@color/colorOrange"
+                android:textSize="28px" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center">
+
+            <TextView
+                android:id="@+id/tv_vertical"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:drawablePadding="5px"
+                android:drawableTop="@mipmap/ic_v"
+                android:text="@string/str_v"
+                android:textColor="@color/colorOrange"
+                android:textSize="28px" />
+        </LinearLayout>
+    </LinearLayout>
+
+</RelativeLayout>

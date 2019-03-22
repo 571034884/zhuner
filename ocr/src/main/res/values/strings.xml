@@ -21,4 +21,8 @@
     <string name="more">更多介绍 ></string>
     <string name="camare_laucher">拍一下，就懂了</string>
     <string name="retry">识别失败，请再试一次。</string>
+    <string name="str_h">横排文字</string>
+    <string name="str_v">竖排文字</string>
+
+
 </resources>

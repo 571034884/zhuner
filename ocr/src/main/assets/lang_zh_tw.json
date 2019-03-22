@@ -1,14 +1,5 @@
 [
   {
-    "id": 0,
-    "name_local": "简体中文",
-    "lang_code": "ch_ch",
-    "alert": "请说标准普通话。",
-    "sound": 1,
-    "child": [],
-    "name": "简体中文"
-  },
-  {
     "id": 1,
     "name_local": "English",
     "lang_code": "en",
@@ -24,16 +15,7 @@
     "alert": "標準語で話してください。",
     "sound": 1,
     "child": [],
-    "name": "日文-橫"
-  },
-  {
-    "id": 2,
-    "name_local": "日本語",
-    "lang_code": "jpa_v",
-    "alert": "標準語で話してください。",
-    "sound": 1,
-    "child": [],
-    "name": "日文-縱"
+    "name": "日文"
   },
   {
     "id": 3,

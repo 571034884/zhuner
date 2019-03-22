@@ -13,6 +13,7 @@ import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.annotation.Nullable;
 import android.support.v4.view.ViewPager;
 import android.text.TextUtils;
 import android.util.Log;
@@ -58,6 +59,7 @@ import com.aibabel.ocr.widgets.CardItem;
 import com.aibabel.ocr.widgets.CustomProgress;
 import com.aibabel.ocr.widgets.FocusImageView;
 import com.aibabel.ocr.widgets.Guaguaka;
+import com.aibabel.ocr.widgets.MyAlertDialog;
 import com.aibabel.ocr.widgets.ReferenceLine;
 import com.aibabel.ocr.widgets.SingleLineZoomTextView;
 import com.bumptech.glide.Glide;
@@ -93,15 +95,19 @@ public class TakePhoteActivity extends BaseActivity implements CameraPreview.OnC
     CameraPreview mCameraPreview;
     RelativeLayout mTakePhotoLayout;
     private TextView tv_orLan;
-    private TextView tv_tranLan;
+    //    private TextView tv_tranLan;
     private TextView tv_light;
     private RadioGroup rg_meau;
     private RadioButton rb_object;
     private RadioButton rb_menu;
+    private RadioGroup rg_hv;
+    private RadioButton rb_h;
+    private RadioButton rb_v;
+
     private RadioButton rb_article;
-    private TextView tv_change;
+    //    private TextView tv_change;
     private TextView tv_back;
-    private TextView tvFanhui;
+    private TextView tv_close;
     private Guaguaka guaguaka;
     private LinearLayout root_layout;
     private ReferenceLine rl_line;
@@ -110,6 +116,7 @@ public class TakePhoteActivity extends BaseActivity implements CameraPreview.OnC
     private RelativeLayout rl_camera;
     private RelativeLayout rl_confirm;
     private RelativeLayout rl_meau;
+    private RelativeLayout rl_hv;
     private ImageView iv_recamera;
     private ImageView iv_translation;
     private ImageView iv_camera;
@@ -150,7 +157,6 @@ public class TakePhoteActivity extends BaseActivity implements CameraPreview.OnC
     private int requsetCode = 1111;
     private Bitmap bitmapData;//相机拍照返回的图片
 
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -159,15 +165,10 @@ public class TakePhoteActivity extends BaseActivity implements CameraPreview.OnC
         init();
         String guangbi = getIntent().getStringExtra("from");
         if (guangbi != null && guangbi.equals("food")) {
-            tvFanhui.setVisibility(View.VISIBLE);
+            tv_close.setVisibility(View.VISIBLE);
         } else {
-            tvFanhui.setVisibility(View.GONE);
+            tv_close.setVisibility(View.GONE);
         }
-
-
-//        屏幕按钮随屏幕旋转
-//        setOrientationChangeListener();
-
         rexiufu();
 
     }
@@ -182,19 +183,23 @@ public class TakePhoteActivity extends BaseActivity implements CameraPreview.OnC
         rl_camera = findViewById(R.id.rl_camera);
         rl_confirm = findViewById(R.id.rl_confirm);
         rl_meau = findViewById(R.id.rl_meau);
+        rl_hv = findViewById(R.id.rl_hv);
         iv_recamera = findViewById(R.id.iv_recamera);
         iv_translation = findViewById(R.id.iv_translation);
         iv_camera = findViewById(R.id.iv_camera);
         tv_orLan = findViewById(R.id.tv_orLan);
         tv_orLan = findViewById(R.id.tv_orLan);
-        tv_tranLan = findViewById(R.id.tv_tranLan);
+//        tv_tranLan = findViewById(R.id.tv_tranLan);
         tv_back = findViewById(R.id.tv_back);
-        tvFanhui = findViewById(R.id.tvFanhui);
-        tv_change = findViewById(R.id.tv_change);
+        tv_close = findViewById(R.id.tv_close);
+//        tv_change = findViewById(R.id.tv_change);
         tv_light = findViewById(R.id.tv_light);
         rg_meau = findViewById(R.id.rg_meau);
         rb_object = findViewById(R.id.rb_object);
         rb_menu = findViewById(R.id.rb_menu);
+        rg_hv = findViewById(R.id.rg_hv);
+        rb_h = findViewById(R.id.rb_h);
+        rb_v = findViewById(R.id.rb_v);
         rb_article = findViewById(R.id.rb_article);
         rl_line = findViewById(R.id.rl_line);
         iv_guagua = findViewById(R.id.dstImage);
@@ -218,17 +223,19 @@ public class TakePhoteActivity extends BaseActivity implements CameraPreview.OnC
         fv_focus.setPosition(point);
         mCameraPreview.setFocusView(fv_focus);
         tv_orLan.setOnClickListener(this);
-        tv_tranLan.setOnClickListener(this);
+//        tv_tranLan.setOnClickListener(this);
         tv_light.setOnClickListener(this);
-        tv_change.setOnClickListener(this);
+//        tv_change.setOnClickListener(this);
         tv_back.setOnClickListener(this);
-        tvFanhui.setOnClickListener(this);
+        tv_close.setOnClickListener(this);
         iv_camera.setOnClickListener(this);
         iv_recamera.setOnClickListener(this);
         iv_translation.setOnClickListener(this);
         rb_object.setOnClickListener(this);
         rb_menu.setOnClickListener(this);
         rb_article.setOnClickListener(this);
+        rb_h.setOnClickListener(this);
+        rb_v.setOnClickListener(this);
         mCameraPreview.setOnCameraStatusListener(this);
         tv_I_kown1.setOnClickListener(this);
         tv_I_kown2.setOnClickListener(this);
@@ -248,6 +255,16 @@ public class TakePhoteActivity extends BaseActivity implements CameraPreview.OnC
         mViewPager = findViewById(R.id.viewPager);
         mViewPager.setPageTransformer(false, mCardShadowTransformer);
         mViewPager.setOffscreenPageLimit(5);
+        //判定是否为日语，日语的话显示横竖排文字图标
+        String or_code = SharePrefUtil.getString(this, Constant.LAN_OR_CODE, "en");
+        if (TextUtils.equals(or_code, "jpa")) {
+            rl_hv.setVisibility(View.VISIBLE);
+            rb_h.setChecked(true);
+        } else if (TextUtils.equals(or_code, "jpa_v")) {
+            rl_hv.setVisibility(View.VISIBLE);
+            rb_v.setChecked(true);
+        }
+
     }
 
 
@@ -305,6 +322,23 @@ public class TakePhoteActivity extends BaseActivity implements CameraPreview.OnC
             }
         });
 
+
+        rg_hv.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup group, int checkedId) {
+                switch (checkedId) {
+                    case R.id.rb_h:
+                        SharePrefUtil.saveString(TakePhoteActivity.this, Constant.LAN_OR_CODE, "jpa");
+                        break;
+                    case R.id.rb_v:
+                        SharePrefUtil.saveString(TakePhoteActivity.this, Constant.LAN_OR_CODE, "jpa_v");
+                        break;
+
+                }
+            }
+        });
+
+
     }
 
     /**
@@ -353,9 +387,9 @@ public class TakePhoteActivity extends BaseActivity implements CameraPreview.OnC
                 int lonId = cursor.getColumnIndex("longitude");
                 latitude = cursor.getDouble(latId);
                 longitude = cursor.getDouble(lonId);
-            } else {
-
             }
+        } catch (Exception e) {
+            e.printStackTrace();
         } finally {
             if (null != cursor)
                 cursor.close();
@@ -375,10 +409,6 @@ public class TakePhoteActivity extends BaseActivity implements CameraPreview.OnC
 
             @Override
             public void onUp(View view) {
-//                BitmapFactory.Options options = new BitmapFactory.Options();
-//                options.inPreferredConfig = Bitmap.Config.RGB_565;
-//                options.inDither = true;
-//                startOcr(BitmapFactory.decodeFile(pathName, options));
                 isDaubed++;
                 dialog.show();
                 startOcr();
@@ -453,8 +483,8 @@ public class TakePhoteActivity extends BaseActivity implements CameraPreview.OnC
     protected void onResume() {
         super.onResume();
         //如果是不是翻译状态，mCameraPreview，主要解决fly版本变红的问题
-        Log.e("status",status+"-----------------------------------");
-        if (status == Constant.PREVIEW){
+        Log.e("status", status + "-----------------------------------");
+        if (status == Constant.PREVIEW) {
             mCameraPreview.setVisibility(View.GONE);
             mCameraPreview.setVisibility(View.VISIBLE);
         }
@@ -462,14 +492,14 @@ public class TakePhoteActivity extends BaseActivity implements CameraPreview.OnC
         //设置语言
         String or_code = SharePrefUtil.getString(this, Constant.LAN_OR_CODE, "en");
         String tr_code = SharePrefUtil.getString(this, Constant.LAN_TR_CODE, "ch_ch");
+//        if (or_code.contains("jpa"))
+//            or_code = "jpa";
         String from = LanguageUtils.getNameByCode(or_code, this);
-        String to = LanguageUtils.getRightNameByCode(tr_code, this);
+//        String to = LanguageUtils.getRightNameByCode(tr_code, this);
 
         tv_orLan.setText(from + "");
-        tv_tranLan.setText(to + "");
         SharePrefUtil.saveString(this, Constant.LAN_OR, from);
-        SharePrefUtil.saveString(this, Constant.LAN_TR, to);
-//        mOrEventListener.enable();
+//        SharePrefUtil.saveString(this, Constant.LAN_TR, to);
     }
 
     @Override
@@ -480,7 +510,6 @@ public class TakePhoteActivity extends BaseActivity implements CameraPreview.OnC
         if (null != dialog && dialog.isShowing()) {
             dialog.cancle();
         }
-//        mOrEventListener.disable();
     }
 
 
@@ -537,18 +566,20 @@ public class TakePhoteActivity extends BaseActivity implements CameraPreview.OnC
             case R.id.tv_orLan://原始的语言
                 selectLanguage(1);
                 break;
-            case R.id.tv_tranLan://选择目标语言
-                selectLanguage(2);
-                break;
-            case R.id.tv_change://对换语言
-                changeLanguage();
-                break;
+//            case R.id.tv_tranLan://选择目标语言
+//                selectLanguage(2);
+//                break;
+//            case R.id.tv_change://对换语言
+//                changeLanguage();
+//                break;
             case R.id.tv_back://返回涂抹界面
-                if (rg_tag != 2)
+                if (rg_tag != 2){
                     showGuaguaka();
-                else reset();
+                }else{
+                    reset();
+                }
                 break;
-            case R.id.tvFanhui://返回涂抹界面
+            case R.id.tv_close://返回涂抹界面
                 finish();
                 break;
             case R.id.iv_recamera://重新拍照
@@ -620,7 +651,7 @@ public class TakePhoteActivity extends BaseActivity implements CameraPreview.OnC
 
 
         tv_orLan.setText(orLan);
-        tv_tranLan.setText(trLan);
+//        tv_tranLan.setText(trLan);
         SharePrefUtil.saveString(this, Constant.LAN_TR, trLan);
         SharePrefUtil.saveString(this, Constant.LAN_OR, orLan);
         SharePrefUtil.saveString(this, Constant.LAN_OR_CODE, orLanCode);
@@ -637,7 +668,7 @@ public class TakePhoteActivity extends BaseActivity implements CameraPreview.OnC
         if (type == 1) {
             Intent intent = new Intent(this, SelectLanguageActivity.class);
             intent.putExtra("type", type);
-            startActivity(intent);
+            startActivityForResult(intent, 100);
             Map<String, String> map = new HashMap<>();
             StatisticsManager.getInstance(this).addEventAidl(1400, map);
         } else {
@@ -649,6 +680,58 @@ public class TakePhoteActivity extends BaseActivity implements CameraPreview.OnC
         }
     }
 
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == 200) {
+            String or_code = SharePrefUtil.getString(this, Constant.LAN_OR_CODE, "en");
+            if (TextUtils.equals(or_code, "jpa")) {
+
+                ShowHVDialog();
+            } else {
+                rl_hv.setVisibility(View.GONE);
+            }
+        }
+    }
+
+
+    /**
+     * 如果选择语言为日语，则显示选择横纵向的对话框
+     */
+    private void ShowHVDialog() {
+
+        View view = getLayoutInflater().inflate(R.layout.dialog_vh, null);
+        final MyAlertDialog builders = new MyAlertDialog(this, 0, 0, view, R.style.dialog);
+        builders.setCancelable(false);
+        TextView mDialogH = view.findViewById(R.id.tv_horizontal);
+        TextView mDialogV = view.findViewById(R.id.tv_vertical);
+        mDialogH.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                builders.dismiss();
+                String jpaCode = "jpa";
+                rl_hv.setVisibility(View.VISIBLE);
+                rb_h.setChecked(true);
+                SharePrefUtil.saveString(TakePhoteActivity.this, Constant.LAN_OR_CODE, jpaCode);
+
+            }
+        });
+        mDialogV.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                builders.dismiss();
+                String jpaCode = "jpa_v";
+                rl_hv.setVisibility(View.VISIBLE);
+                rb_v.setChecked(true);
+                SharePrefUtil.saveString(TakePhoteActivity.this, Constant.LAN_OR_CODE, jpaCode);
+            }
+        });
+
+        builders.show();
+    }
+
+
     /**
      * 发送请求识别和翻译的数据
      *
@@ -658,8 +741,11 @@ public class TakePhoteActivity extends BaseActivity implements CameraPreview.OnC
      */
     public void getData(final boolean isFull, String path, final float downX, final float downY) {
         String from = SharePrefUtil.getString(this, Constant.LAN_OR_CODE, "en");
-        String to = SharePrefUtil.getString(this, Constant.LAN_TR_CODE, "ch_ch");
-
+//        String to = SharePrefUtil.getString(this, Constant.LAN_TR_CODE, "ch_ch");
+        String to = "ch_ch";
+//        if (TextUtils.equals(from, "jpa")) {
+//            from = jpaCode;
+//        }
         if (status_compress == 0) {
             ImageUtils.compress(bitmapData, pathName, 200, 80);
             status_compress = 1;
@@ -688,13 +774,14 @@ public class TakePhoteActivity extends BaseActivity implements CameraPreview.OnC
             dialog.cancel();
             return;
         }
-        //判定拍照语言是否一样日语横纵向
-        if (rg_tag != 2 && (TextUtils.equals(from, "jpa") || TextUtils.equals(from, "jpa_v")) && TextUtils.equals("jpa", to)) {
-            isDaubed = 0;
-            toast(R.string.no_same);
-            dialog.cancel();
-            return;
-        }
+//        //判定拍照语言是否一样日语横纵向
+//        if (rg_tag != 2 && (TextUtils.equals(from, "jpa") || TextUtils.equals(from, "jpa_v")) && TextUtils.equals("jpa", to)) {
+//            isDaubed = 0;
+//            toast(R.string.no_same);
+//            dialog.cancel();
+//            return;
+//        }
+        Log.e(TAG, "from = " + from + ",to = " + to);
 
         runOnUiThread(new Runnable() {
             @Override
@@ -713,7 +800,8 @@ public class TakePhoteActivity extends BaseActivity implements CameraPreview.OnC
                 .params("id", CommonUtils.getSN())
                 .params("type", type)
                 .params("location", StringUtils.getLocation(latitude, longitude))
-                .params("type", "general")
+                //object 参数,这个参数为物体识别用的
+//                .params("type", "general")
                 .params("locale", LanguageUtils.getLang())
                 .execute(new StringCallback() {
                     @Override
@@ -787,6 +875,8 @@ public class TakePhoteActivity extends BaseActivity implements CameraPreview.OnC
         fl_tran.setVisibility(View.GONE);
         tv_back.setVisibility(View.INVISIBLE);
         iv_guagua.setVisibility(View.VISIBLE);
+        Log.e("rl_hv", "----------------------------");
+        rl_hv.setVisibility(View.GONE);
         guaguaka.clear();
         guaguaka.setVisibility(View.VISIBLE);
         tvHint.setVisibility(View.GONE);
@@ -808,6 +898,7 @@ public class TakePhoteActivity extends BaseActivity implements CameraPreview.OnC
         rl_confirm.setVisibility(View.VISIBLE);
         iv_translation.setVisibility(View.GONE);
         rl_line.setVisibility(View.GONE);
+        rl_hv.setVisibility(View.GONE);
         status = Constant.TRANSLATE;
         tvHint.setVisibility(View.GONE);
     }
@@ -845,6 +936,15 @@ public class TakePhoteActivity extends BaseActivity implements CameraPreview.OnC
             tvHint.setVisibility(View.VISIBLE);
         } else {
             tvHint.setVisibility(View.GONE);
+        }
+
+        String or_code = SharePrefUtil.getString(this, Constant.LAN_OR_CODE, "en");
+        if (TextUtils.equals(or_code, "jpa")) {
+            rl_hv.setVisibility(View.VISIBLE);
+            rb_h.setChecked(true);
+        } else if (TextUtils.equals(or_code, "jpa_v")) {
+            rl_hv.setVisibility(View.VISIBLE);
+            rb_v.setChecked(true);
         }
     }
 
@@ -963,14 +1063,6 @@ public class TakePhoteActivity extends BaseActivity implements CameraPreview.OnC
                 frameLayout.addView(textView);
 
             }
-//            if (fangxiang == 0)
-//                startPropertyAnim(frameLayout, -90, StringUtils.getRealWidth(bm.getHeight() / 2), StringUtils.getRealHeight(bm.getHeight() / 2));
-//            else if (fangxiang == 2)
-//                startPropertyAnim(frameLayout, 90, StringUtils.getRealWidth(bm.getWidth() / 2), StringUtils.getRealHeight(bm.getWidth() / 2));
-//            else if (fangxiang == 3)
-//                startPropertyAnim(frameLayout, 180, StringUtils.getRealWidth(bm.getWidth() / 2), StringUtils.getRealHeight(bm.getHeight() / 2));
-//            else
-//                startPropertyAnim(frameLayout, 0, 0, 0);
         } else {
             Toast.makeText(this, bean.getError_message() + "", Toast.LENGTH_SHORT).show();
             reset();
@@ -978,98 +1070,7 @@ public class TakePhoteActivity extends BaseActivity implements CameraPreview.OnC
 
     }
 
-//    /**
-//     * 识别翻译菜单
-//     *
-//     * @param response
-//     * @param downX
-//     * @param downY
-//     */
-//    private void toMenu(String response, float downX, float downY) {
-//        ResponseBean bean = null;
-//        try {
-//            bean = FastJsonUtil.changeJsonToBean(response, ResponseBean.class);
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
-//
-//        if (null == bean || null == bean.getResult()) {
-//            reset();
-//            Toast.makeText(this, R.string.error_msg, Toast.LENGTH_SHORT).show();
-//            return;
-//        }
-//        if (bean.getResult().size() == 0) {
-//            reset();
-//            Toast.makeText(this, R.string.error_msg, Toast.LENGTH_SHORT).show();
-//            return;
-//
-//        }
-//
-//        if (null != bean && null != bean.getResult() && bean.getResult().size() > 0) {
-//
-//            fl_tran.removeAllViews();
-//            fl_tran.setVisibility(View.VISIBLE);
-//            Bitmap bm = PictureUtil.adjustPhotoRotation(BitmapFactory.decodeFile(pathName), 90 * fangxiang - 90);
-//            ImageView imageView = new ImageView(this);
-//            FrameLayout.LayoutParams lp = new FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.MATCH_PARENT);
-//            imageView.setLayoutParams(lp);
-//            int asss = getResources().getColor(R.color.black_transparent);
-//            RequestOptions options = new RequestOptions().transform(new ColorFilterTransformation(asss));
-//
-//            Glide.with(this).load(bitmapData).apply(options).into(imageView);
-//            fl_tran.addView(imageView);
-//
-//            FrameLayout frameLayout = new FrameLayout(this);
-//            FrameLayout.LayoutParams lll = new FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.MATCH_PARENT);
-//            frameLayout.setLayoutParams(lll);
-//            fl_tran.addView(frameLayout);
-//
-//            for (int i = 0; i < bean.getResult().size(); i++) {
-//                String words = bean.getResult().get(i).getTrans_words();
-//                WordsResult result = new WordsResult();
-//                result.setHeight(StringUtils.getRealHeight(bean.getResult().get(i).getLocation().getHeight()));
-//                result.setLeft(StringUtils.getRealWidth(bean.getResult().get(i).getLocation().getX()) + (int) downX);
-//                result.setTop(StringUtils.getRealHeight(bean.getResult().get(i).getLocation().getY()) + (int) downY);
-//                result.setWidth(StringUtils.getRealWidth(bean.getResult().get(i).getLocation().getWidth()));
-//                result.setWords(words);
-//
-//                FrameLayout.LayoutParams layoutParams = new FrameLayout.LayoutParams(result.getWidth(), FrameLayout.LayoutParams.WRAP_CONTENT);
-//                layoutParams.setMargins((result.getLeft() > 1) ? result.getLeft() : 2, result.getTop() + 1, 0, 0);
-//                SingleLineZoomTextView textView = new SingleLineZoomTextView(this);
-//                if (TextUtils.equals("1_v", bean.getMode())) {//竖排文字
-//                    textView.setRotation(90);
-//                    textView.setPivotX(result.getWidth());
-//                    textView.setPivotY(0);
-//                    layoutParams = new FrameLayout.LayoutParams(result.getHeight(), FrameLayout.LayoutParams.WRAP_CONTENT);
-//                    layoutParams.setMargins((result.getLeft() > 1) ? result.getLeft() : 2, result.getTop() + result.getWidth(), 0, 0);
-//                }
-//                textView.setLayoutParams(layoutParams);
-//                textView.setText(result.getWords());
-//                textView.setMaxWidth(DisplayUtil.getWidthInPx(this) - result.getLeft()-2);
-//                textView.setPadding(0, 1, 0, 1);
-//                textView.setGravity(Gravity.CENTER_VERTICAL);
-//                textView.setTextColor(getResources().getColor(R.color.white));
-//                frameLayout.addView(textView);
-//
-//            }
-//            if (fangxiang == 0)
-//                startPropertyAnim(frameLayout, -90, StringUtils.getRealWidth(bm.getHeight() / 2), StringUtils.getRealHeight(bm.getHeight
-//                        () / 2));
-//            else if (fangxiang == 2)
-//                startPropertyAnim(frameLayout, 90, StringUtils.getRealWidth(bm.getWidth() / 2), StringUtils.getRealHeight(bm.getWidth() /
-//                        2));
-//            else if (fangxiang == 3)
-//                startPropertyAnim(frameLayout, 180, StringUtils.getRealWidth(bm.getWidth() / 2), StringUtils.getRealHeight(bm.getHeight()
-//                        / 2));
-//            else
-//                startPropertyAnim(frameLayout, 0, 0, 0);
-//
-//        } else {
-//            Toast.makeText(this, bean.getError_message() + "", Toast.LENGTH_SHORT).show();
-//            reset();
-//        }
-//
-//    }
+
 
     /**
      * 跳转到物体识别

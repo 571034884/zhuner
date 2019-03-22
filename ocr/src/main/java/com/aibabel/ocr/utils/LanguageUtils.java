@@ -1,5 +1,6 @@
 package com.aibabel.ocr.utils;
 
+import android.app.job.JobParameters;
 import android.content.Context;
 import android.content.res.AssetManager;
 import android.text.TextUtils;
@@ -61,6 +62,8 @@ public class LanguageUtils {
 
     public static String getNameByCode(String code,Context context){
         List<LanBean> list = getLanList(context);
+        if (code.contains("jpa"))
+            code = "jpa";
         String name = "";
         for (LanBean bean : list){
             if(TextUtils.equals(bean.getLang_code(),code)){
@@ -74,6 +77,9 @@ public class LanguageUtils {
 
     public static String getRightNameByCode(String code,Context context){
         List<LanBean> list = getLanRightList(context);
+//        if(TextUtils.equals(code,"jpa")||TextUtils.equals(code,"jpa_v")){
+//            code = "jpa";
+//        }
         String name = "";
         for (LanBean bean : list){
             if(TextUtils.equals(bean.getLang_code(),code)){
