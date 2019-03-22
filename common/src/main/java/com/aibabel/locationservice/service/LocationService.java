@@ -15,6 +15,7 @@ import android.text.TextUtils;
 import android.util.Log;
 
 import com.aibabel.aidlaar.StatisticsManager;
+import com.aibabel.baselibrary.utils.DeviceUtils;
 import com.aibabel.locationservice.alarm.ScreenListener;
 import com.aibabel.locationservice.bean.LocationBean;
 import com.aibabel.locationservice.bean.ResultBean;
@@ -54,9 +55,11 @@ public class LocationService extends Service implements ScreenListener, CardBroa
     private String TAG = LocationService.class.getSimpleName().toString();
     private Handler handler_poi = new Handler();
     private Handler handler_server = new Handler();
+    private Handler handler_flow = new Handler();
     public LocationClient mLocationClient = null;
     private MyLocationListener myListener = new MyLocationListener();
     private Runnable runnable_poi;
+    private Runnable runnable_flow;
     private Runnable runnable_server;
     private LocationBean locationBean = new LocationBean();
     private ScreenBroadcastReceiver mScreenReceiver;
@@ -151,9 +154,9 @@ public class LocationService extends Service implements ScreenListener, CardBroa
         contentProvide();
         //百度定位
         //声明、配置LocationClient类
-        if(TextUtils.equals(CommonUtils.getProType(),"L")){//判定Pro是否为销售版
+        if (TextUtils.equals(CommonUtils.getProType(), "L")) {//判定Pro是否为销售版
             mLocationClient = MapUtils.getLocationClient(getApplicationContext(), Constants.LOCATION_MILLIS);
-        }else{
+        } else {
             mLocationClient = MapUtils.getLocationClient(getApplicationContext(), Constants.LOCATION_MILLIS_S);
         }
         // //注册监听函数
@@ -187,15 +190,32 @@ public class LocationService extends Service implements ScreenListener, CardBroa
                     Log.e(TAG, "第一次没有请求!");
                     isFirst = false;
                 }
-                if(TextUtils.equals(CommonUtils.getProType(),"L")){//判定Pro是否为销售版
+                if (TextUtils.equals(CommonUtils.getProType(), "L")) {//判定Pro是否为销售版
                     handler_poi.postDelayed(this, Constants.POI_MILLIS);
-                }else{
+                } else {
                     handler_poi.postDelayed(this, Constants.POI_MILLIS_S);
                 }
 
             }
         };
         handler_poi.postDelayed(runnable_poi, 0);
+
+
+        //循环请求上传流量
+        runnable_flow = new Runnable() {
+            @Override
+            public void run() {
+
+                if (DeviceUtils.getSystem() == DeviceUtils.System.PRO_LEASE) {
+                    uploadTraffic();
+                    handler_flow.postDelayed(this, Constants.FIVE_MILLIS);
+                }
+
+
+            }
+        };
+        handler_flow.postDelayed(runnable_flow, 0);
+
 
         //注册切换sim卡广播
         CardBroadcastReceiver cardBroadcastReceiver = new CardBroadcastReceiver();
@@ -380,33 +400,6 @@ public class LocationService extends Service implements ScreenListener, CardBroa
 
 
     }
-
-//    private void sendLocationBroadcast(LocationBean bean) {
-//        Intent broadcastIntent = new Intent(Constants.ACTION_LOCATION);
-//        Bundle bundle = new Bundle();
-//        bundle.putString("location", FastJsonUtil.changObjectToString(bean));
-//        broadcastIntent.putExtras(bundle);
-//        sendBroadcast(broadcastIntent);
-//    }
-//
-//    /**
-//     * 根据apk类型选择广播
-//     * @param apk
-//     * @return
-//     */
-//    private String selectBroadcastByType(String apk) {
-//        String action = "";
-//        if (TextUtils.equals(apk, "weather")) {
-//            action = Constants.ACTION_WEATHER;
-//        } else if (TextUtils.equals(apk, Constants.TRAVEL)) {
-//            action = Constants.ACTION_TRAVEL;
-//        } else if (TextUtils.equals(apk, "location")) {
-//            action = Constants.ACTION_LOCATION;
-//        } else if (TextUtils.equals(apk, "advisory")) {
-//            action = Constants.ACTION_TRAVEL_ADVISORY;
-//        }
-//        return action;
-//    }
 
 
     @Override
@@ -629,7 +622,7 @@ public class LocationService extends Service implements ScreenListener, CardBroa
             SharePrefUtil.saveLong(context, "zero_now_flow", last_zero_now_flow);
             today_flow = now_flow_num - last_zero_now_flow;
         }
-
+        Log.e(TAG, "iccid ==" + cur_card + "====" + sectionNumFlow);
 
     }
 
@@ -688,41 +681,44 @@ public class LocationService extends Service implements ScreenListener, CardBroa
      * 上传流量到服务器
      */
     private void uploadTraffic() {
-        Timer timer_date = new Timer();
-        TimerTask task = new TimerTask() {
-            @Override
-            public void run() {
-                runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        get_flow(LocationService.this);
-                        if (CommonUtils.isAvailable(LocationService.this)) {
 
-                            lastNumFlow = SharePrefUtil.getLong(LocationService.this, "", 0);
-                            lastNumFlow = SharePrefUtil.getLong(LocationService.this, "last_num_flow", 0);
-                            sectionNumFlow = now_flow_num - lastNumFlow;
-                            Log.e("sectionNumFlow", "总流量：" + now_flow_num + "===5分钟前的总流量：" + lastNumFlow + "===5分钟使用的流量：" + sectionNumFlow + "");
-                            SharePrefUtil.saveLong(LocationService.this, "last_num_flow", now_flow_num);
-                            if (FlowUtil.isMobileEnabled(LocationService.this)) {
-                                BootBroadcastReceiver.CARD_TYPE = FlowUtil.getDefaultDataSubId(LocationService.this);
-                                if (BootBroadcastReceiver.CARD_TYPE == 0) {
-                                    send_sectionFlow(Constants.CARD_0, sectionNumFlow, BootBroadcastReceiver.CARD_TYPE);
-                                    cur_card = Constants.CARD_0;
-                                } else if (BootBroadcastReceiver.CARD_TYPE == 1) {
-                                    send_sectionFlow(Constants.CARD_1, sectionNumFlow, BootBroadcastReceiver.CARD_TYPE);
-                                    cur_card = Constants.CARD_1;
-                                }
-                                Log.e("上传", "iccid ==" + cur_card + "====" + sectionNumFlow);
-                            }
-                        }
+        get_flow(LocationService.this);
+        if (CommonUtils.isAvailable(LocationService.this)) {
 
-                    }
-                });
-
+            lastNumFlow = SharePrefUtil.getLong(LocationService.this, "", 0);
+            lastNumFlow = SharePrefUtil.getLong(LocationService.this, "last_num_flow", 0);
+            sectionNumFlow = now_flow_num - lastNumFlow;
+            Log.e("sectionNumFlow", "总流量：" + now_flow_num + "===5分钟前的总流量：" + lastNumFlow + "===5分钟使用的流量：" + sectionNumFlow + "");
+            SharePrefUtil.saveLong(LocationService.this, "last_num_flow", now_flow_num);
+            if (FlowUtil.isMobileEnabled(LocationService.this)) {
+                BootBroadcastReceiver.CARD_TYPE = FlowUtil.getDefaultDataSubId(LocationService.this);
+                if (BootBroadcastReceiver.CARD_TYPE == 0) {
+                    send_sectionFlow(Constants.CARD_0, sectionNumFlow, BootBroadcastReceiver.CARD_TYPE);
+                    cur_card = Constants.CARD_0;
+                } else if (BootBroadcastReceiver.CARD_TYPE == 1) {
+                    send_sectionFlow(Constants.CARD_1, sectionNumFlow, BootBroadcastReceiver.CARD_TYPE);
+                    cur_card = Constants.CARD_1;
+                }
+                Log.e("上传", "iccid ==" + cur_card + "====" + sectionNumFlow);
             }
-        };
-//        timer_date.schedule(task, 0, 60 * 1000);
-        timer_date.schedule(task, 0, 60 * 1000 * 5);
+        }
+
+//        Timer timer_date = new Timer();
+//        TimerTask task = new TimerTask() {
+//            @Override
+//            public void run() {
+//                runOnUiThread(new Runnable() {
+//                    @Override
+//                    public void run() {
+//
+//
+//                    }
+//                });
+//
+//            }
+//        };
+////        timer_date.schedule(task, 0, 60 * 1000);
+//        timer_date.schedule(task, 0, 60 * 1000 * 5);
 
     }
 
@@ -748,24 +744,24 @@ public class LocationService extends Service implements ScreenListener, CardBroa
         String url = "https://wx.aibabel.com:3002/common/api/flow/count";
 
         String orderNo = CommonUtils.getOrderNo();
-        Log.e(TAG, "============="+orderNo+"==============");
+        Log.e(TAG, "=============" + orderNo + "==============");
         OkGo.<String>post(url)
                 .tag(this)
                 .params("orderNo", orderNo)
                 .params("sn", CommonUtils.getSN())
                 .params("iccid", iccid)
-                .params("cardType", cardType+1)
+                .params("cardType", cardType + 1)
                 .params("count", sectionFlow)
                 .params("unit", "b")
                 .execute(new StringCallback() {
                     @Override
                     public void onSuccess(Response<String> response) {
-                        Log.e(TAG+"流量统计onSuccess：",response.body().toString());
+                        Log.e(TAG + "流量统计onSuccess：", response.body().toString());
                     }
 
                     @Override
                     public void onError(Response<String> response) {
-                        Log.e(TAG+"流量统计onError：",response.body().toString());
+                        Log.e(TAG + "流量统计onError：", response.body().toString());
                     }
 
                     @Override

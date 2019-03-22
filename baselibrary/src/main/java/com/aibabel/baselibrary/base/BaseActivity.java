@@ -1,6 +1,7 @@
 package com.aibabel.baselibrary.base;
 
 import android.content.Context;
+import android.content.Entity;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.graphics.Color;
@@ -20,11 +21,17 @@ import com.aibabel.baselibrary.http.BaseCallback;
 import com.aibabel.baselibrary.http.OkGoUtil;
 import com.aibabel.baselibrary.utils.CommonUtils;
 import com.aibabel.baselibrary.utils.SharePrefUtil;
+import com.google.gson.JsonObject;
 import com.lzy.okgo.OkGo;
 import com.orhanobut.logger.Logger;
 import com.taobao.sophix.SophixManager;
 import com.umeng.analytics.MobclickAgent;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.Serializable;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -37,7 +44,9 @@ import butterknife.Unbinder;
  * 功能：
  * 版本：1.0
  */
-public abstract class BaseActivity extends AppCompatActivity {
+public abstract class BaseActivity extends StatisticsBaseActivity {
+
+
 
     public String TAG = this.getClass().getSimpleName();
     public Unbinder mUnbinder;
@@ -122,6 +131,7 @@ public abstract class BaseActivity extends AppCompatActivity {
                 }
             });
         }
+
     }
 
     //交互次数增长
@@ -360,6 +370,17 @@ public abstract class BaseActivity extends AppCompatActivity {
         return super.dispatchTouchEvent(event);
     }
 
+
+
+//    /**
+//     * 添加自定义事件
+//     * @param eventId 自定义事件id
+//     * @param parameters   自定义事件参数
+//     * @param hardwareButton
+//     */
+//    protected void addStatisticsEvent(String eventId, HashMap<String, Serializable> parameters, boolean hardwareButton){
+//
+//    }
     @Override
     public boolean onTouchEvent(MotionEvent event) {
         switch (event.getAction()) {
