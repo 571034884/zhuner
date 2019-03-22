@@ -4,15 +4,20 @@ package com.aibabel.locationservice.bean;
 import java.util.List;
 
 /**
- *==========================================================================================
+ * ==========================================================================================
+ *
  * @Author： 张文颖
- *
  * @Date：2019/1/16
- *
  * @Desc：推送消息实体类
- *==========================================================================================
+ * @==========================================================================================
  */
 public class PushMessageBean {
+
+    /**
+     * 通知显示级别，1为立即显示，2为普通
+     */
+    private String level;
+
 
     /**
      * type 通知类型
@@ -42,6 +47,14 @@ public class PushMessageBean {
      * 推送景点信息
      */
     private List<ResultDataBean> resultData;
+
+    public String getLevel() {
+        return level;
+    }
+
+    public void setLevel(String level) {
+        this.level = level;
+    }
 
     public String getType() {
         return type;

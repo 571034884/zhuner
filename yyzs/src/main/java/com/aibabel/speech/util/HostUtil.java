@@ -11,6 +11,8 @@ import com.aibabel.speech.app.BaseApplication;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import java.util.TimeZone;
+
 public class HostUtil {
     private static final Uri CITY_URI = Uri.parse("content://com.aibabel.locationservice.provider.AibabelProvider/aibabel_location");
 
@@ -23,14 +25,20 @@ public class HostUtil {
             if (cursor != null && cursor.getCount() > 0) {
                 cursor.moveToFirst();
                 String ips = cursor.getString(cursor.getColumnIndex("ips"));
-                String countryNameCN = cursor.getString(cursor.getColumnIndex("country"));
+//                String countryNameCN = cursor.getString(cursor.getColumnIndex("country"));
 
-                if (countryNameCN.equals("中国")) {
+               /* if (countryNameCN.equals("中国")) {
 
                     key = "中国_" + context.getPackageName() + "_"+typeName;
                 } else {
                     key = "default_" + context.getPackageName() + "_"+typeName;
+                }*/
+                if(getTimerType()==1){
+                    key = "中国_" + context.getPackageName() + "_"+typeName;
+                }else{
+                    key = "default_" + context.getPackageName() + "_"+typeName;
                 }
+
                 JSONObject jsonObject = new JSONObject(ips);
                 JSONArray jsonArray = new JSONArray(jsonObject.getString(key));
                 ip_host = jsonArray.getJSONObject(0).get("domain").toString();
@@ -47,6 +55,28 @@ public class HostUtil {
         return ip_host;
 
     }
+
+    /**
+     * 获取当前时区
+     *
+     * @return 1国内服务器，0国外服务器
+     */
+    public static int getTimerType() {
+        try {
+            String timerID = TimeZone.getDefault().getID();
+            if (timerID.equals("Asia/Shanghai")) {
+                Log.e("SERVICE_FUWU", "时区:" + 1);
+                return 1;
+            } else {
+                Log.e("SERVICE_FUWU", "时区:" + 0);
+                return 0;
+            }
+        } catch (Exception e) {
+            Log.e("SERVICE_FUWU", "获取时区报错");
+        }
+        return 0;
+    }
+
     /**
      * 获取坐标
      *
