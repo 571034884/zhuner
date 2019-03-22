@@ -230,7 +230,7 @@ public class RenUtils {
         @Override
         public void onReceive(Context context, Intent intent) {
 
-            IsToday();
+            //IsToday();
 
         }
     }
