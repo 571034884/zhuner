@@ -696,23 +696,6 @@ public class LocationService extends Service implements ScreenListener, CardBroa
             }
         }
 
-//        Timer timer_date = new Timer();
-//        TimerTask task = new TimerTask() {
-//            @Override
-//            public void run() {
-//                runOnUiThread(new Runnable() {
-//                    @Override
-//                    public void run() {
-//
-//
-//                    }
-//                });
-//
-//            }
-//        };
-////        timer_date.schedule(task, 0, 60 * 1000);
-//        timer_date.schedule(task, 0, 60 * 1000 * 5);
-
     }
 
 

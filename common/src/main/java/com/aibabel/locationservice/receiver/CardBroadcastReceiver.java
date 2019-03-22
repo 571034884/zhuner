@@ -22,14 +22,21 @@ public class CardBroadcastReceiver extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
         Log.e("LocationService", "========切卡广播监听到了=======");
-        if (FlowUtil.isMobileEnabled(context)) {
+        try {
+            //切换卡后不能立即去判定网络是否可用，因为不一定能有网
+            Thread.sleep(5000);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
+        if (FlowUtil.isMobileEnabled(context)) {
             BootBroadcastReceiver.CARD_TYPE = FlowUtil.getDefaultDataSubId(context);
             if (BootBroadcastReceiver.LAST_CARD_TYPE != BootBroadcastReceiver.CARD_TYPE) {
+                Log.e("LocationService", "================和上次不一样================");
+                BootBroadcastReceiver.LAST_CARD_TYPE = BootBroadcastReceiver.CARD_TYPE;
                 if (null != listener) {
                     Log.e("LocationService", "========开始切卡=======");
                     listener.switch_Card();
-                    BootBroadcastReceiver.LAST_CARD_TYPE = BootBroadcastReceiver.CARD_TYPE;
                 }
             }
 
