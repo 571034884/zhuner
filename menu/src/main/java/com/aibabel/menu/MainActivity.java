@@ -480,6 +480,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
     public void clearALlsharePreutil() {
 
         SharePrefUtil.removeByKey(mContext, neverUseNetflag);
+        SharePrefUtil.removeByKey(mContext, neverUseNetflag);
         SharePrefUtil.removeByKey(mContext, neverUseNet_start);
         SharePrefUtil.removeByKey(mContext, neverUseNet_end);
         SharePrefUtil.removeByKey(mContext, order_channelName);
@@ -744,8 +745,6 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
             String order_id = SharePrefUtil.getString(context, order_oid, "");
             ///国外 并且无订单
             if ((LocationUtils.locationWhere(context) == 0) && (TextUtils.isEmpty(order_id))) {
-                //lockloopmsg();
-                //f;
                 LogUtil.e("国外 并且无订单  ");
             }
 
@@ -1598,12 +1597,14 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         String order_end = SharePrefUtil.getString(mContext, order_endttime, "");
         String channelName = SharePrefUtil.getString(mContext, order_channelName, "");
         int isZhuner = SharePrefUtil.getInt(mContext, order_isZhuner, -1);
-
+        if(TextUtils.isEmpty(order_end)){
+            return;
+        }
 
         try {
             LogUtil.e("lockloopmsg="+(order_end));
             //负数的话为已经过期{
-            if(TextUtils.isEmpty(order_end)||(CalenderUtil.compaeTimeWithAfter24(order_end) <= 0)) {
+            if((!TextUtils.isEmpty(order_end))&&(CalenderUtil.compaeTimeWithAfter24(order_end) <= 0)) {
                 Message message = new Message();
                 message.what = 100;
                 Bundle bun = new Bundle();
