@@ -255,6 +255,16 @@ public class TakePhoteActivity extends BaseActivity implements CameraPreview.OnC
         mViewPager = findViewById(R.id.viewPager);
         mViewPager.setPageTransformer(false, mCardShadowTransformer);
         mViewPager.setOffscreenPageLimit(5);
+        //判定是否为日语，日语的话显示横竖排文字图标
+        String or_code = SharePrefUtil.getString(this, Constant.LAN_OR_CODE, "en");
+        if (TextUtils.equals(or_code, "jpa")) {
+            rl_hv.setVisibility(View.VISIBLE);
+            rb_h.setChecked(true);
+        } else if (TextUtils.equals(or_code, "jpa_v")) {
+            rl_hv.setVisibility(View.VISIBLE);
+            rb_v.setChecked(true);
+        }
+
     }
 
 
@@ -452,14 +462,6 @@ public class TakePhoteActivity extends BaseActivity implements CameraPreview.OnC
     @Override
     protected void onStart() {
         super.onStart();
-        String or_code = SharePrefUtil.getString(this, Constant.LAN_OR_CODE, "en");
-        if (TextUtils.equals(or_code, "jpa")) {
-            rl_hv.setVisibility(View.VISIBLE);
-            rb_h.setChecked(true);
-        } else if (TextUtils.equals(or_code, "jpa_v")) {
-            rl_hv.setVisibility(View.VISIBLE);
-            rb_v.setChecked(true);
-        }
         mCameraPreview.onActivityStart();
         mCameraPreview.start();
 
@@ -571,9 +573,11 @@ public class TakePhoteActivity extends BaseActivity implements CameraPreview.OnC
 //                changeLanguage();
 //                break;
             case R.id.tv_back://返回涂抹界面
-                if (rg_tag != 2)
+                if (rg_tag != 2){
                     showGuaguaka();
-                else reset();
+                }else{
+                    reset();
+                }
                 break;
             case R.id.tv_close://返回涂抹界面
                 finish();
@@ -871,6 +875,7 @@ public class TakePhoteActivity extends BaseActivity implements CameraPreview.OnC
         fl_tran.setVisibility(View.GONE);
         tv_back.setVisibility(View.INVISIBLE);
         iv_guagua.setVisibility(View.VISIBLE);
+        Log.e("rl_hv", "----------------------------");
         rl_hv.setVisibility(View.GONE);
         guaguaka.clear();
         guaguaka.setVisibility(View.VISIBLE);
@@ -893,6 +898,7 @@ public class TakePhoteActivity extends BaseActivity implements CameraPreview.OnC
         rl_confirm.setVisibility(View.VISIBLE);
         iv_translation.setVisibility(View.GONE);
         rl_line.setVisibility(View.GONE);
+        rl_hv.setVisibility(View.GONE);
         status = Constant.TRANSLATE;
         tvHint.setVisibility(View.GONE);
     }
@@ -1057,14 +1063,6 @@ public class TakePhoteActivity extends BaseActivity implements CameraPreview.OnC
                 frameLayout.addView(textView);
 
             }
-//            if (fangxiang == 0)
-//                startPropertyAnim(frameLayout, -90, StringUtils.getRealWidth(bm.getHeight() / 2), StringUtils.getRealHeight(bm.getHeight() / 2));
-//            else if (fangxiang == 2)
-//                startPropertyAnim(frameLayout, 90, StringUtils.getRealWidth(bm.getWidth() / 2), StringUtils.getRealHeight(bm.getWidth() / 2));
-//            else if (fangxiang == 3)
-//                startPropertyAnim(frameLayout, 180, StringUtils.getRealWidth(bm.getWidth() / 2), StringUtils.getRealHeight(bm.getHeight() / 2));
-//            else
-//                startPropertyAnim(frameLayout, 0, 0, 0);
         } else {
             Toast.makeText(this, bean.getError_message() + "", Toast.LENGTH_SHORT).show();
             reset();
@@ -1072,98 +1070,7 @@ public class TakePhoteActivity extends BaseActivity implements CameraPreview.OnC
 
     }
 
-//    /**
-//     * 识别翻译菜单
-//     *
-//     * @param response
-//     * @param downX
-//     * @param downY
-//     */
-//    private void toMenu(String response, float downX, float downY) {
-//        ResponseBean bean = null;
-//        try {
-//            bean = FastJsonUtil.changeJsonToBean(response, ResponseBean.class);
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
-//
-//        if (null == bean || null == bean.getResult()) {
-//            reset();
-//            Toast.makeText(this, R.string.error_msg, Toast.LENGTH_SHORT).show();
-//            return;
-//        }
-//        if (bean.getResult().size() == 0) {
-//            reset();
-//            Toast.makeText(this, R.string.error_msg, Toast.LENGTH_SHORT).show();
-//            return;
-//
-//        }
-//
-//        if (null != bean && null != bean.getResult() && bean.getResult().size() > 0) {
-//
-//            fl_tran.removeAllViews();
-//            fl_tran.setVisibility(View.VISIBLE);
-//            Bitmap bm = PictureUtil.adjustPhotoRotation(BitmapFactory.decodeFile(pathName), 90 * fangxiang - 90);
-//            ImageView imageView = new ImageView(this);
-//            FrameLayout.LayoutParams lp = new FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.MATCH_PARENT);
-//            imageView.setLayoutParams(lp);
-//            int asss = getResources().getColor(R.color.black_transparent);
-//            RequestOptions options = new RequestOptions().transform(new ColorFilterTransformation(asss));
-//
-//            Glide.with(this).load(bitmapData).apply(options).into(imageView);
-//            fl_tran.addView(imageView);
-//
-//            FrameLayout frameLayout = new FrameLayout(this);
-//            FrameLayout.LayoutParams lll = new FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.MATCH_PARENT);
-//            frameLayout.setLayoutParams(lll);
-//            fl_tran.addView(frameLayout);
-//
-//            for (int i = 0; i < bean.getResult().size(); i++) {
-//                String words = bean.getResult().get(i).getTrans_words();
-//                WordsResult result = new WordsResult();
-//                result.setHeight(StringUtils.getRealHeight(bean.getResult().get(i).getLocation().getHeight()));
-//                result.setLeft(StringUtils.getRealWidth(bean.getResult().get(i).getLocation().getX()) + (int) downX);
-//                result.setTop(StringUtils.getRealHeight(bean.getResult().get(i).getLocation().getY()) + (int) downY);
-//                result.setWidth(StringUtils.getRealWidth(bean.getResult().get(i).getLocation().getWidth()));
-//                result.setWords(words);
-//
-//                FrameLayout.LayoutParams layoutParams = new FrameLayout.LayoutParams(result.getWidth(), FrameLayout.LayoutParams.WRAP_CONTENT);
-//                layoutParams.setMargins((result.getLeft() > 1) ? result.getLeft() : 2, result.getTop() + 1, 0, 0);
-//                SingleLineZoomTextView textView = new SingleLineZoomTextView(this);
-//                if (TextUtils.equals("1_v", bean.getMode())) {//竖排文字
-//                    textView.setRotation(90);
-//                    textView.setPivotX(result.getWidth());
-//                    textView.setPivotY(0);
-//                    layoutParams = new FrameLayout.LayoutParams(result.getHeight(), FrameLayout.LayoutParams.WRAP_CONTENT);
-//                    layoutParams.setMargins((result.getLeft() > 1) ? result.getLeft() : 2, result.getTop() + result.getWidth(), 0, 0);
-//                }
-//                textView.setLayoutParams(layoutParams);
-//                textView.setText(result.getWords());
-//                textView.setMaxWidth(DisplayUtil.getWidthInPx(this) - result.getLeft()-2);
-//                textView.setPadding(0, 1, 0, 1);
-//                textView.setGravity(Gravity.CENTER_VERTICAL);
-//                textView.setTextColor(getResources().getColor(R.color.white));
-//                frameLayout.addView(textView);
-//
-//            }
-//            if (fangxiang == 0)
-//                startPropertyAnim(frameLayout, -90, StringUtils.getRealWidth(bm.getHeight() / 2), StringUtils.getRealHeight(bm.getHeight
-//                        () / 2));
-//            else if (fangxiang == 2)
-//                startPropertyAnim(frameLayout, 90, StringUtils.getRealWidth(bm.getWidth() / 2), StringUtils.getRealHeight(bm.getWidth() /
-//                        2));
-//            else if (fangxiang == 3)
-//                startPropertyAnim(frameLayout, 180, StringUtils.getRealWidth(bm.getWidth() / 2), StringUtils.getRealHeight(bm.getHeight()
-//                        / 2));
-//            else
-//                startPropertyAnim(frameLayout, 0, 0, 0);
-//
-//        } else {
-//            Toast.makeText(this, bean.getError_message() + "", Toast.LENGTH_SHORT).show();
-//            reset();
-//        }
-//
-//    }
+
 
     /**
      * 跳转到物体识别
