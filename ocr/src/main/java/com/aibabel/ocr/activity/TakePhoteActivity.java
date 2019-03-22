@@ -490,8 +490,8 @@ public class TakePhoteActivity extends BaseActivity implements CameraPreview.OnC
         //设置语言
         String or_code = SharePrefUtil.getString(this, Constant.LAN_OR_CODE, "en");
         String tr_code = SharePrefUtil.getString(this, Constant.LAN_TR_CODE, "ch_ch");
-        if (or_code.contains("jpa"))
-            or_code = "jpa";
+//        if (or_code.contains("jpa"))
+//            or_code = "jpa";
         String from = LanguageUtils.getNameByCode(or_code, this);
 //        String to = LanguageUtils.getRightNameByCode(tr_code, this);
 

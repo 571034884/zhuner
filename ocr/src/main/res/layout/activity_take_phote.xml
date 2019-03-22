@@ -354,14 +354,14 @@
                     android:textSize="@dimen/px24" />
             </RadioGroup>
         </RelativeLayout>
-        <!--文章和菜单-->
+        <!--横竖文字-->
         <RelativeLayout
             android:id="@+id/rl_hv"
             android:visibility="gone"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
-            android:layout_marginBottom="100px">
+            android:layout_marginBottom="110px">
 
             <RadioGroup
                 android:id="@+id/rg_hv"

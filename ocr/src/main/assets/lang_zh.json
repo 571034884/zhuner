@@ -1,14 +1,5 @@
 [
   {
-    "id": 0,
-    "name": "中文",
-    "name_local": "汉语",
-    "lang_code": "ch_ch",
-    "alert": "请说标准普通话。",
-    "sound": 1,
-    "child": []
-  },
-  {
     "id": 1,
     "name": "英语",
     "name_local": "English",

@@ -62,6 +62,8 @@ public class LanguageUtils {
 
     public static String getNameByCode(String code,Context context){
         List<LanBean> list = getLanList(context);
+        if (code.contains("jpa"))
+            code = "jpa";
         String name = "";
         for (LanBean bean : list){
             if(TextUtils.equals(bean.getLang_code(),code)){
