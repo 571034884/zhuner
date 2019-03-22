@@ -4,6 +4,7 @@ import android.app.Application;
 import android.util.Log;
 
 import com.aibabel.aidlaar.StatisticsManager;
+import com.aibabel.baselibrary.utils.DeviceUtils;
 import com.aibabel.locationservice.MainActivity;
 import com.aibabel.locationservice.utils.CommonUtils;
 import com.lzy.okgo.OkGo;
@@ -25,8 +26,9 @@ public class BaseApplication extends com.aibabel.baselibrary.base.BaseApplicatio
         super.onCreate();
         CONTEXT = this;
         configOKGo();
-        configJPush();
-
+        if(DeviceUtils.getSystem()!=DeviceUtils.System.FLY_TAIWAN){
+            configJPush();
+        }
         StatisticsManager.getInstance(this);
 
     }

@@ -37,6 +37,7 @@ import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
+import java.util.TimeZone;
 
 public class CommonUtils {
 
@@ -61,13 +62,19 @@ public class CommonUtils {
             if (cursor != null && cursor.getCount() > 0) {
                 cursor.moveToFirst();
                 String ips = cursor.getString(cursor.getColumnIndex("ips"));
-                String countryNameCN = cursor.getString(cursor.getColumnIndex("country"));
+//                String countryNameCN = cursor.getString(cursor.getColumnIndex("country"));
 
-                if (TextUtils.equals("中国", countryNameCN)) {
+                if(getTimerType()==1){
                     key = "中国_" + BaseApplication.getContext().getPackageName() + "_function";
-                } else {
+                }else{
                     key = "default_" + BaseApplication.getContext().getPackageName() + "_function";
                 }
+
+//                if (TextUtils.equals("中国", countryNameCN)) {
+//                    key = "中国_" + BaseApplication.getContext().getPackageName() + "_function";
+//                } else {
+//                    key = "default_" + BaseApplication.getContext().getPackageName() + "_function";
+//                }
                 JSONObject jsonObject = new JSONObject(ips);
                 JSONArray jsonArray = new JSONArray(jsonObject.getString(key));
                 ip_host = jsonArray.getJSONObject(0).get("domain").toString();
@@ -83,6 +90,27 @@ public class CommonUtils {
         }
         return ip_host;
 
+    }
+
+    /**
+     * 获取当前时区
+     *
+     * @return 1国内服务器，0国外服务器
+     */
+    public static int getTimerType() {
+        try {
+            String timerID = TimeZone.getDefault().getID();
+            if (timerID.equals("Asia/Shanghai")) {
+                Log.e("SERVICE_FUWU", "时区:" + 1);
+                return 1;
+            } else {
+                Log.e("SERVICE_FUWU", "时区:" + 0);
+                return 0;
+            }
+        } catch (Exception e) {
+            Log.e("SERVICE_FUWU", "获取时区报错");
+        }
+        return 0;
     }
 
 
@@ -488,7 +516,6 @@ public class CommonUtils {
      */
     public static String getSysVersion(Context context) {
         String version = "";
-
         try {
             version = Build.DISPLAY;
         } catch (Exception e) {
