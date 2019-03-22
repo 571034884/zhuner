@@ -493,13 +493,11 @@ public class TakePhoteActivity extends BaseActivity implements CameraPreview.OnC
         if (or_code.contains("jpa"))
             or_code = "jpa";
         String from = LanguageUtils.getNameByCode(or_code, this);
-        String to = LanguageUtils.getRightNameByCode(tr_code, this);
+//        String to = LanguageUtils.getRightNameByCode(tr_code, this);
 
         tv_orLan.setText(from + "");
-
-//        tv_tranLan.setText(to + "");
         SharePrefUtil.saveString(this, Constant.LAN_OR, from);
-        SharePrefUtil.saveString(this, Constant.LAN_TR, to);
+//        SharePrefUtil.saveString(this, Constant.LAN_TR, to);
     }
 
     @Override

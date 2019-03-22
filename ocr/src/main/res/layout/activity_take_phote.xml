@@ -98,7 +98,7 @@
 
         <RelativeLayout
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_alignParentLeft="true"
             android:layout_gravity="center_vertical">
 
@@ -133,7 +133,6 @@
             android:gravity="left|center_vertical"
             android:maxWidth="200px"
             android:singleLine="true"
-            android:text="日本语"
             android:textColor="@color/colorOrange"
             android:textSize="@dimen/px26" />
 
@@ -374,16 +373,16 @@
 
                 <RadioButton
                     android:id="@+id/rb_h"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_width="90px"
+                    android:layout_height="90px"
                     android:layout_marginBottom="@dimen/px8"
                     android:background="@drawable/bg_radiobutton_h"
                     android:button="@null" />
 
                 <RadioButton
                     android:id="@+id/rb_v"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_width="90px"
+                    android:layout_height="90px"
                     android:background="@drawable/bg_radiobutton_v"
                     android:button="@null" />
             </RadioGroup>
