@@ -65,6 +65,7 @@ public class RentLockedActivity extends Activity {
     public static void finsRentlock(){
         try {
             if (myrentlock != null) {
+                LogUtil.e("  myrentlock.finish();");
                 myrentlock.finish();
             }
         }catch (Exception e){
