@@ -22,5 +22,7 @@
 	<string name="more">もっと見る ></string>
 	<string name="retry">認識に失敗しました。もう一度お試し下さい。</string>
 	<string name="camare_laucher">カメラで、この世界を理解する</string>
+    <string name="str_h">横書き</string>
+    <string name="str_v">縦書き</string>
 </resources>
 	
