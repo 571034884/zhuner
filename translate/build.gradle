@@ -2,6 +2,14 @@ apply plugin: 'com.android.application'
 apply plugin: 'com.aliyun.ams.emas-services'
 
 android {
+    signingConfigs {
+        config {
+            keyAlias 'translate'
+            keyPassword 'aibabel*123'
+            storeFile file('translate.jks')
+            storePassword 'aibabel*123'
+        }
+    }
     compileSdkVersion 28
     defaultConfig {
         applicationId "com.aibabel.translate"
@@ -34,6 +42,7 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
             /*控制logger显示 true:显示 ，false：不显示*/
             buildConfigField "boolean", "LOGGER_ABLE", "true"//配置文件中生成 LOGGER_ABLE 字段
+            signingConfig signingConfigs.config
 
         }
 
@@ -43,6 +52,7 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
             /*控制logger显示 true:显示 ，false：不显示*/
             buildConfigField "boolean", "LOGGER_ABLE", "true"//配置文件中生成 LOGGER_ABLE 字段
+            signingConfig signingConfigs.config
         }
     }
 
