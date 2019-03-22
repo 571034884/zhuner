@@ -15,6 +15,7 @@ import android.widget.ImageView;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 
+import com.aibabel.baselibrary.utils.DeviceUtils;
 import com.aibabel.download.offline.app.MyApplication;
 import com.aibabel.download.offline.base.BaseActivity;
 import com.aibabel.download.offline.fragment.InstalledFragment;
@@ -51,14 +52,28 @@ public class DownLoadListActivity extends BaseActivity {
     protected void onResume() {
         super.onResume();
         LanUtil.setLan(this);
-        if (!CommonUtils.getLocal(MyApplication.mContext).equals("zh_CN")) {
+        String countyName=CommonUtils.getLocal(MyApplication.mContext);
 
-            if (!key.equals("yyfy")) {
+        if (DeviceUtils.getSystem()==DeviceUtils.System.FLY_TAIWAN){
+            if (!countyName.equals("zh_TW")&&!countyName.equals("zh_CN")) {
 
-                finish();
+                if (!key.equals("yyfy")) {
+
+                    finish();
+                }
+
             }
+        }else{
+            if (!countyName.equals("zh_CN")) {
 
+                if (!key.equals("yyfy")) {
+
+                    finish();
+                }
+
+            }
         }
+
 
         L.e("list===================="+manager.findFragmentByTag("list")+"========install================="+manager.findFragmentByTag("install"));
     }

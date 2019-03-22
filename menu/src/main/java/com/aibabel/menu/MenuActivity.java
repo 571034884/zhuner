@@ -31,6 +31,7 @@ import java.util.List;
 
 import butterknife.BindView;
 
+
 public class MenuActivity extends BaseActivity implements View.OnClickListener {
 
     @BindView(R.id.menu_bottom_yyfy_ll)

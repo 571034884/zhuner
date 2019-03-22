@@ -333,8 +333,6 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         };
 
         L.e("path=====================" + mContext.getFilesDir().getAbsolutePath());
-
-
     }
 
     @Override
@@ -495,6 +493,31 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         SharePrefUtil.removeByKey(mContext, order_lockattime);
         SharePrefUtil.removeByKey(mContext, order_isZhuner);
         SqlUtils.deleteDataAll();
+
+
+        SharePrefUtil.put(mContext,neverUseNetflag,"");
+        SharePrefUtil.put(mContext,neverUseNet_start,"");
+        SharePrefUtil.put(mContext,neverUseNet_end,"");
+        SharePrefUtil.put(mContext,order_channelName,"");
+        SharePrefUtil.put(mContext,order_oid,"");
+        SharePrefUtil.put(mContext,order_uid,"");
+        SharePrefUtil.put(mContext,order_uname,"");
+        SharePrefUtil.put(mContext,order_sn,"");
+        SharePrefUtil.put(mContext,order_from,"");
+        SharePrefUtil.put(mContext,order_endttime,"");
+        SharePrefUtil.put(mContext,order_islock,0);
+        SharePrefUtil.put(mContext,order_lockattime,0);
+        SharePrefUtil.put(mContext,order_isZhuner,0);
+
+
+
+        int lockflag= SharePrefUtil.getInt(mContext,order_islock,0);
+      String  get_starttime = SharePrefUtil.getString(mContext, neverUseNet_start, "");
+        String  get_endtime = SharePrefUtil.getString(mContext, neverUseNet_end, "");
+
+
+        LogUtil.e("get_starttime=="+get_starttime);
+        LogUtil.e("get_endtime=="+get_endtime);
 
     }
 
@@ -1434,6 +1457,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
                 RentLockedActivity.finsRentlock();
             }
             clearALlsharePreutil();
+
             init_neveruser();
             //TODO 清除服务器域名
             LogUtil.e("onRestart = RentLocked_fore");
@@ -1830,6 +1854,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
 
     public int  boot_start_lock(){
         int lockflag= SharePrefUtil.getInt(mContext,order_islock,0);
+
         if(lockflag==1){
             Log.e("hjs","上次锁机，开机继续锁机");
             if (loopHandler != null) loopHandler.sendEmptyMessageDelayed(100,1000);

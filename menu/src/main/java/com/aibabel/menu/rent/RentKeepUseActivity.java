@@ -82,9 +82,11 @@ public class RentKeepUseActivity extends Activity {
                         if (hotline_qrcode != null) hotline_qrcode.setVisibility(View.GONE);
                     } else {
                         if (keepuser_tv != null) keepuser_tv.setText(qinlianxi + keepuse);
+                        if (hotline_qrcode != null) hotline_qrcode.setVisibility(View.GONE);
                     }
                 }catch (Exception e){
                     if (keepuser_tv != null) keepuser_tv.setText(qinlianxi + keepuse);
+                    if (hotline_qrcode != null) hotline_qrcode.setVisibility(View.GONE);
                     e.printStackTrace();
                 }
 
