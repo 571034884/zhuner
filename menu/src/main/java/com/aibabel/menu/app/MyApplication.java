@@ -1,20 +1,28 @@
 package com.aibabel.menu.app;
 
 import android.database.sqlite.SQLiteDatabase;
+import android.util.Log;
 
 import com.aibabel.baselibrary.base.BaseApplication;
 import com.aibabel.baselibrary.http.OkGoUtil;
 import com.aibabel.menu.BuildConfig;
 import com.aibabel.menu.MainActivity;
 import com.aibabel.menu.util.AppStatusUtils;
+import com.aibabel.menu.util.CommonUtils;
 import com.aibabel.menu.util.FileUtil;
 import com.aibabel.menu.util.L;
+import com.aibabel.menu.util.LogUtil;
 import com.aibabel.menu.util.SPUtils;
 import com.liulishuo.filedownloader.FileDownloader;
 
 import org.litepal.LitePal;
 import org.litepal.LitePalApplication;
 import org.litepal.tablemanager.Connector;
+
+import java.util.HashSet;
+import java.util.Set;
+
+import cn.jpush.android.api.JPushInterface;
 
 public class MyApplication extends BaseApplication {
     //一个小时更新一下桌面天气
@@ -35,8 +43,10 @@ public class MyApplication extends BaseApplication {
         //适配类初始化
         LitePal.initialize(this);
         initSQLite();
-
+        configJPush();
 //        Thread.setDefaultUncaughtExceptionHandler(new CrashHandler(this.getApplicationContext()));
+
+        LogUtil.e("hjs MyApplication ==");
 
         if (FileUtil.isFolderExists("/sdcard/download_offline/")) {
 
@@ -94,7 +104,28 @@ public class MyApplication extends BaseApplication {
 
     }
 
+    /**
+     * 配置极光推送
+     */
+    public void configJPush() {
+        Log.e("BaseApplication","配置极光推送");
+        JPushInterface.setDebugMode (true);    // 设置开启日志,发布时请关闭日志
+        JPushInterface.init (this);
+        L.e("SN:"+CommonUtils.getSN());
+        JPushInterface.setAlias(this, 1, CommonUtils.getSN());
+        JPushInterface.getAlias(this,1);
+        Set<String> hashSet = new HashSet<>();
+        hashSet.add(CommonUtils.getDevice());
+        try {
+            hashSet.add(CommonUtils.getVerName(this));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        JPushInterface.setTags(this, 2, hashSet);
+        //设置通知只显示20条
+        JPushInterface.setLatestNotificationNumber(this, 20);
 
+    }
     @Override
     public void onTrimMemory(int level) {
         super.onTrimMemory(level);

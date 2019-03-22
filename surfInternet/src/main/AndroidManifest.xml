@@ -36,6 +36,9 @@
         <activity android:name=".activity.OrderActivity" />
         <activity android:name=".js.CustomWebViewActivity" />
         <activity android:name=".activity.ViewPagerActivity" />
+        <activity android:name=".activity.RentKeepUseActivity"
+            android:launchMode="singleTop"
+            android:theme="@android:style/Theme.Translucent"/>
 
         <receiver
             android:name=".utils.XuZuBroadcastReceiver"

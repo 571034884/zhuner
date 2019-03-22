@@ -147,14 +147,10 @@ public class OrderActivity extends BaseActivity {
             tv_help.setVisibility(View.GONE);
         }
 
-        if (Constans.Lk_CARDTYPE){
-
-            Log.e("LK---001","LK标识符："+Constans.Lk_CARDTYPE+"隐藏");
+        if(Constans.PRO_VERSION_NUMBER.equalsIgnoreCase("L")) {
             tv_help.setVisibility(View.GONE);
-        }else{
-            Log.e("LK---001","LK标识符："+Constans.Lk_CARDTYPE+"显示");
-            tv_help.setVisibility(View.VISIBLE);
         }
+
     }
 
     /**

@@ -18,7 +18,7 @@
     <string name="gotorent">去续租</string>
     <string name="simdetectout">没有检测到SIM卡请检查</string>
     <string name="close">关闭</string>
-    <string name="zhunerkefu">请联系准儿翻译机客服进行续租,\n扫描二维码或直接拨打客户电话</string>
+    <string name="zhunerkefu">请联系准儿翻译机客服进行续租,\n扫描二维码或直接拨打客服电话</string>
     <string name="hotline_tel">400-9966525</string>
     <string name="qinlianxi_str">请联系</string>
     <string name="kefu_keepuse">客服进行续租</string>

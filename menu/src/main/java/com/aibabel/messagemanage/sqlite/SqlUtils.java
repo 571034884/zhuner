@@ -1,6 +1,9 @@
 package com.aibabel.messagemanage.sqlite;
 
-import com.aibabel.messagemanage.MessageBean;
+import android.content.ContentValues;
+
+import com.aibabel.baselibrary.utils.FastJsonUtil;
+import com.aibabel.menu.bean.PushMessageBean;
 
 import org.litepal.LitePal;
 
@@ -11,25 +14,32 @@ public class SqlUtils {
 
     //插入数据
     public static boolean insertData(String from, String to, String from_code, String to_code, String asr, String mt, String eng, String tts, long time) {
-        MessageBean recordBean = new MessageBean();
+        PushMessageBean recordBean = new PushMessageBean();
         return recordBean.save();
     }
 
     //插入数据
-    public static boolean insertData(MessageBean recordBean) {
+    public static boolean insertData(PushMessageBean recordBean) {
         return recordBean.save();
     }
 
 
     //删除指定Id 的数据
     public static int deleteById(int id) {
-        return LitePal.deleteAll(MessageBean.class, "id = ?", String.valueOf(id));
+        return LitePal.deleteAll(PushMessageBean.class, "id = ?", String.valueOf(id));
     }
 
     //删除当前时间的数据
     public static int deleteByTime(long time) {
-        return LitePal.deleteAll(MessageBean.class, "time = ?", String.valueOf(time));
+        return LitePal.deleteAll(PushMessageBean.class, "time = ?", String.valueOf(time));
     }
+
+//    //删除当前时间的数据
+//    public static int update_bean(long id) {
+//        ContentValues values = new ContentValues();
+//        values.put("badge", false);
+//        return LitePal.update(PushMessageBean.class,values,id);
+//    }
 
     /**
      * 删除多条数据
@@ -59,25 +69,50 @@ public class SqlUtils {
     // 删除所有的数据，
     public static void deleteDataAll() {
         try {
-            LitePal.deleteAll(MessageBean.class);
+            LitePal.deleteAll(PushMessageBean.class);
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
     //遍历查询所有数据，保存到List里面
-    public static List<MessageBean> retrieve(int page, int pagesize) {
-        return LitePal.order("time desc").limit(pagesize).offset(pagesize * (page - 1)).find(MessageBean.class);
+    public static List<PushMessageBean> retrieve(int page, int pagesize) {
+        return LitePal.order("time desc").limit(pagesize).offset(pagesize * (page - 1)).find(PushMessageBean.class);
     }
 
-    public static List<MessageBean> queryMethed() {
+    public static List<PushMessageBean> queryMethed() {
         try {
-            List<MessageBean> allSongs = LitePal.findAll(MessageBean.class);
+            List<PushMessageBean> allSongs = LitePal.findAll(PushMessageBean.class);
             return allSongs;
         } catch (Exception e) {
             e.printStackTrace();
         }
         return  null;
+    }
+
+    public static  PushMessageBean queryById(Long Id){
+        try {
+            PushMessageBean pusbbean = LitePal.find(PushMessageBean.class, Id);
+            return pusbbean;
+        }catch (Exception e){
+            e.printStackTrace();;
+        }
+        return null;
+    }
+
+
+    public static  PushMessageBean queryjsonById(Long Id){
+        try {
+            PushMessageBean pusbbean = LitePal.find(PushMessageBean.class, Id);
+           String  sqljson = pusbbean.getJson();
+
+            PushMessageBean bean = FastJsonUtil.changeJsonToBean(sqljson, PushMessageBean.class);
+
+            return bean;
+        }catch (Exception e){
+            e.printStackTrace();;
+        }
+        return null;
     }
 
 }

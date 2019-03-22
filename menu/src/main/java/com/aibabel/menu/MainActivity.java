@@ -39,6 +39,7 @@ import android.webkit.WebResourceRequest;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -61,10 +62,14 @@ import com.aibabel.menu.base.BaseActivity;
 import com.aibabel.menu.bean.Domain;
 import com.aibabel.menu.bean.MenuDataBean;
 import com.aibabel.menu.bean.PublicBean;
+import com.aibabel.menu.bean.PushMessageBean;
+import com.aibabel.menu.bean.ReletSn;
 import com.aibabel.menu.bean.ServerBean;
 import com.aibabel.menu.bean.SyncOrder;
 import com.aibabel.menu.bitmap.MyTransformtion;
 import com.aibabel.menu.broadcast.NetBroadcastReceiver;
+import com.aibabel.menu.broadcast.NotificationClickReceiver;
+import com.aibabel.menu.broadcast.ResidentNotificationHelper;
 import com.aibabel.menu.dialog.CustomDialog;
 import com.aibabel.menu.h5.AndroidJS;
 import com.aibabel.menu.inf.UpdateMenu;
@@ -88,6 +93,8 @@ import com.aibabel.menu.util.SPUtils;
 import com.aibabel.menu.util.ServerUtils;
 import com.aibabel.menu.util.UrlConstants;
 import com.aibabel.menu.view.MagicTextView;
+import com.aibabel.messagemanage.JiGuangActivity;
+import com.aibabel.messagemanage.sqlite.SqlUtils;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.bumptech.glide.request.target.SimpleTarget;
@@ -95,6 +102,7 @@ import com.bumptech.glide.request.transition.Transition;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.StringCallback;
 import com.lzy.okgo.model.Response;
+import com.matrixxun.starry.badgetextview.MaterialBadgeTextView;
 import com.umeng.analytics.MobclickAgent;
 
 import org.json.JSONException;
@@ -108,6 +116,7 @@ import java.util.Map;
 import java.util.TimeZone;
 
 import butterknife.BindView;
+import cn.jpush.android.api.JPushInterface;
 
 
 public class MainActivity extends BaseActivity implements View.OnClickListener {
@@ -181,6 +190,8 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
     private LinearLayout bottom_menu_gd;
     private LinearLayout bottom_ll;
     private RelativeLayout top_ll;
+    private FrameLayout notice_start_activity;
+
     private WebView webView;
     WebSettings webSettings = null;
     int num;
@@ -284,7 +295,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
 
             @Override
             public void updateAddr(String addr) {
-                mainMapLocalTv.setText(addr);
+                if(mainMapLocalTv!=null)mainMapLocalTv.setText(addr);
 
             }
 
@@ -337,12 +348,20 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         loopHandler = new LooptempHandler(this);
     }
 
+    public  static  MaterialBadgeTextView home_badge;
+    public static int set_BadgeCount = 0;
 
     @Override
     protected void assignView() {
         top_ll = findViewById(R.id.main_topPanel);
         bottom_ll = findViewById(R.id.main_bottomPanel);
         bottom_menu_gd = findViewById(R.id.bttom_menu_ll_gd);
+        home_badge = findViewById(R.id.home_badge);
+        home_badge.setBadgeCount(0);
+        notice_start_activity = findViewById(R.id.notice_start_activity);
+
+
+
     }
 
     @Override
@@ -366,7 +385,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
 
         mainTopCtiyLl.setOnClickListener(this);
         mainReturnImgLl.setOnClickListener(this);
-
+        notice_start_activity.setOnClickListener(this);
 
     }
 
@@ -413,7 +432,49 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         } catch (Exception e) {
             e.printStackTrace();
         }
+
+
+        JPushInterface.setAlias(this, 1, CommonUtils.getSN());
+        LogUtil.e("getSN:"+CommonUtils.getSN());
+
+        Testmain();
     }
+
+    public static void Testmain(){
+        // 嵌套的json字符串
+        try {
+            String JSON_MULTI = "{'name':'tom','score':{'Math':98,'English':90}}";
+            JSONObject obj = new JSONObject(JSON_MULTI);
+            System.out.println("name is : " + obj.get("name"));
+            System.out.println("score is : " + obj.get("score"));
+
+            JSONObject scoreObj = (JSONObject) obj.get("score");
+            System.out.println("Math score is : " + scoreObj.get("Math"));
+            System.out.println("English score is : " + scoreObj.get("English"));
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+    String extra_ = "{\"sn\": \"0000000000000000\", \"no\": 3163, \"relet\": {\"code\": 1, \"msg\": \"请同步订单\"}}";
+        try {
+            JSONObject json = new JSONObject(extra_);
+            String relet = (String) json.get("relet");
+
+            JSONObject jsonRelet = new JSONObject(relet);
+            int code = (Integer) jsonRelet.get("code");
+            if (code == 1) {
+                Intent stopIntent = new Intent("com.android.qrcode.unlock.ok");
+
+                System.out.println("code  = 1");
+            }
+        } catch (JSONException e) {
+            System.out.println("Get message extra JSON error!");
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+
+    }
+
+
 
     /**
      * 清除所有sharep 订单信息
@@ -433,6 +494,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         SharePrefUtil.removeByKey(mContext, order_islock);
         SharePrefUtil.removeByKey(mContext, order_lockattime);
         SharePrefUtil.removeByKey(mContext, order_isZhuner);
+        SqlUtils.deleteDataAll();
 
     }
 
@@ -776,6 +838,11 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
 //     top_ll.getGlobalVisibleRect(new Rect());
                     showPanel();
                     StatisticsManager.getInstance(mContext).addEventAidl(1133, new HashMap());
+                    break;
+                case R.id.notice_start_activity:
+                    startActivity(new Intent(this,com.aibabel.messagemanage.MainActivity.class));
+                    set_BadgeCount = 0;
+                    home_badge.setBadgeCount(set_BadgeCount);
                     break;
 
             }
@@ -1412,6 +1479,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
                                 // LogUtil.e("qrcode_isAlive " + qrcode_isAlive);
                                 LogUtil.e("RentLocked_fore " + RentLocked_fore);
 
+                                SqlUtils.deleteDataAll();
                                 if (RentLocked_fore) return;
 
                                 Bundle getbundle = msg.getData();
@@ -1468,6 +1536,25 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
                             unlock_ok_clear();  //清除flag等
                             if (loopHandler != null)
                                 loopHandler.sendEmptyMessageDelayed(130, 10000);
+                            break;
+                        case 300:
+                             //接受到文颖的消息
+                            if(msg!=null) {
+                                Bundle getdata =   msg.getData();
+
+                            }
+                            break;
+                        case 301:
+                            set_BadgeCount+=1;
+                            home_badge.setBadgeCount(set_BadgeCount);
+                            break;
+                        case 302:
+                            set_BadgeCount-=1;
+                            if(set_BadgeCount>0)home_badge.setBadgeCount(set_BadgeCount);
+                            else {
+                                set_BadgeCount =0;
+                                home_badge.setBadgeCount(set_BadgeCount);
+                            }
                             break;
                         default:
                             break;

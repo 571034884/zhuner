@@ -2,6 +2,7 @@ package com.aibabel.menu.util;
 
 import android.content.Context;
 import android.content.pm.ApplicationInfo;
+import android.content.pm.PackageManager;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Build;
@@ -60,6 +61,19 @@ public class CommonUtils {
         return sn;
     }
 
+
+    /*
+     * 获取系统版本号 去除 “-” */
+
+    public static String getDevice() {
+        String result = "";
+        String display = Build.DISPLAY;
+        result = display.replace("-", "");
+        Log.e("result", result);
+        return result;
+    }
+
+
     /**
      * 获取系统版本号
      *
@@ -101,7 +115,21 @@ public class CommonUtils {
         }
         return sl;
     }
-
+    /**
+     * 获取版本号名称
+     *
+     * @param context 上下文
+     * @return
+     */
+    public static String getVerName(Context context) {
+        String verName = "";
+        try {
+            verName = context.getPackageManager().getPackageInfo(context.getPackageName(), 0).versionName;
+        } catch (PackageManager.NameNotFoundException e) {
+            e.printStackTrace();
+        }
+        return verName;
+    }
 
     //判断当前应用是否是debug状态
     public static boolean isApkInDebug(Context context) {
