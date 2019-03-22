@@ -418,6 +418,9 @@ public class LocationService extends Service implements ScreenListener, CardBroa
         if (null != handler_poi) {
             handler_poi.removeCallbacks(runnable_poi);
         }
+        if (null != handler_flow) {
+            handler_flow.removeCallbacks(runnable_flow);
+        }
     }
 
 

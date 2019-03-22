@@ -3,6 +3,7 @@ package com.aibabel.locationservice.receiver;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.util.Log;
 
 import com.aibabel.locationservice.utils.FlowUtil;
 
@@ -20,7 +21,9 @@ public class CardBroadcastReceiver extends BroadcastReceiver{
     private Switch_Card switch_card ;
     @Override
     public void onReceive(Context context, Intent intent) {
+        Log.e("LocationService","========切卡广播监听到了=======");
         if (FlowUtil.isMobileEnabled(context)){
+            Log.e("LocationService","========进来了=======");
             BootBroadcastReceiver.CARD_TYPE = FlowUtil.getDefaultDataSubId(context);
             if (BootBroadcastReceiver.LAST_CARD_TYPE != BootBroadcastReceiver.CARD_TYPE){
                 switch_card.switch_Card();
