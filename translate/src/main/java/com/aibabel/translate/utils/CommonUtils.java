@@ -477,7 +477,6 @@ public class CommonUtils {
      */
     public static String getSysVersion(Context context) {
         String version = "";
-
         try {
             version = Build.DISPLAY;
         } catch (Exception e) {

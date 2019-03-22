@@ -219,8 +219,8 @@ public class LocationService extends Service implements ScreenListener, CardBroa
 
 
         //注册切换sim卡广播
-        CardBroadcastReceiver cardBroadcastReceiver = new CardBroadcastReceiver();
-        cardBroadcastReceiver.setSwitch_card(this);
+//         cardBroadcastReceiver = new CardBroadcastReceiver();
+        CardBroadcastReceiver.setSwitch_card(this);
         FlowUtil.initMtkDoubleSim(LocationService.this);
         if (FlowUtil.isMobileEnabled(this)) {
             FlowUtil.getDefaultDataSubId(this);
