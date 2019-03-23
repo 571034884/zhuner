@@ -479,20 +479,20 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
      */
     public void clearALlsharePreutil() {
 
-        SharePrefUtil.removeByKey(mContext, neverUseNetflag);
-        SharePrefUtil.removeByKey(mContext, neverUseNetflag);
-        SharePrefUtil.removeByKey(mContext, neverUseNet_start);
-        SharePrefUtil.removeByKey(mContext, neverUseNet_end);
-        SharePrefUtil.removeByKey(mContext, order_channelName);
-        SharePrefUtil.removeByKey(mContext, order_oid);
-        SharePrefUtil.removeByKey(mContext, order_uid);
-        SharePrefUtil.removeByKey(mContext, order_uname);
-        SharePrefUtil.removeByKey(mContext, order_sn);
-        SharePrefUtil.removeByKey(mContext, order_from);
-        SharePrefUtil.removeByKey(mContext, order_endttime);
-        SharePrefUtil.removeByKey(mContext, order_islock);
-        SharePrefUtil.removeByKey(mContext, order_lockattime);
-        SharePrefUtil.removeByKey(mContext, order_isZhuner);
+//        SharePrefUtil.removeByKey(mContext, neverUseNetflag);
+//        SharePrefUtil.removeByKey(mContext, neverUseNetflag);
+//        SharePrefUtil.removeByKey(mContext, neverUseNet_start);
+//        SharePrefUtil.removeByKey(mContext, neverUseNet_end);
+//        SharePrefUtil.removeByKey(mContext, order_channelName);
+//        SharePrefUtil.removeByKey(mContext, order_oid);
+//        SharePrefUtil.removeByKey(mContext, order_uid);
+//        SharePrefUtil.removeByKey(mContext, order_uname);
+//        SharePrefUtil.removeByKey(mContext, order_sn);
+//        SharePrefUtil.removeByKey(mContext, order_from);
+//        SharePrefUtil.removeByKey(mContext, order_endttime);
+//        SharePrefUtil.removeByKey(mContext, order_islock);
+//        SharePrefUtil.removeByKey(mContext, order_lockattime);
+//        SharePrefUtil.removeByKey(mContext, order_isZhuner);
         SqlUtils.deleteDataAll();
 
 
@@ -626,13 +626,14 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
                 if (!TextUtils.isEmpty(endtime)) {
                     if (CalenderUtil.compaeTimeWithAfter24(endtime) <= 0) {
                         LogUtil.e(" compaeTimeWithAfter24  lockloopmsg()  <=0");
-                        lockloopmsg();
+                        lockloopmsg(endtime);
                     }
                 } else {
                     LogUtil.e("neverUseNet_end=endtime = null");
                 }
             } else if (spnettemp.equalsIgnoreCase("net_ok")) {
-                lockloopmsg();//以前连接过网络，快到期断网，4个小时检测一次
+                String endtime = SharePrefUtil.getString(mContext, neverUseNet_end, "");//90天未使用
+                lockloopmsg(endtime);//以前连接过网络，快到期断网，4个小时检测一次
             }
 
         } catch (Exception e) {
@@ -1593,8 +1594,8 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
     /**
      * 跳转 100 handler
      */
-    private void lockloopmsg() {
-        String order_end = SharePrefUtil.getString(mContext, order_endttime, "");
+    private void lockloopmsg(String order_end ) {
+//        String order_end = SharePrefUtil.getString(mContext, order_endttime, "");
         String channelName = SharePrefUtil.getString(mContext, order_channelName, "");
         int isZhuner = SharePrefUtil.getInt(mContext, order_isZhuner, -1);
         if(TextUtils.isEmpty(order_end)){
