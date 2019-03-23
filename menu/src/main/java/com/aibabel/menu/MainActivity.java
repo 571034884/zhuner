@@ -333,6 +333,22 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         };
 
         L.e("path=====================" + mContext.getFilesDir().getAbsolutePath());
+        IntentFilter filter = new IntentFilter();
+        filter.addAction(Intent.ACTION_SCREEN_OFF);
+
+
+        mContext.registerReceiver(new ScreenOffReceiver(), filter);
+    }
+    private class ScreenOffReceiver extends BroadcastReceiver{
+
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            String action = intent.getAction();
+            if (action.equals(Intent.ACTION_SCREEN_OFF)) {
+                com.aibabel.baselibrary.mode.StatisticsManager.getInstance().uplaodData(getApplicationContext(), SharePrefUtil.getString(context, "order_oid", ""));
+            }
+
+        }
     }
 
     @Override

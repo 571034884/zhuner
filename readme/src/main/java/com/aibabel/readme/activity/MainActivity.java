@@ -60,7 +60,7 @@ public class MainActivity extends BaseActivity {
         initData(version);
         Map map = new HashMap();
 //        StatisticsManager.getInstance(MainActivity.this).addEventAidl( "进入页面", map);
-        setPathParams(com.alibaba.fastjson.JSONObject.toJSON(map).toString());
+
         rexiufu();
     }
 

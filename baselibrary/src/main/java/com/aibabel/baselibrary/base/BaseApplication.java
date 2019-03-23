@@ -116,6 +116,8 @@ public abstract class BaseApplication extends Application {
         XIPC.register(ServerManager.class);
         XIPC.register(IDataManager.class);
         XIPC.register(IServerManager.class);
+        XIPC.register(com.aibabel.baselibrary.mode.StatisticsManager.class);
+
     }
 
     public void initStatisticsConfig() {

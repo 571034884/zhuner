@@ -1,5 +1,9 @@
 package com.aibabel.menu;
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.graphics.drawable.AnimationDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
@@ -13,6 +17,8 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
+import com.aibabel.baselibrary.mode.StatisticsManager;
+import com.aibabel.baselibrary.utils.SharePrefUtil;
 import com.aibabel.menu.base.BaseActivity;
 import com.aibabel.menu.fragment.MenuOneFragment;
 import com.aibabel.menu.fragment.MenuThreeFragment;
@@ -65,6 +71,8 @@ public class MenuActivity extends BaseActivity implements View.OnClickListener {
     public void onCreate(Bundle savedInstanceState) {
         L.e("=============================");
         super.onCreate(savedInstanceState);
+
+
 
 
     }
