@@ -1,8 +1,21 @@
 package com.aibabel.baselibrary.mode;
 
+import android.content.Context;
+import android.database.Cursor;
+import android.net.Uri;
+import android.os.Build;
+import android.util.Log;
+
 import com.aibabel.baselibrary.impl.IStatistics;
-import com.google.gson.JsonArray;
-import com.google.gson.JsonObject;
+import com.aibabel.baselibrary.utils.CommonUtils;
+import com.aibabel.baselibrary.utils.ToastUtil;
+import com.lzy.okgo.OkGo;
+import com.lzy.okgo.callback.StringCallback;
+import com.lzy.okgo.model.Response;
+import com.lzy.okgo.request.PostRequest;
+import com.lzy.okgo.request.base.Request;
+import com.xuexiang.xipc.annotation.ClassName;
+import com.xuexiang.xipc.annotation.MethodName;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -11,65 +24,111 @@ import org.json.JSONObject;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
-import java.util.TimeZone;
+import java.util.Map;
 
+@ClassName("IStatistics")
 public class StatisticsManager implements IStatistics {
-    List<String>  Statistics=new ArrayList();
-    JSONArray allReadyUploadData=new JSONArray();
-    private ArrayList<StatisticsModle> pathNodes=new ArrayList<>();
+    private static final Uri CITY_URI = Uri.parse("content://com.aibabel.locationservice.provider.AibabelProvider/aibabel_location");
+    private double latitude;
+    private double longitude;
+    private  long locationTime=System.currentTimeMillis();
+    List<String> Statistics = new ArrayList();
+    JSONArray allReadyUploadData = new JSONArray();
+    private ArrayList<StatisticsModle> pathNodes = new ArrayList<>();
 
-    public static StatisticsManager getInstance(){
+    public static StatisticsManager getInstance() {
         return StatisticsManagerHolder.manager;
     }
 
-    public void addPath(String appName,String appVersion,JSONObject info){
-        JSONObject pageUnitData=new JSONObject();
+    @MethodName("addPath")
+    public void addPath(String appName, String appVersion, JSONObject info) {
 
 
-        int size=pathNodes.size();
-        StatisticsModle modle=null;
+        JSONObject pageUnitData = new JSONObject();
 
-        if (size==0){
-            modle=new StatisticsModle();
-            modle.an=appName;
-            modle.av=appVersion;
+
+        int size = pathNodes.size();
+        StatisticsModle modle = null;
+
+        if (size == 0) {
+            modle = new StatisticsModle();
+            modle.an = appName;
+            modle.av = appVersion;
             modle.c.put(info);
-            
+
             pathNodes.add(modle);
 
-        }else {
-            modle=pathNodes.get(size-1);
-            if (modle.an.equals(appName)){
+        } else {
+            modle = pathNodes.get(size - 1);
+            if (modle.an.equals(appName)) {
                 modle.c.put(info);
-            }else{
-                modle=new StatisticsModle();
-                modle.an=appName;
-                modle.av=appVersion;
+            } else {
+                modle = new StatisticsModle();
+                modle.an = appName;
+                modle.av = appVersion;
                 modle.c.put(info);
                 pathNodes.add(modle);
             }
 
         }
 
-    }
-    public String createUploadData(String order_id){
-        JSONObject jsonObject=new JSONObject();
-        try {
-            jsonObject.put("leaseID",order_id);
-            jsonObject.put("version","3");
 
-            jsonObject.put("localTime",new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date(System.currentTimeMillis())));
-            JSONArray array=new JSONArray();
-            for (StatisticsModle modle:pathNodes){
-                JSONObject object=new JSONObject();
-                object.put("av",modle.av);
-                object.put("an",modle.an);
-                object.put("c",modle.c);
+    }
+
+    /**
+     * 获取当前城市
+     *
+     * @param context
+     * @return
+     */
+    public  void location(Context context) {
+        long currentTime=System.currentTimeMillis();
+        if (currentTime-locationTime<15*60*100){
+            return;
+        }
+        locationTime=currentTime;
+        Cursor cursor = context.getContentResolver().query(CITY_URI, null, null, null, null);
+
+        try {
+            if (cursor != null && cursor.getCount() > 0) {
+                cursor.moveToFirst();
+                int latitudeIndex = cursor.getColumnIndex("latitude");
+                int longitudeIndex = cursor.getColumnIndex("longitude");
+                latitude = cursor.getDouble(latitudeIndex);
+                longitude = cursor.getDouble(longitudeIndex);
+
+
+            }
+        } catch (Exception e){
+            e.printStackTrace();
+        }finally {
+            if (null != cursor)
+                cursor.close();
+        }
+
+    }
+
+
+    @MethodName("createUploadData")
+    public String createUploadData(String order_id) {
+        JSONObject jsonObject = new JSONObject();
+        try {
+            jsonObject.put("leaseID", order_id);
+            jsonObject.put("version", "3");
+
+            jsonObject.put("localTime", new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date(System.currentTimeMillis())));
+            JSONArray array = new JSONArray();
+            for (StatisticsModle modle : pathNodes) {
+                JSONObject object = new JSONObject();
+                object.put("av", modle.av);
+                object.put("an", modle.an);
+                object.put("c", modle.c);
                 array.put(object);
 
             }
-            jsonObject.put("path",array);
+            jsonObject.put("path", array);
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -77,20 +136,55 @@ public class StatisticsManager implements IStatistics {
 
     }
 
-//    private String createUploadData() throws JSONException {
-//      if (jsonArraysList.size()>0){
-//          for (StatisticsModle modle:jsonArraysList){
-//              JSONObject jsonObject=new JSONObject();
-//              jsonObject.put("leaseID","");
-//              jsonObject.put("version","3");
-////              jsonObject.put("localTime", TimeZone.getDefault().get);
-//
-//          }
-//      }
-//    }
+    public void uplaodData(Context context,String order_id) {
+        location(context);
 
-    private static class  StatisticsManagerHolder {
-        public  static  final  StatisticsManager manager=new StatisticsManager();
+
+        String url="http://39.107.238.111:7001";
+//        String url=CommonUtils.getTimerType()==0?"http://abroad.api.joner.aibabel.cn:7001":"http://api.joner.aibabel.cn:7001";
+        PostRequest<String> postRequest = OkGo.<String>post(url+"/v2/ddot/JonerLogPush").tag("JonerLogPush");
+
+        postRequest.params("sv", Build.DISPLAY);
+        postRequest.params("sn", CommonUtils.getSN());
+        postRequest.params("sl", CommonUtils.getLocalLanguage());
+        postRequest.params("av", CommonUtils.getDeviceInfo());
+        postRequest.params("no", CommonUtils.getRandom() + "");
+        postRequest.params("lat", latitude + "");
+        postRequest.params("lng", longitude + "");
+        postRequest.params("data",createUploadData(order_id));
+        postRequest.execute(new StringCallback() {
+            @Override
+            public void onStart(Request<String, ? extends Request> request) {
+                super.onStart(request);
+
+            }
+
+            @Override
+            public void onSuccess(Response<String> response) {
+                Log.e("onSuccess",response.body());
+
+
+            }
+
+            @Override
+            public void onError(Response<String> response) {
+                Log.e("onError",response.code()+"");
+            }
+
+            @Override
+            public void onFinish() {
+                super.onFinish();
+
+            }
+        });
+
+    }
+    private void saveData() throws JSONException {
+
+    }
+
+    private static class StatisticsManagerHolder {
+        public static final StatisticsManager manager = new StatisticsManager();
 
     }
 

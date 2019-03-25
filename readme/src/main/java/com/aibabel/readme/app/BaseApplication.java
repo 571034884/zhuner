@@ -6,11 +6,17 @@ import android.os.Bundle;
 import android.util.Log;
 
 import com.aibabel.aidlaar.StatisticsManager;
+import com.aibabel.baselibrary.impl.IDataManager;
+import com.aibabel.baselibrary.impl.IServerManager;
+import com.aibabel.baselibrary.impl.IStatistics;
+import com.aibabel.baselibrary.mode.DataManager;
+import com.aibabel.baselibrary.mode.ServerManager;
 import com.aibabel.readme.BuildConfig;
 import com.aibabel.readme.utils.CommonUtils;
 import com.aibabel.readme.utils.DensityHelper;
 import com.umeng.analytics.MobclickAgent;
 import com.umeng.commonsdk.UMConfigure;
+import com.xuexiang.xipc.XIPC;
 
 import java.util.LinkedList;
 /**
@@ -40,6 +46,24 @@ public class BaseApplication extends Application {
                 null);
         MobclickAgent.setScenarioType(this, MobclickAgent.EScenarioType.E_UM_NORMAL);
         StatisticsManager.getInstance(this).setConfig(getPackageName(), BuildConfig.VERSION_NAME);
+        initXipc();
+
+    }
+
+
+    /**
+     * 跨进程初始化
+     */
+    private void initXipc() {
+        XIPC.init(this);
+//        XIPC.debug(BuildConfig.DEBUG);
+        XIPC.register(DataManager.class);
+        XIPC.register(ServerManager.class);
+        XIPC.register(IDataManager.class);
+        XIPC.register(IServerManager.class);
+        XIPC.register(com.aibabel.baselibrary.mode.StatisticsManager.class);
+        XIPC.register(IStatistics.class);
+
     }
     /**
      * 初始化布局适配  布局中使用pt做位单位

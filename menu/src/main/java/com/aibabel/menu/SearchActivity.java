@@ -194,52 +194,56 @@ public class SearchActivity extends BaseActivity implements View.OnClickListener
 
             });
         } else {
-            SQLiteDatabase db = DBUtils.openDatabase("/sdcard/offline/menu/menu_mdd.db");
-            Cursor cursor = db.query("city_list", null, null, null, null, null, null);
-            List<CityListBean.DataBean.PopularAddrBean> popList = new ArrayList<>();
-            List<CityListBean.DataBean.HotAddrBean> hotList = new ArrayList<>();
-
             try {
+                SQLiteDatabase db = DBUtils.openDatabase("/sdcard/offline/menu/menu_mdd.db");
+                if (db == null) return;
+                Cursor cursor = db.query("city_list", null, null, null, null, null, null);
+                List<CityListBean.DataBean.PopularAddrBean> popList = new ArrayList<>();
+                List<CityListBean.DataBean.HotAddrBean> hotList = new ArrayList<>();
 
-                if (cursor != null && cursor.moveToFirst()) {
-                    do {
-                        CityListBean.DataBean.PopularAddrBean pop = new CityListBean.DataBean.PopularAddrBean();
-                        pop.setCityChj(cursor.getString(cursor.getColumnIndex("city_name_chj")));
-                        pop.setCityId(cursor.getString(cursor.getColumnIndex("city_id")));
-                        pop.setCountryId(cursor.getString(cursor.getColumnIndex("country_id")));
-                        pop.setCountryChj(cursor.getString(cursor.getColumnIndex("country_name_chj")));
-                        pop.setGroupBy(cursor.getString(cursor.getColumnIndex("groupBy")));
+                try {
 
-                        if (cursor.getInt(cursor.getColumnIndex("isHot")) == 1) {
-                            CityListBean.DataBean.HotAddrBean hot = new CityListBean.DataBean.HotAddrBean();
-                            hot.setCityChj(cursor.getString(cursor.getColumnIndex("city_name_chj")));
-                            hot.setCountryChj(cursor.getString(cursor.getColumnIndex("country_name_chj")));
-                            hot.setCityId(cursor.getString(cursor.getColumnIndex("city_id")));
-                            hot.setCountryId(cursor.getString(cursor.getColumnIndex("country_id")));
-                            hot.setGroupBy(cursor.getString(cursor.getColumnIndex("groupBy")));
-                            hotList.add(hot);
-                        }
+                    if (cursor != null && cursor.moveToFirst()) {
+                        do {
+                            CityListBean.DataBean.PopularAddrBean pop = new CityListBean.DataBean.PopularAddrBean();
+                            pop.setCityChj(cursor.getString(cursor.getColumnIndex("city_name_chj")));
+                            pop.setCityId(cursor.getString(cursor.getColumnIndex("city_id")));
+                            pop.setCountryId(cursor.getString(cursor.getColumnIndex("country_id")));
+                            pop.setCountryChj(cursor.getString(cursor.getColumnIndex("country_name_chj")));
+                            pop.setGroupBy(cursor.getString(cursor.getColumnIndex("groupBy")));
 
-                        popList.add(pop);
-                    } while (cursor.moveToNext());
+                            if (cursor.getInt(cursor.getColumnIndex("isHot")) == 1) {
+                                CityListBean.DataBean.HotAddrBean hot = new CityListBean.DataBean.HotAddrBean();
+                                hot.setCityChj(cursor.getString(cursor.getColumnIndex("city_name_chj")));
+                                hot.setCountryChj(cursor.getString(cursor.getColumnIndex("country_name_chj")));
+                                hot.setCityId(cursor.getString(cursor.getColumnIndex("city_id")));
+                                hot.setCountryId(cursor.getString(cursor.getColumnIndex("country_id")));
+                                hot.setGroupBy(cursor.getString(cursor.getColumnIndex("groupBy")));
+                                hotList.add(hot);
+                            }
 
+                            popList.add(pop);
+                        } while (cursor.moveToNext());
+
+
+                    }
+
+
+                    Collections.sort(popList, new PinyinComparator());
+                    View view = LayoutInflater.from(getApplicationContext()).inflate(R.layout.list_group_item, searchCity, false);
+
+                    searchCity.setPinnedHeaderView(view);
+                    getIndexerAndCounts(popList);
+                    bindReMen(hotList);
+                } finally {
+                    if (cursor != null) {
+                        cursor.close();
+                    }
 
                 }
-
-
-                Collections.sort(popList, new PinyinComparator());
-                View view = LayoutInflater.from(getApplicationContext()).inflate(R.layout.list_group_item, searchCity, false);
-
-                searchCity.setPinnedHeaderView(view);
-                getIndexerAndCounts(popList);
-                bindReMen(hotList);
-            } finally {
-                if (cursor != null) {
-                    cursor.close();
-                }
+            }catch (Exception e){
 
             }
-
 
         }
     }

@@ -7,11 +7,12 @@ import android.view.KeyEvent;
 import android.view.View;
 import android.view.WindowManager;
 
+import com.aibabel.baselibrary.base.StatisticsBaseActivity;
 import com.aibabel.readme.app.BaseApplication;
 import com.aibabel.statisticalserver.SimpleStatisticsActivity;
 import com.umeng.analytics.MobclickAgent;
 
-public class BaseActivity extends SimpleStatisticsActivity {
+public class BaseActivity extends StatisticsBaseActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);// 设置全屏

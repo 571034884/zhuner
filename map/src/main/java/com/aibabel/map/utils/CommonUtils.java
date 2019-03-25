@@ -6,8 +6,6 @@ import android.database.Cursor;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
-import android.os.Build;
-import android.text.TextUtils;
 import android.util.Log;
 
 import com.aibabel.baselibrary.utils.ToastUtil;

@@ -201,13 +201,14 @@ public class LocationService extends Service implements ScreenListener, CardBroa
         handler_poi.postDelayed(runnable_poi, 0);
 
 
-        //循环请求上传流量
+        //循环上传统计流量
         runnable_flow = new Runnable() {
             @Override
             public void run() {
 
                 if (DeviceUtils.getSystem() == DeviceUtils.System.PRO_LEASE) {
                     uploadTraffic();
+                    Log.e(TAG, "=================流量统计执行了=================");
                     handler_flow.postDelayed(this, Constants.FIVE_MILLIS);
                 }
 
@@ -218,14 +219,14 @@ public class LocationService extends Service implements ScreenListener, CardBroa
 
 
         //注册切换sim卡广播
-        CardBroadcastReceiver cardBroadcastReceiver = new CardBroadcastReceiver();
-        cardBroadcastReceiver.setSwitch_card(this);
+//         cardBroadcastReceiver = new CardBroadcastReceiver();
+        CardBroadcastReceiver.setSwitch_card(this);
         FlowUtil.initMtkDoubleSim(LocationService.this);
         if (FlowUtil.isMobileEnabled(this)) {
             FlowUtil.getDefaultDataSubId(this);
         }
-        //上传统计流量
-        uploadTraffic();
+
+//        uploadTraffic();
         //向语音翻译发送广播
         sendTranslation();
         return super.onStartCommand(intent, flags, startId);
@@ -317,17 +318,6 @@ public class LocationService extends Service implements ScreenListener, CardBroa
         map.put("lng", longitude + "");
         StatisticsManager.getInstance(this).sendDataAidl(ip + "/v1/ddot/JonerLogPush", map);
         Log.e("sleep", ip);
-//        isScreenOn = false;
-//        TimerTask task = new TimerTask() {
-//            @Override
-//            public void run() {
-//                if (mLocationClient.isStarted())
-//                    mLocationClient.stop();
-////                    handler.removeCallbacks(runnable);
-//            }
-//        };
-//        Timer timer = new Timer();
-//        timer.schedule(task, Constants.FIVE_MILLIS);
     }
 
 
@@ -427,6 +417,9 @@ public class LocationService extends Service implements ScreenListener, CardBroa
         }
         if (null != handler_poi) {
             handler_poi.removeCallbacks(runnable_poi);
+        }
+        if (null != handler_flow) {
+            handler_flow.removeCallbacks(runnable_flow);
         }
     }
 
@@ -702,23 +695,6 @@ public class LocationService extends Service implements ScreenListener, CardBroa
                 Log.e("上传", "iccid ==" + cur_card + "====" + sectionNumFlow);
             }
         }
-
-//        Timer timer_date = new Timer();
-//        TimerTask task = new TimerTask() {
-//            @Override
-//            public void run() {
-//                runOnUiThread(new Runnable() {
-//                    @Override
-//                    public void run() {
-//
-//
-//                    }
-//                });
-//
-//            }
-//        };
-////        timer_date.schedule(task, 0, 60 * 1000);
-//        timer_date.schedule(task, 0, 60 * 1000 * 5);
 
     }
 
