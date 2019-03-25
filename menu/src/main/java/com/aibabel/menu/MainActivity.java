@@ -295,7 +295,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
 
             @Override
             public void updateAddr(String addr) {
-                if(mainMapLocalTv!=null)mainMapLocalTv.setText(addr);
+                if (mainMapLocalTv != null) mainMapLocalTv.setText(addr);
 
             }
 
@@ -339,7 +339,8 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
 
         mContext.registerReceiver(new ScreenOffReceiver(), filter);
     }
-    private class ScreenOffReceiver extends BroadcastReceiver{
+
+    private class ScreenOffReceiver extends BroadcastReceiver {
 
         @Override
         public void onReceive(Context context, Intent intent) {
@@ -362,7 +363,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         loopHandler = new LooptempHandler(this);
     }
 
-    public  static  MaterialBadgeTextView home_badge;
+    public static MaterialBadgeTextView home_badge;
     public static int set_BadgeCount = 0;
 
     @Override
@@ -373,7 +374,6 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         home_badge = findViewById(R.id.home_badge);
         home_badge.setBadgeCount(0);
         notice_start_activity = findViewById(R.id.notice_start_activity);
-
 
 
     }
@@ -437,7 +437,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
                 @Override
                 public void run() {
                     init_neveruser();
-                    Log.e("SERVICE_FUWU","开启网络监听");
+                    Log.e("SERVICE_FUWU", "开启网络监听");
                     requestNetwork();
                     // boot_start_lock();
                     lock90day();
@@ -449,45 +449,9 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
 
 
         JPushInterface.setAlias(this, 1, CommonUtils.getSN());
-        LogUtil.e("getSN:"+CommonUtils.getSN());
-
-        Testmain();
-    }
-
-    public static void Testmain(){
-        // 嵌套的json字符串
-        try {
-            String JSON_MULTI = "{'name':'tom','score':{'Math':98,'English':90}}";
-            JSONObject obj = new JSONObject(JSON_MULTI);
-            System.out.println("name is : " + obj.get("name"));
-            System.out.println("score is : " + obj.get("score"));
-
-            JSONObject scoreObj = (JSONObject) obj.get("score");
-            System.out.println("Math score is : " + scoreObj.get("Math"));
-            System.out.println("English score is : " + scoreObj.get("English"));
-        }catch (Exception e){
-            e.printStackTrace();
-        }
-    String extra_ = "{\"sn\": \"0000000000000000\", \"no\": 3163, \"relet\": {\"code\": 1, \"msg\": \"请同步订单\"}}";
-        try {
-            JSONObject json = new JSONObject(extra_);
-            String relet = (String) json.get("relet");
-
-            JSONObject jsonRelet = new JSONObject(relet);
-            int code = (Integer) jsonRelet.get("code");
-            if (code == 1) {
-                Intent stopIntent = new Intent("com.android.qrcode.unlock.ok");
-
-                System.out.println("code  = 1");
-            }
-        } catch (JSONException e) {
-            System.out.println("Get message extra JSON error!");
-        }catch (Exception e){
-            e.printStackTrace();
-        }
+        LogUtil.e("getSN:" + CommonUtils.getSN());
 
     }
-
 
 
     /**
@@ -495,46 +459,29 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
      */
     public void clearALlsharePreutil() {
 
-//        SharePrefUtil.removeByKey(mContext, neverUseNetflag);
-//        SharePrefUtil.removeByKey(mContext, neverUseNetflag);
-//        SharePrefUtil.removeByKey(mContext, neverUseNet_start);
-//        SharePrefUtil.removeByKey(mContext, neverUseNet_end);
-//        SharePrefUtil.removeByKey(mContext, order_channelName);
-//        SharePrefUtil.removeByKey(mContext, order_oid);
-//        SharePrefUtil.removeByKey(mContext, order_uid);
-//        SharePrefUtil.removeByKey(mContext, order_uname);
-//        SharePrefUtil.removeByKey(mContext, order_sn);
-//        SharePrefUtil.removeByKey(mContext, order_from);
-//        SharePrefUtil.removeByKey(mContext, order_endttime);
-//        SharePrefUtil.removeByKey(mContext, order_islock);
-//        SharePrefUtil.removeByKey(mContext, order_lockattime);
-//        SharePrefUtil.removeByKey(mContext, order_isZhuner);
         SqlUtils.deleteDataAll();
+        SharePrefUtil.put(mContext, neverUseNetflag, "");
+        SharePrefUtil.put(mContext, neverUseNet_start, "");
+        SharePrefUtil.put(mContext, neverUseNet_end, "");
+        SharePrefUtil.put(mContext, order_channelName, "");
+        SharePrefUtil.put(mContext, order_oid, "");
+        SharePrefUtil.put(mContext, order_uid, "");
+        SharePrefUtil.put(mContext, order_uname, "");
+        SharePrefUtil.put(mContext, order_sn, "");
+        SharePrefUtil.put(mContext, order_from, "");
+        SharePrefUtil.put(mContext, order_endttime, "");
+        SharePrefUtil.put(mContext, order_islock, 0);
+        SharePrefUtil.put(mContext, order_lockattime, 0);
+        SharePrefUtil.put(mContext, order_isZhuner, 0);
 
 
-        SharePrefUtil.put(mContext,neverUseNetflag,"");
-        SharePrefUtil.put(mContext,neverUseNet_start,"");
-        SharePrefUtil.put(mContext,neverUseNet_end,"");
-        SharePrefUtil.put(mContext,order_channelName,"");
-        SharePrefUtil.put(mContext,order_oid,"");
-        SharePrefUtil.put(mContext,order_uid,"");
-        SharePrefUtil.put(mContext,order_uname,"");
-        SharePrefUtil.put(mContext,order_sn,"");
-        SharePrefUtil.put(mContext,order_from,"");
-        SharePrefUtil.put(mContext,order_endttime,"");
-        SharePrefUtil.put(mContext,order_islock,0);
-        SharePrefUtil.put(mContext,order_lockattime,0);
-        SharePrefUtil.put(mContext,order_isZhuner,0);
+        int lockflag = SharePrefUtil.getInt(mContext, order_islock, 0);
+        String get_starttime = SharePrefUtil.getString(mContext, neverUseNet_start, "");
+        String get_endtime = SharePrefUtil.getString(mContext, neverUseNet_end, "");
 
 
-
-        int lockflag= SharePrefUtil.getInt(mContext,order_islock,0);
-      String  get_starttime = SharePrefUtil.getString(mContext, neverUseNet_start, "");
-        String  get_endtime = SharePrefUtil.getString(mContext, neverUseNet_end, "");
-
-
-        LogUtil.e("get_starttime=="+get_starttime);
-        LogUtil.e("get_endtime=="+get_endtime);
+        LogUtil.e("get_starttime==" + get_starttime);
+        LogUtil.e("get_endtime==" + get_endtime);
 
     }
 
@@ -551,7 +498,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
             } catch (Exception e) {
                 e.printStackTrace();
             }
-            LogUtil.e("start__= "+get_starttime + " = init_neveruser = " + get_endtime);
+            LogUtil.e("start__= " + get_starttime + " = init_neveruser = " + get_endtime);
             if (TextUtils.isEmpty(get_starttime) || (TextUtils.isEmpty(get_endtime))) {
                 String[] startstr = CalenderUtil.calculateTimeDifferenceByDuration();
                 if (startstr != null) {
@@ -631,14 +578,14 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         try {
 
             int lock_type = boot_start_lock();
-            LogUtil.e("lock_type ="+lock_type);
-            if(lock_type==1 )return;
+            LogUtil.e("lock_type =" + lock_type);
+            if (lock_type == 1) return;
 
             String spnettemp = SharePrefUtil.getString(mContext, neverUseNetflag, "");
-            LogUtil.e("neverUseNetflag ="+spnettemp);
+            LogUtil.e("neverUseNetflag =" + spnettemp);
             if (TextUtils.isEmpty(spnettemp)) {
                 String endtime = SharePrefUtil.getString(mContext, neverUseNet_end, "");//90天未使用
-                LogUtil.e(" neverUseNet_end ="+endtime);
+                LogUtil.e(" neverUseNet_end =" + endtime);
                 if (!TextUtils.isEmpty(endtime)) {
                     if (CalenderUtil.compaeTimeWithAfter24(endtime) <= 0) {
                         LogUtil.e(" compaeTimeWithAfter24  lockloopmsg()  <=0");
@@ -879,7 +826,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
                     StatisticsManager.getInstance(mContext).addEventAidl(1133, new HashMap());
                     break;
                 case R.id.notice_start_activity:
-                    startActivity(new Intent(this,com.aibabel.messagemanage.MainActivity.class));
+                    startActivity(new Intent(this, com.aibabel.messagemanage.MainActivity.class));
                     set_BadgeCount = 0;
                     home_badge.setBadgeCount(set_BadgeCount);
                     break;
@@ -1456,6 +1403,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         }
 
     }
+
     @Override
     protected void onStart() {
         super.onStart();
@@ -1515,32 +1463,26 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
                         case 100:
                             try {
                                 boolean RentLocked_fore = DetectUtil.isForeground(activity, RentLockedActivity.class);
-                                // boolean qrcode_isAlive = DetectUtil.isProessRunning(activity,"com.dommy.qrcode");
-                                // LogUtil.e("qrcode_isAlive " + qrcode_isAlive);
                                 LogUtil.e("RentLocked_fore " + RentLocked_fore);
-
                                 SqlUtils.deleteDataAll();
                                 if (RentLocked_fore) return;
-
                                 Bundle getbundle = msg.getData();
-                                if (getbundle != null) {
-                                    String zhuner_str = getbundle.getString(bunder_iszhuner);
-                                    String qudao_str = getbundle.getString(bunder_qudao);
-
-                                    LogUtil.e("RentLockedActivity start"+zhuner_str+qudao_str);
-                                    Intent keepuse = new Intent(activity, RentLockedActivity.class); //已经到期
-                                    keepuse.putExtra(bunder_iszhuner, zhuner_str);
-                                    keepuse.putExtra(bunder_qudao, qudao_str);
-                                    startActivity(keepuse);
-                                } else {
-                                    Intent keepuse = new Intent(activity, RentLockedActivity.class); //已经到期
-                                    String zhuner_str = getbundle.getString(bunder_iszhuner);
-                                    String qudao_str = getbundle.getString(bunder_qudao);
-                                    LogUtil.e("start zhuner_str qudao_str"+zhuner_str+qudao_str);
-                                    keepuse.putExtra(bunder_iszhuner, ""+zhuner_str);
-                                    keepuse.putExtra(bunder_qudao, ""+qudao_str);
-                                    startActivity(keepuse);
+                                String zhuner_str = getbundle.getString(bunder_iszhuner);
+                                String qudao_str = getbundle.getString(bunder_qudao);
+                                LogUtil.e("RentLockedActivity start" + zhuner_str + qudao_str);
+                                if (TextUtils.isEmpty(zhuner_str)) {
+                                    int isZhuner = SharePrefUtil.getInt(mContext, order_isZhuner, -1);
+                                    if ((isZhuner == 1)) {
+                                        zhuner_str = "zhuner";
+                                    }
                                 }
+                                if (TextUtils.isEmpty(qudao_str)) {
+                                    qudao_str = SharePrefUtil.getString(mContext, order_channelName, "");
+                                }
+                                Intent keepuse = new Intent(activity, RentLockedActivity.class); //已经到期
+                                keepuse.putExtra(bunder_iszhuner, zhuner_str);
+                                keepuse.putExtra(bunder_qudao, qudao_str);
+                                startActivity(keepuse);
                             } catch (Exception e) {
                                 e.printStackTrace();
                             }
@@ -1578,21 +1520,21 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
                                 loopHandler.sendEmptyMessageDelayed(130, 10000);
                             break;
                         case 300:
-                             //接受到文颖的消息
-                            if(msg!=null) {
-                                Bundle getdata =   msg.getData();
+                            //接受到文颖的消息
+                            if (msg != null) {
+                                Bundle getdata = msg.getData();
 
                             }
                             break;
                         case 301:
-                            set_BadgeCount+=1;
+                            set_BadgeCount += 1;
                             home_badge.setBadgeCount(set_BadgeCount);
                             break;
                         case 302:
-                            set_BadgeCount-=1;
-                            if(set_BadgeCount>0)home_badge.setBadgeCount(set_BadgeCount);
+                            set_BadgeCount -= 1;
+                            if (set_BadgeCount > 0) home_badge.setBadgeCount(set_BadgeCount);
                             else {
-                                set_BadgeCount =0;
+                                set_BadgeCount = 0;
                                 home_badge.setBadgeCount(set_BadgeCount);
                             }
                             break;
@@ -1610,18 +1552,21 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
     /**
      * 跳转 100 handler
      */
-    private void lockloopmsg(String order_end ) {
+    private void lockloopmsg(String order_end) {
 //        String order_end = SharePrefUtil.getString(mContext, order_endttime, "");
         String channelName = SharePrefUtil.getString(mContext, order_channelName, "");
+
+        LogUtil.e("channelName=" + (channelName));
+
         int isZhuner = SharePrefUtil.getInt(mContext, order_isZhuner, -1);
-        if(TextUtils.isEmpty(order_end)){
+        if (TextUtils.isEmpty(order_end)) {
             return;
         }
 
         try {
-            LogUtil.e("lockloopmsg="+(order_end));
+            LogUtil.e("lockloopmsg=" + (order_end));
             //负数的话为已经过期{
-            if((!TextUtils.isEmpty(order_end))&&(CalenderUtil.compaeTimeWithAfter24(order_end) <= 0)) {
+            if ((!TextUtils.isEmpty(order_end)) && (CalenderUtil.compaeTimeWithAfter24(order_end) <= 0)) {
                 Message message = new Message();
                 message.what = 100;
                 Bundle bun = new Bundle();
@@ -1739,7 +1684,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
                     LogUtil.v("onAvailable wifi is connected: " + networkinfo.isConnected());
                 }
 
-                Log.e("SERVICE_FUWU","监听到当前有网");
+                Log.e("SERVICE_FUWU", "监听到当前有网");
                 getInternetService();
                 if (loopHandler != null) loopHandler.sendEmptyMessageDelayed(130, 10000);
             }
@@ -1775,12 +1720,12 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
      */
     private void initService() {
         String timerID = TimeZone.getDefault().getID();
-        if (timerID.equals("Asia/Shanghai")){
+        if (timerID.equals("Asia/Shanghai")) {
             Constans.HOST_SERVER = Constans.HOST_SERVER_CH;
-        }else{
+        } else {
             Constans.HOST_SERVER = Constans.HOST_SERVER_EN;
         }
-        Log.e("SERVICE_FUWU","时区："+timerID+"----选择服务器:"+Constans.HOST_SERVER);
+        Log.e("SERVICE_FUWU", "时区：" + timerID + "----选择服务器:" + Constans.HOST_SERVER);
     }
 
 
@@ -1788,36 +1733,35 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
      * 1.获取服务器域名
      * 2.存储
      * 3.开启定时轮询
-     *      1.判断容错是否达到3次
-     *          1.达到三次
-     *              判断时区，切换域名   容错清零
-     *          2.未达到三次
-     *              判断时区，域名不做变动     超时容错清零
-     *
+     * 1.判断容错是否达到3次
+     * 1.达到三次
+     * 判断时区，切换域名   容错清零
+     * 2.未达到三次
+     * 判断时区，域名不做变动     超时容错清零
      */
     private void getInternetService() {
-        Log.e("SERVICE_FUWU","开始请求域名接口");
+        Log.e("SERVICE_FUWU", "开始请求域名接口");
         if (!CommonUtils.isAvailable(this)) {
-            Log.e("SERVICE_FUWU","当前网络不可用");
+            Log.e("SERVICE_FUWU", "当前网络不可用");
             return;
         }
-        Log.e("SERVICE_FUWU", "URL:"+Constans.GET_HOST_SERVER);
-        Log.e("SERVICE_FUWU", "sn:"+CommonUtils.getSN());
-        Log.e("SERVICE_FUWU", "no:"+CommonUtils.getRandom());
-        Log.e("SERVICE_FUWU", "sl:"+CommonUtils.getLocal(mContext));
+        Log.e("SERVICE_FUWU", "URL:" + Constans.GET_HOST_SERVER);
+        Log.e("SERVICE_FUWU", "sn:" + CommonUtils.getSN());
+        Log.e("SERVICE_FUWU", "no:" + CommonUtils.getRandom());
+        Log.e("SERVICE_FUWU", "sl:" + CommonUtils.getLocal(mContext));
 
         OkGo.<String>get(Constans.GET_HOST_SERVER)
                 .tag(this)
-                .params("sn",CommonUtils.getSN())
-                .params("no",CommonUtils.getRandom())
-                .params("sl",CommonUtils.getLocal(mContext))
+                .params("sn", CommonUtils.getSN())
+                .params("no", CommonUtils.getRandom())
+                .params("sl", CommonUtils.getLocal(mContext))
                 .execute(new StringCallback() {
                     @Override
                     public void onSuccess(Response<String> response) {
-                        if (!TextUtils.isEmpty(response.body().toString())){
-                            Log.e("SERVICE_FUWU", "onSuccess:"+response.body().toString());
+                        if (!TextUtils.isEmpty(response.body().toString())) {
+                            Log.e("SERVICE_FUWU", "onSuccess:" + response.body().toString());
                             saveService(response.body().toString());
-                        }else{
+                        } else {
                             //TODO 获取服务列表空
                             Log.e("SERVICE_FUWU", "onSuccess:数据空");
                         }
@@ -1826,21 +1770,21 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
                     @Override
                     public void onError(Response<String> response) {
                         super.onError(response);
-                        Log.e("SERVICE_FUWU", "onError:"+response.getException().toString());
+                        Log.e("SERVICE_FUWU", "onError:" + response.getException().toString());
                     }
                 });
 
     }
 
     private void saveService(String response) {
-        try{
-            PublicBean bean =  FastJsonUtil.changeJsonToBean(response, PublicBean.class);
+        try {
+            PublicBean bean = FastJsonUtil.changeJsonToBean(response, PublicBean.class);
             //备份所有服务器数据，使用,分割
             ServerUtils.saveAllServer(bean.data.server);
 //            ServerManager.getInstance().setPingServerError(ServerKeyUtils.serverKeyChatJoner);
             //TODO 任务
-        }catch (Exception e){
-            ToastUtil.showShort(mContext,"解析服务器列表出错，请重启设备");
+        } catch (Exception e) {
+            ToastUtil.showShort(mContext, "解析服务器列表出错，请重启设备");
         }
 
     }
@@ -1870,12 +1814,12 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         return false;
     }
 
-    public int  boot_start_lock(){
-        int lockflag= SharePrefUtil.getInt(mContext,order_islock,0);
+    public int boot_start_lock() {
+        int lockflag = SharePrefUtil.getInt(mContext, order_islock, 0);
 
-        if(lockflag==1){
-            Log.e("hjs","上次锁机，开机继续锁机");
-            if (loopHandler != null) loopHandler.sendEmptyMessageDelayed(100,1000);
+        if (lockflag == 1) {
+            Log.e("hjs", "上次锁机，开机继续锁机");
+            if (loopHandler != null) loopHandler.sendEmptyMessageDelayed(100, 1000);
             return 1;
         }
 
