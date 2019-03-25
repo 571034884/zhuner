@@ -1,28 +1,33 @@
 package com.aibabel.baselibrary.base;
 
+import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
+import android.text.TextUtils;
 
 import com.aibabel.baselibrary.impl.IStatistics;
+import com.aibabel.baselibrary.mode.StatisticsManager;
 import com.aibabel.baselibrary.utils.DeviceUtils;
 import com.xuexiang.xipc.XIPC;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.w3c.dom.Text;
 
 import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 
 /**
- *
+ * 数据统计基础类
  */
 public class StatisticsBaseActivity extends AppCompatActivity {
+    public static final String NOTIFY_ID="notiytId";
+    public static final String HARDWARE_BUTTON="HardwareButton";
     protected static String notifyId;   //当前路径下通知的id
-    private boolean isFromNotify; //是否有通知打开
     private JSONArray eventsArray=null;
     private JSONObject pageObject=null;
     protected boolean isOpenFromHardwareButton=true; //是否通过物理按键唤起
@@ -30,11 +35,19 @@ public class StatisticsBaseActivity extends AppCompatActivity {
     protected  static String appName, appVersion;
 
 
-
-
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        if (!getPackageName().equals("com.aibabel.menu")&&DeviceUtils.getSystem()== DeviceUtils.System.PRO_LEASE){
+            XIPC.connectApp(this,"com.aibabel.menu");
+
+        }
+
+        notifyId=getIntent().getStringExtra(NOTIFY_ID);
+
+        isOpenFromHardwareButton=getIntent().getBooleanExtra(HARDWARE_BUTTON,true);
+
+        getIntent().putExtra("HardwareButton",false);
         if (DeviceUtils.getSystem()== DeviceUtils.System.PRO_LEASE){
             try {
                 if (appName==null){
@@ -47,10 +60,17 @@ public class StatisticsBaseActivity extends AppCompatActivity {
                 pageObject=new JSONObject();
                 pageObject.put("pn",getClass().getSimpleName());
 
+                if (!TextUtils.isEmpty(notifyId)){
+                    pageObject.put("notify",notifyId);
+                }
+                if (isOpenFromHardwareButton){
+                    pageObject.put("h",true);
+                }
+
             } catch (Exception e) {
                 e.printStackTrace();
             }
-            XIPC.connectApp(this,"com.aibabel.menu");
+
         }
 
 
@@ -73,7 +93,11 @@ public class StatisticsBaseActivity extends AppCompatActivity {
     }
 
 
-
+    /**
+     *  添加页面参数
+     * @param key  参数key
+     * @param value  参数值
+     */
 
     public void  addPageParameters(String key ,Serializable value){
 
@@ -98,13 +122,19 @@ public class StatisticsBaseActivity extends AppCompatActivity {
         if (DeviceUtils.getSystem()== DeviceUtils.System.PRO_LEASE){
 
             try {
-                IStatistics statisticsManager=XIPC.getInstance(IStatistics.class);
+                IStatistics statisticsManager;
+                if (!getPackageName().equals("com.aibabel.menu")){
+                     statisticsManager=XIPC.getInstance(IStatistics.class);
+                }else{
+                    statisticsManager= StatisticsManager.getInstance();
+                }
+
                 pageObject.put("ot", System.currentTimeMillis());
                 pageObject.put("p",pageParameters);
 
                 if (eventsArray!=null&&eventsArray.length()>0)
                     pageObject.put("e",eventsArray);
-                String order=statisticsManager.createUploadData("iiiidd");
+
                 statisticsManager.addPath(appName,appVersion,pageObject);
 
 
@@ -121,6 +151,9 @@ public class StatisticsBaseActivity extends AppCompatActivity {
         super.onStop();
         if (System.currentTimeMillis()-pageObject.optLong("it")>500){
             addPathToStatisticsManager();
+            if (pageObject.has("h")){
+                pageObject.remove("h");
+            }
         }
 
 
@@ -161,10 +194,27 @@ public class StatisticsBaseActivity extends AppCompatActivity {
     }
 
     @Override
+    public void startActivity(Intent intent) {
+        super.startActivity(intent);
+        if (!TextUtils.isEmpty("")){
+            intent.putExtra(NOTIFY_ID,notifyId);
+        }
+    }
+
+    @Override
+    public void startActivityForResult(Intent intent, int requestCode) {
+        super.startActivityForResult(intent, requestCode);
+        if (!TextUtils.isEmpty("")){
+            intent.putExtra(NOTIFY_ID,notifyId);
+        }
+    }
+
+    @Override
     protected void onDestroy() {
         super.onDestroy();
-        if (DeviceUtils.getSystem()== DeviceUtils.System.PRO_LEASE){
-          XIPC.disconnect(this);
+        if (!getPackageName().equals("com.aibabel.menu")&&DeviceUtils.getSystem()== DeviceUtils.System.PRO_LEASE){
+            XIPC.disconnect(this);
         }
+
     }
 }

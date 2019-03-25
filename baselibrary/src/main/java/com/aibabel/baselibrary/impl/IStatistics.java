@@ -5,6 +5,10 @@ import com.xuexiang.xipc.annotation.MethodName;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
+
+import java.io.Serializable;
+import java.util.HashMap;
+
 @ClassName("IStatistics")
 public interface IStatistics {
     /**
@@ -17,4 +21,6 @@ public interface IStatistics {
        void addPath(String appName, String appVersion, JSONObject info);
        @MethodName("createUploadData")
        String createUploadData(String order_id);
+       @MethodName("addNotify")
+       void addNotify(String id, HashMap<String , Serializable> map);
 }

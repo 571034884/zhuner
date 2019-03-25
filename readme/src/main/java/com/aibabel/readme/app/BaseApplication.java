@@ -56,12 +56,12 @@ public class BaseApplication extends Application {
      */
     private void initXipc() {
         XIPC.init(this);
-//        XIPC.debug(BuildConfig.DEBUG);
-        XIPC.register(DataManager.class);
-        XIPC.register(ServerManager.class);
+        XIPC.debug(BuildConfig.DEBUG);
+//        XIPC.register(DataManager.class);
+//        XIPC.register(ServerManager.class);
         XIPC.register(IDataManager.class);
         XIPC.register(IServerManager.class);
-        XIPC.register(com.aibabel.baselibrary.mode.StatisticsManager.class);
+//        XIPC.register(com.aibabel.baselibrary.mode.StatisticsManager.class);
         XIPC.register(IStatistics.class);
 
     }

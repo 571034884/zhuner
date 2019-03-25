@@ -26,6 +26,7 @@ import com.taobao.sophix.SophixManager;
 
 import org.json.JSONObject;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -110,6 +111,11 @@ public class MainActivity extends BaseActivity {
         adapter = new CommomRecyclerAdapter(this, readmeList, R.layout.recy_item, new CommomRecyclerAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(CommonRecyclerViewHolder holder, int postion) {
+                if (DeviceUtils.getSystem()== DeviceUtils.System.PRO_LEASE){
+                    HashMap<String, Serializable> map=new HashMap<>();
+                    map.put("pageId",readmeList.get(postion).getItem_name());
+                    addStatisticsEvent("readme_click",map);
+                }
                 int type = readmeList.get(postion).getType();
 
                 Map map = new HashMap();

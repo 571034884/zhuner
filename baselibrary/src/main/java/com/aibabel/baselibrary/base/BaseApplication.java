@@ -14,6 +14,7 @@ import com.aibabel.baselibrary.imageloader.ImageLoader;
 import com.aibabel.baselibrary.imageloader.object.GlideLoader;
 import com.aibabel.baselibrary.impl.IDataManager;
 import com.aibabel.baselibrary.impl.IServerManager;
+import com.aibabel.baselibrary.impl.IStatistics;
 import com.aibabel.baselibrary.mode.DataManager;
 import com.aibabel.baselibrary.mode.ServerManager;
 import com.aibabel.baselibrary.sphelper.SPHelper;
@@ -111,12 +112,20 @@ public abstract class BaseApplication extends Application {
      */
     private void initXipc() {
         XIPC.init(this);
-//        XIPC.debug(BuildConfig.DEBUG);
-        XIPC.register(DataManager.class);
-        XIPC.register(ServerManager.class);
-        XIPC.register(IDataManager.class);
-        XIPC.register(IServerManager.class);
-        XIPC.register(com.aibabel.baselibrary.mode.StatisticsManager.class);
+        XIPC.debug(BuildConfig.DEBUG);
+        if (getAppPackageName().equals("com.aibabel.menu")){
+            XIPC.register(DataManager.class);
+            XIPC.register(ServerManager.class);
+            XIPC.register(com.aibabel.baselibrary.mode.StatisticsManager.class);
+        }else{
+            XIPC.register(IDataManager.class);
+            XIPC.register(IServerManager.class);
+            XIPC.register(IStatistics.class);
+        }
+
+
+
+
 
     }
 
