@@ -18,6 +18,7 @@ import android.widget.TextView;
 
 import com.aibabel.aidlaar.StatisticsManager;
 import com.aibabel.baselibrary.base.BaseFragment;
+import com.aibabel.baselibrary.base.StatisticsBaseActivity;
 import com.aibabel.baselibrary.http.BaseBean;
 import com.aibabel.baselibrary.http.BaseCallback;
 import com.aibabel.baselibrary.http.OkGoUtil;
@@ -40,6 +41,7 @@ import com.aibabel.map.wheel.WheelView;
 import com.aibabel.map.wheel.adapter.ArrayWheelAdapter;
 import com.aibabel.map.wheel.listener.OnItemSelectedListener;
 
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -346,6 +348,7 @@ public class TransitFragment extends BaseFragment implements View.OnClickListene
 
     private void transitType(String json) {
         switch (routeBean.getLocationWhere()) {
+
             case 0://国外
                 tEnBean = FastJsonUtil.changeJsonToBean(json, TransitEnBean.class);
                 if (tEnBean.getData() != null) {
@@ -364,6 +367,16 @@ public class TransitFragment extends BaseFragment implements View.OnClickListene
                     lvTransit.setVisibility(View.GONE);
                     iconShow(101010);
                 }
+
+                /**####  start-hjs-addStatisticsEvent   ##**/
+                try {
+                    HashMap<String, Serializable> add_hp = new HashMap<>();
+                    add_hp.put("map_search_letter12", routeBean.getLocationWhere());
+                    ((StatisticsBaseActivity)getActivity()).addStatisticsEvent("path_plan_bus1", add_hp);
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
+                /**####  end-hjs-addStatisticsEvent  ##**/
                 break;
             case 1://国内
                 tZhBean = FastJsonUtil.changeJsonToBean(json, TransitZhBean.class);
@@ -383,6 +396,16 @@ public class TransitFragment extends BaseFragment implements View.OnClickListene
                     lvTransit.setVisibility(View.GONE);
                     iconShow(101010);
                 }
+
+                /**####  start-hjs-addStatisticsEvent   ##**/
+                try {
+                    HashMap<String, Serializable> add_hp = new HashMap<>();
+                    add_hp.put("map_search_letter12", routeBean.getLocationWhere());
+                    ((StatisticsBaseActivity)getActivity()).addStatisticsEvent("path_plan_bus1", add_hp);
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
+                /**####  end-hjs-addStatisticsEvent  ##**/
                 break;
         }
     }
@@ -399,6 +422,13 @@ public class TransitFragment extends BaseFragment implements View.OnClickListene
                     routeView.setVisibility(View.VISIBLE);
                     routeView.setAnimation(animation);
                 }
+                /**####  start-hjs-addStatisticsEvent   ##**/
+                try {
+                    ((StatisticsBaseActivity)getActivity()).addStatisticsEvent("path_plan_bus2", null);
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
+                /**####  end-hjs-addStatisticsEvent  ##**/
                 break;
         }
     }

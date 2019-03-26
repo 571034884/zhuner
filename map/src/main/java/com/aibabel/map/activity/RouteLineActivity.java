@@ -30,6 +30,7 @@ import com.aibabel.map.utils.BaiDuUtil;
 import com.aibabel.map.utils.CommonUtils;
 import com.baidu.location.BDLocation;
 
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -353,6 +354,17 @@ public class RouteLineActivity extends MapBaseActivity {
                 routeBean.setEndLoc(new LocationBean(address.getLocation().getLat(), address.getLocation().getLng()));
                 mTextEnd.setText(routeBean.getEndName());
             }
+
+            /**####  start-hjs-addStatisticsEvent   ##**/
+            try {
+                HashMap<String, Serializable> add_hp = new HashMap<>();
+                add_hp.put("map_search_letter11",routeBean.getStartName()+routeBean.getEndName() );
+                addStatisticsEvent("path_plan_car1", add_hp);
+            }catch (Exception e){
+                e.printStackTrace();
+            }
+            /**####  end-hjs-addStatisticsEvent  ##**/
+
             changeDataFragment();
         }
     }

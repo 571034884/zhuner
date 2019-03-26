@@ -380,6 +380,13 @@ public class TrafficDetailActivity extends BaseActivity{
     public void onClick(View view){
         switch (view.getId()){
             case R.id.tv_close:
+                /**####  start-hjs-addStatisticsEvent   ##**/
+                try {
+                    addStatisticsEvent("path_plan_car3", null);
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
+                /**####  end-hjs-addStatisticsEvent  ##**/
                 finish();
                 break;
             case R.id.rl_scheme_one:

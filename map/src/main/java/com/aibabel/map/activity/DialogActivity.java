@@ -16,6 +16,7 @@ import android.widget.TextView;
 
 import com.aibabel.aidlaar.StatisticsManager;
 import com.aibabel.baselibrary.base.BaseApplication;
+import com.aibabel.baselibrary.base.StatisticsBaseActivity;
 import com.aibabel.baselibrary.imageloader.ImageLoader;
 import com.aibabel.baselibrary.utils.ToastUtil;
 import com.aibabel.map.R;
@@ -31,6 +32,7 @@ import com.aibabel.map.views.CornerTransform;
 import com.bumptech.glide.request.RequestOptions;
 import com.lzy.okgo.OkGo;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -41,7 +43,7 @@ import butterknife.ButterKnife;
 
 import static com.umeng.commonsdk.stateless.UMSLEnvelopeBuild.mContext;
 
-public class DialogActivity extends Activity implements View.OnClickListener {
+public class DialogActivity extends StatisticsBaseActivity implements View.OnClickListener {
 
 
     @BindView(R.id.anl_label)
@@ -101,6 +103,7 @@ public class DialogActivity extends Activity implements View.OnClickListener {
         window.setGravity(Gravity.BOTTOM);
         ButterKnife.bind(this);
         init();
+
     }
 
 
@@ -268,6 +271,16 @@ public class DialogActivity extends Activity implements View.OnClickListener {
         map.put("type", bean.getMode());
         StatisticsManager.getInstance(this).addEventAidl(1216, map);
 
+        /**####  start-hjs-addStatisticsEvent   ##**/
+        try {
+            HashMap<String, Serializable> add_hp = new HashMap<>();
+            add_hp.put("map_search_letter3", ""+bean.getStartName()+bean.getEndName());
+            addStatisticsEvent("map_poi7", add_hp);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        /**####  end-hjs-addStatisticsEvent  ##**/
+
         intent.putExtra("routes", bean);
         startActivity(intent);
         this.finish();
@@ -378,6 +391,16 @@ public class DialogActivity extends Activity implements View.OnClickListener {
             bean.setLocationWhere(locationWhere);
             intent.putExtra("routes", bean);
             startActivity(intent);
+
+            /**####  start-hjs-addStatisticsEvent   ##**/
+            try {
+                HashMap<String, Serializable> add_hp = new HashMap<>();
+                add_hp.put("map_search_letter5", locationWhere + "");
+                addStatisticsEvent("map_poi9", add_hp);
+            }catch (Exception e){
+                e.printStackTrace();
+            }
+            /**####  end-hjs-addStatisticsEvent  ##**/
             this.finish();
         }
 
@@ -397,6 +420,17 @@ public class DialogActivity extends Activity implements View.OnClickListener {
             intent.putExtra("id", destinationId + "");
             intent.putExtra("from", "map");
             startActivity(intent);
+
+            /**####  start-hjs-addStatisticsEvent   ##**/
+            try {
+                HashMap<String, Serializable> add_hp = new HashMap<>();
+                add_hp.put("map_search_letter6", destinationId + "");
+                addStatisticsEvent("map_poi10", add_hp);
+            }catch (Exception e){
+                e.printStackTrace();
+            }
+            /**####  end-hjs-addStatisticsEvent  ##**/
+
             this.finish();
         }
 
@@ -414,6 +448,17 @@ public class DialogActivity extends Activity implements View.OnClickListener {
         Intent intent = getPackageManager().getLaunchIntentForPackage("com.aibabel.coupon");
         intent.putExtra("from", "map");
         startActivity(intent);
+
+        /**####  start-hjs-addStatisticsEvent   ##**/
+        try {
+            HashMap<String, Serializable> add_hp = new HashMap<>();
+            add_hp.put("map_search_letter4", "map");
+            addStatisticsEvent("map_poi8", add_hp);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        /**####  end-hjs-addStatisticsEvent  ##**/
+
         this.finish();
 //        }
 

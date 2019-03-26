@@ -66,6 +66,7 @@ import com.lzy.okgo.OkGo;
 
 import org.litepal.LitePal;
 
+import java.io.Serializable;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -226,6 +227,15 @@ public class SearchAddressActivity extends MapBaseActivity implements SensorEven
                 map.put("latlon", addressResult.getLocation().getLat() + "," + addressResult.getLocation().getLng());
                 map.put("addr", addressResult.getName());
                 StatisticsManager.getInstance(mContext).addEventAidl(1207, map);
+                /**####  start-hjs-addStatisticsEvent   ##**/
+                try {
+                    HashMap<String, Serializable> add_hp = new HashMap<>();
+                    add_hp.put("map_search_letter1", addressResult.getName());
+                    addStatisticsEvent("map_search5", add_hp);
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
+                /**####  end-hjs-addStatisticsEvent  ##**/
 
                 tvName.setText(addressResult.getName());
                 flagSearch = true;
@@ -308,10 +318,11 @@ public class SearchAddressActivity extends MapBaseActivity implements SensorEven
         OkGo.cancelAll(OkGo.getInstance().getOkHttpClient());
         Map param = new HashMap();
         param.put("query", loca.trim());
-        param.put("region", mLocation.getAddress().city);
         param.put("city_limit", "true");
+        if(mLocation!=null){
+        param.put("region", mLocation.getAddress().city);
         param.put("coord_type", mLocation.getCoorType());
-        param.put("locationWhere", mLocation.getLocationWhere() + "");
+        param.put("locationWhere", mLocation.getLocationWhere() + "");}
         param.put("language", "zh-CN");
         OkGoUtil.get(false, ApiConstant.API_SEARCH_CITY, param, AddressBean.class, new BaseCallback<AddressBean>() {
 
@@ -440,12 +451,19 @@ public class SearchAddressActivity extends MapBaseActivity implements SensorEven
                 Map map = new HashMap();
                 StatisticsManager.getInstance(mContext).addEventAidl( 1208, map);
 
+                /**####  start-hjs-addStatisticsEvent   ##**/
+                try {
+                    addStatisticsEvent("map_search1", null);
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
+                /**####  end-hjs-addStatisticsEvent  ##**/
+
                 this.finish();
                 overridePendingTransition(R.anim.fade_out, R.anim.fade_in);
                 KeyBords.closeKeybord(etSearch, mContext);
                 break;
             case R.id.iv_search:
-
                 String loca = etSearch.getText().toString();
                 if (TextUtils.isEmpty(loca)) {
                     ToastUtil.showShort(mContext, "请输入关键字");
@@ -453,6 +471,18 @@ public class SearchAddressActivity extends MapBaseActivity implements SensorEven
                 }
                 KeyBords.closeKeybord(etSearch, mContext);
                 searchOkGo(loca);
+
+
+                /**####  start-hjs-addStatisticsEvent   ##**/
+                try {
+                    HashMap<String, Serializable> add_hp = new HashMap<>();
+                    add_hp.put("map_search3_key", loca);
+                    addStatisticsEvent("map_search3", add_hp);
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
+                /**####  end-hjs-addStatisticsEvent  ##**/
+
                 break;
             case R.id.et_search:
                 if (!CommonUtils.isNetworkAvailable(SearchAddressActivity.this)){
@@ -489,6 +519,17 @@ public class SearchAddressActivity extends MapBaseActivity implements SensorEven
                 routeBean.setLocationWhere(mLocation.getLocationWhere());
                 intent.putExtra("routes", routeBean);
                 startActivity(intent);
+
+                /**####  start-hjs-addStatisticsEvent   ##**/
+                try {
+                    HashMap<String, Serializable> add_hp = new HashMap<>();
+                    add_hp.put("map_search_letter2", addressResult.getName());
+                    addStatisticsEvent("map_search6", add_hp);
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
+                /**####  end-hjs-addStatisticsEvent  ##**/
+
 //                finish();
                 break;
             case R.id.tv_maker:
@@ -510,6 +551,14 @@ public class SearchAddressActivity extends MapBaseActivity implements SensorEven
                 }
                 break;
             case R.id.iv_clear_et:
+
+                /**####  start-hjs-addStatisticsEvent   ##**/
+                try {
+                    addStatisticsEvent("map_search4", null);
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
+                /**####  end-hjs-addStatisticsEvent  ##**/
 
                 etSearch.setText("");
                 //数据库操作

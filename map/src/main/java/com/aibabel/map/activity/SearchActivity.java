@@ -31,6 +31,7 @@ import com.lzy.okgo.OkGo;
 
 import org.litepal.LitePal;
 
+import java.io.Serializable;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -133,6 +134,21 @@ public class SearchActivity extends BaseActivity{
                 SearchActivity.this.setResult(ActivityConstant.RESULT_OK, intent);
                 SearchActivity.this.finish();
                 overridePendingTransition(R.anim.fade_out,R.anim.fade_in);
+
+                /**####  start-hjs-addStatisticsEvent   ##**/
+                try {
+                    HashMap<String, Serializable> add_hp = new HashMap<>();
+                    if((!TextUtils.isEmpty(type))&&type.equals("0")) {
+                        add_hp.put("map_search_letter8", resultList.get(0).getAddr());
+                        addStatisticsEvent("path_plan4", add_hp);
+                    }else {
+                        add_hp.put("map_search_letter10", resultList.get(0).getAddr());
+                        addStatisticsEvent("path_plan8", add_hp);
+                    }
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
+                /**####  end-hjs-addStatisticsEvent  ##**/
             }
         });
 
@@ -256,6 +272,21 @@ public class SearchActivity extends BaseActivity{
         addressAdapter = new SearchAddressAdapter(mContext,resultList);
         lvItemDes.setAdapter(addressAdapter);
         addressAdapter.notifyDataSetChanged();
+
+        /**####  start-hjs-addStatisticsEvent   ##**/
+        try {
+            HashMap<String, Serializable> add_hp = new HashMap<>();
+            if((!TextUtils.isEmpty(type))&&type.equals("0")) {
+                add_hp.put("map_search_letter7", resultList.get(0).getAddr());
+                addStatisticsEvent("path_plan3", add_hp);
+            }else{
+                add_hp.put("map_search_letter9", resultList.get(0).getAddr());
+                addStatisticsEvent("path_plan7", add_hp);
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        /**####  end-hjs-addStatisticsEvent  ##**/
     }
     @Override
     protected void onDestroy() {

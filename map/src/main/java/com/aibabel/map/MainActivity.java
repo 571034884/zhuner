@@ -78,6 +78,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -134,6 +135,16 @@ public class MainActivity extends MapBaseActivity implements SensorEventListener
 
     @Override
     public int getLayoutMap(Bundle bundle) {
+
+        // TODO: 2019/3/25
+        /**####  start-hjs-addStatisticsEvent ##**/
+        try {
+            addStatisticsEvent("map_main", null);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        /**####  end-hjs-addStatisticsEvent ##**/
+
         return R.layout.activity_main;
     }
 
@@ -170,6 +181,17 @@ public class MainActivity extends MapBaseActivity implements SensorEventListener
                     mCate.setChecked(false);
                     return;
                 }
+
+                /**####  start-hjs-addStatisticsEvent   ##**/
+                try {
+                    HashMap<String, Serializable> add_hp = new HashMap<>();
+                    add_hp.put("map_search_letter", "美食");
+                    addStatisticsEvent("map_search7", add_hp);
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
+                /**####  end-hjs-addStatisticsEvent  ##**/
+
                 Map map = new HashMap();
                 map.put("type","cate");
                 if (isChecked){
@@ -200,6 +222,15 @@ public class MainActivity extends MapBaseActivity implements SensorEventListener
                     mMetro.setChecked(false);
                     return;
                 }
+
+                /**####  start-hjs-addStatisticsEvent   ##**/
+                try {
+                    addStatisticsEvent("map_search8", null);
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
+                /**####  end-hjs-addStatisticsEvent  ##**/
+
                 Map map = new HashMap();
                 map.put("type","metro");
                 if (isChecked){
@@ -230,6 +261,14 @@ public class MainActivity extends MapBaseActivity implements SensorEventListener
                     mScenic.setChecked(false);
                     return;
                 }
+
+                /**####  start-hjs-addStatisticsEvent   ##**/
+                try {
+                    addStatisticsEvent("map_searchA", null);
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
+                /**####  end-hjs-addStatisticsEvent  ##**/
                 Map map = new HashMap();
                 map.put("type","scenic");
                 if (isChecked){
@@ -260,6 +299,13 @@ public class MainActivity extends MapBaseActivity implements SensorEventListener
                     mShop.setChecked(false);
                     return;
                 }
+                /**####  start-hjs-addStatisticsEvent   ##**/
+                try {
+                    addStatisticsEvent("map_search9", null);
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
+                /**####  end-hjs-addStatisticsEvent  ##**/
                 Map map = new HashMap();
                 map.put("type","shop");
                 if (isChecked){
@@ -293,6 +339,7 @@ public class MainActivity extends MapBaseActivity implements SensorEventListener
         setLocData();
         if (isFirstLoc) {
             mScenic.setChecked(true);
+
             isFirstLoc = false;
             LatLng ll = new LatLng(location.getLatitude(), location.getLongitude());
 //            LatLng ll = new LatLng(35.714764, 139.796665);
@@ -300,6 +347,14 @@ public class MainActivity extends MapBaseActivity implements SensorEventListener
             builder.target(ll).zoom(14.5f);
             mBaiduMap.animateMapStatus(MapStatusUpdateFactory.newMapStatus(builder.build()));
         }
+        /**####  start-hjs-addStatisticsEvent   ##**/
+        try {
+            addStatisticsEvent("map_display", null);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        /**####  end-hjs-addStatisticsEvent  ##**/
+
     }
 
     /**
@@ -438,6 +493,13 @@ public class MainActivity extends MapBaseActivity implements SensorEventListener
                     return;
                 }
                 StatisticsManager.getInstance(mContext).addEventAidl( 1205, map);
+                /**####  start-hjs-addStatisticsEvent   ##**/
+                try {
+                    addStatisticsEvent("map_poi3", null);
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
+                /**####  end-hjs-addStatisticsEvent  ##**/
 
                 updateLocation();
                 break;
@@ -450,6 +512,15 @@ public class MainActivity extends MapBaseActivity implements SensorEventListener
                     ToastUtil.showShort(mContext,"定位失败");
                     return;
                 }
+
+                /**####  start-hjs-addStatisticsEvent   ##**/
+                try {
+                    addStatisticsEvent("map_search", null);
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
+                /**####  end-hjs-addStatisticsEvent  ##**/
+
 
                 StatisticsManager.getInstance(mContext).addEventAidl( 1206, map);
                 Intent intent = new Intent(mContext, SearchAddressActivity.class);
@@ -482,6 +553,14 @@ public class MainActivity extends MapBaseActivity implements SensorEventListener
                 if (mLocation != null) {
                     StatisticsManager.getInstance(mContext).addEventAidl(1201, new HashMap());
 
+                    /**####  start-hjs-addStatisticsEvent   ##**/
+                    try {
+                        addStatisticsEvent("map_poi4", null);
+                    }catch (Exception e){
+                        e.printStackTrace();
+                    }
+                    /**####  end-hjs-addStatisticsEvent  ##**/
+
                     Intent intents = new Intent(mContext, ActiveActivity.class);
                     intents.putExtra("locationWhere",mLocation.getLocationWhere()+"");
                     startActivity(intents);
@@ -506,6 +585,15 @@ public class MainActivity extends MapBaseActivity implements SensorEventListener
         MapStatus.Builder builder = new MapStatus.Builder();
         builder.target(ll).zoom(14.5f);
         mBaiduMap.animateMapStatus(MapStatusUpdateFactory.newMapStatus(builder.build()));
+
+
+        /**####  start-hjs-addStatisticsEvent   ##**/
+        try {
+            addStatisticsEvent("map_display1", null);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        /**####  end-hjs-addStatisticsEvent  ##**/
 
         //以下是定位类型
 //        switch (mCurrentMode) {
@@ -714,7 +802,13 @@ public class MainActivity extends MapBaseActivity implements SensorEventListener
         changeZoom(lat, lng);
 
         vpInfo.setCurrentItem(id);
-
+        /**####  start-hjs-addStatisticsEvent   ##**/
+        try {
+            addStatisticsEvent("map_poi1", null);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        /**####  end-hjs-addStatisticsEvent  ##**/
 
         return false;
     }
@@ -811,6 +905,13 @@ public class MainActivity extends MapBaseActivity implements SensorEventListener
             intent.putExtra("city", mLocation.getAddress().city);
             startActivity(intent);
         }
+        /**####  start-hjs-addStatisticsEvent   ##**/
+        try {
+            addStatisticsEvent("map_poi2", null);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        /**####  end-hjs-addStatisticsEvent  ##**/
     }
 
     @Override

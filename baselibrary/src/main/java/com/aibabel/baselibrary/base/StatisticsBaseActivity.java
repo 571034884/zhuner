@@ -149,11 +149,15 @@ public class StatisticsBaseActivity extends AppCompatActivity {
     @Override
     protected void onStop() {
         super.onStop();
-        if (System.currentTimeMillis()-pageObject.optLong("it")>500){
-            addPathToStatisticsManager();
-            if (pageObject.has("h")){
-                pageObject.remove("h");
+        try {
+            if (System.currentTimeMillis() - pageObject.optLong("it") > 500) {
+                addPathToStatisticsManager();
+                if (pageObject.has("h")) {
+                    pageObject.remove("h");
+                }
             }
+        }catch (Exception e){
+
         }
 
 

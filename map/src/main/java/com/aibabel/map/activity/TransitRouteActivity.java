@@ -9,6 +9,7 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
 import com.aibabel.baselibrary.base.BaseActivity;
+import com.aibabel.baselibrary.base.StatisticsBaseActivity;
 import com.aibabel.baselibrary.utils.FastJsonUtil;
 import com.aibabel.map.R;
 import com.aibabel.map.adapter.TransitDetailsEnAdapter;
@@ -82,6 +83,7 @@ public class TransitRouteActivity extends BaseActivity{
                 case 200:
                     int pos = result.getInt("index");
                     showTranistLine(pos);
+
                     break;
             }
         }
@@ -151,6 +153,14 @@ public class TransitRouteActivity extends BaseActivity{
     }
 
     private void showTranistLine(int position) {
+        /**####  start-hjs-addStatisticsEvent   ##**/
+        try {
+           addStatisticsEvent("path_plan_bus5", null);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        /**####  end-hjs-addStatisticsEvent  ##**/
+
         mBaiduMap.clear();
         switch (locationWhere){
             case 0:

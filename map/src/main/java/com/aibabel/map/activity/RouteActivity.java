@@ -23,6 +23,7 @@ import android.widget.TextView;
 import android.widget.ZoomControls;
 
 import com.aibabel.baselibrary.base.BaseActivity;
+import com.aibabel.baselibrary.base.StatisticsBaseActivity;
 import com.aibabel.baselibrary.http.BaseBean;
 import com.aibabel.baselibrary.http.BaseCallback;
 import com.aibabel.baselibrary.http.OkGoUtil;
@@ -180,6 +181,15 @@ public class RouteActivity extends BaseActivity implements SensorEventListener {
                 intent.putExtra("startName", tvStart.getText().toString());
                 intent.putExtra("endName", tvEnd.getText().toString());
                 startActivity(intent);
+
+
+                /**####  start-hjs-addStatisticsEvent   ##**/
+                try {
+                    addStatisticsEvent("path_plan_bus4", null);
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
+                /**####  end-hjs-addStatisticsEvent  ##**/
             }
         });
     }
@@ -287,6 +297,13 @@ public class RouteActivity extends BaseActivity implements SensorEventListener {
                 break;
             case R.id.iv_change:
                 startEndChange();
+                /**####  start-hjs-addStatisticsEvent   ##**/
+                try {
+                    addStatisticsEvent("path_plan9", null);
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
+                /**####  end-hjs-addStatisticsEvent  ##**/
                 break;
             case R.id.tv_start:
                 skipSearchAty(tvStart.getText().toString(), "0");
@@ -296,12 +313,34 @@ public class RouteActivity extends BaseActivity implements SensorEventListener {
                 break;
             case R.id.tv_device:
                 defaultSetting(BaiDuConstant.DRIVING_MODE);
+
+                /**####  start-hjs-addStatisticsEvent   ##**/
+                try {
+                    addStatisticsEvent("path_plan10", null);
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
+                /**####  end-hjs-addStatisticsEvent  ##**/
                 break;
             case R.id.tv_transit:
                 defaultSetting(BaiDuConstant.TRANSIT_MODE);
+                /**####  start-hjs-addStatisticsEvent   ##**/
+                try {
+                    addStatisticsEvent("path_plan11", null);
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
+                /**####  end-hjs-addStatisticsEvent  ##**/
                 break;
             case R.id.tv_walk:
                 defaultSetting(BaiDuConstant.WALKING_MODE);
+                /**####  start-hjs-addStatisticsEvent   ##**/
+                try {
+                    addStatisticsEvent("path_plan12", null);
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
+                /**####  end-hjs-addStatisticsEvent  ##**/
                 break;
             case R.id.rl_scheme_one:
                 defaultView(0);
@@ -333,6 +372,13 @@ public class RouteActivity extends BaseActivity implements SensorEventListener {
                 intent.putExtra("startName", tvStart.getText().toString());//起点
                 intent.putExtra("endName", tvEnd.getText().toString());//终点
                 startActivity(intent);
+                /**####  start-hjs-addStatisticsEvent   ##**/
+                try {
+                    addStatisticsEvent("path_plan_car2", null);
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
+                /**####  end-hjs-addStatisticsEvent  ##**/
                 break;
             case R.id.rl_timer:
                 if (!popWnd.isShowing()){
@@ -467,6 +513,14 @@ public class RouteActivity extends BaseActivity implements SensorEventListener {
                 startMonth = monthListValues.get(indexMonth);
                 startTimer = hoursList.get(indexHours)+":"+minList.get(indexMin);
                 judgeDataMode(ROUTE_MODE);
+                /**####  start-hjs-addStatisticsEvent   ##**/
+                try {
+                    addStatisticsEvent("path_plan_bus3", null);
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
+                /**####  end-hjs-addStatisticsEvent  ##**/
+
             }
         });
     }
@@ -485,6 +539,18 @@ public class RouteActivity extends BaseActivity implements SensorEventListener {
         startActivityForResult(intent, ActivityConstant.REQUSET_OK);
         overridePendingTransition(R.anim.fade_out, R.anim.fade_in);
 
+
+        /**####  start-hjs-addStatisticsEvent   ##**/
+        try {
+            if((!TextUtils.isEmpty(searchType))&&searchType.equals("0")){
+            addStatisticsEvent("path_plan2", null);
+            }else{
+                addStatisticsEvent("path_plan5", null);
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        /**####  end-hjs-addStatisticsEvent  ##**/
     }
 
     /**
