@@ -6,11 +6,14 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
+import android.widget.Toast;
 
 import com.aibabel.baselibrary.impl.IStatistics;
 import com.aibabel.baselibrary.mode.StatisticsManager;
 import com.aibabel.baselibrary.utils.DeviceUtils;
 import com.xuexiang.xipc.XIPC;
+import com.xuexiang.xipc.core.channel.IPCListener;
+import com.xuexiang.xipc.core.channel.IPCService;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -33,16 +36,15 @@ public class StatisticsBaseActivity extends AppCompatActivity {
     protected boolean isOpenFromHardwareButton=true; //是否通过物理按键唤起
     private JSONObject pageParameters;
     protected  static String appName, appVersion;
+    public  IStatistics statisticsManager;
+
 
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (!getPackageName().equals("com.aibabel.menu")&&DeviceUtils.getSystem()== DeviceUtils.System.PRO_LEASE){
-            XIPC.connectApp(this,"com.aibabel.menu");
 
-        }
-
+         connectXIPC();
         notifyId=getIntent().getStringExtra(NOTIFY_ID);
 
         isOpenFromHardwareButton=getIntent().getBooleanExtra(HARDWARE_BUTTON,true);
@@ -76,7 +78,25 @@ public class StatisticsBaseActivity extends AppCompatActivity {
 
 
     }
+    private void connectXIPC(){
+        if (statisticsManager!=null)
+            return;
+        if (!getPackageName().equals("com.aibabel.menu")&&DeviceUtils.getSystem()== DeviceUtils.System.PRO_LEASE){
+            XIPC.setIPCListener(new IPCListener() {
+                @Override
+                public void onIPCConnected(Class<? extends IPCService> service) {
+                    statisticsManager=XIPC.getInstance(IStatistics.class);
 
+//                    Toast.makeText(getApplicationContext(),"IPC服务已绑定！",Toast.LENGTH_LONG).show();
+                }
+            });
+            XIPC.connectApp(this,"com.aibabel.menu");
+
+        }
+        else {
+            statisticsManager= StatisticsManager.getInstance();
+        }
+    }
     @Override
     protected void onResume() {
         super.onResume();
@@ -119,15 +139,11 @@ public class StatisticsBaseActivity extends AppCompatActivity {
      * 跨进程添加统计数据
      */
     private void addPathToStatisticsManager(){
-        if (DeviceUtils.getSystem()== DeviceUtils.System.PRO_LEASE){
+        if (DeviceUtils.getSystem()== DeviceUtils.System.PRO_LEASE&&statisticsManager!=null){
 
             try {
-                IStatistics statisticsManager;
-                if (!getPackageName().equals("com.aibabel.menu")){
-                     statisticsManager=XIPC.getInstance(IStatistics.class);
-                }else{
-                    statisticsManager= StatisticsManager.getInstance();
-                }
+
+
 
                 pageObject.put("ot", System.currentTimeMillis());
                 pageObject.put("p",pageParameters);
@@ -138,7 +154,7 @@ public class StatisticsBaseActivity extends AppCompatActivity {
                 statisticsManager.addPath(appName,appVersion,pageObject);
 
 
-            } catch (JSONException e) {
+            } catch (Exception e) {
                 e.printStackTrace();
             }
         }
@@ -177,6 +193,7 @@ public class StatisticsBaseActivity extends AppCompatActivity {
                         parametersJson.put(entry.getKey(),entry.getValue());
                     }
                     eventObject.put("p",parametersJson.toString());
+
                 }
                 if (eventsArray==null){
                     eventsArray=new JSONArray();
