@@ -63,6 +63,26 @@ public class HostUtil {
         });
     }
 
+    /**
+     * 获取当前地区的host地址
+     *
+     * @return
+     */
+    public static String getServerHost(String typeName) {
+        String ip_host = "";
+        switch (typeName) {
+            case "function"://识别服务器，默认是国外地址
+                ip_host =SPHelper.getString(ServerKeyUtils.serverKeySpeechFunction, "abroad.api.function.aibabel.cn:5005");
+                break;
+            case "pa"://意图识别服务器，默认是国外地址
+                ip_host = SPHelper.getString(ServerKeyUtils.serverKeySpeechPa, "http://abroad.api.pa.aibabel.cn:6021");
+                break;
+        }
+        Log.e("http", ip_host);
+        return ip_host;
+
+    }
+
 
     /**
      * 获取坐标

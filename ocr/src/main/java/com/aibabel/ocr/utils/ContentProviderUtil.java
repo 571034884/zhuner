@@ -6,8 +6,15 @@ import android.net.Uri;
 import android.text.TextUtils;
 import android.util.Log;
 
+import com.aibabel.baselibrary.impl.IServerManager;
+import com.aibabel.baselibrary.sphelper.SPHelper;
+import com.aibabel.baselibrary.utils.ServerKeyUtils;
+import com.aibabel.baselibrary.utils.XIPCUtils;
 import com.aibabel.ocr.app.BaseApplication;
 import com.aibabel.ocr.app.UrlConfig;
+import com.xuexiang.xipc.XIPC;
+import com.xuexiang.xipc.core.channel.IPCListener;
+import com.xuexiang.xipc.core.channel.IPCService;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -64,6 +71,42 @@ public class ContentProviderUtil {
 
     }
 
+
+    /**
+     * 获取当前地区的host地址
+     *
+     * @return
+     */
+    public static String getServerHost() {
+        String ip_host = SPHelper.getString(ServerKeyUtils.serverKeyOcrCamera, UrlConfig.DEFAULT_HOST);
+        Log.e("http：",ip_host);
+        return ip_host;
+
+    }
+
+
+    /**
+     * 请求切换服务器
+     */
+    public static void sendErrorServer() {
+        XIPC.connectApp(XIPC.getContext(), XIPCUtils.XIPC_MENU_NEW);
+        XIPC.setIPCListener(new IPCListener() {
+            @Override
+            public void onIPCConnected(Class<? extends IPCService> service) {
+                new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        IServerManager dsm = XIPC.getInstance(IServerManager.class);
+                        dsm.setPingServerError(ServerKeyUtils.serverKeyOcrCameraError);
+                        Log.e("http", "请求换服务器！");
+                        XIPC.disconnect(XIPC.getContext());
+                    }
+                }).start();
+
+            }
+        });
+    }
+
     /**
      * 获取当前定位城市（省）
      * @param context
@@ -84,7 +127,7 @@ public class ContentProviderUtil {
             if(null!=cursor)
                 cursor.close();
         }
-       return cityName;
+        return cityName;
     }
 
 
