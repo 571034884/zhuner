@@ -26,6 +26,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.aibabel.baselibrary.impl.IDataManager;
+import com.aibabel.baselibrary.utils.DeviceUtils;
 import com.aibabel.baselibrary.utils.FilesUtil;
 import com.aibabel.baselibrary.utils.ToastUtil;
 import com.aibabel.baselibrary.utils.XIPCUtils;
@@ -174,6 +175,7 @@ public class MainActivity extends BaseActivity implements BaseCallback {
                 }
             }
         });
+        if (DeviceUtils.)
     }
 
     //---------领科卡启动过程-------------------------------------------------------------------------------
