@@ -82,6 +82,14 @@ public class DetailsActivity extends BaseActivity implements BaseCallback<BaseBe
         ivBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+                /**####  start-hjs-addStatisticsEvent   ##**/
+                try {
+                    addStatisticsEvent("coupon_Details3", null);
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
+                /**####  end-hjs-addStatisticsEvent  ##**/
                 finish();
             }
         });
@@ -204,6 +212,15 @@ public class DetailsActivity extends BaseActivity implements BaseCallback<BaseBe
                 ivYuantu.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
+
+                        /**####  start-hjs-addStatisticsEvent   ##**/
+                        try {
+                            addStatisticsEvent("coupon_Details4", null);
+                        }catch (Exception e){
+                            e.printStackTrace();
+                        }
+                        /**####  end-hjs-addStatisticsEvent  ##**/
+
                         Intent intent = new Intent(DetailsActivity.this,PhotoViewActivity.class);
                         intent.putExtra("photo_img",shopBeanData.getBasicimage());
                         startActivity(intent);

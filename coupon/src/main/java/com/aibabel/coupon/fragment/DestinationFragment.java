@@ -22,6 +22,7 @@ import android.widget.TextView;
 
 import com.aibabel.aidlaar.StatisticsManager;
 import com.aibabel.baselibrary.base.BaseFragment;
+import com.aibabel.baselibrary.base.StatisticsBaseActivity;
 import com.aibabel.baselibrary.http.BaseBean;
 import com.aibabel.baselibrary.http.BaseCallback;
 import com.aibabel.baselibrary.http.OkGoUtil;
@@ -38,6 +39,7 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.lzy.okgo.model.Response;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -190,6 +192,16 @@ public class DestinationFragment extends BaseFragment implements BaseCallback<Ba
                 Map map = new HashMap();
                 map.put("p1",countryBeanData.get(postion).getCountryname());
                 StatisticsManager.getInstance(mContext).addEventAidl( 2600, map);
+
+                /**####  start-hjs-addStatisticsEvent   ##**/
+                try {
+                    HashMap<String, Serializable> add_hp = new HashMap<>();
+                    add_hp.put("coupon_name_def", countryBeanData.get(postion).getCountryname());
+                    ((StatisticsBaseActivity)getActivity()).addStatisticsEvent("coupon_main1", add_hp);
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
+                /**####  end-hjs-addStatisticsEvent  ##**/
 
 
                 String country_name = countryBeanData.get(postion).getCountryname();

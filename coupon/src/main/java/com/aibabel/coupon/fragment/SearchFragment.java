@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 
 import com.aibabel.baselibrary.base.BaseFragment;
+import com.aibabel.baselibrary.base.StatisticsBaseActivity;
 import com.aibabel.baselibrary.http.BaseBean;
 import com.aibabel.baselibrary.http.BaseCallback;
 import com.aibabel.baselibrary.http.OkGoUtil;
@@ -27,6 +28,7 @@ import com.bumptech.glide.Glide;
 import com.zhy.view.flowlayout.TagAdapter;
 import com.zhy.view.flowlayout.TagFlowLayout;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -75,6 +77,16 @@ public class SearchFragment extends BaseFragment implements BaseCallback<BaseBea
             public boolean onTagClick(View view, int position, com.zhy.view.flowlayout.FlowLayout parent) {
                 ((SearchActivity) mContext).setSvSearchText(historyList.get(position));
                 ((SearchActivity) mContext).turnToSearchResult(historyList.get(position), 1);
+
+                /**####  start-hjs-addStatisticsEvent   ##**/
+                try {
+                    HashMap<String, Serializable> add_hp = new HashMap<>();
+                    add_hp.put("coupon_search1_def",historyList.get(position) );
+                    ((StatisticsBaseActivity)getActivity()).addStatisticsEvent("coupon_search1", add_hp);
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
+                /**####  end-hjs-addStatisticsEvent  ##**/
                 return true;
             }
         });
@@ -140,6 +152,15 @@ public class SearchFragment extends BaseFragment implements BaseCallback<BaseBea
                     public boolean onTagClick(View view, int position, com.zhy.view.flowlayout.FlowLayout parent) {
                         ((SearchActivity) mContext).setSvSearchText(searchRemengBeanList.get(position));
                         ((SearchActivity) mContext).turnToSearchResult(searchRemengBeanList.get(position), 1);
+                        /**####  start-hjs-addStatisticsEvent   ##**/
+                        try {
+                            HashMap<String, Serializable> add_hp = new HashMap<>();
+                            add_hp.put("coupon_search2_def",historyList.get(position) );
+                            ((StatisticsBaseActivity)getActivity()).addStatisticsEvent("coupon_search2", add_hp);
+                        }catch (Exception e){
+                            e.printStackTrace();
+                        }
+                        /**####  end-hjs-addStatisticsEvent  ##**/
                         return true;
                     }
                 });

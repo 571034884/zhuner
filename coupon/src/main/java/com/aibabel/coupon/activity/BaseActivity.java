@@ -12,12 +12,12 @@ import com.aibabel.coupon.app.BaseApplication;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
 
-public abstract class BaseActivity extends AppCompatActivity {
-
+//public abstract class BaseActivity extends AppCompatActivity {
+public abstract class BaseActivity extends com.aibabel.baselibrary.base.BaseActivity {
     private Unbinder mUnbinder;
 
     @Override
-    protected void onCreate(@Nullable Bundle savedInstanceState) {
+    public void onCreate(@Nullable Bundle savedInstanceState) {
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);// 设置全屏
         setNavigationBarVisibility(false);
         super.onCreate(savedInstanceState);

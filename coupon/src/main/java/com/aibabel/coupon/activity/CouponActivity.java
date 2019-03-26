@@ -122,6 +122,14 @@ public class CouponActivity extends BaseActivity {
                 tvMudidi.setTextColor(Color.parseColor("#000000"));
                 tvCoupon.setTextColor(Color.parseColor("#959595"));
 //                tvCoupon.setCompoundDrawables(getResources().getDrawable(R.mipmap.my_coupon_no),null,null,null);
+
+                /**####  start-hjs-addStatisticsEvent   ##**/
+                try {
+                    addStatisticsEvent("coupon_Details7", null);
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
+                /**####  end-hjs-addStatisticsEvent  ##**/
                 break;
             case 1://购物车
                 fragmentTransaction.replace(R.id.fragment, couponFragment);
@@ -132,7 +140,13 @@ public class CouponActivity extends BaseActivity {
                 tvCoupon.setTextColor(Color.parseColor("#000000"));
                 tvMudidi.setTextColor(Color.parseColor("#959595"));
 //                tvCoupon.setCompoundDrawables(getResources().getDrawable(R.mipmap.my_coupon_yes),null,null,null);
-
+                /**####  start-hjs-addStatisticsEvent   ##**/
+                try {
+                    addStatisticsEvent("coupon_Details8", null);
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
+                /**####  end-hjs-addStatisticsEvent  ##**/
                 break;
         }
 
@@ -145,10 +159,24 @@ public class CouponActivity extends BaseActivity {
         switch (view.getId()) {
             case R.id.tv_mudidi:
                 showFragment(0);
+                /**####  start-hjs-addStatisticsEvent   ##**/
+                try {
+                    addStatisticsEvent("coupon_main2", null);
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
+                /**####  end-hjs-addStatisticsEvent  ##**/
                 break;
             case R.id.tv_coupon:
                 Map map = new HashMap();
                 StatisticsManager.getInstance(mContext).addEventAidl( 2601, map);
+                /**####  start-hjs-addStatisticsEvent   ##**/
+                try {
+                    addStatisticsEvent("coupon_main3", null);
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
+                /**####  end-hjs-addStatisticsEvent  ##**/
                 showFragment(1);
                 break;
         }

@@ -52,6 +52,7 @@ import com.bumptech.glide.request.target.SimpleTarget;
 import com.bumptech.glide.request.transition.Transition;
 import com.zhouyou.recyclerview.XRecyclerView;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -128,6 +129,15 @@ public class MainActivity extends BaseActivity implements AppBarLayout.OnOffsetC
         Constans.COUNTRY = ContentProviderUtil.getCountry(this);
 
 
+        /**####  start-hjs-addStatisticsEvent   ##**/
+        try {
+            HashMap<String, Serializable> add_hp = new HashMap<>();
+            add_hp.put("fyt_play_main1_def",  Constans.CITY);
+            addStatisticsEvent("fyt_play_main1", add_hp);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        /**####  end-hjs-addStatisticsEvent  ##**/
 
         toolbarOpen = findViewById(R.id.include_toolbar_open);
         toolbarClose = findViewById(R.id.include_toolbar_close);
@@ -281,6 +291,19 @@ public class MainActivity extends BaseActivity implements AppBarLayout.OnOffsetC
                 Map map = new HashMap();
                 map.put("p1", playItemBeanList.get(postion).getTitle());
                 StatisticsManager.getInstance(mContext).addEventAidl( 1501, map);
+                /**####  start-hjs-addStatisticsEvent   ##**/
+                HashMap<String, Serializable> add_hp = new HashMap<>();
+                if (statepos == 0) {
+                    add_hp.put("fyt_play_main2_def",playItemBeanList.get(postion).getTitle() );
+                    addStatisticsEvent("fyt_play_main2", add_hp);
+                } else if (statepos == 1) {
+                    add_hp.put("fyt_play_main4_def",playItemBeanList.get(postion).getTitle() );
+                    addStatisticsEvent("fyt_play_main4", add_hp);
+                } else if (statepos == 2) {
+                    add_hp.put("fyt_play_main6_def", playItemBeanList.get(postion).getTitle());
+                    addStatisticsEvent("fyt_play_main6", add_hp);
+                }
+                /**####  end-hjs-addStatisticsEvent  ##**/
 
                 Intent intent = new Intent(MainActivity.this, WebActivity.class);
                 intent.putExtra("city", tvCityName.getText().toString());
@@ -357,6 +380,7 @@ public class MainActivity extends BaseActivity implements AppBarLayout.OnOffsetC
                 View view3 = viewHolder.getView(R.id.view3);
 
                 rvItem.setNestedScrollingEnabled(false);
+                statepos = position;
 
                 if (position == 0) {
                     Glide.with(MainActivity.this).load(R.mipmap.icon_biwan).into(ivIcon);
@@ -376,6 +400,8 @@ public class MainActivity extends BaseActivity implements AppBarLayout.OnOffsetC
         };
         rvPlay.setAdapter(adapter);
     }
+
+  private  static int statepos = 0;
 
 
     @Override

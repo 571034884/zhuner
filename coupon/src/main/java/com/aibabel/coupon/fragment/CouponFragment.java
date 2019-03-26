@@ -21,6 +21,7 @@ import android.widget.TextView;
 
 import com.aibabel.aidlaar.StatisticsManager;
 import com.aibabel.baselibrary.base.BaseFragment;
+import com.aibabel.baselibrary.base.StatisticsBaseActivity;
 import com.aibabel.baselibrary.http.BaseBean;
 import com.aibabel.baselibrary.http.BaseCallback;
 import com.aibabel.baselibrary.http.OkGoUtil;
@@ -34,6 +35,7 @@ import com.aibabel.coupon.bean.Constans;
 import com.aibabel.coupon.bean.CouponQueryBean;
 import com.bumptech.glide.Glide;
 
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -104,6 +106,17 @@ public class CouponFragment extends BaseFragment implements BaseCallback<BaseBea
                 Map map = new HashMap();
                 map.put("p1",couponId);
                 StatisticsManager.getInstance(mContext).addEventAidl( 2620, map);
+
+                /**####  start-hjs-addStatisticsEvent   ##**/
+                try {
+                    HashMap<String, Serializable> add_hp = new HashMap<>();
+                    add_hp.put("coupon_Details6_def", couponId);
+                    ((StatisticsBaseActivity)getActivity()).addStatisticsEvent("coupon_Details6", add_hp);
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
+                /**####  end-hjs-addStatisticsEvent  ##**/
+
                 Intent intent = new Intent(getActivity(), DetailsActivity.class);
                 intent.putExtra("couponId", couponId);
                 startActivity(intent);

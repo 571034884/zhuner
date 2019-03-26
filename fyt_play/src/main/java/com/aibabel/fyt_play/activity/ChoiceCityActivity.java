@@ -32,6 +32,7 @@ import com.aibabel.fyt_play.bean.PlayBean;
 import com.zhouyou.recyclerview.adapter.BaseRecyclerViewAdapter;
 import com.zhouyou.recyclerview.adapter.HelperRecyclerViewHolder;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -64,6 +65,13 @@ public class ChoiceCityActivity extends BaseActivity implements BaseCallback<Bas
         ivGuanbi.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                /**####  start-hjs-addStatisticsEvent   ##**/
+                try {
+                    addStatisticsEvent("fyt_play_ChoiceCity1", null);
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
+                /**####  end-hjs-addStatisticsEvent  ##**/
                 finish();
             }
         });
@@ -83,6 +91,15 @@ public class ChoiceCityActivity extends BaseActivity implements BaseCallback<Bas
                 map.put("p1",cityBeanList.get(postion));
                 StatisticsManager.getInstance(mContext).addEventAidl(1511,map);
 
+                /**####  start-hjs-addStatisticsEvent   ##**/
+                try {
+                    HashMap<String, Serializable> add_hp = new HashMap<>();
+                    add_hp.put("fyt_play_ChoiceCity2_def", cityBeanList.get(postion).getCity());
+                    addStatisticsEvent("fyt_play_ChoiceCity2", add_hp);
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
+                /**####  end-hjs-addStatisticsEvent  ##**/
 
                 Intent intent = new Intent(ChoiceCityActivity.this,MainActivity.class);
                 intent.putExtra("city",cityBeanList.get(postion).getCity());

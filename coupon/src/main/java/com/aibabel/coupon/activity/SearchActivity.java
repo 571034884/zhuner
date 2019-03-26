@@ -18,7 +18,9 @@ import com.aibabel.coupon.bean.Constans;
 import com.aibabel.coupon.fragment.SearchFragment;
 import com.aibabel.coupon.fragment.SearchResultFragment;
 
+import java.io.Serializable;
 import java.lang.reflect.Field;
+import java.util.HashMap;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -127,6 +129,16 @@ public class SearchActivity extends BaseActivity implements BaseActivity.Fragmen
             public boolean onQueryTextSubmit(String s) {
                 if (!TextUtils.equals(searchInput, "")) {
                     searchInput = s;
+
+                    /**####  start-hjs-addStatisticsEvent   ##**/
+                    try {
+                        HashMap<String, Serializable> add_hp = new HashMap<>();
+                        add_hp.put("coupon_search3_def", searchInput);
+                        addStatisticsEvent("coupon_search3", add_hp);
+                    }catch (Exception e){
+                        e.printStackTrace();
+                    }
+                    /**####  end-hjs-addStatisticsEvent  ##**/
                     turnToSearchResult(searchInput, page);
                 }
                 return false;
@@ -149,6 +161,13 @@ public class SearchActivity extends BaseActivity implements BaseActivity.Fragmen
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.tv_right:
+                /**####  start-hjs-addStatisticsEvent   ##**/
+                try {
+                    addStatisticsEvent("coupon_search0", null);
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
+                /**####  end-hjs-addStatisticsEvent  ##**/
                 finish();
                 break;
         }

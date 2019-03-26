@@ -44,6 +44,7 @@ import com.youth.banner.Banner;
 import com.youth.banner.BannerConfig;
 import com.youth.banner.loader.ImageLoader;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -163,6 +164,13 @@ public class ReceiveActivity extends BaseActivity implements BaseCallback<BaseBe
 //                Intent intent = new Intent(ReceiveActivity.this, CouponActivity.class);
 //                intent.putExtra("type", 1);
 //                startActivity(intent);
+                /**####  start-hjs-addStatisticsEvent   ##**/
+                try {
+                    addStatisticsEvent("coupon_receive6", null);
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
+                /**####  end-hjs-addStatisticsEvent  ##**/
 
                 Intent intent = new Intent();
                 intent.putExtra("type", 1);
@@ -175,6 +183,13 @@ public class ReceiveActivity extends BaseActivity implements BaseCallback<BaseBe
             @Override
             public void onClick(View v) {
 
+                /**####  start-hjs-addStatisticsEvent   ##**/
+                try {
+                    addStatisticsEvent("coupon_receive1", null);
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
+                /**####  end-hjs-addStatisticsEvent  ##**/
 
                 Intent intent = new Intent();
                 intent.putExtra("type", 0);
@@ -187,6 +202,14 @@ public class ReceiveActivity extends BaseActivity implements BaseCallback<BaseBe
         tvTitle.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                /**####  start-hjs-addStatisticsEvent   ##**/
+                try {
+                    addStatisticsEvent("coupon_receive2", null);
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
+                /**####  end-hjs-addStatisticsEvent  ##**/
+
                 Intent intent = new Intent(ReceiveActivity.this, SearchActivity.class);
                 intent.putExtra("country",country_name);
                 startActivity(intent);
@@ -284,6 +307,17 @@ public class ReceiveActivity extends BaseActivity implements BaseCallback<BaseBe
                     public void onClick(View view) {
                         Map map = new HashMap();
                         StatisticsManager.getInstance(mContext).addEventAidl( 2612, map);
+
+                        /**####  start-hjs-addStatisticsEvent   ##**/
+                        try {
+                            HashMap<String, Serializable> add_hp = new HashMap<>();
+                            add_hp.put("coupon_receive3_def", "优惠券详情");
+                            addStatisticsEvent("coupon_receive3", add_hp);
+                        }catch (Exception e){
+                            e.printStackTrace();
+                        }
+                        /**####  end-hjs-addStatisticsEvent  ##**/
+
                         try {
                             popupWindowShow(position);
                         }catch (Exception e){
@@ -305,6 +339,16 @@ public class ReceiveActivity extends BaseActivity implements BaseCallback<BaseBe
                             Map map = new HashMap();
                             map.put("p1",couponBeanData.get(position).getCouponData().getTitle());
                             StatisticsManager.getInstance(mContext).addEventAidl(2610, map);
+                            /**####  start-hjs-addStatisticsEvent   ##**/
+                            try {
+                                HashMap<String, Serializable> add_hp = new HashMap<>();
+                                add_hp.put("coupon_receive4_def", couponBeanData.get(position).getCouponData().getTitle());
+                                addStatisticsEvent("coupon_receive4", add_hp);
+                            }catch (Exception e){
+                                e.printStackTrace();
+                            }
+                            /**####  end-hjs-addStatisticsEvent  ##**/
+
                             userGetOneCoupon(couponId);
                             couponBeanData.get(position).setUserHasThisCoupon("true");
                             adapter.updateData(couponBeanData);
@@ -313,6 +357,15 @@ public class ReceiveActivity extends BaseActivity implements BaseCallback<BaseBe
                             Map map = new HashMap();
                             map.put("p1",couponBeanData.get(position).getCouponData().getTitle());
                             StatisticsManager.getInstance(mContext).addEventAidl( 2611, map);
+                            /**####  start-hjs-addStatisticsEvent   ##**/
+                            try {
+                                HashMap<String, Serializable> add_hp = new HashMap<>();
+                                add_hp.put("coupon_receive5_def", couponBeanData.get(position).getCouponData().getTitle());
+                                addStatisticsEvent("coupon_receive5", add_hp);
+                            }catch (Exception e){
+                                e.printStackTrace();
+                            }
+                            /**####  end-hjs-addStatisticsEvent  ##**/
 
                             Intent intent = new Intent(ReceiveActivity.this, DetailsActivity.class);
 
@@ -369,6 +422,14 @@ public class ReceiveActivity extends BaseActivity implements BaseCallback<BaseBe
             public void onClick(View v) {
                 if (popupWindow!=null){
 
+
+                    /**####  start-hjs-addStatisticsEvent   ##**/
+                    try {
+                        addStatisticsEvent("coupon_Details1", null);
+                    }catch (Exception e){
+                        e.printStackTrace();
+                    }
+                    /**####  end-hjs-addStatisticsEvent  ##**/
                     popupWindow.dismiss();
                 }
             }
