@@ -11,12 +11,15 @@ import android.widget.Toast;
 
 import com.aibabel.baselibrary.utils.FastJsonUtil;
 import com.aibabel.menu.MainActivity;
+import com.aibabel.menu.base.BaseActivity;
 import com.aibabel.menu.bean.DetailBean;
 import com.aibabel.menu.bean.PushMessageBean;
 import com.aibabel.messagemanage.JiGuangActivity;
 import com.aibabel.messagemanage.MessageUtil;
 
+import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 public class NotificationClickReceiver extends BroadcastReceiver {
@@ -40,11 +43,27 @@ public class NotificationClickReceiver extends BroadcastReceiver {
                 //String message = intent.getStringExtra("MESSAGE");
                 //Toast.makeText(context, "clicked " + message, Toast.LENGTH_LONG).show();
 
+
+
                 Log.i("hjs", "userClick:我被点击啦！！！ ");
 
                 String extjson = intent.getStringExtra(ResidentNotificationHelper.intentjson);
                 String title = intent.getStringExtra("title");
                 MessageUtil.TITLE_JG = title;
+
+
+
+            /**####  start-hjs-addStatisticsEvent   ##**/
+            try {
+                PushMessageBean bean = FastJsonUtil.changeJsonToBean(extjson, PushMessageBean.class);
+                HashMap<String, Serializable> add_hp = new HashMap<>();
+                add_hp.put("push_notification1_def", bean.getTitle());
+                add_hp.put("push_notification1_id",bean.getNum() );
+                ((BaseActivity)context).addStatisticsEvent("push_notification1", add_hp);
+            }catch (Exception e){
+                e.printStackTrace();
+            }
+            /**####  end-hjs-addStatisticsEvent  ##**/
 
                 MessageUtil.openNotification(context, extjson);
                 if(MainActivity.loopHandler!=null)MainActivity.loopHandler.sendEmptyMessage(302);
@@ -53,6 +72,19 @@ public class NotificationClickReceiver extends BroadcastReceiver {
             if (action.equals("notification_cancelled")) {
                 //处理滑动清除和点击删除事件
                 //Toast.makeText(context, "cancelled", Toast.LENGTH_LONG).show();
+                /**####  start-hjs-addStatisticsEvent   ##**/
+                try {
+                    String extjson = intent.getStringExtra(ResidentNotificationHelper.intentjson);
+                    PushMessageBean bean = FastJsonUtil.changeJsonToBean(extjson, PushMessageBean.class);
+                    HashMap<String, Serializable> add_hp = new HashMap<>();
+                    add_hp.put("push_notification5_def", bean.getTitle());
+                    add_hp.put("push_notification5_id",bean.getNum() );
+                    ((BaseActivity)context).addStatisticsEvent("push_notification5", add_hp);
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
+                /**####  end-hjs-addStatisticsEvent  ##**/
+
                 Log.i("hjs", "userClick:我取消啦！！！ ");
                 if(MainActivity.loopHandler!=null)MainActivity.loopHandler.sendEmptyMessage(302);
             }

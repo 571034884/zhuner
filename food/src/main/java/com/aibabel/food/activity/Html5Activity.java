@@ -38,6 +38,7 @@ import com.aibabel.food.R;
 import com.aibabel.food.base.Constant;
 import com.aibabel.food.bean.Html5UrlBean;
 
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -275,6 +276,11 @@ public class Html5Activity extends BaseActivity implements BaseCallback<Html5Url
 
     }
 
+//    语音翻译按钮	点击	food_html5		food_html5_def:味道不错
+//    菜单翻译按钮	点击	food_html6		food_html6_def:菜单翻译
+//    账单换算按钮	点击	food_html7		food_html7_def:账单翻译
+
+
     @OnClick({R.id.tvTurnTranslate, R.id.tvTurnCamera, R.id.tvTurnHuilv})
     public void onViewClicked(View view) {
         Intent intent = null;
@@ -283,17 +289,47 @@ public class Html5Activity extends BaseActivity implements BaseCallback<Html5Url
         switch (view.getId()) {
             case R.id.tvTurnTranslate:
                 StatisticsManager.getInstance(this).addEventAidl(1011, map);
+                /**####  start-hjs-addStatisticsEvent   ##**/
+                try {
+                    HashMap<String, Serializable> add_hp = new HashMap<>();
+                    add_hp.put("food_html5_def", shopId);
+                    addStatisticsEvent("food_html5", add_hp);
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
+                /**####  end-hjs-addStatisticsEvent  ##**/
+
+
                 intent = getAppOpenIntentByPackageName(mContext, "com.aibabel.translate");
                 intent.setClassName("com.aibabel.translate", "com.aibabel.translate.MainActivity");
 //                intent.setAction(Intent.ACTION_VIEW);
                 break;
             case R.id.tvTurnCamera:
                 StatisticsManager.getInstance(this).addEventAidl(1012, map);
+                /**####  start-hjs-addStatisticsEvent   ##**/
+                try {
+                    HashMap<String, Serializable> add_hp = new HashMap<>();
+                    add_hp.put("food_html6_def", shopId);
+                    addStatisticsEvent("food_html6", add_hp);
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
+                /**####  end-hjs-addStatisticsEvent  ##**/
+
                 intent = getAppOpenIntentByPackageName(mContext, "com.aibabel.ocr");
                 intent.setClassName("com.aibabel.ocr", "com.aibabel.ocr.activity.LauncherActivity");
                 break;
             case R.id.tvTurnHuilv:
                 StatisticsManager.getInstance(this).addEventAidl(1013, map);
+                /**####  start-hjs-addStatisticsEvent   ##**/
+                try {
+                    HashMap<String, Serializable> add_hp = new HashMap<>();
+                    add_hp.put("food_html7_def", shopId);
+                    addStatisticsEvent("food_html7", add_hp);
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
+                /**####  end-hjs-addStatisticsEvent  ##**/
                 intent = getAppOpenIntentByPackageName(mContext, "com.aibabel.currencyconversion");
                 intent.setClassName("com.aibabel.currencyconversion", "com.aibabel" +
                         ".currencyconversion.MainActivity");

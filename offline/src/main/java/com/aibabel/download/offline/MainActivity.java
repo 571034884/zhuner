@@ -5,6 +5,7 @@ import android.content.ContentValues;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -287,6 +288,22 @@ public class MainActivity extends BaseActivity {
                 rl.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
+
+                        /**####  start-hjs-addStatisticsEvent   ##**/
+                        try {
+                             String entenid = "";
+                            if(arr[0].equals("yyfy")){
+                                entenid = "download.offline_main1";
+                            }else if(arr[0].equals("jqdl")){
+                                entenid = "download.offline_main2";
+                            }else if(arr[0].equals("bdzy")){
+                                entenid = "download.offline_main3";
+                            }
+                            addStatisticsEvent(entenid, null);
+                        }catch (Exception e){
+                            e.printStackTrace();
+                        }
+                        /**####  end-hjs-addStatisticsEvent  ##**/
 
                         Intent intent=new Intent();
                         intent.putExtra("key",arr[0]);

@@ -9,6 +9,7 @@ import android.view.View;
 
 import com.aibabel.aidlaar.StatisticsManager;
 import com.aibabel.baselibrary.adapter.BaseRecyclercAdapter;
+import com.aibabel.baselibrary.base.BaseActivity;
 import com.aibabel.food.R;
 import com.aibabel.food.activity.AllOffThingsActivity;
 import com.aibabel.food.activity.FilterActivity;
@@ -55,6 +56,13 @@ public class HomepageAdapter extends BaseRecyclercAdapter<HomePageAllBean.DataBe
                     turnToAll(AllOffThingsActivity.class, AllOffThingsActivity.TAG_AREA);
                     Map<String, String> map = new HashMap<>();
                     StatisticsManager.getInstance(mContext).addEventAidl(1003, map);
+                    /**####  start-hjs-addStatisticsEvent   ##**/
+                    try {
+                        ((BaseActivity)mContext).addStatisticsEvent("1003", null);
+                    }catch (Exception e){
+                        e.printStackTrace();
+                    }
+                    /**####  end-hjs-addStatisticsEvent  ##**/
                 }
             });
             adapter.setOnItemClickListener(new OnItemClickListener() {
@@ -65,6 +73,14 @@ public class HomepageAdapter extends BaseRecyclercAdapter<HomePageAllBean.DataBe
                     Map<String, String> map = new HashMap<>();
                     map.put("p1", ((HomePageAllBean.DataBean.BegionShoptypeJsonBean.ListBean) item).getName());
                     StatisticsManager.getInstance(mContext).addEventAidl(1004, map);
+
+                    /**####  start-hjs-addStatisticsEvent   ##**/
+                    try {
+                        ((BaseActivity)mContext).addStatisticsEvent("food_home4", null);
+                    }catch (Exception e){
+                        e.printStackTrace();
+                    }
+                    /**####  end-hjs-addStatisticsEvent  ##**/
                 }
             });
         } else if (position == 1) {
@@ -80,6 +96,14 @@ public class HomepageAdapter extends BaseRecyclercAdapter<HomePageAllBean.DataBe
                     turnToAll(AllOffThingsActivity.class, AllOffThingsActivity.TAG_KIND);
                     Map<String, String> map = new HashMap<>();
                     StatisticsManager.getInstance(mContext).addEventAidl(1005, map);
+
+                    /**####  start-hjs-addStatisticsEvent   ##**/
+                    try {
+                        ((BaseActivity)mContext).addStatisticsEvent("food_home5", null);
+                    }catch (Exception e){
+                        e.printStackTrace();
+                    }
+                    /**####  end-hjs-addStatisticsEvent  ##**/
                 }
             });
             adapter.setOnItemClickListener(new OnItemClickListener() {
@@ -89,6 +113,13 @@ public class HomepageAdapter extends BaseRecyclercAdapter<HomePageAllBean.DataBe
                     Map<String, String> map = new HashMap<>();
                     map.put("p1", ((HomePageAllBean.DataBean.BegionShoptypeJsonBean.ListBean) item).getName());
                     StatisticsManager.getInstance(mContext).addEventAidl(1006, map);
+                    /**####  start-hjs-addStatisticsEvent   ##**/
+                    try {
+                        ((BaseActivity)mContext).addStatisticsEvent("food_home6", null);
+                    }catch (Exception e){
+                        e.printStackTrace();
+                    }
+                    /**####  end-hjs-addStatisticsEvent  ##**/
                 }
             });
         } else if (position == 2) {

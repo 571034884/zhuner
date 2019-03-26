@@ -135,10 +135,26 @@ public class HomePageActivity extends BaseActivity implements  BaseCallback<Home
         switch (view.getId()) {
             case R.id.dctvCityOpen:
                 startActivityForResult(AreaSelectActivity.class, 666);
+
+                /**####  start-hjs-addStatisticsEvent   ##**/
+                try {
+                    addStatisticsEvent("food_home1", null);
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
+                /**####  end-hjs-addStatisticsEvent  ##**/
                 break;
             case R.id.dctvSearchOpen:
                 startActivity(SearchActivity.class);
                 StatisticsManager.getInstance(this).addEventAidl(1001, map);
+
+                /**####  start-hjs-addStatisticsEvent   ##**/
+                try {
+                    addStatisticsEvent("food_home2", null);
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
+                /**####  end-hjs-addStatisticsEvent  ##**/
                 break;
         }
     }

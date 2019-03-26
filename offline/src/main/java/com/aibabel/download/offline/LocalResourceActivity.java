@@ -113,6 +113,14 @@ public class LocalResourceActivity extends BaseActivity {
         ib_return.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                /**####  start-hjs-addStatisticsEvent   ##**/
+                try {
+                    addStatisticsEvent("download.offline_resource1", null);
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
+                /**####  end-hjs-addStatisticsEvent  ##**/
+
                 finish();
             }
         });

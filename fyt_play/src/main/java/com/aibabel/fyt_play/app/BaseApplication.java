@@ -6,6 +6,7 @@ import android.text.TextUtils;
 
 import com.aibabel.baselibrary.BuildConfig;
 import com.aibabel.baselibrary.http.OkGoUtil;
+import com.aibabel.baselibrary.utils.DeviceUtils;
 import com.aibabel.fyt_play.utils.DensityHelper;
 import com.lzy.okgo.OkGo;
 
@@ -44,6 +45,11 @@ public class BaseApplication extends com.aibabel.baselibrary.base.BaseApplicatio
 
     @Override
     public String setUmengKey() {
+        if(DeviceUtils.getSystem()==DeviceUtils.System.PRO_LEASE){
+            return "5c9a245661f5641241000e8f";
+        }
+
+
         return "5c33109af1f5566770000134";
     }
 }

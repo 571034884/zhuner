@@ -165,21 +165,50 @@ public class FilterActivity extends BaseActivity implements BaseCallback<BaseBea
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.ivBack:
+
+                /**####  start-hjs-addStatisticsEvent   ##**/
+                try {
+                    addStatisticsEvent("food_filter1", null);
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
+                /**####  end-hjs-addStatisticsEvent  ##**/
                 finish();
                 break;
             case R.id.tvCity:
                 break;
             case R.id.dctvKind1:
+                /**####  start-hjs-addStatisticsEvent   ##**/
+                try {
+                    addStatisticsEvent("food_filter2", null);
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
+                /**####  end-hjs-addStatisticsEvent  ##**/
                 dctvKind1.setTextColor(Color.RED);
                 dctvKind1.setCompoundDrawablesWithIntrinsicBounds(null, null, getResources().getDrawable(R.mipmap.fenlei_select), null);
                 showWindow(1, llKind);
                 break;
             case R.id.dctvKind2:
+                /**####  start-hjs-addStatisticsEvent   ##**/
+                try {
+                    addStatisticsEvent("food_filter3", null);
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
+                /**####  end-hjs-addStatisticsEvent  ##**/
                 dctvKind2.setTextColor(Color.RED);
                 dctvKind2.setCompoundDrawablesWithIntrinsicBounds(null, null, getResources().getDrawable(R.mipmap.fenlei_select), null);
                 showWindow(2, llKind);
                 break;
             case R.id.dctvKind3:
+                /**####  start-hjs-addStatisticsEvent   ##**/
+                try {
+                    addStatisticsEvent("food_filter4", null);
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
+                /**####  end-hjs-addStatisticsEvent  ##**/
                 dctvKind3.setTextColor(Color.RED);
                 dctvKind3.setCompoundDrawablesWithIntrinsicBounds(null, null, getResources().getDrawable(R.mipmap.fenlei_select), null);
                 showWindow(3, llKind);

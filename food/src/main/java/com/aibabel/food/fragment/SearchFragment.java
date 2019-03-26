@@ -20,6 +20,7 @@ import com.zhy.view.flowlayout.FlowLayout;
 import com.zhy.view.flowlayout.TagAdapter;
 import com.zhy.view.flowlayout.TagFlowLayout;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -68,6 +69,16 @@ public class SearchFragment extends BaseFragment implements BaseCallback<HotSear
             public boolean onTagClick(View view, int position, FlowLayout parent) {
                 ((SearchActivity) mContext).setSvSearchText(historyList.get(position));
                 ((SearchActivity) mContext).turnToSearchResult(historyList.get(position), 1);
+
+                /**####  start-hjs-addStatisticsEvent   ##**/
+                try {
+                    HashMap<String, Serializable> add_hp = new HashMap<>();
+                    add_hp.put("food_Search4_def", historyList.get(position));
+                    ((SearchActivity) mContext).addStatisticsEvent("food_Search4", add_hp);
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
+                /**####  end-hjs-addStatisticsEvent  ##**/
                 return true;
             }
         });
@@ -76,6 +87,16 @@ public class SearchFragment extends BaseFragment implements BaseCallback<HotSear
             public boolean onTagClick(View view, int position, FlowLayout parent) {
                 ((SearchActivity) mContext).setSvSearchText(hotSearchList.get(position));
                 ((SearchActivity) mContext).turnToSearchResult(hotSearchList.get(position), 1);
+
+                /**####  start-hjs-addStatisticsEvent   ##**/
+                try {
+                    HashMap<String, Serializable> add_hp = new HashMap<>();
+                    add_hp.put("food_Search6_def", historyList.get(position));
+                    ((SearchActivity) mContext).addStatisticsEvent("food_Search6", add_hp);
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
+                /**####  end-hjs-addStatisticsEvent  ##**/
                 return true;
             }
         });
@@ -114,6 +135,13 @@ public class SearchFragment extends BaseFragment implements BaseCallback<HotSear
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.ivClear:
+                /**####  start-hjs-addStatisticsEvent   ##**/
+                try {
+                    ((SearchActivity) mContext).addStatisticsEvent("food_Search5", null);
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
+                /**####  end-hjs-addStatisticsEvent  ##**/
                 historyList.clear();
                 histoeyAdapter.refereshData(historyList);
                 showHistoryLayout();

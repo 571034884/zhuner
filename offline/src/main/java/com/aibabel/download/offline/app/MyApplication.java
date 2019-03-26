@@ -9,6 +9,9 @@ import android.os.Environment;
 import android.os.Handler;
 
 import com.aibabel.aidlaar.StatisticsManager;
+import com.aibabel.baselibrary.impl.IDataManager;
+import com.aibabel.baselibrary.impl.IServerManager;
+import com.aibabel.baselibrary.impl.IStatistics;
 import com.aibabel.download.offline.BuildConfig;
 import com.aibabel.download.offline.db.OfflineDBHelper;
 import com.aibabel.download.offline.log.CrashHandler;
@@ -19,6 +22,7 @@ import com.aibabel.download.offline.util.FileUtil;
 import com.aibabel.download.offline.util.L;
 import com.aibabel.download.offline.util.URL_API;
 import com.liulishuo.filedownloader.FileDownloader;
+import com.xuexiang.xipc.XIPC;
 
 
 import org.xutils.x;
@@ -66,7 +70,17 @@ public class MyApplication extends Application {
         if (FileUtil.isFolderExists("/sdcard/download_offline/")) {
 
         }
+        initXipc();
 
+    }
+    /**
+     * 跨进程初始化
+     */
+    private void initXipc() {
+        XIPC.init(this);
+        XIPC.register(IDataManager.class);
+        XIPC.register(IServerManager.class);
+        XIPC.register(IStatistics.class);
 
     }
 

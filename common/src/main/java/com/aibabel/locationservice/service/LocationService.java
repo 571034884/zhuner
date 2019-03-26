@@ -737,7 +737,11 @@ public class LocationService extends Service implements ScreenListener, CardBroa
 
                     @Override
                     public void onError(Response<String> response) {
-                        Log.e(TAG + "流量统计onError：", response.body().toString());
+                        try {
+                            Log.e(TAG + "流量统计onError：", response.body().toString());
+                        }catch (Exception e){
+                            e.printStackTrace();
+                        }
                     }
 
                     @Override

@@ -131,6 +131,14 @@ public class SearchActivity extends BaseActivity implements BaseActivity.Fragmen
                 if (!TextUtils.equals(searchInput, "")) {
                     searchInput = s;
                     turnToSearchResult(searchInput, page);
+
+                    /**####  start-hjs-addStatisticsEvent   ##**/
+                    try {
+                        addStatisticsEvent("food_Search3", null);
+                    }catch (Exception e){
+                        e.printStackTrace();
+                    }
+                    /**####  end-hjs-addStatisticsEvent  ##**/
                 }
                 return false;
             }
@@ -146,12 +154,31 @@ public class SearchActivity extends BaseActivity implements BaseActivity.Fragmen
                 return false;
             }
         });
+        svSearch.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                /**####  start-hjs-addStatisticsEvent   ##**/
+                try {
+                    addStatisticsEvent("food_Search2", null);
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
+                /**####  end-hjs-addStatisticsEvent  ##**/
+            }
+        });
     }
 
     @OnClick({R.id.tv_right1})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.tv_right1:
+                /**####  start-hjs-addStatisticsEvent   ##**/
+                try {
+                    addStatisticsEvent("food_Search1", null);
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
+                /**####  end-hjs-addStatisticsEvent  ##**/
                 finish();
                 break;
         }

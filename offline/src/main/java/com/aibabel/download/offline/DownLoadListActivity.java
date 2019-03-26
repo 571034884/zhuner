@@ -166,6 +166,13 @@ public class DownLoadListActivity extends BaseActivity {
         ib_return.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                /**####  start-hjs-addStatisticsEvent   ##**/
+                try {
+                    addStatisticsEvent("download.offline_downLoadList1", null);
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
+                /**####  end-hjs-addStatisticsEvent  ##**/
                 finish();
             }
         });
@@ -176,8 +183,24 @@ public class DownLoadListActivity extends BaseActivity {
                 transaction = manager.beginTransaction();
 
                 if (i == R.id.dl_gp_zy) {
+
+                    /**####  start-hjs-addStatisticsEvent   ##**/
+                    try {
+                        addStatisticsEvent("download.offline_downLoadList2", null);
+                    }catch (Exception e){
+                        e.printStackTrace();
+                    }
+                    /**####  end-hjs-addStatisticsEvent  ##**/
+
                     transaction.hide(installFrag).show(listFrag);
                 } else if (i == R.id.dl_gp_install) {
+                    /**####  start-hjs-addStatisticsEvent   ##**/
+                    try {
+                        addStatisticsEvent("download.offline_downLoadList3", null);
+                    }catch (Exception e){
+                        e.printStackTrace();
+                    }
+                    /**####  end-hjs-addStatisticsEvent  ##**/
                     transaction.hide(listFrag).show(installFrag);
                 }
 

@@ -8,17 +8,21 @@ import android.util.Log;
 
 import com.aibabel.baselibrary.utils.FastJsonUtil;
 import com.aibabel.menu.MainActivity;
+import com.aibabel.menu.base.BaseActivity;
 import com.aibabel.menu.bean.DetailBean;
 import com.aibabel.menu.bean.PushMessageBean;
+import com.aibabel.menu.broadcast.ResidentNotificationHelper;
 import com.aibabel.menu.util.LogUtil;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.Serializable;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.HashMap;
 import java.util.List;
 
 public class MessageUtil {
@@ -39,6 +43,19 @@ public class MessageUtil {
             PushMessageBean bean = FastJsonUtil.changeJsonToBean(jsonString, PushMessageBean.class);
 
             if(bean==null)return;
+
+
+
+//            /**####  start-hjs-addStatisticsEvent   ##**/
+//            try {
+//                HashMap<String, Serializable> add_hp = new HashMap<>();
+//                add_hp.put("push_notification1_def", bean.getTitle());
+//                add_hp.put("push_notification1_id",bean.getNum() );
+//                ((BaseActivity)context).addStatisticsEvent("push_notification1", add_hp);
+//            }catch (Exception e){
+//                e.printStackTrace();
+//            }
+//            /**####  end-hjs-addStatisticsEvent  ##**/
 
             MESSAGE_JG = bean.getContent();
             TITLE_JG = bean.getTitle();
@@ -119,6 +136,8 @@ public class MessageUtil {
         }
     }
 
+    public static int numid = -1;
+
     /**
      * 启动一个dialog
      *
@@ -139,6 +158,18 @@ public class MessageUtil {
             intent.putExtra("couponId", bean.getResultData().get(0).getCouponId());
             intent.putExtra("package", bean.getPackageName());
             intent.putExtra("path", bean.getPath());
+            numid= bean.getNum();
+            /**####  start-hjs-addStatisticsEvent   ##**/
+            try {
+                HashMap<String, Serializable> add_hp = new HashMap<>();
+                add_hp.put("push_notification3_def", bean.getTitle());
+                add_hp.put("push_notification3_id",bean.getNum() );
+                ((BaseActivity)context).addStatisticsEvent("push_notification3", add_hp);
+            }catch (Exception e){
+                e.printStackTrace();
+            }
+            /**####  end-hjs-addStatisticsEvent  ##**/
+
             context.startActivity(intent);
         } catch (Exception e) {
             e.printStackTrace();

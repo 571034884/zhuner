@@ -17,6 +17,7 @@ import android.widget.Button;
 import com.aibabel.baselibrary.utils.FastJsonUtil;
 import com.aibabel.menu.MainActivity;
 import com.aibabel.menu.R;
+import com.aibabel.menu.base.BaseActivity;
 import com.aibabel.menu.bean.DetailBean;
 import com.aibabel.menu.bean.PushBean;
 import com.aibabel.menu.bean.PushMessageBean;
@@ -29,7 +30,9 @@ import com.aibabel.messagemanage.sqlite.SqlUtils;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 
@@ -97,8 +100,8 @@ public class MyReceiver extends BroadcastReceiver {
                 LogUtil.e("public static final String EXTRA_EXTRA = cn.jpush.android.EXTRA;");
                 try {
                     JSONObject json = new JSONObject(extra_);
-                    String relet = (String) json.get("relet");
 
+                    String relet = (String) json.get("relet");
                     JSONObject jsonRelet = new JSONObject(relet);
                     int code = (Integer) jsonRelet.get("code");
                     if (code == 1) {
@@ -108,6 +111,19 @@ public class MyReceiver extends BroadcastReceiver {
 
                         LogUtil.e("code  = 1");
                     }
+
+                    /**####  start-hjs-addStatisticsEvent   ##**/
+                    try {
+                        int numid = (int)json.get("no");
+                        HashMap<String, Serializable> add_hp = new HashMap<>();
+                        add_hp.put("push_notification2_def", code);
+                        add_hp.put("push_notification2_id",numid );
+                        ((BaseActivity)context).addStatisticsEvent("push_notification2", add_hp);
+                    }catch (Exception e){
+                        e.printStackTrace();
+                    }
+                    /**####  end-hjs-addStatisticsEvent  ##**/
+
                 } catch (JSONException e) {
                     Log.e(TAG, "Get message extra JSON error!");
                 }catch (Exception e){
@@ -261,6 +277,9 @@ public class MyReceiver extends BroadcastReceiver {
             intent.putExtra("package", bean.getPackageName());
             intent.putExtra("path", bean.getPath());
             context.startActivity(intent);
+
+
+
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -392,6 +411,17 @@ public class MyReceiver extends BroadcastReceiver {
                 SqlUtils.insertData(bean);
             }else return;
 
+
+            /**####  start-hjs-addStatisticsEvent   ##**/
+            try {
+                HashMap<String, Serializable> add_hp = new HashMap<>();
+                add_hp.put("push_notification_def", bean.getPackageName());
+                add_hp.put("push_notification_id",bean.getNum() );
+                ((BaseActivity)context).addStatisticsEvent("push_notification", add_hp);
+            }catch (Exception e){
+                e.printStackTrace();
+            }
+            /**####  end-hjs-addStatisticsEvent  ##**/
 
             if(MainActivity.loopHandler!=null)MainActivity.loopHandler.sendEmptyMessage(301);
 

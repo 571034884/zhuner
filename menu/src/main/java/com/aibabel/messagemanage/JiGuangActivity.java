@@ -8,10 +8,15 @@ import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.aibabel.baselibrary.base.StatisticsBaseActivity;
 import com.aibabel.menu.R;
+import com.aibabel.menu.base.BaseActivity;
+
+import java.io.Serializable;
+import java.util.HashMap;
 
 
-public class JiGuangActivity extends Activity {
+public class JiGuangActivity extends StatisticsBaseActivity {
 
 
     private TextView tvTitle;
@@ -27,13 +32,13 @@ public class JiGuangActivity extends Activity {
     private String path;
     private String couponId;
 
-
+    String title;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_ji_guang);
         String msg = getIntent().getStringExtra("msg");
-        String title =getIntent().getStringExtra("title");
+        title =getIntent().getStringExtra("title");
         pkg = getIntent().getStringExtra("package");
         path = getIntent().getStringExtra("path");
         couponId = getIntent().getStringExtra("couponId");
@@ -65,22 +70,55 @@ public class JiGuangActivity extends Activity {
                 ll3.setVisibility(View.VISIBLE);
                 break;
         }
+//        push_notification3		push_notification3_def:界面&&push_notification3_id:景区导览
+//        push_notification4		push_notification4_def:确定&&push_notification4_id:景区导览
+//        push_notification5		push_notification5_def:取消&&push_notification5_id:景区导览
 
         tvConfirm.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                /**####  start-hjs-addStatisticsEvent   ##**/
+                try {
+                    HashMap<String, Serializable> add_hp = new HashMap<>();
+                    add_hp.put("push_notification5_def", title);
+                    add_hp.put("push_notification5_id",MessageUtil.numid );
+                    addStatisticsEvent("push_notification5", add_hp);
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
+                /**####  end-hjs-addStatisticsEvent  ##**/
                 JiGuangActivity.this.finish();
             }
         });
         tvConfirm2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                /**####  start-hjs-addStatisticsEvent   ##**/
+                try {
+                    HashMap<String, Serializable> add_hp = new HashMap<>();
+                    add_hp.put("push_notification5_def", title);
+                    add_hp.put("push_notification5_id",MessageUtil.numid );
+                    addStatisticsEvent("push_notification5", add_hp);
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
+                /**####  end-hjs-addStatisticsEvent  ##**/
                 JiGuangActivity.this.finish();
             }
         });
         tvCancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                /**####  start-hjs-addStatisticsEvent   ##**/
+                try {
+                    HashMap<String, Serializable> add_hp = new HashMap<>();
+                    add_hp.put("push_notification5_def", title);
+                    add_hp.put("push_notification5_id",MessageUtil.numid );
+                    addStatisticsEvent("push_notification5", add_hp);
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
+                /**####  end-hjs-addStatisticsEvent  ##**/
                 JiGuangActivity.this.finish();
             }
         });
@@ -100,6 +138,16 @@ public class JiGuangActivity extends Activity {
      */
     private void toCoupon() {
         try{
+            /**####  start-hjs-addStatisticsEvent   ##**/
+            try {
+                HashMap<String, Serializable> add_hp = new HashMap<>();
+                add_hp.put("push_notification4_def", title);
+                add_hp.put("push_notification4_id",MessageUtil.numid );
+                addStatisticsEvent("push_notification4", add_hp);
+            }catch (Exception e){
+                e.printStackTrace();
+            }
+            /**####  end-hjs-addStatisticsEvent  ##**/
             int id = Integer.parseInt(couponId);
             Intent intent = new Intent();
             ComponentName componentName = new ComponentName(pkg, path);

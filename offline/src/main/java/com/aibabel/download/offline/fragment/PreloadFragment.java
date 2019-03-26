@@ -29,6 +29,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.aibabel.aidlaar.StatisticsManager;
+import com.aibabel.baselibrary.base.StatisticsBaseActivity;
 import com.aibabel.download.offline.MenuActivity;
 import com.aibabel.download.offline.R;
 import com.aibabel.download.offline.adapter.MyAdapter;
@@ -56,6 +57,7 @@ import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
 
 import java.io.File;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -69,15 +71,15 @@ public class PreloadFragment extends Fragment {
     private SmartRefreshLayout refreshLayout;
     ProgressDialog.Builder mBuilder;
 
-     private String id="";
+    private String id = "";
 
-     //操作文件的服务
-     Intent intent;
+    //操作文件的服务
+    Intent intent;
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view=inflater.inflate(R.layout.fragment_installed,null);
+        View view = inflater.inflate(R.layout.fragment_installed, null);
         initView(view);
         //修正韩语名字显示问题
         MyApplication.dbHelper.replaceKO();
@@ -101,8 +103,8 @@ public class PreloadFragment extends Fragment {
                                     MyApplication.offlineNoticeUIHandler.sendEmptyMessage(100);
                                 }
                                 getOfflineInstallList();
-                                if (!((String)msg.obj).equals("")) {
-                                    T.show(getContext(), MyApplication.mContext.getString(R.string.anzhuangchengong) + MyApplication.dbHelper.queryFiled((String)msg.obj, "lan_name"), 500);
+                                if (!((String) msg.obj).equals("")) {
+                                    T.show(getContext(), MyApplication.mContext.getString(R.string.anzhuangchengong) + MyApplication.dbHelper.queryFiled((String) msg.obj, "lan_name"), 500);
 
                                 }
 
@@ -112,7 +114,7 @@ public class PreloadFragment extends Fragment {
 
                         });
                         try {
-                            if (mBuilder!=null) {
+                            if (mBuilder != null) {
                                 mBuilder.dismiss();
                             }
                             getActivity().stopService(intent);
@@ -123,7 +125,7 @@ public class PreloadFragment extends Fragment {
                         break;
                     case -400:
                         //解压安装失败  回调
-                        if (mBuilder!=null) {
+                        if (mBuilder != null) {
                             mBuilder.dismiss();
 
                         }
@@ -131,20 +133,20 @@ public class PreloadFragment extends Fragment {
                         break;
                     case 500:
                         //删除完成  回调
-                        if (!((String)msg.obj).equals("")) {
-                            T.show(getActivity(), MyApplication.mContext.getString(R.string.xiezaichenggong) + MyApplication.dbHelper.queryFiled((String)msg.obj, "lan_name"), 500);
+                        if (!((String) msg.obj).equals("")) {
+                            T.show(getActivity(), MyApplication.mContext.getString(R.string.xiezaichenggong) + MyApplication.dbHelper.queryFiled((String) msg.obj, "lan_name"), 500);
                         }
-                        if (mBuilder!=null) {
+                        if (mBuilder != null) {
                             mBuilder.dismiss();
                         }
                         getOfflineInstallList();
                         break;
                     case -500:
                         //删除失败  回调
-                        if (!((String)msg.obj).equals("")) {
-                            T.show(getActivity(), MyApplication.mContext.getString(R.string.xiezaichenggong) + MyApplication.dbHelper.queryFiled((String)msg.obj, "lan_name"), 500);
+                        if (!((String) msg.obj).equals("")) {
+                            T.show(getActivity(), MyApplication.mContext.getString(R.string.xiezaichenggong) + MyApplication.dbHelper.queryFiled((String) msg.obj, "lan_name"), 500);
                         }
-                        if (mBuilder!=null) {
+                        if (mBuilder != null) {
                             mBuilder.dismiss();
                         }
                         getOfflineInstallList();
@@ -165,24 +167,22 @@ public class PreloadFragment extends Fragment {
         try {
 
 
+            if (!id.equals("")) {
+                String status = MyApplication.dbHelper.queryStatus(id);
+                switch (status) {
 
-                if (!id.equals("")) {
-                    String status=MyApplication.dbHelper.queryStatus(id);
-                    switch (status) {
+                    case "11":
+                        long copyTime = MyApplication.dbHelper.queryFiledLong(id, "copy_start_time");
+                        if (copyTime > 0 && System.currentTimeMillis() - copyTime > 40 * 60 * 1000) {
 
-                        case "11":
-                            long  copyTime = MyApplication.dbHelper.queryFiledLong(id, "copy_start_time");
-                            if (copyTime > 0 && System.currentTimeMillis() - copyTime > 40 * 60 * 1000) {
-
-                                if (mBuilder!=null) {
-                                    mBuilder.dismiss();
-                                }
+                            if (mBuilder != null) {
+                                mBuilder.dismiss();
                             }
-                            break;
-                    }
-
+                        }
+                        break;
                 }
 
+            }
 
 
         } catch (Exception e) {
@@ -198,8 +198,8 @@ public class PreloadFragment extends Fragment {
     }
 
     public void initView(View view) {
-        listView=view.findViewById(R.id.frag_install_listview);
-        refreshLayout=view.findViewById(R.id.frag_install_refresh);
+        listView = view.findViewById(R.id.frag_install_listview);
+        refreshLayout = view.findViewById(R.id.frag_install_refresh);
         refreshLayout.setOnRefreshListener(new OnRefreshListener() {
             @Override
             public void onRefresh(RefreshLayout refreshlayout) {
@@ -217,29 +217,29 @@ public class PreloadFragment extends Fragment {
         super.onMultiWindowModeChanged(isInMultiWindowMode);
     }
 
-    Map<String,SwipeLayout> swipeLayoutMap=new HashMap<>();
+    Map<String, SwipeLayout> swipeLayoutMap = new HashMap<>();
 
     public void getOfflineInstallList() {
-        if (mBuilder!=null) {
+        if (mBuilder != null) {
             mBuilder.dismiss();
         }
         swipeLayoutMap.clear();
-        Cursor cursor= MyApplication.dbHelper.queryCursor();
-        final List<Offline_database>  list=new ArrayList<>();
-        if(cursor.moveToFirst()){
+        Cursor cursor = MyApplication.dbHelper.queryCursor();
+        final List<Offline_database> list = new ArrayList<>();
+        if (cursor.moveToFirst()) {
             //遍历Cursor对象，取出数据
-            do{
-                String status= cursor.getString(cursor.getColumnIndex("status"));
-                String lan_code=cursor.getString(cursor.getColumnIndex("lan_code"));
-                String local_lan= CommonUtils.getLocal(getContext());
-                if (status.equals("10")||status.equals("11")||status.equals("12")) {
+            do {
+                String status = cursor.getString(cursor.getColumnIndex("status"));
+                String lan_code = cursor.getString(cursor.getColumnIndex("lan_code"));
+                String local_lan = CommonUtils.getLocal(getContext());
+                if (status.equals("10") || status.equals("11") || status.equals("12")) {
                     if (local_lan.equals("zh_CN")) {
                         String id = cursor.getString(cursor.getColumnIndex("Id"));
                         String name = cursor.getString(cursor.getColumnIndex("lan_name"));
                         String size = cursor.getString(cursor.getColumnIndex("size"));
                         String copyPath = cursor.getString(cursor.getColumnIndex("from_path"));
                         list.add(new Offline_database(id, name, size, status, copyPath));
-                    } else if(!lan_code.equals("mdd")&&!lan_code.equals("jqdl")) {
+                    } else if (!lan_code.equals("mdd") && !lan_code.equals("jqdl")) {
 
                         String id = cursor.getString(cursor.getColumnIndex("Id"));
                         String name = cursor.getString(cursor.getColumnIndex("lan_name"));
@@ -251,28 +251,26 @@ public class PreloadFragment extends Fragment {
                 }
 
 
-            }while(cursor.moveToNext());
+            } while (cursor.moveToNext());
 
 
         }
 
 
-
         //本地数据排序分组
-        final List<Offline_database>  newList=new ArrayList<>();
-        int first=0;
+        final List<Offline_database> newList = new ArrayList<>();
+        int first = 0;
         for (int i = 0; i < 3; i++) {
-            first=0;
+            first = 0;
             first++;
-            for (int j = 0; j < list.size(); j++)
-            {
+            for (int j = 0; j < list.size(); j++) {
 
                 switch (i) {
                     case 0:
                         //语音翻译
-                        if (!list.get(j).getId().contains("jqdl")&&!list.get(j).getId().contains("mdd")) {
+                        if (!list.get(j).getId().contains("jqdl") && !list.get(j).getId().contains("mdd")) {
                             if (first == 1) {
-                                first=0;
+                                first = 0;
                                 newList.add(new Offline_database("yyfy", "语音翻译", "", "", ""));
                                 newList.add(list.get(j));
 
@@ -286,7 +284,7 @@ public class PreloadFragment extends Fragment {
                         //景区导览
                         if (list.get(j).getId().contains("jqdl")) {
                             if (first == 1) {
-                                first=0;
+                                first = 0;
                                 newList.add(new Offline_database("jqdl", "景区导览", "", "", ""));
                                 newList.add(list.get(j));
 
@@ -298,7 +296,7 @@ public class PreloadFragment extends Fragment {
                         break;
                     case 2:
                         //目的地
-                        if(!Build.DISPLAY.substring(9,10).equals("L")) {
+                        if (!Build.DISPLAY.substring(9, 10).equals("L")) {
                             if (list.get(j).getId().contains("mdd")) {
                                 if (first == 1) {
                                     first = 0;
@@ -317,7 +315,7 @@ public class PreloadFragment extends Fragment {
             }
         }
 
-        listView.setAdapter(new MyAdapter<Offline_database>(getActivity(),newList,R.layout.item_perload) {
+        listView.setAdapter(new MyAdapter<Offline_database>(getActivity(), newList, R.layout.item_perload) {
             @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
             @Override
             public void convert(ViewHolder holder, final Offline_database dataBean) {
@@ -327,14 +325,14 @@ public class PreloadFragment extends Fragment {
                 RelativeLayout rl = ((RelativeLayout) holder.getView(R.id.item_preload_rl));
                 final SwipeLayout parent_rl = ((SwipeLayout) holder.getView(R.id.item_preload_parent_swipeLayout));
 
-                swipeLayoutMap.put(dataBean.getId(),parent_rl);
+                swipeLayoutMap.put(dataBean.getId(), parent_rl);
 
 
-                ImageView imageView=((ImageView) holder.getView(R.id.item_preload_shibai_iv));
+                ImageView imageView = ((ImageView) holder.getView(R.id.item_preload_shibai_iv));
 
-                RelativeLayout top_rl= ((RelativeLayout) holder.getView(R.id.item_preload_top_rl));
+                RelativeLayout top_rl = ((RelativeLayout) holder.getView(R.id.item_preload_top_rl));
                 TextView tv_title = ((TextView) holder.getView(R.id.item_preload_title));
-                TextView tv_del= ((TextView) holder.getView(R.id.item_perload_delect1));
+                TextView tv_del = ((TextView) holder.getView(R.id.item_perload_delect1));
 
 
                 parent_rl.close();
@@ -362,23 +360,20 @@ public class PreloadFragment extends Fragment {
                 }
 
 
+                parent_rl.addSwipeListener(new SimpleSwipeListener() {
+                    @Override
+                    public void onOpen(SwipeLayout layout) {
 
+                        L.e("kai ====================");
+                        for (String key : swipeLayoutMap.keySet()) {
+                            swipeLayoutMap.get(key).close();
+                        }
 
-            parent_rl.addSwipeListener(new SimpleSwipeListener(){
-                @Override
-                public void onOpen(SwipeLayout layout) {
+                        layout.open();
 
-                    L.e("kai ====================");
-                    for (String key : swipeLayoutMap.keySet()) {
-                        swipeLayoutMap.get(key).close();
+                        super.onOpen(layout);
                     }
-
-                    layout.open();
-
-                    super.onOpen(layout);
-                }
-            });
-
+                });
 
 
                 //删除资源
@@ -389,7 +384,7 @@ public class PreloadFragment extends Fragment {
                                 .setGravity(Gravity.CENTER)
                                 .setContentView(R.layout.dialog_tishi)
                                 .setText(R.id.dialog_title, MyApplication.mContext.getString(R.string.shanchu))
-                                .setText(R.id.dialog_desc,MyApplication.mContext.getString(R.string.shanchu_content))
+                                .setText(R.id.dialog_desc, MyApplication.mContext.getString(R.string.shanchu_content))
                                 .setCancelable(false)
                                 .setOnClickListener(R.id.dialog_tv_sure, MyApplication.mContext.getString(R.string.queding), new View.OnClickListener() {
                                     @Override
@@ -402,9 +397,8 @@ public class PreloadFragment extends Fragment {
                                                 .setDesc(MyApplication.mContext.getString(R.string.shanchu_tishi_content))
                                                 .showProgress(false)
                                                 .show();
-                                        id=dataBean.getId();
-                                        deleteFile(dataBean,tv_tishi,"");
-
+                                        id = dataBean.getId();
+                                        deleteFile(dataBean, tv_tishi, "");
 
 
                                     }
@@ -424,14 +418,14 @@ public class PreloadFragment extends Fragment {
                         tv_tishi.setVisibility(View.VISIBLE);
                         break;
                     case "11":
-                        tv_size.setText( dataBean.getSize());
+                        tv_size.setText(dataBean.getSize());
                         imageView.setVisibility(View.GONE);
                         tv_tishi.setText(MyApplication.mContext.getString(R.string.zhengzaianzhuang));
                         tv_tishi.setVisibility(View.VISIBLE);
                         long copyTime = MyApplication.dbHelper.queryFiledLong(dataBean.getId(), "copy_start_time");
                         if (copyTime > 0 && System.currentTimeMillis() - copyTime > 40 * 60 * 1000) {
-                            MyApplication.dbHelper.updateStatusId(dataBean.getId(),"12");
-                            tv_size.setText(dataBean.getSize() );
+                            MyApplication.dbHelper.updateStatusId(dataBean.getId(), "12");
+                            tv_size.setText(dataBean.getSize());
                             imageView.setVisibility(View.VISIBLE);
                             tv_tishi.setText(MyApplication.mContext.getString(R.string.chongshi));
 
@@ -439,7 +433,7 @@ public class PreloadFragment extends Fragment {
                         }
                         break;
                     case "12":
-                        tv_size.setText( dataBean.getSize());
+                        tv_size.setText(dataBean.getSize());
                         imageView.setVisibility(View.VISIBLE);
                         tv_tishi.setText(MyApplication.mContext.getString(R.string.chongshi));
 
@@ -453,7 +447,7 @@ public class PreloadFragment extends Fragment {
 
                         long uninstallTime = MyApplication.dbHelper.queryFiledLong(dataBean.getId(), "uninstall_start_time");
                         if (uninstallTime > 0 && System.currentTimeMillis() - uninstallTime > 30 * 60 * 1000) {
-                            MyApplication.dbHelper.updateStatusId(dataBean.getId(),"14");
+                            MyApplication.dbHelper.updateStatusId(dataBean.getId(), "14");
                             tv_size.setText(dataBean.getSize());
                             imageView.setVisibility(View.VISIBLE);
                             tv_tishi.setText(MyApplication.mContext.getString(R.string.chongshi));
@@ -461,7 +455,7 @@ public class PreloadFragment extends Fragment {
                         }
                         break;
                     case "14":
-                        tv_size.setText(dataBean.getSize() );
+                        tv_size.setText(dataBean.getSize());
                         imageView.setVisibility(View.VISIBLE);
                         tv_tishi.setText(MyApplication.mContext.getString(R.string.chongshi));
 
@@ -477,21 +471,24 @@ public class PreloadFragment extends Fragment {
                     @Override
                     public void onClick(View view) {
                         //已安装
-                        if (ThreadPoolManager.getInstance().getCarryNum()>=2) {
-                            T.show(getContext(),MyApplication.mContext.getString(R.string.zhengzaizhixing),500);
+                        if (ThreadPoolManager.getInstance().getCarryNum() >= 2) {
+                            T.show(getContext(), MyApplication.mContext.getString(R.string.zhengzaizhixing), 500);
                             return;
 
                         }
 
-                        String status=MyApplication.dbHelper.queryStatus(dataBean.getId());
-                        String installTime="";
+                        final String[] eventid = {""};
+                        final HashMap<String, Serializable> add_hp = new HashMap<>();
+
+                        String status = MyApplication.dbHelper.queryStatus(dataBean.getId());
+                        String installTime = "";
                         switch (status) {
                             case "1":
                                 new OtherDialog.Builder(getContext())
                                         .setGravity(Gravity.CENTER)
                                         .setContentView(R.layout.dialog_tishi)
                                         .setText(R.id.dialog_title, MyApplication.mContext.getString(R.string.xiezai))
-                                        .setText(R.id.dialog_desc,"")
+                                        .setText(R.id.dialog_desc, "")
                                         .setCancelable(false)
                                         .setOnClickListener(R.id.dialog_tv_sure, MyApplication.mContext.getString(R.string.queding), new View.OnClickListener() {
                                             @Override
@@ -504,10 +501,9 @@ public class PreloadFragment extends Fragment {
                                                         .setDesc(MyApplication.mContext.getString(R.string.shanchu_tishi_content))
                                                         .showProgress(false)
                                                         .show();
-                                                id=dataBean.getId();
-                                              deleteFile(dataBean,tv_tishi,"13");
-
-
+                                                id = dataBean.getId();
+                                                deleteFile(dataBean, tv_tishi, "13");
+                                                eventid[0] = "download.offline_resource3";
 
                                             }
                                         }).setOnClickListener(R.id.dialog_tv_cancel, MyApplication.mContext.getString(R.string.quxiao), null).show();
@@ -515,11 +511,11 @@ public class PreloadFragment extends Fragment {
                             case "10":
                                 //预装
                                 StatisticsManager.getInstance(mContext).addEventAidl(2504);
-                                if(dataBean.getId().equals("jqdl_ch")){
-                                    installTime="（文件过大，预计安装时间20分钟）";
-                                }else {
+                                if (dataBean.getId().equals("jqdl_ch")) {
+                                    installTime = "（文件过大，预计安装时间20分钟）";
+                                } else {
 
-                                    installTime="";
+                                    installTime = "";
                                 }
 
 
@@ -528,50 +524,7 @@ public class PreloadFragment extends Fragment {
                                         .setGravity(Gravity.CENTER)
                                         .setContentView(R.layout.dialog_tishi)
                                         .setText(R.id.dialog_title, MyApplication.mContext.getString(R.string.anzhuang))
-                                        .setText(R.id.dialog_desc,MyApplication.mContext.getString(R.string.wenjiandaxiao)+dataBean.getSize())
-                                        .setCancelable(false)
-                                        .setOnClickListener(R.id.dialog_tv_sure, MyApplication.mContext.getString(R.string.queding), new View.OnClickListener() {
-                                            @Override
-                                            public void onClick(View view) {
-
-                                                 mBuilder = new ProgressDialog.Builder(getActivity());
-                                                 mBuilder.setCanceledOnTouchOutside(false)
-                                                         .showProgress(true)
-                                                         .setTitle(MyApplication.mContext.getString(R.string.anzhaungtishi))
-                                                         .setDesc(MyApplication.mContext.getString(R.string.anzhaungtishi_content1)+ finalInstallTime +MyApplication.mContext.getString(R.string.anzhaungtishi_content2))
-                                                         .showProgress(false)
-                                                         .show();
-                                                 id=dataBean.getId();
-                                                L.e("10=============="+dataBean.getCopyPath());
-                                                NeizhiList.ListFileBean.CopyPathBean bean=JSON.parseObject(dataBean.getCopyPath(),NeizhiList.ListFileBean.CopyPathBean.class);
-                                                L.e("bean.getZipPath()================="+bean.getZipPath());
-                                                tv_tishi.setText(MyApplication.mContext.getString(R.string.zhengzaianzhuang));
-
-                                                unzipCopy(dataBean.getId(),bean);
-
-
-
-                                            }
-                                        }).setOnClickListener(R.id.dialog_tv_cancel, MyApplication.mContext.getString(R.string.quxiao), null).show();
-                                break;
-                            case "11":
-                                T.show(getActivity(),MyApplication.mContext.getString(R.string.zhengzaianzhuang),500);
-                                break;
-                            case "12":
-
-                                if(dataBean.getId().equals("jqdl_ch")){
-                                    installTime="（文件过大，预计安装时间20分钟）";
-                                }else {
-
-                                    installTime="";
-                                }
-
-                                final String finalInstallTime1 = installTime;
-                                new OtherDialog.Builder(getContext())
-                                        .setGravity(Gravity.CENTER)
-                                        .setContentView(R.layout.dialog_tishi)
-                                        .setText(R.id.dialog_title, MyApplication.mContext.getString(R.string.anzhuang))
-                                        .setText(R.id.dialog_desc,MyApplication.mContext.getString(R.string.wenjiandaxiao)+dataBean.getSize())
+                                        .setText(R.id.dialog_desc, MyApplication.mContext.getString(R.string.wenjiandaxiao) + dataBean.getSize())
                                         .setCancelable(false)
                                         .setOnClickListener(R.id.dialog_tv_sure, MyApplication.mContext.getString(R.string.queding), new View.OnClickListener() {
                                             @Override
@@ -581,31 +534,74 @@ public class PreloadFragment extends Fragment {
                                                 mBuilder.setCanceledOnTouchOutside(false)
                                                         .showProgress(true)
                                                         .setTitle(MyApplication.mContext.getString(R.string.anzhaungtishi))
-                                                        .setDesc(MyApplication.mContext.getString(R.string.anzhaungtishi_content1)+ finalInstallTime1 +MyApplication.mContext.getString(R.string.anzhaungtishi_content2))
+                                                        .setDesc(MyApplication.mContext.getString(R.string.anzhaungtishi_content1) + finalInstallTime + MyApplication.mContext.getString(R.string.anzhaungtishi_content2))
                                                         .showProgress(false)
                                                         .show();
-                                                id=dataBean.getId();
-                                                L.e("10=============="+dataBean.getCopyPath());
-                                                NeizhiList.ListFileBean.CopyPathBean bean=JSON.parseObject(dataBean.getCopyPath(),NeizhiList.ListFileBean.CopyPathBean.class);
-                                                L.e("bean.getZipPath()================="+bean.getZipPath());
+                                                id = dataBean.getId();
+                                                L.e("10==============" + dataBean.getCopyPath());
+                                                NeizhiList.ListFileBean.CopyPathBean bean = JSON.parseObject(dataBean.getCopyPath(), NeizhiList.ListFileBean.CopyPathBean.class);
+                                                L.e("bean.getZipPath()=================" + bean.getZipPath());
+                                                tv_tishi.setText(MyApplication.mContext.getString(R.string.zhengzaianzhuang));
+                                                add_hp.put("download.offline_resource4_def",dataBean.getName());
+                                                add_hp.put("offline_resource4_status",true);
+                                                eventid[0] = "download.offline_resource4";
+                                                unzipCopy(dataBean.getId(), bean);
+
+
+                                            }
+                                        }).setOnClickListener(R.id.dialog_tv_cancel, MyApplication.mContext.getString(R.string.quxiao), null).show();
+                                break;
+                            case "11":
+                                T.show(getActivity(), MyApplication.mContext.getString(R.string.zhengzaianzhuang), 500);
+                                break;
+                            case "12":
+
+                                if (dataBean.getId().equals("jqdl_ch")) {
+                                    installTime = "（文件过大，预计安装时间20分钟）";
+                                } else {
+
+                                    installTime = "";
+                                }
+
+                                final String finalInstallTime1 = installTime;
+                                new OtherDialog.Builder(getContext())
+                                        .setGravity(Gravity.CENTER)
+                                        .setContentView(R.layout.dialog_tishi)
+                                        .setText(R.id.dialog_title, MyApplication.mContext.getString(R.string.anzhuang))
+                                        .setText(R.id.dialog_desc, MyApplication.mContext.getString(R.string.wenjiandaxiao) + dataBean.getSize())
+                                        .setCancelable(false)
+                                        .setOnClickListener(R.id.dialog_tv_sure, MyApplication.mContext.getString(R.string.queding), new View.OnClickListener() {
+                                            @Override
+                                            public void onClick(View view) {
+
+                                                mBuilder = new ProgressDialog.Builder(getActivity());
+                                                mBuilder.setCanceledOnTouchOutside(false)
+                                                        .showProgress(true)
+                                                        .setTitle(MyApplication.mContext.getString(R.string.anzhaungtishi))
+                                                        .setDesc(MyApplication.mContext.getString(R.string.anzhaungtishi_content1) + finalInstallTime1 + MyApplication.mContext.getString(R.string.anzhaungtishi_content2))
+                                                        .showProgress(false)
+                                                        .show();
+                                                id = dataBean.getId();
+                                                L.e("10==============" + dataBean.getCopyPath());
+                                                NeizhiList.ListFileBean.CopyPathBean bean = JSON.parseObject(dataBean.getCopyPath(), NeizhiList.ListFileBean.CopyPathBean.class);
+                                                L.e("bean.getZipPath()=================" + bean.getZipPath());
                                                 tv_tishi.setText(MyApplication.mContext.getString(R.string.zhengzaianzhuang));
 
-                                                unzipCopy(dataBean.getId(),bean);
-
+                                                unzipCopy(dataBean.getId(), bean);
 
 
                                             }
                                         }).setOnClickListener(R.id.dialog_tv_cancel, MyApplication.mContext.getString(R.string.quxiao), null).show();
                                 break;
                             case "13":
-                                T.show(getActivity(),MyApplication.mContext.getString(R.string.zhengzaixiezai),500);
+                                T.show(getActivity(), MyApplication.mContext.getString(R.string.zhengzaixiezai), 500);
                                 break;
                             case "14":
                                 new OtherDialog.Builder(getContext())
                                         .setGravity(Gravity.CENTER)
                                         .setContentView(R.layout.dialog_tishi)
                                         .setText(R.id.dialog_title, MyApplication.mContext.getString(R.string.xiezai))
-                                        .setText(R.id.dialog_desc,"")
+                                        .setText(R.id.dialog_desc, "")
                                         .setCancelable(false)
                                         .setOnClickListener(R.id.dialog_tv_sure, MyApplication.mContext.getString(R.string.queding), new View.OnClickListener() {
                                             @Override
@@ -618,9 +614,8 @@ public class PreloadFragment extends Fragment {
                                                         .setDesc(MyApplication.mContext.getString(R.string.xiezaitishi_content))
                                                         .showProgress(false)
                                                         .show();
-                                                id=dataBean.getId();
-                                                deleteFile(dataBean,tv_tishi,"13");
-
+                                                id = dataBean.getId();
+                                                deleteFile(dataBean, tv_tishi, "13");
 
 
                                             }
@@ -629,6 +624,14 @@ public class PreloadFragment extends Fragment {
 
                         }
 
+
+                        /**####  start-hjs-addStatisticsEvent   ##**/
+                        try {
+                            ((StatisticsBaseActivity) getActivity()).addStatisticsEvent( eventid[0], add_hp);
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                        /**####  end-hjs-addStatisticsEvent  ##**/
 
                     }
 
@@ -642,21 +645,20 @@ public class PreloadFragment extends Fragment {
 
     /**
      * 解压 拷贝文件
+     *
      * @param bean
      */
-    public void unzipCopy(final String id, final NeizhiList.ListFileBean.CopyPathBean bean){
+    public void unzipCopy(final String id, final NeizhiList.ListFileBean.CopyPathBean bean) {
 
         intent = new Intent(MyApplication.mContext, UnZipInstallService.class);
-        intent.putExtra("comm","copy");
-        intent.putExtra("id",id);
-        intent.putExtra("copyBean",JSON.toJSONString(bean));
-        intent.putExtra("frag","list");
+        intent.putExtra("comm", "copy");
+        intent.putExtra("id", id);
+        intent.putExtra("copyBean", JSON.toJSONString(bean));
+        intent.putExtra("frag", "list");
         getActivity().startService(intent);
 
 
     }
-
-
 
 
     public void updateUiDb(final String id, final TextView textView) {
@@ -664,7 +666,7 @@ public class PreloadFragment extends Fragment {
             @Override
             public void run() {
                 MyApplication.dbHelper.updateStatusId(id, "12");
-                if (mBuilder!=null) {
+                if (mBuilder != null) {
                     mBuilder.dismiss();
                 }
                 textView.setText(MyApplication.mContext.getString(R.string.chongshi));
@@ -675,23 +677,21 @@ public class PreloadFragment extends Fragment {
     }
 
 
-
-
-
     /**
-     *   删除
+     * 删除
+     *
      * @param dataBean
      * @param tv_tishi
-     * @param delType   13是卸载
+     * @param delType  13是卸载
      */
     public void deleteFile(final Offline_database dataBean, final TextView tv_tishi, String delType) {
 
         intent = new Intent(MyApplication.mContext, UnZipInstallService.class);
-        intent.putExtra("comm","del");
-        intent.putExtra("frag","list");
-        intent.putExtra("bean",JSON.toJSONString(dataBean));
-        L.e("bean======================"+JSON.toJSONString(dataBean));
-        intent.putExtra("delType",delType);
+        intent.putExtra("comm", "del");
+        intent.putExtra("frag", "list");
+        intent.putExtra("bean", JSON.toJSONString(dataBean));
+        L.e("bean======================" + JSON.toJSONString(dataBean));
+        intent.putExtra("delType", delType);
         getActivity().startService(intent);
 
         tv_tishi.setText(MyApplication.mContext.getString(R.string.zhengzaixiezai));
@@ -708,10 +708,10 @@ public class PreloadFragment extends Fragment {
         try {
             getActivity().stopService(intent);
         } catch (Exception e) {
-            L.e("unbindService==================="+e.getMessage());
+            L.e("unbindService===================" + e.getMessage());
         }
 
-      MyApplication.dbHelper.shutdownUPdateDB();
+        MyApplication.dbHelper.shutdownUPdateDB();
 
 
         super.onDestroy();

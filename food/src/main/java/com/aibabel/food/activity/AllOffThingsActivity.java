@@ -28,6 +28,7 @@ import com.zhouyou.recyclerview.adapter.BaseRecyclerViewAdapter;
 import com.zhouyou.recyclerview.adapter.HelperStateRecyclerViewAdapter;
 import com.zhouyou.recyclerview.manager.StateGridLayoutManager;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -87,10 +88,29 @@ public class AllOffThingsActivity extends BaseActivity implements BaseCallback<B
                     case TAG_AREA:
                         map.put("p1", ((AreaBean.DataBean) item).getName_cn());
                         StatisticsManager.getInstance(mContext).addEventAidl(1021, map);
+
+                        /**####  start-hjs-addStatisticsEvent   ##**/
+                        try {
+                            HashMap<String, Serializable> add_hp = new HashMap<>();
+                            add_hp.put("food_allOff5_def", ((AreaBean.DataBean) item).getName_cn());
+                            addStatisticsEvent("food_allOff5", add_hp);
+                        }catch (Exception e){
+                            e.printStackTrace();
+                        }
+                        /**####  end-hjs-addStatisticsEvent  ##**/
                         startActivity(new Intent(mContext, FilterActivity.class).putExtra(FilterActivity.FILTER_TAG1, ((AreaBean.DataBean) item)
                                 .getName_cn()));
                         break;
                     case TAG_KIND:
+                        /**####  start-hjs-addStatisticsEvent   ##**/
+                        try {
+                            HashMap<String, Serializable> add_hp = new HashMap<>();
+                            add_hp.put("food_allOff5_def", ((AreaBean.DataBean) item).getName_cn());
+                            addStatisticsEvent("food_allOff5", add_hp);
+                        }catch (Exception e){
+                            e.printStackTrace();
+                        }
+                        /**####  end-hjs-addStatisticsEvent  ##**/
                         map.put("p1", ((KindBean.DataBean) item).getName_cn());
                         StatisticsManager.getInstance(mContext).addEventAidl( 1032, map);
                         startActivity(new Intent(mContext, FilterActivity.class).putExtra(FilterActivity.FILTER_TAG2, ((KindBean.DataBean) item)
@@ -112,6 +132,14 @@ public class AllOffThingsActivity extends BaseActivity implements BaseCallback<B
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.ivBack:
+
+                /**####  start-hjs-addStatisticsEvent   ##**/
+                try {
+                    addStatisticsEvent("food_allOff1", null);
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
+                /**####  end-hjs-addStatisticsEvent  ##**/
                 finish();
                 break;
         }

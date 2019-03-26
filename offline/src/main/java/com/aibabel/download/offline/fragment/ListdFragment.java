@@ -23,6 +23,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.aibabel.aidlaar.StatisticsManager;
+import com.aibabel.baselibrary.base.StatisticsBaseActivity;
 import com.aibabel.download.offline.R;
 import com.aibabel.download.offline.adapter.MyAdapter;
 import com.aibabel.download.offline.adapter.ViewHolder;
@@ -62,6 +63,7 @@ import org.xutils.http.RequestParams;
 import org.xutils.x;
 
 import java.io.File;
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -533,6 +535,16 @@ public class ListdFragment extends Fragment {
 
                                                     deleteFile(new Offline_database(dataBean.getId(),"","","",dataBean.getCopy_path()),tv_tishi,"");
 
+                                                    /**####  start-hjs-addStatisticsEvent   ##**/
+                                                    try {
+                                                        HashMap<String, Serializable> add_hp = new HashMap<>();
+                                                        add_hp.put("download.offline_downLoadList5_def", tv_id.getText().toString());
+                                                        ((StatisticsBaseActivity)getActivity()).addStatisticsEvent("download.offline_downLoadList5", add_hp);
+                                                    }catch (Exception e){
+                                                        e.printStackTrace();
+                                                    }
+                                                    /**####  end-hjs-addStatisticsEvent  ##**/
+
 
 
                                                 }
@@ -724,7 +736,15 @@ public class ListdFragment extends Fragment {
                                     downloadFile(dataBean,status,tv_id.getText().toString());
                                     StatisticsManager.getInstance(mContext).addEventAidl(2502);
 
-
+                                    /**####  start-hjs-addStatisticsEvent   ##**/
+                                    try {
+                                        HashMap<String, Serializable> add_hp = new HashMap<>();
+                                        add_hp.put("download.offline_downLoadList4_def", tv_id.getText().toString());
+                                        ((StatisticsBaseActivity)getActivity()).addStatisticsEvent("download.offline_downLoadList4", add_hp);
+                                    }catch (Exception e){
+                                        e.printStackTrace();
+                                    }
+                                    /**####  end-hjs-addStatisticsEvent  ##**/
 
                                 }
                             });

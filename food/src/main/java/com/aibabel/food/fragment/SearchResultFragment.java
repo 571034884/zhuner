@@ -8,6 +8,7 @@ import android.view.View;
 
 import com.aibabel.baselibrary.adapter.BaseRecyclercAdapter;
 import com.aibabel.baselibrary.base.BaseFragment;
+import com.aibabel.baselibrary.base.StatisticsBaseActivity;
 import com.aibabel.baselibrary.http.BaseCallback;
 import com.aibabel.baselibrary.http.OkGoUtil;
 import com.aibabel.baselibrary.utils.FastJsonUtil;
@@ -22,6 +23,7 @@ import com.zhouyou.recyclerview.XRecyclerView;
 import com.zhouyou.recyclerview.adapter.BaseRecyclerViewAdapter;
 import com.zhouyou.recyclerview.adapter.HelperStateRecyclerViewAdapter;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -73,6 +75,17 @@ public class SearchResultFragment extends BaseFragment implements BaseCallback<F
                         .putExtra("shopId", item.getShopId())
                         .putExtra("shopName", item.getShopName())
                         .putExtra("where", "search"));
+
+
+                /**####  start-hjs-addStatisticsEvent   ##**/
+                try {
+                    HashMap<String, Serializable> add_hp = new HashMap<>();
+                    add_hp.put("food_Search9_def", item.getShopName());
+                    ((StatisticsBaseActivity)getActivity()).addStatisticsEvent("food_Search9", add_hp);
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
+                /**####  end-hjs-addStatisticsEvent  ##**/
             }
         });
     }

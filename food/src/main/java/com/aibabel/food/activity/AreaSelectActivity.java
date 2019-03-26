@@ -21,6 +21,7 @@ import com.aibabel.food.custom.sticklist.PinyinComparator;
 import com.aibabel.food.custom.sticklist.SideBar;
 import com.aibabel.food.custom.sticklist.SortAdapter;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -141,6 +142,17 @@ public class AreaSelectActivity extends BaseActivity implements BaseCallback<Cit
                 Map<String,String> map = new HashMap<>();
                 map.put("p1",adapter.getData().get(position).getName_cn());
                 StatisticsManager.getInstance(AreaSelectActivity.this).addEventAidl(1062,map);
+
+                /**####  start-hjs-addStatisticsEvent   ##**/
+                try {
+                    HashMap<String, Serializable> add_hp = new HashMap<>();
+                    add_hp.put("food_Selec1_def", adapter.getData().get(position).getName_cn());
+                    addStatisticsEvent("food_Selec1", add_hp);
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
+                /**####  end-hjs-addStatisticsEvent  ##**/
+
                 Constant.CURRENT_CITY = adapter.getData().get(position).getName_cn();
                 Intent intent = new Intent();
                 intent.putExtra("cityId", adapter.getData().get(position).getCity_id());
