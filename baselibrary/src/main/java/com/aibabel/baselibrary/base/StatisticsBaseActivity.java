@@ -214,6 +214,15 @@ public class StatisticsBaseActivity extends AppCompatActivity {
 
     }
 
+    /**
+     *  添加独立的、不依赖于任何界面的事件统计、通常用于统计Service中的事件
+     * @param eventId
+     * @param parameters
+     */
+    public void addIndependentEvent(String eventId, HashMap<String, Serializable> parameters){
+
+
+    }
     @Override
     public void startActivity(Intent intent) {
         super.startActivity(intent);

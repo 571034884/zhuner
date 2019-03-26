@@ -5,7 +5,6 @@ import android.app.Application;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.text.TextUtils;
 import android.util.Log;
 
 import com.aibabel.aidlaar.StatisticsManager;
@@ -112,24 +111,24 @@ public abstract class BaseApplication extends Application {
      * 跨进程初始化
      */
     private void initXipc() {
-        XIPC.init(this);
-        XIPC.debug(BuildConfig.DEBUG);
-        String packagename = getAppPackageName();
-        if(!TextUtils.isEmpty(packagename)) {
-            if (getAppPackageName().equals("com.aibabel.menu")) {
-                XIPC.register(DataManager.class);
-                XIPC.register(ServerManager.class);
-                XIPC.register(com.aibabel.baselibrary.mode.StatisticsManager.class);
+        try {
+            XIPC.init(this);
+            XIPC.debug(BuildConfig.DEBUG);
+            String packgageName = getPackageName();
+            if (packgageName != null) {
+                if (packgageName.equals("com.aibabel.menu")) {
+                    XIPC.register(DataManager.class);
+                    XIPC.register(ServerManager.class);
+                    XIPC.register(com.aibabel.baselibrary.mode.StatisticsManager.class);
+                } else {
+                    XIPC.register(IDataManager.class);
+                    XIPC.register(IServerManager.class);
+                    XIPC.register(IStatistics.class);
+                }
             }
+        }catch (Exception e){
+            e.printStackTrace();
         }
-        else{
-            XIPC.register(IDataManager.class);
-            XIPC.register(IServerManager.class);
-            XIPC.register(IStatistics.class);
-        }
-
-
-
 
 
     }
