@@ -21,6 +21,6 @@ public interface IStatistics {
        void addPath(String appName, String appVersion, JSONObject info);
        @MethodName("createUploadData")
        String createUploadData(String order_id);
-       @MethodName("addNotify")
-       void addNotify(String id, HashMap<String , Serializable> map);
+       @MethodName("addIndependentEvent")
+       void addIndependentEvent(String id, HashMap<String , Serializable> map);
 }

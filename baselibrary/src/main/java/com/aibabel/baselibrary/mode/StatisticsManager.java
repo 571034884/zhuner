@@ -11,6 +11,7 @@ import com.aibabel.baselibrary.impl.IStatistics;
 import com.aibabel.baselibrary.utils.CommonUtils;
 import com.aibabel.baselibrary.utils.SharePrefUtil;
 import com.aibabel.baselibrary.utils.ToastUtil;
+import com.google.gson.JsonArray;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.StringCallback;
 import com.lzy.okgo.model.Response;
@@ -40,6 +41,7 @@ public class StatisticsManager implements IStatistics {
     List<String> Statistics = new ArrayList();
     JSONArray allReadyUploadData = new JSONArray();
     private ArrayList<StatisticsModle> pathNodes = new ArrayList<>();
+    private JSONArray independentEventArray=new JSONArray();
 
     public static StatisticsManager getInstance() {
         return StatisticsManagerHolder.manager;
@@ -47,6 +49,7 @@ public class StatisticsManager implements IStatistics {
 
     @MethodName("addPath")
     public void addPath(String appName, String appVersion, JSONObject info) {
+        Log.e("addPath",appName+"  "+appVersion+" "+info.toString());
 
         int size = pathNodes.size();
         StatisticsModle modle = null;
@@ -76,15 +79,17 @@ public class StatisticsManager implements IStatistics {
 
     }
 
+
     /**
-     *  通知栏点击事件统计
-     * @param id
-     * @param parameters
+     *  添加独立的、不依赖于任何界面的事件统计、通常用于统计Service中的事件
+     * @param id  事件id
+     * @param parameters  事件参数
      */
     @Override
-    @MethodName("addNotify")
-    public void addNotify(String id, HashMap<String, Serializable> parameters) {
-         JSONObject pageObject=new JSONObject();
+    @MethodName("addIndependentEvent")
+    public void addIndependentEvent(String id, HashMap<String, Serializable> parameters) {
+
+
          JSONObject eventObject=new JSONObject();
         try {
             eventObject.put("eid",id);
@@ -97,13 +102,12 @@ public class StatisticsManager implements IStatistics {
                 }
                 eventObject.put("p",parametersJson.toString());
             }
-           pageObject.put("e",new JSONArray().put(eventObject));
-
+            independentEventArray.put(eventObject);
 
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        addPath("notify","1.0",pageObject);
+
 
 
     }
@@ -144,6 +148,7 @@ public class StatisticsManager implements IStatistics {
 
     @MethodName("createUploadData")
     public String createUploadData(String order_id) {
+        String resultStr=null;
         JSONObject jsonObject = new JSONObject();
         try {
             jsonObject.put("leaseID", order_id);
@@ -160,10 +165,19 @@ public class StatisticsManager implements IStatistics {
 
             }
             jsonObject.put("path", array);
+
+            if (independentEventArray!=null&&independentEventArray.length()>0){
+                jsonObject.put("events",independentEventArray);
+
+            }
+            resultStr=jsonObject.toString();
+            independentEventArray=new JSONArray();
+            pathNodes.clear();
+
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        return jsonObject.toString();
+        return resultStr;
 
     }
 
