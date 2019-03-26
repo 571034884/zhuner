@@ -18,6 +18,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 
 import com.aibabel.baselibrary.base.BaseActivity;
+import com.aibabel.baselibrary.base.StatisticsBaseActivity;
 import com.aibabel.baselibrary.utils.ToastUtil;
 import com.aibabel.map.R;
 import com.aibabel.map.base.MapBaseActivity;
@@ -106,6 +107,13 @@ public class ActiveActivity extends MapBaseActivity{
     public void onClick(View view){
         switch (view.getId()){
             case R.id.bar_closes:
+                /**####  start-hjs-addStatisticsEvent   ##**/
+                try {
+                    addStatisticsEvent("path_plan_route5", null);
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
+                /**####  end-hjs-addStatisticsEvent  ##**/
                 finish();
                 break;
             case R.id.ll_error:

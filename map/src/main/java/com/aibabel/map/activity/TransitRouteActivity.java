@@ -4,6 +4,8 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v4.view.ViewPager;
+import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
@@ -208,6 +210,7 @@ public class TransitRouteActivity extends BaseActivity{
             }
         });
 
+
         ivClose.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -237,6 +240,35 @@ public class TransitRouteActivity extends BaseActivity{
         public void onScrollFinished(ScrollLayout.Status currentStatus) {
             if (currentStatus.equals(ScrollLayout.Status.EXIT)) {
                 vpDetails.setVisibility(View.VISIBLE);
+            }
+
+            if (currentStatus.equals(ScrollLayout.Status.OPENED)) {
+                /**####  start-hjs-addStatisticsEvent   ##**/
+                try {
+                    addStatisticsEvent("path_plan_bus7", null);
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
+                /**####  end-hjs-addStatisticsEvent  ##**/
+            }else if(currentStatus.equals(ScrollLayout.Status.CLOSED)) {
+
+                /**####  start-hjs-addStatisticsEvent   ##**/
+                try {
+                    addStatisticsEvent("path_plan_bus8", null);
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
+                /**####  end-hjs-addStatisticsEvent  ##**/
+
+            }else if(currentStatus.equals(ScrollLayout.Status.EXIT)) {
+
+                /**####  start-hjs-addStatisticsEvent   ##**/
+                try {
+                    addStatisticsEvent("path_plan_bus6", null);
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
+                /**####  end-hjs-addStatisticsEvent  ##**/
             }
         }
 

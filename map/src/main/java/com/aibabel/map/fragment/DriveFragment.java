@@ -24,6 +24,7 @@ import android.widget.ZoomControls;
 
 import com.aibabel.aidlaar.StatisticsManager;
 import com.aibabel.baselibrary.base.BaseFragment;
+import com.aibabel.baselibrary.base.StatisticsBaseActivity;
 import com.aibabel.baselibrary.http.BaseBean;
 import com.aibabel.baselibrary.http.BaseCallback;
 import com.aibabel.baselibrary.http.OkGoUtil;
@@ -141,6 +142,14 @@ public class DriveFragment extends BaseFragment implements SensorEventListener ,
         //地图初始化
         initBaiDuOption();
         initListener();
+
+        /**####  start-hjs-addStatisticsEvent   ##**/
+        try {
+            ((StatisticsBaseActivity)getActivity()).addStatisticsEvent("path_plan_route", null);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        /**####  end-hjs-addStatisticsEvent  ##**/
     }
 
     private void initListener() {
@@ -251,6 +260,13 @@ public class DriveFragment extends BaseFragment implements SensorEventListener ,
             public void onSuccess(String s, BaseBean baseBean, String s1) {
                 index = 0;
                 trafficType(s1);
+                /**####  start-hjs-addStatisticsEvent   ##**/
+                try {
+                    ((StatisticsBaseActivity)getActivity()).addStatisticsEvent("path_plan_route1", null);
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
+                /**####  end-hjs-addStatisticsEvent  ##**/
             }
 
             @Override
@@ -552,6 +568,13 @@ public class DriveFragment extends BaseFragment implements SensorEventListener ,
                     Map map = new HashMap();
                 map.put("type",routeBean.getMode());
                 StatisticsManager.getInstance(mContext).addEventAidl(1211,map);
+                /**####  start-hjs-addStatisticsEvent   ##**/
+                try {
+                    ((StatisticsBaseActivity)getActivity()).addStatisticsEvent("path_plan_route2", null);
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
+                /**####  end-hjs-addStatisticsEvent  ##**/
 
                 Intent intent = new Intent(mContext, TrafficDetailActivity.class);
                 if (routeBean.getLocationWhere() == 1) {
