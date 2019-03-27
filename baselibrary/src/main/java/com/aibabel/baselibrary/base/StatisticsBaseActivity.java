@@ -9,6 +9,7 @@ import android.text.TextUtils;
 import android.widget.Toast;
 
 import com.aibabel.baselibrary.impl.IStatistics;
+import com.aibabel.baselibrary.mode.PageUnit;
 import com.aibabel.baselibrary.mode.StatisticsManager;
 import com.aibabel.baselibrary.utils.DeviceUtils;
 import com.xuexiang.xipc.XIPC;
@@ -49,7 +50,7 @@ public class StatisticsBaseActivity extends AppCompatActivity {
 
         isOpenFromHardwareButton=getIntent().getBooleanExtra(HARDWARE_BUTTON,true);
 
-        getIntent().putExtra("HardwareButton",false);
+
         if (DeviceUtils.getSystem()== DeviceUtils.System.PRO_LEASE){
             try {
                 if (appName==null){
@@ -59,15 +60,7 @@ public class StatisticsBaseActivity extends AppCompatActivity {
                     PackageInfo info=getPackageManager().getPackageInfo(getPackageName(),0);
                     appVersion=info.versionName;
                 }
-                pageObject=new JSONObject();
-                pageObject.put("pn",getClass().getSimpleName());
 
-                if (!TextUtils.isEmpty(notifyId)){
-                    pageObject.put("notify",notifyId);
-                }
-                if (isOpenFromHardwareButton){
-                    pageObject.put("h",true);
-                }
 
             } catch (Exception e) {
                 e.printStackTrace();
@@ -102,8 +95,17 @@ public class StatisticsBaseActivity extends AppCompatActivity {
         super.onResume();
         if (DeviceUtils.getSystem()== DeviceUtils.System.PRO_LEASE){
             try {
+                pageObject=new JSONObject();
+                pageObject.put("pn",getClass().getSimpleName());
                 pageObject.remove("it");
                 pageObject.put("it",System.currentTimeMillis());
+                if (!TextUtils.isEmpty(notifyId)){
+                    pageObject.put("notify",notifyId);
+                }
+                if (isOpenFromHardwareButton){
+                    pageObject.put("h",true);
+                }
+
             } catch (JSONException e) {
                 e.printStackTrace();
             }
@@ -142,17 +144,19 @@ public class StatisticsBaseActivity extends AppCompatActivity {
         if (DeviceUtils.getSystem()== DeviceUtils.System.PRO_LEASE&&statisticsManager!=null){
 
             try {
-
-
-
                 pageObject.put("ot", System.currentTimeMillis());
                 pageObject.put("p",pageParameters);
 
-                if (eventsArray!=null&&eventsArray.length()>0)
+                if (eventsArray!=null&&eventsArray.length()>0){
                     pageObject.put("e",eventsArray);
-
-                statisticsManager.addPath(appName,appVersion,pageObject);
-
+                    eventsArray=new JSONArray();
+                }
+//                PageUnit pageUnit=new PageUnit();
+//                pageUnit.inTime="23r33r3r3r3";
+//                HashMap<String,Serializable> parameters=new HashMap<>();
+//                parameters.put("click","23134");
+//                pageUnit.paramters=parameters;
+                statisticsManager.addPath(appName,appVersion,pageObject.toString());
 
             } catch (Exception e) {
                 e.printStackTrace();
@@ -161,16 +165,54 @@ public class StatisticsBaseActivity extends AppCompatActivity {
 
 
     }
+//    /**
+//     * 跨进程添加统计数据
+//     */
+//    private void createPageInfo(){
+//        if (DeviceUtils.getSystem()== DeviceUtils.System.PRO_LEASE&&statisticsManager!=null){
+//
+//            try {
+//                pageObject.put("ot", System.currentTimeMillis());
+//                pageObject.put("p",pageParameters);
+//
+//                if (eventsArray!=null&&eventsArray.length()>0){
+//                    pageObject.put("e",eventsArray);
+//                    eventsArray=new JSONArray();
+//                }
+//                statisticsManager.addPath(appName,appVersion,pageObject.toString());
+//
+//            } catch (Exception e) {
+//                e.printStackTrace();
+//            }
 
+
+//            StringBuilder builder=new StringBuilder();
+//            builder.append("op:"+System.currentTimeMillis()).append("-").append("it:"+pageObject.opt("it"));
+//            if (eventsArray!=null&&eventsArray.length()>0){
+//                StringBuilder pageParmeters=new StringBuilder();
+//                for (int i=0;i<eventsArray.length();i++){
+//                    JSONObject jsonObject=eventsArray.optJSONObject(i);
+//                    String key=jsonObject.keys().next();
+//                    String value= (String) jsonObject.opt(key);
+//                    pageParmeters.append(key+":"+value+"-");
+//                }
+//                pageObject.put("e",eventsArray);
+//                eventsArray=new JSONArray();
+//            }
+//
+
+//        }
+//
+//
+//    }
     @Override
     protected void onStop() {
         super.onStop();
         try {
             if (System.currentTimeMillis() - pageObject.optLong("it") > 500) {
                 addPathToStatisticsManager();
-                if (pageObject.has("h")) {
-                    pageObject.remove("h");
-                }
+
+
             }
         }catch (Exception e){
 
@@ -196,7 +238,7 @@ public class StatisticsBaseActivity extends AppCompatActivity {
 
                         parametersJson.put(entry.getKey(),entry.getValue());
                     }
-                    eventObject.put("p",parametersJson.toString());
+                    eventObject.put("p",parametersJson);
 
                 }
                 if (eventsArray==null){

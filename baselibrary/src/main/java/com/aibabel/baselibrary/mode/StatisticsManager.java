@@ -6,12 +6,14 @@ import android.net.Uri;
 import android.os.Build;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.TextureView;
 
 import com.aibabel.baselibrary.impl.IStatistics;
 import com.aibabel.baselibrary.utils.CommonUtils;
 import com.aibabel.baselibrary.utils.SharePrefUtil;
 import com.aibabel.baselibrary.utils.ToastUtil;
 import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.StringCallback;
 import com.lzy.okgo.model.Response;
@@ -20,10 +22,18 @@ import com.lzy.okgo.request.base.Request;
 import com.xuexiang.xipc.annotation.ClassName;
 import com.xuexiang.xipc.annotation.MethodName;
 
+import org.apache.commons.lang3.StringEscapeUtils;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
 import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -37,77 +47,84 @@ public class StatisticsManager implements IStatistics {
     private static final Uri CITY_URI = Uri.parse("content://com.aibabel.locationservice.provider.AibabelProvider/aibabel_location");
     private double latitude;
     private double longitude;
-    private  long locationTime=System.currentTimeMillis();
+    private long locationTime = System.currentTimeMillis();
     List<String> Statistics = new ArrayList();
     JSONArray allReadyUploadData = new JSONArray();
     private ArrayList<StatisticsModle> pathNodes = new ArrayList<>();
-    private JSONArray independentEventArray=new JSONArray();
+    private JSONArray independentEventArray = new JSONArray();
 
     public static StatisticsManager getInstance() {
         return StatisticsManagerHolder.manager;
     }
 
     @MethodName("addPath")
-    public void addPath(String appName, String appVersion, JSONObject info) {
-        Log.e("addPath",appName+"  "+appVersion+" "+info.toString());
+    public void addPath(String appName, String appVersion, String info) {
+        Log.e("addPath", appName + "  " + appVersion + " " + info);
+//
+        try {
+            JSONObject infoObject = new JSONObject(info);
 
-        int size = pathNodes.size();
-        StatisticsModle modle = null;
+//            Log.e("infoObject",)
+            int size = pathNodes.size();
+            StatisticsModle modle = null;
 
-        if (size == 0) {
-            modle = new StatisticsModle();
-            modle.an = appName;
-            modle.av = appVersion;
-            modle.c.put(info);
-
-            pathNodes.add(modle);
-
-        } else {
-            modle = pathNodes.get(size - 1);
-            if (modle.an.equals(appName)) {
-                modle.c.put(info);
-            } else {
+            if (size == 0) {
                 modle = new StatisticsModle();
                 modle.an = appName;
                 modle.av = appVersion;
-                modle.c.put(info);
+                modle.c.put(infoObject);
+
                 pathNodes.add(modle);
+
+            } else {
+                modle = pathNodes.get(size - 1);
+                if (modle.an.equals(appName)) {
+                    modle.c.put(infoObject);
+                } else {
+                    modle = new StatisticsModle();
+                    modle.an = appName;
+                    modle.av = appVersion;
+                    modle.c.put(infoObject);
+                    pathNodes.add(modle);
+                }
+
             }
 
+        } catch (Exception e) {
+            e.printStackTrace();
         }
-
 
     }
 
 
     /**
-     *  添加独立的、不依赖于任何界面的事件统计、通常用于统计Service中的事件
-     * @param id  事件id
-     * @param parameters  事件参数
+     * 添加独立的、不依赖于任何界面的事件统计、通常用于统计Service中的事件
+     *
+     * @param id         事件id
+     * @param parameters 事件参数
      */
     @Override
     @MethodName("addIndependentEvent")
     public void addIndependentEvent(String id, HashMap<String, Serializable> parameters) {
 
 
-         JSONObject eventObject=new JSONObject();
+        JSONObject eventObject = new JSONObject();
         try {
-            eventObject.put("eid",id);
-            eventObject.put("et",System.currentTimeMillis());
-            if (parameters!=null&&parameters.size()>0){
-                JSONObject parametersJson=new JSONObject();
-                for (Map.Entry<String, Serializable> entry : parameters.entrySet()){
+            eventObject.put("eid", id);
+            eventObject.put("et", System.currentTimeMillis());
+            if (parameters != null && parameters.size() > 0) {
+                JSONObject parametersJson = new JSONObject();
+                for (Map.Entry<String, Serializable> entry : parameters.entrySet()) {
 
-                    parametersJson.put(entry.getKey(),entry.getValue());
+                    parametersJson.put(entry.getKey(), entry.getValue());
                 }
-                eventObject.put("p",parametersJson.toString());
+                eventObject.put("p", parametersJson.toString());
             }
             independentEventArray.put(eventObject);
 
         } catch (JSONException e) {
             e.printStackTrace();
         }
-
 
 
     }
@@ -118,12 +135,12 @@ public class StatisticsManager implements IStatistics {
      * @param context
      * @return
      */
-    public  void location(Context context) {
-        long currentTime=System.currentTimeMillis();
-        if (currentTime-locationTime<15*60*100){
+    public void location(Context context) {
+        long currentTime = System.currentTimeMillis();
+        if (currentTime - locationTime < 15 * 60 * 100) {
             return;
         }
-        locationTime=currentTime;
+        locationTime = currentTime;
         Cursor cursor = context.getContentResolver().query(CITY_URI, null, null, null, null);
 
         try {
@@ -136,9 +153,9 @@ public class StatisticsManager implements IStatistics {
 
 
             }
-        } catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
-        }finally {
+        } finally {
             if (null != cursor)
                 cursor.close();
         }
@@ -148,7 +165,7 @@ public class StatisticsManager implements IStatistics {
 
     @MethodName("createUploadData")
     public String createUploadData(String order_id) {
-        String resultStr=null;
+        String resultStr = null;
         JSONObject jsonObject = new JSONObject();
         try {
             jsonObject.put("leaseID", order_id);
@@ -166,12 +183,14 @@ public class StatisticsManager implements IStatistics {
             }
             jsonObject.put("path", array);
 
-            if (independentEventArray!=null&&independentEventArray.length()>0){
-                jsonObject.put("events",independentEventArray);
-
+            if (independentEventArray != null && independentEventArray.length() > 0) {
+                jsonObject.put("events", independentEventArray);
             }
-            resultStr=jsonObject.toString();
-            independentEventArray=new JSONArray();
+
+
+            resultStr = StringEscapeUtils.unescapeJava(jsonObject.toString());
+            Log.e("createUploadData", resultStr);
+            independentEventArray = new JSONArray();
             pathNodes.clear();
 
         } catch (JSONException e) {
@@ -182,17 +201,16 @@ public class StatisticsManager implements IStatistics {
     }
 
 
-
-
-
-    public void uplaodData( Context context,String order_id) {
+    public void uplaodData(Context context, String order_id) {
         location(context);
-        String newData=createUploadData(order_id);
-        final String allData=getData(context,newData);
+        String newData = createUploadData(order_id);
+//        Log.e("newData", newData);
 
-        String url="http://39.107.238.111:7001";
+        final String allData = getData(context, newData);
+//        Log.e("allData", allData);
+        String url = "http://39.107.238.111:7001";
 //        String url=CommonUtils.getTimerType()==0?"http://abroad.api.joner.aibabel.cn:7001":"http://api.joner.aibabel.cn:7001";
-        PostRequest<String> postRequest = OkGo.<String>post(url+"/v2/ddot/JonerLogPush").tag("JonerLogPush");
+        PostRequest<String> postRequest = OkGo.<String>post(url + "/v2/ddot/JonerLogPush").tag("JonerLogPush");
 
         postRequest.params("sv", Build.DISPLAY);
         postRequest.params("sn", CommonUtils.getSN());
@@ -201,7 +219,7 @@ public class StatisticsManager implements IStatistics {
         postRequest.params("no", CommonUtils.getRandom() + "");
         postRequest.params("lat", latitude + "");
         postRequest.params("lng", longitude + "");
-        postRequest.params("data",allData);
+        postRequest.params("data", allData);
         postRequest.execute(new StringCallback() {
             @Override
             public void onStart(Request<String, ? extends Request> request) {
@@ -212,23 +230,26 @@ public class StatisticsManager implements IStatistics {
             @Override
             public void onSuccess(Response<String> response) {
 
-                Log.e("onSuccess",response.body());
+                Log.e("onSuccess", response.body());
+
                 try {
-                    JSONObject object=new JSONObject(response.body());
-                    if (!object.has("code")||!object.getString("code").equals("1")){
-                         saveData(context,allData);
+                    JSONObject object = new JSONObject(response.body());
+                    if (!object.has("code") || !object.getString("code").equals("1")) {
+                        saveData(context, allData);
+                    } else {
+                        saveData(context, "");
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
-
+//                saveData(context, allData);
 
             }
 
             @Override
             public void onError(Response<String> response) {
-                Log.e("onError",response.code()+"");
-                saveData(context,allData);
+                Log.e("onError", response.code() + "");
+                saveData(context, allData);
             }
 
             @Override
@@ -240,36 +261,106 @@ public class StatisticsManager implements IStatistics {
 
 
     }
-    private void saveData(Context context,String data)  {
-        SharePrefUtil.put(context,"statisticsData",data);
+
+    private void saveData(Context context, String data) {
+        new FileUtil(context).save(data);
     }
 
 
-    private String getData(Context context,String data)  {
-       String savedData= SharePrefUtil.getString(context,"statisticsData","");
-        JSONArray jsonArray=null;
-        try {
-            if (!TextUtils.isEmpty(savedData)){
-                jsonArray= new JSONArray(savedData);
-            }else{
-                jsonArray= new JSONArray();
+    private String getData(Context context, String data) {
+        Log.e("data========",data);
+        FileUtil fileUtil = new FileUtil(context);
+        String savedData = fileUtil.load();
+        Log.e("savedData===", savedData);
+        if (!TextUtils.isEmpty(savedData)) {
+            try {
+                JSONArray array = null;
+                if (savedData.startsWith("[")) {
+                    array = new JSONArray(savedData);
+                } else {
+                    array = new JSONArray();
+                    array.put(new JSONObject(savedData));
+                }
+
+                array.put(new JSONObject(data));
+                String result=StringEscapeUtils.unescapeJava(array.toString());
+                Log.e("result=====",result);
+                return result;
+
+            } catch (JSONException e) {
+                e.printStackTrace();
+                return data;
             }
-            jsonArray.put(data);
-
-
-        }catch (Exception e){
-            e.printStackTrace();
+        } else {
+            return data;
         }
 
-
-
-
-       return jsonArray.toString();
     }
 
     private static class StatisticsManagerHolder {
         public static final StatisticsManager manager = new StatisticsManager();
 
+    }
+
+
+    public static class FileUtil {
+        private Context context = null;
+
+        public FileUtil(Context context) {
+            this.context = context;
+        }
+
+        public void save(String data) {
+
+            FileOutputStream out = null;
+            BufferedWriter writer = null;
+            try {
+                //设置文件名称，以及存储方式
+                out = context.openFileOutput("data", Context.MODE_PRIVATE);
+                //创建一个OutputStreamWriter对象，传入BufferedWriter的构造器中
+                writer = new BufferedWriter(new OutputStreamWriter(out));
+                //向文件中写入数据
+                writer.write(data);
+
+            } catch (Exception e) {
+                e.printStackTrace();
+            } finally {
+                try {
+                    writer.close();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+
+        public String load() {
+            FileInputStream in = null;
+            BufferedReader reader = null;
+            StringBuilder content = new StringBuilder();
+            try {
+                //设置将要打开的存储文件名称
+                in = context.openFileInput("data");
+                //FileInputStream -> InputStreamReader ->BufferedReader
+                reader = new BufferedReader(new InputStreamReader(in));
+                String line = new String();
+                //读取每一行数据，并追加到StringBuilder对象中，直到结束
+                while ((line = reader.readLine()) != null) {
+                    content.append(line);
+                }
+
+            } catch (IOException e) {
+                e.printStackTrace();
+            } finally {
+                if (reader != null) {
+                    try {
+                        reader.close();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+            return content.toString();
+        }
     }
 
 }
