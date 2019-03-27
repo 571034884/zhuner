@@ -44,7 +44,7 @@ import com.aibabel.ocr.gesture.GestureViewBinder;
 import com.aibabel.ocr.utils.CommonUtils;
 import com.aibabel.ocr.utils.Constant;
 import com.aibabel.ocr.utils.ContentProviderUtil;
-import com.aibabel.ocr.utils.DevUtils;
+//import com.aibabel.ocr.utils.DevUtils;
 import com.aibabel.ocr.utils.DisplayUtil;
 import com.aibabel.ocr.utils.FastJsonUtil;
 import com.aibabel.ocr.utils.LanguageUtils;
@@ -304,16 +304,40 @@ public class TakePhoteActivity extends BaseActivity implements CameraPreview.OnC
             public void onCheckedChanged(RadioGroup group, int checkedId) {
                 switch (checkedId) {
                     case R.id.rb_article:
+
+                        /**####  start-hjs-addStatisticsEvent   ##**/
+                        try {
+                            addStatisticsEvent("ocr_TakePhote3", null);
+                        }catch (Exception e){
+                            e.printStackTrace();
+                        }
+                        /**####  end-hjs-addStatisticsEvent  ##**/
                         tvHint.setVisibility(View.VISIBLE);
                         selectArticleOrMeau(1);
                         iv_camera.setClickable(true);
                         break;
                     case R.id.rb_menu:
+
+                        /**####  start-hjs-addStatisticsEvent   ##**/
+                        try {
+                            addStatisticsEvent("ocr_TakePhote2", null);
+                        }catch (Exception e){
+                            e.printStackTrace();
+                        }
+                        /**####  end-hjs-addStatisticsEvent  ##**/
                         tvHint.setVisibility(View.GONE);
                         selectArticleOrMeau(0);
                         iv_camera.setClickable(true);
                         break;
                     case R.id.rb_object:
+
+                        /**####  start-hjs-addStatisticsEvent   ##**/
+                        try {
+                            addStatisticsEvent("ocr_TakePhote1", null);
+                        }catch (Exception e){
+                            e.printStackTrace();
+                        }
+                        /**####  end-hjs-addStatisticsEvent  ##**/
                         tvHint.setVisibility(View.GONE);
                         selectArticleOrMeau(2);
                         iv_camera.setClickable(true);
@@ -578,12 +602,60 @@ public class TakePhoteActivity extends BaseActivity implements CameraPreview.OnC
                 }else{
                     reset();
                 }
+                /**####  start-hjs-addStatisticsEvent   ##**/
+                try {
+                    String aidlmsg ="ocr_TakePhote12";
+                    if(type == Constant.TYPE_MENU){//菜单
+                        aidlmsg ="ocr_menu7";
+                    }else if(type == Constant.TYPE_ARTICAL){//文
+                        aidlmsg ="ocr_menu22";
+                    }else if(type == Constant.TYPE_OBJECT){//物体
+                        aidlmsg ="ocr_TakePhote12";
+                    }
+                    addStatisticsEvent(aidlmsg, null);
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
+                /**####  end-hjs-addStatisticsEvent  ##**/
+
                 break;
             case R.id.tv_close://返回涂抹界面
+
+                /**####  start-hjs-addStatisticsEvent   ##**/
+                try {
+                    String aidlmsg ="ocr_TakePhote14";
+                    if(type == Constant.TYPE_MENU){//菜单
+                        aidlmsg ="ocr_menu9";
+                    }else if(type == Constant.TYPE_ARTICAL){//文
+                        aidlmsg ="ocr_main1";
+                    }else if(type == Constant.TYPE_OBJECT){//物体
+                        aidlmsg ="ocr_TakePhote14";
+                    }
+                    addStatisticsEvent(aidlmsg, null);
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
+                /**####  end-hjs-addStatisticsEvent  ##**/
                 finish();
                 break;
             case R.id.iv_recamera://重新拍照
                 isTaken = false;
+
+                /**####  start-hjs-addStatisticsEvent   ##**/
+                try {
+                    String aidlmsg ="ocr_TakePhote10";
+                    if(type == Constant.TYPE_MENU){
+                        aidlmsg ="ocr_menu10";
+                    }else if(type == Constant.TYPE_ARTICAL){
+                        aidlmsg ="ocr_menu20";
+                    }else if(type == Constant.TYPE_OBJECT){
+                        aidlmsg ="ocr_TakePhote10";
+                    }
+                    addStatisticsEvent(aidlmsg, null);
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
+                /**####  end-hjs-addStatisticsEvent  ##**/
                 reset();
                 break;
             case R.id.iv_camera://拍照
@@ -592,23 +664,75 @@ public class TakePhoteActivity extends BaseActivity implements CameraPreview.OnC
                 takePhoto();
                 Map<String, String> map = new HashMap<>();
                 StatisticsManager.getInstance(TakePhoteActivity.this).addEventAidl(1405, map);
+                /**####  start-hjs-addStatisticsEvent   ##**/
+                try {
+                    addStatisticsEvent("ocr_TakePhote8", null);
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
+                /**####  end-hjs-addStatisticsEvent  ##**/
                 break;
             case R.id.rb_object:
+                /**####  start-hjs-addStatisticsEvent   ##**/
+                try {
+                    addStatisticsEvent("ocr_TakePhote1", null);
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
+                /**####  end-hjs-addStatisticsEvent  ##**/
                 selectArticleOrMeau(2);
                 break;
             case R.id.rb_menu:
+                /**####  start-hjs-addStatisticsEvent   ##**/
+                try {
+                    addStatisticsEvent("ocr_TakePhote2", null);
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
+                /**####  end-hjs-addStatisticsEvent  ##**/
                 selectArticleOrMeau(0);
                 break;
             case R.id.rb_article:
+                /**####  start-hjs-addStatisticsEvent   ##**/
+                try {
+                    addStatisticsEvent("ocr_TakePhote3", null);
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
+                /**####  end-hjs-addStatisticsEvent  ##**/
                 selectArticleOrMeau(1);
                 break;
             case R.id.iv_translation://识别翻译确定
+
+                /**####  start-hjs-addStatisticsEvent   ##**/
+                try {
+                    String aidlmsg ="ocr_TakePhote11";
+                    if(type == Constant.TYPE_MENU){//菜单
+                        aidlmsg ="ocr_menu6";
+                    }else if(type == Constant.TYPE_ARTICAL){//文
+                        aidlmsg ="ocr_menu21";
+                    }else if(type == Constant.TYPE_OBJECT){//物体
+                        aidlmsg ="ocr_TakePhote11";
+                    }
+                    addStatisticsEvent(aidlmsg, null);
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
+                /**####  end-hjs-addStatisticsEvent  ##**/
                 if (CommonUtils.isFastClick()) {
                     dialog.show();
                     getData(true, pathName, 0f, 0f);
                 }
                 break;
             case R.id.tv_light://开启关闭闪光灯
+
+                /**####  start-hjs-addStatisticsEvent   ##**/
+                try {
+                    addStatisticsEvent("ocr_TakePhote4", null);
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
+                /**####  end-hjs-addStatisticsEvent  ##**/
                 setFlashMode();
                 break;
             default:
@@ -715,6 +839,15 @@ public class TakePhoteActivity extends BaseActivity implements CameraPreview.OnC
                 rb_h.setChecked(true);
                 SharePrefUtil.saveString(TakePhoteActivity.this, Constant.LAN_OR_CODE, jpaCode);
 
+                /**####  start-hjs-addStatisticsEvent   ##**/
+                try {
+                    addStatisticsEvent("ocr_menu", null);
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
+                /**####  end-hjs-addStatisticsEvent  ##**/
+
+
             }
         });
         mDialogV.setOnClickListener(new View.OnClickListener() {
@@ -725,6 +858,14 @@ public class TakePhoteActivity extends BaseActivity implements CameraPreview.OnC
                 rl_hv.setVisibility(View.VISIBLE);
                 rb_v.setChecked(true);
                 SharePrefUtil.saveString(TakePhoteActivity.this, Constant.LAN_OR_CODE, jpaCode);
+
+                /**####  start-hjs-addStatisticsEvent   ##**/
+                try {
+                    addStatisticsEvent("ocr_menu1", null);
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
+                /**####  end-hjs-addStatisticsEvent  ##**/
             }
         });
 
@@ -827,6 +968,14 @@ public class TakePhoteActivity extends BaseActivity implements CameraPreview.OnC
                         map.put("p4", Constant.LAN_TR);
                         map.put("p5", rg_tag + "");
                         StatisticsManager.getInstance(TakePhoteActivity.this).addEventAidl(isFull ? 1403 : 1402, map);
+
+                        /**####  start-hjs-addStatisticsEvent   ##**/
+                        try {
+                            addStatisticsEvent("ocr_TakePhote15", null);
+                        }catch (Exception e){
+                            e.printStackTrace();
+                        }
+                        /**####  end-hjs-addStatisticsEvent  ##**/
                     }
 
                     @Override

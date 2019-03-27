@@ -75,6 +75,15 @@ public class SelectRightLanguageActivity extends BaseActivity implements Adapter
         map.put("p2", bean.getName());
         StatisticsManager.getInstance(SelectRightLanguageActivity.this).addEventAidl( 1411, map);
 
+
+        /**####  start-hjs-addStatisticsEvent   ##**/
+        try {
+            addStatisticsEvent("ocr_menu2", null);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        /**####  end-hjs-addStatisticsEvent  ##**/
+
         saveLan(name, name_code);
     }
 

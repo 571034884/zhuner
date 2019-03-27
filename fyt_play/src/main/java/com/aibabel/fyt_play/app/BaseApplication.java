@@ -45,11 +45,9 @@ public class BaseApplication extends com.aibabel.baselibrary.base.BaseApplicatio
 
     @Override
     public String setUmengKey() {
-        if(DeviceUtils.getSystem()==DeviceUtils.System.PRO_LEASE){
+        if(lease_Debug_v&&DeviceUtils.getSystem()==DeviceUtils.System.PRO_LEASE){
             return "5c9a245661f5641241000e8f";
         }
-
-
         return "5c33109af1f5566770000134";
     }
 }

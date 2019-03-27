@@ -53,6 +53,8 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
             holder.MsgTitle.setText(tempmsg.getTitle());
             holder.MsgInfo.setText(tempmsg.getContent());
 
+
+            LogUtil.e("tempmsg.isBadge()=" + tempmsg.isBadge());
             if (tempmsg.isBadge()) {
                 holder.tempbadged.setVisibility(View.VISIBLE);
             } else {
@@ -62,7 +64,6 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
 
             try {
                 String time = MessageUtil.getShowRealtime(tempmsg.getTimeCode());
-                //LogUtil.e("time=" + time);
                 holder.MsgTime.setText(time);
             } catch (Exception e) {
 

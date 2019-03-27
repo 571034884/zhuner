@@ -2,6 +2,7 @@ package com.aibabel.food.base;
 
 import com.aibabel.baselibrary.base.BaseApplication;
 import com.aibabel.baselibrary.http.OkGoUtil;
+import com.aibabel.baselibrary.utils.DeviceUtils;
 import com.aibabel.food.BuildConfig;
 
 /**
@@ -37,6 +38,9 @@ public class MyApp extends BaseApplication {
 
     @Override
     public String setUmengKey() {
+        if(lease_Debug_v&& DeviceUtils.getSystem()==DeviceUtils.System.PRO_LEASE){
+            return "5c9ac8ab61f564a1ff000856";
+        }
         return "5c1c518cf1f556458d000a08";
     }
 }

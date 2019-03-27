@@ -22,7 +22,9 @@ import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.aibabel.aidlaar.StatisticsManager;
+import com.aibabel.baselibrary.base.StatisticsBaseActivity;
 import com.aibabel.translate.R;
+import com.aibabel.translate.activity.BaseActivity;
 import com.aibabel.translate.activity.LanguageActivity;
 import com.aibabel.translate.activity.RecordActivity;
 import com.aibabel.translate.app.BaseApplication;
@@ -700,6 +702,14 @@ public class OppositeFragment extends BaseFragment implements OnResponseListener
 
             case R.id.iv_record:
                 StatisticsManager.getInstance(context).addEventAidl(1306);
+                /**####  start-hjs-addStatisticsEvent   ##**/
+                try {
+                    ((StatisticsBaseActivity)getActivity()).addStatisticsEvent("translation_main12", null);
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
+                /**####  end-hjs-addStatisticsEvent  ##**/
+
                 toRecord();
                 break;
         }
@@ -712,6 +722,13 @@ public class OppositeFragment extends BaseFragment implements OnResponseListener
         Map<String, String> map = new HashMap<>();
         map.put("p1",code_to);
         StatisticsManager.getInstance(context).addEventAidl(1304);
+        /**####  start-hjs-addStatisticsEvent   ##**/
+        try {
+            ((StatisticsBaseActivity)getActivity()).addStatisticsEvent("translation_main11", null);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        /**####  end-hjs-addStatisticsEvent  ##**/
         if (isOnline) {
             MediaPlayerUtil.playMp3(SharePrefUtil.getString(context, "mp3_1", ""), context);
         } else {
@@ -951,6 +968,15 @@ public class OppositeFragment extends BaseFragment implements OnResponseListener
             map.put("p1",lan_do);
             map.put("p2",lan_up);
             StatisticsManager.getInstance(context).addEventAidl(1311,map);
+
+            /**####  start-hjs-addStatisticsEvent   ##**/
+            try {
+                ((StatisticsBaseActivity)getActivity()).addStatisticsEvent("translation_language3", null);
+            }catch (Exception e){
+                e.printStackTrace();
+            }
+            /**####  end-hjs-addStatisticsEvent  ##**/
+
         } else if (requestCode == 101 && resultCode == 201) {
             String mt = data.getStringExtra("mt");
             String en = data.getStringExtra("en");

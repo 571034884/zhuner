@@ -11,6 +11,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.aibabel.ocr.R;
+import com.aibabel.ocr.activity.BaseActivity;
 import com.aibabel.ocr.utils.GlideRoundTransform;
 import com.aibabel.ocr.widgets.CardItem;
 import com.bumptech.glide.Glide;
@@ -134,6 +135,14 @@ public class CardPagerAdapter extends PagerAdapter implements CardAdapter {
             public void onClick(View v) {
                 if(!TextUtils.isEmpty(item.getmTitleResource())){
                     listener.onItemClick(item);
+
+                    /**####  start-hjs-addStatisticsEvent   ##**/
+                    try {
+                        ((BaseActivity)context).addStatisticsEvent("ocr_Detail", null);
+                    }catch (Exception e){
+                        e.printStackTrace();
+                    }
+                    /**####  end-hjs-addStatisticsEvent  ##**/
                 }
             }
         });
@@ -152,6 +161,14 @@ public class CardPagerAdapter extends PagerAdapter implements CardAdapter {
             public void onClick(View v) {
                 if(!TextUtils.isEmpty(item.getmTitleResource())){
                     listener.onItemClick(item);
+
+                    /**####  start-hjs-addStatisticsEvent   ##**/
+                    try {
+                        ((BaseActivity)context).addStatisticsEvent("ocr_Detail", null);
+                    }catch (Exception e){
+                        e.printStackTrace();
+                    }
+                    /**####  end-hjs-addStatisticsEvent  ##**/
                 }
 
             }

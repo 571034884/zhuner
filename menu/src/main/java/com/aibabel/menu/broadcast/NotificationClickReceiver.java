@@ -5,6 +5,7 @@ import android.content.BroadcastReceiver;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Message;
 import android.text.TextUtils;
 import android.util.Log;
 import android.widget.Toast;
@@ -16,6 +17,7 @@ import com.aibabel.menu.bean.DetailBean;
 import com.aibabel.menu.bean.PushMessageBean;
 import com.aibabel.messagemanage.JiGuangActivity;
 import com.aibabel.messagemanage.MessageUtil;
+import com.aibabel.messagemanage.sqlite.SqlUtils;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -43,30 +45,32 @@ public class NotificationClickReceiver extends BroadcastReceiver {
                 //String message = intent.getStringExtra("MESSAGE");
                 //Toast.makeText(context, "clicked " + message, Toast.LENGTH_LONG).show();
 
-
-
                 Log.i("hjs", "userClick:我被点击啦！！！ ");
-
                 String extjson = intent.getStringExtra(ResidentNotificationHelper.intentjson);
                 String title = intent.getStringExtra("title");
                 MessageUtil.TITLE_JG = title;
 
-
-
-            /**####  start-hjs-addStatisticsEvent   ##**/
-            try {
-                PushMessageBean bean = FastJsonUtil.changeJsonToBean(extjson, PushMessageBean.class);
-                HashMap<String, Serializable> add_hp = new HashMap<>();
-                add_hp.put("push_notification1_def", bean.getTitle());
-                add_hp.put("push_notification1_id",bean.getNum() );
-                ((BaseActivity)context).addStatisticsEvent("push_notification1", add_hp);
-            }catch (Exception e){
-                e.printStackTrace();
-            }
-            /**####  end-hjs-addStatisticsEvent  ##**/
-
                 MessageUtil.openNotification(context, extjson);
-                if(MainActivity.loopHandler!=null)MainActivity.loopHandler.sendEmptyMessage(302);
+                if(MainActivity.loopHandler!=null){
+
+                    try {
+                        PushMessageBean bean = FastJsonUtil.changeJsonToBean(extjson, PushMessageBean.class);
+                        MainActivity.loopHandler.sendEmptyMessage(302);
+                        /**####  start-hjs-addStatisticsEvent   ##**/
+                        HashMap<String, Serializable> add_hp = new HashMap<>();
+                        add_hp.put("push_notification1_def", bean.getTitle());
+                        add_hp.put("push_notification1_id", bean.getNum());
+                        Message msgtemp = new Message();
+                        msgtemp.what = 320;
+                        msgtemp.obj=add_hp;
+                        MainActivity.loopHandler.sendMessage(msgtemp);
+
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                    /**####  end-hjs-addStatisticsEvent  ##**/
+
+                }
             }
 
             if (action.equals("notification_cancelled")) {
@@ -79,7 +83,11 @@ public class NotificationClickReceiver extends BroadcastReceiver {
                     HashMap<String, Serializable> add_hp = new HashMap<>();
                     add_hp.put("push_notification5_def", bean.getTitle());
                     add_hp.put("push_notification5_id",bean.getNum() );
-                    ((BaseActivity)context).addStatisticsEvent("push_notification5", add_hp);
+                    Message msgtemp = new Message();
+                    msgtemp.what = 320;
+                    msgtemp.obj=add_hp;
+                    MainActivity.loopHandler.sendMessage(msgtemp);
+
                 }catch (Exception e){
                     e.printStackTrace();
                 }
@@ -91,16 +99,6 @@ public class NotificationClickReceiver extends BroadcastReceiver {
         }
 
 
-
-
-        //if(MainActivity.loopHandler!=null)MainActivity.loopHandler.sendEmptyMessage(302);
-
-//        PushMessageBean bean = new PushMessageBean();
-//        bean.setContent("去你妈");
-//        startDialog(context, "123", MESSAGE_JG, bean);
-
-//        Intent newIntent = new Intent(context, MainActivity.class).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-//        context.startActivity(newIntent);
     }
 
 //

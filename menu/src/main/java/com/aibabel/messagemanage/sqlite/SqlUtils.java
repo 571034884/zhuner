@@ -4,6 +4,7 @@ import android.content.ContentValues;
 
 import com.aibabel.baselibrary.utils.FastJsonUtil;
 import com.aibabel.menu.bean.PushMessageBean;
+import com.aibabel.menu.util.LogUtil;
 
 import org.litepal.LitePal;
 
@@ -21,6 +22,14 @@ public class SqlUtils {
     //插入数据
     public static boolean insertData(PushMessageBean recordBean) {
         return recordBean.save();
+    }
+
+    public static void updateBadgeBean(PushMessageBean push_bean){
+        try {
+                push_bean.update(push_bean.getId());
+        }catch (Exception e){
+            e.printStackTrace();
+        }
     }
 
 

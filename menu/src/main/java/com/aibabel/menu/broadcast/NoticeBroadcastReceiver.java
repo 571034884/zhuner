@@ -20,6 +20,7 @@ import com.aibabel.menu.bean.PushMessageBean;
 import com.aibabel.menu.util.CommonUtils;
 import com.aibabel.menu.util.Constans;
 import com.aibabel.menu.util.DetectUtil;
+import com.aibabel.menu.util.LogUtil;
 import com.aibabel.messagemanage.JiGuangActivity;
 
 import java.util.ArrayList;
@@ -50,6 +51,7 @@ public class NoticeBroadcastReceiver extends BroadcastReceiver {
             if(TextUtils.equals(bean.getLevel(),"1")){
                 Intent noticeIntent = new Intent();
                 noticeIntent.putExtra("",json);
+                LogUtil.e("-----------------NoticeBroadcastReceiver--------------");
                 ResidentNotificationHelper.sendResidentNotice(context, "", "", noticeIntent);
             }else  if(TextUtils.equals(bean.getLevel(),"1")){
                 //判定语音翻译，小秘书，拍照翻译是否在前台处理显示通知

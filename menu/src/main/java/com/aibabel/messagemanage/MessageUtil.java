@@ -44,19 +44,6 @@ public class MessageUtil {
 
             if(bean==null)return;
 
-
-
-//            /**####  start-hjs-addStatisticsEvent   ##**/
-//            try {
-//                HashMap<String, Serializable> add_hp = new HashMap<>();
-//                add_hp.put("push_notification1_def", bean.getTitle());
-//                add_hp.put("push_notification1_id",bean.getNum() );
-//                ((BaseActivity)context).addStatisticsEvent("push_notification1", add_hp);
-//            }catch (Exception e){
-//                e.printStackTrace();
-//            }
-//            /**####  end-hjs-addStatisticsEvent  ##**/
-
             MESSAGE_JG = bean.getContent();
             TITLE_JG = bean.getTitle();
             LogUtil.e("openNotification = ");
@@ -70,6 +57,13 @@ public class MessageUtil {
                 switch (bean.getApk()) {
                     case "travel":
                         startScenic(bean, context);
+                        break;
+                    case "coupon":
+                    case "currency":
+                    case "destination":
+                    case "fyt_exitandentry":
+                    case "food":
+                        startOtherScenic(bean, context);
                         break;
                     default:
                         break;
@@ -105,6 +99,9 @@ public class MessageUtil {
             if(bean==null)return;
             MESSAGE_JG = bean.getContent();
 
+            LogUtil.e("openNotification_bean.getType"+bean.getType());
+            LogUtil.e("openNotification_bean.getApk"+bean.getApk());
+
             if (TextUtils.equals(bean.getType(), "5")) {
                 // TODO: 2019/1/10 打开链接地址
 
@@ -114,6 +111,13 @@ public class MessageUtil {
                 switch (bean.getApk()) {
                     case "travel":
                         startScenic(bean, context);
+                        break;
+                    case "coupon":
+                    case "currency":
+                    case "destination":
+                    case "fyt_exitandentry":
+                    case "food":
+                        startOtherScenic(bean, context);
                         break;
                     default:
                         break;
@@ -136,7 +140,7 @@ public class MessageUtil {
         }
     }
 
-    public static int numid = -1;
+    public static String numid = "";
 
     /**
      * 启动一个dialog
@@ -209,8 +213,26 @@ public class MessageUtil {
         } catch (Exception e) {
             e.printStackTrace();
         }
-
     }
+
+    /**
+     * 启动景区导览详情页
+     *
+     * @param bean
+     * @param context
+     */
+    public static void startOtherScenic(PushMessageBean bean, Context context) {
+        try {
+            Intent mIntent = new Intent();
+            mIntent.putExtra("notiytId",""+bean.getNum());
+            ComponentName componentName = new ComponentName(bean.getPackageName(), bean.getPath());
+            mIntent.setComponent(componentName);
+            context.startActivity(mIntent);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
 
 
     public static String getRealtime() {
@@ -227,11 +249,11 @@ public class MessageUtil {
     }
 
     public static String getShowRealtime(String  systime) {
-        if(TextUtils.isEmpty(systime))return "";
+//        if(TextUtils.isEmpty(systime))return "";
         try {
             DateFormat formatter = new SimpleDateFormat("MM-dd HH:mm");
             Calendar calendar = Calendar.getInstance();
-            calendar.setTimeInMillis(Long.valueOf(systime));
+            calendar.setTimeInMillis(Long.valueOf(systime)*1000);
             String format = formatter.format(calendar.getTime());
             return format;
         } catch (Exception e) {
@@ -240,10 +262,11 @@ public class MessageUtil {
         return "";
     }
 
-    public static void main(String args[]){
-        System.out.println(getShowRealtime("1553136506886"));
-        //System.out.println(System.currentTimeMillis());
-    }
+//    public static void main(String args[]){
+//                                                     //"1553681867020
+//        System.out.println(getShowRealtime("1553681765"));
+//        System.out.println(getShowRealtime(String.valueOf(System.currentTimeMillis())));
+//    }
 
 
 

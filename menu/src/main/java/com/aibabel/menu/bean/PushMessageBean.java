@@ -7,14 +7,13 @@ import java.util.List;
 public class PushMessageBean extends LitePalSupport {
     private boolean badge;
     private long id;
-    private int num;
+    private String num;
 
-
-    public int getNum() {
+    public String getNum() {
         return num;
     }
 
-    public void setNum(int num) {
+    public void setNum(String num) {
         this.num = num;
     }
 
@@ -23,6 +22,7 @@ public class PushMessageBean extends LitePalSupport {
         return "PushMessageBean{" +
                 "badge=" + badge +
                 ", id=" + id +
+                ", num='" + num + '\'' +
                 ", json='" + json + '\'' +
                 ", title='" + title + '\'' +
                 ", level='" + level + '\'' +

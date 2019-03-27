@@ -9,9 +9,10 @@ import android.util.DisplayMetrics;
 import android.util.Log;
 
 import com.aibabel.aidlaar.StatisticsManager;
+import com.aibabel.baselibrary.utils.CommonUtils;
+import com.aibabel.baselibrary.utils.DeviceUtils;
 import com.aibabel.ocr.BuildConfig;
 import com.aibabel.ocr.utils.DensityHelper;
-import com.aibabel.ocr.utils.DevUtils;
 import com.lzy.okgo.OkGo;
 import com.umeng.analytics.MobclickAgent;
 import com.umeng.commonsdk.UMConfigure;
@@ -82,10 +83,15 @@ public class BaseApplication extends com.aibabel.baselibrary.base.BaseApplicatio
      * 初始化友盟统计
      */
     private void  configUmeng(){
-
-        UMConfigure.init(this, "5b519cdff29d981e1400002b", DevUtils.getSN(), UMConfigure.DEVICE_TYPE_PHONE,
-                null);
-        MobclickAgent.setScenarioType(this, MobclickAgent.EScenarioType.E_UM_NORMAL);
+        if(lease_Debug_v&& DeviceUtils.getSystem()==DeviceUtils.System.PRO_LEASE){
+            UMConfigure.init(this, "5c9ac86861f564b955000550", CommonUtils.getSN(), UMConfigure.DEVICE_TYPE_PHONE,
+                    null);
+            MobclickAgent.setScenarioType(this, MobclickAgent.EScenarioType.E_UM_NORMAL);
+        }else {
+            UMConfigure.init(this, "5b519cdff29d981e1400002b", CommonUtils.getSN(), UMConfigure.DEVICE_TYPE_PHONE,
+                    null);
+            MobclickAgent.setScenarioType(this, MobclickAgent.EScenarioType.E_UM_NORMAL);
+        }
     }
 
     /**

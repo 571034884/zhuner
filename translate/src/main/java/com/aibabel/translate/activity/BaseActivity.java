@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.view.KeyEvent;
 import android.view.View;
 
+import com.aibabel.baselibrary.base.StatisticsBaseActivity;
 import com.aibabel.statisticalserver.SimpleStatisticsActivity;
 import com.aibabel.translate.bean.JsonDataBean;
 import com.aibabel.translate.socket.SocketManger;
@@ -18,7 +19,7 @@ import com.umeng.analytics.MobclickAgent;
 
 import butterknife.OnClick;
 
-public class BaseActivity extends SimpleStatisticsActivity implements View.OnClickListener {
+public class BaseActivity extends StatisticsBaseActivity implements View.OnClickListener {
 
     protected Context mContext;
     private long clickTime;

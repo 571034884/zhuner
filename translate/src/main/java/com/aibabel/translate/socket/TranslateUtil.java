@@ -8,6 +8,7 @@ import android.util.Log;
 
 import com.aibabel.aidlaar.StatisticsManager;
 import com.aibabel.translate.R;
+import com.aibabel.translate.activity.BaseActivity;
 import com.aibabel.translate.app.BaseApplication;
 import com.aibabel.translate.audio.MicArrayUtil;
 import com.aibabel.translate.bean.AsrAndTranResultBean;
@@ -33,6 +34,7 @@ import com.qinghuaofflineasr.inf.ResultListener;
 
 import org.json.JSONObject;
 
+import java.io.Serializable;
 import java.nio.charset.Charset;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -685,6 +687,7 @@ public class TranslateUtil implements MicArrayUtil.OnDealwithListener, SocketMan
      */
     private void statistics(){
         int key = 1303;
+        String nkey = "translation_main9";
 
         try{
             Map<String, String> map = new HashMap<>();
@@ -699,10 +702,25 @@ public class TranslateUtil implements MicArrayUtil.OnDealwithListener, SocketMan
 
             if(key_press==132){
                 key=1302;
+                nkey = "translation_main9";
             }else{
                 key=1303;
+                nkey = "translation_main10";
             }
             StatisticsManager.getInstance(context).addEventAidl(key,map);
+
+
+            /**####  start-hjs-addStatisticsEvent   ##**/
+            try {
+                HashMap<String, Serializable> add_hp = new HashMap<>();
+                add_hp.put("original_language_up", ""+from_lan_code);
+                add_hp.put("translation_language_up", ""+to_lan_code);
+                add_hp.put("translation_status_up", ""+isSuccess);
+                ((BaseActivity)context).addStatisticsEvent(nkey, add_hp);
+            }catch (Exception e){
+                e.printStackTrace();
+            }
+            /**####  end-hjs-addStatisticsEvent  ##**/
         }catch(Exception e){
             e.printStackTrace();
         }

@@ -53,6 +53,9 @@ public abstract class BaseApplication extends Application {
     public static boolean allPhysicalButtonsExitEnable = false;
     public static boolean statisticsEnable = false;
 
+    ////3月底租赁测试版本，后续会注释成为fase
+    public static boolean lease_Debug_v = true;
+
     /**
      * 设置物理按键杀死程序，回到菜单
      *

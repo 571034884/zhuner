@@ -262,6 +262,14 @@ public class LanguageActivity extends BaseActivity implements ExpandableListView
                 SharePrefUtil.saveString(LanguageActivity.this, Constant.OFFLINE_UP, offline);
                 //添加统计
                 StatisticsManager.getInstance(this).addEventAidl(1300);
+
+                /**####  start-hjs-addStatisticsEvent   ##**/
+                try {
+                    addStatisticsEvent("translation_main7", null);
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
+                /**####  end-hjs-addStatisticsEvent  ##**/
                 onBackPressed();
                 break;
             case 131:
@@ -272,6 +280,14 @@ public class LanguageActivity extends BaseActivity implements ExpandableListView
                 SharePrefUtil.saveString(LanguageActivity.this, Constant.OFFLINE_DOWN, offline);
                 //添加统计
                 StatisticsManager.getInstance(this).addEventAidl(1301);
+
+                /**####  start-hjs-addStatisticsEvent   ##**/
+                try {
+                    addStatisticsEvent("translation_main8", null);
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
+                /**####  end-hjs-addStatisticsEvent  ##**/
                 onBackPressed();
                 break;
             default:
@@ -285,6 +301,14 @@ public class LanguageActivity extends BaseActivity implements ExpandableListView
     @Override
     protected void onStop() {
         super.onStop();
+
+        /**####  start-hjs-addStatisticsEvent   ##**/
+        try {
+            addStatisticsEvent("translation_language1", null);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        /**####  end-hjs-addStatisticsEvent  ##**/
         finish();
     }
 

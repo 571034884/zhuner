@@ -22,6 +22,7 @@ import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.aibabel.aidlaar.StatisticsManager;
+import com.aibabel.baselibrary.base.StatisticsBaseActivity;
 import com.aibabel.translate.R;
 import com.aibabel.translate.activity.EditActivity;
 import com.aibabel.translate.activity.LanguageActivity;
@@ -666,6 +667,7 @@ public class IpsilateralFragment extends BaseFragment implements OnResponseListe
                 break;
             case R.id.iv_switch:
                 StatisticsManager.getInstance(context).addEventAidl(1305);
+
                 toOppos();
                 break;
             case R.id.iv_down_sound:
@@ -691,6 +693,13 @@ public class IpsilateralFragment extends BaseFragment implements OnResponseListe
                 break;
             case R.id.iv_record:
                 StatisticsManager.getInstance(context).addEventAidl(1306);
+                /**####  start-hjs-addStatisticsEvent   ##**/
+                try {
+                    ((StatisticsBaseActivity)getActivity()).addStatisticsEvent("translation_main12", null);
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
+                /**####  end-hjs-addStatisticsEvent  ##**/
                 toRecord();
                 break;
 
@@ -705,6 +714,14 @@ public class IpsilateralFragment extends BaseFragment implements OnResponseListe
         Map<String, String> map = new HashMap<>();
         map.put("p1", code_to);
         StatisticsManager.getInstance(context).addEventAidl(1304);
+        /**####  start-hjs-addStatisticsEvent   ##**/
+        try {
+            ((StatisticsBaseActivity)getActivity()).addStatisticsEvent("translation_main11", null);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        /**####  end-hjs-addStatisticsEvent  ##**/
+
         if (isOnline) {
             MediaPlayerUtil.playMp3(SharePrefUtil.getString(context, "mp3_1", ""), context);
         } else {
@@ -968,6 +985,13 @@ public class IpsilateralFragment extends BaseFragment implements OnResponseListe
             map.put("p1", lan_do);
             map.put("p2", lan_up);
             StatisticsManager.getInstance(context).addEventAidl(1311, map);
+            /**####  start-hjs-addStatisticsEvent   ##**/
+            try {
+                ((StatisticsBaseActivity)getActivity()).addStatisticsEvent("translation_language3", null);
+            }catch (Exception e){
+                e.printStackTrace();
+            }
+            /**####  end-hjs-addStatisticsEvent  ##**/
 
         } else if (requestCode == 101 && resultCode == 201) {//编辑修改页面返回设置参数
             String mt = data.getStringExtra("mt");

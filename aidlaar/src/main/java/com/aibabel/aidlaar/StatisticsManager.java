@@ -87,7 +87,7 @@ public class StatisticsManager {
     public void addUserPathAidl(String pageName, long entryTime, long exitTime, int interactions, String keyWordm) {
         Log.e(TAG, "addUserPath: " + pageName + entryTime + exitTime + interactions + keyWordm);
         try {
-            getService().addPath(mAppName, mAppVersion, pageName, entryTime, exitTime, interactions, keyWordm);
+            if(getService()!=null)getService().addPath(mAppName, mAppVersion, pageName, entryTime, exitTime, interactions, keyWordm);
         } catch (RemoteException e) {
             e.printStackTrace();
         } catch (Exception e) {

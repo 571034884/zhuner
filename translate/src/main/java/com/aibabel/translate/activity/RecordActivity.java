@@ -15,6 +15,7 @@ import com.aibabel.translate.bean.RecordBean;
 import com.aibabel.translate.sqlite.SqlUtils;
 import com.aibabel.translate.view.MyRecyclerView;
 
+import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -90,13 +91,24 @@ public class RecordActivity extends BaseActivity {
         adapter.setRecyclerViewOnItemClickListener(new Adapter_Record.RecyclerViewOnItemClickListener() {
             @Override
             public void onItemClickListener(View view, int position) {
+                HashMap<String, Serializable> add_hp = new HashMap<>();
                 if (isShowCheck) {
                     if (checkList.contains(Integer.valueOf(position))) {
                         checkList.remove(Integer.valueOf(position));
+                        add_hp.put("translation_record6__unchecked", position);
                     } else {
                         checkList.add(position);
+                        add_hp.put("translation_record6_check", position);
                     }
                 }
+
+                try {
+                    addStatisticsEvent("translation_record6", add_hp);
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
+                /**####  end-hjs-addStatisticsEvent  ##**/
+
                 if (checkList.size() > 0)
                     tvshanchu.setTextColor(getResources().getColor(R.color.white));
                 else
@@ -112,6 +124,16 @@ public class RecordActivity extends BaseActivity {
                     adapter.setShowCheckBox(true);
                     checkList.add(position);
                 }
+
+
+                /**####  start-hjs-addStatisticsEvent   ##**/
+                try {
+                    addStatisticsEvent("translation_record3", null);
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
+                /**####  end-hjs-addStatisticsEvent  ##**/
+
                 refreshUI(isShowCheck);
                 isShowCheck = !isShowCheck;
                 if (checkList.size() > 0)
@@ -210,9 +232,12 @@ public class RecordActivity extends BaseActivity {
                 quxiao();
                 break;
             case R.id.tvQuanxuan:
+
+                HashMap<String, Serializable> add_hpn = new HashMap<>();
                 checkList.clear();
                 if (!isSelectAll) {
                     tvQuanxuan.setText(getResources().getString(R.string.select_null));
+                    add_hpn.put("translation_record7_no", true);
                     tvshanchu.setTextColor(getResources().getColor(R.color.white));
                     adapter.setCheckAll(true);
                     for (int i = 0; i < newsList.size(); i++) {
@@ -223,7 +248,18 @@ public class RecordActivity extends BaseActivity {
                     tvshanchu.setTextColor(getResources().getColor(R.color.gray));
                     adapter.setCheckAll(false);
                     checkList.clear();
+                    add_hpn.put("translation_record7_select", true);
                 }
+
+                /**####  start-hjs-addStatisticsEvent   ##**/
+                try {
+                    addStatisticsEvent("translation_record7", add_hpn);
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
+                /**####  end-hjs-addStatisticsEvent  ##**/
+
+
                 isSelectAll = !isSelectAll;
                 adapter.notifyDataSetChanged();
                 break;
@@ -239,6 +275,17 @@ public class RecordActivity extends BaseActivity {
                         Map<String, String> map = new HashMap<>();
                         map.put("p1",checkList.size()+"");
                         StatisticsManager.getInstance(this).addEventAidl(1321,map);
+
+
+                        /**####  start-hjs-addStatisticsEvent   ##**/
+                        try {
+                            HashMap<String, Serializable> add_hp = new HashMap<>();
+                            add_hp.put("translation_record8_delete",checkList.size()+"" );
+                            addStatisticsEvent("translation_record8", add_hp);
+                        }catch (Exception e){
+                            e.printStackTrace();
+                        }
+                        /**####  end-hjs-addStatisticsEvent  ##**/
                         quxiao();
                     }
                 }catch(Exception e){
@@ -248,6 +295,14 @@ public class RecordActivity extends BaseActivity {
                 break;
             case R.id.iv_close:
                 StatisticsManager.getInstance(this).addEventAidl(1312);
+
+                /**####  start-hjs-addStatisticsEvent   ##**/
+                try {
+                    addStatisticsEvent("translation_record5", null);
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
+                /**####  end-hjs-addStatisticsEvent  ##**/
                 finish();
                 break;
         }

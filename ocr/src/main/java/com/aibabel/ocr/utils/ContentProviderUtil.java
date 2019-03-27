@@ -96,10 +96,14 @@ public class ContentProviderUtil {
                 new Thread(new Runnable() {
                     @Override
                     public void run() {
-                        IServerManager dsm = XIPC.getInstance(IServerManager.class);
-                        dsm.setPingServerError(ServerKeyUtils.serverKeyOcrCameraError);
-                        Log.e("http", "请求换服务器！");
-                        XIPC.disconnect(XIPC.getContext());
+                        try {
+                            IServerManager dsm = XIPC.getInstance(IServerManager.class);
+                            dsm.setPingServerError(ServerKeyUtils.serverKeyOcrCameraError);
+                            Log.e("http", "请求换服务器！");
+                            XIPC.disconnect(XIPC.getContext());
+                        }catch (Exception e){
+                            e.printStackTrace();
+                        }
                     }
                 }).start();
 

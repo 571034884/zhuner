@@ -10,6 +10,7 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.os.Bundle;
+import android.os.Message;
 import android.text.TextUtils;
 import android.util.Log;
 import android.widget.Button;
@@ -53,31 +54,18 @@ public class MyReceiver extends BroadcastReceiver {
     public void onReceive(Context context, Intent intent) {
         Bundle bundle = intent.getExtras();
         Log.d(TAG, "[MyReceiver] onReceive - " + intent.getAction() + ", extras: " + printBundle(bundle));
+        checksyncOrder(context,bundle);
+
         if (JPushInterface.ACTION_REGISTRATION_ID.equals(intent.getAction())) {
             String regId = bundle.getString(JPushInterface.EXTRA_REGISTRATION_ID);
             Log.d(TAG, "[MyReceiver] 接收Registration Id : " + regId);
-            //140fe1da9eabf4cefe2
-            //send the Registration Id to your server...
-            //SDK 向 JPush Server 注册所得到的注册 ID 。可以通过此 ID 向对应的客户端发送消息和通知。
 
         } else if (JPushInterface.ACTION_MESSAGE_RECEIVED.equals(intent.getAction())) {
-            Log.d(TAG, "[MyReceiver] 接收到推送下来的自定义消息: " + bundle.getString(JPushInterface.EXTRA_MESSAGE));
+            Log.d(TAG, "[MyReceiver]MESSAGE接收到推送下来的自定义消息: " + bundle.getString(JPushInterface.EXTRA_MESSAGE));
 
-//            Constants.CONTEXTS_JG = bundle.getString(JPushInterface.EXTRA_MESSAGE);
-//            Constants.TITLE_JG = bundle.getString(JPushInterface.EXTRA_TITLE);
-//            Constants.MESSAGE_JG = bundle.getString(JPushInterface.EXTRA_ALERT);
-//            String id = bundle.getString(JPushInterface.EXTRA_MSG_ID);
-//            PushBean push = new PushBean();
-//            push.setContent(Constants.CONTEXTS_JG);
-//            push.setMesId(id);
-//            push.setMessage(Constants.MESSAGE_JG);
-//            push.setTitle(Constants.TITLE_JG);
-//            Constants.pushBeanList.add(push);
-//            Log.d(TAG, "[TITLE_JG]" + Constants.TITLE_JG + " /n[MESSAGE_JG]" + Constants.MESSAGE_JG);
             receivingNotification(context, bundle);
 
             /*** 处理推送流程hjs*/
-
             MenuonReceive(context, bundle);
 
         } else if (JPushInterface.ACTION_NOTIFICATION_RECEIVED.equals(intent.getAction())) {
@@ -85,64 +73,14 @@ public class MyReceiver extends BroadcastReceiver {
              * 如果通知的内容为空，则在通知栏上不会展示通知。
              * 但是，这个广播 Intent 还是会有。开发者可以取到通知内容外的其他信息。
              */
-            Log.d(TAG, "[MyReceiver] 接收到推送下来的通知消息: " + bundle.getString(JPushInterface.EXTRA_MESSAGE));
+            Log.d(TAG, "[MyReceiver] 通知消息: " + bundle.getString(JPushInterface.EXTRA_MESSAGE));
             int notifactionId = bundle.getInt(JPushInterface.EXTRA_NOTIFICATION_ID);
-            Log.d(TAG, "[MyReceiver] 接收到推送下来的通知的ID: " + notifactionId);
+            Log.d(TAG, "[MyReceiver] 通知的ID: " + notifactionId);
 //            setNotification(context, Constants.TITLE_JG, Constants.MESSAGE_JG);
             MenuonReceive(context, bundle);
 
 
-            /**解锁推送**/
-            String extra_ = bundle.getString(JPushInterface.EXTRA_EXTRA);
-            LogUtil.e(" ====extra_====="+(!TextUtils.isEmpty(extra_)));
-            LogUtil.e(" ====extra_====="+extra_);
-            if (!TextUtils.isEmpty(extra_)) {
-                LogUtil.e("public static final String EXTRA_EXTRA = cn.jpush.android.EXTRA;");
-                try {
-                    JSONObject json = new JSONObject(extra_);
-
-                    String relet = (String) json.get("relet");
-                    JSONObject jsonRelet = new JSONObject(relet);
-                    int code = (Integer) jsonRelet.get("code");
-                    if (code == 1) {
-                        Intent stopIntent = new Intent("com.android.qrcode.unlock.ok");
-                        context.sendBroadcast(stopIntent);
-//                        ToastUtil.showShort(context,"发送了广播！");
-
-                        LogUtil.e("code  = 1");
-                    }
-
-                    /**####  start-hjs-addStatisticsEvent   ##**/
-                    try {
-                        int numid = (int)json.get("no");
-                        HashMap<String, Serializable> add_hp = new HashMap<>();
-                        add_hp.put("push_notification2_def", code);
-                        add_hp.put("push_notification2_id",numid );
-                        ((BaseActivity)context).addStatisticsEvent("push_notification2", add_hp);
-                    }catch (Exception e){
-                        e.printStackTrace();
-                    }
-                    /**####  end-hjs-addStatisticsEvent  ##**/
-
-                } catch (JSONException e) {
-                    Log.e(TAG, "Get message extra JSON error!");
-                }catch (Exception e){
-                    e.printStackTrace();
-                }
-            }
-
-
         } else if (JPushInterface.ACTION_NOTIFICATION_OPENED.equals(intent.getAction())) {
-
-//            String msg_id = bundle.getString(JPushInterface.EXTRA_MSG_ID);
-//            Log.d(TAG, "[MyReceiver] 用户点击打开了通知,id:" + msg_id);
-//            for (int i = 0; i < Constants.pushBeanList.size(); i++) {
-//                if (TextUtils.equals(msg_id, Constants.pushBeanList.get(i).getMesId())) {
-//                    openNotification(context, Constants.pushBeanList.get(i).getContent());
-//                    Constants.pushBeanList.remove(Constants.pushBeanList.get(i));
-//                }
-//            }
-
 
             /**
              * 如果开发者在 AndroidManifest.xml 里未配置此 receiver action，那么，
@@ -163,6 +101,72 @@ public class MyReceiver extends BroadcastReceiver {
         } else {
             Log.d(TAG, "[MyReceiver] Unhandled intent - " + intent.getAction());
         }
+    }
+
+    /**
+     * 检查同步更新
+     *
+     * @param bundle
+     */
+    private void checksyncOrder(Context context, Bundle bundle) {
+        try {
+            /**解锁推送**/
+            String extra_str = bundle.getString(JPushInterface.EXTRA_EXTRA);
+            LogUtil.e(" =========" + extra_str);
+            if (!TextUtils.isEmpty(extra_str)) {
+                int numid = -1;
+                int code = -1;
+//                extra_str = extra_str.replace(" ","");
+                if (extra_str.contains("relet")) {
+//                    LogUtil.e(" ====extra_str.contains(\"code\"=====" + extra_str.contains("code"));
+//                    if (extra_str.contains("code")) {
+//                    LogUtil.e("----------------code  = 1");
+//                        if(extra_str.contains(":1,")) {
+//                            Intent stopIntent = new Intent("com.android.qrcode.unlock.ok");
+//                            context.sendBroadcast(stopIntent);
+//                        }
+//                    } else
+//                    String aaa = "{\"relet\":\"{\\\"code\\\":1,\\\"msg\\\":\\\"请同步订单\\\"}\"}";
+                        {
+                        try {
+                            JSONObject json = new JSONObject(extra_str);
+                            String relet = (String) json.get("relet");
+                            JSONObject jsonRelet = new JSONObject(relet);
+                            code = (Integer) jsonRelet.get("code");
+                            if (code == 1) {
+                                Intent stopIntent = new Intent("com.android.qrcode.unlock.ok");
+                                context.sendBroadcast(stopIntent);
+                                LogUtil.e("code  = 1");
+                            }
+                            numid = (int) json.get("no");
+                        } catch (JSONException e) {
+                            Log.e(TAG, "Get message extra JSON error!");
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
+                    /**####  start-hjs-addStatisticsEvent   ##**/
+                    try {
+                        if (MainActivity.loopHandler != null) {
+                            HashMap<String, Serializable> add_hp = new HashMap<>();
+                            add_hp.put("push_notification2_def", code);
+                            add_hp.put("push_notification2_def", numid);
+                            //MainActivity.loopHandler.obtainMessage(330, add_hp);
+                            Message msgtemp = new Message();
+                            msgtemp.what = 330;
+                            msgtemp.obj=add_hp;
+                            MainActivity.loopHandler.sendMessage(msgtemp);
+                        }
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                    /**####  end-hjs-addStatisticsEvent  ##**/
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
     }
 
     /**
@@ -279,7 +283,6 @@ public class MyReceiver extends BroadcastReceiver {
             context.startActivity(intent);
 
 
-
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -312,12 +315,16 @@ public class MyReceiver extends BroadcastReceiver {
                     }
                 } catch (JSONException e) {
                     Log.e(TAG, "Get message extra JSON error!");
-                }catch (Exception e){
+                } catch (Exception e) {
                     e.printStackTrace();
                 }
 
             } else {
-                sb.append("\nkey:" + key + ", value:" + bundle.getString(key));
+                try {
+                    sb.append("\nkey:" + key + ", value:" + bundle.getString(key));
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
         }
         return sb.toString();
@@ -409,22 +416,25 @@ public class MyReceiver extends BroadcastReceiver {
             if (bean != null) {
                 bean.setJson(json);
                 SqlUtils.insertData(bean);
-            }else return;
+            } else return;
 
 
-            /**####  start-hjs-addStatisticsEvent   ##**/
-            try {
+            if (MainActivity.loopHandler != null) {
+//                MainActivity.loopHandler.obtainMessage(301,bean);
+                Message msgtempadd = new Message();
+                msgtempadd.what = 301;
+                msgtempadd.obj = bean;
+                MainActivity.loopHandler.sendMessage(msgtempadd);
+
+
                 HashMap<String, Serializable> add_hp = new HashMap<>();
                 add_hp.put("push_notification_def", bean.getPackageName());
-                add_hp.put("push_notification_id",bean.getNum() );
-                ((BaseActivity)context).addStatisticsEvent("push_notification", add_hp);
-            }catch (Exception e){
-                e.printStackTrace();
+                add_hp.put("push_notification_id", bean.getNum());
+                Message msgtemp = new Message();
+                msgtemp.what = 310;
+                msgtemp.obj=add_hp;
+                MainActivity.loopHandler.sendMessage(msgtemp);
             }
-            /**####  end-hjs-addStatisticsEvent  ##**/
-
-            if(MainActivity.loopHandler!=null)MainActivity.loopHandler.sendEmptyMessage(301);
-
 
             String pushcontent = bean.getContent();
             if (TextUtils.isEmpty(pushcontent)) pushcontent = "";
@@ -433,8 +443,6 @@ public class MyReceiver extends BroadcastReceiver {
                 Intent noticeIntent = new Intent();
                 noticeIntent.putExtra("json", json);
 //                noticeIntent.setClass(context, Class.forName(noticeIntent.getPackage().getClass()));
-
-
 
                 ResidentNotificationHelper.sendResidentNotice(context, "" + title, "" + pushcontent, noticeIntent);
 
@@ -459,10 +467,10 @@ public class MyReceiver extends BroadcastReceiver {
                             delayshow = false;
                             Intent noticeIntent = new Intent();
                             noticeIntent.putExtra("json", json);
-                            ResidentNotificationHelper.sendResidentNotice(context, ""+title, ""+pushcontent, noticeIntent);
+                            ResidentNotificationHelper.sendResidentNotice(context, "" + title, "" + pushcontent, noticeIntent);
                         }
                     }
-                }else{
+                } else {
                     Intent noticeIntent = new Intent();
                     noticeIntent.putExtra("json", json);
                     ResidentNotificationHelper.sendResidentNotice(context, "" + title, "" + pushcontent, noticeIntent);
@@ -498,7 +506,6 @@ public class MyReceiver extends BroadcastReceiver {
 //        }
 //
 //    }
-
 
 
 }

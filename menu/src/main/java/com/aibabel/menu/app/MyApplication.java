@@ -5,6 +5,7 @@ import android.util.Log;
 
 import com.aibabel.baselibrary.base.BaseApplication;
 import com.aibabel.baselibrary.http.OkGoUtil;
+import com.aibabel.baselibrary.utils.DeviceUtils;
 import com.aibabel.menu.BuildConfig;
 import com.aibabel.menu.MainActivity;
 import com.aibabel.menu.util.AppStatusUtils;
@@ -92,6 +93,10 @@ public class MyApplication extends BaseApplication {
 
     @Override
     public String setUmengKey() {
+        if(lease_Debug_v&& DeviceUtils.getSystem()==DeviceUtils.System.PRO_LEASE){
+            return "5c9ac8ab61f564a1ff000856";
+        }
+
         L.e("setUmengKey debug=============="+AppStatusUtils.isApkInDebug(getApplicationContext()));
         if (!AppStatusUtils.isApkInDebug(getApplicationContext())) {
            //debug

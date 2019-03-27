@@ -8,6 +8,8 @@ import android.os.Bundle;
 import android.util.Log;
 
 import com.aibabel.aidlaar.StatisticsManager;
+import com.aibabel.baselibrary.base.BaseApplication;
+import com.aibabel.baselibrary.utils.DeviceUtils;
 import com.aibabel.currencyconversion.BuildConfig;
 import com.aibabel.currencyconversion.utils.CommonUtils;
 import com.aibabel.currencyconversion.utils.DensityHelper;
@@ -24,7 +26,7 @@ import java.util.LinkedList;
  * 功能：
  * 版本：1.0
  */
-public class MyApplication extends Application {
+public class MyApplication extends BaseApplication {
     public static String TAG = "MyApplication";
     /**
      * DESIGN_WIDTH为设计图宽度
@@ -48,6 +50,26 @@ public class MyApplication extends Application {
         StatisticsManager.getInstance(this).setConfig(getPackageName(), BuildConfig.VERSION_NAME);
     }
 
+    @Override
+    public String getAppVersionName() {
+        return null;
+    }
+
+    @Override
+    public String getAppPackageName() {
+        return null;
+    }
+
+    @Override
+    public void setServerUrlAndInterfaceGroup() {
+
+    }
+
+    @Override
+    public String setUmengKey() {
+        return null;
+    }
+
     /**
      * 初始化布局适配  布局中使用pt做位单位
      */
@@ -63,10 +85,16 @@ public class MyApplication extends Application {
     }
 
     public void initUmengConfig() {
-        //初始化组件化基础库, 统计SDK/推送SDK/分享SDK都必须调用此初始化接口
-        UMConfigure.init(this, "5b51a093b27b0a375200007b", CommonUtils.getSN(), UMConfigure.DEVICE_TYPE_PHONE,
-                null);
-        MobclickAgent.setScenarioType(this, MobclickAgent.EScenarioType.E_UM_NORMAL);
+        if (lease_Debug_v && DeviceUtils.getSystem() == DeviceUtils.System.PRO_LEASE) {
+            UMConfigure.init(this, "5c9ac80961f564a0dd0009e2", com.aibabel.baselibrary.utils.CommonUtils.getSN(), UMConfigure.DEVICE_TYPE_PHONE,
+                    null);
+            MobclickAgent.setScenarioType(this, MobclickAgent.EScenarioType.E_UM_NORMAL);
+        } else {
+            //初始化组件化基础库, 统计SDK/推送SDK/分享SDK都必须调用此初始化接口
+            UMConfigure.init(this, "5b51a093b27b0a375200007b", CommonUtils.getSN(), UMConfigure.DEVICE_TYPE_PHONE,
+                    null);
+            MobclickAgent.setScenarioType(this, MobclickAgent.EScenarioType.E_UM_NORMAL);
+        }
     }
 
     public void initSharedpreferenceConfig() {

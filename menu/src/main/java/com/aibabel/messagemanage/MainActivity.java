@@ -102,6 +102,9 @@ public class MainActivity extends com.aibabel.baselibrary.base.BaseActivity {
         List<PushMessageBean> tt = SqlUtils.queryMethed();
         if (tt != null) {
             for (PushMessageBean pushobj : tt) {
+
+                LogUtil.e("timecode = "+pushobj.getTimeCode()+"= baseg="+pushobj.isBadge());
+
             }
 
             msglist.addAll(tt);

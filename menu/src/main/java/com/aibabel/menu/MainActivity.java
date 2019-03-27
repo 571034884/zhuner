@@ -52,6 +52,7 @@ import com.aibabel.baselibrary.http.BaseCallback;
 import com.aibabel.baselibrary.http.OkGoUtil;
 import com.aibabel.baselibrary.mode.DataManager;
 import com.aibabel.baselibrary.mode.ServerManager;
+import com.aibabel.baselibrary.sphelper.SPHelper;
 import com.aibabel.baselibrary.utils.FastJsonUtil;
 import com.aibabel.baselibrary.utils.ProviderUtils;
 import com.aibabel.baselibrary.utils.ServerKeyUtils;
@@ -109,6 +110,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.io.Serializable;
 import java.lang.ref.WeakReference;
 import java.util.HashMap;
 import java.util.List;
@@ -451,6 +453,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         JPushInterface.setAlias(this, 1, CommonUtils.getSN());
         LogUtil.e("getSN:" + CommonUtils.getSN());
 
+
     }
 
 
@@ -628,6 +631,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
 
             if (!TextUtils.isEmpty(oid)) {
                 SharePrefUtil.saveString(context, order_oid, oid);
+                SPHelper.save(order_oid, oid);
                 DataManager.getInstance().setSaveString(order_oid, oid);
             } else LogUtil.e("oid empty");
             if (!TextUtils.isEmpty(uid)) {
@@ -1529,6 +1533,13 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
                         case 301:
                             set_BadgeCount += 1;
                             home_badge.setBadgeCount(set_BadgeCount);
+                            try {
+                                PushMessageBean bean = (PushMessageBean)msg.obj;
+                                bean.setBadge(true);
+                                SqlUtils.updateBadgeBean(bean);
+                                LogUtil.e("++++++++++++new ");
+                            }catch (Exception e){
+                            }
                             break;
                         case 302:
                             set_BadgeCount -= 1;
@@ -1537,6 +1548,44 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
                                 set_BadgeCount = 0;
                                 home_badge.setBadgeCount(set_BadgeCount);
                             }
+                            break;
+                        case 310:
+                            /**####  start-hjs-addStatisticsEvent   ##**/
+                            try {
+                                HashMap<String, Serializable> add_hp = ( HashMap<String, Serializable>)msg.obj;
+                                addStatisticsEvent("push_notification", add_hp);
+                            }catch (Exception e){
+                                e.printStackTrace();
+                            }
+                            /**####  end-hjs-addStatisticsEvent  ##**/
+                            break;
+                        case 320:
+                            try {
+                                HashMap<String, Serializable> add_hp = (HashMap<String, Serializable>) msg.obj;
+                                addStatisticsEvent("push_notification1", add_hp);
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            }
+                            break;
+                        case 330:
+                            try {
+                                HashMap<String, Serializable> add_hp = (HashMap<String, Serializable>) msg.obj;
+                                addStatisticsEvent("push_notification2", add_hp);
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            }
+                            break;
+                        case 340:
+                            try {
+                                HashMap<String, Serializable> add_hp = (HashMap<String, Serializable>) msg.obj;
+                                addStatisticsEvent("push_notification5", add_hp);
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            }
+                            break;
+                        case 400:
+                            HashMap<String, Serializable> add_hp = (HashMap<String, Serializable>) msg.obj;
+                            LogUtil.e("hjs"+add_hp.get("key"));
                             break;
                         default:
                             break;
