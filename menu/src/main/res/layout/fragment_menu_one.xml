@@ -29,7 +29,7 @@
                android:layout_height="wrap_content"
                android:textSize="@dimen/y28"
                android:layout_marginLeft="18dp"
-               android:text="优惠券"
+               android:text="打折券"
                android:textColor="@color/clr_fff"
                />
        </LinearLayout>
@@ -67,7 +67,7 @@
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@mipmap/icon_jqdl"
+                android:src="@mipmap/icon_dangdiwanle"
                 android:layout_marginLeft="50dp"
                 />
             <TextView
@@ -75,7 +75,7 @@
                 android:layout_height="wrap_content"
                 android:textSize="@dimen/y28"
                 android:layout_marginLeft="18dp"
-                android:text="景区导览"
+                android:text="游玩攻略"
                 android:textColor="@color/clr_fff"
                 />
         </LinearLayout>
