@@ -89,26 +89,31 @@ public class ContentProviderUtil {
      * 请求切换服务器
      */
     public static void sendErrorServer() {
-        XIPC.connectApp(XIPC.getContext(), XIPCUtils.XIPC_MENU_NEW);
-        XIPC.setIPCListener(new IPCListener() {
-            @Override
-            public void onIPCConnected(Class<? extends IPCService> service) {
-                new Thread(new Runnable() {
-                    @Override
-                    public void run() {
-                        try {
-                            IServerManager dsm = XIPC.getInstance(IServerManager.class);
-                            dsm.setPingServerError(ServerKeyUtils.serverKeyOcrCameraError);
-                            Log.e("http", "请求换服务器！");
-                            XIPC.disconnect(XIPC.getContext());
-                        }catch (Exception e){
-                            e.printStackTrace();
+        try{
+            XIPC.connectApp(XIPC.getContext(), XIPCUtils.XIPC_MENU_NEW);
+            XIPC.setIPCListener(new IPCListener() {
+                @Override
+                public void onIPCConnected(Class<? extends IPCService> service) {
+                    new Thread(new Runnable() {
+                        @Override
+                        public void run() {
+                            try {
+                                IServerManager dsm = XIPC.getInstance(IServerManager.class);
+                                dsm.setPingServerError(ServerKeyUtils.serverKeyOcrCameraError);
+                                Log.e("http", "请求换服务器！");
+                                XIPC.disconnect(XIPC.getContext());
+                            }catch (Exception e){
+                                e.printStackTrace();
+                            }
                         }
-                    }
-                }).start();
+                    }).start();
 
-            }
-        });
+                }
+            });
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+
     }
 
     /**

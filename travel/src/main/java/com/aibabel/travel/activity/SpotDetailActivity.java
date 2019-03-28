@@ -228,48 +228,51 @@ public class SpotDetailActivity extends BaseActivity implements View.OnClickList
         adapter = new CommomRecyclerAdapter(this, children, R.layout.horizontallistview_item, new CommomRecyclerAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(CommonRecyclerViewHolder holder, final int postion) {
+                try{
+                    Map map3 = new HashMap();
+                    map3.put("p1", children.get(lastOnclick).getName());
+                    map3.put("p2", children.get(postion).getName());
 
-                Map map3 = new HashMap();
-
-                map3.put("p1", children.get(lastOnclick).getName());
-                map3.put("p2", children.get(postion).getName());
-
-                StatisticsManager.getInstance(SpotDetailActivity.this).addEventAidl(1655, map3);
+                    StatisticsManager.getInstance(SpotDetailActivity.this).addEventAidl(1655, map3);
 
 
-                if (postion != lastOnclick) {
-                    if (postion == lastItemPosition) {
+                    if (postion != lastOnclick) {
+                        if (postion == lastItemPosition) {
+                            children.get(postion).setSelector(true);
+                            children.get(lastOnclick).setSelector(false);
+
+                            children.get(lastOnclick).setIslast(true);
+                            children.get(postion).setIslast(false);
+                            MoveToPosition(layoutManager, postion);
+                            adapter.updateData(children);
+                            musicPlayer.playIndex(postion);
+                            last = lastOnclick;
+                            lastOnclick = postion;
+                        } else {
+                            children.get(postion).setSelector(true);
+                            children.get(lastOnclick).setSelector(false);
+                            children.get(lastOnclick).setIslast(true);
+                            children.get(postion).setIslast(false);
+                            adapter.updateData(children);
+//                    MoveToPosition(layoutManager, postion);
+                            musicPlayer.playIndex(postion);
+                            last = lastOnclick;
+                            lastOnclick = postion;
+                        }
+
+                    }
+                    if (postion == 0) {
                         children.get(postion).setSelector(true);
-                        children.get(lastOnclick).setSelector(false);
-
-                        children.get(lastOnclick).setIslast(true);
-                        children.get(postion).setIslast(false);
-                        MoveToPosition(layoutManager, postion);
-                        adapter.updateData(children);
-                        musicPlayer.playIndex(postion);
-                        last = lastOnclick;
-                        lastOnclick = postion;
-                    } else {
-                        children.get(postion).setSelector(true);
-                        children.get(lastOnclick).setSelector(false);
-                        children.get(lastOnclick).setIslast(true);
-                        children.get(postion).setIslast(false);
+                        children.get(postion).setIslast(true);
                         adapter.updateData(children);
 //                    MoveToPosition(layoutManager, postion);
                         musicPlayer.playIndex(postion);
-                        last = lastOnclick;
                         lastOnclick = postion;
                     }
+                }catch(Exception e){
+                    e.printStackTrace();
+                }
 
-                }
-                if (postion == 0) {
-                    children.get(postion).setSelector(true);
-                    children.get(postion).setIslast(true);
-                    adapter.updateData(children);
-//                    MoveToPosition(layoutManager, postion);
-                    musicPlayer.playIndex(postion);
-                    lastOnclick = postion;
-                }
             }
         }, null) {
 
