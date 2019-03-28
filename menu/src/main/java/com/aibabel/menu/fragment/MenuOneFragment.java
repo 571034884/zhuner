@@ -82,8 +82,8 @@ public class MenuOneFragment extends BaseFragment implements View.OnClickListene
                     break;
                 case R.id.one_frag_3:
                     //调起景区导览
-                    startActivity(AppStatusUtils.getAppOpenIntentByPackageName(getContext(),"com.aibabel.travel"));
-
+                    //startActivity(AppStatusUtils.getAppOpenIntentByPackageName(getContext(),"com.aibabel.travel"));
+                    startActivity(AppStatusUtils.getAppOpenIntentByPackageName(getContext(),"com.aibabel.scenic"));
                     break;
                 case R.id.one_frag_4:
                     //调起出入境
