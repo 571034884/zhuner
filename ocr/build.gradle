@@ -91,7 +91,6 @@ dependencies {
     implementation files('libs/jpeglibrary.jar')
     //    implementation "com.aibabel:aidlaar:1.0.14"
     api project(path: ':aidlaar')
-    compile project(path: ':baselibrary')
     implementation project(':baselibrary')
 }
 repositories {

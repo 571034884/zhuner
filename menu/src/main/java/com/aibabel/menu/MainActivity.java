@@ -634,7 +634,6 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
             if (!TextUtils.isEmpty(chanelname)) {
                 SharePrefUtil.saveString(context, order_channelName, chanelname);
             } else LogUtil.e("chanelname empty");
-
             if (!TextUtils.isEmpty(oid)) {
                 SharePrefUtil.saveString(context, order_oid, oid);
                 SPHelper.save(order_oid, oid);

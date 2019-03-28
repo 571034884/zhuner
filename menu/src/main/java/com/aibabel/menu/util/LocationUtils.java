@@ -26,7 +26,7 @@ public class LocationUtils {
             if (cursor != null && cursor.moveToFirst()) {
                 mLocation = cursor.getString(cursor.getColumnIndex("locationWhere"));
             }
-            cursor.close();
+            if(cursor!=null)cursor.close();
         } catch (Exception e) {
             L.e("getLocation--------" + e.getMessage());
         }
@@ -69,7 +69,7 @@ public class LocationUtils {
 
                 } while (cursor.moveToNext());
             }
-            cursor.close();
+            if(cursor!=null)cursor.close();
         } catch (Exception e) {
             L.e("getLocation--------" + e.getMessage());
 
@@ -129,7 +129,7 @@ public class LocationUtils {
 
                 } while (cursor.moveToNext());
             }
-            cursor.close();
+            if(cursor!=null)cursor.close();
         } catch (Exception e) {
             L.e("getLocation--------" + e.getMessage());
 
