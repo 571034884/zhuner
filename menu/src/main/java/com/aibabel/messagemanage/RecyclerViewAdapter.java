@@ -78,12 +78,12 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
                     try {
                         LogUtil.e("setOnClickListener pos = " + position);
                         PushMessageBean push_bean = message.get(position);
-                        push_bean.setBadge(false);
+                        //push_bean.setBadge(false);
                         message.set(position, push_bean);
                         LogUtil.e("push_bean.getId = " + push_bean.getId());
                         push_bean.setBadge(false);
                         push_bean.update(push_bean.getId());
-                        push_bean.save();
+                        //push_bean.save();
 
                         notifyItemChanged(position, push_bean);
 

@@ -224,7 +224,7 @@ public class MessageUtil {
     public static void startOtherScenic(PushMessageBean bean, Context context) {
         try {
             Intent mIntent = new Intent();
-            mIntent.putExtra("notiytId",""+bean.getNum());
+            if(bean!=null)mIntent.putExtra("notiytId",""+bean.getNum());
             ComponentName componentName = new ComponentName(bean.getPackageName(), bean.getPath());
             mIntent.setComponent(componentName);
             context.startActivity(mIntent);
