@@ -628,6 +628,15 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
             if (!TextUtils.isEmpty(chanelname)) {
                 SharePrefUtil.saveString(context, order_channelName, chanelname);
             } else LogUtil.e("chanelname empty");
+
+////张月测试用
+//            ((Activity)mContext).runOnUiThread(new Runnable() {
+//                @Override
+//                public void run() {
+//                    ToastUtil.show(context,"oid="+oid,Toast.LENGTH_LONG);
+//                }
+//            });
+
             if (!TextUtils.isEmpty(oid)) {
                 SharePrefUtil.saveString(context, order_oid, oid);
                 SPHelper.save(order_oid, oid);
@@ -651,6 +660,15 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
             } else LogUtil.e("sn = null");
             if (islock >= 0) {
                 SharePrefUtil.saveInt(context, order_islock, islock);
+                try {
+                    boolean RentLocked_fore = DetectUtil.isForeground(this, RentLockedActivity.class);
+                    if (RentLocked_fore&&islock==0) {
+                        LogUtil.e("RentLocked_fore = " + RentLocked_fore);
+                        if (loopHandler != null) loopHandler.sendEmptyMessage(200);
+                    }
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
             } else LogUtil.e("order_islock = null");
             if (attime >= 0) {
                 SharePrefUtil.saveInt(context, order_lockattime, attime);
@@ -1679,23 +1697,6 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
     }
 
 
-   /* public void showdialog(){
-        builderChangeCity = new CustomDialog.Builder(MainActivity.this, R.layout.dialog_change_city)
-                .setTv(R.id.dialog_change_content, "123")
-                .setTvListener(R.id.dialog_change_btm_cancle, "", new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        builderChangeCity.dismiss();
-                    }
-                })
-                .setTvListener(R.id.dialog_change_btm_sure, "", new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        builderChangeCity.dismiss();
-                    }
-                }).setCanceledOnTouchOutside(false);
-        builderChangeCity.show();
-    }*/
 
     private void requestNetwork() {
         ConnectivityManager connectivityManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
@@ -1874,49 +1875,4 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         return -1;
     }
 
-//public void okgerror(){
-        /*String reposStr = "{\n" +
-                                "      \"code\": 1,\n" +
-                                "      \"status\": \"ok\",\n" +
-                                "      \"msg\": \"国外，无订单\",\n" +
-                                "      \"body\": {\n" +
-                                "        \"isLock\": 1,\n" +
-                                "        \"oid\": \"\",\n" +
-                                "        \"uid\": \"\",\n" +
-                                "        \"channelName\": \"\",\n" +
-                                "        \"uname\": \"\",\n" +
-                                "        \"sn\": \"\",\n" +
-                                "        \"f\": \"\",\n" +
-                                "        \"t\": \"\",\n" +
-                                "        \"d\": \"\",\n" +
-                                "        \"at\": 24,\n" +
-                                "        \"isZhuner\": 0\n" +
-                                "      }\n" +
-                                "    }";
-                        try {
-                            SyncOrder synorder = JSON.parseObject(reposStr, SyncOrder.class);
-                            if ((synorder != null)) {
-                                LogUtil.e("synorder != null");
-                                Locklogic(context, synorder);
-                                //SharePrefUtil.saveString();
-                            }
-
-                        }catch (Exception e){
-                            e.printStackTrace();
-                        }*/
-//}
-
-//        OkHttp3Util.doPost("",mapPram, new Callback() {
-//            @Override
-//            public void onFailure(@NonNull Call call, @NonNull IOException e) {
-//
-//            }
-//
-//            @Override
-//            public void onResponse(@NonNull Call call, @NonNull Response response) throws IOException {
-//
-//                String  res = JSON.toJSONString(response.body().toString());
-//                SyncOrder synorder = JSON.parseObject(res, new TypeReference<SyncOrder>() {});
-//            }
-//        });
 }
