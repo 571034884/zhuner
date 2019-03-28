@@ -27,9 +27,10 @@ import java.util.List;
 
 public class MessageUtil {
 
-    public static   String TITLE_JG = "";
-    public static   String MESSAGE_JG = "";
-    public static   String CONTEXTS_JG = "";
+    public static String TITLE_JG = "";
+    public static String MESSAGE_JG = "";
+    public static String CONTEXTS_JG = "";
+
     /**
      * 点击通知栏
      *
@@ -42,7 +43,7 @@ public class MessageUtil {
         try {
             PushMessageBean bean = FastJsonUtil.changeJsonToBean(jsonString, PushMessageBean.class);
 
-            if(bean==null)return;
+            if (bean == null) return;
 
             MESSAGE_JG = bean.getContent();
             TITLE_JG = bean.getTitle();
@@ -96,11 +97,11 @@ public class MessageUtil {
      */
     public static void openNotification_pushbean(Context context, PushMessageBean bean) {
         try {
-            if(bean==null)return;
+            if (bean == null) return;
             MESSAGE_JG = bean.getContent();
 
-            LogUtil.e("openNotification_bean.getType"+bean.getType());
-            LogUtil.e("openNotification_bean.getApk"+bean.getApk());
+            LogUtil.e("openNotification_bean.getType" + bean.getType());
+            LogUtil.e("openNotification_bean.getApk" + bean.getApk());
 
             if (TextUtils.equals(bean.getType(), "5")) {
                 // TODO: 2019/1/10 打开链接地址
@@ -111,6 +112,9 @@ public class MessageUtil {
                 switch (bean.getApk()) {
                     case "travel":
                         startScenic(bean, context);
+                        break;
+                    case "scenic":
+                        startNewScenic(bean, context);
                         break;
                     case "coupon":
                     case "currency":
@@ -162,14 +166,14 @@ public class MessageUtil {
             intent.putExtra("couponId", bean.getResultData().get(0).getCouponId());
             intent.putExtra("package", bean.getPackageName());
             intent.putExtra("path", bean.getPath());
-            numid= bean.getNum();
+            numid = bean.getNum();
             /**####  start-hjs-addStatisticsEvent   ##**/
             try {
                 HashMap<String, Serializable> add_hp = new HashMap<>();
                 add_hp.put("push_notification3_def", bean.getTitle());
-                add_hp.put("push_notification3_id",bean.getNum() );
-                ((BaseActivity)context).addStatisticsEvent("push_notification3", add_hp);
-            }catch (Exception e){
+                add_hp.put("push_notification3_id", bean.getNum());
+                ((BaseActivity) context).addStatisticsEvent("push_notification3", add_hp);
+            } catch (Exception e) {
                 e.printStackTrace();
             }
             /**####  end-hjs-addStatisticsEvent  ##**/
@@ -190,14 +194,14 @@ public class MessageUtil {
         try {
             List<DetailBean> list = new ArrayList<>();
 
-            if(bean!=null && (bean.getResultData().size()>0)){
-            for (PushMessageBean.ResultDataBean data : bean.getResultData()) {
-                DetailBean detailBean = new DetailBean();
-                detailBean.setAudioUrl(data.getAudiosurl());
-                detailBean.setImageUrl(data.getCover());
-                detailBean.setName(data.getName());
-                list.add(detailBean);
-            }
+            if (bean != null && (bean.getResultData().size() > 0)) {
+                for (PushMessageBean.ResultDataBean data : bean.getResultData()) {
+                    DetailBean detailBean = new DetailBean();
+                    detailBean.setAudioUrl(data.getAudiosurl());
+                    detailBean.setImageUrl(data.getCover());
+                    detailBean.setName(data.getName());
+                    list.add(detailBean);
+                }
             }
 
             Intent mIntent = new Intent();
@@ -215,8 +219,30 @@ public class MessageUtil {
         }
     }
 
+
     /**
-     * 启动景区导览详情页
+     * 启动新景区导览详情页
+     *
+     * @param bean
+     * @param context
+     */
+    public static void startNewScenic(PushMessageBean bean, Context context) {
+        try {
+            if (bean != null) {
+                Intent mIntent = new Intent();
+                ComponentName componentName = new ComponentName(bean.getPackageName(), bean.getPath());
+                mIntent.setComponent(componentName);
+                if (bean.getResultData() != null)mIntent.putExtra("poiId", bean.getResultData().get(0).getIdstring());
+
+                context.startActivity(mIntent);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * 启动其他
      *
      * @param bean
      * @param context
@@ -224,7 +250,7 @@ public class MessageUtil {
     public static void startOtherScenic(PushMessageBean bean, Context context) {
         try {
             Intent mIntent = new Intent();
-            if(bean!=null)mIntent.putExtra("notiytId",""+bean.getNum());
+            if (bean != null) mIntent.putExtra("notiytId", "" + bean.getNum());
             ComponentName componentName = new ComponentName(bean.getPackageName(), bean.getPath());
             mIntent.setComponent(componentName);
             context.startActivity(mIntent);
@@ -232,7 +258,6 @@ public class MessageUtil {
             e.printStackTrace();
         }
     }
-
 
 
     public static String getRealtime() {
@@ -248,12 +273,12 @@ public class MessageUtil {
         return "";
     }
 
-    public static String getShowRealtime(String  systime) {
+    public static String getShowRealtime(String systime) {
 //        if(TextUtils.isEmpty(systime))return "";
         try {
             DateFormat formatter = new SimpleDateFormat("MM-dd HH:mm");
             Calendar calendar = Calendar.getInstance();
-            calendar.setTimeInMillis(Long.valueOf(systime)*1000);
+            calendar.setTimeInMillis(Long.valueOf(systime) * 1000);
             String format = formatter.format(calendar.getTime());
             return format;
         } catch (Exception e) {
@@ -269,8 +294,7 @@ public class MessageUtil {
 //    }
 
 
-
-    public static void Testmain(){
+    public static void Testmain() {
         // 嵌套的json字符串
         try {
             String JSON_MULTI = "{'name':'tom','score':{'Math':98,'English':90}}";
@@ -281,7 +305,7 @@ public class MessageUtil {
             JSONObject scoreObj = (JSONObject) obj.get("score");
             System.out.println("Math score is : " + scoreObj.get("Math"));
             System.out.println("English score is : " + scoreObj.get("English"));
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
         String extra_ = "{\"sn\": \"0000000000000000\", \"no\": 3163, \"relet\": {\"code\": 1, \"msg\": \"请同步订单\"}}";
@@ -298,7 +322,7 @@ public class MessageUtil {
             }
         } catch (JSONException e) {
             System.out.println("Get message extra JSON error!");
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
 
