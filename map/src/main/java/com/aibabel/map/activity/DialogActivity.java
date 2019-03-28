@@ -230,10 +230,14 @@ public class DialogActivity extends StatisticsBaseActivity implements View.OnCli
                 break;
             case R.id.tv_address:
             case R.id.tv_go:
-                if (!CommonUtils.isNetworkAvailable(this)){
-                    ToastUtil.showShort(mContext,"请检查网络连接");
-                    return;
+                try{
+                    if (!CommonUtils.isNetworkAvailable(this)){
+                        ToastUtil.showShort(this,"请检查网络连接");
+                        return;
+                    }
+                }catch (Exception e){
                 }
+
                 toRoute();
                 break;
         }
