@@ -159,11 +159,14 @@ public class LocationService extends Service implements ScreenListener, CardBroa
         } else {
             mLocationClient = MapUtils.getLocationClient(getApplicationContext(), Constants.LOCATION_MILLIS_S);
         }
+        if (DeviceUtils.getSystem() == DeviceUtils.System.FLY_TAIWAN || DeviceUtils.getSystem() == DeviceUtils.System.GO) {
+            mLocationClient = MapUtils.getLocationClient(getApplicationContext(), Constants.LOCATION_MILLIS_S);
+        }
+
         // //注册监听函数
         mLocationClient.registerLocationListener(myListener);
         //调用LocationClient的start()方法，便可发起定位请求
         mLocationClient.start();
-
         reLocationManager = new ReLocationManager(mLocationClient);
 
 
@@ -171,7 +174,7 @@ public class LocationService extends Service implements ScreenListener, CardBroa
         runnable_server = new Runnable() {
             @Override
             public void run() {
-                getHotFix();
+//                getHotFix();
                 getServerIP();
                 contentProvide();
                 handler_server.postDelayed(this, Constants.SERVER_MILLIS);
@@ -179,54 +182,56 @@ public class LocationService extends Service implements ScreenListener, CardBroa
         };
         handler_server.postDelayed(runnable_server, 0);
 
+        /**
+         * 台湾版不上poi请求和流量统计，20190328
+         */
 
-        //循环请求后台获取新POI数据
-        runnable_poi = new Runnable() {
-            @Override
-            public void run() {
-                if (!isFirst) {//判定是否为第一次启动，第一次定位不请求（百度默认有第一次定位）
-                    getInformation(LocationService.this);
-                } else {
-                    Log.e(TAG, "第一次没有请求!");
-                    isFirst = false;
-                }
-                if (TextUtils.equals(CommonUtils.getProType(), "L")) {//判定Pro是否为销售版
-                    handler_poi.postDelayed(this, Constants.POI_MILLIS);
-                } else {
-                    handler_poi.postDelayed(this, Constants.POI_MILLIS_S);
-                }
+        if (DeviceUtils.getSystem() != DeviceUtils.System.FLY_TAIWAN) {
+            //循环请求后台获取新POI数据
+            runnable_poi = new Runnable() {
+                @Override
+                public void run() {
+                    if (!isFirst) {//判定是否为第一次启动，第一次定位不请求（百度默认有第一次定位）
+                        getInformation(LocationService.this);
+                    } else {
+                        Log.e(TAG, "第一次没有请求!");
+                        isFirst = false;
+                    }
+                    if (TextUtils.equals(CommonUtils.getProType(), "L")) {//判定Pro是否为销售版
+                        handler_poi.postDelayed(this, Constants.POI_MILLIS);
+                    } else {
+                        handler_poi.postDelayed(this, Constants.POI_MILLIS_S);
+                    }
 
+                }
+            };
+            handler_poi.postDelayed(runnable_poi, 0);
+
+
+            //循环上传统计流量
+            runnable_flow = new Runnable() {
+                @Override
+                public void run() {
+
+                    if (DeviceUtils.getSystem() == DeviceUtils.System.PRO_LEASE) {
+                        uploadTraffic();
+                        Log.e(TAG, "=================流量统计执行了=================");
+                        handler_flow.postDelayed(this, Constants.FIVE_MILLIS);
+                    }
+
+
+                }
+            };
+            handler_flow.postDelayed(runnable_flow, 0);
+
+            //注册切换sim卡广播
+            CardBroadcastReceiver.setSwitch_card(this);
+            FlowUtil.initMtkDoubleSim(LocationService.this);
+            if (FlowUtil.isMobileEnabled(this)) {
+                FlowUtil.getDefaultDataSubId(this);
             }
-        };
-        handler_poi.postDelayed(runnable_poi, 0);
-
-
-        //循环上传统计流量
-        runnable_flow = new Runnable() {
-            @Override
-            public void run() {
-
-                if (DeviceUtils.getSystem() == DeviceUtils.System.PRO_LEASE) {
-                    uploadTraffic();
-                    Log.e(TAG, "=================流量统计执行了=================");
-                    handler_flow.postDelayed(this, Constants.FIVE_MILLIS);
-                }
-
-
-            }
-        };
-        handler_flow.postDelayed(runnable_flow, 0);
-
-
-        //注册切换sim卡广播
-//         cardBroadcastReceiver = new CardBroadcastReceiver();
-        CardBroadcastReceiver.setSwitch_card(this);
-        FlowUtil.initMtkDoubleSim(LocationService.this);
-        if (FlowUtil.isMobileEnabled(this)) {
-            FlowUtil.getDefaultDataSubId(this);
         }
 
-//        uploadTraffic();
         //向语音翻译发送广播
         sendTranslation();
         return super.onStartCommand(intent, flags, startId);
@@ -302,22 +307,24 @@ public class LocationService extends Service implements ScreenListener, CardBroa
 
     @Override
     public void sleep() {//屏幕熄灭后调用执行任务
-        String ip = "http://abroad.api.joner.aibabel.cn:7001";
-        if (locationWhere == 0) {
-            ip = "http://abroad.api.joner.aibabel.cn:7001";
-        } else {
-            ip = "http://api.joner.aibabel.cn:7001";
+        if (DeviceUtils.getSystem() != DeviceUtils.System.FLY_TAIWAN) {
+            String ip;
+            if (locationWhere == 0) {
+                ip = "http://abroad.api.joner.aibabel.cn:7001";
+            } else {
+                ip = "http://api.joner.aibabel.cn:7001";
+            }
+            Map<String, String> map = new HashMap<>();
+            map.put("sv", Build.DISPLAY);
+            map.put("sn", CommonUtils.getSN());
+            map.put("sl", CommonUtils.getLocal());
+            map.put("av", CommonUtils.getVerName(this));
+            map.put("no", CommonUtils.getRandom() + "");
+            map.put("lat", latitude + "");
+            map.put("lng", longitude + "");
+            StatisticsManager.getInstance(this).sendDataAidl(ip + "/v1/ddot/JonerLogPush", map);
         }
-        Map<String, String> map = new HashMap<>();
-        map.put("sv", Build.DISPLAY);
-        map.put("sn", CommonUtils.getSN());
-        map.put("sl", CommonUtils.getLocal());
-        map.put("av", CommonUtils.getVerName(this));
-        map.put("no", CommonUtils.getRandom() + "");
-        map.put("lat", latitude + "");
-        map.put("lng", longitude + "");
-        StatisticsManager.getInstance(this).sendDataAidl(ip + "/v1/ddot/JonerLogPush", map);
-        Log.e("sleep", ip);
+
     }
 
 
@@ -739,7 +746,7 @@ public class LocationService extends Service implements ScreenListener, CardBroa
                     public void onError(Response<String> response) {
                         try {
                             Log.e(TAG + "流量统计onError：", response.body().toString());
-                        }catch (Exception e){
+                        } catch (Exception e) {
                             e.printStackTrace();
                         }
                     }
