@@ -128,7 +128,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
     @BindView(R.id.main_return_img)
     ImageView mainReturnImg;
     @BindView(R.id.main_top_ctiy)
-    MagicTextView mainTopCtiy;
+    TextView mainTopCtiy;
     @BindView(R.id.main_topPanel)
     RelativeLayout mainTopPanel;
     @BindView(R.id.main_middle_time)
@@ -137,16 +137,10 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
     TextView mainMiddleTianqi;
     @BindView(R.id.main_middle_tianqi_du)
     TextView mainMiddleTianqiDu;
-    @BindView(R.id.main_middle_huilv)
-    TextView mainMiddleHuilv;
-    //    @BindView(R.id.main_middle_huilv1)
-//    SingleLineZoomTextView mainMiddleHuilv1;
     @BindView(R.id.main_middle_ll)
     LinearLayout mainMiddleLl;
     @BindView(R.id.main_map_local_tv)
     TextView mainMapLocalTv;
-    @BindView(R.id.main_map_jinru_img)
-    ImageView mainMapJinruImg;
     @BindView(R.id.main_map_jinru_tv)
     TextView mainMapJinruTv;
     @BindView(R.id.bttom_menu_ll_gd)
@@ -158,8 +152,6 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
     @BindView(R.id.main_middle_tianqi_ll)
     RelativeLayout mainMiddleTianqiLl;
     @BindView(R.id.main_middle_huilv_ll)
-
-
     RelativeLayout mainMiddleHuilvLl;
     @BindView(R.id.main_map_rl)
     RelativeLayout mainMapRl;
@@ -169,16 +161,11 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
     LinearLayout bttomMenuLlPzfy;
     @BindView(R.id.bttom_menu_ll_ddwl)
     LinearLayout bttomMenuLlDdwl;
-    @BindView(R.id.main_shanghua_img)
-    ImageView mainShanghuaImg;
+//    @BindView(R.id.main_shanghua_img)
+//    ImageView mainShanghuaImg;
     @BindView(R.id.main_middle_tianqi_du1)
     TextView mainMiddleTianqiDu1;
 
-
-    @BindView(R.id.main_middle_huilv_top1)
-    TextView mainMiddleHuilvTop1;
-    @BindView(R.id.main_middle_huilv_top2)
-    TextView mainMiddleHuilvTop2;
     @BindView(R.id.main_middle_date)
     TextClock mainMiddleDate;
     @BindView(R.id.main_top_ctiy_ll)
@@ -187,7 +174,12 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
     ImageView mainTopCtiyImg;
     @BindView(R.id.main_return_img_ll)
     LinearLayout mainReturnImgLl;
-
+    @BindView(R.id.tv_huilvone)
+    TextView tvHuilvOne;
+    @BindView(R.id.tv_huilvtwo)
+    TextView tvHuilvTwo;
+    @BindView(R.id.text_view_address_city)
+    TextView tvAddressCity;
 
     private LinearLayout bottom_menu_gd;
     private LinearLayout bottom_ll;
@@ -199,7 +191,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
     int num;
     Rect rect;
     //上滑动画
-    public static AnimationDrawable frameAnim;
+//    public static AnimationDrawable frameAnim;
     public static UpdateMenu upListener; //更新界面接口
     CustomDialog.Builder builderChangeCity;//切换城市dialog
     CustomDialog.Builder builderNoCity;//切换城市dialog
@@ -421,9 +413,9 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         intentFilter.addAction("android.net.conn.CONNECTIVITY_CHANGE");
         registerReceiver(netBroadcastReceiver, intentFilter);
         //上滑引导的帧动画
-        frameAnim = (AnimationDrawable) getResources().getDrawable(R.drawable.amin_list_shanghua);
-        mainShanghuaImg.setBackgroundDrawable(frameAnim);
-        frameAnim.start();
+//        frameAnim = (AnimationDrawable) getResources().getDrawable(R.drawable.amin_list_shanghua);
+//        mainShanghuaImg.setBackgroundDrawable(frameAnim);
+//        frameAnim.start();
 
         webviewSetting();
 
@@ -628,6 +620,15 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
             if (!TextUtils.isEmpty(chanelname)) {
                 SharePrefUtil.saveString(context, order_channelName, chanelname);
             } else LogUtil.e("chanelname empty");
+
+////张月测试用
+//            ((Activity)mContext).runOnUiThread(new Runnable() {
+//                @Override
+//                public void run() {
+//                    ToastUtil.show(context,"oid="+oid,Toast.LENGTH_LONG);
+//                }
+//            });
+
             if (!TextUtils.isEmpty(oid)) {
                 SharePrefUtil.saveString(context, order_oid, oid);
                 SPHelper.save(order_oid, oid);
@@ -651,6 +652,15 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
             } else LogUtil.e("sn = null");
             if (islock >= 0) {
                 SharePrefUtil.saveInt(context, order_islock, islock);
+                try {
+                    boolean RentLocked_fore = DetectUtil.isForeground(this, RentLockedActivity.class);
+                    if (RentLocked_fore&&islock==0) {
+                        LogUtil.e("RentLocked_fore = " + RentLocked_fore);
+                        if (loopHandler != null) loopHandler.sendEmptyMessage(200);
+                    }
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
             } else LogUtil.e("order_islock = null");
             if (attime >= 0) {
                 SharePrefUtil.saveInt(context, order_lockattime, attime);
@@ -733,6 +743,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         OkGoUtil.get(false, UrlConstants.GET_MENU, mapPram, MenuDataBean.class, new BaseCallback<MenuDataBean>() {
             @Override
             public void onSuccess(String s, MenuDataBean menuDataBean, String s1) {
+                Log.e("XINMENU",s1);
                 bindMenuData(menuDataBean);
             }
 
@@ -804,9 +815,8 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
 
                     break;
                 case R.id.bttom_menu_ll_ddwl:
-                    //调起当地玩乐
-                    startActivity(AppStatusUtils.getAppOpenIntentByPackageName(mContext, "com.aibabel.fyt_play"));
-                    StatisticsManager.getInstance(mContext).addEventAidl(1108, new HashMap<>());
+                    //TODO 调起景区导览
+                    startActivity(AppStatusUtils.getAppOpenIntentByPackageName(mContext,"com.aibabel.travel"));
 
                     break;
                 case R.id.main_top_ctiy_ll:
@@ -859,7 +869,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
                 switch (event.getAction()) {
 
                     case MotionEvent.ACTION_DOWN:
-                        frameAnim.stop();
+//                        frameAnim.stop();
                         mPosX = event.getX();
                         mPosY = event.getRawY();
 
@@ -905,7 +915,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
                             showPanel1();
                         }
 
-                        frameAnim.start();
+//                        frameAnim.start();
 
                         break;
                 }
@@ -1151,23 +1161,6 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         }
 
         try {
-//            mainTopCtiy.setTextColor(TextUtils.equals(bean.getData().getAddrPicColor(), "light") ? getResources().getColor(R.color.clr_333) : getResources().getColor(R.color.clr_fff));
-//            mainTopCtiy.setTextColor(getResources().getColor(R.color.clr_fff));
-
-            if (TextUtils.equals(bean.getData().getAddrPicColor(), "light")) {
-                frameAnim = (AnimationDrawable) getResources().getDrawable(R.drawable.amin_list_shanghua_an);
-                mainShanghuaImg.setBackgroundDrawable(frameAnim);
-                frameAnim.start();
-            } else {
-                frameAnim = (AnimationDrawable) getResources().getDrawable(R.drawable.amin_list_shanghua);
-                mainShanghuaImg.setBackgroundDrawable(frameAnim);
-                frameAnim.start();
-            }
-        } catch (Exception e) {
-
-        }
-
-        try {
             if (TextUtils.equals(SPUtils.get(mContext, "showCityName", "").toString(), bean.getData().getCityNameCn())) {
                 //显示的桌面  就是当前城市
                 mainTopCtiyImg.setVisibility(View.VISIBLE);
@@ -1235,15 +1228,32 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
 
         // 汇率
         try {
-            mainMiddleHuilvTop1.setText(!TextUtils.equals(bean.getCode(), "-10000") ? bean.getData().getCurrencyData().substring(0, bean.getData().getCurrencyData().indexOf(".")) : "--·--");
-            mainMiddleHuilvTop2.setText(!TextUtils.equals(bean.getCode(), "-10000") ? bean.getData().getCurrencyData().substring(bean.getData().getCurrencyData().indexOf(".")) : "");
+            if (!TextUtils.isEmpty(bean.getData().getCurrency100WaiBi())){
+                tvHuilvOne.setText(bean.getData().getCurrency100WaiBi()+"");
+            }else{
+                tvHuilvOne.setText("--·--");
+            }
 
-        } catch (Exception e) {
-            mainMiddleHuilvTop1.setText("--·--");
-            mainMiddleHuilvTop2.setText("");
-
-
+            if (!TextUtils.isEmpty(bean.getData().getCurrencyCny())){
+                tvHuilvTwo.setText(bean.getData().getCurrencyCny()+"");
+            }else{
+                tvHuilvTwo.setText("--·--");
+            }
+        }catch (Exception e){
+            tvHuilvOne.setText("--·--");
+            tvHuilvTwo.setText("--·--");
         }
+
+        try {
+            if (!TextUtils.isEmpty(bean.getData().getCityNameCn())){
+                tvAddressCity.setText(bean.getData().getCityNameCn()+"");
+            }else{
+                tvAddressCity.setText("--·--");
+            }
+        }catch (Exception e){
+            tvAddressCity.setText("--·--");
+        }
+
 
         String addr = ProviderUtils.getInfo("addr");
         L.e("dw======================" + addr);
@@ -1679,23 +1689,6 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
     }
 
 
-   /* public void showdialog(){
-        builderChangeCity = new CustomDialog.Builder(MainActivity.this, R.layout.dialog_change_city)
-                .setTv(R.id.dialog_change_content, "123")
-                .setTvListener(R.id.dialog_change_btm_cancle, "", new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        builderChangeCity.dismiss();
-                    }
-                })
-                .setTvListener(R.id.dialog_change_btm_sure, "", new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        builderChangeCity.dismiss();
-                    }
-                }).setCanceledOnTouchOutside(false);
-        builderChangeCity.show();
-    }*/
 
     private void requestNetwork() {
         ConnectivityManager connectivityManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
@@ -1874,49 +1867,4 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         return -1;
     }
 
-//public void okgerror(){
-        /*String reposStr = "{\n" +
-                                "      \"code\": 1,\n" +
-                                "      \"status\": \"ok\",\n" +
-                                "      \"msg\": \"国外，无订单\",\n" +
-                                "      \"body\": {\n" +
-                                "        \"isLock\": 1,\n" +
-                                "        \"oid\": \"\",\n" +
-                                "        \"uid\": \"\",\n" +
-                                "        \"channelName\": \"\",\n" +
-                                "        \"uname\": \"\",\n" +
-                                "        \"sn\": \"\",\n" +
-                                "        \"f\": \"\",\n" +
-                                "        \"t\": \"\",\n" +
-                                "        \"d\": \"\",\n" +
-                                "        \"at\": 24,\n" +
-                                "        \"isZhuner\": 0\n" +
-                                "      }\n" +
-                                "    }";
-                        try {
-                            SyncOrder synorder = JSON.parseObject(reposStr, SyncOrder.class);
-                            if ((synorder != null)) {
-                                LogUtil.e("synorder != null");
-                                Locklogic(context, synorder);
-                                //SharePrefUtil.saveString();
-                            }
-
-                        }catch (Exception e){
-                            e.printStackTrace();
-                        }*/
-//}
-
-//        OkHttp3Util.doPost("",mapPram, new Callback() {
-//            @Override
-//            public void onFailure(@NonNull Call call, @NonNull IOException e) {
-//
-//            }
-//
-//            @Override
-//            public void onResponse(@NonNull Call call, @NonNull Response response) throws IOException {
-//
-//                String  res = JSON.toJSONString(response.body().toString());
-//                SyncOrder synorder = JSON.parseObject(res, new TypeReference<SyncOrder>() {});
-//            }
-//        });
 }

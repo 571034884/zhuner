@@ -57,11 +57,14 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
            android:layout_centerHorizontal="true"
-            android:layout_marginTop="@dimen/y75"
+            android:layout_marginTop="35dp"
+            android:paddingLeft="15dp"
+            android:paddingTop="8dp"
+            android:paddingBottom="8dp"
+            android:paddingRight="15dp"
+            android:background="@drawable/location_city_bg"
             android:orientation="horizontal"
             android:layout_gravity="center_vertical"
-
-            android:padding="0dp"
             >
             <ImageView
                 android:id="@+id/main_top_ctiy_img"
@@ -69,23 +72,16 @@
                 android:layout_height="wrap_content"
                 android:src="@mipmap/main_top_location_icn"
                 android:visibility="gone"
+                android:layout_marginRight="10dp"
                 android:layout_gravity="center_vertical"
-                android:layout_marginTop="@dimen/x7"
-                android:layout_marginRight="-10px"
-
                 />
-            <com.aibabel.menu.view.MagicTextView
+            <TextView
                 android:id="@+id/main_top_ctiy"
-                xmlns:qwerjk="http://schemas.android.com/apk/res/com.aibabel.menu"
                 android:layout_width="wrap_content"
-                android:layout_height="fill_parent"
+                android:layout_height="wrap_content"
                 android:textStyle="bold"
-                qwerjk:outerShadowDy="2"
-                qwerjk:outerShadowColor="#33000000"
-                android:padding="@dimen/x10"
-                qwerjk:outerShadowRadius="15"
-                android:textColor="@color/clr_fff"
-                android:textSize="@dimen/y48"
+                android:textColor="#333333"
+                android:textSize="20sp"
                 android:text="--·--" />
 
         </LinearLayout>
@@ -96,7 +92,7 @@
         <LinearLayout
             android:layout_width="60dp"
             android:layout_height="60dp"
-            android:layout_marginTop="@dimen/y75"
+            android:layout_marginTop="35dp"
             android:background="@drawable/shape_notice_fff"
             android:layout_gravity="right"
             android:layout_marginRight="7dp"
@@ -131,7 +127,8 @@
                     android:maxLines="1"
                     android:ellipsize="none"
                     android:textSize="10sp"
-                    android:background="#EF4738"/>
+                    android:background="#EF4738"
+                    tools:ignore="EllipsizeMaxLines" />
             </FrameLayout>
 
         </LinearLayout>
@@ -144,274 +141,270 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layout_constraintBottom_toBottomOf="parent"
-
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintVertical_weight="1"
+        app:layout_constraintVertical_weight="1">
+        <ImageView
+            android:id="@+id/main_shanghua_img"
+            android:layout_width="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            android:src="@mipmap/icon_menu_shanghua"
+            />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:text="在图片上上滑试试"
+            android:textColor="#ffffff"
+            android:textSize="12sp"
+            android:layout_marginBottom="15dp"
+            />
 
 
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_alignParentBottom="true"
+            android:layout_height="100dp">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="1"/>
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:background="@drawable/main_menu_left_right_bg"
+                    android:layout_weight="1"/>
+            </LinearLayout>
+            <LinearLayout
+                android:id="@+id/main_middle_ll"
+                android:layout_width="match_parent"
+                android:layout_height="100dp"
+                android:background="@mipmap/icon_menu_clock_timer"
+                android:layout_alignParentBottom="true"
+                android:orientation="horizontal"
+                >
+                <RelativeLayout
+                    android:id="@+id/main_middle_time_ll"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:paddingBottom="12dp"
+                    android:orientation="vertical"
+                    android:background="?android:attr/selectableItemBackground"
+                    >
 
-        >
+                    <TextView
+                        android:id="@+id/text_view_address_city"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="--·--"
+                        android:textStyle="bold"
+                        android:textSize="15sp"
+                        android:textColor="#999999"
+                        android:layout_centerHorizontal="true"
+                        />
+                    <TextClock
+                        android:layout_below="@id/text_view_address_city"
+                        android:id="@+id/main_middle_time"
+                        android:text="20:40"
+                        android:textColor="#666666"
+                        android:textSize="24sp"
+                        android:textStyle="bold"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:format24Hour="HH:mm"
+                        android:includeFontPadding="false"
+                        android:layout_centerHorizontal="true"
+                        />
+                    <TextClock
+                        android:id="@+id/main_middle_date"
+                        android:layout_below="@id/main_middle_time"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="#999999"
+                        android:textSize="10dp"
+                        android:textStyle="bold"
+                        android:text="2018-12-14"
+                        android:format24Hour="yyyy-MM-dd"
+                        android:layout_centerHorizontal="true"
+                        />
+                </RelativeLayout>
+                <RelativeLayout
+                    android:id="@+id/main_middle_tianqi_ll"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:orientation="vertical"
+                    android:paddingBottom="15dp">
+                    <LinearLayout
+                        android:id="@+id/linear_tianqi"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:layout_centerHorizontal="true"
+                        >
+                        <TextView
+                            android:id="@+id/main_middle_tianqi_du"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textColor="#666666"
+                            android:textStyle="bold"
+                            android:textSize="24sp"
+                            android:text="--·--"
+                            android:includeFontPadding="false"
+                            />
 
-              <ImageView
-                  android:id="@+id/main_shanghua_img"
-                  android:layout_width="wrap_content"
-                  android:layout_height="wrap_content"
-                  android:layout_gravity="center_horizontal"
-                  />
+                        <TextView
+                            android:id="@+id/main_middle_tianqi_du1"
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:text=""
+                            android:textColor="#666666"
+                            android:layout_marginTop="2dp"
+                            android:textSize="12sp"
+                            android:textStyle="bold" />
+                    </LinearLayout>
+                    <TextView
+                        android:id="@+id/main_middle_tianqi"
+                        android:layout_below="@id/linear_tianqi"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="#999999"
+                        android:textSize="15sp"
+                        android:layout_marginTop="8dp"
+                        android:textStyle="bold"
+                        android:text="天气"
+                        android:includeFontPadding="false"
+                        android:layout_centerHorizontal="true"
+                        />
+                </RelativeLayout>
 
-
-
-          <LinearLayout
-              android:id="@+id/main_middle_ll"
-              android:layout_width="match_parent"
-              android:layout_height="@dimen/y140"
-              android:layout_marginLeft="@dimen/x10"
-              android:layout_marginRight="@dimen/x10"
-              android:layout_marginBottom="@dimen/y10"
-              android:background="@drawable/shape_alpha_fff"
-              android:layout_alignParentBottom="true"
-              android:orientation="horizontal"
-
-              >
-              <RelativeLayout
-                  android:id="@+id/main_middle_time_ll"
-                  android:layout_width="0dp"
-                  android:layout_height="match_parent"
-                  android:layout_weight="3.5"
-                  android:orientation="vertical"
-
-                  android:paddingTop="@dimen/y24"
-                  android:background="?android:attr/selectableItemBackground"
-                  >
-                  <TextClock
-                      android:id="@+id/main_middle_time"
-                      android:text="20:40"
-                      android:textColor="@color/clr_333"
-                      android:textSize="@dimen/y52"
-                      android:layout_width="wrap_content"
-                      android:layout_height="wrap_content"
-                      android:format24Hour="HH:mm"
-                      android:includeFontPadding="false"
-                      android:layout_centerHorizontal="true"
-                      />
-                  <TextClock
-                      android:id="@+id/main_middle_date"
-                      android:layout_width="wrap_content"
-                      android:layout_height="wrap_content"
-                      android:textColor="@color/clr_666"
-                      android:textSize="@dimen/y24"
-                      android:text="2018-12-14"
-                      android:format24Hour="yyyy-MM-dd"
-                      android:layout_alignParentBottom="true"
-                      android:layout_centerHorizontal="true"
-                      android:layout_marginBottom="@dimen/y24"
-                      android:includeFontPadding="false"
-                      android:layout_marginLeft="@dimen/x8"
-                      />
-              </RelativeLayout>
-              <View
-                  android:layout_width="1px"
-                  android:layout_height="match_parent"
-                  android:background="@color/clr_f3f3f3"
-                  android:layout_marginTop="@dimen/y28"
-                  android:layout_marginBottom="@dimen/y28"
-                  />
-              <RelativeLayout
-                  android:id="@+id/main_middle_tianqi_ll"
-                  android:layout_width="0dp"
-                  android:layout_height="match_parent"
-                  android:layout_weight="3"
-                  android:orientation="vertical"
-
-                  android:paddingTop="@dimen/y24"
-                  android:background="?android:attr/selectableItemBackground"
-                  >
-                  <TextView
-                      android:id="@+id/main_middle_tianqi"
-                      android:layout_width="wrap_content"
-                      android:layout_height="wrap_content"
-                      android:textColor="@color/clr_666"
-                      android:textSize="@dimen/y24"
-                      android:text="天气"
-                      android:includeFontPadding="false"
-                      android:layout_alignParentBottom="true"
-                      android:layout_marginBottom="@dimen/y24"
-                      android:layout_centerHorizontal="true"
-                      />
-
-                  <LinearLayout
-                      android:layout_width="wrap_content"
-                      android:layout_height="wrap_content"
-                      android:orientation="horizontal"
-                      android:layout_centerHorizontal="true"
-                      >
-                      <TextView
-                          android:id="@+id/main_middle_tianqi_du"
-                          android:layout_width="wrap_content"
-                          android:layout_height="wrap_content"
-                          android:textColor="@color/clr_333"
-                          android:textSize="@dimen/y52"
-                          android:text="--·--"
-                          android:includeFontPadding="false"
-                          />
-                      <TextView
-                          android:id="@+id/main_middle_tianqi_du1"
-                          android:layout_width="wrap_content"
-                          android:layout_height="wrap_content"
-                          android:textColor="@color/clr_333"
-                          android:textSize="@dimen/y26"
-                          android:text=""
-                          android:includeFontPadding="false"
-                         android:layout_marginLeft="@dimen/x5"
-
-                          />
-                  </LinearLayout>
-
-              </RelativeLayout>
-              <View
-                  android:layout_width="1px"
-                  android:layout_height="match_parent"
-                  android:background="@color/clr_f3f3f3"
-                  android:layout_marginTop="@dimen/y28"
-                  android:layout_marginBottom="@dimen/y28"
-                  />
-              <RelativeLayout
-                  android:id="@+id/main_middle_huilv_ll"
-                  android:layout_width="0dp"
-                  android:layout_height="match_parent"
-                  android:layout_weight="3.5"
-                  android:paddingTop="@dimen/y24"
-
-                  android:orientation="vertical"
-                  android:background="?android:attr/selectableItemBackground"
-                  >
-                  <LinearLayout
-                      android:layout_width="wrap_content"
-                      android:layout_height="wrap_content"
-                      android:orientation="horizontal"
-                      android:layout_centerHorizontal="true"
-                      >
-                      <TextView
-                          android:id="@+id/main_middle_huilv_top1"
-                          android:layout_width="wrap_content"
-                          android:layout_height="wrap_content"
-                          android:textColor="@color/clr_333"
-                          android:textSize="@dimen/y52"
-                          android:text="--·--"
-                          android:includeFontPadding="false"
-                          />
-                      <TextView
-                          android:id="@+id/main_middle_huilv_top2"
-                          android:layout_width="wrap_content"
-                          android:layout_height="wrap_content"
-                          android:textColor="@color/clr_333"
-                          android:textSize="@dimen/y34"
-                          android:text=""
-                          android:includeFontPadding="false"
-                          android:layout_marginLeft="@dimen/x5"
-
-                          />
-                  </LinearLayout>
-           <!--       <com.aibabel.menu.view.SingleLineZoomTextView
-                      android:id="@+id/main_middle_huilv1"
-                      android:layout_width="wrap_content"
-                      android:layout_height="wrap_content"
-                      android:textColor="@color/clr_333"
-                      android:textSize="26sp"
-                      android:text="1≈16.17"
-
-                     android:layout_centerHorizontal="true"
-                      android:includeFontPadding="false"
-                      />-->
-                  <TextView
-                      android:id="@+id/main_middle_huilv"
-                      android:layout_width="wrap_content"
-                      android:layout_height="wrap_content"
-                      android:textColor="@color/clr_666"
-                      android:textSize="@dimen/y24"
-                      android:text="汇率"
-                      android:includeFontPadding="false"
-                      android:layout_alignParentBottom="true"
-                      android:layout_marginBottom="@dimen/y24"
-                      android:layout_centerHorizontal="true"
-                      />
-
-              </RelativeLayout>
-
-
-
-
-      </LinearLayout>
+            </LinearLayout>
+        </RelativeLayout>
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical"
-            app:layout_constraintHeight_percent="0.28"
-            android:padding="@dimen/x10"
-            android:background="@color/clr_f3f3f3"
+            android:background="#F9F9F9"
             >
-            <RelativeLayout
-                android:id="@+id/main_map_rl"
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/y120"
-                android:background="?android:attr/selectableItemBackground"
-
-                >
-
-                <ImageView
-                    android:layout_width="match_parent"
+                android:layout_height="90dp"
+                android:orientation="horizontal">
+                <RelativeLayout
+                    android:id="@+id/main_middle_huilv_ll"
+                    android:layout_width="0dp"
+                    android:paddingLeft="15dp"
+                    android:paddingRight="15dp"
+                    android:paddingTop="12dp"
                     android:layout_height="match_parent"
-                    android:src="@mipmap/menu_map_bg"
-                    android:scaleType="fitXY"
-                    />
-                <TextView
-                    android:id="@+id/main_map_local_tv"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:maxWidth="@dimen/x360"
-                    android:layout_centerVertical="true"
-                    android:textSize="@dimen/y22"
-                    android:textColor="#999"
-                    android:lineSpacingMultiplier="1.2"
-                    android:text="--·--"
-                    android:layout_marginLeft="@dimen/x10"
-                    />
-                <ImageView
-                    android:id="@+id/main_map_jinru_img"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:src="@mipmap/jiantou"
-                    android:layout_alignParentRight="true"
-                    android:layout_centerVertical="true"
-                    android:layout_marginRight="@dimen/x10"
-                    />
-                <TextView
-                    android:id="@+id/main_map_jinru_tv"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:layout_toLeftOf="@+id/main_map_jinru_img"
-                    android:layout_marginRight="@dimen/x10"
-                    android:textColor="@color/clr_333"
-                    android:textSize="@dimen/y24"
-                    android:text="查看地图"
-                    />
-            </RelativeLayout>
+                    android:background="@mipmap/ic_main_huilv"
+                    android:layout_weight="1">
+                    <ImageView
+                        android:id="@+id/iv_huilv"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@mipmap/icon_menu_huilvs"
+                        />
+                    <TextView
+                        android:id="@+id/tv_huilvone"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_toRightOf="@id/iv_huilv"
+                        android:text="--·--"
+                        android:layout_marginLeft="5dp"
+                        android:textColor="#666666"
+                        android:textSize="12sp"
+                        />
+                    <TextView
+                        android:id="@+id/tv_huilvtwo"
+                        android:layout_below="@id/tv_huilvone"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_toRightOf="@id/iv_huilv"
+                        android:text="--·--"
+                        android:textStyle="bold"
+                        android:layout_marginLeft="5dp"
+                        android:textColor="#FF8B01"
+                        android:textSize="15sp"
+                        />
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="#666666"
+                        android:textStyle="bold"
+                        android:textSize="15sp"
+                        android:layout_alignParentBottom="true"
+                        android:paddingBottom="20dp"
+                        android:text="今日汇率"
+                        android:id="@+id/textView2" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentBottom="true"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_marginBottom="97dp"
+                        android:layout_toEndOf="@+id/textView2"
+                        android:text="在图片上上滑试试"
+                        android:textColor="#ffffff"
+                        android:textSize="12sp" />
+                </RelativeLayout>
+                <RelativeLayout
+                    android:id="@+id/main_map_rl"
+                    android:layout_width="0dp"
+                    android:paddingLeft="15dp"
+                    android:paddingRight="15dp"
+                    android:paddingTop="12dp"
+                    android:layout_height="match_parent"
+                    android:background="@mipmap/ic_main_ditu"
+                    android:layout_weight="1">
+                    <TextView
+                        android:id="@+id/main_map_local_tv"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:lines="2"
+                        android:ellipsize="end"
+                        android:textSize="12sp"
+                        android:textColor="#666666"
+                        android:lineSpacingMultiplier="1"
+                        android:text="--·--"
+                        />
+                    <TextView
+                        android:id="@+id/main_map_jinru_tv"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="#666666"
+                        android:textStyle="bold"
+                        android:textSize="15sp"
+                        android:layout_alignParentBottom="true"
+                        android:paddingBottom="20dp"
+                        android:text="查看地图"
+                        />
+                </RelativeLayout>
+            </LinearLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/y120"
+                android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                android:layout_marginTop="@dimen/y10"
                 >
                 <LinearLayout
                     android:id="@+id/bttom_menu_ll_yyfy"
                     android:layout_width="0dp"
+                    android:paddingLeft="15dp"
                     android:layout_height="match_parent"
                     android:orientation="vertical"
                     android:layout_weight="1"
-                    android:background="@drawable/shape_fff"
-                    android:gravity="center"
+                    android:background="@mipmap/icon_yyfy_layout"
+                    android:gravity="center_vertical"
                     >
                     <ImageView
                         android:layout_width="wrap_content"
@@ -421,20 +414,22 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:textSize="@dimen/y20"
-                        android:textColor="@color/clr_333"
+                        android:textSize="14sp"
+                        android:layout_marginTop="4dp"
+                        android:textColor="#666666"
+                        android:textStyle="bold"
                         android:text="语音翻译"
                         />
                 </LinearLayout>
                 <LinearLayout
                     android:id="@+id/bttom_menu_ll_pzfy"
                     android:layout_width="0dp"
+                    android:paddingLeft="15dp"
                     android:layout_height="match_parent"
                     android:orientation="vertical"
                     android:layout_weight="1"
-                    android:background="@drawable/shape_fff"
-                    android:gravity="center"
-                    android:layout_marginLeft="@dimen/x10"
+                    android:background="@mipmap/icon_pzfy_layout"
+                    android:gravity="center_vertical"
                     >
                     <ImageView
                         android:layout_width="wrap_content"
@@ -444,43 +439,47 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:textSize="@dimen/y20"
-                        android:textColor="@color/clr_333"
+                        android:textSize="14sp"
+                        android:textColor="#666666"
+                        android:textStyle="bold"
+                        android:layout_marginTop="4dp"
                         android:text="拍照翻译"
                         />
                 </LinearLayout>
                 <LinearLayout
                     android:id="@+id/bttom_menu_ll_ddwl"
                     android:layout_width="0dp"
+                    android:paddingLeft="15dp"
                     android:layout_height="match_parent"
                     android:orientation="vertical"
                     android:layout_weight="1"
-                    android:background="@drawable/shape_fff"
-                    android:gravity="center"
-                    android:layout_marginLeft="@dimen/x10"
+                    android:background="@mipmap/icon_jqdl_layout"
+                    android:gravity="center_vertical"
                     >
                     <ImageView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:src="@mipmap/icon_dangdiwanle"
+                        android:src="@mipmap/icon_jqdl"
                         />
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:textSize="@dimen/y20"
-                        android:textColor="@color/clr_333"
-                        android:text="当地玩乐"
+                        android:textSize="14sp"
+                        android:textColor="#666666"
+                        android:textStyle="bold"
+                        android:layout_marginTop="4dp"
+                        android:text="景区导览"
                         />
                 </LinearLayout>
                 <LinearLayout
                     android:id="@+id/bttom_menu_ll_gd"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
+                    android:paddingLeft="15dp"
                     android:orientation="vertical"
                     android:layout_weight="1"
-                    android:background="@drawable/shape_fff"
-                    android:gravity="center"
-                    android:layout_marginLeft="@dimen/x10"
+                    android:background="@mipmap/icon_gengduo_layout"
+                    android:gravity="center_vertical"
                     android:transitionName="shareName"
                     >
                     <ImageView
@@ -491,9 +490,11 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:textSize="@dimen/y20"
-                        android:textColor="@color/clr_333"
-                        android:text="更多"
+                        android:textSize="14sp"
+                        android:textColor="#666666"
+                        android:textStyle="bold"
+                        android:layout_marginTop="4dp"
+                        android:text="更多功能"
                         />
                 </LinearLayout>
             </LinearLayout>

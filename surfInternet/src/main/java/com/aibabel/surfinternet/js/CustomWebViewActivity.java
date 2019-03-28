@@ -273,8 +273,11 @@ public class CustomWebViewActivity extends BaseActivity implements OnJSClickList
 //                tvTishi.setScaleType(ImageView.ScaleType.FIT_XY);
                 ivTishi.setImageResource(R.mipmap.success1);
                 ivTishi1.setVisibility(View.VISIBLE);
-                Glide.with(CustomWebViewActivity.this)
-                        .load(R.mipmap.successs2).into(ivTishi1);
+                //TODO 有可能activity被注销 需要判断当前activity的状态
+                if (!CustomWebViewActivity.this.isDestroyed()){
+                    Glide.with(CustomWebViewActivity.this)
+                            .load(R.mipmap.successs2).into(ivTishi1);
+                }
                 rl.setVisibility(View.GONE);
                 tvError.setText(getResources().getString(R.string.success));
                 llIsnet.setVisibility(View.VISIBLE);

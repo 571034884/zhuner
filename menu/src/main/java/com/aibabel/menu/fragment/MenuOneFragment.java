@@ -8,8 +8,11 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
 import com.aibabel.baselibrary.base.BaseFragment;
+import com.aibabel.baselibrary.mode.StatisticsManager;
 import com.aibabel.menu.R;
 import com.aibabel.menu.util.AppStatusUtils;
+
+import java.util.HashMap;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -72,7 +75,7 @@ public class MenuOneFragment extends BaseFragment implements View.OnClickListene
             switch (view.getId()) {
                 case R.id.one_frag_1:
 
-                    //调起优惠券
+                    //调起打折券
                     startActivity(AppStatusUtils.getAppOpenIntentByPackageName(getContext(), "com.aibabel.coupon"));
 
                     break;
@@ -81,8 +84,8 @@ public class MenuOneFragment extends BaseFragment implements View.OnClickListene
                     startActivity(AppStatusUtils.getAppOpenIntentByPackageName(getContext(),"com.aibabel.food"));
                     break;
                 case R.id.one_frag_3:
-                    //调起景区导览
-                    startActivity(AppStatusUtils.getAppOpenIntentByPackageName(getContext(),"com.aibabel.travel"));
+                    //TODO 调起游玩攻略
+                    startActivity(AppStatusUtils.getAppOpenIntentByPackageName(getContext(), "com.aibabel.fyt_play"));
 
                     break;
                 case R.id.one_frag_4:

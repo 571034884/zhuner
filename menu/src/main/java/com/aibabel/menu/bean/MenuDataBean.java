@@ -95,6 +95,9 @@ public class MenuDataBean extends BaseBean {
         private String addrPicColor;
         private String addrDetialPage;
         private WeatherNowDataBean weatherNowData;
+        private String currency100WaiBi;
+        private String currencyCny;
+
 
         public String getTimeZone() {
             return timeZone;
@@ -214,6 +217,22 @@ public class MenuDataBean extends BaseBean {
 
         public void setWeatherNowData(WeatherNowDataBean weatherNowData) {
             this.weatherNowData = weatherNowData;
+        }
+
+        public String getCurrency100WaiBi() {
+            return currency100WaiBi;
+        }
+
+        public void setCurrency100WaiBi(String currency100WaiBi) {
+            this.currency100WaiBi = currency100WaiBi;
+        }
+
+        public String getCurrencyCny() {
+            return currencyCny;
+        }
+
+        public void setCurrencyCny(String currencyCny) {
+            this.currencyCny = currencyCny;
         }
 
         public static class WeatherNowDataBean {

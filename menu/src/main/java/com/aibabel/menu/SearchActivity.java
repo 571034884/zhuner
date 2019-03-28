@@ -167,7 +167,7 @@ public class SearchActivity extends BaseActivity implements View.OnClickListener
         if (NetworkUtils.isAvailable(mContext)) {
 
             Map<String, String> mapPram = new HashMap<>();
-            OkGoUtil.get(false, UrlConstants.GET_CITYLIST, mapPram, CityListBean.class, new BaseCallback<CityListBean>() {
+            OkGoUtil.get(mContext, UrlConstants.GET_CITYLIST, mapPram, CityListBean.class, new BaseCallback<CityListBean>() {
                 @Override
                 public void onSuccess(String s, CityListBean cityListBean, String s1) {
                     L.e("bindMenuData  onsuccess================" + cityListBean.toString());
