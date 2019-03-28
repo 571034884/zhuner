@@ -60,13 +60,10 @@ public class MenuActivity extends BaseActivity implements View.OnClickListener {
     LinearLayout menuBttomGdLl;
 
 
-    @BindView(R.id.menu_bttom_gd_img)
-    ImageView menuBttomGdImg;
-
 
 
     //退出icon动画
-    public static AnimationDrawable frameAnim;
+//    public static AnimationDrawable frameAnim;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         L.e("=============================");
@@ -99,8 +96,8 @@ public class MenuActivity extends BaseActivity implements View.OnClickListener {
 
     @Override
     protected void assignView() {
-        frameAnim = (AnimationDrawable) getResources().getDrawable(R.drawable.amin_list_tuichu);
-        menuBttomGdImg.setBackgroundDrawable(frameAnim);
+//        frameAnim = (AnimationDrawable) getResources().getDrawable(R.drawable.amin_list_tuichu);
+//        menuBttomGdImg.setBackgroundDrawable(frameAnim);
 
 
 
@@ -136,7 +133,7 @@ public class MenuActivity extends BaseActivity implements View.OnClickListener {
 //            new Handler().postDelayed(new Runnable() {
 //                @Override
 //                public void run() {
-            frameAnim.start();
+//            frameAnim.start();
 //
 
 
@@ -214,9 +211,8 @@ public class MenuActivity extends BaseActivity implements View.OnClickListener {
                     startActivity(AppStatusUtils.getAppOpenIntentByPackageName(mContext, "com.aibabel.ocr"));
                     break;
                 case R.id.menu_bottom_ddwl_ll:
-                    //调起当地玩乐
-
-                    startActivity(AppStatusUtils.getAppOpenIntentByPackageName(mContext,"com.aibabel.fyt_play"));
+                    //调起景区导览
+                    startActivity(AppStatusUtils.getAppOpenIntentByPackageName(mContext,"com.aibabel.travel"));
                     break;
             }
         } catch (Exception e) {
