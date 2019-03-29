@@ -216,7 +216,7 @@ public class MainActivity extends BaseScenicActivity {
                 Intent intent = new Intent();
                 intent.setClass(MainActivity.this, SpotsActivity.class);
                 intent.putExtra("poiId", bean.idstring);
-                startActivity(intent);
+                startActivityForResult(intent,1010);
             }
         });
 
@@ -409,11 +409,15 @@ public class MainActivity extends BaseScenicActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == 1010 && resultCode == 1002) {
-             city = data.getExtras().getString("city");
-            if (!mLocation.getText().toString().trim().equals(city)) {
-                isFlag = true;
-                mLocation.setText(city);
+        if (requestCode == 1010){
+            if (resultCode == 1002){
+                city = data.getExtras().getString("city");
+                if (!mLocation.getText().toString().trim().equals(city)) {
+                    isFlag = true;
+                    mLocation.setText(city);
+                    isNetWork();
+                }
+            }else if (resultCode == 1003){
                 isNetWork();
             }
         }

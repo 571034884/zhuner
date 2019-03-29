@@ -192,7 +192,7 @@ public class CityActivity extends BaseScenicActivity {
                 Intent intent = new Intent();
                 intent.setClass(CityActivity.this, SpotsActivity.class);
                 intent.putExtra("poiId", bean.idstring);
-                startActivity(intent);
+                startActivityForResult(intent,1010);
             }
         });
 
@@ -349,5 +349,15 @@ public class CityActivity extends BaseScenicActivity {
                 break;
         }
 
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == 1010) {
+            if (resultCode == 1003) {
+                isNetWork();
+            }
+        }
     }
 }
