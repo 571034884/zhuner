@@ -192,7 +192,7 @@ public class CityActivity extends BaseScenicActivity {
                 Intent intent = new Intent();
                 intent.setClass(CityActivity.this, SpotsActivity.class);
                 intent.putExtra("poiId", bean.idstring);
-                startActivityForResult(intent,1010);
+                startActivity(intent);
             }
         });
 
@@ -257,7 +257,7 @@ public class CityActivity extends BaseScenicActivity {
         Intent intent = new Intent(this, ScenicActivity.class);
         intent.putExtra("index", flagIndex);
         intent.putExtra("cityName", city);
-        startActivity(intent);
+        startActivityForResult(intent,1010);
     }
     private void getShowView(int index) {
         if (flagIndex == index) {

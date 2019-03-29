@@ -17,6 +17,7 @@ import com.aibabel.baselibrary.sphelper.SPHelper;
 import com.aibabel.baselibrary.utils.FastJsonUtil;
 import com.aibabel.baselibrary.utils.ToastUtil;
 import com.aibabel.scenic.R;
+import com.aibabel.scenic.activity.ScenicActivity;
 import com.aibabel.scenic.activity.SpotsActivity;
 import com.aibabel.scenic.adapter.Adapter_Scenics;
 import com.aibabel.scenic.bean.CollectBean;
@@ -231,6 +232,7 @@ public class ScenicNearFragment extends BaseFragment implements BaseQuickAdapter
             public void onSuccess(String method, BaseBean model, String json) {
 //                ToastUtil.showShort(mContext, "成功");
                 Logs.e(json);
+                ((ScenicActivity)getActivity()).isChanged = true;
                 CollectBean bean = FastJsonUtil.changeJsonToBean(json, CollectBean.class);
                 //取消收藏
                 update(bean, id, 1);
@@ -270,6 +272,7 @@ public class ScenicNearFragment extends BaseFragment implements BaseQuickAdapter
             @Override
             public void onSuccess(String method, BaseBean model, String json) {
                 Logs.e(json);
+                ((ScenicActivity)getActivity()).isChanged = true;
                 CollectBean bean = FastJsonUtil.changeJsonToBean(json, CollectBean.class);
                 //添加收藏
                 update(bean, id, 2);

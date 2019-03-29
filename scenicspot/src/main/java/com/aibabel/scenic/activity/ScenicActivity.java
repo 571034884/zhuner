@@ -56,6 +56,7 @@ public class ScenicActivity extends BaseScenicActivity {
     private int flagIndex = -1;
     private String cityName;
     private int index;
+    public  boolean isChanged;
 
 
     private FragmentManager fragmentManager;
@@ -97,6 +98,9 @@ public class ScenicActivity extends BaseScenicActivity {
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.tv_left:
+                if(isChanged){
+                    setResult(1003);
+                }
                 this.finish();
                 break;
             case R.id.ll_hot://热门

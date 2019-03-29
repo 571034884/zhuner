@@ -19,6 +19,7 @@ import com.aibabel.baselibrary.sphelper.SPHelper;
 import com.aibabel.baselibrary.utils.FastJsonUtil;
 import com.aibabel.baselibrary.utils.ToastUtil;
 import com.aibabel.scenic.R;
+import com.aibabel.scenic.activity.ScenicActivity;
 import com.aibabel.scenic.activity.SpotsActivity;
 import com.aibabel.scenic.adapter.Adapter_Scenics;
 import com.aibabel.scenic.bean.CollectBean;
@@ -52,6 +53,7 @@ public class ScenicCollectFragment extends BaseFragment implements BaseQuickAdap
     private int page;
     private final int PAGE_SIZE = 50;
     private String cityName;
+
 
     public ScenicCollectFragment(String cityName) {
         this.cityName = cityName;
@@ -227,6 +229,7 @@ public class ScenicCollectFragment extends BaseFragment implements BaseQuickAdap
             public void onSuccess(String method, BaseBean model, String json) {
 //                ToastUtil.showShort(mContext, "成功");
                 Logs.e(json);
+                ((ScenicActivity)getActivity()).isChanged = true;
                 CollectBean bean = FastJsonUtil.changeJsonToBean(json, CollectBean.class);
                 update(bean, id);
             }
