@@ -119,9 +119,10 @@ public class ChoiceCityActivity extends BaseActivity implements BaseCallback<Bas
             @Override
             public void onItemClick(CommonRecyclerViewHolder holder, int postion) {
                 //热门城市点击
-                Map map = new HashMap();
-                map.put("p1",stringList.get(postion).getHotCity() );
-                StatisticsManager.getInstance(mContext).addEventAidl(1812,map);
+                HashMap<String,Serializable> map = new HashMap();
+                map.put("fyt_exitandentry_choiceCity2",stringList.get(postion).getHotCity() );
+                addStatisticsEvent("fyt_exitandentry_choiceCity2_def",map);
+
 
                 Intent intent = new Intent(ChoiceCityActivity.this, MainActivity.class);
                 intent.putExtra("country", stringList.get(postion).getHotCountry());
@@ -170,6 +171,8 @@ public class ChoiceCityActivity extends BaseActivity implements BaseCallback<Bas
     @OnClick(R.id.iv_guanbi)
     public void onViewClicked() {
         ivGuanbi.setClickable(false);
+        addStatisticsEvent("fyt_exitandentry_choiceCity1",null);
+
         finish();
     }
 
@@ -260,6 +263,9 @@ public class ChoiceCityActivity extends BaseActivity implements BaseCallback<Bas
         sbSort.setOnTouchingLetterChangedListener(new SideBar.OnTouchingLetterChangedListener() {
             @Override
             public void onTouchingLetterChanged(String s) {
+                HashMap<String,Serializable> map=new HashMap<>();
+                map.put("fyt_exitandentry_choiceCity4_def",s);
+                addStatisticsEvent("fyt_exitandentry_choiceCity4",map);
                 if (mIndexer != null) {
                     //该字母首次出现的位置
                     int position = mIndexer.getPositionForSection(ALL_CHARACTER.indexOf(s));
@@ -278,9 +284,9 @@ public class ChoiceCityActivity extends BaseActivity implements BaseCallback<Bas
             public void onItemClick(AdapterView<?> parent, View view,
                                     int position, long id) {
 
-                Map map = new HashMap();
-                map.put("p1",adapter.getData().get(position).getCityChj() );
-                StatisticsManager.getInstance(mContext).addEventAidl(1813,map);
+                HashMap<String,Serializable> map = new HashMap();
+                map.put("fyt_exitandentry_choiceCity3_def",adapter.getData().get(position).getCityChj() );
+                addStatisticsEvent("fyt_exitandentry_choiceCity3",map);
 
                 Intent intent = new Intent(ChoiceCityActivity.this, MainActivity.class);
                 intent.putExtra("country", adapter.getData().get(position).getCountryChj());

@@ -203,11 +203,10 @@ public class StatisticsManager implements IStatistics {
     public void uplaodData(Context context, String order_id) {
         location(context);
         String newData = createUploadData(order_id);
-//        Log.e("newData", newData);
 
         final String allData = getData(context, newData);
 
-//        Log.e("allData", allData);
+        Log.e("allData", allData);
         String url = "http://39.107.238.111:7001";
 //        String url=CommonUtils.getTimerType()==0?"http://abroad.api.joner.aibabel.cn:7001":"http://api.joner.aibabel.cn:7001";
         PostRequest<String> postRequest = OkGo.<String>post(url + "/v2/ddot/JonerLogPush").tag("JonerLogPush");
@@ -275,10 +274,10 @@ public class StatisticsManager implements IStatistics {
 
 
     private String getData(Context context, String data) {
-        Log.e("data========",data);
+
         FileUtil fileUtil = new FileUtil(context);
         String savedData = fileUtil.load();
-        Log.e("savedData===", savedData);
+
         if (!TextUtils.isEmpty(savedData)) {
             try {
                 JSONArray array = null;
@@ -291,7 +290,7 @@ public class StatisticsManager implements IStatistics {
 
                 array.put(new JSONObject(data));
                 String result=StringEscapeUtils.unescapeJava(array.toString());
-                Log.e("result=====",result);
+
                 return result;
 
             } catch (JSONException e) {

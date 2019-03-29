@@ -185,8 +185,9 @@ public class MainActivity extends BaseActivity implements TabLayout.OnTabSelecte
         choiceCityLlLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Map map = new HashMap();
-                StatisticsManager.getInstance(mContext).addEventAidl(1801,map);
+//                HashMap<String,Serializable>  map1 = new HashMap();
+//                StatisticsManager.getInstance(mContext).addEventAidl(1801,map);
+                addStatisticsEvent("fyt_exitandentry_main1",null);
                 Intent intent1 = new Intent(MainActivity.this, ChoiceCityActivity.class);
                 startActivityForResult(intent1, 10);
             }
@@ -194,8 +195,8 @@ public class MainActivity extends BaseActivity implements TabLayout.OnTabSelecte
         choiceCityLlLayout1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Map map = new HashMap();
-                StatisticsManager.getInstance(mContext).addEventAidl(1801,map);
+                addStatisticsEvent("fyt_exitandentry_main1",null);
+
                 Intent intent1 = new Intent(MainActivity.this, ChoiceCityActivity.class);
                 startActivityForResult(intent1, 10);
             }
@@ -252,6 +253,7 @@ public class MainActivity extends BaseActivity implements TabLayout.OnTabSelecte
                     if (air>1){
 
                         scrollView.fullScroll(ScrollView.FOCUS_UP);
+
                     }
 
 
@@ -297,6 +299,11 @@ public class MainActivity extends BaseActivity implements TabLayout.OnTabSelecte
     @Override
     public void onTabSelected(TabLayout.Tab tab) {
         viewPager.setCurrentItem(tab.getPosition());
+//        airplaneBeanData;
+        HashMap<String,Serializable> map=new HashMap<>();
+        map.put("fyt_exitandentry_main2_def",airplaneBeanData.get(tab.getPosition()).getAirportName());
+        addStatisticsEvent("fyt_exitandentry_main2",map);
+
     }
 
     @Override

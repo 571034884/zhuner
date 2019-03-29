@@ -6,6 +6,11 @@ import android.os.Bundle;
 import android.util.Log;
 
 import com.aibabel.aidlaar.StatisticsManager;
+import com.aibabel.baselibrary.impl.IDataManager;
+import com.aibabel.baselibrary.impl.IServerManager;
+import com.aibabel.baselibrary.impl.IStatistics;
+import com.aibabel.baselibrary.mode.DataManager;
+import com.aibabel.baselibrary.mode.ServerManager;
 import com.aibabel.statisticalserver.SimpleStatisticsActivity;
 import com.aibabel.weather.BuildConfig;
 import com.aibabel.weather.utils.CommonUtils;
@@ -13,6 +18,7 @@ import com.aibabel.weather.utils.DensityHelper;
 import com.lzy.okgo.OkGo;
 import com.umeng.analytics.MobclickAgent;
 import com.umeng.commonsdk.UMConfigure;
+import com.xuexiang.xipc.XIPC;
 
 import java.io.File;
 import java.util.LinkedList;
@@ -45,7 +51,32 @@ public class MyApplication extends Application {
         initAppExitConfig();
         initOKgoConfig();
         initUmengConfig();
-        StatisticsManager.getInstance(this).setConfig(getPackageName(), BuildConfig.VERSION_NAME);
+         initXipc();
+    }
+    /**
+     * 跨进程初始化
+     */
+    private void initXipc() {
+        try {
+            XIPC.init(this);
+            XIPC.debug(com.aibabel.baselibrary.BuildConfig.DEBUG);
+            String packgageName = getPackageName();
+            if (packgageName != null) {
+                if (packgageName.equals("com.aibabel.menu")) {
+                    XIPC.register(DataManager.class);
+                    XIPC.register(ServerManager.class);
+                    XIPC.register(com.aibabel.baselibrary.mode.StatisticsManager.class);
+                } else {
+                    XIPC.register(IDataManager.class);
+                    XIPC.register(IServerManager.class);
+                    XIPC.register(IStatistics.class);
+                }
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+
+
     }
 
     /**
