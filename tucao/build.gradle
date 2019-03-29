@@ -1,8 +1,10 @@
 apply plugin: 'com.android.application'
+
 def buildTime() {
     //return System.currentTimeMillis()
     return new Date().format("MMddHHmmss", TimeZone.getDefault())
 }
+
 android {
     compileSdkVersion 28
     defaultConfig {

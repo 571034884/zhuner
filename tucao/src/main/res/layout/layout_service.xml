@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="450dp"
+    android:paddingLeft="29dp"
+    android:paddingRight="29dp"
+    android:paddingTop="10dp"
+    android:paddingBottom="30dp"
+    android:background="@mipmap/tran_v"
+    android:layout_marginTop="107dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="402dp"
+        android:layout_gravity="center_horizontal"
+        android:gravity="center_horizontal"
+        android:background="@drawable/around_common"
+        android:orientation="vertical"
+        android:paddingLeft="30dp"
+        android:paddingRight="30dp"
+        android:paddingTop="34dp"
+        android:paddingBottom="34dp">
+
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@mipmap/ic_zing" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginTop="30dp"
+            android:background="#dddddd" />
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingBottom="20dp"
+            android:paddingTop="20dp">
+
+            <TextView
+                android:id="@+id/tv_tel_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/tel"
+                android:textColor="@color/color999"
+                android:textSize="19sp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toRightOf="@id/tv_tel_title"
+                android:paddingLeft="20dp"
+                android:singleLine="true"
+                android:text="400-9966525"
+                android:textColor="@color/color333"
+                android:textSize="19sp" />
+        </RelativeLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="#dddddd" />
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingBottom="20dp"
+            android:paddingTop="20dp">
+
+            <TextView
+                android:id="@+id/tv_weixin_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:singleLine="true"
+                android:text="公  众  号"
+                android:textColor="@color/color999"
+                android:textSize="19sp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toRightOf="@id/tv_weixin_title"
+                android:lines="2"
+                android:paddingLeft="20dp"
+                android:text="微信搜索“准儿”\n或扫描图中二维码"
+                android:textColor="@color/color333"
+                android:textSize="17sp" />
+        </RelativeLayout>
+    </LinearLayout>
+
+
+
+</FrameLayout>

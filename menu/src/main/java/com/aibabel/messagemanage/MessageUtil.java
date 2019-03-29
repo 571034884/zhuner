@@ -59,6 +59,9 @@ public class MessageUtil {
                     case "travel":
                         startScenic(bean, context);
                         break;
+                    case "scenic":
+                        startNewScenic(bean, context);
+                        break;
                     case "coupon":
                     case "currency":
                     case "destination":
@@ -232,7 +235,8 @@ public class MessageUtil {
                 Intent mIntent = new Intent();
                 ComponentName componentName = new ComponentName(bean.getPackageName(), bean.getPath());
                 mIntent.setComponent(componentName);
-                if (bean.getResultData() != null)mIntent.putExtra("poiId", bean.getResultData().get(0).getIdstring());
+                if (bean.getResultData() != null)
+                    mIntent.putExtra("poiId", bean.getResultData().get(0).getIdstring());
 
                 context.startActivity(mIntent);
             }

@@ -9,7 +9,7 @@ public class Constants {
 
     public static final long DELAY_MILLIS = 60 * 1000 * 5;//延时请求推送数据，单位毫秒
     public static final long FIVE_MILLIS = 60 * 1000 * 5;//延时请求推送数据，单位毫秒
-    public static final long SERVER_MILLIS = 60 * 1000 * 60;//延时请求服务器列表数据，单位毫秒
+    public static final long SERVER_MILLIS = 60 * 1000 * 60 * 2;//延时请求服务器列表数据，单位毫秒
     public static final long POI_MILLIS = 60 * 1000 * 3;//延时请求服务器列表数据，单位毫秒
     public static final long POI_MILLIS_S = 60 * 1000 * 60 * 2;//延时请求服务器列表数据，单位毫秒
     public static final int LOCATION_MILLIS = 60 * 1000 * 3;//默认请求间隔，单位毫秒

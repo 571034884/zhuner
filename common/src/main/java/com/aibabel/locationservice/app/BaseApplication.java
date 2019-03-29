@@ -26,7 +26,7 @@ public class BaseApplication extends com.aibabel.baselibrary.base.BaseApplicatio
         super.onCreate();
         CONTEXT = this;
         configOKGo();
-        if(DeviceUtils.getSystem()!=DeviceUtils.System.FLY_TAIWAN){
+        if (DeviceUtils.getSystem() != DeviceUtils.System.FLY_TAIWAN) {
             configJPush();
         }
         StatisticsManager.getInstance(this);
@@ -53,14 +53,14 @@ public class BaseApplication extends com.aibabel.baselibrary.base.BaseApplicatio
         return null;
     }
 
-    private void configOKGo(){
+    private void configOKGo() {
         OkHttpClient.Builder builder = new OkHttpClient.Builder();
         //全局的读取超时时间
-        builder.readTimeout(30*1000, TimeUnit.MILLISECONDS);
+        builder.readTimeout(30 * 1000, TimeUnit.MILLISECONDS);
         //全局的写入超时时间
-        builder.writeTimeout(30*1000, TimeUnit.MILLISECONDS);
+        builder.writeTimeout(30 * 1000, TimeUnit.MILLISECONDS);
         //全局的连接超时时间
-        builder.connectTimeout(30*1000, TimeUnit.MILLISECONDS);
+        builder.connectTimeout(30 * 1000, TimeUnit.MILLISECONDS);
         OkGo.getInstance().init(this).setRetryCount(0).setOkHttpClient(builder.build()); //必须调用初始化
     }
 
@@ -68,9 +68,9 @@ public class BaseApplication extends com.aibabel.baselibrary.base.BaseApplicatio
      * 配置极光推送
      */
     public void configJPush() {
-        Log.e("BaseApplication","配置极光推送");
-        JPushInterface.setDebugMode (true);    // 设置开启日志,发布时请关闭日志
-        JPushInterface.init (this);
+        Log.e("BaseApplication", "配置极光推送");
+        JPushInterface.setDebugMode(true);    // 设置开启日志,发布时请关闭日志
+        JPushInterface.init(this);
         JPushInterface.setAlias(this, 1, CommonUtils.getSN());
         Set<String> hashSet = new HashSet<>();
         hashSet.add(CommonUtils.getDevice());
@@ -84,7 +84,6 @@ public class BaseApplication extends com.aibabel.baselibrary.base.BaseApplicatio
         JPushInterface.setLatestNotificationNumber(this, 20);
 
     }
-
 
 
 }
