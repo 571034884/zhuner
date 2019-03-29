@@ -8,9 +8,15 @@ import android.text.TextUtils;
 
 import com.aibabel.baselibrary.BuildConfig;
 import com.aibabel.baselibrary.http.OkGoUtil;
+import com.aibabel.baselibrary.impl.IDataManager;
+import com.aibabel.baselibrary.impl.IServerManager;
+import com.aibabel.baselibrary.impl.IStatistics;
+import com.aibabel.baselibrary.mode.DataManager;
+import com.aibabel.baselibrary.mode.ServerManager;
 import com.aibabel.baselibrary.utils.DeviceUtils;
 import com.aibabel.fyt_exitandentry.utils.DensityHelper;
 import com.lzy.okgo.OkGo;
+import com.xuexiang.xipc.XIPC;
 
 import java.util.LinkedList;
 import java.util.concurrent.TimeUnit;
@@ -32,7 +38,32 @@ public class BaseApplication extends com.aibabel.baselibrary.base.BaseApplicatio
         super.onCreate();
         com.aibabel.baselibrary.base.BaseApplication.setAllPhysicalButtonsExitEnable(true);
 
+       initXipc();
 
+
+    }
+    /**
+     * 跨进程初始化
+     */
+    private void initXipc() {
+        try {
+            XIPC.init(this);
+            XIPC.debug(BuildConfig.DEBUG);
+            String packgageName = getPackageName();
+            if (packgageName != null) {
+                if (packgageName.equals("com.aibabel.menu")) {
+                    XIPC.register(DataManager.class);
+                    XIPC.register(ServerManager.class);
+                    XIPC.register(com.aibabel.baselibrary.mode.StatisticsManager.class);
+                } else {
+                    XIPC.register(IDataManager.class);
+                    XIPC.register(IServerManager.class);
+                    XIPC.register(IStatistics.class);
+                }
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+        }
 
 
     }

@@ -113,21 +113,18 @@ public class MainActivity extends BaseActivity {
             public void onItemClick(CommonRecyclerViewHolder holder, int postion) {
                 if (DeviceUtils.getSystem()== DeviceUtils.System.PRO_LEASE){
                     HashMap<String, Serializable> map=new HashMap<>();
-                    map.put("pageId",readmeList.get(postion).getItem_name());
-                    addStatisticsEvent("readme_click",map);
+                    map.put("readme_main1_def",readmeList.get(postion).getItem_name());
+                    addStatisticsEvent("item_click",map);
                 }
                 int type = readmeList.get(postion).getType();
 
-                Map map = new HashMap();
-                map.put("p1", readmeList.get(postion).getItem_name());
-                StatisticsManager.getInstance(MainActivity.this).addEventAidl( 1900, map);
-                Map map1 = new HashMap();
-                map1.put("p1", readmeList.get(postion).getItem_name());
-                StatisticsManager.getInstance(MainActivity.this).addEventAidl( 1900, map1);
+
+
                 Intent intent = new Intent(MainActivity.this, ViewPagerActivity.class);
                 intent.putExtra("type", type);
                 intent.putExtra("version", version);
                 intent.putExtra("proVersion", proVersion);
+                intent.putExtra("name",readmeList.get(postion).getItem_name());
                 startActivity(intent);
             }
         }, null) {

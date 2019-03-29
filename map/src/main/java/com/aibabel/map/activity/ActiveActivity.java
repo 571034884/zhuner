@@ -3,6 +3,7 @@ package com.aibabel.map.activity;
 import android.annotation.SuppressLint;
 import android.os.Build;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.webkit.CookieManager;
@@ -24,6 +25,13 @@ import com.aibabel.map.R;
 import com.aibabel.map.base.MapBaseActivity;
 import com.aibabel.map.utils.CommonUtils;
 import com.baidu.location.BDLocation;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.Serializable;
+import java.util.HashMap;
+import java.util.Iterator;
 
 import butterknife.BindView;
 
@@ -127,7 +135,41 @@ public class ActiveActivity extends MapBaseActivity{
 
                 break;
         }
+
+
     }
+
+//    @Override
+//    @JavascriptInterface
+//    public void addStatisticsEvent(String eventId, HashMap<String, Serializable> parameters) {
+//        super.addStatisticsEvent(eventId, parameters);
+//    }
+
+    @JavascriptInterface
+    public void addJsEvent(String eventId, String parameters) throws JSONException {
+        HashMap<String, Serializable> parametersMap=null;
+
+        if (!TextUtils.isEmpty(parameters)){
+            JSONObject object=new JSONObject(parameters);
+            parametersMap=new HashMap<>();
+            Iterator<String> keys=object.keys();
+            while (keys.hasNext()){
+                String key=keys.next();
+                String value= (String) object.get(key);
+                parametersMap.put(key,value);
+            }
+        }
+
+        addStatisticsEvent(eventId, parametersMap);
+    }
+
+    @JavascriptInterface
+    @Override
+    public void addPageParameters(String key, Serializable value) {
+        super.addPageParameters(key, value);
+    }
+
+
 
     /**
      * 接收数据

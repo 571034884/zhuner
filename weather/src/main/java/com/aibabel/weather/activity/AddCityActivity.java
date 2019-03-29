@@ -34,6 +34,7 @@ import com.aibabel.weather.okgo.BaseCallback;
 import com.aibabel.weather.okgo.OkGoUtil;
 import com.aibabel.weather.utils.CommonUtils;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -43,7 +44,7 @@ import java.util.Map;
 import butterknife.BindView;
 import butterknife.OnClick;
 
-public class AddCityActivity extends BaseActivity implements BaseCallback {
+public class AddCityActivity extends BaseActivity implements BaseCallback , SortAdapter.OnstateListener {
 
     @BindView(R.id.iv_guanbi)
     ImageView ivGuanbi;
@@ -114,6 +115,7 @@ public class AddCityActivity extends BaseActivity implements BaseCallback {
 
     @OnClick(R.id.iv_guanbi)
     public void onViewClicked() {
+        addStatisticsEvent("weather_addCity1",null);
         finish();
     }
 
@@ -199,6 +201,7 @@ public class AddCityActivity extends BaseActivity implements BaseCallback {
         }
         mIndexer = new MySectionIndexer(sections, counts);
         adapter = new SortAdapter(this, list, mIndexer);
+        adapter.onstateListener=this;
         sortListView.setAdapter(adapter);
         sortListView.setOnScrollListener(adapter);
     }
@@ -214,6 +217,10 @@ public class AddCityActivity extends BaseActivity implements BaseCallback {
 //                int position = adapter.getPositionForSection(s.charAt(0));
                     if (position != -1) {
                         sortListView.setSelection(position);
+                        HashMap<String,Serializable> map=new HashMap<>();
+                        map.put("weather_addCity7_num", (String) sortListView.getAdapter().getItem(position));
+                        addStatisticsEvent("weather_addCity7",map);
+
                     }
                 }
             }
@@ -226,9 +233,11 @@ public class AddCityActivity extends BaseActivity implements BaseCallback {
             public void onItemClick(AdapterView<?> parent, View view,
                                     int position, long id) {
 
-                Map<String, String> map = new HashMap<>();
-                map.put("p1", adapter.getData().get(position).getCityCn() + adapter.getData().get(position).getCountryCn());
-                StatisticsManager.getInstance(AddCityActivity.this).addEventAidl( 2310, map);
+                HashMap<String, Serializable> map = new HashMap<>();
+                map.put("weather_main1_country",adapter.getData().get(position).getCountryCn());
+                map.put("weather_main1_city",adapter.getData().get(position).getCityCn());
+
+                addStatisticsEvent("weather_addCity4",map);
                 Intent intent = new Intent();
                 intent.putExtra("countryCn", adapter.getData().get(position).getCountryCn());
                 intent.putExtra("countryEn", adapter.getData().get(position).getCountryEn());
@@ -249,8 +258,11 @@ public class AddCityActivity extends BaseActivity implements BaseCallback {
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 //当输入框里面的值为空，更新为原来的列表，否则为过滤数据列表
-                if (CommonUtils.isNetAvailable(AddCityActivity.this) && SourceDateList != null && SourceDateList.size() > 0)
+                if (CommonUtils.isNetAvailable(AddCityActivity.this) && SourceDateList != null && SourceDateList.size() > 0){
                     filterData(s.toString());
+                    addStatisticsEvent("weather_addCity3",null);
+                }
+
             }
 
             @Override
@@ -258,6 +270,15 @@ public class AddCityActivity extends BaseActivity implements BaseCallback {
 
             }
         });
+        etSearch.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (hasFocus){
+                    addStatisticsEvent("weather_addCity2",null);
+                }
+            }
+        });
+
     }
 
     /**
@@ -300,5 +321,20 @@ public class AddCityActivity extends BaseActivity implements BaseCallback {
     @Override
     public void onError(String method, String message) {
 
+    }
+    int firstVisibleItem=0;
+    @Override
+    public void onStateChanged(int state) {
+        if (state==1){
+            firstVisibleItem=sortListView.getFirstVisiblePosition();
+        }
+        if (state==0){
+            if (sortListView.getFirstVisiblePosition()-firstVisibleItem>0){
+                addStatisticsEvent("weather_addCity5",null);
+            }else{
+                addStatisticsEvent("weather_addCity6",null);
+            }
+
+        }
     }
 }

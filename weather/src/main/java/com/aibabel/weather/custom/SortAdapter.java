@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AbsListView;
 import android.widget.BaseAdapter;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import com.aibabel.weather.R;
@@ -21,7 +22,7 @@ public class SortAdapter extends BaseAdapter implements PinnedHeaderListView.Pin
 
     private MySectionIndexer mIndexer;
     private int mLocationPosition = -1;
-
+    public OnstateListener onstateListener=null;
     public SortAdapter(Context mContext, List<CityListBean.DataBean> list, MySectionIndexer indexer) {
         this.mContext = mContext;
         this.list = list;
@@ -114,6 +115,12 @@ public class SortAdapter extends BaseAdapter implements PinnedHeaderListView.Pin
 
     @Override
     public void onScrollStateChanged(AbsListView absListView, int i) {
+        Log.e("onScrollStateChanged===",""+i);
+        if (i==1){
+
+        }
+
+
 
     }
 
@@ -129,5 +136,7 @@ public class SortAdapter extends BaseAdapter implements PinnedHeaderListView.Pin
         TextView tvLetter;
         TextView tvTitle;
     }
-
+   public interface OnstateListener{
+        public void onStateChanged(int state);
+   }
 }

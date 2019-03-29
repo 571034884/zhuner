@@ -3,6 +3,7 @@ package com.aibabel.fyt_play.activity;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
@@ -19,6 +20,13 @@ import com.aibabel.fyt_play.R;
 import com.aibabel.fyt_play.js.AdvancedWebView;
 import com.aibabel.fyt_play.utils.CommonUtils;
 import com.aibabel.fyt_play.utils.EmptyLayout;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.Serializable;
+import java.util.HashMap;
+import java.util.Iterator;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -106,7 +114,29 @@ public class WebActivity extends BaseActivity {
 
 
     }
+    @JavascriptInterface
+    public void addJsEvent(String eventId, String parameters) throws JSONException {
+        HashMap<String, Serializable> parametersMap=null;
 
+        if (!TextUtils.isEmpty(parameters)){
+            JSONObject object=new JSONObject(parameters);
+            parametersMap=new HashMap<>();
+            Iterator<String> keys=object.keys();
+            while (keys.hasNext()){
+                String key=keys.next();
+                String value= (String) object.get(key);
+                parametersMap.put(key,value);
+            }
+        }
+
+        addStatisticsEvent(eventId, parametersMap);
+    }
+
+    @JavascriptInterface
+    @Override
+    public void addPageParameters(String key, Serializable value) {
+        super.addPageParameters(key, value);
+    }
     /**
      * JS调用android的方法
      *

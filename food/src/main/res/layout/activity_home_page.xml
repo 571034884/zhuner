@@ -10,7 +10,7 @@
                                  android:id="@+id/xbanner"
                                  android:layout_width="match_parent"
                                  android:layout_height="@dimen/y280"
-                                 app:AutoPlayTime="2500"
+                                 app:AutoPlayTime="4000"
                                  app:isAutoPlay="true"
                                  app:isShowIndicatorOnlyOne="true"
                                  app:layout_constraintTop_toTopOf="parent"
