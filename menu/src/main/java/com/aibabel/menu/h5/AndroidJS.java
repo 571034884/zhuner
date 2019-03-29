@@ -46,9 +46,7 @@ public class AndroidJS {
         L.e("webview>>>>>>>>>>>=================country:" + countryName + "==========city:" + cityName);
         //调起SOS
         mContext.startActivity(AppStatusUtils.getAppOpenIntentByPackageName(mContext, "com.aibabel.sos").putExtra("country", countryName).putExtra("city", cityName).putExtra("from","menu"));
-        StatisticsManager.getInstance(mContext).addEventAidl( 1130, new HashMap(){{
-            put("cityName",cityName);
-        }});
+
     }
 
     @JavascriptInterface
@@ -56,7 +54,6 @@ public class AndroidJS {
 
         //调起搜索页面
         ((MainActivity) mContext).startActivityForResult(new Intent(mContext, SearchActivity.class), 100);
-        StatisticsManager.getInstance(mContext).addEventAidl(1131, new HashMap());
 
     }
 

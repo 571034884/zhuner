@@ -25,6 +25,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.aibabel.baselibrary.base.BaseFragment;
+import com.aibabel.baselibrary.base.StatisticsBaseActivity;
 import com.aibabel.fyt_exitandentry.R;
 import com.aibabel.fyt_exitandentry.activity.PhotoViewActivity;
 import com.aibabel.fyt_exitandentry.activity.PhotoViewActivity2;
@@ -42,10 +43,12 @@ import com.squareup.picasso.Picasso;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.Serializable;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import butterknife.BindView;
@@ -163,6 +166,7 @@ public class AirportFragment extends BaseFragment {
                 public void onClick(View view) {
                     Intent intent = new Intent(getActivity(), PhotoViewActivity.class);
                     intent.putExtra("img", str2);
+                    addPhotoEventClick(str1);
                     if (str2 != null && !TextUtils.equals(str2, "")) {
                         imageView3.post(new Runnable() {
                             @Override
@@ -245,6 +249,7 @@ public class AirportFragment extends BaseFragment {
                     public void onClick(View view) {
                         Intent intent = new Intent(getActivity(), PhotoViewActivity.class);
                         intent.putExtra("img", airportImg);
+                        addPhotoEventClick(airportImg);
                         if (airportImg != null && !TextUtils.equals(airportImg, "")) {
                             imageView2.post(new Runnable() {
                                 @Override
@@ -319,6 +324,7 @@ public class AirportFragment extends BaseFragment {
                     public void onClick(View view) {
                         Intent intent = new Intent(getActivity(), PhotoViewActivity.class);
                         intent.putExtra("img", airportImg);
+                        addPhotoEventClick(airportImg);
                         if (airportImg != null && !TextUtils.equals(airportImg, "")) {
                             imageView1.post(new Runnable() {
                                 @Override
@@ -356,7 +362,16 @@ public class AirportFragment extends BaseFragment {
 
 
     }
+    private void addPhotoEventClick(String name){
 
+        StatisticsBaseActivity statisticsBaseActivity= (StatisticsBaseActivity) getActivity();
+        if (statisticsBaseActivity!=null){
+            HashMap<String, Serializable> map=new HashMap<>();
+            map.put("fyt_exitandentry_main4_def",name);
+            statisticsBaseActivity.addStatisticsEvent("fyt_exitandentry_main4",map);
+        }
+
+    }
     @Override
     public void onDestroyView() {
         super.onDestroyView();

@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/color_activity"
+    android:orientation="vertical">
+
+    <!--播放介绍-->
+    <LinearLayout
+        android:id="@+id/ll_introduce"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="47dp"
+        android:orientation="vertical"
+        android:paddingLeft="22dp"
+        android:paddingRight="22dp">
+
+        <TextView
+            android:id="@+id/tv_spot"
+            android:layout_width="match_parent"
+            android:layout_height="32dp"
+            android:gravity="center"
+            android:singleLine="true"
+            android:textColor="@color/color333"
+            android:textSize="17sp"
+            android:textStyle="bold" />
+
+
+        <TextView
+            android:id="@+id/tv_content"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="17dp"
+            android:textColor="@color/color333"
+            android:textSize="15sp" />
+
+    </LinearLayout>
+    <!--景区景点-->
+
+    <TextView
+        android:id="@+id/tv_spots"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
+        android:gravity="left"
+        android:paddingLeft="22dp"
+        android:paddingRight="22dp"
+        android:singleLine="true"
+        android:text="景区内景点"
+        android:textColor="@color/color333"
+        android:textSize="17sp"
+        android:textStyle="bold" />
+</LinearLayout>

@@ -46,7 +46,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class EditCityActivity extends BaseActivity {
+public class EditCityActivity extends BaseActivity implements ItemRemoveRecyclerView.OnLeftScrollListener {
 
     @BindView(R.id.tv_time_dingwei)
     TextView tvTimeDingwei;
@@ -81,6 +81,7 @@ public class EditCityActivity extends BaseActivity {
         getIntentData();
         if (weatherBeanList != null && weatherBeanList != null) {
             initData();
+            rvCity.onLeftScrollListener=this;
         }
     }
 
@@ -116,15 +117,19 @@ public class EditCityActivity extends BaseActivity {
 //                Toast.makeText(EditCityActivity.this, "** " + position + " **", Toast.LENGTH_SHORT).show();
                 resultIntent.putExtra("delPosition", (Serializable) delPosition);
                 resultIntent.putExtra("clickPosition", position);
+                HashMap<String, Serializable> map = new HashMap<>();
+                map.put("weather_editCity2_name", adapter.getmUrlList().get(position).getCityCN() + adapter.getmUrlList().get(position).getCountryCN());
+                addStatisticsEvent("weather_editCity2",  map);
+
                 setResult(555, resultIntent);
                 finish();
             }
 
             @Override
             public void onDeleteClick(int position) {
-                Map<String, String> map = new HashMap<>();
-                map.put("p1", adapter.getmUrlList().get(position).getCityCN() + adapter.getmUrlList().get(position).getCountryCN());
-                StatisticsManager.getInstance(EditCityActivity.this).addEventAidl(2320, map);
+                HashMap<String, Serializable>map = new HashMap<>();
+                map.put("weather_editCity3_name", adapter.getmUrlList().get(position).getCityCN() + adapter.getmUrlList().get(position).getCountryCN());
+                addStatisticsEvent("weather_editCity3",map);
                 adapter.removeItem(position);
                 delPosition.add(position);
             }
@@ -247,5 +252,10 @@ public class EditCityActivity extends BaseActivity {
     public void saveLishitianqi(List<WeatherBean> list) {
         String json = FastJsonUtil.changListToString(list);
         SharePrefUtil.saveString(EditCityActivity.this, Constant.LISHI_TIANQI_KEY, json);
+    }
+
+    @Override
+    public void onLeftScroll() {
+       addStatisticsEvent("weather_editCity1",null);
     }
 }

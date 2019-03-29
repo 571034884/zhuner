@@ -1,5 +1,6 @@
 package com.aibabel.baselibrary.impl;
 
+import com.aibabel.baselibrary.mode.PageUnit;
 import com.xuexiang.xipc.annotation.ClassName;
 import com.xuexiang.xipc.annotation.MethodName;
 
@@ -18,7 +19,7 @@ public interface IStatistics {
      * @param info      统计数据详情  json格式
      */
        @MethodName("addPath")
-       void addPath(String appName, String appVersion, JSONObject info);
+       void addPath(String appName, String appVersion, String info);
        @MethodName("createUploadData")
        String createUploadData(String order_id);
        @MethodName("addIndependentEvent")

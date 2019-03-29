@@ -28,10 +28,16 @@ public class SophixStubApplication extends SophixApplication {
         super.attachBaseContext(base);
 //         如果需要使用MultiDex，需要在此处调用。
 //         MultiDex.install(this);
-        initSophix();
+
+        try {
+            initSophix();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
     }
 
-    private void initSophix() {
+    private void initSophix() throws Exception {
         String appVersion = "0.0.0";
         try {
             appVersion = this.getPackageManager()

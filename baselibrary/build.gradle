@@ -97,6 +97,7 @@ dependencies {
     //跨进程通信
     api 'com.github.xuexiangjys:XIPC:1.0.1'
     api 'com.google.code.gson:gson:2.2.4'
+    api 'org.apache.commons:commons-lang3:3.7'
 
     api 'com.tencent:mmkv:1.0.18'
 

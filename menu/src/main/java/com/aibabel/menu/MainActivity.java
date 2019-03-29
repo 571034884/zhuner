@@ -326,14 +326,17 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
             }
         };
 
-        L.e("path=====================" + mContext.getFilesDir().getAbsolutePath());
-        IntentFilter filter = new IntentFilter();
-        filter.addAction(Intent.ACTION_SCREEN_OFF);
-
-
-        mContext.registerReceiver(new ScreenOffReceiver(), filter);
+        try {
+            L.e("path=====================" + mContext.getFilesDir().getAbsolutePath());
+            IntentFilter filter = new IntentFilter();
+            filter.addAction(Intent.ACTION_SCREEN_OFF);
+            screenrecive = new ScreenOffReceiver();
+            mContext.registerReceiver(screenrecive, filter);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
     }
-
+    ScreenOffReceiver screenrecive ;
     private class ScreenOffReceiver extends BroadcastReceiver {
 
         @Override
@@ -355,6 +358,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
     @Override
     public void init() {
         loopHandler = new LooptempHandler(this);
+        addStatisticsEvent("menu_main_open",null);
     }
 
     public static MaterialBadgeTextView home_badge;
@@ -771,52 +775,42 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
                 case R.id.bttom_menu_ll_gd:
                     ActivityOptions compat = ActivityOptions.makeSceneTransitionAnimation(this);
                     startActivity(new Intent(mContext, MenuActivity.class), compat.toBundle());
-//                startActivity(intent,ActivityOptions.makeCustomAnimation(mContext,R.transition.tran_menu_in,R.transition.tran_menu_out).toBundle());
-                    StatisticsManager.getInstance(mContext).addEventAidl(1109, new HashMap<>());
+                    addStatisticsEvent("more_click",null);
                     break;
                 case R.id.main_middle_time_ll:
                     //调起时钟
                     startActivity(AppStatusUtils.getAppOpenIntentByPackageName(mContext, "com.aibabel.alliedclock"));
-                    StatisticsManager.getInstance(mContext).addEventAidl(1102, new HashMap<>());
+                    addStatisticsEvent("time_click",null);
 
                     break;
                 case R.id.main_middle_tianqi_ll:
                     //调起天气
                     startActivity(AppStatusUtils.getAppOpenIntentByPackageName(mContext, "com.aibabel.weather"));
-                    StatisticsManager.getInstance(mContext).addEventAidl(1103, new HashMap<>());
-
+                    addStatisticsEvent("weather_click",null);
                     break;
                 case R.id.main_middle_huilv_ll:
                     //调起汇率
                     startActivity(AppStatusUtils.getAppOpenIntentByPackageName(mContext, "com.aibabel.currencyconversion"));
-                    StatisticsManager.getInstance(mContext).addEventAidl(1104, new HashMap<>());
+                    addStatisticsEvent("currency_click",null);
 
                     break;
                 case R.id.main_map_rl:
                     //调起地图
                     startActivity(AppStatusUtils.getAppOpenIntentByPackageName(mContext, "com.aibabel.map"));
-                    StatisticsManager.getInstance(mContext).addEventAidl(1105, new HashMap<>());
-
-
+                    addStatisticsEvent("map_click",null);
                     break;
                 case R.id.bttom_menu_ll_yyfy:
                     //调起语音翻译
                     startActivity(AppStatusUtils.getAppOpenIntentByPackageName(mContext, "com.aibabel.translate"));
-                    StatisticsManager.getInstance(mContext).addEventAidl(1106, new HashMap<>());
-
-//                    startActivity(AppStatusUtils.getAppOpenIntentByPackageName(mContext, "com.aibabel.translate").putExtra("from","food"));
-//                    startActivity(new Intent().setPackage("com.aibabel.translate").putExtra("from", "food"));
-
+                    addStatisticsEvent("voice_click",null);
                     break;
                 case R.id.bttom_menu_ll_pzfy:
                     //调起拍照翻译
                     startActivity(AppStatusUtils.getAppOpenIntentByPackageName(mContext, "com.aibabel.ocr"));
-                    StatisticsManager.getInstance(mContext).addEventAidl(1107, new HashMap<>());
-
+                    addStatisticsEvent("photo_click",null);
                     break;
                 case R.id.bttom_menu_ll_ddwl:
-                    //TODO 调起景区导览
-                    startActivity(AppStatusUtils.getAppOpenIntentByPackageName(mContext,"com.aibabel.travel"));
+                    startActivity(AppStatusUtils.getAppOpenIntentByPackageName(mContext,"com.aibabel.scenic"));
 
                     break;
                 case R.id.main_top_ctiy_ll:
@@ -826,10 +820,12 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
 ////                    sendBroadcast(intent1);
                     //调起搜索页面
                     ((MainActivity) mContext).startActivityForResult(new Intent(mContext, SearchActivity.class), 100);
-                    L.e("1111111111111111111111111111111");
-                    StatisticsManager.getInstance(mContext).addEventAidl(1101, new HashMap<>());
 
-
+                    try{
+                        HashMap<String, Serializable> map = new HashMap<>();
+                        map.put("mddname",oldCity+"");
+                        addStatisticsEvent("mdd_click",map);
+                    }catch (Exception e){}
                     break;
 
                 case R.id.main_return_img_ll:
@@ -1302,6 +1298,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         }
 
         oldCity = bean.getData().getCityNameCn();
+        addStatisticsEvent("mdd_up",null);
     }
 
 

@@ -9,6 +9,7 @@ import android.widget.LinearLayout;
 
 import com.aibabel.baselibrary.base.BaseFragment;
 import com.aibabel.baselibrary.mode.StatisticsManager;
+import com.aibabel.menu.MenuActivity;
 import com.aibabel.menu.R;
 import com.aibabel.menu.util.AppStatusUtils;
 
@@ -77,26 +78,36 @@ public class MenuOneFragment extends BaseFragment implements View.OnClickListene
 
                     //调起打折券
                     startActivity(AppStatusUtils.getAppOpenIntentByPackageName(getContext(), "com.aibabel.coupon"));
-
+                    try{
+                        ((MenuActivity) getActivity()).addStatisticsEvent("menu_coupon_click",null);
+                    }catch (Exception e){}
                     break;
                 case R.id.one_frag_2:
                     //调起美食
                     startActivity(AppStatusUtils.getAppOpenIntentByPackageName(getContext(),"com.aibabel.food"));
+                    try{
+                        ((MenuActivity) getActivity()).addStatisticsEvent("menu_areaselect_click",null);
+                    }catch (Exception e){}
                     break;
                 case R.id.one_frag_3:
-                    //TODO 调起游玩攻略
                     startActivity(AppStatusUtils.getAppOpenIntentByPackageName(getContext(), "com.aibabel.fyt_play"));
-
+                    try{
+                        ((MenuActivity) getActivity()).addStatisticsEvent("menu_fun_click",null);
+                    }catch (Exception e){}
                     break;
                 case R.id.one_frag_4:
                     //调起出入境
                     startActivity(AppStatusUtils.getAppOpenIntentByPackageName(getContext(),"com.aibabel.fyt_exitandentry"));
-
+                    try{
+                        ((MenuActivity) getActivity()).addStatisticsEvent("menu_choice_click",null);
+                    }catch (Exception e){}
                     break;
                 case R.id.one_frag_5:
                     //调起应用说明书
                     startActivity(AppStatusUtils.getAppOpenIntentByPackageName(getContext(),"com.aibabel.readme"));
-
+                    try{
+                        ((MenuActivity) getActivity()).addStatisticsEvent("menu_readme_click",null);
+                    }catch (Exception e){}
                     break;
 
 

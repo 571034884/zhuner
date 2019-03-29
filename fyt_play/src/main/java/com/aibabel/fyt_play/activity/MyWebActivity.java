@@ -34,7 +34,12 @@ import com.aibabel.fyt_play.js.OnJSClickListener;
 import com.aibabel.fyt_play.utils.CommonUtils;
 import com.aibabel.fyt_play.utils.EmptyLayout;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.Serializable;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -170,6 +175,30 @@ public class MyWebActivity extends BaseActivity implements OnJSClickListener , B
         setResult(RESULT_OK, intent);
         Log.e("aas","====");
         finish();
+    }
+
+    @JavascriptInterface
+    public void addJsEvent(String eventId, String parameters) throws JSONException {
+        HashMap<String, Serializable> parametersMap=null;
+
+        if (!TextUtils.isEmpty(parameters)){
+            JSONObject object=new JSONObject(parameters);
+            parametersMap=new HashMap<>();
+            Iterator<String> keys=object.keys();
+            while (keys.hasNext()){
+                String key=keys.next();
+                String value= (String) object.get(key);
+                parametersMap.put(key,value);
+            }
+        }
+
+        addStatisticsEvent(eventId, parametersMap);
+    }
+
+    @JavascriptInterface
+    @Override
+    public void addPageParameters(String key, Serializable value) {
+        super.addPageParameters(key, value);
     }
 
     @Override

@@ -14,7 +14,9 @@ import com.aibabel.baselibrary.utils.DeviceUtils;
 import com.aibabel.readme.R;
 import com.aibabel.readme.adapter.ViewPagerAdapter;
 
+import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import butterknife.BindView;
@@ -72,17 +74,20 @@ public class ViewPagerActivity extends BaseActivity {
     private int[] paizhao;
     private int[] yuyinmishu;
     private int[] shezhi;
-
+    private String name;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_view_pager);
         ButterKnife.bind(this);
         initData();
-
+        name=getIntent().getStringExtra("name");
         ivClose.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                HashMap<String, Serializable> map=new HashMap<>();
+                map.put("readme_main3_def",name);
+                addStatisticsEvent("readme_main3",map);
                 finish();
             }
         });
@@ -94,6 +99,7 @@ public class ViewPagerActivity extends BaseActivity {
         int type = intent.getIntExtra("type", 0);
         String version = intent.getStringExtra("version");
         String proVersion = intent.getStringExtra("proVersion");
+
 //        version = "PH";
 //        proVersion = "S";
         switch (version) {
@@ -522,6 +528,10 @@ public class ViewPagerActivity extends BaseActivity {
                 dots.get(currentPosition).setBackgroundResource(R.drawable.dot_focused);
                 oldPosition = currentPosition;
 
+                HashMap<String, Serializable> map=new HashMap<>();
+                map.put("readme_main4_def",name);
+                map.put("readme_main4_status",arg0==list.size()-1);
+                addStatisticsEvent("readme_main4",map);
             }
 
             @Override

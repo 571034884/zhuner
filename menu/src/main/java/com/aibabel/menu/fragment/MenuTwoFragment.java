@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
 import com.aibabel.baselibrary.base.BaseFragment;
+import com.aibabel.menu.MenuActivity;
 import com.aibabel.menu.R;
 import com.aibabel.menu.util.AppStatusUtils;
 
@@ -73,7 +74,9 @@ public class MenuTwoFragment extends BaseFragment implements View.OnClickListene
                 case R.id.two_frag_1:
                     //调起地图
                     startActivity(AppStatusUtils.getAppOpenIntentByPackageName(getContext(),"com.aibabel.map"));
-
+                    try{
+                        ((MenuActivity) getActivity()).addStatisticsEvent("menu_map_click",null);
+                    }catch (Exception e){}
                     break;
                 case R.id.two_frag_2:
                     //调起 订单
@@ -83,6 +86,9 @@ public class MenuTwoFragment extends BaseFragment implements View.OnClickListene
                     intent.setComponent(cn);
                     intent.putExtra("from","menu");
                     startActivity(intent);
+                    try{
+                        ((MenuActivity) getActivity()).addStatisticsEvent("menu_order_click",null);
+                    }catch (Exception e){}
                     break;
                 case R.id.two_frag_3:
                     //调起搜索
@@ -92,18 +98,24 @@ public class MenuTwoFragment extends BaseFragment implements View.OnClickListene
                      cn = new ComponentName("com.google.android.googlequicksearchbox", "com.google.android.apps.gsa.queryentry.QueryEntryActivity");
                     intent.setComponent(cn);
                     startActivity(intent);
-
+                    try{
+                        ((MenuActivity) getActivity()).addStatisticsEvent("menu_search_click",null);
+                    }catch (Exception e){}
                     break;
                 case R.id.two_frag_4:
                     //调起吐槽
                     startActivity(AppStatusUtils.getAppOpenIntentByPackageName(getContext(),"com.aibabel.tucao"));
 
-
+                    try{
+                        ((MenuActivity) getActivity()).addStatisticsEvent("menu_complaints_click",null);
+                    }catch (Exception e){}
                     break;
                 case R.id.two_frag_5:
                     //调起设置
                     startActivity(AppStatusUtils.getAppOpenIntentByPackageName(getContext(), "com.zhuner.administrator.settings"));
-
+                    try{
+                        ((MenuActivity) getActivity()).addStatisticsEvent("menu_settings_click",null);
+                    }catch (Exception e){}
                     break;
 
 

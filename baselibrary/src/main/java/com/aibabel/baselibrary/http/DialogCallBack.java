@@ -85,9 +85,14 @@ public class DialogCallBack extends StringCallback {
     public void onFinish() {
         super.onFinish();
         Log.e(TAG, "onFinish: ");
-        if (dialog != null && dialog.isShowing()) {
-            dialog.dismiss();
+        try{
+            if (dialog != null && dialog.isShowing()) {
+                dialog.dismiss();
+            }
+        }catch (Exception e){
+
         }
+
     }
 
     @Override
