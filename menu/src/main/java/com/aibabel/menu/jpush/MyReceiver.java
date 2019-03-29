@@ -435,7 +435,6 @@ public class MyReceiver extends BroadcastReceiver {
                 msgtemp.obj=add_hp;
                 MainActivity.loopHandler.sendMessage(msgtemp);
             }
-
             String pushcontent = bean.getContent();
             if (TextUtils.isEmpty(pushcontent)) pushcontent = "";
 
@@ -447,6 +446,7 @@ public class MyReceiver extends BroadcastReceiver {
                 ResidentNotificationHelper.sendResidentNotice(context, "" + title, "" + pushcontent, noticeIntent);
 
             } else if (TextUtils.equals(bean.getLevel(), "2")) {
+                LogUtil.e("bean.getLevel()="+bean.getLevel());
                 //判定语音翻译，小秘书，拍照翻译是否在前台处理显示通知
                 if (DetectUtil.isAppInForeground(context, "com.aibabel.translate")
                         || (DetectUtil.isAppInForeground(context, "com.aibabel.speech"))

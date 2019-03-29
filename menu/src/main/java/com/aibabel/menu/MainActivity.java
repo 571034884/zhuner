@@ -237,9 +237,6 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
 //        DBUtils.copyAssetsToSd(mContext,"index.html");
         //根据时区选择服务器
         initService();
-//        StringBuilder stringBuilder=new StringBuilder("123456");
-//        stringBuilder.insert(5,",");
-//        stringBuilder.insert(6,"2345");
         //城市切换后 更新界面
         upListener = new UpdateMenu() {
 
@@ -329,23 +326,23 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
             }
         };
 
-        L.e("path=====================" + mContext.getFilesDir().getAbsolutePath());
-        IntentFilter filter = new IntentFilter();
-        filter.addAction(Intent.ACTION_SCREEN_OFF);
-
-        mContext.registerReceiver(new ScreenOffReceiver(), filter);
-        Log.e("oncreate","menu");
-//        new com.aibabel.baselibrary.mode.StatisticsManager.FileUtil(this).save("");
+        try {
+            L.e("path=====================" + mContext.getFilesDir().getAbsolutePath());
+            IntentFilter filter = new IntentFilter();
+            filter.addAction(Intent.ACTION_SCREEN_OFF);
+            screenrecive = new ScreenOffReceiver();
+            mContext.registerReceiver(screenrecive, filter);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
     }
-
-
+    ScreenOffReceiver screenrecive ;
     private class ScreenOffReceiver extends BroadcastReceiver {
 
         @Override
         public void onReceive(Context context, Intent intent) {
             String action = intent.getAction();
             if (action.equals(Intent.ACTION_SCREEN_OFF)) {
-                Log.e("ACTION_SCREEN_OFF======","ACTION_SCREEN_OFF");
                 com.aibabel.baselibrary.mode.StatisticsManager.getInstance().uplaodData(getApplicationContext(), SharePrefUtil.getString(context, "order_oid", ""));
             }
 
@@ -1448,7 +1445,6 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         super.onRestart();
         LogUtil.e("MainAcitivyt = onRestart");
 
-
     }
 
     public static LooptempHandler loopHandler;
@@ -1673,8 +1669,6 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
     @Override
     protected void onStop() {
         super.onStop();
-//        com.aibabel.baselibrary.mode.StatisticsManager.getInstance().uplaodData(getApplicationContext(), SharePrefUtil.getString(this, "order_oid", ""));
-
 
         //        L.e("rect==================="+top_ll.getGlobalVisibleRect(rect)+"========top_ll.getY()==========="+top_ll.getY()+"========top_ll.getY()111==========="+top_ll.getY()+"======(int)top_ll.getY()>0===="+((int)top_ll.getY()>0)+"=====(int)top_ll.getY()<700====="+((int)top_ll.getY()<700));
         int top_y = Math.abs((int) top_ll.getY());
