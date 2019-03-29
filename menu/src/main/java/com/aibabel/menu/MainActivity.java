@@ -326,14 +326,17 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
             }
         };
 
-        L.e("path=====================" + mContext.getFilesDir().getAbsolutePath());
-        IntentFilter filter = new IntentFilter();
-        filter.addAction(Intent.ACTION_SCREEN_OFF);
-
-
-        mContext.registerReceiver(new ScreenOffReceiver(), filter);
+        try {
+            L.e("path=====================" + mContext.getFilesDir().getAbsolutePath());
+            IntentFilter filter = new IntentFilter();
+            filter.addAction(Intent.ACTION_SCREEN_OFF);
+            screenrecive = new ScreenOffReceiver();
+            mContext.registerReceiver(screenrecive, filter);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
     }
-
+    ScreenOffReceiver screenrecive ;
     private class ScreenOffReceiver extends BroadcastReceiver {
 
         @Override
@@ -1656,9 +1659,15 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
     @Override
     protected void onDestroy() {
         //注销  租赁逻辑里面的广播和资源
-        renUtils.destroyRes();
-        if (netBroadcastReceiver != null) {
-            unregisterReceiver(netBroadcastReceiver);
+        try {
+            renUtils.destroyRes();
+            if (netBroadcastReceiver != null) {
+                unregisterReceiver(netBroadcastReceiver);
+            }
+           if(screenrecive!=null)unregisterReceiver(screenrecive);
+
+        }catch (Exception e){
+
         }
         super.onDestroy();
     }
