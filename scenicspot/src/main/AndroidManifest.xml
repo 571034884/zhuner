@@ -45,6 +45,7 @@
             android:name=".receiver.ExpireBroadcast"
             android:exported="true">
             <intent-filter>
+                <action android:name="com.aibabel.scenic.stop"/>
                 <action android:name="com.android.zhuner" />
             </intent-filter>
         </receiver>

@@ -319,6 +319,8 @@ public class SpotsActivity extends BaseScenicActivity implements ExpireBroadcast
             case R.id.tv_left:
                 onBackPressed();
                 sendBroadcast(Constants.ACTION_CLOSE);
+                Intent intent = new Intent(getApplicationContext(), MusicService.class);
+                stopService(intent);// 关闭服务
                 break;
             case R.id.iv_scenic:
                 sendBroadcast(Constants.ACTION_LIST_ITEM, 0);
@@ -421,9 +423,7 @@ public class SpotsActivity extends BaseScenicActivity implements ExpireBroadcast
 
     @Override
     public void stopMp3() {
-        sendBroadcast(Constants.ACTION_CLOSE);
-        Intent intent = new Intent(getApplicationContext(), MusicService.class);
-        stopService(intent);// 关闭服务
+        sendBroadcast(Constants.ACTION_PAUSE);
     }
 
     @Override

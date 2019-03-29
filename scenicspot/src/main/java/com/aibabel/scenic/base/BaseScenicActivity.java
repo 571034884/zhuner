@@ -92,7 +92,7 @@ public abstract class BaseScenicActivity extends BaseActivity implements OnClick
         switch (keyCode) {
             case 133:
             case 134:
-                Intent intent = new Intent("com.android.zhuner");
+                Intent intent = new Intent("com.aibabel.scenic.stop");
                 sendBroadcast(intent);
                 break;
         }

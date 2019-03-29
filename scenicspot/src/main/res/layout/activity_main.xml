@@ -30,7 +30,7 @@
                     android:drawablePadding="7dp"
                     android:drawableRight="@mipmap/ic_main_location"
                     android:onClick="onClick"
-                    android:text="东京"
+                    android:text="--"
                     android:textColor="#000000"
                     android:textSize="24sp"
                     android:textStyle="bold" />

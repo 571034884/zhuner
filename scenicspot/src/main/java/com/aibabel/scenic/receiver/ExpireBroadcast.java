@@ -18,7 +18,7 @@ public class ExpireBroadcast extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
         String action = intent.getAction();
-        if (TextUtils.equals("com.android.zhuner", action)) {
+        if (TextUtils.equals("com.android.zhuner", action) ||TextUtils.equals("com.aibabel.scenic.stop", action)) {
             if (null != stopMp3_spots)
                 stopMp3_spots.stopMp3();
             if (null != stopMp3_history) {
