@@ -327,9 +327,7 @@ public class SpotsActivity extends BaseScenicActivity implements ExpireBroadcast
 
     @Override
     public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
-        if (CommonUtils.isFastClick()){
-            sendBroadcast(Constants.ACTION_LIST_ITEM, position + 1);
-        }
+        sendBroadcast(Constants.ACTION_LIST_ITEM, position + 1);
     }
     //======================================音乐处理=================================================
 
