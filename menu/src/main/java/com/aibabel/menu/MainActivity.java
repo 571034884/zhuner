@@ -822,7 +822,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
                     break;
                 case R.id.bttom_menu_ll_ddwl:
                     //TODO 调起景区导览
-                    startActivity(AppStatusUtils.getAppOpenIntentByPackageName(mContext,"com.aibabel.travel"));
+                    startActivity(AppStatusUtils.getAppOpenIntentByPackageName(mContext,"com.aibabel.scenic"));
 
                     break;
                 case R.id.main_top_ctiy_ll:

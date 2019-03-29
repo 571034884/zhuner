@@ -1,0 +1,301 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <ScrollView
+        android:id="@+id/sl_match"
+        android:layout_width="match_parent"
+        android:background="@color/color_activity"
+        android:scrollbars="none"
+        android:layout_height="match_parent">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/color_activity">
+
+            <RelativeLayout
+                android:id="@+id/rl_top"
+                android:background="@android:color/white"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingBottom="16dp">
+
+                <TextView
+                    android:id="@+id/tv_location"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="30dp"
+                    android:layout_marginTop="30dp"
+                    android:drawablePadding="7dp"
+                    android:drawableRight="@mipmap/ic_main_location"
+                    android:onClick="onClick"
+                    android:text="东京"
+                    android:textColor="#000000"
+                    android:textSize="24sp"
+                    android:textStyle="bold" />
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+
+                <RelativeLayout
+                    android:id="@+id/rls_search"
+                    android:layout_width="match_parent"
+                    android:layout_height="35dp"
+                    android:layout_below="@+id/tv_location"
+                    android:layout_marginLeft="22dp"
+                    android:layout_marginRight="22dp"
+                    android:onClick="onClick"
+                    android:layout_marginTop="15dp"
+                    android:background="@drawable/search_bg">
+
+                    <TextView
+                        android:id="@+id/tvSearch"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:paddingLeft="15dp"
+                        android:drawablePadding="9dp"
+                        android:drawableLeft="@mipmap/ic_search"
+                        android:text="冬天太冷? 尝试搜索三亚吧..."
+                        android:textColor="#999999"
+                        android:textSize="12sp" />
+                </RelativeLayout>
+
+            </RelativeLayout>
+            <RelativeLayout
+                android:id="@+id/rl_datas"
+                android:layout_width="match_parent"
+                android:layout_below="@id/rl_top"
+                android:layout_height="match_parent">
+                <RelativeLayout
+                    android:id="@+id/rl_page"
+                    android:layout_width="match_parent"
+                    android:paddingTop="10dp"
+                    android:background="@color/color_activity"
+                    android:layout_height="wrap_content">
+
+                    <android.support.v4.view.ViewPager
+                        android:id="@+id/vp_info"
+                        android:layout_width="match_parent"
+                        android:layout_height="178dp"
+                        android:clipToPadding="false"
+                        android:overScrollMode="never"
+                        android:paddingEnd="20dp"
+                        android:paddingStart="20dp" />
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:id="@+id/rl_bar"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/rl_page"
+                    android:background="@color/color_activity"
+                    android:paddingLeft="27dp"
+                    android:paddingRight="27dp"
+                    android:paddingTop="20dp">
+
+                    <LinearLayout
+                        android:id="@+id/ll_hot"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:layout_marginRight="27dp"
+                        android:gravity="center"
+                        android:onClick="onClick"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/tv_hot"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="热门"
+                            android:textColor="#FF781D"
+                            android:textSize="17sp"
+                            android:textStyle="bold" />
+
+                        <View
+                            android:id="@+id/v_hot"
+                            android:layout_width="match_parent"
+                            android:layout_height="3dp"
+                            android:layout_below="@+id/tv_hot"
+                            android:layout_marginTop="5dp"
+                            android:background="#FF8B01" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/ll_about"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:layout_marginRight="27dp"
+                        android:layout_toRightOf="@id/ll_hot"
+                        android:gravity="center"
+                        android:onClick="onClick"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/tv_about"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="附近"
+                            android:textColor="#666666"
+                            android:textSize="15sp" />
+
+                        <View
+                            android:id="@+id/v_about"
+                            android:layout_width="match_parent"
+                            android:layout_height="3dp"
+                            android:layout_below="@+id/tv_hot"
+                            android:layout_marginTop="5dp"
+                            android:layout_toRightOf="@+id/v_hot"
+                            android:background="#FF8B01"
+                            android:visibility="invisible" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/ll_collect"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:layout_marginRight="27dp"
+                        android:layout_toRightOf="@id/ll_about"
+                        android:gravity="center"
+                        android:onClick="onClick"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/tv_collect"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_toRightOf="@+id/tv_about"
+                            android:text="收藏"
+                            android:textColor="#666666"
+                            android:textSize="15sp" />
+
+                        <View
+                            android:id="@+id/v_collect"
+                            android:layout_width="match_parent"
+                            android:layout_height="3dp"
+                            android:layout_below="@+id/tv_hot"
+                            android:layout_marginTop="5dp"
+                            android:layout_toRightOf="@+id/v_hot"
+                            android:background="#FF8B01"
+                            android:visibility="invisible" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/ll_more"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:layout_alignParentRight="true"
+                        android:gravity="center"
+                        android:onClick="onClick"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/tv_more"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentRight="true"
+                            android:text="更多"
+                            android:textColor="#666666"
+                            android:textSize="15sp" />
+
+                        <View
+                            android:layout_width="35dp"
+                            android:layout_height="3dp"
+                            android:layout_below="@+id/tv_hot"
+                            android:layout_marginTop="5dp"
+                            android:layout_toRightOf="@+id/v_hot"
+                            android:background="#FF8B01"
+                            android:visibility="invisible" />
+                    </LinearLayout>
+                </RelativeLayout>
+                <RelativeLayout
+                    android:id="@+id/rl_bars"
+                    android:layout_width="match_parent"
+                    android:layout_below="@id/rl_bar"
+                    android:background="@color/color_activity"
+                    android:paddingLeft="10dp"
+                    android:paddingTop="10dp"
+                    android:paddingRight="10dp"
+                    android:layout_height="wrap_content">
+                    <com.aibabel.scenic.view.CustomGridView
+                        android:id="@+id/c_grid"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@color/color_activity"
+                        android:columnWidth="90dp"
+                        android:listSelector="@android:color/transparent"
+                        android:numColumns="2"></com.aibabel.scenic.view.CustomGridView>
+                    <include
+                        layout="@layout/item_null"
+                        />
+                </RelativeLayout>
+
+                <TextView
+                    android:id="@+id/tv_history"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/rl_bars"
+                    android:paddingLeft="27dp"
+                    android:paddingTop="20dp"
+                    android:background="@color/color_activity"
+                    android:text="国家历史风俗"
+                    android:textColor="@android:color/black"
+                    android:textSize="17sp"
+                    android:textStyle="bold" />
+
+                <RelativeLayout
+                    android:id="@+id/rl_history"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/color_activity"
+                    android:layout_below="@id/tv_history"
+                    android:paddingTop="10dp">
+
+                    <android.support.v7.widget.RecyclerView
+                        android:id="@+id/rlv_history"
+                        android:background="@color/color_activity"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"></android.support.v7.widget.RecyclerView>
+                </RelativeLayout>
+
+                <TextView
+                    android:id="@+id/tv_city"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/rl_history"
+                    android:paddingLeft="27dp"
+                    android:paddingTop="20dp"
+                    android:text="周边城市"
+                    android:background="@color/color_activity"
+                    android:textColor="@android:color/black"
+                    android:textSize="17sp"
+                    android:textStyle="bold" />
+
+                <RelativeLayout
+                    android:id="@+id/rl_city"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/color_activity"
+                    android:layout_below="@id/tv_city"
+                    android:paddingBottom="50dp"
+                    android:paddingTop="10dp">
+
+                    <android.support.v7.widget.RecyclerView
+                        android:id="@+id/rlv_city"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"></android.support.v7.widget.RecyclerView>
+                </RelativeLayout>
+            </RelativeLayout>
+            <com.aibabel.scenic.view.EmptyLayout
+                android:id="@+id/empty"
+                android:layout_below="@id/rl_top"
+                android:visibility="gone"
+                android:layout_marginTop="80dp"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+            </com.aibabel.scenic.view.EmptyLayout>
+        </RelativeLayout>
+    </ScrollView>
+</RelativeLayout>

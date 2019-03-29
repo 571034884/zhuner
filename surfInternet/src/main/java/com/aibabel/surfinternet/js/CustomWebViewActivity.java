@@ -24,6 +24,8 @@ import android.widget.Toast;
 
 import com.aibabel.aidlaar.StatisticsManager;
 import com.aibabel.baselibrary.impl.IDataManager;
+import com.aibabel.baselibrary.utils.CommonUtils;
+import com.aibabel.baselibrary.utils.DeviceUtils;
 import com.aibabel.baselibrary.utils.ToastUtil;
 import com.aibabel.baselibrary.utils.XIPCUtils;
 import com.aibabel.surfinternet.MainActivity;
@@ -285,18 +287,31 @@ public class CustomWebViewActivity extends BaseActivity implements OnJSClickList
                 Map map1 = new HashMap();
                 map1.put("p2", skuid);
                 StatisticsManager.getInstance(CustomWebViewActivity.this).addEventAidl(1732, map1);
-                //TODO 下单成功  判断标识 是否重置SoftSim
-                XIPC.connectApp(getContext(), XIPCUtils.XIPC_MENU);
-                XIPC.setIPCListener(new IPCListener() {
-                    @Override
-                    public void onIPCConnected(Class<? extends IPCService> service) {
-                        IDataManager dm = XIPC.getInstance(IDataManager.class);
-                        String softType = dm.getString("softSimType");
-                        Log.e("LK---001", "当前LK卡状态:" + softType);
-                        isShowDialog(softType);
 
-                    }
-                });
+                if (DeviceUtils.getSystem() == DeviceUtils.System.PRO_SELL){
+                    Log.e("LK---001", "Pro销售版本");
+                    //TODO 下单成功  判断标识 是否重置SoftSim
+                    XIPC.connectApp(getContext(), XIPCUtils.XIPC_MENU);
+                    XIPC.setIPCListener(new IPCListener() {
+                        @Override
+                        public void onIPCConnected(Class<? extends IPCService> service) {
+                            IDataManager dm = XIPC.getInstance(IDataManager.class);
+                            String softType = dm.getString("softSimType");
+                            Log.e("LK---001", "当前LK卡状态:" + softType);
+                            isShowDialog(softType);
+
+                        }
+                    });
+                }else{
+                    Log.e("LK---001", "台湾版本");
+                    Timer timer = new Timer();
+                    timer.schedule(new TimerTask() {
+                        @Override
+                        public void run() {
+                            startActivity(new Intent(CustomWebViewActivity.this, MainActivity.class));
+                        }
+                    }, 3000);
+                }
             }
         });
 

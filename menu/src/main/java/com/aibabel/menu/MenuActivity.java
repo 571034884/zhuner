@@ -212,7 +212,7 @@ public class MenuActivity extends BaseActivity implements View.OnClickListener {
                     break;
                 case R.id.menu_bottom_ddwl_ll:
                     //调起景区导览
-                    startActivity(AppStatusUtils.getAppOpenIntentByPackageName(mContext,"com.aibabel.travel"));
+                    startActivity(AppStatusUtils.getAppOpenIntentByPackageName(mContext,"com.aibabel.scenic"));
                     break;
             }
         } catch (Exception e) {

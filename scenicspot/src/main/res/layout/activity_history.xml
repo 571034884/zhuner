@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/color_activity"
+    tools:context=".activity.SpotsActivity">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        tools:context=".activity.HistoryActivity">
+        <!--titlebar-->
+        <include layout="@layout/layout_title" />
+        <!--景区图片-->
+        <RelativeLayout
+            android:id="@+id/rl_img"
+            android:layout_width="match_parent"
+            android:layout_height="203dp">
+
+            <com.shehuan.niv.NiceImageView
+                android:id="@+id/iv_scenic"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:scaleType="fitXY"
+                app:corner_bottom_left_radius="16dp"
+                app:corner_bottom_right_radius="16dp" />
+
+            <TextView
+                android:id="@+id/tv_name"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:singleLine="true"
+                android:textColor="@color/white"
+                android:textSize="40sp" />
+        </RelativeLayout>
+
+        <!--有当地简介布局-->
+        <LinearLayout
+            android:id="@+id/ll_h"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="40dp"
+            android:orientation="vertical"
+            android:visibility="gone">
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/rv_h"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/color_activity"
+                android:paddingBottom="10dp"
+                android:paddingLeft="22dp"
+                android:paddingTop="10dp" />
+
+            <WebView
+                android:id="@+id/wv_local"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/color_activity"
+                android:scrollbars="vertical" />
+
+
+        </LinearLayout>
+        <!--没有当地简介布局-->
+        <LinearLayout
+            android:id="@+id/ll_v"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="32dp"
+            android:background="@color/color_activity">
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/rv_v"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:paddingBottom="20dp" />
+
+        </LinearLayout>
+    </LinearLayout>
+
+    <!--音乐播放器-->
+    <include layout="@layout/layout_music" />
+</FrameLayout>
