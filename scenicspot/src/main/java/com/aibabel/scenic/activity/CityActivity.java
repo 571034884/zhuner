@@ -17,6 +17,7 @@ import android.widget.TextView;
 
 import com.aibabel.baselibrary.http.BaseCallback;
 import com.aibabel.baselibrary.http.OkGoUtil;
+import com.aibabel.baselibrary.sphelper.SPHelper;
 import com.aibabel.baselibrary.utils.CommonUtils;
 import com.aibabel.baselibrary.utils.FastJsonUtil;
 import com.aibabel.baselibrary.utils.ProviderUtils;
@@ -130,7 +131,7 @@ public class CityActivity extends BaseScenicActivity {
         map.put("cityName", city);
         map.put("lat", ProviderUtils.getInfo(ProviderUtils.COLUMN_LATITUDE));
         map.put("lng", ProviderUtils.getInfo(ProviderUtils.COLUMN_LONGITUDE));
-        map.put("leaseId", ScenicBaseApplication.LEASEID);
+        map.put("leaseId", SPHelper.getString("order_oid",""));
 
         OkGoUtil.get(mContext, ApiConstant.GET_HOME_SCENIC, map, ScenicBean.class, new BaseCallback<ScenicBean>() {
             @Override
@@ -256,7 +257,7 @@ public class CityActivity extends BaseScenicActivity {
         Intent intent = new Intent(this, ScenicActivity.class);
         intent.putExtra("index", flagIndex);
         intent.putExtra("cityName", city);
-        startActivity(intent);
+        startActivityForResult(intent,1010);
     }
     private void getShowView(int index) {
         if (flagIndex == index) {
@@ -348,5 +349,15 @@ public class CityActivity extends BaseScenicActivity {
                 break;
         }
 
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == 1010) {
+            if (resultCode == 1003) {
+                isNetWork();
+            }
+        }
     }
 }
