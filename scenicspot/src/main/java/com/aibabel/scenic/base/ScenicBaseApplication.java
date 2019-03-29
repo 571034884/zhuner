@@ -9,6 +9,7 @@ import com.aibabel.baselibrary.base.BaseApplication;
 import com.aibabel.baselibrary.http.OkGoUtil;
 import com.aibabel.baselibrary.sphelper.SPHelper;
 import com.aibabel.baselibrary.utils.CommonUtils;
+import com.aibabel.baselibrary.utils.DeviceUtils;
 import com.aibabel.baselibrary.utils.FastJsonUtil;
 import com.aibabel.scenic.bean.AddressBean;
 import com.aibabel.scenic.okgo.ApiConstant;
@@ -54,6 +55,7 @@ public class ScenicBaseApplication extends BaseApplication {
         configUmeng();
         initCountry();
     }
+
     //初始化城市数据
     private void initCountry() {
         addressBeanAsia = FastJsonUtil.changeJsonToBean(CityConfig.asiaFragment,AddressBean.class);
@@ -83,7 +85,13 @@ public class ScenicBaseApplication extends BaseApplication {
 
     @Override
     public String setUmengKey() {
-        return null;
+        if(lease_Debug_v&&DeviceUtils.getSystem()== DeviceUtils.System.PRO_LEASE) {
+            return "5c9ac851203657850a0004fd";
+        }else {
+            return "5c9ac851203657850a0004fd";
+//            return "5b519f22a40fa35134000042";
+
+        }
     }
 
 
