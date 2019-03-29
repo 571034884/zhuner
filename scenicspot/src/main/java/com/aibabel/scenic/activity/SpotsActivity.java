@@ -306,10 +306,14 @@ public class SpotsActivity extends BaseScenicActivity implements ExpireBroadcast
                 }
                 break;
             case R.id.tv_next:
-                sendBroadcast(Constants.ACTION_NEXT);
+                if (CommonUtils.isFastClick()){
+                    sendBroadcast(Constants.ACTION_NEXT);
+                }
                 break;
             case R.id.tv_pre:
-                sendBroadcast(Constants.ACTION_PRV);
+                if (CommonUtils.isFastClick()){
+                    sendBroadcast(Constants.ACTION_PRV);
+                }
                 break;
             case R.id.tv_left:
                 onBackPressed();
@@ -323,7 +327,9 @@ public class SpotsActivity extends BaseScenicActivity implements ExpireBroadcast
 
     @Override
     public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
-        sendBroadcast(Constants.ACTION_LIST_ITEM, position + 1);
+        if (CommonUtils.isFastClick()){
+            sendBroadcast(Constants.ACTION_LIST_ITEM, position + 1);
+        }
     }
     //======================================音乐处理=================================================
 
