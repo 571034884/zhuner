@@ -58,7 +58,7 @@ import butterknife.ButterKnife;
  * @Desc：
  * @==========================================================================================
  */
-public class HistoryActivity extends BaseScenicActivity implements ExpireBroadcast.stopMp3, BaseQuickAdapter.OnItemClickListener {
+public class HistoryActivity extends BaseScenicActivity implements ExpireBroadcast.StopMp3, BaseQuickAdapter.OnItemClickListener {
     @BindView(R.id.tv_left)
     TextView tvLeft;
     @BindView(R.id.tv_title)
@@ -133,7 +133,7 @@ public class HistoryActivity extends BaseScenicActivity implements ExpireBroadca
         tvLeft.setOnClickListener(this);
         tvStart.setOnClickListener(this);
         tvTitle.setText(R.string.title_history);
-
+        ExpireBroadcast.setStopMp3(this, Constants.key_history);
     }
 
     @Override

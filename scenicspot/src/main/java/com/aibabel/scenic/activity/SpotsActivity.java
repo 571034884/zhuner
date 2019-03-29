@@ -57,7 +57,7 @@ import butterknife.ButterKnife;
  * @Desc：景点详情
  * @==========================================================================================
  */
-public class SpotsActivity extends BaseScenicActivity implements ExpireBroadcast.stopMp3, BaseQuickAdapter.OnItemClickListener {
+public class SpotsActivity extends BaseScenicActivity implements ExpireBroadcast.StopMp3, BaseQuickAdapter.OnItemClickListener {
 
 
     @BindView(R.id.tv_left)
@@ -132,6 +132,7 @@ public class SpotsActivity extends BaseScenicActivity implements ExpireBroadcast
         tvLeft.setOnClickListener(this);
         tvStart.setOnClickListener(this);
         ivScenic.setOnClickListener(this);
+        ExpireBroadcast.setStopMp3(this,Constants.key_spot);
     }
 
     @Override
