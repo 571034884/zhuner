@@ -151,7 +151,12 @@ public class ScenicCollectFragment extends BaseFragment implements BaseQuickAdap
                 Logs.e("景区--" + ApiConstant.GET_HOME_SCENIC + "：" + message);
                 mAdapter.loadMoreFail();
                 if (page == 1) {
-                    elError.setErrorType(EmptyLayout.ERROR_EMPTY);
+                    try{
+                        elError.setErrorType(EmptyLayout.ERROR_EMPTY);
+                    }catch (Exception e){
+                        ToastUtil.showShort(mContext,"准儿出错了");
+                    }
+
                 }
             }
 
