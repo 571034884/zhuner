@@ -9,9 +9,15 @@ import com.aibabel.aidlaar.StatisticsManager;
 import com.aibabel.alliedclock.BuildConfig;
 import com.aibabel.alliedclock.utils.CommonUtils;
 import com.aibabel.alliedclock.utils.DensityHelper;
+import com.aibabel.baselibrary.impl.IDataManager;
+import com.aibabel.baselibrary.impl.IServerManager;
+import com.aibabel.baselibrary.impl.IStatistics;
+import com.aibabel.baselibrary.mode.DataManager;
+import com.aibabel.baselibrary.mode.ServerManager;
 import com.lzy.okgo.OkGo;
 import com.umeng.analytics.MobclickAgent;
 import com.umeng.commonsdk.UMConfigure;
+import com.xuexiang.xipc.XIPC;
 
 import java.util.LinkedList;
 
@@ -42,7 +48,20 @@ public class MyApplication extends Application {
         initOKgoConfig();
         initUmengConfig();
         initAppExitConfig();
+        initXipc();
         StatisticsManager.getInstance(this).setConfig(getPackageName(), BuildConfig.VERSION_NAME);
+    }
+
+    /**
+     * 跨进程初始化
+     */
+    private void initXipc() {
+        XIPC.init(this);
+//        XIPC.debug(BuildConfig.DEBUG);
+        XIPC.register(IDataManager.class);
+        XIPC.register(IServerManager.class);
+        XIPC.register(IStatistics.class);
+
     }
 
     /**
