@@ -120,9 +120,7 @@
                 android:orientation="horizontal"
                 app:layout_constraintLeft_toLeftOf="@id/tv_tucao"
                 app:layout_constraintRight_toRightOf="@id/iv_close"
-                app:layout_constraintTop_toBottomOf="@id/rv_number"
-
-                >
+                app:layout_constraintTop_toBottomOf="@id/rv_number">
 
                 <View
                     android:layout_width="@dimen/px140"
