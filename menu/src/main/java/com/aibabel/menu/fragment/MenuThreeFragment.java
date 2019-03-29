@@ -7,6 +7,7 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
 import com.aibabel.baselibrary.base.BaseFragment;
+import com.aibabel.menu.MenuActivity;
 import com.aibabel.menu.R;
 import com.aibabel.menu.util.AppStatusUtils;
 
@@ -71,26 +72,38 @@ public class MenuThreeFragment extends BaseFragment implements View.OnClickListe
                 case R.id.two_frag_1:
                     //调起   全球上网
                     startActivity(AppStatusUtils.getAppOpenIntentByPackageName(getContext(),"com.aibabel.surfinternet"));
+                    try{
+                        ((MenuActivity) getActivity()).addStatisticsEvent("menu_surfinternet_click",null);
+                    }catch (Exception e){}
                     break;
                 case R.id.two_frag_2:
                     //调起汇率
                     startActivity(AppStatusUtils.getAppOpenIntentByPackageName(getContext(), "com.aibabel.currencyconversion"));
+                    try{
+                        ((MenuActivity) getActivity()).addStatisticsEvent("menu_currency_click",null);
+                    }catch (Exception e){}
                     break;
                 case R.id.two_frag_3:
                     //调起天气
                     startActivity(AppStatusUtils.getAppOpenIntentByPackageName(getContext(),"com.aibabel.weather"));
-
+                    try{
+                        ((MenuActivity) getActivity()).addStatisticsEvent("menu_weather_click",null);
+                    }catch (Exception e){}
                     break;
                 case R.id.two_frag_4:
                     //调起世界钟
                     startActivity(AppStatusUtils.getAppOpenIntentByPackageName(getContext(),"com.aibabel.alliedclock"));
-
+                    try{
+                        ((MenuActivity) getActivity()).addStatisticsEvent("menu_clock_click",null);
+                    }catch (Exception e){}
 
                     break;
                 case R.id.two_frag_5:
                     //调起离线管理
                     startActivity(AppStatusUtils.getAppOpenIntentByPackageName(getContext(), "com.aibabel.download.offline"));
-
+                    try{
+                        ((MenuActivity) getActivity()).addStatisticsEvent("menu_Offline_click",null);
+                    }catch (Exception e){}
                     break;
 
 
