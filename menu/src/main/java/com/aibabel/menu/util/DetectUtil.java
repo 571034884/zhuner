@@ -4,7 +4,11 @@ import android.app.Activity;
 import android.app.ActivityManager;
 import android.content.ComponentName;
 import android.content.Context;
+import android.content.pm.ApplicationInfo;
 import android.text.TextUtils;
+import android.util.Log;
+
+import com.orhanobut.logger.Logger;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -80,6 +84,32 @@ public class DetectUtil {
         return false;
     }
 
+    ////获取已安装应用的 uid，-1 表示未安装此应用或程序异常
+    public static int getPackageUid(Context context, String packageName) {
+        try {
+            ApplicationInfo applicationInfo = context.getPackageManager().getApplicationInfo(packageName, 0);
+            if (applicationInfo != null) {
+                Logger.d(applicationInfo.uid);
+                return applicationInfo.uid;
+            }
+        } catch (Exception e) {
+            return -1;
+        }
+        return -1;
+    }
+    public static boolean isProcessRunning(Context context, int uid) {
+        ActivityManager am = (ActivityManager) context.getSystemService(Context.ACTIVITY_SERVICE);
+        List<ActivityManager.RunningServiceInfo> runningServiceInfos = am.getRunningServices(200);
+        if (runningServiceInfos.size() > 0) {
+            for (ActivityManager.RunningServiceInfo appProcess : runningServiceInfos){
+                if (uid == appProcess.uid) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
 
     /**
      * 判断APP是否在前台
@@ -88,14 +118,19 @@ public class DetectUtil {
      * @return
      */
     public static boolean isAppInForeground(Context context,String packname) {
+        try{
+
         ActivityManager am = (ActivityManager) context
                 .getSystemService(Context.ACTIVITY_SERVICE);
         List<ActivityManager.RunningTaskInfo> tasks = am.getRunningTasks(1);
         if (!tasks.isEmpty()) {
             ComponentName topActivity = tasks.get(0).topActivity;
+            Log.e("hjs","topActivity="+topActivity.toString());
             if (topActivity.getPackageName().equals(packname)) {
                 return true;
             }
+        }}catch (Exception e){
+
         }
         return false;
     }
