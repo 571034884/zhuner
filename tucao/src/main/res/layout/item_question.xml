@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="#FFFFFF"
+    android:orientation="vertical">
+    <!--用于隐藏-->
+    <LinearLayout
+        android:id="@+id/ll_question"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_horizontal"
+        android:orientation="vertical">
+
+
+        <TextView
+            android:id="@+id/tv_question"
+            android:layout_width="match_parent"
+            android:layout_height="42dp"
+            android:drawableLeft="@mipmap/ic_point"
+            android:drawablePadding="10dp"
+            android:gravity="center_vertical"
+            android:text="您觉得准儿有什么问题？（可多选）"
+            android:textColor="@color/color333"
+            android:textSize="17sp" />
+
+        <CheckBox
+            android:id="@+id/cb_question1"
+            android:layout_width="match_parent"
+            android:layout_height="42dp"
+            android:drawablePadding="14dp"
+            android:gravity="center_vertical"
+            android:drawableLeft="@drawable/checkbox_selector"
+            android:button="@null"
+            android:layout_marginLeft="15dp"
+            android:text="翻译准确率有待提高"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:textColor="@color/color333"
+            android:textSize="17sp" />
+
+        <CheckBox
+            android:id="@+id/cb_question2"
+            android:layout_width="match_parent"
+            android:layout_height="42dp"
+            android:drawablePadding="14dp"
+            android:gravity="center_vertical"
+            android:drawableLeft="@drawable/checkbox_selector"
+            android:button="@null"
+            android:layout_marginLeft="15dp"
+            android:text="旅游功率内容不够"
+            android:textColor="@color/color333"
+            android:textSize="17sp" />
+
+        <CheckBox
+            android:id="@+id/cb_question3"
+            android:layout_width="match_parent"
+            android:layout_height="42dp"
+            android:drawablePadding="14dp"
+            android:layout_marginLeft="15dp"
+            android:gravity="center_vertical"
+            android:drawableLeft="@drawable/checkbox_selector"
+            android:button="@null"
+            android:text="景区导览内容不够"
+            android:textColor="@color/color333"
+            android:textSize="17sp" />
+
+        <CheckBox
+            android:id="@+id/cb_question4"
+            android:layout_width="match_parent"
+            android:layout_height="42dp"
+            android:layout_marginLeft="15dp"
+            android:filterTouchesWhenObscured="true"
+            android:focusableInTouchMode="true"
+            android:drawablePadding="14dp"
+            android:gravity="center_vertical"
+            android:drawableLeft="@drawable/checkbox_selector"
+            android:button="@null"
+            android:text="操作不方便"
+            android:textColor="@color/color333"
+            android:textSize="17sp" />
+
+
+    </LinearLayout>
+
+
+</LinearLayout>

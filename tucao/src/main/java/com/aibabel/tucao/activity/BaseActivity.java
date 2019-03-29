@@ -2,16 +2,16 @@ package com.aibabel.tucao.activity;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v7.app.AppCompatActivity;
 import android.view.KeyEvent;
+import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 
+import com.aibabel.baselibrary.base.StatisticsBaseActivity;
 import com.aibabel.tucao.app.BaseApplication;
-import com.aibabel.tucao.utils.FileUtils;
 import com.umeng.analytics.MobclickAgent;
 
-public class BaseActivity extends AppCompatActivity {
+public class BaseActivity extends StatisticsBaseActivity implements View.OnClickListener {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -41,5 +41,10 @@ public class BaseActivity extends AppCompatActivity {
                 break;
         }
         return super.onKeyDown(keyCode, event);
+    }
+
+    @Override
+    public void onClick(View v) {
+
     }
 }

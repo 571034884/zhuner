@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/white"
     tools:context=".activity.MainActivity">
 
     <com.aibabel.tucao.utils.MyScrollview
@@ -16,8 +17,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:focusable="true"
-            android:focusableInTouchMode="true"
-            android:visibility="gone">
+            android:focusableInTouchMode="true">
 
             <TextView
                 android:id="@+id/tv_tucao"
@@ -37,7 +37,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginRight="@dimen/px30"
-                android:src="@mipmap/close"
+                android:src="@mipmap/ic_close"
                 app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintTop_toTopOf="@id/tv_tucao" />
 
@@ -197,7 +197,7 @@
                 android:layout_marginTop="@dimen/px54"
                 android:background="@drawable/shape_background"
                 android:gravity="center"
-                android:text="提交享优惠"
+                android:text="提 交"
                 android:textColor="#fff"
                 android:textSize="@dimen/px30"
                 app:layout_constraintBottom_toBottomOf="parent"
@@ -207,11 +207,13 @@
 
         </android.support.constraint.ConstraintLayout>
     </com.aibabel.tucao.utils.MyScrollview>
+
     <RelativeLayout
         android:id="@+id/rl_isnet"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-       >
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true">
 
         <TextView
             android:id="@+id/tv_tucao1"
@@ -222,18 +224,17 @@
             android:text="@string/title"
             android:textColor="#ffffff"
             android:textSize="@dimen/px40"
-            android:textStyle="bold"
-            />
+            android:textStyle="bold" />
 
         <ImageView
             android:id="@+id/iv_close1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginRight="@dimen/px30"
-            android:src="@mipmap/close"
             android:layout_alignParentRight="true"
+            android:layout_marginRight="@dimen/px30"
             android:layout_marginTop="@dimen/px44"
-            />
+            android:src="@mipmap/close" />
+
         <LinearLayout
             android:id="@+id/lin_isnet"
             android:layout_width="wrap_content"
