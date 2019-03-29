@@ -59,6 +59,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="@dimen/x10"
+        android:visibility="gone"
         app:layout_constraintLeft_toLeftOf="parent"
         android:onClick="onClick"
         android:src="@drawable/home_gif_anim"

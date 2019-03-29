@@ -150,7 +150,7 @@ public class MainActivity extends BaseScenicActivity {
         map.put("cityName", city);
         map.put("lat", ProviderUtils.getInfo(ProviderUtils.COLUMN_LATITUDE));
         map.put("lng", ProviderUtils.getInfo(ProviderUtils.COLUMN_LONGITUDE));
-        map.put("leaseId", ScenicBaseApplication.LEASEID);
+        map.put("leaseId", SPHelper.getString("order_oid",""));
 
         OkGoUtil.get(mContext, ApiConstant.GET_HOME_SCENIC, map, ScenicBean.class, new BaseCallback<ScenicBean>() {
             @Override
@@ -310,7 +310,7 @@ public class MainActivity extends BaseScenicActivity {
         Intent intent = new Intent(this, ScenicActivity.class);
         intent.putExtra("index", flagIndex);
         intent.putExtra("cityName", city);
-        startActivity(intent);
+        startActivityForResult(intent,1010);
     }
 
     private void getShowView(int index) {
@@ -409,11 +409,15 @@ public class MainActivity extends BaseScenicActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == 1010 && resultCode == 1002) {
-             city = data.getExtras().getString("city");
-            if (!mLocation.getText().toString().trim().equals(city)) {
-                isFlag = true;
-                mLocation.setText(city);
+        if (requestCode == 1010){
+            if (resultCode == 1002){
+                city = data.getExtras().getString("city");
+                if (!mLocation.getText().toString().trim().equals(city)) {
+                    isFlag = true;
+                    mLocation.setText(city);
+                    isNetWork();
+                }
+            }else if (resultCode == 1003){
                 isNetWork();
             }
         }

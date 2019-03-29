@@ -17,6 +17,7 @@ import com.aibabel.baselibrary.sphelper.SPHelper;
 import com.aibabel.baselibrary.utils.FastJsonUtil;
 import com.aibabel.baselibrary.utils.ToastUtil;
 import com.aibabel.scenic.R;
+import com.aibabel.scenic.activity.ScenicActivity;
 import com.aibabel.scenic.activity.SpotsActivity;
 import com.aibabel.scenic.adapter.Adapter_Scenics;
 import com.aibabel.scenic.bean.CollectBean;
@@ -157,7 +158,11 @@ public class ScenicNearFragment extends BaseFragment implements BaseQuickAdapter
 //                Logs.e("景区--" + ApiConstant.GET_HOME_SCENIC + "：" + message);
                 mAdapter.loadMoreFail();
                 if (page == 1) {
-                    elError.setErrorType(EmptyLayout.ERROR_EMPTY);
+                    try{
+                        elError.setErrorType(EmptyLayout.ERROR_EMPTY);
+                    }catch (Exception e){
+                        ToastUtil.showShort(mContext,"准儿出错了");
+                    }
                 }
             }
 
@@ -218,8 +223,8 @@ public class ScenicNearFragment extends BaseFragment implements BaseQuickAdapter
 
         Map<String, String> map = new HashMap<>();
         map.put("poiIdStr", id);
-//        map.put("leaseId", SPHelper.getString("order_oid",""));
-        map.put("leaseId", "1122");
+        map.put("leaseId", SPHelper.getString("order_oid",""));
+//        map.put("leaseId", "1122");
         map.put("page", String.valueOf(page));
         map.put("pageSize", String.valueOf(PAGE_SIZE));
         OkGoUtil.get(mContext, ApiConstant.GET_CANCEL_COLLECTION, map, BaseBean.class, new BaseCallback() {
@@ -227,6 +232,7 @@ public class ScenicNearFragment extends BaseFragment implements BaseQuickAdapter
             public void onSuccess(String method, BaseBean model, String json) {
 //                ToastUtil.showShort(mContext, "成功");
                 Logs.e(json);
+                ((ScenicActivity)getActivity()).isChanged = true;
                 CollectBean bean = FastJsonUtil.changeJsonToBean(json, CollectBean.class);
                 //取消收藏
                 update(bean, id, 1);
@@ -259,14 +265,14 @@ public class ScenicNearFragment extends BaseFragment implements BaseQuickAdapter
 
         Map<String, String> map = new HashMap<>();
         map.put("poiIdStr", id);
-//        map.put("leaseId", SPHelper.getString("order_oid",""));
-        map.put("leaseId", "1122");
+        map.put("leaseId", SPHelper.getString("order_oid",""));
         map.put("page", String.valueOf(page));
         map.put("pageSize", String.valueOf(PAGE_SIZE));
         OkGoUtil.get(ApiConstant.GET_ADD_COLLECTION, map, BaseBean.class, new BaseCallback() {
             @Override
             public void onSuccess(String method, BaseBean model, String json) {
                 Logs.e(json);
+                ((ScenicActivity)getActivity()).isChanged = true;
                 CollectBean bean = FastJsonUtil.changeJsonToBean(json, CollectBean.class);
                 //添加收藏
                 update(bean, id, 2);
