@@ -29,6 +29,7 @@ import org.json.JSONObject;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
+import java.io.ByteArrayOutputStream;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -41,6 +42,8 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Logger;
+import java.util.zip.GZIPOutputStream;
 
 @ClassName("IStatistics")
 public class StatisticsManager implements IStatistics {
@@ -63,8 +66,6 @@ public class StatisticsManager implements IStatistics {
 //
         try {
             JSONObject infoObject = new JSONObject(info);
-
-//            Log.e("infoObject",)
             int size = pathNodes.size();
             StatisticsModle modle = null;
 
@@ -73,9 +74,7 @@ public class StatisticsManager implements IStatistics {
                 modle.an = appName;
                 modle.av = appVersion;
                 modle.c.put(infoObject);
-
                 pathNodes.add(modle);
-
             } else {
                 modle = pathNodes.get(size - 1);
                 if (modle.an.equals(appName)) {
@@ -207,6 +206,7 @@ public class StatisticsManager implements IStatistics {
 //        Log.e("newData", newData);
 
         final String allData = getData(context, newData);
+
 //        Log.e("allData", allData);
         String url = "http://39.107.238.111:7001";
 //        String url=CommonUtils.getTimerType()==0?"http://abroad.api.joner.aibabel.cn:7001":"http://api.joner.aibabel.cn:7001";
@@ -219,6 +219,13 @@ public class StatisticsManager implements IStatistics {
         postRequest.params("no", CommonUtils.getRandom() + "");
         postRequest.params("lat", latitude + "");
         postRequest.params("lng", longitude + "");
+        String uploadData=null;
+//        try {
+//            uploadData=compress(allData);
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
+//        Log.e("uploadData====",uploadData);
         postRequest.params("data", allData);
         postRequest.execute(new StringCallback() {
             @Override
@@ -297,6 +304,21 @@ public class StatisticsManager implements IStatistics {
 
     }
 
+    /**
+     * @param input 需要压缩的字符串
+     * @return 压缩后的字符串
+     * @throws IOException IO
+     */
+    public static String compress(String input) throws IOException {
+        if (input == null || input.length() == 0) {
+            return input;
+        }
+        ByteArrayOutputStream out = new ByteArrayOutputStream();
+        GZIPOutputStream gzipOs = new GZIPOutputStream(out);
+        gzipOs.write(input.getBytes());
+        gzipOs.close();
+        return out.toString("ISO-8859-1");
+    }
     private static class StatisticsManagerHolder {
         public static final StatisticsManager manager = new StatisticsManager();
 

@@ -158,7 +158,13 @@ public class MainActivity extends BaseActivity implements BaseCallback {
                 } else {
                     ivDingwei.setImageResource(0);
                 }
-                tvCityName.setText(weatherUrlBeanList.get(oldPosition).getCityCN() + "," + weatherUrlBeanList.get(oldPosition).getCountryCN());
+                String city=weatherUrlBeanList.get(oldPosition).getCityCN();
+                String county= weatherUrlBeanList.get(oldPosition).getCountryCN();
+                tvCityName.setText(city + "," + county);
+                HashMap<String, Serializable> map=new HashMap<>();
+                map.put("weather_main1_country",county);
+                map.put("weather_main1_city",city);
+                addStatisticsEvent("weather_main2",map);
             }
 
             @Override
@@ -179,8 +185,8 @@ public class MainActivity extends BaseActivity implements BaseCallback {
                     Intent intent = new Intent(MainActivity.this, AddCityActivity.class);
                     startActivityForResult(intent, 888);
                 }
-                Map<String, String> map = new HashMap<>();
-                StatisticsManager.getInstance(MainActivity.this).addEventAidl(2300, map);
+                addStatisticsEvent("weather_main5",null);
+
             }
         });
         tvEdit.setOnClickListener(new OnMultiClickListener() {
@@ -191,8 +197,8 @@ public class MainActivity extends BaseActivity implements BaseCallback {
                     intent.putExtra("weatherBeanList", (Serializable) weatherBeanList);
                     intent.putExtra("weatherUrlBeanList", (Serializable) weatherUrlBeanList);
                     startActivityForResult(intent, 888);
-                    Map<String, String> map = new HashMap<>();
-                    StatisticsManager.getInstance(MainActivity.this).addEventAidl(2301, map);
+
+                    addStatisticsEvent("weather_main4",null);
                 }
             }
         });

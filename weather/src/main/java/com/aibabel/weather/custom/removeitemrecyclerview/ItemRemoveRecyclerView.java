@@ -45,6 +45,8 @@ public class ItemRemoveRecyclerView extends RecyclerView {
     private Scroller mScroller;
     private OnItemClickListener mListener;
 
+    public  OnLeftScrollListener onLeftScrollListener;
+
     public ItemRemoveRecyclerView(Context context) {
         this(context, null);
     }
@@ -111,7 +113,9 @@ public class ItemRemoveRecyclerView extends RecyclerView {
                         mItemLayout.scrollTo(0, 0);
                         return true;
                     } else if (scrollX + dx >= mMaxLength) {//右边界检测
+
                         mItemLayout.scrollTo(mMaxLength, 0);
+
                         return true;
                     }
                     mItemLayout.scrollBy(dx, 0);//item跟随手指滑动
@@ -150,6 +154,9 @@ public class ItemRemoveRecyclerView extends RecyclerView {
 
                 //item自动滑动到指定位置
                 mScroller.startScroll(upScrollX, 0, deltaX, 0, 200);
+                if (upScrollX!=0){
+                    onLeftScrollListener.onLeftScroll();
+                }
                 isStartScroll = true;
                 invalidate();
 
@@ -197,5 +204,9 @@ public class ItemRemoveRecyclerView extends RecyclerView {
 
     public int getDeleteBtnStates() {
         return mDeleteBtnState;
+    }
+
+    public interface OnLeftScrollListener{
+        public void onLeftScroll();
     }
 }

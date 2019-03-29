@@ -19,8 +19,10 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.aibabel.baselibrary.base.StatisticsBaseActivity;
 import com.aibabel.weather.adapter.CommomRecyclerAdapter;
 import com.aibabel.weather.adapter.CommonRecyclerViewHolder;
+import com.aibabel.weather.app.BaseActivity;
 import com.aibabel.weather.bean.WeatherBean;
 import com.aibabel.weather.utils.WeatherIconUtil;
 
@@ -202,6 +204,31 @@ public class WeatherFragment extends Fragment {
                 }
             }
         });
+        rvWeatherForHour.setOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
+                super.onScrollStateChanged(recyclerView, newState);
+                Log.e("scrollState==",""+newState);
+                if (newState == 0) {
+                    StatisticsBaseActivity statisticsBaseActivity=   (StatisticsBaseActivity) getActivity();
+                    if (statisticsBaseActivity!=null){
+                        statisticsBaseActivity.addStatisticsEvent("weather_main6",null);
+                    }
+
+
+                }
+            }
+        });
+//
+//        rvWeatherForHour.setOnScrollChangeListener(new RecyclerView.OnScrollChangeListener(){
+//
+//
+//            @Override
+//            public void onScrollChange(View v, int scrollX, int scrollY, int oldScrollX, int oldScrollY) {
+//
+//
+//            }
+//        });
 
         if (weatherBean.getWeatherobj() != null && weatherBean.getWeatherobj().size() > 3) {
             Log.e(TAG, "initView: " + weatherBean.getWeatherobj().get(2).getData());
