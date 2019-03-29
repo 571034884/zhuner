@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#3F51B5</color>
+    <color name="colorPrimaryDark">#303F9F</color>
+    <color name="colorAccent">#FF4081</color>
+    <color name="c_666666">#666666</color>
+    <color name="c_ff781d">#FF781D</color>
+    <color name="color_activity">#F9F9F9</color>
+    <color name="tran">#AAFFFFFF</color>
+    <color name="app_dark_gray">#B6B6B5</color><!--深灰 -->
+    <color name="app_ju_huang">#F9593E</color><!-- 橘黄 -->
+
+</resources>

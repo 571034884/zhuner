@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+
+    <RelativeLayout
+        android:id="@+id/rl_music"
+        android:layout_width="match_parent"
+        android:layout_height="120dp"
+        android:layout_marginLeft="22dp"
+        android:layout_marginRight="22dp"
+        android:layout_marginTop="180dp"
+        android:visibility="gone"
+        android:background="@drawable/around_music"
+        android:orientation="horizontal">
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="67dp"
+            android:layout_alignParentBottom="true"
+            android:background="@drawable/around_music_down" />
+
+
+        <LinearLayout
+            android:id="@+id/ll_music"
+            android:layout_width="match_parent"
+            android:layout_height="120dp"
+            android:orientation="horizontal"
+            android:paddingBottom="10dp"
+            android:paddingLeft="13dp"
+            android:paddingTop="10dp">
+
+            <com.shehuan.niv.NiceImageView
+                android:id="@+id/iv_img"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:contentDescription="@string/app_name"
+                android:scaleType="centerCrop"
+                app:corner_radius="16dp" />
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/tv_music_name"
+                    android:layout_width="match_parent"
+                    android:layout_height="39dp"
+                    android:layout_marginLeft="13dp"
+                    android:ellipsize="end"
+                    android:singleLine="true"
+                    android:textColor="@color/color000"
+                    android:textSize="17sp" />
+
+                <ProgressBar
+                    android:id="@+id/pb_progress"
+                    style="@android:style/Widget.ProgressBar.Horizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="2dp"
+                    android:progressDrawable="@drawable/progress_bg" />
+
+                <LinearLayout
+                    android:id="@+id/ll_play"
+                    android:layout_width="match_parent"
+                    android:layout_height="65dp"
+                    android:orientation="horizontal">
+
+                    <LinearLayout
+                        android:id="@+id/ll_pre"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:gravity="center_vertical|right">
+
+                        <TextView
+                            android:id="@+id/tv_pre"
+                            android:layout_width="50dp"
+                            android:layout_height="50dp"
+                            android:background="@mipmap/ic_pre_normal" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/ll_start"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1.5"
+                        android:gravity="center">
+
+                        <TextView
+                            android:id="@+id/tv_start"
+                            android:layout_width="50dp"
+                            android:layout_height="50dp"
+                            android:background="@mipmap/ic_play_normal"
+                            android:gravity="center" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/ll_next"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:gravity="center_vertical|left">
+
+                        <TextView
+                            android:id="@+id/tv_next"
+                            android:layout_width="50dp"
+                            android:layout_height="50dp"
+                            android:background="@mipmap/ic_next_normal" />
+                    </LinearLayout>
+
+                </LinearLayout>
+
+
+            </LinearLayout>
+
+        </LinearLayout>
+    </RelativeLayout>
+</merge>

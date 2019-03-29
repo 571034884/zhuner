@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#f9f9f9f9"
+    android:orientation="vertical">
+
+    <include
+        layout="@layout/layout_searchbar"
+        />
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:background="#f9f9f9f9"
+        android:layout_height="match_parent">
+        <ListView
+            android:id="@+id/lv_search"
+            android:divider="@null"
+            android:listSelector="@android:color/transparent"
+            android:layout_width="match_parent"
+            android:scrollbars="none"
+            android:layout_height="match_parent">
+        </ListView>
+        <com.aibabel.scenic.view.EmptyLayout
+            android:id="@+id/empty"
+            android:layout_width="match_parent"
+            android:visibility="gone"
+            android:layout_height="match_parent">
+        </com.aibabel.scenic.view.EmptyLayout>
+    </RelativeLayout>
+</LinearLayout>

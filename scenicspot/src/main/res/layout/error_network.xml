@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:id="@+id/rl_error"
+    android:background="@android:color/white"
+    android:layout_height="match_parent">
+    <ImageView
+        android:id="@+id/iv_img"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:src="@mipmap/ic_network_error"
+        android:layout_marginTop="128dp"
+        />
+    <TextView
+        android:id="@+id/tv_name"
+        android:layout_below="@id/iv_img"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="网络开了小差"
+        android:layout_centerHorizontal="true"
+        android:textColor="#999999"
+        android:textSize="17sp"
+        />
+    <TextView
+        android:id="@+id/tv_wifi"
+        android:layout_width="260dp"
+        android:layout_height="60dp"
+        android:layout_marginTop="50dp"
+        android:layout_centerHorizontal="true"
+        android:text="连接WIFI"
+        android:onClick="onClick"
+        android:textColor="@color/c_ff781d"
+        android:textSize="24sp"
+        android:background="@drawable/textview_bg"
+        android:layout_below="@id/tv_name"
+        android:gravity="center"
+        />
+
+
+</RelativeLayout>
