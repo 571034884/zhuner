@@ -224,8 +224,8 @@ public class ScenicHotFragment extends BaseFragment implements BaseQuickAdapter.
 
         Map<String, String> map = new HashMap<>();
         map.put("poiIdStr", id);
-//        map.put("leaseId", SPHelper.getString("order_oid",""));
-        map.put("leaseId", "1122");
+        map.put("leaseId", SPHelper.getString("order_oid",""));
+//        map.put("leaseId", "1122");
         map.put("page", String.valueOf(page));
         map.put("pageSize", String.valueOf(PAGE_SIZE));
         OkGoUtil.get(mContext, ApiConstant.GET_CANCEL_COLLECTION, map, BaseBean.class, new BaseCallback() {
@@ -265,7 +265,7 @@ public class ScenicHotFragment extends BaseFragment implements BaseQuickAdapter.
 
         Map<String, String> map = new HashMap<>();
         map.put("poiIdStr", id);
-        map.put("leaseId", "1122");
+        map.put("leaseId", SPHelper.getString("order_oid",""));
         map.put("page", String.valueOf(page));
         map.put("pageSize", String.valueOf(PAGE_SIZE));
         OkGoUtil.get(ApiConstant.GET_ADD_COLLECTION, map, BaseBean.class, new BaseCallback() {

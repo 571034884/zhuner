@@ -150,7 +150,7 @@ public class MainActivity extends BaseScenicActivity {
         map.put("cityName", city);
         map.put("lat", ProviderUtils.getInfo(ProviderUtils.COLUMN_LATITUDE));
         map.put("lng", ProviderUtils.getInfo(ProviderUtils.COLUMN_LONGITUDE));
-        map.put("leaseId", ScenicBaseApplication.LEASEID);
+        map.put("leaseId", SPHelper.getString("order_oid",""));
 
         OkGoUtil.get(mContext, ApiConstant.GET_HOME_SCENIC, map, ScenicBean.class, new BaseCallback<ScenicBean>() {
             @Override

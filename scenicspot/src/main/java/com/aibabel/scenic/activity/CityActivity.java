@@ -17,6 +17,7 @@ import android.widget.TextView;
 
 import com.aibabel.baselibrary.http.BaseCallback;
 import com.aibabel.baselibrary.http.OkGoUtil;
+import com.aibabel.baselibrary.sphelper.SPHelper;
 import com.aibabel.baselibrary.utils.CommonUtils;
 import com.aibabel.baselibrary.utils.FastJsonUtil;
 import com.aibabel.baselibrary.utils.ProviderUtils;
@@ -130,7 +131,7 @@ public class CityActivity extends BaseScenicActivity {
         map.put("cityName", city);
         map.put("lat", ProviderUtils.getInfo(ProviderUtils.COLUMN_LATITUDE));
         map.put("lng", ProviderUtils.getInfo(ProviderUtils.COLUMN_LONGITUDE));
-        map.put("leaseId", ScenicBaseApplication.LEASEID);
+        map.put("leaseId", SPHelper.getString("order_oid",""));
 
         OkGoUtil.get(mContext, ApiConstant.GET_HOME_SCENIC, map, ScenicBean.class, new BaseCallback<ScenicBean>() {
             @Override
