@@ -57,7 +57,7 @@ import butterknife.ButterKnife;
  * @Desc：景点详情
  * @==========================================================================================
  */
-public class SpotsActivity extends BaseScenicActivity implements ExpireBroadcast.stopMp3, BaseQuickAdapter.OnItemClickListener {
+public class SpotsActivity extends BaseScenicActivity implements ExpireBroadcast.StopMp3, BaseQuickAdapter.OnItemClickListener {
 
 
     @BindView(R.id.tv_left)
@@ -132,6 +132,7 @@ public class SpotsActivity extends BaseScenicActivity implements ExpireBroadcast
         tvLeft.setOnClickListener(this);
         tvStart.setOnClickListener(this);
         ivScenic.setOnClickListener(this);
+        ExpireBroadcast.setStopMp3(this,Constants.key_spot);
     }
 
     @Override
@@ -318,6 +319,8 @@ public class SpotsActivity extends BaseScenicActivity implements ExpireBroadcast
             case R.id.tv_left:
                 onBackPressed();
                 sendBroadcast(Constants.ACTION_CLOSE);
+                Intent intent = new Intent(getApplicationContext(), MusicService.class);
+                stopService(intent);// 关闭服务
                 break;
             case R.id.iv_scenic:
                 sendBroadcast(Constants.ACTION_LIST_ITEM, 0);
@@ -420,9 +423,7 @@ public class SpotsActivity extends BaseScenicActivity implements ExpireBroadcast
 
     @Override
     public void stopMp3() {
-        sendBroadcast(Constants.ACTION_CLOSE);
-        Intent intent = new Intent(getApplicationContext(), MusicService.class);
-        stopService(intent);// 关闭服务
+        sendBroadcast(Constants.ACTION_PAUSE);
     }
 
     @Override

@@ -9,6 +9,7 @@ import android.net.NetworkInfo;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.RequiresApi;
+import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 
@@ -84,5 +85,17 @@ public abstract class BaseScenicActivity extends BaseActivity implements OnClick
     @Override
     public void onClick(View v) {
 
+    }
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        switch (keyCode) {
+            case 133:
+            case 134:
+                Intent intent = new Intent("com.aibabel.scenic.stop");
+                sendBroadcast(intent);
+                break;
+        }
+        return super.onKeyDown(keyCode, event);
     }
 }

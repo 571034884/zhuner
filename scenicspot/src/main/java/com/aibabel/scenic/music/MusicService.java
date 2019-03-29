@@ -355,7 +355,7 @@ public class MusicService extends Service implements MediaPlayer.OnErrorListener
             case AudioManager.AUDIOFOCUS_GAIN://你已经得到了音频焦点。
                 Log.i(TAG, "onAudioFocusChange: -------------AUDIOFOCUS_GAIN---------------");
                 // resume playback
-                if (isLoseFocus) {
+                if (null != mPlayer && isLoseFocus) {
                     isLoseFocus = false;
                     mPlayer.start();
                     mPlayer.setVolume(1.0f, 1.0f);
@@ -366,7 +366,7 @@ public class MusicService extends Service implements MediaPlayer.OnErrorListener
                 Log.i(TAG, "onAudioFocusChange: -------------AUDIOFOCUS_LOSS---------------");
                 // Lost focus for an unbounded amount of time: stop playback and release media player
                 isLoseFocus = false;
-                if (mPlayer.isPlaying()) {
+                if (null != mPlayer && mPlayer.isPlaying()) {
                     mPlayer.stop();
                     sentPlayStateToMain();
                 }
@@ -378,7 +378,7 @@ public class MusicService extends Service implements MediaPlayer.OnErrorListener
                 // Lost focus for a short time, but we have to stop
                 // playback. We don't release the media player because playback
                 // is likely to resume
-                if (mPlayer.isPlaying()) {
+                if (null != mPlayer && mPlayer.isPlaying()) {
                     isLoseFocus = true;
                     mPlayer.pause();
                     sentPlayStateToMain();
@@ -388,12 +388,10 @@ public class MusicService extends Service implements MediaPlayer.OnErrorListener
                 Log.i(TAG, "onAudioFocusChange: -------------AUDIOFOCUS_LOSS_TRANSIENT_CAN_DUCK---------------");
                 // Lost focus for a short time, but it's ok to keep playing
                 // at an attenuated level
-                if(mPlayer!=null) {
-                    if (mPlayer.isPlaying()) {
-                        isLoseFocus = true;
-                        mPlayer.setVolume(0.1f, 0.1f);
-                        sentPlayStateToMain();
-                    }
+                if (null != mPlayer && mPlayer.isPlaying()) {
+                    isLoseFocus = true;
+                    mPlayer.setVolume(0.1f, 0.1f);
+                    sentPlayStateToMain();
                 }
                 break;
         }

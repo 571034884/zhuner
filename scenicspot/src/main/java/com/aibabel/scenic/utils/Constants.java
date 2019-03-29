@@ -38,4 +38,9 @@ public class Constants {
 
 //    ===================================以上为音乐处理==========================================
 
+    public static final String key_history = "history";
+    public static final String key_spot = "spot";
+
+
+
 }
