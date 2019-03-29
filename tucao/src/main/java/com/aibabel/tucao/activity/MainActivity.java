@@ -70,8 +70,8 @@ import butterknife.OnClick;
 
 public class MainActivity extends BaseActivity implements BaseCallback, AudioRecordButton.OnLongListener {
 
-    @BindView(R.id.tv_tucao)
-    TextView tvTucao;
+    //    @BindView(R.id.tv_tucao)
+//    TextView tvTucao;
     @BindView(R.id.iv_close)
     ImageView ivClose;
     @BindView(R.id.tv_title)
@@ -86,13 +86,12 @@ public class MainActivity extends BaseActivity implements BaseCallback, AudioRec
     RadioGroup rgNumber1;
     @BindView(R.id.rv_number)
     RecyclerView rvNumber;
-    @BindView(R.id.lin1)
-    LinearLayout lin1;
-    @BindView(R.id.tv_yuyin)
-    TextView tvYuyin;
-
-    @BindView(R.id.lin2)
-    LinearLayout lin2;
+    //    @BindView(R.id.lin1)
+//    LinearLayout lin1;
+//    @BindView(R.id.tv_yuyin)
+//    TextView tvYuyin;
+//    @BindView(R.id.lin2)
+//    LinearLayout lin2;
     @BindView(R.id.tv_submit)
     TextView tvSubmit;
     @BindView(R.id.em_lv_recodeList)
@@ -102,9 +101,9 @@ public class MainActivity extends BaseActivity implements BaseCallback, AudioRec
     @BindView(R.id.Scroll)
     MyScrollview Scroll;
     @BindView(R.id.cl)
-    ConstraintLayout cl;
-    @BindView(R.id.tv_tucao1)
-    TextView tvTucao1;
+    LinearLayout cl;
+    //    @BindView(R.id.tv_tucao1)
+//    TextView tvTucao1;
     @BindView(R.id.iv_close1)
     ImageView ivClose1;
     @BindView(R.id.tv_error)
@@ -147,13 +146,14 @@ public class MainActivity extends BaseActivity implements BaseCallback, AudioRec
     private String ips;
     private String key_xw;
     private String key_xs;
-    private boolean isFind =false;
+    private boolean isFind = false;
+
     //    private RecorderUtil recorderUtil = new RecorderUtil();
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP_MR1)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_main2);
         ButterKnife.bind(this);
 
         try {
@@ -202,6 +202,7 @@ public class MainActivity extends BaseActivity implements BaseCallback, AudioRec
 
 
     }
+
     public void rexiufu() {
         String latitude = WeizhiUtil.getInfo(this, WeizhiUtil.CONTENT_URI_WY, "latitude");
         String longitude = WeizhiUtil.getInfo(this, WeizhiUtil.CONTENT_URI_WY, "longitude");
@@ -280,8 +281,6 @@ public class MainActivity extends BaseActivity implements BaseCallback, AudioRec
 
             }
         });
-
-
     }
 
     @Override
@@ -305,6 +304,7 @@ public class MainActivity extends BaseActivity implements BaseCallback, AudioRec
             map.put("Answer2", CheckText1);
             map.put("Answer3", CheckText2);
             map.put("Answer4", CheckText3);
+            map.put("Answer5", CheckText4);
             map.put("QuestionVer", "321");
             map.put("uploadfile", file);
             OkGoUtil.<BaseBean>post(MainActivity.this, Constans.METHOD_SHANGCHUANGLUYIN, map, BaseBean.class, this);
@@ -573,6 +573,87 @@ public class MainActivity extends BaseActivity implements BaseCallback, AudioRec
                             break;
                     }
                 }
+                if (position == 4) {
+                    switch (buttonView.getId()) {
+                        case R.id.cb_item_daan1:
+                            String s = question2.get(position).getAnswer().get(0).toString();
+
+                            if (isChecked) {
+                                if (CheckText4.equals("")) {
+                                    CheckText4 = s + "&";
+                                } else {
+                                    CheckText4 = CheckText4 + s + "&";
+                                }
+
+                            } else {
+                                CheckText4 = CheckText4.replaceAll(s + "&", "");
+                            }
+
+                            break;
+                        case R.id.cb_item_daan2:
+                            String s1 = question2.get(position).getAnswer().get(1).toString();
+                            if (isChecked) {
+                                if (CheckText4.equals("")) {
+                                    CheckText4 = s1 + "&";
+                                } else {
+                                    CheckText4 = CheckText4 + s1 + "&";
+                                }
+
+                            } else {
+                                CheckText4 = CheckText4.replaceAll(s1 + "&", "");
+                            }
+
+                            break;
+
+                        case R.id.cb_item_daan3:
+                            String s2 = question2.get(position).getAnswer().get(2).toString();
+                            if (isChecked) {
+                                if (CheckText4.equals("")) {
+                                    CheckText4 = s2 + "&";
+                                } else {
+                                    CheckText4 = CheckText4 + s2 + "&";
+                                }
+
+                            } else {
+                                CheckText4 = CheckText4.replaceAll(s2 + "&", "");
+                            }
+
+                            break;
+
+                        case R.id.cb_item_daan4:
+                            String s3 = question2.get(position).getAnswer().get(3).toString();
+                            if (isChecked) {
+                                if (CheckText4.equals("")) {
+                                    CheckText4 = s3 + "&";
+                                } else {
+                                    CheckText4 = CheckText4 + s3 + "&";
+                                }
+
+                            } else {
+                                CheckText4 = CheckText4.replaceAll(s3 + "&", "");
+                            }
+
+                            break;
+                        case R.id.cb_item_daan5:
+                            String s4 = question2.get(position).getAnswer().get(4).toString();
+                            if (isChecked)
+
+                            {
+                                if (CheckText4.equals("")) {
+                                    CheckText4 = s4 + "&";
+                                } else {
+                                    CheckText4 = CheckText4 + s4 + "&";
+                                }
+
+                            } else
+
+                            {
+                                CheckText4 = CheckText4.replaceAll(s4 + "&", "");
+                            }
+
+                            break;
+                    }
+                }
 
             }
         });
@@ -693,7 +774,7 @@ public class MainActivity extends BaseActivity implements BaseCallback, AudioRec
     }
 
 
-    @OnClick({R.id.iv_close, R.id.man_rb, R.id.woman_rb, R.id.tv_submit,R.id.iv_close1})
+    @OnClick({R.id.iv_close, R.id.man_rb, R.id.woman_rb, R.id.tv_submit, R.id.iv_close1})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.iv_close:
@@ -718,6 +799,7 @@ public class MainActivity extends BaseActivity implements BaseCallback, AudioRec
                     map.put("Answer2", CheckText1);
                     map.put("Answer3", CheckText2);
                     map.put("Answer4", CheckText3);
+                    map.put("Answer5", CheckText4);
                     map.put("QuestionVer", "321");
                     OkGoUtil.<BaseBean>get(MainActivity.this, Constans.METHOD_SHANGCHUANGWULUYIN, map, BaseBean.class, this);
                 } else {
@@ -739,9 +821,12 @@ public class MainActivity extends BaseActivity implements BaseCallback, AudioRec
                 adapter.updateData(question2);
                 cl.setVisibility(View.VISIBLE);
                 rlIsnet.setVisibility(View.GONE);
-                tvNumber1.setText(question1.get(0).getQuestionMsg());
-                manRb.setText(question1.get(0).getAnswer().get(0));
-                womanRb.setText(question1.get(0).getAnswer().get(1));
+                if (null != question1) {
+                    tvNumber1.setText(question1.get(0).getQuestionMsg());
+                    manRb.setText(question1.get(0).getAnswer().get(0));
+                    womanRb.setText(question1.get(0).getAnswer().get(1));
+                }
+
                 break;
 
             case Constans.METHOD_SHANGCHUANGWULUYIN:
@@ -751,9 +836,9 @@ public class MainActivity extends BaseActivity implements BaseCallback, AudioRec
                     runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
-//                            ToastUtil.showShort(MainActivity.this,"上传成功");
-                            startActivity(new Intent(MainActivity.this, KeFuActivity.class));
-                            finish();
+                            ToastUtil.showShort(MainActivity.this, "提交成功");
+//                            startActivity(new Intent(MainActivity.this, KeFuActivity.class));
+//                            finish();
                         }
                     });
                 } else {

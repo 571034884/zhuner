@@ -6,7 +6,8 @@ package com.aibabel.scenic.okgo;
 
 public class ApiConstant {
 
-    public static final String HOST = "http://39.107.238.111:7001";
+//    public static final String HOST = "http://39.107.238.111:7001";
+    public static final String HOST = "http://api.joner.aibabel.cn:7001";
 
     public static final String HOST_GROUP = "/v2/tourguide/";
 

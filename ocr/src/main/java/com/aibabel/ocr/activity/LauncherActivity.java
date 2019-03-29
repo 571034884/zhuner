@@ -48,6 +48,9 @@ public class LauncherActivity extends BaseActivity {
     @Override
     protected void onResume() {
         super.onResume();
+        // TODO: 2019/3/29 临时操作，按语音翻译键调起的时候，停止播放景区导览
+        Intent intent1 = new Intent("com.aibabel.scenic.stop");
+        sendBroadcast(intent1);
 
         TimerTask task = new TimerTask() {
             @Override

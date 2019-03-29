@@ -1,0 +1,277 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.aibabel.tucao.utils.MyScrollview xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/sl_root"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/white"
+        android:orientation="vertical">
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/white"
+                android:orientation="vertical">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@mipmap/bg_ll"
+                    android:paddingTop="30dp">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:paddingLeft="28dp"
+                        android:text="@string/contact_us"
+                        android:textColor="@color/white"
+                        android:textSize="27sp"
+                        android:textStyle="bold" />
+
+                    <ImageView
+                        android:id="@+id/iv_close"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_marginRight="10dp"
+                        android:layout_weight="2"
+                        android:background="@mipmap/ic_close" />
+                </RelativeLayout>
+
+
+            </LinearLayout>
+
+            <include layout="@layout/layout_service" />
+
+        </FrameLayout>
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="30dp"
+            android:background="@color/white"
+            android:orientation="vertical">
+
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingLeft="29dp"
+                android:paddingRight="29dp"
+                android:text="@string/say"
+                android:textColor="@color/color333"
+                android:textSize="27sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_marginRight="10dp"
+                android:layout_marginTop="10dp"
+                android:background="@mipmap/ic_close"
+                android:paddingLeft="29dp"
+                android:paddingRight="29dp"
+                android:text="想对准儿说，可以语音吐槽"
+                android:textColor="@color/color999"
+                android:textSize="17sp" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@mipmap/tran_h"
+                android:elevation="10dp"
+                android:minHeight="268dp"
+                android:paddingBottom="29dp"
+                android:paddingLeft="29dp"
+                android:paddingRight="29dp"
+                android:paddingTop="20dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@drawable/around_common"
+                    android:gravity="center_horizontal"
+                    android:orientation="vertical"
+                    android:paddingTop="39dp">
+
+                    <com.aibabel.tucao.manager.AudioRecordButton
+                        android:id="@+id/ab_audio"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/bg_mic" />
+
+                    <android.support.v7.widget.RecyclerView
+                        android:id="@+id/rv_records"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="20dp" />
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/tv_satisfied"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="40dp"
+                android:drawableLeft="@mipmap/ic_point"
+                android:drawablePadding="10dp"
+                android:gravity="center_vertical"
+                android:paddingLeft="29dp"
+                android:paddingRight="29dp"
+                android:text="本次使用您是否满意？"
+                android:textColor="@color/color333"
+                android:textSize="17sp" />
+
+            <RadioGroup
+                android:id="@+id/rg_question"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:orientation="horizontal"
+                android:paddingLeft="40dp"
+                android:paddingRight="40dp"
+                android:weightSum="2">
+
+                <RadioButton
+                    android:id="@+id/rb_satisfied"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:button="@null"
+                    android:drawableLeft="@drawable/radiobutton_selector"
+                    android:drawablePadding="11dp"
+                    android:text="@string/Satisfied"
+                    android:checked="true"
+                    android:textColor="@color/color333"
+                    android:textSize="17sp" />
+
+                <RadioButton
+                    android:id="@+id/rb_unSatisfied"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:button="@null"
+                    android:drawableLeft="@drawable/radiobutton_selector"
+                    android:drawablePadding="11dp"
+                    android:text="@string/unSatisfied"
+                    android:textColor="@color/color333"
+                    android:textSize="17sp" />
+            </RadioGroup>
+
+            <!--            <android.support.v7.widget.RecyclerView
+                            android:id="@+id/rv_question"
+                            android:paddingLeft="29dp"
+                            android:paddingRight="29dp"
+                            android:layout_marginTop="40dp"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"/>-->
+
+            <LinearLayout
+                android:id="@+id/ll_question"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="40dp"
+                android:gravity="center_horizontal"
+                android:orientation="vertical"
+                android:paddingLeft="29dp"
+                android:paddingRight="29dp">
+
+
+                <TextView
+                    android:id="@+id/tv_question"
+                    android:layout_width="match_parent"
+                    android:layout_height="42dp"
+                    android:drawableLeft="@mipmap/ic_point"
+                    android:drawablePadding="10dp"
+                    android:gravity="center_vertical"
+                    android:text="您觉得准儿有什么问题？（可多选）"
+                    android:textColor="@color/color333"
+                    android:textSize="17sp" />
+
+                <CheckBox
+                    android:id="@+id/cb_answer1"
+                    android:layout_width="match_parent"
+                    android:layout_height="42dp"
+                    android:layout_marginLeft="15dp"
+                    android:button="@null"
+                    android:drawableLeft="@drawable/checkbox_selector"
+                    android:drawablePadding="14dp"
+                    android:gravity="center_vertical"
+                    android:text="翻译准确率有待提高"
+                    android:textAppearance="?android:attr/textAppearanceLarge"
+                    android:textColor="@color/color333"
+                    android:textSize="17sp" />
+
+                <CheckBox
+                    android:id="@+id/cb_answer2"
+                    android:layout_width="match_parent"
+                    android:layout_height="42dp"
+                    android:layout_marginLeft="15dp"
+                    android:button="@null"
+                    android:drawableLeft="@drawable/checkbox_selector"
+                    android:drawablePadding="14dp"
+                    android:gravity="center_vertical"
+                    android:text="旅游功率内容不够"
+                    android:textColor="@color/color333"
+                    android:textSize="17sp" />
+
+                <CheckBox
+                    android:id="@+id/cb_answer3"
+                    android:layout_width="match_parent"
+                    android:layout_height="42dp"
+                    android:layout_marginLeft="15dp"
+                    android:button="@null"
+                    android:drawableLeft="@drawable/checkbox_selector"
+                    android:drawablePadding="14dp"
+                    android:gravity="center_vertical"
+                    android:text="景区导览内容不够"
+                    android:textColor="@color/color333"
+                    android:textSize="17sp" />
+
+                <CheckBox
+                    android:id="@+id/cb_answer4"
+                    android:layout_width="match_parent"
+                    android:layout_height="42dp"
+                    android:layout_marginLeft="15dp"
+                    android:button="@null"
+                    android:drawableLeft="@drawable/checkbox_selector"
+                    android:drawablePadding="14dp"
+                    android:filterTouchesWhenObscured="true"
+                    android:focusableInTouchMode="true"
+                    android:gravity="center_vertical"
+                    android:text="操作不方便"
+                    android:textColor="@color/color333"
+                    android:textSize="17sp" />
+
+
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/tv_submit"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:layout_marginBottom="@dimen/text_size50"
+                android:layout_marginLeft="32dp"
+                android:layout_marginRight="32dp"
+                android:layout_marginTop="@dimen/px54"
+                android:background="@drawable/shape_background"
+                android:gravity="center"
+                android:text="提 交"
+                android:textColor="#FE5000"
+                android:textSize="@dimen/px30" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+</com.aibabel.tucao.utils.MyScrollview>

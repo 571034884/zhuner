@@ -13,6 +13,7 @@ import com.lzy.okgo.OkGo;
 import com.lzy.okgo.model.Response;
 import com.lzy.okgo.request.GetRequest;
 import com.lzy.okgo.request.PostRequest;
+import com.orhanobut.logger.LogStrategy;
 
 import org.json.JSONObject;
 
@@ -38,7 +39,7 @@ public class OkGoUtil {
      * @param mCallback 回调
      */
     public static <T> void get(final Context context, final String method, Map<String, String> param, final Class<T> cls, final BaseCallback mCallback) {
-
+        Log.e("http",Constans.HOST_XW + Constans.METHOD_GROUP_XW + method +"");
         GetRequest<String> getRequest = OkGo.<String>get(Constans.HOST_XW + Constans.METHOD_GROUP_XW + method).tag(method);
 
         for (Map.Entry<String, String> entry : param.entrySet()) {

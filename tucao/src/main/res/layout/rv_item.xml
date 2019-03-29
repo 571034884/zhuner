@@ -2,17 +2,18 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="#000"
+    android:background="#FFFFFF"
+    android:layout_marginTop="16dp"
     android:orientation="vertical">
 
     <!--用于隐藏-->
-    <LinearLayout
+    <!--<LinearLayout
         android:id="@+id/lin_number1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/px26"
         android:orientation="vertical">
-        <!--题目-->
+        &lt;!&ndash;题目&ndash;&gt;
         <TextView
             android:id="@+id/tv_title1"
             android:layout_width="wrap_content"
@@ -22,7 +23,7 @@
             android:layout_marginBottom="@dimen/px34"
             android:drawablePadding="@dimen/text_size20"
             android:textSize="@dimen/text_size24" />
-        <!--答案-->
+        &lt;!&ndash;答案&ndash;&gt;
 
         <CheckBox
             android:id="@+id/cb_item_daan1"
@@ -84,7 +85,95 @@
             android:textSize="@dimen/text_size24" />
 
 
-    </LinearLayout>
+    </LinearLayout>-->
+    <LinearLayout
+        android:id="@+id/lin_number1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_horizontal"
+        android:orientation="vertical">
 
+
+        <TextView
+            android:id="@+id/tv_title1"
+            android:layout_width="match_parent"
+            android:layout_height="42dp"
+            android:drawableLeft="@mipmap/ic_point"
+            android:drawablePadding="10dp"
+            android:gravity="center_vertical"
+            android:text="您觉得准儿有什么问题？（可多选）"
+            android:textColor="@color/color333"
+            android:textSize="17sp" />
+
+        <CheckBox
+            android:id="@+id/cb_item_daan1"
+            android:layout_width="match_parent"
+            android:layout_height="42dp"
+            android:layout_marginLeft="15dp"
+            android:button="@null"
+            android:drawableLeft="@drawable/checkbox_selector"
+            android:drawablePadding="14dp"
+            android:gravity="center_vertical"
+            android:text="翻译准确率有待提高"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:textColor="@color/color333"
+            android:textSize="17sp" />
+
+        <CheckBox
+            android:id="@+id/cb_item_daan2"
+            android:layout_width="match_parent"
+            android:layout_height="42dp"
+            android:layout_marginLeft="15dp"
+            android:button="@null"
+            android:drawableLeft="@drawable/checkbox_selector"
+            android:drawablePadding="14dp"
+            android:gravity="center_vertical"
+            android:text="旅游功率内容不够"
+            android:textColor="@color/color333"
+            android:textSize="17sp" />
+
+        <CheckBox
+            android:id="@+id/cb_item_daan3"
+            android:layout_width="match_parent"
+            android:layout_height="42dp"
+            android:layout_marginLeft="15dp"
+            android:button="@null"
+            android:drawableLeft="@drawable/checkbox_selector"
+            android:drawablePadding="14dp"
+            android:gravity="center_vertical"
+            android:text="景区导览内容不够"
+            android:textColor="@color/color333"
+            android:textSize="17sp" />
+
+        <CheckBox
+            android:id="@+id/cb_item_daan4"
+            android:layout_width="match_parent"
+            android:layout_height="42dp"
+            android:layout_marginLeft="15dp"
+            android:button="@null"
+            android:drawableLeft="@drawable/checkbox_selector"
+            android:drawablePadding="14dp"
+            android:filterTouchesWhenObscured="true"
+            android:focusableInTouchMode="true"
+            android:gravity="center_vertical"
+            android:text="操作不方便"
+            android:textColor="@color/color333"
+            android:textSize="17sp" />
+        <CheckBox
+            android:id="@+id/cb_item_daan5"
+            android:layout_width="match_parent"
+            android:layout_height="42dp"
+            android:layout_marginLeft="15dp"
+            android:button="@null"
+            android:drawableLeft="@drawable/checkbox_selector"
+            android:drawablePadding="14dp"
+            android:filterTouchesWhenObscured="true"
+            android:focusableInTouchMode="true"
+            android:gravity="center_vertical"
+            android:text="操作不方便"
+            android:textColor="@color/color333"
+            android:textSize="17sp" />
+
+    </LinearLayout>
 
 </LinearLayout>
