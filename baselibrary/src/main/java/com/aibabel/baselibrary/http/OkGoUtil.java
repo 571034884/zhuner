@@ -180,7 +180,7 @@ public class OkGoUtil {
 //                        ToastUtil.showShort(context, baseBean.getMsg());
                     }
                 } catch (Exception e) {
-                    Logger.e(e.getMessage().toString());
+//                    Logger.e(e.getMessage().toString());
                 }
             }
 
