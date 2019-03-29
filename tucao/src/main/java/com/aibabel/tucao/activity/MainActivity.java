@@ -837,7 +837,7 @@ public class MainActivity extends BaseActivity implements BaseCallback, AudioRec
                     runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
-                            ToastUtil.showShort(MainActivity.this, "提交成功");
+//                            ToastUtil.showShort(MainActivity.this, "提交成功");
 //                            startActivity(new Intent(MainActivity.this, KeFuActivity.class));
 //                            finish();
                             showDialog();
