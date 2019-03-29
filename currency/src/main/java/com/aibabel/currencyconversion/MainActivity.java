@@ -44,6 +44,7 @@ import com.taobao.sophix.SophixManager;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import java.io.Serializable;
 import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -280,7 +281,19 @@ public class MainActivity extends BaseActivity {
         }
         for (int i = 0; i < idNum.length; i++) {
             buttonsNum[i] = findViewById(idNum[i]);
-            buttonsNum[i].setOnClickListener(new NumberOnClick(buttonsNum[i].getText().toString()));
+            /**####  start-hjs-addStatisticsEvent   ##**/
+            try {
+                HashMap<String, Serializable> add_hp = new HashMap<>();
+                add_hp.put("currency_main7_status",true);
+                add_hp.put("currency_main7_people",i);
+                addStatisticsEvent("currency_main7", add_hp);
+
+            }catch (Exception e){
+                e.printStackTrace();
+            }
+            /**####  end-hjs-addStatisticsEvent  ##**/
+            buttonsNum[i].setOnClickListener(new NumberOnClick(buttonsNum[i].getText().toString())
+            );
         }
     }
 
@@ -401,24 +414,52 @@ public class MainActivity extends BaseActivity {
         Intent intent = new Intent(this, ChooseCurrencyActivity.class);
         switch (view.getId()) {
             case R.id.ll_zuo1:
+                /**####  start-hjs-addStatisticsEvent   ##**/
+                try {
+                    addStatisticsEvent("currency_main1", null);
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
+                /**####  end-hjs-addStatisticsEvent  ##**/
                 if (CommonUtils.isAvailable(MainActivity.this))
                     startActivityForResult(intent, 1);
                 else
                     ToastUtil.showShort(MainActivity.this, R.string.toast_wuwangluo);
                 break;
             case R.id.ll_zuo2:
+                /**####  start-hjs-addStatisticsEvent   ##**/
+                try {
+                    addStatisticsEvent("currency_main2", null);
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
+                /**####  end-hjs-addStatisticsEvent  ##**/
                 if (CommonUtils.isAvailable(MainActivity.this))
                     startActivityForResult(intent, 2);
                 else
                     ToastUtil.showShort(MainActivity.this, R.string.toast_wuwangluo);
                 break;
             case R.id.ll_zuo3:
+                /**####  start-hjs-addStatisticsEvent   ##**/
+                try {
+                    addStatisticsEvent("currency_main3", null);
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
+                /**####  end-hjs-addStatisticsEvent  ##**/
                 if (CommonUtils.isAvailable(MainActivity.this))
                     startActivityForResult(intent, 3);
                 else
                     ToastUtil.showShort(MainActivity.this, R.string.toast_wuwangluo);
                 break;
             case R.id.ll_you1:
+                /**####  start-hjs-addStatisticsEvent   ##**/
+                try {
+                    addStatisticsEvent("currency_main4", null);
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
+                /**####  end-hjs-addStatisticsEvent  ##**/
                 llYou1.setEnabled(false);
                 llYou2.setEnabled(true);
                 llYou3.setEnabled(true);
@@ -433,6 +474,13 @@ public class MainActivity extends BaseActivity {
                 resetInit("100");
                 break;
             case R.id.ll_you2:
+                /**####  start-hjs-addStatisticsEvent   ##**/
+                try {
+                    addStatisticsEvent("currency_main5", null);
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
+                /**####  end-hjs-addStatisticsEvent  ##**/
                 llYou1.setEnabled(true);
                 llYou2.setEnabled(false);
                 llYou3.setEnabled(true);
@@ -447,6 +495,13 @@ public class MainActivity extends BaseActivity {
                 resetInit("100");
                 break;
             case R.id.ll_you3:
+                /**####  start-hjs-addStatisticsEvent   ##**/
+                try {
+                    addStatisticsEvent("currency_main6", null);
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
+                /**####  end-hjs-addStatisticsEvent  ##**/
                 llYou1.setEnabled(true);
                 llYou2.setEnabled(true);
                 llYou3.setEnabled(false);

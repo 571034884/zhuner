@@ -26,14 +26,21 @@ import com.aibabel.alliedclock.utils.FastJsonUtil;
 import com.aibabel.alliedclock.utils.NetUtil;
 import com.aibabel.alliedclock.utils.SharePrefUtil;
 import com.aibabel.alliedclock.utils.WeizhiUtil;
+import com.aibabel.baselibrary.impl.IDataManager;
+import com.aibabel.baselibrary.impl.IServerManager;
+import com.aibabel.baselibrary.impl.IStatistics;
+import com.aibabel.baselibrary.mode.DataManager;
+import com.aibabel.baselibrary.mode.ServerManager;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.StringCallback;
 import com.lzy.okgo.model.Response;
 import com.taobao.sophix.SophixManager;
+import com.xuexiang.xipc.XIPC;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -66,6 +73,7 @@ public class MainActivity extends BaseActivity {
         return R.layout.activity_main;
     }
 
+
     @Override
     public void init() {
         mContext = this;
@@ -79,30 +87,65 @@ public class MainActivity extends BaseActivity {
             switch (CommonUtils.getLocalLanguage()) {
                 case "zh_CN":
                 case "zh_TW":
+                    /**####  start-hjs-addStatisticsEvent   ##**/
+                    try {
+                        addStatisticsEvent("alliedclock_main1", null);
+                    }catch (Exception e){
+                        e.printStackTrace();
+                    }
+                    /**####  end-hjs-addStatisticsEvent  ##**/
                     clockBeanList.add(firstUsedAdd("北京", "Beijing", "GMT+8"));
                     clockBeanList.add(firstUsedAdd("东京", "Tokyo", "GMT+9"));
                     clockBeanList.add(firstUsedAdd("曼谷", "Bangkok", "GMT+7"));
                     clockBeanList.add(firstUsedAdd("纽约", "New York", "GMT-5"));
                     break;
                 case "en":
+                    /**####  start-hjs-addStatisticsEvent   ##**/
+                    try {
+                        addStatisticsEvent("alliedclock_main1", null);
+                    }catch (Exception e){
+                        e.printStackTrace();
+                    }
+                    /**####  end-hjs-addStatisticsEvent  ##**/
                     clockBeanList.add(firstUsedAdd("Beijing", "Beijing", "GMT+8"));
                     clockBeanList.add(firstUsedAdd("Tokyo", "Tokyo", "GMT+9"));
                     clockBeanList.add(firstUsedAdd("Bangkok", "Bangkok", "GMT+7"));
                     clockBeanList.add(firstUsedAdd("New York", "New York", "GMT-5"));
                     break;
                 case "ja":
+                    /**####  start-hjs-addStatisticsEvent   ##**/
+                    try {
+                        addStatisticsEvent("alliedclock_main1", null);
+                    }catch (Exception e){
+                        e.printStackTrace();
+                    }
+                    /**####  end-hjs-addStatisticsEvent  ##**/
                     clockBeanList.add(firstUsedAdd("北京", "Beijing", "GMT+8"));
                     clockBeanList.add(firstUsedAdd("東京", "Tokyo", "GMT+9"));
                     clockBeanList.add(firstUsedAdd("バンコク", "Bangkok", "GMT+7"));
                     clockBeanList.add(firstUsedAdd("ニューヨーク", "New York", "GMT-5"));
                     break;
                 case "ko":
+                    /**####  start-hjs-addStatisticsEvent   ##**/
+                    try {
+                        addStatisticsEvent("alliedclock_main1", null);
+                    }catch (Exception e){
+                        e.printStackTrace();
+                    }
+                    /**####  end-hjs-addStatisticsEvent  ##**/
                     clockBeanList.add(firstUsedAdd("베이징", "Beijing", "GMT+8"));
                     clockBeanList.add(firstUsedAdd("동경", "Tokyo", "GMT+9"));
                     clockBeanList.add(firstUsedAdd("방콕", "Bangkok", "GMT+7"));
                     clockBeanList.add(firstUsedAdd("뉴욕", "New York", "GMT-5"));
                     break;
                 default:
+                    /**####  start-hjs-addStatisticsEvent   ##**/
+                    try {
+                        addStatisticsEvent("alliedclock_main1", null);
+                    }catch (Exception e){
+                        e.printStackTrace();
+                    }
+                    /**####  end-hjs-addStatisticsEvent  ##**/
                     clockBeanList.add(firstUsedAdd("北京", "Beijing", "GMT+8"));
                     clockBeanList.add(firstUsedAdd("东京", "Tokyo", "GMT+9"));
                     clockBeanList.add(firstUsedAdd("曼谷", "Bangkok", "GMT+7"));
@@ -140,6 +183,13 @@ public class MainActivity extends BaseActivity {
             @Override
             public void onMultiClick(View v) {
                 ivTianjia.setClickable(false);
+                /**####  start-hjs-addStatisticsEvent   ##**/
+                try {
+                    addStatisticsEvent("alliedclock_main3", null);
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
+                /**####  end-hjs-addStatisticsEvent  ##**/
                 Intent intent = new Intent(MainActivity.this, AddCityActivity.class);
                 startActivityForResult(intent, 888);
             }
@@ -185,6 +235,16 @@ public class MainActivity extends BaseActivity {
             public void onDeleteClick(int position) {
                 Map<String, String> map = new HashMap<>();
                 map.put("p1", adapter.getmList().get(position).getCityCN());
+                /**####  start-hjs-addStatisticsEvent   ##**/
+                try {
+                    HashMap<String, Serializable> add_hp = new HashMap<>();
+                    add_hp.put("alliedclock_main2_name",adapter.getmList().get(position).getCityCN());
+                    addStatisticsEvent("alliedclock_main2", add_hp);
+
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
+                /**####  end-hjs-addStatisticsEvent  ##**/
                 StatisticsManager.getInstance(MainActivity.this).addEventAidl(2410, map);
                 adapter.removeItem(position);
                 String json = FastJsonUtil.changListToString(clockBeanList);

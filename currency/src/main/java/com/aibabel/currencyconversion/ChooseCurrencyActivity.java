@@ -5,6 +5,7 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -30,6 +31,7 @@ import com.lzy.okgo.request.GetRequest;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 
 import butterknife.BindView;
@@ -187,6 +189,16 @@ public class ChooseCurrencyActivity extends BaseActivity {
                 if (CommonUtils.isAvailable(ChooseCurrencyActivity.this)){
                     //该字母首次出现的位置
                     int position = mIndexer.getPositionForSection(ALL_CHARACTER.indexOf(s));
+                    /**####  start-hjs-addStatisticsEvent   ##**/
+                    try {
+                        HashMap<String, Serializable> add_hp = new HashMap<>();
+                        add_hp.put("currency_choose5_num",position);
+                        addStatisticsEvent("currency_choose5", add_hp);
+
+                    }catch (Exception e){
+                        e.printStackTrace();
+                    }
+                    /**####  end-hjs-addStatisticsEvent  ##**/
                     if (position != -1) {
                         //因为列表默认加上了常用的分组 所以位置需要再-1
                         sortListView.setSelection(position + 1 - 1);
@@ -200,6 +212,16 @@ public class ChooseCurrencyActivity extends BaseActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view,
                                     int position, long id) {
+                /**####  start-hjs-addStatisticsEvent   ##**/
+                try {
+                    HashMap<String, Serializable> add_hp = new HashMap<>();
+                    add_hp.put("currency_choose2_name",position);
+                    addStatisticsEvent("currency_choose2", add_hp);
+
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
+                /**####  end-hjs-addStatisticsEvent  ##**/
                 Intent intent = new Intent();
                 intent.putExtra("xuanzhongAbbreviation", sourceDateList.get(position).getKey());
                 intent.putExtra("xuanzhongName", (Serializable) sourceDateList.get(position));
@@ -212,6 +234,14 @@ public class ChooseCurrencyActivity extends BaseActivity {
 
     @OnClick(R.id.iv_guanbi)
     public void onViewClicked() {
+
+        /**####  start-hjs-addStatisticsEvent   ##**/
+        try {
+            addStatisticsEvent("currency_choose1", null);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        /**####  end-hjs-addStatisticsEvent  ##**/
         finish();
     }
 

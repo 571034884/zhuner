@@ -34,6 +34,7 @@ import com.aibabel.alliedclock.okgo.BaseCallback;
 import com.aibabel.alliedclock.okgo.OkGoUtil;
 import com.aibabel.alliedclock.utils.CommonUtils;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -240,6 +241,13 @@ public class AddCityActivity extends BaseActivity implements BaseCallback {
     @OnClick(R.id.iv_guanbi)
     public void onViewClicked() {
         ivGuanbi.setClickable(false);
+        /**####  start-hjs-addStatisticsEvent   ##**/
+        try {
+            addStatisticsEvent("alliedclock_addCity1", null);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        /**####  end-hjs-addStatisticsEvent  ##**/
         finish();
     }
 
@@ -247,6 +255,13 @@ public class AddCityActivity extends BaseActivity implements BaseCallback {
     @Override
     public boolean dispatchTouchEvent(MotionEvent ev) {
         if (ev.getAction() == MotionEvent.ACTION_DOWN) {
+            /**####  start-hjs-addStatisticsEvent   ##**/
+            try {
+                addStatisticsEvent("alliedclock_addCity2", null);
+            }catch (Exception e){
+                e.printStackTrace();
+            }
+            /**####  end-hjs-addStatisticsEvent  ##**/
             View v = getCurrentFocus();
             boolean hideInputResult = isShouldHideInput(v, ev);
             Log.v("hideInputResult", "zzz-->>" + hideInputResult);
@@ -334,6 +349,16 @@ public class AddCityActivity extends BaseActivity implements BaseCallback {
                     //该字母首次出现的位置
                     int position = mIndexer.getPositionForSection(ALL_CHARACTER.indexOf(s));
 //                int position = adapter.getPositionForSection(s.charAt(0));
+                    /**####  start-hjs-addStatisticsEvent   ##**/
+                    try {
+                        HashMap<String, Serializable> add_hp = new HashMap<>();
+                        add_hp.put("alliedclock_num",position);
+                        addStatisticsEvent("alliedclock_addCity7", add_hp);
+
+                    }catch (Exception e){
+                        e.printStackTrace();
+                    }
+                    /**####  end-hjs-addStatisticsEvent  ##**/
                     if (position != -1) {
                         sortListView.setSelection(position);
                     }
@@ -349,6 +374,16 @@ public class AddCityActivity extends BaseActivity implements BaseCallback {
                                     int position, long id) {
                 Map<String, String> map = new HashMap<>();
                 map.put("p1", adapter.getData().get(position).getCityCn());
+                /**####  start-hjs-addStatisticsEvent   ##**/
+                try {
+                    HashMap<String, Serializable> add_hp = new HashMap<>();
+                    add_hp.put("alliedclock_name",adapter.getData().get(position).getCityCn());
+                    addStatisticsEvent("alliedclock_addCity4", add_hp);
+
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
+                /**####  end-hjs-addStatisticsEvent  ##**/
                 StatisticsManager.getInstance(AddCityActivity.this).addEventAidl( 2400, map);
                 Intent intent = new Intent();
                 intent.putExtra("cityCn", adapter.getData().get(position).getCityCn());
@@ -396,6 +431,16 @@ public class AddCityActivity extends BaseActivity implements BaseCallback {
                 String name = sortModel.getCityCn();
                 if (name.toUpperCase().indexOf(filterStr.toString().toUpperCase()) != -1 || PinyinUtils.getPingYin(name).toUpperCase().startsWith(filterStr.toString()
                         .toUpperCase())) {
+                    /**####  start-hjs-addStatisticsEvent   ##**/
+                    try {
+                        HashMap<String, Serializable> add_hp = new HashMap<>();
+                        add_hp.put("alliedclock_search",name);
+                        addStatisticsEvent("alliedclock_addCity3", add_hp);
+
+                    }catch (Exception e){
+                        e.printStackTrace();
+                    }
+                    /**####  end-hjs-addStatisticsEvent  ##**/
                     mSortList.add(sortModel);
                 }
             }
