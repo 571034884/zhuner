@@ -388,10 +388,12 @@ public class MusicService extends Service implements MediaPlayer.OnErrorListener
                 Log.i(TAG, "onAudioFocusChange: -------------AUDIOFOCUS_LOSS_TRANSIENT_CAN_DUCK---------------");
                 // Lost focus for a short time, but it's ok to keep playing
                 // at an attenuated level
-                if (mPlayer.isPlaying()) {
-                    isLoseFocus = true;
-                    mPlayer.setVolume(0.1f, 0.1f);
-                    sentPlayStateToMain();
+                if(mPlayer!=null) {
+                    if (mPlayer.isPlaying()) {
+                        isLoseFocus = true;
+                        mPlayer.setVolume(0.1f, 0.1f);
+                        sentPlayStateToMain();
+                    }
                 }
                 break;
         }
