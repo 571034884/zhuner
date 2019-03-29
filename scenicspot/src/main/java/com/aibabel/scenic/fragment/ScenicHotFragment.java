@@ -200,9 +200,9 @@ public class ScenicHotFragment extends BaseFragment implements BaseQuickAdapter.
         if (size < PAGE_SIZE) {
             //第一页如果不够一页就不显示没有更多数据布局
             mAdapter.loadMoreEnd(isRefresh);
-            if (page > 2) {
-                Toast.makeText(getContext(), "no more data", Toast.LENGTH_SHORT).show();
-            }
+//            if (page > 2) {
+//                Toast.makeText(getContext(), "no more data", Toast.LENGTH_SHORT).show();
+//            }
         } else {
             mAdapter.loadMoreComplete();
         }
@@ -230,6 +230,7 @@ public class ScenicHotFragment extends BaseFragment implements BaseQuickAdapter.
             @Override
             public void onSuccess(String method, BaseBean model, String json) {
 //                ToastUtil.showShort(mContext, "成功");
+                Logs.e(json);
                 CollectBean bean = FastJsonUtil.changeJsonToBean(json, CollectBean.class);
                 //取消收藏
                 update(bean, id, 1);
@@ -269,6 +270,7 @@ public class ScenicHotFragment extends BaseFragment implements BaseQuickAdapter.
             @Override
             public void onSuccess(String method, BaseBean model, String json) {
 //                ToastUtil.showShort(mContext, "成功：" + json);
+                Logs.e(json);
                 CollectBean bean = FastJsonUtil.changeJsonToBean(json, CollectBean.class);
                 //添加收藏
                 update(bean, id, 2);

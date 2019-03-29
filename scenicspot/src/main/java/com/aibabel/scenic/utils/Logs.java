@@ -1,5 +1,6 @@
 package com.aibabel.scenic.utils;
 
+import android.text.TextUtils;
 import android.util.Log;
 
 /**
@@ -17,7 +18,13 @@ public class Logs {
     }
     public static void e(String msg){
         if (DEBUG){
-            Log.e(TAG,msg);
+            if(!TextUtils.isEmpty(msg)){
+                Log.e(TAG,msg);
+            }else{
+                Log.e(TAG,"空字段了");
+            }
+
+
         }
     }
 }

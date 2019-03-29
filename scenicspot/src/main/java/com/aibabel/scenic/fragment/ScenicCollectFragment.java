@@ -133,6 +133,7 @@ public class ScenicCollectFragment extends BaseFragment implements BaseQuickAdap
         OkGoUtil.get(ApiConstant.GET_COLLECTION, map, BaseBean.class, new BaseCallback() {
             @Override
             public void onSuccess(String method, BaseBean model, String json) {
+                Logs.e(json);
                 ScenicListBean scenicListBean = FastJsonUtil.changeJsonToBean(json, ScenicListBean.class);
 
                 boolean isRefresh = false;
@@ -191,9 +192,9 @@ public class ScenicCollectFragment extends BaseFragment implements BaseQuickAdap
         if (size < PAGE_SIZE) {
             //第一页如果不够一页就不显示没有更多数据布局
             mAdapter.loadMoreEnd(isRefresh);
-            if (page > 2) {
-                Toast.makeText(getContext(), "no more data", Toast.LENGTH_SHORT).show();
-            }
+//            if (page > 2) {
+//                Toast.makeText(getContext(), "no more data", Toast.LENGTH_SHORT).show();
+//            }
         } else {
             mAdapter.loadMoreComplete();
         }
@@ -221,6 +222,7 @@ public class ScenicCollectFragment extends BaseFragment implements BaseQuickAdap
             @Override
             public void onSuccess(String method, BaseBean model, String json) {
 //                ToastUtil.showShort(mContext, "成功");
+                Logs.e(json);
                 CollectBean bean = FastJsonUtil.changeJsonToBean(json, CollectBean.class);
                 update(bean, id);
             }
