@@ -32,6 +32,7 @@ import com.zhy.view.flowlayout.FlowLayout;
 import com.zhy.view.flowlayout.TagAdapter;
 import com.zhy.view.flowlayout.TagFlowLayout;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -75,6 +76,7 @@ public class SearchActivity extends BaseActivity implements View.OnClickListener
     @Override
     public void init() {
       setPathParams("进入目的地列表");
+      addStatisticsEvent("menu_search_open",null);
     }
 
     @Override
@@ -111,9 +113,13 @@ public class SearchActivity extends BaseActivity implements View.OnClickListener
             public void onItemClick(AdapterView<?> parent, View view,
                                     int position, long id) {
                 //todo 选择城市后处理
-                finish();
-                StatisticsManager.getInstance(mContext).addEventAidl(1110, new HashMap());
+                try{
+                    HashMap<String, Serializable> map = new HashMap<>();
+                    map.put("popular_list_click_id","List");
+                    addStatisticsEvent("popular_list_c",map);
+                }catch (Exception e){}
 
+                finish();
             }
         });
 
@@ -141,6 +147,7 @@ public class SearchActivity extends BaseActivity implements View.OnClickListener
 
         switch (view.getId()) {
             case R.id.search_guanbi:
+                addStatisticsEvent("menu_search_close",null);
                 finish();
                 break;
             case R.id.search_curr_location_ll:
@@ -309,6 +316,13 @@ public class SearchActivity extends BaseActivity implements View.OnClickListener
             @Override
             public void onTouchingLetterChanged(String s) {
                 if (mIndexer != null) {
+                    try{
+                        HashMap<String, Serializable> map = new HashMap<>();
+                        map.put("popular_list_click_id","List");
+                        addStatisticsEvent("index_slide",map);
+                    }catch (Exception e){}
+
+
                     //该字母首次出现的位置
                     int position = mIndexer.getPositionForSection(ALL_CHARACTER.indexOf(s));
 //                int position = adapter.getPositionForSection(s.charAt(0));
@@ -354,6 +368,14 @@ public class SearchActivity extends BaseActivity implements View.OnClickListener
             @Override
             public boolean onTagClick(View view, int position, FlowLayout parent) {
                 L.e("onTagClick========" + (String) view.getTag());
+
+                try{
+                    HashMap<String, Serializable> map = new HashMap<>();
+                    map.put("popular_click_id",view.getTag()+"");
+                    addStatisticsEvent("popular_click",map);
+                }catch (Exception e){}
+
+
                 Intent intent = new Intent();
 //                intent.putExtra("url",list.get(position).getMenuAddrId());
                 intent.putExtra("city_id", list.get(position).getCityId());

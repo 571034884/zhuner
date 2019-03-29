@@ -32,7 +32,9 @@ import com.bumptech.glide.request.target.SimpleTarget;
 import com.bumptech.glide.request.transition.Transition;
 
 import java.io.File;
+import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import butterknife.BindView;
@@ -68,7 +70,7 @@ public class MenuActivity extends BaseActivity implements View.OnClickListener {
     public void onCreate(Bundle savedInstanceState) {
         L.e("=============================");
         super.onCreate(savedInstanceState);
-
+        addStatisticsEvent("more_inface_open",null);
 
 
 
@@ -166,7 +168,7 @@ public class MenuActivity extends BaseActivity implements View.OnClickListener {
 //
 //        return R.activity_rent_locked.activity_menu;
 //    }
-
+    private int indexFlag = 0;
     @Override
     protected void initData() {
 
@@ -181,6 +183,51 @@ public class MenuActivity extends BaseActivity implements View.OnClickListener {
         menuViewpager.setAdapter(new FragmentPagerAdapter(getSupportFragmentManager()) {
             @Override
             public Fragment getItem(int position) {
+                switch (position){
+                    case 0:
+                        if (indexFlag != position){
+                            try{
+                                HashMap<String, Serializable> map = new HashMap<>();
+                                map.put("menu_right_left_page","88");
+                                addStatisticsEvent("menu_right_left",map);
+                            }catch (Exception e){}
+                        }
+                        indexFlag =0;
+                        break;
+                    case 1:
+                        if (indexFlag > position){
+                            try{
+                                HashMap<String, Serializable> map = new HashMap<>();
+                                map.put("menu_right_left_page","88");
+                                addStatisticsEvent("menu_right_left",map);
+                            }catch (Exception e){}
+                        }else{
+                            try{
+                                HashMap<String, Serializable> map = new HashMap<>();
+                                map.put("menu_left_right_page","88");
+                                addStatisticsEvent("menu_left_right",map);
+                            }catch (Exception e){}
+                        }
+                        break;
+                    case 2:
+
+                        if (indexFlag > position){
+                            try{
+                                HashMap<String, Serializable> map = new HashMap<>();
+                                map.put("menu_right_left_page","88");
+                                addStatisticsEvent("menu_right_left",map);
+                            }catch (Exception e){}
+                        }else{
+                            try{
+                                HashMap<String, Serializable> map = new HashMap<>();
+                                map.put("menu_left_right_page","88");
+                                addStatisticsEvent("menu_left_right",map);
+                            }catch (Exception e){}
+                        }
+
+                        break;
+                }
+                indexFlag =position;
                 return datas.get(position);
             }
 
@@ -199,20 +246,24 @@ public class MenuActivity extends BaseActivity implements View.OnClickListener {
         try {
             switch (view.getId()) {
                 case R.id.menu_bttom_gd_ll:
+                    addStatisticsEvent("more_inface_close",null);
                     finishAfterTransition();
 //                finish();
                     break;
                 case R.id.menu_bottom_yyfy_ll:
                     //调起语音翻译
                     startActivity(AppStatusUtils.getAppOpenIntentByPackageName(mContext, "com.aibabel.translate"));
+                    addStatisticsEvent("menu_voice_click",null);
                     break;
                 case R.id.menu_bottom_pzfy_ll:
                     //调起拍照翻译
                     startActivity(AppStatusUtils.getAppOpenIntentByPackageName(mContext, "com.aibabel.ocr"));
+                    addStatisticsEvent("menu_photo_click",null);
                     break;
                 case R.id.menu_bottom_ddwl_ll:
                     //调起景区导览
                     startActivity(AppStatusUtils.getAppOpenIntentByPackageName(mContext,"com.aibabel.scenic"));
+                    addStatisticsEvent("menu_country_click",null);
                     break;
             }
         } catch (Exception e) {
