@@ -22,6 +22,7 @@ import android.widget.Toast;
 
 import com.aibabel.aidlaar.StatisticsManager;
 import com.aibabel.baselibrary.impl.IDataManager;
+import com.aibabel.baselibrary.utils.DeviceUtils;
 import com.aibabel.baselibrary.utils.XIPCUtils;
 import com.aibabel.surfinternet.MainActivity;
 import com.aibabel.surfinternet.R;
@@ -196,8 +197,13 @@ public class PayPalActivity extends BaseActivity implements OnJSClickListener {
 //                tvTishi.setScaleType(ImageView.ScaleType.FIT_XY);
                 ivTishi.setImageResource(R.mipmap.success1);
                 ivTishi1.setVisibility(View.VISIBLE);
-                Glide.with(PayPalActivity.this)
-                        .load(R.mipmap.successs2).into(ivTishi1);
+
+                //TODO 有可能activity被注销 需要判断当前activity的状态
+                if (!PayPalActivity.this.isDestroyed()){
+                    Glide.with(PayPalActivity.this)
+                            .load(R.mipmap.successs2).into(ivTishi1);
+                }
+
                 rl.setVisibility(View.GONE);
                 tvError.setText(getResources().getString(R.string.success));
                 llIsnet.setVisibility(View.VISIBLE);
@@ -207,17 +213,30 @@ public class PayPalActivity extends BaseActivity implements OnJSClickListener {
                 map1.put("p2", skuid);
                 StatisticsManager.getInstance(PayPalActivity.this).addEventAidl(1732, map1);
                 //TODO 下单成功  判断标识 是否重置Siftsim
-                XIPC.connectApp(getContext(), XIPCUtils.XIPC_MENU);
-                XIPC.setIPCListener(new IPCListener() {
-                    @Override
-                    public void onIPCConnected(Class<? extends IPCService> service) {
-                        IDataManager dm = XIPC.getInstance(IDataManager.class);
-                        String softType = dm.getString("softSimType");
-                        Log.e("LK---001", "当前LK卡状态:" + softType);
-                        isShowDialog(softType);
+                if (DeviceUtils.getSystem() == DeviceUtils.System.PRO_SELL){
+                    Log.e("LK---001", "Pro销售版本");
+                    //TODO 下单成功  判断标识 是否重置SoftSim
+                    XIPC.connectApp(getContext(), XIPCUtils.XIPC_MENU);
+                    XIPC.setIPCListener(new IPCListener() {
+                        @Override
+                        public void onIPCConnected(Class<? extends IPCService> service) {
+                            IDataManager dm = XIPC.getInstance(IDataManager.class);
+                            String softType = dm.getString("softSimType");
+                            Log.e("LK---001", "当前LK卡状态:" + softType);
+                            isShowDialog(softType);
 
-                    }
-                });
+                        }
+                    });
+                }else{
+                    Log.e("LK---001", "台湾版本");
+                    Timer timer = new Timer();
+                    timer.schedule(new TimerTask() {
+                        @Override
+                        public void run() {
+                            startActivity(new Intent(PayPalActivity.this, MainActivity.class));
+                        }
+                    }, 3000);
+                }
 
 
             }
