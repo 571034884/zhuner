@@ -13,9 +13,9 @@ public class Constans {
 
     //安卓6.0以上手机权限处理
     public static final int PERMISSIONS_REQUEST_FOR_AUDIO = 1;
-//    public static String HOST_XW = "http://abroad.api.joner.aibabel.cn:7001";
+    public static String HOST_XW = "http://abroad.api.joner.aibabel.cn:7001";
 //    测试服务器
-    public static String HOST_XW = "http://39.107.238.111:7001";
+//    public static String HOST_XW = "http://39.107.238.111:7001";
 
 
 //    public static String METHOD_GROUP_XW = "/v1/tucao/";

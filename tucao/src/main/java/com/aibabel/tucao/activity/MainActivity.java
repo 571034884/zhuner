@@ -49,6 +49,7 @@ import com.aibabel.tucao.utils.MyScrollview;
 import com.aibabel.tucao.utils.NetUtil;
 import com.aibabel.tucao.utils.ToastUtil;
 import com.aibabel.tucao.utils.WeizhiUtil;
+import com.aibabel.tucao.views.CommonDialog;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.StringCallback;
 import com.lzy.okgo.model.Response;
@@ -839,6 +840,7 @@ public class MainActivity extends BaseActivity implements BaseCallback, AudioRec
                             ToastUtil.showShort(MainActivity.this, "提交成功");
 //                            startActivity(new Intent(MainActivity.this, KeFuActivity.class));
 //                            finish();
+                            showDialog();
                         }
                     });
                 } else {
@@ -874,6 +876,27 @@ public class MainActivity extends BaseActivity implements BaseCallback, AudioRec
         rlIsnet.setVisibility(View.VISIBLE);
         linIsnet.setVisibility(View.VISIBLE);
         tvError.setText(getResources().getString(R.string.zoudiule));
+    }
+
+    private void showDialog(){
+        final CommonDialog dialog = new CommonDialog(this, R.style.dialog);
+        dialog.setOnBtnClickListener(new CommonDialog.OnBtnClickListener() {
+            @Override
+            public void onCancelClick() {
+
+            }
+
+            @Override
+            public void onConfirmClick() {
+                try {
+                    MainActivity.this.finish();
+
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+        dialog.show();
     }
 
 
