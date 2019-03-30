@@ -33,6 +33,7 @@ import com.aibabel.scenic.utils.KeyBords;
 import com.aibabel.scenic.utils.Logs;
 import com.aibabel.scenic.view.EmptyLayout;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -65,6 +66,9 @@ public class CitySearchActivity extends BaseScenicActivity{
 
     @Override
     public void initView() {
+
+        addStatisticsEvent("scenic_search_open",null);
+
         etSearch.setHint("搜搜您想要的");
         InputFilter filter = new InputFilter() {
             @Override
@@ -79,6 +83,14 @@ public class CitySearchActivity extends BaseScenicActivity{
                 }
             }
         };
+
+        etSearch.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                addStatisticsEvent("scenic_search_click",null);
+            }
+        });
+
         etSearch.setFilters(new InputFilter[]{filter});
         etSearch.addTextChangedListener(new TextWatcher() {
             @Override
@@ -103,6 +115,13 @@ public class CitySearchActivity extends BaseScenicActivity{
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
                 if (actionId == EditorInfo.IME_ACTION_SEARCH){
                     String data = etSearch.getText().toString().trim();
+
+                    try{
+                        HashMap<String, Serializable> map = new HashMap<>();
+                        map.put("scenic_search_search_key",data+"");
+                        addStatisticsEvent("scenic_search_search",map);
+                    }catch (Exception e){}
+
                     if (!TextUtils.isEmpty(data)){
                         Logs.e("搜索关键字："+data);
                         KeyBords.closeKeybord(etSearch,mContext);
@@ -143,6 +162,9 @@ public class CitySearchActivity extends BaseScenicActivity{
                         showSearchData(model.getData());
                         mEmpty.setErrorType(EmptyLayout.SUCCESS_EMPTY);
                         lvSearch.setVisibility(View.VISIBLE);
+                        addStatisticsEvent("scenic_search_resoult_open",null);
+
+
                     }
                 }else{
                     mEmpty.setErrorType(EmptyLayout.NORMAL_EMPTY);
@@ -182,6 +204,13 @@ public class CitySearchActivity extends BaseScenicActivity{
         searchAdapter.setOnItemClickListener(new SearchWordAdapter.onClickListener() {
             @Override
             public void onItemClick(SearchWordBean.DataBean.CityListBean bean) {
+
+                try{
+                    HashMap<String, Serializable> map = new HashMap<>();
+                    map.put("scenic_search_resoult_click_name",bean.getName());
+                    addStatisticsEvent("scenic_search_resoult_click",map);
+                }catch (Exception e){}
+
                 Intent intent;
                 switch (bean.getType()){
                     case 2:
@@ -222,6 +251,8 @@ public class CitySearchActivity extends BaseScenicActivity{
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.iv_close:
+                addStatisticsEvent("scenic_search_resoult_close",null);
+                addStatisticsEvent("scenic_search_close",null);
                 this.finish();
                 break;
             case R.id.iv_clear_et:

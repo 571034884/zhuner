@@ -40,6 +40,7 @@ import com.aibabel.scenic.utils.KeyBords;
 import com.aibabel.scenic.utils.Logs;
 import com.aibabel.scenic.view.SimpleViewpagerIndicator;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -85,6 +86,7 @@ public class CityLocaActivity extends BaseScenicActivity{
 
     @Override
     public void initView() {
+        addStatisticsEvent("scenic_loc_open",null);
 
         String type = getIntent().getStringExtra("type");
         if (type.equals("0")){
@@ -119,6 +121,12 @@ public class CityLocaActivity extends BaseScenicActivity{
 
             @Override
             public void onPageSelected(int position) {
+                try{
+                    HashMap<String, Serializable> map = new HashMap<>();
+                    map.put("scenic_loc_continent_city",strList.get(position));
+                    addStatisticsEvent("scenic_loc_continent",map);
+
+                }catch (Exception e){}
             }
 
             @Override
@@ -254,6 +262,14 @@ public class CityLocaActivity extends BaseScenicActivity{
         searchAdapter.setOnItemClickListener(new SearchAdapter.onClickListener() {
             @Override
             public void onItemClick(SearchBean.DataBean bean) {
+
+                try{
+                    HashMap<String, Serializable> map = new HashMap<>();
+                    map.put("scenic_loc_city_city",bean.getName());
+                    addStatisticsEvent("scenic_loc_city",map);
+
+                }catch (Exception e){}
+
                 //数据存储
                 saveLocationCity(bean.getName());
                 //回到首页
@@ -267,6 +283,13 @@ public class CityLocaActivity extends BaseScenicActivity{
     }
 
     private void saveLocationCity(String cityName) {
+
+        try{
+            HashMap<String, Serializable> map = new HashMap<>();
+            map.put("scenic_search_near_name",cityName+"");
+            addStatisticsEvent("scenic_search_near",map);
+        }catch (Exception e){}
+
         String locHistoryOne = SharePrefUtil.getString(mContext,"locationNameOne","");
         String locHistoryTwo = SharePrefUtil.getString(mContext,"locationNameTwo","");
         if (TextUtils.isEmpty(locHistoryOne)){
@@ -285,6 +308,7 @@ public class CityLocaActivity extends BaseScenicActivity{
                 SharePrefUtil.saveString(mContext,"locationNameTwo",locHistoryOne);
                 SharePrefUtil.saveString(mContext,"locationNameOne",cityName);
 
+                addStatisticsEvent("scenic_search_clear_history",null);
             }
         }
     }
@@ -292,10 +316,23 @@ public class CityLocaActivity extends BaseScenicActivity{
     public void onClick(View v){
         switch (v.getId()){
             case R.id.iv_close:
+                addStatisticsEvent("scenic_loc_close",null);
                 this.finish();
                 break;
             case R.id.tv_location_name:
                 if (!TextUtils.isEmpty(city)){
+                    try{
+                        HashMap<String, Serializable> map = new HashMap<>();
+                        map.put("scenic_loc_location_city",city);
+                        addStatisticsEvent("scenic_loc_location",map);
+                    }catch (Exception e){}
+
+                    try{
+                        HashMap<String, Serializable> map = new HashMap<>();
+                        map.put("scenic_loc_history_city",city);
+                        addStatisticsEvent("scenic_loc_history",map);
+                    }catch (Exception e){}
+
                     Intent intent = new Intent();
                     intent.putExtra("city",city);
                     setResult(1002, intent);
@@ -311,6 +348,12 @@ public class CityLocaActivity extends BaseScenicActivity{
                         mLocationName.setCompoundDrawablesWithIntrinsicBounds(getResources().getDrawable(R.mipmap.location_error),
                                 null, null, null);
                     }
+
+                    try{
+                        HashMap<String, Serializable> map = new HashMap<>();
+                        map.put("scenic_loc_location_city","定位失败");
+                        addStatisticsEvent("scenic_loc_location",map);
+                    }catch (Exception e){}
                 }
                 break;
             case R.id.iv_clear_et:

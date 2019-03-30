@@ -2,6 +2,7 @@ package com.aibabel.scenic.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.LinearLayoutManager;
@@ -39,6 +40,7 @@ import com.aibabel.scenic.view.EmptyLayout;
 import com.aibabel.scenic.view.ShadowTransformer;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -104,11 +106,30 @@ public class MainActivity extends BaseScenicActivity {
 
     @Override
     public void initView() {
+
+        addStatisticsEvent("scenic_app_open",null);
+
         city = ProviderUtils.getInfo(ProviderUtils.COLUMN_CITY);
         if (!TextUtils.isEmpty(city)) {
             mLocation.setText(city);
             isNetWork();
+            try{
+                HashMap<String, Serializable> map = new HashMap<>();
+                map.put("scenic_main_download_city",city);
+                addStatisticsEvent("scenic_main_open",map);
+
+                HashMap<String, Serializable> maps = new HashMap<>();
+                maps.put("scenic_main_location_city",city);
+                addStatisticsEvent("scenic_main_location",maps);
+            }catch (Exception e){}
+
         } else {
+            try{
+                HashMap<String, Serializable> map = new HashMap<>();
+                map.put("scenic_main_download_city","没有定位");
+                addStatisticsEvent("scenic_main_open",map);
+            }catch (Exception e){}
+
             Intent intent = new Intent(mContext, CityLocaActivity.class);
             intent.putExtra("type","0");//隐藏返回
             startActivityForResult(intent, 1010);
@@ -135,6 +156,37 @@ public class MainActivity extends BaseScenicActivity {
 
     @Override
     public void initData() {
+
+        vpInfo.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int i, float v, int i1) {
+
+            }
+
+            @Override
+            public void onPageSelected(int i) {
+                addStatisticsEvent("scenic_main_top_move",null);
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int i) {
+
+            }
+        });
+
+        mRecyclerHistory.setOnScrollChangeListener(new View.OnScrollChangeListener() {
+            @Override
+            public void onScrollChange(View v, int scrollX, int scrollY, int oldScrollX, int oldScrollY) {
+                addStatisticsEvent("scenic_main_history_move",null);
+            }
+        });
+
+        mRecyclerCity.setOnScrollChangeListener(new View.OnScrollChangeListener() {
+            @Override
+            public void onScrollChange(View v, int scrollX, int scrollY, int oldScrollX, int oldScrollY) {
+                addStatisticsEvent("scenic_main_city_move",null);
+            }
+        });
     }
 
     /**
@@ -198,6 +250,14 @@ public class MainActivity extends BaseScenicActivity {
         mCardAdapter.setOnItemClickListener(new CardHomeAdapter.onClickListener() {
             @Override
             public void onItemClick(PoiDetailsBean bean, View view) {
+
+                try{
+                    HashMap<String, Serializable> map = new HashMap<>();
+                    map.put("scenic_main_top_id",bean.idstring);
+                    map.put("scenic_main_top_name",bean.name);
+                    addStatisticsEvent("scenic_main_top_click",map);
+                }catch (Exception e){}
+
                 Intent intent = new Intent();
                 intent.setClass(MainActivity.this, SpotsActivity.class);
                 intent.putExtra("poiId", bean.idstring);
@@ -212,7 +272,35 @@ public class MainActivity extends BaseScenicActivity {
         mGrid.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
                 PoiDetailsBean bean = poiMsgHot.get(position);
+
+                switch (flagIndex){
+                    case 0:
+                        try{
+                            HashMap<String, Serializable> map = new HashMap<>();
+                            map.put("scenic_main_fire_des_id",bean.idstring);
+                            map.put("scenic_main_fire_des_name",bean.name);
+                            addStatisticsEvent("scenic_main_fire_des",map);
+                        }catch (Exception e){}
+                        break;
+                    case 1:
+                        try{
+                            HashMap<String, Serializable> map = new HashMap<>();
+                            map.put("scenic_main_about_des_id",bean.idstring);
+                            map.put("scenic_main_about_des_name",bean.name);
+                            addStatisticsEvent("scenic_main_about_des",map);
+                        }catch (Exception e){}
+                        break;
+                    case 2:
+                        try{
+                            HashMap<String, Serializable> map = new HashMap<>();
+                            map.put("scenic_main_check_des_id",bean.idstring);
+                            map.put("scenic_main_check_des_name",bean.name);
+                            addStatisticsEvent("scenic_main_check_des",map);
+                        }catch (Exception e){}
+                        break;
+                }
                 Intent intent = new Intent();
                 intent.setClass(MainActivity.this, SpotsActivity.class);
                 intent.putExtra("poiId", bean.idstring);
@@ -237,6 +325,15 @@ public class MainActivity extends BaseScenicActivity {
         mHistoryAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
+                PoiDetailsBean beans = poiCountry.get(position);
+                try{
+                    HashMap<String, Serializable> map = new HashMap<>();
+                    map.put("scenic_main_history_click_id",beans.idstring);
+                    map.put("scenic_main_history_click_name",beans.name);
+                    addStatisticsEvent("scenic_main_history_click",map);
+                }catch (Exception e){}
+
+
                 Intent intent = new Intent();
                 intent.setClass(MainActivity.this, HistoryActivity.class);
                 intent.putExtra("json", FastJsonUtil.changListToString(poiCountry));
@@ -265,6 +362,14 @@ public class MainActivity extends BaseScenicActivity {
             @Override
             public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
                 PoiDetailsBean bean = poiCity.get(position);
+
+                try{
+                    HashMap<String, Serializable> map = new HashMap<>();
+                    map.put("scenic_main_city_click_id",bean.idstring);
+                    map.put("scenic_main_city_click_name",bean.name);
+                    addStatisticsEvent("scenic_main_city_click",map);
+                }catch (Exception e){}
+
                 Intent intent = new Intent(mContext,CityActivity.class);
                 intent.putExtra("city",bean.name);
                 Logs.e("周边城市："+bean.name);
@@ -279,23 +384,55 @@ public class MainActivity extends BaseScenicActivity {
         Intent intent = null;
         switch (v.getId()) {
             case R.id.tv_location:
+                try{
+                    HashMap<String, Serializable> map = new HashMap<>();
+                    map.put("scenic_main_search_city",city);
+                    addStatisticsEvent("scenic_main_search",map);
+                }catch (Exception e){}
+
                 intent = new Intent(mContext, CityLocaActivity.class);
                 intent.putExtra("type","1");//显示返回
                 startActivityForResult(intent, 1010);
                 break;
             case R.id.ll_hot://热门
                 getShowView(0);
+                try{
+                    HashMap<String, Serializable> map = new HashMap<>();
+                    map.put("scenic_main_btn_fire_city",city);
+                    addStatisticsEvent("scenic_main_btn_fire",map);
+                }catch (Exception e){}
                 break;
             case R.id.ll_about://附近
                 getShowView(1);
+                try{
+                    HashMap<String, Serializable> map = new HashMap<>();
+                    map.put("scenic_main_btn_about_city",city);
+                    addStatisticsEvent("scenic_main_btn_about",map);
+                }catch (Exception e){}
                 break;
             case R.id.ll_collect://收藏
+                try{
+                    HashMap<String, Serializable> map = new HashMap<>();
+                    map.put("scenic_main_btn_check_city",city);
+                    addStatisticsEvent("scenic_main_btn_check",map);
+                }catch (Exception e){}
                 getShowView(2);
                 break;
             case R.id.ll_more://更多
+                try{
+                    HashMap<String, Serializable> map = new HashMap<>();
+                    map.put("scenic_main_btn_more_city",city);
+                    addStatisticsEvent("scenic_main_btn_more",map);
+                }catch (Exception e){}
                 toScenic();
                 break;
             case R.id.rls_search:
+                try{
+                    HashMap<String, Serializable> map = new HashMap<>();
+                    map.put("scenic_main_search_city",city);
+                    addStatisticsEvent("scenic_main_search",map);
+                }catch (Exception e){}
+
                 intent = new Intent(mContext, CitySearchActivity.class);
                 startActivityForResult(intent,1010);
                 break;

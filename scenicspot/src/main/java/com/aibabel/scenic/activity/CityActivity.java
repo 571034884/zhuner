@@ -38,6 +38,7 @@ import com.aibabel.scenic.view.EmptyLayout;
 import com.aibabel.scenic.view.ShadowTransformer;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -96,6 +97,9 @@ public class CityActivity extends BaseScenicActivity {
     public void initView() {
         city = getIntent().getStringExtra("city");
         tvTitle.setText(city);
+
+        addStatisticsEvent("scenic_app_open",null);
+
         isNetWork();
         mEmpty.setOnBtnClickListener(new EmptyLayout.onClickListener() {
             @Override
@@ -109,6 +113,17 @@ public class CityActivity extends BaseScenicActivity {
         if (CommonUtils.isNetworkAvailable(mContext)) {
             mScroll.setVisibility(View.VISIBLE);
             getDataValue(city);
+
+            try{
+                HashMap<String, Serializable> map = new HashMap<>();
+                map.put("scenic_main_download_city",city);
+                addStatisticsEvent("scenic_main_open",map);
+
+                HashMap<String, Serializable> maps = new HashMap<>();
+                maps.put("scenic_main_location_city",city);
+                addStatisticsEvent("scenic_main_location",maps);
+            }catch (Exception e){}
+
         } else {
             mScroll.setVisibility(View.GONE);
             mEmpty.setErrorType(EmptyLayout.NETWORK_EMPTY);
@@ -174,6 +189,14 @@ public class CityActivity extends BaseScenicActivity {
         mCardAdapter.setOnItemClickListener(new CardHomeAdapter.onClickListener() {
             @Override
             public void onItemClick(PoiDetailsBean bean, View view) {
+
+                try{
+                    HashMap<String, Serializable> map = new HashMap<>();
+                    map.put("scenic_main_top_id",bean.idstring);
+                    map.put("scenic_main_top_name",bean.name);
+                    addStatisticsEvent("scenic_main_top_click",map);
+                }catch (Exception e){}
+
                 Intent intent = new Intent();
                 intent.setClass(CityActivity.this, SpotsActivity.class);
                 intent.putExtra("poiId", bean.idstring);
@@ -189,6 +212,35 @@ public class CityActivity extends BaseScenicActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 PoiDetailsBean bean = poiMsgHot.get(position);
+
+                switch (flagIndex){
+                    case 0:
+                        try{
+                            HashMap<String, Serializable> map = new HashMap<>();
+                            map.put("scenic_main_fire_des_id",bean.idstring);
+                            map.put("scenic_main_fire_des_name",bean.name);
+                            addStatisticsEvent("scenic_main_fire_des",map);
+                        }catch (Exception e){}
+                        break;
+                    case 1:
+                        try{
+                            HashMap<String, Serializable> map = new HashMap<>();
+                            map.put("scenic_main_about_des_id",bean.idstring);
+                            map.put("scenic_main_about_des_name",bean.name);
+                            addStatisticsEvent("scenic_main_about_des",map);
+                        }catch (Exception e){}
+                        break;
+                    case 2:
+                        try{
+                            HashMap<String, Serializable> map = new HashMap<>();
+                            map.put("scenic_main_check_des_id",bean.idstring);
+                            map.put("scenic_main_check_des_name",bean.name);
+                            addStatisticsEvent("scenic_main_check_des",map);
+                        }catch (Exception e){}
+                        break;
+                }
+
+
                 Intent intent = new Intent();
                 intent.setClass(CityActivity.this, SpotsActivity.class);
                 intent.putExtra("poiId", bean.idstring);
@@ -213,6 +265,16 @@ public class CityActivity extends BaseScenicActivity {
         mHistoryAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
+
+                PoiDetailsBean beans = poiCountry.get(position);
+                try{
+                    HashMap<String, Serializable> map = new HashMap<>();
+                    map.put("scenic_main_history_click_id",beans.idstring);
+                    map.put("scenic_main_history_click_name",beans.name);
+                    addStatisticsEvent("scenic_main_history_click",map);
+                }catch (Exception e){}
+
+
                 Intent intent = new Intent();
                 intent.setClass(CityActivity.this, HistoryActivity.class);
                 intent.putExtra("json", FastJsonUtil.changListToString(poiCountry));
@@ -233,14 +295,35 @@ public class CityActivity extends BaseScenicActivity {
         switch (v.getId()) {
             case R.id.ll_hot://热门
                 getShowView(0);
+                try{
+                    HashMap<String, Serializable> map = new HashMap<>();
+                    map.put("scenic_main_btn_fire_city",city);
+                    addStatisticsEvent("scenic_main_btn_fire",map);
+                }catch (Exception e){}
+
                 break;
             case R.id.ll_about://附近
                 getShowView(1);
+                try{
+                    HashMap<String, Serializable> map = new HashMap<>();
+                    map.put("scenic_main_btn_about_city",city);
+                    addStatisticsEvent("scenic_main_btn_about",map);
+                }catch (Exception e){}
                 break;
             case R.id.ll_collect://收藏
                 getShowView(2);
+                try{
+                    HashMap<String, Serializable> map = new HashMap<>();
+                    map.put("scenic_main_btn_check_city",city);
+                    addStatisticsEvent("scenic_main_btn_check",map);
+                }catch (Exception e){}
                 break;
             case R.id.ll_more://更多
+                try{
+                    HashMap<String, Serializable> map = new HashMap<>();
+                    map.put("scenic_main_btn_more_city",city);
+                    addStatisticsEvent("scenic_main_btn_more",map);
+                }catch (Exception e){}
                 toScenic();
                 break;
             case R.id.tv_left:
