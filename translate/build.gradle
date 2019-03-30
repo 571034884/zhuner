@@ -1,6 +1,10 @@
 apply plugin: 'com.android.application'
 apply plugin: 'com.aliyun.ams.emas-services'
 
+// 显示的时间格式，形如20171110
+def buildTime() {
+    return new Date().format("MMddHHmmss", TimeZone.getDefault())
+}
 android {
     signingConfigs {
         config {
@@ -34,6 +38,20 @@ android {
     lintOptions {
         checkReleaseBuilds false
         abortOnError false
+    }
+    applicationVariants.all { variant ->
+        variant.outputs.each { output ->
+            def outputFile = output.outputFile
+            if (outputFile != null && outputFile.name.endsWith('.apk')) {
+
+                /// 输出apk名称为ForWatch_v1.1(2)_2016-09-28_15-54-35.apk
+                def version = "v${versionName}.${buildTime()}"
+                def endIndex = outputFile.name.indexOf('.apk')
+                def apkName = outputFile.name.substring(0, endIndex);
+                def fileName = "语音翻译_${version}.apk"
+                output.outputFileName = fileName
+            }
+        }
     }
 
     buildTypes {
