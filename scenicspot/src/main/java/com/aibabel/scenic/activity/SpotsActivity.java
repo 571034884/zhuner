@@ -119,7 +119,8 @@ public class SpotsActivity extends BaseScenicActivity implements ExpireBroadcast
     Handler handler = new MyHandler(SpotsActivity.this);
     private List<MusicBean> musicList = new ArrayList<>();
 
-
+    private long startTimer;
+    private long endTimer;
     @Override
     public int getLayouts(Bundle var1) {
         return R.layout.activity_spots;
@@ -311,8 +312,7 @@ public class SpotsActivity extends BaseScenicActivity implements ExpireBroadcast
                         HashMap<String, Serializable> map = new HashMap<>();
                         map.put("scenic_spots_auto_off_name", list.get(mPosition).getName());
                         addStatisticsEvent("scenic_spots_auto_off", map);
-                    } catch (Exception e) {
-                    }
+                    } catch (Exception e) {}
                 } else {
 //                    if (mPosition == 0) {
 //                        sendBroadcast(Constants.ACTION_LIST_ITEM, 0);
@@ -360,6 +360,15 @@ public class SpotsActivity extends BaseScenicActivity implements ExpireBroadcast
                 sendBroadcast(Constants.ACTION_CLOSE);
                 Intent intent = new Intent(getApplicationContext(), MusicService.class);
                 stopService(intent);// 关闭服务
+
+                try {
+                    endTimer = System.currentTimeMillis();
+                    HashMap<String, Serializable> map = new HashMap<>();
+                    map.put("scenic_spots_over_name", list.get(mPosition).getName());
+                    map.put("scenic_spots_over_long", (endTimer-startTimer)+"");
+                    addStatisticsEvent("scenic_spots_over", map);
+                } catch (Exception e) {}
+
                 break;
             case R.id.iv_scenic:
                 sendBroadcast(Constants.ACTION_LIST_ITEM, 0);
@@ -444,8 +453,20 @@ public class SpotsActivity extends BaseScenicActivity implements ExpireBroadcast
      */
     private void switchUI(int position, boolean mIsPlaying) {
         if (mIsPlaying) {
+            startTimer = System.currentTimeMillis();
             tvStart.setBackgroundResource(R.mipmap.ic_pause);
         } else {
+
+            endTimer = System.currentTimeMillis();
+            try {
+                HashMap<String, Serializable> map = new HashMap<>();
+                map.put("scenic_spots_over_name", list.get(mPosition).getName());
+                map.put("scenic_spots_over_long", (endTimer-startTimer)+"");
+                addStatisticsEvent("scenic_spots_over", map);
+                startTimer = 0;
+                endTimer = 0;
+            } catch (Exception e) {}
+
             tvStart.setBackgroundResource(R.mipmap.ic_play_normal);
         }
         setScenery(musicList.get(position).getImageUrl(), musicList.get(position).getName());

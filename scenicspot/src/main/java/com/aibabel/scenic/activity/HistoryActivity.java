@@ -272,6 +272,15 @@ public class HistoryActivity extends BaseScenicActivity implements ExpireBroadca
                 sendBroadcast(Constants.ACTION_CLOSE);
                 Intent intent = new Intent(getApplicationContext(), MusicService.class);
                 stopService(intent);// 关闭服务
+
+                endTimer = System.currentTimeMillis();
+                try {
+                    HashMap<String, Serializable> map = new HashMap<>();
+                    map.put("scenic_history_over_name", list.get(mPosition).getName());
+                    map.put("scenic_history_over_long", (endTimer-startTimer)+"");
+                    addStatisticsEvent("scenic_history_over", map);
+                } catch (Exception e) {}
+
                 break;
         }
 
@@ -351,7 +360,8 @@ public class HistoryActivity extends BaseScenicActivity implements ExpireBroadca
             }
         }
     }
-
+    private long startTimer;
+    private long endTimer;
 
     /**
      * 切换图片
@@ -361,8 +371,19 @@ public class HistoryActivity extends BaseScenicActivity implements ExpireBroadca
      */
     private void switchUI(int position, boolean mIsPlaying) {
         if (mIsPlaying) {
+            startTimer = System.currentTimeMillis();
             tvStart.setBackgroundResource(R.mipmap.ic_pause);
         } else {
+            endTimer = System.currentTimeMillis();
+            try {
+                HashMap<String, Serializable> map = new HashMap<>();
+                map.put("scenic_history_over_name", list.get(mPosition).getName());
+                map.put("scenic_history_over_long", (endTimer-startTimer)+"");
+                addStatisticsEvent("scenic_history_over", map);
+                startTimer = 0;
+                endTimer = 0;
+            } catch (Exception e) {}
+
             tvStart.setBackgroundResource(R.mipmap.ic_play_normal);
         }
         setScenery(musicList.get(position).getImageUrl(), musicList.get(position).getName());
