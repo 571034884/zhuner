@@ -47,7 +47,7 @@ public class StatisticsBaseActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
          connectXIPC();
-        notifyId=getIntent().getStringExtra(NOTIFY_ID);
+         notifyId=getIntent().getStringExtra(NOTIFY_ID);
 
         isOpenFromHardwareButton=getIntent().getBooleanExtra(HARDWARE_BUTTON,true);
 
@@ -94,6 +94,7 @@ public class StatisticsBaseActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
+        connectXIPC();
         if (DeviceUtils.getSystem()== DeviceUtils.System.PRO_LEASE){
             try {
                 pageObject=new JSONObject();
@@ -233,7 +234,7 @@ public class StatisticsBaseActivity extends AppCompatActivity {
     @Override
     public void startActivity(Intent intent) {
         super.startActivity(intent);
-        if (!TextUtils.isEmpty("")){
+        if (!TextUtils.isEmpty(notifyId)){
             intent.putExtra(NOTIFY_ID,notifyId);
         }
     }
@@ -241,7 +242,7 @@ public class StatisticsBaseActivity extends AppCompatActivity {
     @Override
     public void startActivityForResult(Intent intent, int requestCode) {
         super.startActivityForResult(intent, requestCode);
-        if (!TextUtils.isEmpty("")){
+        if (!TextUtils.isEmpty(notifyId)){
             intent.putExtra(NOTIFY_ID,notifyId);
         }
     }

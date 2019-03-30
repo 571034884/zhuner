@@ -205,7 +205,7 @@ public abstract class BaseActivity extends StatisticsBaseActivity {
         super.onPause();
         MobclickAgent.onPause(this);
         outTime = System.currentTimeMillis();
-        StatisticsManager.getInstance(this).addUserPathAidl(getClass().getSimpleName(), inTime, outTime, interactionTimes, getPathParams());
+//        StatisticsManager.getInstance(this).addUserPathAidl(getClass().getSimpleName(), inTime, outTime, interactionTimes, getPathParams());
         interactionTimes = 0;
     }
 
