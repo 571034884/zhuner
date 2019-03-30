@@ -25,6 +25,7 @@ import org.w3c.dom.Text;
 import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.logging.Logger;
 
 /**
  * 数据统计基础类
@@ -48,6 +49,7 @@ public class StatisticsBaseActivity extends AppCompatActivity {
 
          connectXIPC();
          notifyId=getIntent().getStringExtra(NOTIFY_ID);
+
 
         isOpenFromHardwareButton=getIntent().getBooleanExtra(HARDWARE_BUTTON,true);
 
@@ -231,20 +233,24 @@ public class StatisticsBaseActivity extends AppCompatActivity {
           }
 
     }
-    @Override
-    public void startActivity(Intent intent) {
-        super.startActivity(intent);
-        if (!TextUtils.isEmpty(notifyId)){
-            intent.putExtra(NOTIFY_ID,notifyId);
-        }
-    }
+//    @Override
+//    public void startActivity(Intent intent) {
+//        if (!TextUtils.isEmpty(notifyId)){
+//            intent.putExtra(NOTIFY_ID,notifyId);
+//        }
+//
+//        super.startActivity(intent);
+//
+//
+//    }
 
     @Override
     public void startActivityForResult(Intent intent, int requestCode) {
-        super.startActivityForResult(intent, requestCode);
         if (!TextUtils.isEmpty(notifyId)){
             intent.putExtra(NOTIFY_ID,notifyId);
         }
+        super.startActivityForResult(intent, requestCode);
+
     }
 
     @Override
