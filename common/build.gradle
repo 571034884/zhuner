@@ -8,22 +8,32 @@ def buildTime() {
 }
 
 android {
+    signingConfigs {
+        config {
+            keyAlias 'service'
+            keyPassword 'aibabel*123'
+            storeFile file('service.jks')
+            storePassword 'aibabel*123'
+        }
+    }
     compileSdkVersion 28
     defaultConfig {
         applicationId "com.aibabel.locationservice"
         minSdkVersion 21
         targetSdkVersion 28
         versionCode 10
-        versionName "1.1.3"
+        versionName "1.1.4"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.config
         }
         debug {
             resValue("string", "PORT_NUMBER", "9999")
+            signingConfig signingConfigs.config
         }
     }
     sourceSets {
