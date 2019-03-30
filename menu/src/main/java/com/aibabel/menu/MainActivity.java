@@ -450,6 +450,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         LogUtil.e("getSN:" + CommonUtils.getSN());
 
 
+
     }
 
 
@@ -522,7 +523,11 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         }
     }
 
-    private static final String url_sync_order = "https://wx.aibabel.com:3002/common/api/machine/syncOrder";
+    /**
+     * 测试IP
+     */
+    //private static final String url_sync_order = "https://wx.aibabel.com:3002/common/api/machine/syncOrder";
+    private static final String url_sync_order = "https://api.web.aibabel.cn:7001/common/api/machine/syncOrder";
 
     /**
      * 同步订单， hjs
@@ -1860,8 +1865,8 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
             if (loopHandler != null) loopHandler.sendEmptyMessageDelayed(100, 1000);
             return 1;
         }
-
         return -1;
     }
+
 
 }
