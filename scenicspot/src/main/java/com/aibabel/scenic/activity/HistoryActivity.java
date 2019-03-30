@@ -41,6 +41,7 @@ import com.bumptech.glide.request.RequestOptions;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.shehuan.niv.NiceImageView;
 
+import java.io.Serializable;
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -145,7 +146,11 @@ public class HistoryActivity extends BaseScenicActivity implements ExpireBroadca
         mPosition = getIntent().getIntExtra("position", 0);
         page = 1;
 
-
+        try{
+            HashMap<String, Serializable> map = new HashMap<>();
+            map.put("scenic_history_open_name",list.get(mPosition).getName());
+            addStatisticsEvent("scenic_history_open",map);
+        }catch (Exception e){}
 
         //横向RecyclerView
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
@@ -261,6 +266,8 @@ public class HistoryActivity extends BaseScenicActivity implements ExpireBroadca
                 sendBroadcast(Constants.ACTION_PRV);
                 break;
             case R.id.tv_left:
+                addStatisticsEvent("scenic_history_close",null);
+
                 onBackPressed();
                 sendBroadcast(Constants.ACTION_CLOSE);
                 Intent intent = new Intent(getApplicationContext(), MusicService.class);
@@ -273,7 +280,18 @@ public class HistoryActivity extends BaseScenicActivity implements ExpireBroadca
     @Override
     public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
         sendBroadcast(Constants.ACTION_LIST_ITEM, position);
+        try{
+            HashMap<String, Serializable> map = new HashMap<>();
+            map.put("scenic_history_list_click_id",position);
+            map.put("scenic_history_list_click_name",list.get(mPosition).getName());
+            addStatisticsEvent("scenic_history_list_click",map);
+        }catch (Exception e){}
 
+        try{
+            HashMap<String, Serializable> map = new HashMap<>();
+            map.put("scenic_history_des_name",list.get(mPosition).getName());
+            addStatisticsEvent("scenic_history_des",map);
+        }catch (Exception e){}
     }
 
 

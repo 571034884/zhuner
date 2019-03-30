@@ -305,22 +305,47 @@ public class SpotsActivity extends BaseScenicActivity implements ExpireBroadcast
             case R.id.tv_start:
                 if (mIsPlaying) {
                     sendBroadcast(Constants.ACTION_PAUSE);
+                    try{
+                        HashMap<String, Serializable> map = new HashMap<>();
+                        map.put("scenic_spots_auto_off_name",list.get(mPosition).getName());
+                        addStatisticsEvent("scenic_spots_auto_off",map);
+                    }catch (Exception e){}
                 } else {
-                    if (mPosition == 0) {
-                        sendBroadcast(Constants.ACTION_LIST_ITEM, 0);
-                    } else {
-                        sendBroadcast(Constants.ACTION_PLAY);
-                    }
+//                    if (mPosition == 0) {
+//                        sendBroadcast(Constants.ACTION_LIST_ITEM, 0);
+//                    } else {
+//
+//                    }
+                    sendBroadcast(Constants.ACTION_PLAY);
+
+                    try{
+                        HashMap<String, Serializable> map = new HashMap<>();
+                        map.put("scenic_spots_auto_on_name",list.get(mPosition).getName());
+                        addStatisticsEvent("scenic_spots_auto_on",map);
+                    }catch (Exception e){}
+
                 }
                 break;
             case R.id.tv_next:
                 if (CommonUtils.isFastClick()){
                     sendBroadcast(Constants.ACTION_NEXT);
+                    try{
+                        HashMap<String, Serializable> map = new HashMap<>();
+                        map.put("scenic_spots_down_name",list.get(mPosition).getName());
+                        addStatisticsEvent("scenic_spots_down",map);
+                    }catch (Exception e){}
                 }
                 break;
             case R.id.tv_pre:
                 if (CommonUtils.isFastClick()){
                     sendBroadcast(Constants.ACTION_PRV);
+
+                    try{
+                        HashMap<String, Serializable> map = new HashMap<>();
+                        map.put("scenic_spots_up_name",list.get(mPosition).getName());
+                        addStatisticsEvent("scenic_spots_up",map);
+                    }catch (Exception e){}
+
                 }
                 break;
             case R.id.tv_left:
@@ -339,6 +364,11 @@ public class SpotsActivity extends BaseScenicActivity implements ExpireBroadcast
     @Override
     public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
         sendBroadcast(Constants.ACTION_LIST_ITEM, position + 1);
+        try{
+            HashMap<String, Serializable> map = new HashMap<>();
+            map.put("scenic_spots_list_name",list.get(mPosition).getName());
+            addStatisticsEvent("scenic_spots_list",map);
+        }catch (Exception e){}
     }
     //======================================音乐处理=================================================
 
