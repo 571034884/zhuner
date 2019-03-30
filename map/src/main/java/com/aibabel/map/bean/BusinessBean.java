@@ -67,8 +67,8 @@ public class BusinessBean extends BaseBean implements Serializable {
         private String tagMy;
         private String image;
         private String nameCh;
+        private String tourguidePidStr;
         private String nameEn;
-        private String poiId;
         private int couponId;
         private int cateId;
 
@@ -273,12 +273,12 @@ public class BusinessBean extends BaseBean implements Serializable {
             this.cateId = cateId;
         }
 
-        public String getPoiId() {
-            return poiId;
+        public String getTourguidePidStr() {
+            return tourguidePidStr;
         }
 
-        public void setPoiId(String poiId) {
-            this.poiId = poiId;
+        public void setTourguidePidStr(String tourguidePidStr) {
+            this.tourguidePidStr = tourguidePidStr;
         }
     }
 }

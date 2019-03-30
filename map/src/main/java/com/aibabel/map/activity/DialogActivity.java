@@ -300,7 +300,7 @@ public class DialogActivity extends StatisticsBaseActivity implements View.OnCli
         Intent intent = new Intent();
         ComponentName componentName = new ComponentName("com.aibabel.scenic", "com.aibabel.scenic.activity.SpotsActivity");
         intent.setComponent(componentName);
-        intent.putExtra("poiId",  data.getPoiId()+"");
+        intent.putExtra("poiId",  data.getTourguidePidStr()+"");
 //        intent.putExtra("from", "map");
 //        intent.putExtra("url", url);
 //        intent.putExtra("name", nameCh);
