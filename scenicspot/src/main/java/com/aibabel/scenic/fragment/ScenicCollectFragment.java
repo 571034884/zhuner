@@ -141,7 +141,7 @@ public class ScenicCollectFragment extends BaseFragment implements BaseQuickAdap
         map.put("leaseId", SPHelper.getString("order_oid", ""));
         map.put("page", String.valueOf(page));
         map.put("pageSize", String.valueOf(PAGE_SIZE));
-        OkGoUtil.get(ApiConstant.GET_COLLECTION, map, BaseBean.class, new BaseCallback() {
+        OkGoUtil.get(mContext,ApiConstant.GET_COLLECTION, map, BaseBean.class, new BaseCallback() {
             @Override
             public void onSuccess(String method, BaseBean model, String json) {
                 Logs.e(json);

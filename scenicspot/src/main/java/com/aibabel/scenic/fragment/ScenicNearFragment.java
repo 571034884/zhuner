@@ -154,7 +154,7 @@ public class ScenicNearFragment extends BaseFragment implements BaseQuickAdapter
 //        map.put("leaseId", "1122");
         map.put("page", String.valueOf(page));
         map.put("pageSize", String.valueOf(PAGE_SIZE));
-        OkGoUtil.get(ApiConstant.GET_NEAR, map, BaseBean.class, new BaseCallback() {
+        OkGoUtil.get(mContext,ApiConstant.GET_NEAR, map, BaseBean.class, new BaseCallback() {
             @Override
             public void onSuccess(String method, BaseBean model, String json) {
                 Logs.e(json);
