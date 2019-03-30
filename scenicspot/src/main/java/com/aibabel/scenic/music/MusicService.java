@@ -366,11 +366,13 @@ public class MusicService extends Service implements MediaPlayer.OnErrorListener
                 Log.i(TAG, "onAudioFocusChange: -------------AUDIOFOCUS_LOSS---------------");
                 // Lost focus for an unbounded amount of time: stop playback and release media player
                 isLoseFocus = false;
-                if (null != mPlayer && mPlayer.isPlaying()) {
-                    mPlayer.stop();
-                    sentPlayStateToMain();
+                if (null != mPlayer) {
+                    if (mPlayer.isPlaying()) {
+                        mPlayer.stop();
+                        sentPlayStateToMain();
+                    }
+                    mPlayer.release();
                 }
-                mPlayer.release();
                 mPlayer = null;
                 break;
             case AudioManager.AUDIOFOCUS_LOSS_TRANSIENT://你暂时失去了音频焦点
