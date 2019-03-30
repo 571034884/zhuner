@@ -724,7 +724,8 @@ public class LocationService extends Service implements ScreenListener, CardBroa
             return;
         }
 
-        String url = "https://wx.aibabel.com:3002/common/api/flow/count";
+        //String url = "https://wx.aibabel.com:3002/common/api/flow/count";
+        String url = "https://api.web.aibabel.cn:7001/common/api/flow/count";
 
         String orderNo = CommonUtils.getOrderNo();
         Log.e(TAG, "=============" + orderNo + "==============");
