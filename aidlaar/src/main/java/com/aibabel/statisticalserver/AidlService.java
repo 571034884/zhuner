@@ -119,8 +119,12 @@ public class AidlService extends Service {
         }
 
         @Override
-        public void getAllData() throws RemoteException {
-            Log.e(TAG, "getAllData: " + FastJsonUtil.changObjectToString(sendingList));
+        public void getAllData() {
+            try {
+                Log.e(TAG, "getAllData: " + FastJsonUtil.changObjectToString(sendingList));
+            }catch (Exception e){
+            }
+
         }
 
         @Override

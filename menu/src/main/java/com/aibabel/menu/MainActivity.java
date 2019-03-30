@@ -1770,7 +1770,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         }
         Log.e("SERVICE_FUWU", "时区：" + timerID + "----选择服务器:" + Constans.HOST_SERVER);
     }
-
+    private int servers = 0;
 
     /**
      * 1.获取服务器域名
@@ -1813,11 +1813,24 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
                     @Override
                     public void onError(Response<String> response) {
                         super.onError(response);
+                        switch (servers){
+                            case 0:
+                                servers = 1;
+                                getInternetService();
+                                break;
+                            case 1:
+                                ToastUtil.showShort(mContext, "服务器出错，请重启设备");
+                                break;
+                        }
+
                         Log.e("SERVICE_FUWU", "onError:" + response.getException().toString());
                     }
                 });
 
     }
+
+
+
 
     private void saveService(String response) {
         try {
