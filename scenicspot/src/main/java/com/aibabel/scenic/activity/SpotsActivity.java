@@ -333,6 +333,10 @@ public class SpotsActivity extends BaseScenicActivity implements ExpireBroadcast
                 }
                 break;
             case R.id.tv_next:
+                if (!CommonUtils.isNetworkAvailable(this)) {
+                    ToastUtil.showShort(this, "当前网络不可用！");
+                    return;
+                }
                 if (CommonUtils.isFastClick()) {
                     sendBroadcast(Constants.ACTION_NEXT);
                     try {
@@ -344,6 +348,10 @@ public class SpotsActivity extends BaseScenicActivity implements ExpireBroadcast
                 }
                 break;
             case R.id.tv_pre:
+                if (!CommonUtils.isNetworkAvailable(this)) {
+                    ToastUtil.showShort(this, "当前网络不可用！");
+                    return;
+                }
                 if (CommonUtils.isFastClick()) {
                     sendBroadcast(Constants.ACTION_PRV);
 
@@ -374,6 +382,10 @@ public class SpotsActivity extends BaseScenicActivity implements ExpireBroadcast
 
                 break;
             case R.id.iv_scenic:
+                if (!CommonUtils.isNetworkAvailable(this)) {
+                    ToastUtil.showShort(this, "当前网络不可用！");
+                    return;
+                }
                 sendBroadcast(Constants.ACTION_LIST_ITEM, 0);
                 break;
         }
@@ -381,6 +393,10 @@ public class SpotsActivity extends BaseScenicActivity implements ExpireBroadcast
 
     @Override
     public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
+        if (!CommonUtils.isNetworkAvailable(this)) {
+            ToastUtil.showShort(this, "当前网络不可用！");
+            return;
+        }
         sendBroadcast(Constants.ACTION_LIST_ITEM, position + 1);
         try {
             HashMap<String, Serializable> map = new HashMap<>();
@@ -507,35 +523,16 @@ public class SpotsActivity extends BaseScenicActivity implements ExpireBroadcast
      * @param action
      */
     private void sendBroadcast(String action) {
-
-        try {
-            if (!CommonUtils.isNetworkAvailable(this)) {
-                ToastUtil.showShort(this, "当前网络不可用！");
-                return;
-            }
             Intent intent = new Intent();
             intent.setAction(action);
             sendBroadcast(intent);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
     }
 
     private void sendBroadcast(String action, int position) {
-
-        try {
-            if (!CommonUtils.isNetworkAvailable(this)) {
-                ToastUtil.showShort(this, "当前网络不可用！");
-                return;
-            }
             Intent intent = new Intent();
             intent.putExtra("position", position);
             intent.setAction(action);
             sendBroadcast(intent);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
 
     }
 

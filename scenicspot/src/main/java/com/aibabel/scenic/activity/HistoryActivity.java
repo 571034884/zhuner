@@ -261,14 +261,21 @@ public class HistoryActivity extends BaseScenicActivity implements ExpireBroadca
                 }
                 break;
             case R.id.tv_next:
+                if (!CommonUtils.isNetworkAvailable(this)) {
+                    ToastUtil.showShort(this, "当前网络不可用！");
+                    return;
+                }
                 sendBroadcast(Constants.ACTION_NEXT);
                 break;
             case R.id.tv_pre:
+                if (!CommonUtils.isNetworkAvailable(this)) {
+                    ToastUtil.showShort(this, "当前网络不可用！");
+                    return;
+                }
                 sendBroadcast(Constants.ACTION_PRV);
                 break;
             case R.id.tv_left:
                 addStatisticsEvent("scenic_history_close", null);
-
                 onBackPressed();
                 sendBroadcast(Constants.ACTION_CLOSE);
                 Intent intent = new Intent(getApplicationContext(), MusicService.class);
@@ -290,6 +297,10 @@ public class HistoryActivity extends BaseScenicActivity implements ExpireBroadca
 
     @Override
     public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
+        if (!CommonUtils.isNetworkAvailable(this)) {
+            ToastUtil.showShort(this, "当前网络不可用！");
+            return;
+        }
         sendBroadcast(Constants.ACTION_LIST_ITEM, position);
         try {
             HashMap<String, Serializable> map = new HashMap<>();
@@ -422,33 +433,21 @@ public class HistoryActivity extends BaseScenicActivity implements ExpireBroadca
      * @param action
      */
     private void sendBroadcast(String action) {
-        try {
-            if (!CommonUtils.isNetworkAvailable(this)) {
-                ToastUtil.showShort(this, "当前网络不可用！");
-                return;
-            }
+
+
             Intent intent = new Intent();
             intent.setAction(action);
             sendBroadcast(intent);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+
 
     }
 
     private void sendBroadcast(String action, int position) {
-        try {
-            if (!CommonUtils.isNetworkAvailable(this)) {
-                ToastUtil.showShort(this, "当前网络不可用！");
-                return;
-            }
             Intent intent = new Intent();
             intent.putExtra("position", position);
             intent.setAction(action);
             sendBroadcast(intent);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+
     }
 
 }
