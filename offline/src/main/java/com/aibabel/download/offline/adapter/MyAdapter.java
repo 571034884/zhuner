@@ -17,10 +17,14 @@ public abstract class MyAdapter<T> extends BaseAdapter {
     private int layoutId; //把布局单独提取出来
 
     public MyAdapter(Context context, List<T> datas, int layoutId) {
-        this.mContext = context;
-        mInflater = LayoutInflater.from(context);
-        this.mDatas = datas;
-        this.layoutId = layoutId;
+        try {
+            this.mContext = context;
+            mInflater = LayoutInflater.from(context);
+            this.mDatas = datas;
+            this.layoutId = layoutId;
+        }catch (Exception e){
+
+        }
     }
 
     @Override
