@@ -68,6 +68,7 @@ public class BusinessBean extends BaseBean implements Serializable {
         private String image;
         private String nameCh;
         private String nameEn;
+        private String poiId;
         private int couponId;
         private int cateId;
 
@@ -270,6 +271,14 @@ public class BusinessBean extends BaseBean implements Serializable {
 
         public void setCateId(int cateId) {
             this.cateId = cateId;
+        }
+
+        public String getPoiId() {
+            return poiId;
+        }
+
+        public void setPoiId(String poiId) {
+            this.poiId = poiId;
         }
     }
 }

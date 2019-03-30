@@ -298,13 +298,13 @@ public class DialogActivity extends StatisticsBaseActivity implements View.OnCli
 
         if (!CommonUtils.isFastClick()) return;
         Intent intent = new Intent();
-        ComponentName componentName = new ComponentName("com.aibabel.travel", "com.aibabel.travel.activity.SpotActivity");
+        ComponentName componentName = new ComponentName("com.aibabel.scenic", "com.aibabel.scenic.activity.SpotsActivity");
         intent.setComponent(componentName);
-        intent.putExtra("id", tourguideId + "");
-        intent.putExtra("from", "map");
-        intent.putExtra("url", url);
-        intent.putExtra("name", nameCh);
-        intent.putExtra("audioUrl", audioUrl);
+        intent.putExtra("poiId",  data.getPoiId()+"");
+//        intent.putExtra("from", "map");
+//        intent.putExtra("url", url);
+//        intent.putExtra("name", nameCh);
+//        intent.putExtra("audioUrl", audioUrl);
         startActivity(intent);
         this.finish();
     }
