@@ -1,10 +1,18 @@
 apply plugin: 'com.android.application'
 apply plugin: 'com.aliyun.ams.emas-services'
+def buildTime() {
+    return new Date().format("MMddHHmmss", TimeZone.getDefault())
+}
 android {
+    signingConfigs {
+        config {
+            keyAlias 'play'
+            keyPassword 'aibabel*123'
+            storeFile file('play.jks')
+            storePassword 'aibabel*123'
+        }
+    }
     compileSdkVersion 28
-
-
-
     defaultConfig {
         applicationId "com.aibabel.fyt_play"
         minSdkVersion 21
@@ -15,11 +23,24 @@ android {
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
 
     }
+    applicationVariants.all { variant ->
+        variant.outputs.each { output ->
+            def outputFile = output.outputFile
+            if (outputFile != null && outputFile.name.endsWith('.apk')) {
+                def version = "v${versionName}.${buildTime()}"
+                def endIndex = outputFile.name.indexOf('.apk')
+                def apkName = outputFile.name.substring(0, endIndex);
+                def fileName = "玩乐_${version}.apk"
+                output.outputFileName = fileName
+            }
+        }
+    }
 
        buildTypes {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.config
         }
     }
 
