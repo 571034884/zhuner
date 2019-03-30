@@ -121,6 +121,7 @@ public class SpotsActivity extends BaseScenicActivity implements ExpireBroadcast
 
     private long startTimer;
     private long endTimer;
+
     @Override
     public int getLayouts(Bundle var1) {
         return R.layout.activity_spots;
@@ -312,7 +313,8 @@ public class SpotsActivity extends BaseScenicActivity implements ExpireBroadcast
                         HashMap<String, Serializable> map = new HashMap<>();
                         map.put("scenic_spots_auto_off_name", list.get(mPosition).getName());
                         addStatisticsEvent("scenic_spots_auto_off", map);
-                    } catch (Exception e) {}
+                    } catch (Exception e) {
+                    }
                 } else {
 //                    if (mPosition == 0) {
 //                        sendBroadcast(Constants.ACTION_LIST_ITEM, 0);
@@ -365,9 +367,10 @@ public class SpotsActivity extends BaseScenicActivity implements ExpireBroadcast
                     endTimer = System.currentTimeMillis();
                     HashMap<String, Serializable> map = new HashMap<>();
                     map.put("scenic_spots_over_name", list.get(mPosition).getName());
-                    map.put("scenic_spots_over_long", (endTimer-startTimer)+"");
+                    map.put("scenic_spots_over_long", (endTimer - startTimer) + "");
                     addStatisticsEvent("scenic_spots_over", map);
-                } catch (Exception e) {}
+                } catch (Exception e) {
+                }
 
                 break;
             case R.id.iv_scenic:
@@ -461,11 +464,12 @@ public class SpotsActivity extends BaseScenicActivity implements ExpireBroadcast
             try {
                 HashMap<String, Serializable> map = new HashMap<>();
                 map.put("scenic_spots_over_name", list.get(mPosition).getName());
-                map.put("scenic_spots_over_long", (endTimer-startTimer)+"");
+                map.put("scenic_spots_over_long", (endTimer - startTimer) + "");
                 addStatisticsEvent("scenic_spots_over", map);
                 startTimer = 0;
                 endTimer = 0;
-            } catch (Exception e) {}
+            } catch (Exception e) {
+            }
 
             tvStart.setBackgroundResource(R.mipmap.ic_play_normal);
         }
@@ -503,17 +507,36 @@ public class SpotsActivity extends BaseScenicActivity implements ExpireBroadcast
      * @param action
      */
     private void sendBroadcast(String action) {
-        Intent intent = new Intent();
-        intent.setAction(action);
-        sendBroadcast(intent);
+
+        try {
+            if (!CommonUtils.isNetworkAvailable(this)) {
+                ToastUtil.showShort(this, "当前网络不可用！");
+                return;
+            }
+            Intent intent = new Intent();
+            intent.setAction(action);
+            sendBroadcast(intent);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
     }
 
     private void sendBroadcast(String action, int position) {
 
-        Intent intent = new Intent();
-        intent.putExtra("position", position);
-        intent.setAction(action);
-        sendBroadcast(intent);
+        try {
+            if (!CommonUtils.isNetworkAvailable(this)) {
+                ToastUtil.showShort(this, "当前网络不可用！");
+                return;
+            }
+            Intent intent = new Intent();
+            intent.putExtra("position", position);
+            intent.setAction(action);
+            sendBroadcast(intent);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
     }
 
     private void updateList(List<SpotsBean.DataBean.SubpoiMsgBean> list) {
