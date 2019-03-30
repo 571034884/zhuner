@@ -12,9 +12,11 @@ import com.aibabel.baselibrary.sphelper.SPHelper;
 import com.aibabel.baselibrary.utils.CommonUtils;
 import com.aibabel.baselibrary.utils.DeviceUtils;
 import com.aibabel.baselibrary.utils.FastJsonUtil;
+import com.aibabel.baselibrary.utils.ServerKeyUtils;
 import com.aibabel.scenic.bean.AddressBean;
 import com.aibabel.scenic.okgo.ApiConstant;
 import com.aibabel.scenic.utils.CityConfig;
+import com.aibabel.scenic.utils.Logs;
 import com.umeng.analytics.MobclickAgent;
 import com.umeng.commonsdk.UMConfigure;
 
@@ -66,6 +68,10 @@ public class ScenicBaseApplication extends BaseApplication {
         addressBeanNorth = FastJsonUtil.changeJsonToBean(CityConfig.northFragment,AddressBean.class);
         addressBeanOceanica = FastJsonUtil.changeJsonToBean(CityConfig.oceaniaFragment,AddressBean.class);
         LEASEID = SPHelper.getString("order_oid","");
+
+        Logs.e(ApiConstant.HOST);
+        ApiConstant.HOST = SPHelper.getString(ServerKeyUtils.serverKeyScenic,"http://abroad.api.joner.aibabel.cn:7001");
+        Logs.e(ApiConstant.HOST);
     }
 
     @Override

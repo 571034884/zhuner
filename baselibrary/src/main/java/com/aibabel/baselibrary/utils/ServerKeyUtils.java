@@ -30,6 +30,7 @@ public class ServerKeyUtils {
     public static final String serverKeyTravelJoner = "default_com_aibabel_travel_joner";
     public static final String serverKeyTravelAdvisory = "default_com_aibabel_traveladvisory_joner";
     public static final String serverKeyEeatherJoner = "default_com_aibabel_weather_joner";
+    public static final String serverKeyScenic = "default_com_aibabel_scenic";
 
     //以下获取服务器Error Key
     public static final String serverKeyAlliedClockJonerError = "default_com_aibabel_alliedclock_joner_error";
@@ -55,5 +56,6 @@ public class ServerKeyUtils {
     public static final String serverKeyTravelJonerError = "default_com_aibabel_travel_joner_error";
     public static final String serverKeyTravelAdvisoryError = "default_com_aibabel_traveladvisory_joner_error";
     public static final String serverKeyEeatherJonerError = "default_com_aibabel_weather_joner_error";
+    public static final String serverKeyScenicError = "default_com_aibabel_scenic_error";
 
 }

@@ -30,4 +30,5 @@ public class ServerBean {
     public List<Domain> default_com_aibabel_travel_joner;
     public List<Domain> default_com_aibabel_traveladvisory_joner;
     public List<Domain> default_com_aibabel_weather_joner;
+    public List<Domain> default_com_aibabel_scenic;
 }

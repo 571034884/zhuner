@@ -61,6 +61,8 @@ public class ServerUtils {
         DataManager.getInstance().setSaveString("_com_aibabel_travel_joner",getSerVerInfo(serverBean.default_com_aibabel_travel_joner,ServerKeyUtils.serverKeyTravelJoner));
         DataManager.getInstance().setSaveString("_com_aibabel_traveladvisory_joner",getSerVerInfo(serverBean.default_com_aibabel_traveladvisory_joner,ServerKeyUtils.serverKeyTravelAdvisory));
         DataManager.getInstance().setSaveString("_com_aibabel_weather_joner",getSerVerInfo(serverBean.default_com_aibabel_weather_joner,ServerKeyUtils.serverKeyEeatherJoner));
+        DataManager.getInstance().setSaveString("_com_aibabel_scenic",getSerVerInfo(serverBean.default_com_aibabel_scenic,ServerKeyUtils.serverKeyScenic));
+
     }
 
     /**
