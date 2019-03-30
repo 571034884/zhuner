@@ -229,8 +229,8 @@ public class StatisticsManager implements IStatistics {
 
 
         Log.e("allPath", allData);
-        String url = "http://39.107.238.111:7001";
-//        String url=CommonUtils.getTimerType()==0?"http://abroad.api.joner.aibabel.cn:7001":"http://api.joner.aibabel.cn:7001";
+//        String url = "http://39.107.238.111:7001";
+        String url=CommonUtils.getTimerType()==0?"http://abroad.api.joner.aibabel.cn:7001":"http://api.joner.aibabel.cn:7001";
         PostRequest<String> postRequest = OkGo.<String>post(url + "/v2/ddot/JonerLogPush").tag("JonerLogPush");
 
         postRequest.params("sv", Build.DISPLAY);
