@@ -111,9 +111,9 @@ public class HistoryActivity extends BaseScenicActivity implements ExpireBroadca
     private List<HistoryBean> list = new ArrayList<>();
     private int page;
     private final int PAGE_SIZE = 50;
-    private static int mPosition = 0;
+    private int mPosition = 0;
     //播放状态
-    private static boolean mIsPlaying;
+    private boolean mIsPlaying;
     Handler handler = new MyHandler(HistoryActivity.this);
     private List<MusicBean> musicList = new ArrayList<>();
     private String json;

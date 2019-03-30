@@ -112,9 +112,9 @@ public class SpotsActivity extends BaseScenicActivity implements ExpireBroadcast
     private Adapter_Spots mAdapter;
     private int page;
     private final int PAGE_SIZE = 50;
-    private static int mPosition = 0;
+    private int mPosition = 0;
     //播放状态
-    private static boolean mIsPlaying;
+    private boolean mIsPlaying;
     private String poiId;
     Handler handler = new MyHandler(SpotsActivity.this);
     private List<MusicBean> musicList = new ArrayList<>();
@@ -134,18 +134,20 @@ public class SpotsActivity extends BaseScenicActivity implements ExpireBroadcast
         tvLeft.setOnClickListener(this);
         tvStart.setOnClickListener(this);
         ivScenic.setOnClickListener(this);
-        ExpireBroadcast.setStopMp3(this,Constants.key_spot);
+        ExpireBroadcast.setStopMp3(this, Constants.key_spot);
     }
 
     @Override
     public void initData() {
         page = 1;
+        mPosition = 0;
         poiId = getIntent().getStringExtra("poiId");
-        try{
+        try {
             HashMap<String, Serializable> map = new HashMap<>();
-            map.put("scenic_spots_open_name",poiId);
-            addStatisticsEvent("scenic_spots_open",map);
-        }catch (Exception e){}
+            map.put("scenic_spots_open_name", poiId);
+            addStatisticsEvent("scenic_spots_open", map);
+        } catch (Exception e) {
+        }
         GridLayoutManager layoutManager = new GridLayoutManager(this, 2);
         //设置布局管理器
         rvSpots.setLayoutManager(layoutManager);
@@ -305,11 +307,12 @@ public class SpotsActivity extends BaseScenicActivity implements ExpireBroadcast
             case R.id.tv_start:
                 if (mIsPlaying) {
                     sendBroadcast(Constants.ACTION_PAUSE);
-                    try{
+                    try {
                         HashMap<String, Serializable> map = new HashMap<>();
-                        map.put("scenic_spots_auto_off_name",list.get(mPosition).getName());
-                        addStatisticsEvent("scenic_spots_auto_off",map);
-                    }catch (Exception e){}
+                        map.put("scenic_spots_auto_off_name", list.get(mPosition).getName());
+                        addStatisticsEvent("scenic_spots_auto_off", map);
+                    } catch (Exception e) {
+                    }
                 } else {
 //                    if (mPosition == 0) {
 //                        sendBroadcast(Constants.ACTION_LIST_ITEM, 0);
@@ -318,38 +321,41 @@ public class SpotsActivity extends BaseScenicActivity implements ExpireBroadcast
 //                    }
                     sendBroadcast(Constants.ACTION_PLAY);
 
-                    try{
+                    try {
                         HashMap<String, Serializable> map = new HashMap<>();
-                        map.put("scenic_spots_auto_on_name",list.get(mPosition).getName());
-                        addStatisticsEvent("scenic_spots_auto_on",map);
-                    }catch (Exception e){}
+                        map.put("scenic_spots_auto_on_name", list.get(mPosition).getName());
+                        addStatisticsEvent("scenic_spots_auto_on", map);
+                    } catch (Exception e) {
+                    }
 
                 }
                 break;
             case R.id.tv_next:
-                if (CommonUtils.isFastClick()){
+                if (CommonUtils.isFastClick()) {
                     sendBroadcast(Constants.ACTION_NEXT);
-                    try{
+                    try {
                         HashMap<String, Serializable> map = new HashMap<>();
-                        map.put("scenic_spots_down_name",list.get(mPosition).getName());
-                        addStatisticsEvent("scenic_spots_down",map);
-                    }catch (Exception e){}
+                        map.put("scenic_spots_down_name", list.get(mPosition).getName());
+                        addStatisticsEvent("scenic_spots_down", map);
+                    } catch (Exception e) {
+                    }
                 }
                 break;
             case R.id.tv_pre:
-                if (CommonUtils.isFastClick()){
+                if (CommonUtils.isFastClick()) {
                     sendBroadcast(Constants.ACTION_PRV);
 
-                    try{
+                    try {
                         HashMap<String, Serializable> map = new HashMap<>();
-                        map.put("scenic_spots_up_name",list.get(mPosition).getName());
-                        addStatisticsEvent("scenic_spots_up",map);
-                    }catch (Exception e){}
+                        map.put("scenic_spots_up_name", list.get(mPosition).getName());
+                        addStatisticsEvent("scenic_spots_up", map);
+                    } catch (Exception e) {
+                    }
 
                 }
                 break;
             case R.id.tv_left:
-                addStatisticsEvent("scenic_spots_close",null);
+                addStatisticsEvent("scenic_spots_close", null);
                 onBackPressed();
                 sendBroadcast(Constants.ACTION_CLOSE);
                 Intent intent = new Intent(getApplicationContext(), MusicService.class);
@@ -364,11 +370,12 @@ public class SpotsActivity extends BaseScenicActivity implements ExpireBroadcast
     @Override
     public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
         sendBroadcast(Constants.ACTION_LIST_ITEM, position + 1);
-        try{
+        try {
             HashMap<String, Serializable> map = new HashMap<>();
-            map.put("scenic_spots_list_name",list.get(mPosition).getName());
-            addStatisticsEvent("scenic_spots_list",map);
-        }catch (Exception e){}
+            map.put("scenic_spots_list_name", list.get(mPosition).getName());
+            addStatisticsEvent("scenic_spots_list", map);
+        } catch (Exception e) {
+        }
     }
     //======================================音乐处理=================================================
 
@@ -380,7 +387,7 @@ public class SpotsActivity extends BaseScenicActivity implements ExpireBroadcast
         musicService.setClass(getApplicationContext(), MusicService.class);
         musicService.putParcelableArrayListExtra("music_list", (ArrayList<? extends Parcelable>) musicList);
         musicService.putExtra("messenger", new Messenger(handler));
-        musicService.putExtra("position", 0);
+        musicService.putExtra("position", mPosition);
         startService(musicService);
 //        ToastUtil.showShort(this, "启动音乐服务");
     }
