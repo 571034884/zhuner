@@ -208,7 +208,7 @@ public class MainActivity extends BaseScenicActivity {
             @Override
             public void onSuccess(String method, ScenicBean model, String resoureJson) {
                 Logs.e(ApiConstant.GET_HOME_SCENIC + "：" + resoureJson);
-
+                rlDatas.setVisibility(View.VISIBLE);
                 mEmpty.setErrorType(EmptyLayout.SUCCESS_EMPTY);
                 showDetails(model.data);
             }
@@ -216,6 +216,7 @@ public class MainActivity extends BaseScenicActivity {
             @Override
             public void onError(String method, String message, String resoureJson) {
                 mEmpty.setErrorType(EmptyLayout.ERROR_EMPTY);
+                rlDatas.setVisibility(View.GONE);
                 Logs.e(ApiConstant.GET_HOME_SCENIC + "：" + message);
             }
 
