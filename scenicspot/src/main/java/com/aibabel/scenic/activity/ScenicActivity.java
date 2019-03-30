@@ -14,6 +14,9 @@ import com.aibabel.scenic.fragment.ScenicCollectFragment;
 import com.aibabel.scenic.fragment.ScenicHotFragment;
 import com.aibabel.scenic.fragment.ScenicNearFragment;
 
+import java.io.Serializable;
+import java.util.HashMap;
+
 import butterknife.BindView;
 
 /**
@@ -74,6 +77,9 @@ public class ScenicActivity extends BaseScenicActivity {
 
     @Override
     public void initView() {
+
+        addStatisticsEvent("scenic_list_open",null);
+
         cityName = getIntent().getStringExtra("cityName");
         index = getIntent().getIntExtra("index", 0);
         llHot.setOnClickListener(this);
@@ -101,16 +107,32 @@ public class ScenicActivity extends BaseScenicActivity {
                 if(isChanged){
                     setResult(1003);
                 }
+                addStatisticsEvent("scenic_list_close",null);
                 this.finish();
                 break;
             case R.id.ll_hot://热门
                 getShowView(0);
+                try{
+                    HashMap<String, Serializable> map = new HashMap<>();
+                    map.put("scenic_list_btn_hot_click_name",cityName);
+                    addStatisticsEvent("scenic_list_btn_hot_click",map);
+                }catch (Exception e){}
                 break;
             case R.id.ll_about://附近
                 getShowView(1);
+                try{
+                    HashMap<String, Serializable> map = new HashMap<>();
+                    map.put("scenic_list_btn_about_click_name",cityName);
+                    addStatisticsEvent("scenic_list_btn_about_click",map);
+                }catch (Exception e){}
                 break;
             case R.id.ll_collect://收藏
                 getShowView(2);
+                try{
+                    HashMap<String, Serializable> map = new HashMap<>();
+                    map.put("scenic_list_btn_collect_click_name",cityName);
+                    addStatisticsEvent("scenic_list_btn_collect_click",map);
+                }catch (Exception e){}
                 break;
         }
     }

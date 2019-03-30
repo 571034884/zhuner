@@ -40,6 +40,7 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 
+import java.io.Serializable;
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -126,6 +127,7 @@ public class SpotsActivity extends BaseScenicActivity implements ExpireBroadcast
 
     @Override
     public void initView() {
+
 //        remoteViews = new RemoteViews(getPackageName(), R.layout.customnotice);//通知栏布局
         tvPre.setOnClickListener(this);
         tvNext.setOnClickListener(this);
@@ -139,6 +141,11 @@ public class SpotsActivity extends BaseScenicActivity implements ExpireBroadcast
     public void initData() {
         page = 1;
         poiId = getIntent().getStringExtra("poiId");
+        try{
+            HashMap<String, Serializable> map = new HashMap<>();
+            map.put("scenic_spots_open_name",poiId);
+            addStatisticsEvent("scenic_spots_open",map);
+        }catch (Exception e){}
         GridLayoutManager layoutManager = new GridLayoutManager(this, 2);
         //设置布局管理器
         rvSpots.setLayoutManager(layoutManager);
@@ -317,6 +324,7 @@ public class SpotsActivity extends BaseScenicActivity implements ExpireBroadcast
                 }
                 break;
             case R.id.tv_left:
+                addStatisticsEvent("scenic_spots_close",null);
                 onBackPressed();
                 sendBroadcast(Constants.ACTION_CLOSE);
                 Intent intent = new Intent(getApplicationContext(), MusicService.class);

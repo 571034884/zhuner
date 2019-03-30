@@ -144,6 +144,9 @@ public class HistoryActivity extends BaseScenicActivity implements ExpireBroadca
         json = getIntent().getStringExtra("json");
         mPosition = getIntent().getIntExtra("position", 0);
         page = 1;
+
+
+
         //横向RecyclerView
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         layoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);

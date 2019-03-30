@@ -31,6 +31,7 @@ import com.aibabel.scenic.view.EmptyLayout;
 import com.aibabel.scenic.view.RecyclerItemDecoration;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -101,6 +102,13 @@ public class ScenicHotFragment extends BaseFragment implements BaseQuickAdapter.
     @Override
     public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
         if (CommonUtils.isFastClick()) {
+
+            try{
+                HashMap<String, Serializable> map = new HashMap<>();
+                map.put("scenic_list_btn_hot_des_id",position);
+                map.put("scenic_list_btn_hot_des_name",list.get(position).getCityname());
+                ((ScenicActivity)getActivity()).addStatisticsEvent("scenic_list_btn_hot_des",map);
+            }catch (Exception e){}
             Intent intent = new Intent();
             intent.setClass(getActivity(), SpotsActivity.class);
             intent.putExtra("poiId", list.get(position).getIdstring());
@@ -113,6 +121,14 @@ public class ScenicHotFragment extends BaseFragment implements BaseQuickAdapter.
         switch (view.getId()) {
             case R.id.iv_item_save:
                 String id = list.get(position).getIdstring();
+
+                try{
+                    HashMap<String, Serializable> map = new HashMap<>();
+                    map.put("scenic_list_btn_hot_collect_id",position);
+                    map.put("scenic_list_btn_hot_collect_name",list.get(position).getCityname());
+                    ((ScenicActivity)getActivity()).addStatisticsEvent("scenic_list_btn_hot_collect",map);
+                }catch (Exception e){}
+
                 if (CommonUtils.isFastClick()) {
                     //如果是已收藏，点击取消收藏，反之点击收藏
                     if (TextUtils.equals(list.get(position).getIsMy(), "1")) {
