@@ -5,6 +5,7 @@ import android.app.ActivityManager;
 import android.app.Application;
 import android.content.Context;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.DisplayMetrics;
 import android.util.Log;
 
@@ -195,7 +196,12 @@ public class BaseApplication extends com.aibabel.baselibrary.base.BaseApplicatio
         for (Activity activity : activityLinkedList) {
             activity.finish();
         }
-        android.os.Process.killProcess(android.os.Process.myPid());
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                android.os.Process.killProcess(android.os.Process.myPid());
+            }
+        },3000);
     }
 
 }

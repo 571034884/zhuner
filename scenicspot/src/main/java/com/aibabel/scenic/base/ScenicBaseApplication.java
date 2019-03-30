@@ -3,6 +3,7 @@ package com.aibabel.scenic.base;
 import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 
 import com.aibabel.baselibrary.base.BaseApplication;
@@ -173,8 +174,12 @@ public class ScenicBaseApplication extends BaseApplication {
         for (Activity activity : activityLinkedList) {
             activity.finish();
         }
-        android.os.Process.killProcess(android.os.Process.myPid());
-    }
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                android.os.Process.killProcess(android.os.Process.myPid());
+            }
+        },3000);    }
 
     @Override
     public void onTrimMemory(int level) {

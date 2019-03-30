@@ -189,9 +189,6 @@ public class DestinationFragment extends BaseFragment implements BaseCallback<Ba
         adapter = new CommomRecyclerAdapter(getActivity(), countryBeanData, R.layout.recy_country, new CommomRecyclerAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(CommonRecyclerViewHolder holder, int postion) {
-                Map map = new HashMap();
-                map.put("p1",countryBeanData.get(postion).getCountryname());
-                StatisticsManager.getInstance(mContext).addEventAidl( 2600, map);
 
                 /**####  start-hjs-addStatisticsEvent   ##**/
                 try {

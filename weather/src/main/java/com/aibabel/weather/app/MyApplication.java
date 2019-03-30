@@ -3,6 +3,7 @@ package com.aibabel.weather.app;
 import android.app.Activity;
 import android.app.Application;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 
 import com.aibabel.aidlaar.StatisticsManager;
@@ -189,7 +190,13 @@ public class MyApplication extends Application {
         for (Activity activity : activityLinkedList) {
             activity.finish();
         }
-        android.os.Process.killProcess(android.os.Process.myPid());
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                android.os.Process.killProcess(android.os.Process.myPid());
+            }
+        },5000);
+
     }
 
 }

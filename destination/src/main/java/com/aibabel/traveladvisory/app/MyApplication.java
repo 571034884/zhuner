@@ -7,6 +7,7 @@ import android.content.res.Configuration;
 import android.graphics.Point;
 import android.os.Bundle;
 import android.os.Environment;
+import android.os.Handler;
 import android.util.Log;
 import android.view.WindowManager;
 
@@ -175,7 +176,12 @@ public class MyApplication extends Application {
         for (Activity activity : activityLinkedList) {
             activity.finish();
         }
-        android.os.Process.killProcess(android.os.Process.myPid());
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                android.os.Process.killProcess(android.os.Process.myPid());
+            }
+        },3000);
     }
 
     public void initUmengConfig() {

@@ -164,6 +164,12 @@ public class StatisticsManager implements IStatistics {
 
     @MethodName("createUploadData")
     public String createUploadData(String order_id) {
+        if (pathNodes.size()==0){
+            return null;
+        }
+        if (pathNodes.size()==1&& pathNodes.get(0).c.length()==0){
+          return null;
+        }
         String resultStr = null;
         JSONObject jsonObject = new JSONObject();
         try {
@@ -201,12 +207,28 @@ public class StatisticsManager implements IStatistics {
 
 
     public void uplaodData(Context context, String order_id) {
-        location(context);
         String newData = createUploadData(order_id);
+        if (TextUtils.isEmpty(newData)){
+            return;
+        }
+        location(context);
+
 
         final String allData = getData(context, newData);
+//        if (allData.length()<200){
+//            try {
+//                JSONArray array=new JSONArray(newData);
+//                if (array.length()==1&&array.getJSONObject(0).optJSONArray("path").length()==0){
+//                    return;
+//                }
+//
+//            }catch (Exception e){
+//                e.printStackTrace();
+//            }
+//        }
 
-        Log.e("allData", allData);
+
+        Log.e("allPath", allData);
         String url = "http://39.107.238.111:7001";
 //        String url=CommonUtils.getTimerType()==0?"http://abroad.api.joner.aibabel.cn:7001":"http://api.joner.aibabel.cn:7001";
         PostRequest<String> postRequest = OkGo.<String>post(url + "/v2/ddot/JonerLogPush").tag("JonerLogPush");
@@ -218,13 +240,6 @@ public class StatisticsManager implements IStatistics {
         postRequest.params("no", CommonUtils.getRandom() + "");
         postRequest.params("lat", latitude + "");
         postRequest.params("lng", longitude + "");
-        String uploadData=null;
-//        try {
-//            uploadData=compress(allData);
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
-//        Log.e("uploadData====",uploadData);
         postRequest.params("data", allData);
         postRequest.execute(new StringCallback() {
             @Override
@@ -277,29 +292,45 @@ public class StatisticsManager implements IStatistics {
 
         FileUtil fileUtil = new FileUtil(context);
         String savedData = fileUtil.load();
-
-        if (!TextUtils.isEmpty(savedData)) {
-            try {
-                JSONArray array = null;
-                if (savedData.startsWith("[")) {
-                    array = new JSONArray(savedData);
-                } else {
-                    array = new JSONArray();
-                    array.put(new JSONObject(savedData));
-                }
-
-                array.put(new JSONObject(data));
-                String result=StringEscapeUtils.unescapeJava(array.toString());
-
-                return result;
-
-            } catch (JSONException e) {
-                e.printStackTrace();
-                return data;
+        JSONArray array = null;
+        try {
+            if (!TextUtils.isEmpty(savedData)){
+                array=new JSONArray(savedData);
+            }else{
+                array=new JSONArray();
             }
-        } else {
-            return data;
+            array.put(new JSONObject(data));
+        }catch (Exception e){
+            e.printStackTrace();
         }
+        if (array!=null){
+            return StringEscapeUtils.unescapeJava(array.toString());
+        }else{
+            return "";
+        }
+
+//        if (!TextUtils.isEmpty(savedData)) {
+//            try {
+//
+//                if (savedData.startsWith("[")) {
+//                    array = new JSONArray(savedData);
+//                } else {
+//                    array = new JSONArray();
+//                    array.put(new JSONObject(savedData));
+//                }
+//
+//                array.put(new JSONObject(data));
+//                String result=StringEscapeUtils.unescapeJava(array.toString());
+//
+//                return result;
+//
+//            } catch (JSONException e) {
+//                e.printStackTrace();
+//                return data;
+//            }
+//        } else {
+//            return data;
+//        }
 
     }
 

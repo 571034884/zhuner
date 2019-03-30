@@ -23,8 +23,8 @@ android {
         applicationId "com.aibabel.weather"
         minSdkVersion 23
         targetSdkVersion 28
-        versionCode 21
-        versionName "1.1.21"
+        versionCode 24
+        versionName "1.2.2"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
     buildTypes {

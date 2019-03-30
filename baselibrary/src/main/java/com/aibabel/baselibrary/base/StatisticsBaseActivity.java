@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
+import android.util.Log;
 import android.widget.Toast;
 
 import com.aibabel.baselibrary.impl.IStatistics;
@@ -149,11 +150,10 @@ public class StatisticsBaseActivity extends AppCompatActivity {
 
                 if (eventsArray!=null&&eventsArray.length()>0){
                     pageObject.put("e",eventsArray);
-                    eventsArray=new JSONArray();
+
                 }
-
                 statisticsManager.addPath(appName,appVersion,pageObject.toString());
-
+                eventsArray=new JSONArray();
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -163,17 +163,23 @@ public class StatisticsBaseActivity extends AppCompatActivity {
     }
 
     @Override
-    protected void onStop() {
-        super.onStop();
+    protected void onPause() {
+        super.onPause();
+
         try {
             if (System.currentTimeMillis() - pageObject.optLong("it") > 500) {
                 addPathToStatisticsManager();
-
-
             }
         }catch (Exception e){
-
+            e.printStackTrace();
         }
+        Log.e("onPause===:",getClass().getName());
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+
 
 
     }

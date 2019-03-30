@@ -218,7 +218,7 @@ public class AddCityActivity extends BaseActivity implements BaseCallback , Sort
                     if (position != -1) {
                         sortListView.setSelection(position);
                         HashMap<String,Serializable> map=new HashMap<>();
-                        map.put("weather_addCity7_num", (String) sortListView.getAdapter().getItem(position));
+                        map.put("weather_addCity7_num", s);
                         addStatisticsEvent("weather_addCity7",map);
 
                     }
