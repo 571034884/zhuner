@@ -166,6 +166,13 @@ public class StatisticsBaseActivity extends AppCompatActivity {
     protected void onPause() {
         super.onPause();
 
+
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+
         try {
             if (System.currentTimeMillis() - pageObject.optLong("it") > 500) {
                 addPathToStatisticsManager();
@@ -173,13 +180,6 @@ public class StatisticsBaseActivity extends AppCompatActivity {
         }catch (Exception e){
             e.printStackTrace();
         }
-        Log.e("onPause===:",getClass().getName());
-    }
-
-    @Override
-    protected void onStop() {
-        super.onStop();
-
 
 
     }
