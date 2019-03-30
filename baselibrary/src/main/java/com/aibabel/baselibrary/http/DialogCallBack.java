@@ -98,6 +98,14 @@ public class DialogCallBack extends StringCallback {
     @Override
     public void onError(Response<String> response) {
         super.onError(response);
-        Log.e(TAG, "onError: " + response.getException().getMessage());
+        try{
+
+            Log.e(TAG, "onError: " + response.getException().getMessage());
+            if (dialog != null && dialog.isShowing()) {
+                dialog.dismiss();
+            }
+        }catch (Exception e){
+
+        }
     }
 }
