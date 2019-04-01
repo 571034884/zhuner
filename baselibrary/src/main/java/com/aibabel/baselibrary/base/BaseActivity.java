@@ -67,6 +67,7 @@ public abstract class BaseActivity extends StatisticsBaseActivity {
 
     private boolean stateFlag = false;//状态栏是否显示标志 默认不显示
 
+
     public boolean isStateFlag() {
         return stateFlag;
     }
@@ -195,6 +196,7 @@ public abstract class BaseActivity extends StatisticsBaseActivity {
 
     @Override
     protected void onResume() {
+        Log.e("onResume===",getClass().getName());
         super.onResume();
         inTime = System.currentTimeMillis();
         MobclickAgent.onResume(this);
@@ -210,7 +212,15 @@ public abstract class BaseActivity extends StatisticsBaseActivity {
     }
 
     @Override
+    protected void onStop() {
+        super.onStop();
+        Log.e("onStop===",getClass().getName());
+
+    }
+
+    @Override
     protected void onDestroy() {
+
         super.onDestroy();
         try {
             if(mUnbinder!=null)mUnbinder.unbind();
@@ -344,6 +354,7 @@ public abstract class BaseActivity extends StatisticsBaseActivity {
                 case 133:
                 case 134:
                     OkGo.cancelAll(OkGo.getInstance().getOkHttpClient());
+
                     BaseApplication.exit();
                     break;
             }

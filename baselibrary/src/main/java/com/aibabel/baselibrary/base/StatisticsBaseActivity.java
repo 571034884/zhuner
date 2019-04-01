@@ -154,7 +154,7 @@ public class StatisticsBaseActivity extends AppCompatActivity {
         if (DeviceUtils.getSystem()== DeviceUtils.System.PRO_LEASE&&statisticsManager!=null){
 
             try {
-                pageObject.put("ot", System.currentTimeMillis());
+
                 pageObject.put("p",pageParameters);
 
                 if (eventsArray!=null&&eventsArray.length()>0){
@@ -174,6 +174,13 @@ public class StatisticsBaseActivity extends AppCompatActivity {
     @Override
     protected void onPause() {
         super.onPause();
+
+        try {
+            pageObject.remove("ot");
+            pageObject.put("ot",System.currentTimeMillis());
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
 
 
     }
