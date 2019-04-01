@@ -17,15 +17,18 @@ import com.aibabel.menu.util.LocationUtils;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 
+import org.json.JSONException;
+
+import java.io.Serializable;
 import java.util.HashMap;
+import java.util.Iterator;
 
 public class AndroidJS {
 
-    private Context mContext;
+    private MainActivity mContext;
 
-    public AndroidJS(Context context) {
+    public AndroidJS(MainActivity context) {
         mContext = context;
-
     }
 //
 //    @JavascriptInterface
@@ -141,6 +144,32 @@ public class AndroidJS {
 
         }
     }
+    @JavascriptInterface
+    public void addJsEvent(String eventId, String parameters) throws JSONException {
+        HashMap<String, Serializable> parametersMap=null;
 
+        if (!TextUtils.isEmpty(parameters)){
+            org.json.JSONObject object=new org.json.JSONObject(parameters);
+            parametersMap=new HashMap<>();
+            Iterator<String> keys=object.keys();
+            while (keys.hasNext()){
+                String key=keys.next();
+                String value= (String) object.get(key);
+                parametersMap.put(key,value);
+            }
+        }
+
+       mContext.addStatisticsEvent(eventId, parametersMap);
+        try {
+
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+    }
+
+    @JavascriptInterface
+    public void addPageParameters(String key, Serializable value) {
+        mContext.addPageParameters(key, value);
+    }
 
 }

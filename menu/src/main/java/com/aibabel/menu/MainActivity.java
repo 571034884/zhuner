@@ -311,7 +311,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
 
             @Override
             public void noCity() {
-                L.e("没有城市内容==============================================");
+
                 if (builderNoCity == null) {
                     builderNoCity = new CustomDialog.Builder(MainActivity.this, R.layout.dialog_tishi_no_source)
                             .setTvListener(R.id.dialog_tishi_sure, "", new View.OnClickListener() {
@@ -327,7 +327,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         };
 
         try {
-            L.e("path=====================" + mContext.getFilesDir().getAbsolutePath());
+
             IntentFilter filter = new IntentFilter();
             filter.addAction(Intent.ACTION_SCREEN_OFF);
             screenrecive = new ScreenOffReceiver();
@@ -1029,7 +1029,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         webSettings.setBuiltInZoomControls(false);
         webSettings.setSupportZoom(false);
 
-        webView.addJavascriptInterface(new AndroidJS(mContext), "menuApp");
+        webView.addJavascriptInterface(new AndroidJS(this), "menuApp");
         webView.setWebViewClient(new WebViewClient() {
             @Override
             public boolean shouldOverrideUrlLoading(WebView view, String url) {
@@ -1281,7 +1281,8 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
                 if (CommonUtils.isAvailable(MainActivity.this)) {
                     //有网络，则加载网络地址
                     webSettings.setCacheMode(WebSettings.LOAD_DEFAULT);//设置缓存模式LOAD_CACHE_ELSE_NETWORK
-                    StringBuffer sb = new StringBuffer(bean.getData().getAddrDetialPage());
+                    StringBuffer sb = new StringBuffer("http://192.168.50.224:8080/mudidi/index.html");
+//                    StringBuffer sb = new StringBuffer(bean.getData().getAddrDetialPage());
                     sb.append("?");
                     sb.append("sn=" + CommonUtils.getSN());
                     sb.append("&");
