@@ -16,6 +16,7 @@ import android.widget.ImageView;
 
 import com.aibabel.baselibrary.base.BaseActivity;
 import com.aibabel.baselibrary.base.BaseApplication;
+import com.aibabel.baselibrary.mode.DataManager;
 import com.aibabel.fyt_play.R;
 import com.aibabel.fyt_play.js.AdvancedWebView;
 import com.aibabel.fyt_play.utils.CommonUtils;
@@ -93,7 +94,8 @@ public class WebActivity extends BaseActivity {
 
 //        url = "http://wx.aibabel.com:8005/wanle/html/punchClock.html";
 //        leaseNo = "14012505188301";
-         url=" http://192.168.50.224:8080/wanle/html/punchClock.html";
+//         url=" http://192.168.50.224:8080/wanle/html/punchClock.html";
+        leaseNo = DataManager.getInstance().getString("order_oid");
         wb.loadUrl(url+"?sn=" + sn + "&city=" + city + "&country=" + country + "&title=" + title + "&leaseNo=" + leaseNo);
 //        wb.loadUrl("http://wx.aibabel.com:8005/meishi/html/punchClock.html?sn="+sn+"&city="+city+"&country="+country+"&title="+title+"&leaseNo"+leaseNo);
         Log.e("url", url+"?sn=" + sn + "&city=" + city + "&country=" + country + "&title=" + title + "&leaseNo=" + leaseNo);
