@@ -254,11 +254,12 @@ public class InstalledFragment extends Fragment {
                         top_rl.setVisibility(View.VISIBLE);
                         return;
                     case "jqdl":
-                        tv_title.setText(MyApplication.mContext.getString(R.string.jingqudaolan));
+                        if(MyApplication.ifshowjqdl) {
+                            tv_title.setText(MyApplication.mContext.getString(R.string.jingqudaolan));
 
-                        parent_rl.setVisibility(View.GONE);
-                        top_rl.setVisibility(View.VISIBLE);
-
+                            parent_rl.setVisibility(View.GONE);
+                            top_rl.setVisibility(View.VISIBLE);
+                        }
                         return;
                     case "mdd":
                         tv_title.setText(MyApplication.mContext.getString(R.string.mudidi));

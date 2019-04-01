@@ -7,15 +7,18 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
+import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Debug;
 import android.os.Handler;
 import android.os.Message;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.RequiresApi;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.DragEvent;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -30,6 +33,7 @@ import android.widget.TextView;
 
 import com.aibabel.aidlaar.StatisticsManager;
 import com.aibabel.baselibrary.base.StatisticsBaseActivity;
+import com.aibabel.download.offline.BuildConfig;
 import com.aibabel.download.offline.MenuActivity;
 import com.aibabel.download.offline.R;
 import com.aibabel.download.offline.adapter.MyAdapter;
@@ -155,7 +159,7 @@ public class PreloadFragment extends Fragment {
             }
         };
 
-
+        Log.e("hjs", "getOfflineInstallList==" );
         getOfflineInstallList();
         return view;
     }
@@ -226,11 +230,17 @@ public class PreloadFragment extends Fragment {
         swipeLayoutMap.clear();
         Cursor cursor = MyApplication.dbHelper.queryCursor();
         final List<Offline_database> list = new ArrayList<>();
+
+
         if (cursor.moveToFirst()) {
             //遍历Cursor对象，取出数据
+
+            Log.e("hjs", "cursor. do {==");
             do {
                 String status = cursor.getString(cursor.getColumnIndex("status"));
                 String lan_code = cursor.getString(cursor.getColumnIndex("lan_code"));
+
+                Log.e("hjs", "lan_code==" +lan_code);
                 String local_lan = CommonUtils.getLocal(getContext());
                 if (status.equals("10") || status.equals("11") || status.equals("12")) {
                     if (local_lan.equals("zh_CN")) {
@@ -255,6 +265,8 @@ public class PreloadFragment extends Fragment {
 
 
         }
+
+        if(cursor!=null)cursor.close();
 
 
         //本地数据排序分组
@@ -281,18 +293,21 @@ public class PreloadFragment extends Fragment {
                         }
                         break;
                     case 1:
-                        //景区导览
-                        if (list.get(j).getId().contains("jqdl")) {
-                            if (first == 1) {
-                                first = 0;
-                                newList.add(new Offline_database("jqdl", "景区导览", "", "", ""));
-                                newList.add(list.get(j));
+                        //景区导览 不显示
+                        if (MyApplication.ifshowjqdl) {
+                            if (list.get(j).getId().contains("jqdl")) {
+                                if (first == 1) {
+                                    first = 0;
+                                    newList.add(new Offline_database("jqdl", "景区导览", "", "", ""));
+                                    newList.add(list.get(j));
 
 
+                                }
                             } else {
                                 newList.add(list.get(j));
                             }
                         }
+
                         break;
                     case 2:
                         //目的地
@@ -344,10 +359,12 @@ public class PreloadFragment extends Fragment {
                         top_rl.setVisibility(View.VISIBLE);
                         return;
                     case "jqdl":
-                        tv_title.setText(MyApplication.mContext.getString(R.string.jingqudaolan));
+                        if(MyApplication.ifshowjqdl) {
+                            tv_title.setText(MyApplication.mContext.getString(R.string.jingqudaolan));
 
-                        parent_rl.setVisibility(View.GONE);
-                        top_rl.setVisibility(View.VISIBLE);
+                            parent_rl.setVisibility(View.GONE);
+                            top_rl.setVisibility(View.VISIBLE);
+                        }
 
                         return;
                     case "mdd":

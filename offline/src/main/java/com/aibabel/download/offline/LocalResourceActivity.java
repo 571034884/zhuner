@@ -55,7 +55,7 @@ public class LocalResourceActivity extends BaseActivity {
         manager = getSupportFragmentManager();
 
         if (manager.findFragmentByTag("preload") == null) {
-            L.e("1111111111111111111");
+            L.e("manager.findFragmentByTag(\"preload\") == null");
 
             preloadFragment = new PreloadFragment();
             preloadInstalledFragment = new PreloadInstalledFragment();

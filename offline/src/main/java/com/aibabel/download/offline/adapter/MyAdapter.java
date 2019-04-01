@@ -25,11 +25,15 @@ public abstract class MyAdapter<T> extends BaseAdapter {
         }catch (Exception e){
 
         }
+
     }
 
     @Override
     public int getCount() {
-        return mDatas.size();
+         if(mDatas!=null){
+             return mDatas.size();
+         }else return 0;
+
     }
 
     @Override
@@ -62,12 +66,12 @@ public abstract class MyAdapter<T> extends BaseAdapter {
 
     //加载数据
     public void load(List<T> datas) {
-        mDatas.addAll(datas);
+        if(mDatas!=null)mDatas.addAll(datas);
         notifyDataSetChanged();
     }
     //加载数据
     public void loadoOne(T t) {
-        mDatas.add(t);
+        if(mDatas!=null)mDatas.add(t);
         notifyDataSetChanged();
     }
 }

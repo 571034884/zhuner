@@ -49,7 +49,7 @@ import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
 
 
- import java.io.File;
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -82,8 +82,8 @@ public class PreloadInstalledFragment extends Fragment {
 
                     case 500:
                         //删除完成  回调
-                        if (!((String)msg.obj).equals("")) {
-                            T.show(getActivity(), MyApplication.mContext.getString(R.string.xiezaichenggong) + MyApplication.dbHelper.queryFiled((String)msg.obj, "lan_name"), 500);
+                        if (!((String) msg.obj).equals("")) {
+                            T.show(getActivity(), MyApplication.mContext.getString(R.string.xiezaichenggong) + MyApplication.dbHelper.queryFiled((String) msg.obj, "lan_name"), 500);
                         }
                         getOfflineInstallList();
                         break;
@@ -139,7 +139,7 @@ public class PreloadInstalledFragment extends Fragment {
     }
 
     public void getOfflineInstallList() {
-        if (mBuilder!=null) {
+        if (mBuilder != null) {
             mBuilder.dismiss();
         }
 
@@ -184,7 +184,7 @@ public class PreloadInstalledFragment extends Fragment {
         int first = 0;
         for (int i = 0; i < 3; i++) {
 
-            first=0;
+            first = 0;
             first++;
 
             for (int j = 0; j < list.size(); j++) {
@@ -193,7 +193,7 @@ public class PreloadInstalledFragment extends Fragment {
                         //语音翻译
                         if (!list.get(j).getId().contains("jqdl") && !list.get(j).getId().contains("mdd")) {
                             if (first == 1) {
-                                first=0;
+                                first = 0;
                                 newList.add(new Offline_database("yyfy", "语音翻译", "", "", ""));
                                 newList.add(list.get(j));
 
@@ -205,21 +205,22 @@ public class PreloadInstalledFragment extends Fragment {
                         break;
                     case 1:
                         //景区导览
-                        if (list.get(j).getId().contains("jqdl")) {
-                            if (first == 1) {
-                                first=0;
-                                newList.add(new Offline_database("jqdl", "景区导览", "", "", ""));
-                                newList.add(list.get(j));
+                        if (MyApplication.ifshowjqdl) {
+                            if (list.get(j).getId().contains("jqdl")) {
+                                if (first == 1) {
+                                    first = 0;
+                                    newList.add(new Offline_database("jqdl", "景区导览", "", "", ""));
+                                    newList.add(list.get(j));
 
-
-                            } else {
-                                newList.add(list.get(j));
+                                } else {
+                                    newList.add(list.get(j));
+                                }
                             }
                         }
                         break;
                     case 2:
                         //目的地
-                        if(!Build.DISPLAY.substring(9,10).equals("L")) {
+                        if (!Build.DISPLAY.substring(9, 10).equals("L")) {
                             if (list.get(j).getId().contains("mdd")) {
                                 if (first == 1) {
                                     first = 0;
@@ -264,11 +265,11 @@ public class PreloadInstalledFragment extends Fragment {
                         top_rl.setVisibility(View.VISIBLE);
                         return;
                     case "jqdl":
-                        tv_title.setText(MyApplication.mContext.getString(R.string.jingqudaolan));
-
-                        parent_rl.setVisibility(View.GONE);
-                        top_rl.setVisibility(View.VISIBLE);
-
+                        if(MyApplication.ifshowjqdl) {
+                            tv_title.setText(MyApplication.mContext.getString(R.string.jingqudaolan));
+                            parent_rl.setVisibility(View.GONE);
+                            top_rl.setVisibility(View.VISIBLE);
+                        }
                         return;
                     case "mdd":
                         tv_title.setText(MyApplication.mContext.getString(R.string.mudidi));
@@ -378,7 +379,7 @@ public class PreloadInstalledFragment extends Fragment {
                                                         .showProgress(false)
                                                         .show();
                                                 id = dataBean.getId();
-                                                deleteFile(dataBean, tv_tishi,"13");
+                                                deleteFile(dataBean, tv_tishi, "13");
                                                 StatisticsManager.getInstance(mContext).addEventAidl(2503);
 
                                             }
@@ -408,7 +409,7 @@ public class PreloadInstalledFragment extends Fragment {
                                                         .showProgress(false)
                                                         .show();
                                                 id = dataBean.getId();
-                                                deleteFile(dataBean, tv_tishi,"13");
+                                                deleteFile(dataBean, tv_tishi, "13");
 
 
                                             }
@@ -649,19 +650,20 @@ public class PreloadInstalledFragment extends Fragment {
 
 
     /**
-     *   删除
+     * 删除
+     *
      * @param dataBean
      * @param tv_tishi
-     * @param delType   13是卸载
+     * @param delType  13是卸载
      */
     public void deleteFile(final Offline_database dataBean, final TextView tv_tishi, String delType) {
 
         intent = new Intent(MyApplication.mContext, UnZipInstallService.class);
-        intent.putExtra("comm","del");
-        intent.putExtra("frag","install");
-        intent.putExtra("bean",JSON.toJSONString(dataBean));
-        L.e("bean======================"+JSON.toJSONString(dataBean));
-        intent.putExtra("delType",delType);
+        intent.putExtra("comm", "del");
+        intent.putExtra("frag", "install");
+        intent.putExtra("bean", JSON.toJSONString(dataBean));
+        L.e("bean======================" + JSON.toJSONString(dataBean));
+        intent.putExtra("delType", delType);
         getActivity().startService(intent);
 
         tv_tishi.setText(MyApplication.mContext.getString(R.string.zhengzaixiezai));
@@ -694,10 +696,10 @@ public class PreloadInstalledFragment extends Fragment {
         try {
             getActivity().stopService(intent);
         } catch (Exception e) {
-            L.e("unbindService==================="+e.getMessage());
+            L.e("unbindService===================" + e.getMessage());
         }
 
-      MyApplication.dbHelper.shutdownUPdateDB();
+        MyApplication.dbHelper.shutdownUPdateDB();
 
 
         super.onDestroy();
