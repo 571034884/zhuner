@@ -8,6 +8,7 @@ import android.support.v4.util.Pair;
 import android.support.v4.view.PagerAdapter;
 import android.support.v7.widget.CardView;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -101,7 +102,15 @@ public class CardPagerAdapter extends PagerAdapter implements CardAdapter {
         cardView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                listener.onItemClick(mData.get(position), view);
+                try{
+                    if (mData.size()>0){
+                        listener.onItemClick(mData.get(position), view);
+                    }
+                }catch (Exception e){
+                    Log.e("MAP",e.toString());
+                }
+
+
             }
         });
 
