@@ -33,7 +33,7 @@ import java.util.logging.Logger;
 public class StatisticsBaseActivity extends AppCompatActivity {
     public static final String NOTIFY_ID="notiytId";
     public static final String HARDWARE_BUTTON="HardwareButton";
-    protected static String notifyId;   //当前路径下通知的id
+    protected  String notifyId;   //当前路径下通知的id
     private JSONArray eventsArray=null;
     private JSONObject pageObject=null;
     protected boolean isOpenFromHardwareButton=true; //是否通过物理按键唤起

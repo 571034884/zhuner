@@ -6,7 +6,9 @@ import android.text.TextUtils;
 
 import com.aibabel.baselibrary.BuildConfig;
 import com.aibabel.baselibrary.http.OkGoUtil;
+import com.aibabel.baselibrary.sphelper.SPHelper;
 import com.aibabel.baselibrary.utils.DeviceUtils;
+import com.aibabel.baselibrary.utils.ServerKeyUtils;
 import com.aibabel.fyt_play.utils.DensityHelper;
 import com.lzy.okgo.OkGo;
 
@@ -38,9 +40,11 @@ public class BaseApplication extends com.aibabel.baselibrary.base.BaseApplicatio
 
     @Override
     public void setServerUrlAndInterfaceGroup() {
+//        SPHelper.getString(ServerKeyUtils.serverKeyAibabelPlay,"http://abroad.api.joner.aibabel.cn:7001");
 
-//        OkGoUtil.setDefualtServerUrl("http://abroad.api.joner.aibabel.cn:7001" );
-        OkGoUtil.setDefualtServerUrl("http://39.107.238.111:7001" );
+        OkGoUtil.setDefualtServerUrl(   SPHelper.getString(ServerKeyUtils.serverKeyAibabelPlay,"http://abroad.api.joner.aibabel.cn:7001"));
+// );
+//        OkGoUtil.setDefualtServerUrl("http://39.107.238.111:7001" );
         OkGoUtil.setDefaultInterfaceGroup("/v1/play/");
     }
 

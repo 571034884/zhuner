@@ -99,7 +99,7 @@ public abstract class BaseApplication extends Application {
         super.onCreate();
 
         mApplication = this;
-
+        SPHelper.init(this);
         initAppExitConfig();
         initLogConfig();
         initUmengConfig(setUmengKey());
@@ -108,7 +108,7 @@ public abstract class BaseApplication extends Application {
         initImageLoaderConfig();
         initStatisticsConfig();
         initXipc();
-        SPHelper.init(this);
+
     }
 
     /**

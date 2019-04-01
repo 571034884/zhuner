@@ -1,5 +1,6 @@
 package com.aibabel.menu.fragment;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -104,7 +105,10 @@ public class MenuOneFragment extends BaseFragment implements View.OnClickListene
                     break;
                 case R.id.one_frag_5:
                     //调起应用说明书
-                    startActivity(AppStatusUtils.getAppOpenIntentByPackageName(getContext(),"com.aibabel.readme"));
+//
+                    Intent intent=AppStatusUtils.getAppOpenIntentByPackageName(getContext(),"com.aibabel.readme");
+
+                    startActivity(intent);
                     try{
                         ((MenuActivity) getActivity()).addStatisticsEvent("menu_readme_click",null);
                     }catch (Exception e){}
