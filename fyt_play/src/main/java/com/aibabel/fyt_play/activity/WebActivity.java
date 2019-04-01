@@ -93,7 +93,7 @@ public class WebActivity extends BaseActivity {
 
 //        url = "http://wx.aibabel.com:8005/wanle/html/punchClock.html";
 //        leaseNo = "14012505188301";
-
+         url=" http://192.168.50.224:8080/wanle/html/punchClock.html";
         wb.loadUrl(url+"?sn=" + sn + "&city=" + city + "&country=" + country + "&title=" + title + "&leaseNo=" + leaseNo);
 //        wb.loadUrl("http://wx.aibabel.com:8005/meishi/html/punchClock.html?sn="+sn+"&city="+city+"&country="+country+"&title="+title+"&leaseNo"+leaseNo);
         Log.e("url", url+"?sn=" + sn + "&city=" + city + "&country=" + country + "&title=" + title + "&leaseNo=" + leaseNo);
@@ -124,7 +124,7 @@ public class WebActivity extends BaseActivity {
             Iterator<String> keys=object.keys();
             while (keys.hasNext()){
                 String key=keys.next();
-                String value= (String) object.get(key);
+                String value=  object.get(key).toString();
                 parametersMap.put(key,value);
             }
         }

@@ -81,7 +81,13 @@ public class StatisticsBaseActivity extends AppCompatActivity {
             XIPC.setIPCListener(new IPCListener() {
                 @Override
                 public void onIPCConnected(Class<? extends IPCService> service) {
-                    statisticsManager=XIPC.getInstance(IStatistics.class);
+                    int count=0;
+                    while (statisticsManager==null&&count<3){
+                        statisticsManager=XIPC.getInstance(IStatistics.class);
+                        count++;
+                    }
+
+
 
 //                    Toast.makeText(getApplicationContext(),"IPC服务已绑定！",Toast.LENGTH_LONG).show();
                 }
@@ -233,16 +239,7 @@ public class StatisticsBaseActivity extends AppCompatActivity {
           }
 
     }
-//    @Override
-//    public void startActivity(Intent intent) {
-//        if (!TextUtils.isEmpty(notifyId)){
-//            intent.putExtra(NOTIFY_ID,notifyId);
-//        }
-//
-//        super.startActivity(intent);
-//
-//
-//    }
+
 
     @Override
     public void startActivityForResult(Intent intent, int requestCode) {

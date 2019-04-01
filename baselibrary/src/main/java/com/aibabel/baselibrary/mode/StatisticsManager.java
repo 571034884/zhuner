@@ -91,6 +91,7 @@ public class StatisticsManager implements IStatistics {
 
         } catch (Exception e) {
             e.printStackTrace();
+            Log.e("addPathException",e.toString());
         }
 
     }

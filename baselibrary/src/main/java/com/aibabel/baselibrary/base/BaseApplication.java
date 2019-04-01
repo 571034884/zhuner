@@ -281,6 +281,6 @@ public abstract class BaseApplication extends Application {
             public void run() {
                 android.os.Process.killProcess(android.os.Process.myPid());
             }
-        },3000);
+        },1500);
     }
 }

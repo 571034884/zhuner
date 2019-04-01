@@ -847,8 +847,9 @@ public class MainActivity extends MapBaseActivity implements SensorEventListener
     @Override
     protected void onStop() {
         //取消注册传感器监听
-        mSensorManager.unregisterListener(this);
         super.onStop();
+        mSensorManager.unregisterListener(this);
+
     }
 
 

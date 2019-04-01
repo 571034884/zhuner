@@ -1281,8 +1281,8 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
                 if (CommonUtils.isAvailable(MainActivity.this)) {
                     //有网络，则加载网络地址
                     webSettings.setCacheMode(WebSettings.LOAD_DEFAULT);//设置缓存模式LOAD_CACHE_ELSE_NETWORK
-                    StringBuffer sb = new StringBuffer("http://192.168.50.224:8080/mudidi/index.html");
-//                    StringBuffer sb = new StringBuffer(bean.getData().getAddrDetialPage());
+//                    StringBuffer sb = new StringBuffer("http://192.168.50.224:8080/mudidi/index.html");
+                    StringBuffer sb = new StringBuffer(bean.getData().getAddrDetialPage());
                     sb.append("?");
                     sb.append("sn=" + CommonUtils.getSN());
                     sb.append("&");
