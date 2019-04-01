@@ -88,6 +88,9 @@ public class MainActivity extends BaseActivity implements NetBroadcastReceiver.N
         ipsiFragment = new IpsilateralFragment();
         oppoFragment = new OppositeFragment();
         showFragment(0);
+        // TODO: 2019/3/29 临时操作，按语音翻译键调起的时候，停止播放景区导览
+        Intent intent1 = new Intent("com.aibabel.scenic.stop");
+        sendBroadcast(intent1);
     }
 
     /**
