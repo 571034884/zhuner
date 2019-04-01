@@ -106,9 +106,11 @@ public class MenuOneFragment extends BaseFragment implements View.OnClickListene
                 case R.id.one_frag_5:
                     //调起应用说明书
 //
-                    Intent intent=AppStatusUtils.getAppOpenIntentByPackageName(getContext(),"com.aibabel.readme");
 
+                    ////Intent intent=AppStatusUtils.getAppOpenIntentByPackageName(getContext(),"com.qyer.android.plan");
+                    Intent intent=AppStatusUtils.getAppOpenIntentByPackageName(getContext(),"com.aibabel.readme");
                     startActivity(intent);
+
                     try{
                         ((MenuActivity) getActivity()).addStatisticsEvent("menu_readme_click",null);
                     }catch (Exception e){}
