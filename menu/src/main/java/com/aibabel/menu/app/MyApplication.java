@@ -57,7 +57,11 @@ public class MyApplication extends BaseApplication {
 
     private void initSQLite() {
         //创建表,如果存在就不会在创建了
-        SQLiteDatabase db = Connector.getDatabase();
+        try {
+            SQLiteDatabase db = Connector.getDatabase();
+        }catch (Exception e){
+            e.printStackTrace();
+        }
     }
 
     @Override
