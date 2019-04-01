@@ -65,28 +65,32 @@ public class CustomProgress extends Dialog {
      * @return
      */
     public static CustomProgress show(Context context, CharSequence message, boolean cancelable, OnCancelListener cancelListener) {
-        CustomProgress dialog = new CustomProgress(context, R.style.Custom_Progress);
-        dialog.setTitle("");
-        dialog.setContentView(R.layout.loading_layout);
-        if (message == null || message.length() == 0) {
+        CustomProgress dialog = null;
+        try{
+            dialog = new CustomProgress(context, R.style.Custom_Progress);
+            dialog.setTitle("");
+            dialog.setContentView(R.layout.loading_layout);
+            if (message == null || message.length() == 0) {
 //            dialog.findViewById(R.id.message).setVisibility(View.GONE);
-        } else {
-            TextView txt = (TextView) dialog.findViewById(R.id.message);
-            txt.setText(message);
-        }
-        // 按返回键是否取消
-        dialog.setCanceledOnTouchOutside(false);
-        dialog.setCancelable(cancelable);
-        // 监听返回键处理
-        dialog.setOnCancelListener(cancelListener);
-        // 设置居中
-        dialog.getWindow().getAttributes().gravity = Gravity.CENTER;
-        WindowManager.LayoutParams lp = dialog.getWindow().getAttributes();
-        // 设置背景层透明度
-        lp.dimAmount = 0.2f;
-        dialog.getWindow().setAttributes(lp);
-        // dialog.getWindow().addFlags(WindowManager.LayoutParams.FLAG_BLUR_BEHIND);
-        dialog.show();
+            } else {
+                TextView txt = (TextView) dialog.findViewById(R.id.message);
+                txt.setText(message);
+            }
+            // 按返回键是否取消
+            dialog.setCanceledOnTouchOutside(false);
+            dialog.setCancelable(cancelable);
+            // 监听返回键处理
+            dialog.setOnCancelListener(cancelListener);
+            // 设置居中
+            dialog.getWindow().getAttributes().gravity = Gravity.CENTER;
+            WindowManager.LayoutParams lp = dialog.getWindow().getAttributes();
+            // 设置背景层透明度
+            lp.dimAmount = 0.2f;
+            dialog.getWindow().setAttributes(lp);
+            // dialog.getWindow().addFlags(WindowManager.LayoutParams.FLAG_BLUR_BEHIND);
+            dialog.show();
+        }catch (Exception e){}
+
         return dialog;
     }
 

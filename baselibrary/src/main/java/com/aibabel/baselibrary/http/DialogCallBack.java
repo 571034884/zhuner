@@ -55,25 +55,27 @@ public class DialogCallBack extends StringCallback {
     @Override
     public void onStart(Request<String, ? extends Request> request) {
         super.onStart(request);
-        if (isShowDialog && context != null) {
-            dialog = CustomProgress.show(context, "", true, null);
-            dialog.setOnCancelListener(new DialogInterface.OnCancelListener() {
-                @Override
-                public void onCancel(DialogInterface dialogInterface) {
-                    if (tag != null) {
-                        Log.e(TAG, "onCancel: 取消网络请求");
-                        OkGo.getInstance().cancelTag(tag);
+        try{
+            if (isShowDialog && context != null) {
+                dialog = CustomProgress.show(context, "", true, null);
+                dialog.setOnCancelListener(new DialogInterface.OnCancelListener() {
+                    @Override
+                    public void onCancel(DialogInterface dialogInterface) {
+                        if (tag != null) {
+                            Log.e(TAG, "onCancel: 取消网络请求");
+                            OkGo.getInstance().cancelTag(tag);
+                        }
                     }
-                }
-            });
-            dialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
-                @Override
-                public void onDismiss(DialogInterface dialogInterface) {
-                    dialog.stopAnimation();
-                    dialog = null;
-                }
-            });
-        }
+                });
+                dialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
+                    @Override
+                    public void onDismiss(DialogInterface dialogInterface) {
+                        dialog.stopAnimation();
+                        dialog = null;
+                    }
+                });
+            }
+        }catch (Exception e){}
     }
 
     @Override

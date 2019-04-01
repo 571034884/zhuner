@@ -187,13 +187,17 @@ public class OkGoUtil {
             @Override
             public void onError(Response<String> response) {
                 super.onError(response);
-                mCallback.onError(interfaceName, response.getException().getMessage(), response.body());
+                try{
+                    mCallback.onError(interfaceName, response.getException().getMessage(), response.body());
+                }catch (Exception e){}
             }
 
             @Override
             public void onFinish() {
                 super.onFinish();
-                mCallback.onFinsh(interfaceName);
+                try{
+                    mCallback.onFinsh(interfaceName);
+                }catch (Exception e){}
             }
         });
     }
