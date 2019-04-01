@@ -214,25 +214,15 @@ public class StatisticsManager implements IStatistics {
         location(context);
 
 
-        final String allData = getData(context, newData);
-//        if (allData.length()<200){
-//            try {
-//                JSONArray array=new JSONArray(newData);
-//                if (array.length()==1&&array.getJSONObject(0).optJSONArray("path").length()==0){
-//                    return;
-//                }
-//
-//            }catch (Exception e){
-//                e.printStackTrace();
-//            }
-//        }
+        final String allData = StringEscapeUtils.unescapeJava(getData(context, newData));
+
 
 
         Log.e("allPath", allData);
 //        String url = "http://39.107.238.111:7001";
         String url=CommonUtils.getTimerType()==0?"http://abroad.api.joner.aibabel.cn:7001":"http://api.joner.aibabel.cn:7001";
         PostRequest<String> postRequest = OkGo.<String>post(url + "/v2/ddot/JonerLogPush").tag("JonerLogPush");
-
+        Log.e("url==",url+"/v2/ddot/JonerLogPush");
         postRequest.params("sv", Build.DISPLAY);
         postRequest.params("sn", CommonUtils.getSN());
         postRequest.params("sl", CommonUtils.getLocalLanguage());
@@ -269,7 +259,8 @@ public class StatisticsManager implements IStatistics {
 
             @Override
             public void onError(Response<String> response) {
-                Log.e("onError", response.code() + "");
+
+                Log.e("onError", response.body() + "");
                 saveData(context, allData);
             }
 

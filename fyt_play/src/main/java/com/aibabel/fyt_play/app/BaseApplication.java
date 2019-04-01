@@ -38,8 +38,9 @@ public class BaseApplication extends com.aibabel.baselibrary.base.BaseApplicatio
 
     @Override
     public void setServerUrlAndInterfaceGroup() {
-        OkGoUtil.setDefualtServerUrl("http://abroad.api.joner.aibabel.cn:7001" );
-//        OkGoUtil.setDefualtServerUrl("http://39.107.238.111:7001" );
+
+//        OkGoUtil.setDefualtServerUrl("http://abroad.api.joner.aibabel.cn:7001" );
+        OkGoUtil.setDefualtServerUrl("http://39.107.238.111:7001" );
         OkGoUtil.setDefaultInterfaceGroup("/v1/play/");
     }
 
