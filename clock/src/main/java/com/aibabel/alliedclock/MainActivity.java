@@ -233,22 +233,22 @@ public class MainActivity extends BaseActivity {
 
             @Override
             public void onDeleteClick(int position) {
-                Map<String, String> map = new HashMap<>();
-                map.put("p1", adapter.getmList().get(position).getCityCN());
+
                 /**####  start-hjs-addStatisticsEvent   ##**/
                 try {
                     HashMap<String, Serializable> add_hp = new HashMap<>();
                     add_hp.put("alliedclock_main2_name",adapter.getmList().get(position).getCityCN());
                     addStatisticsEvent("alliedclock_main2", add_hp);
+                    adapter.removeItem(position);
+                    String json = FastJsonUtil.changListToString(clockBeanList);
+                    SharePrefUtil.saveString(MainActivity.this, "clockBeanList", json);
 
                 }catch (Exception e){
                     e.printStackTrace();
                 }
                 /**####  end-hjs-addStatisticsEvent  ##**/
-                StatisticsManager.getInstance(MainActivity.this).addEventAidl(2410, map);
-                adapter.removeItem(position);
-                String json = FastJsonUtil.changListToString(clockBeanList);
-                SharePrefUtil.saveString(MainActivity.this, "clockBeanList", json);
+
+
             }
         });
 //        Timer timer = new Timer();

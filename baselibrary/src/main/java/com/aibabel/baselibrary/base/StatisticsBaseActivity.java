@@ -178,7 +178,7 @@ public class StatisticsBaseActivity extends AppCompatActivity {
         try {
             pageObject.remove("ot");
             pageObject.put("ot",System.currentTimeMillis());
-        } catch (JSONException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
 

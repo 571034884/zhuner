@@ -239,8 +239,10 @@ public class MyApplication extends Application {
      * 退出所有app
      */
     public static void exit() {
-        for (Activity activity : activityLinkedList) {
-            activity.finish();
+        if(activityLinkedList!=null&& activityLinkedList.size()>0){
+            for (Activity activity : activityLinkedList) {
+                activity.finish();
+            }
         }
         new Handler().postDelayed(new Runnable() {
             @Override

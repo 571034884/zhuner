@@ -306,7 +306,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
             @Override
             public void onError(String err) {
 
-                ToastUtil.show(mContext, err, 500);
+//                ToastUtil.show(mContext, err, 500);
             }
 
             @Override

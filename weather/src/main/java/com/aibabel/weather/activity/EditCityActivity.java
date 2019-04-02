@@ -127,11 +127,16 @@ public class EditCityActivity extends BaseActivity implements ItemRemoveRecycler
 
             @Override
             public void onDeleteClick(int position) {
+                try {
+
                 HashMap<String, Serializable>map = new HashMap<>();
                 map.put("weather_editCity3_name", adapter.getmUrlList().get(position).getCityCN() + adapter.getmUrlList().get(position).getCountryCN());
                 addStatisticsEvent("weather_editCity3",map);
                 adapter.removeItem(position);
                 delPosition.add(position);
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
             }
         });
 
