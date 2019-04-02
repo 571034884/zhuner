@@ -168,8 +168,6 @@ public class CouponActivity extends BaseActivity {
                 /**####  end-hjs-addStatisticsEvent  ##**/
                 break;
             case R.id.tv_coupon:
-                Map map = new HashMap();
-                StatisticsManager.getInstance(mContext).addEventAidl( 2601, map);
                 /**####  start-hjs-addStatisticsEvent   ##**/
                 try {
                     addStatisticsEvent("coupon_main3", null);

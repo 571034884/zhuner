@@ -133,16 +133,7 @@ public class AndroidJS {
     @JavascriptInterface
     public void countH5(String json) {
         L.e("tongji h5:"+json);
-        try {
-            JSONObject jsonObject=JSON.parseObject(json);
-            StatisticsManager.getInstance(mContext).addEventAidl(1132, new HashMap() {{
-                put("videoName",jsonObject.get("videoName"));
-                put("cityName", jsonObject.get("cityName"));
 
-            }});
-        } catch (Exception e) {
-
-        }
     }
     @JavascriptInterface
     public void addJsEvent(String eventId, String parameters) throws JSONException {

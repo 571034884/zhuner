@@ -527,7 +527,6 @@ public class PreloadFragment extends Fragment {
                                 break;
                             case "10":
                                 //预装
-                                StatisticsManager.getInstance(mContext).addEventAidl(2504);
                                 if (dataBean.getId().equals("jqdl_ch")) {
                                     installTime = "（文件过大，预计安装时间20分钟）";
                                 } else {

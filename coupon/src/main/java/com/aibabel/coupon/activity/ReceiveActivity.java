@@ -305,8 +305,6 @@ public class ReceiveActivity extends BaseActivity implements BaseCallback<BaseBe
                 rlPopu.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        Map map = new HashMap();
-                        StatisticsManager.getInstance(mContext).addEventAidl( 2612, map);
 
                         /**####  start-hjs-addStatisticsEvent   ##**/
                         try {
@@ -336,9 +334,6 @@ public class ReceiveActivity extends BaseActivity implements BaseCallback<BaseBe
                         couponId = couponBeanData.get(position).getCouponData().getCouponId();
                         Log.e("couponId", couponId + "");
                         if (TextUtils.equals(couponBeanData.get(position).getUserHasThisCoupon(), "false")) {
-                            Map map = new HashMap();
-                            map.put("p1",couponBeanData.get(position).getCouponData().getTitle());
-                            StatisticsManager.getInstance(mContext).addEventAidl(2610, map);
                             /**####  start-hjs-addStatisticsEvent   ##**/
                             try {
                                 HashMap<String, Serializable> add_hp = new HashMap<>();
@@ -354,9 +349,6 @@ public class ReceiveActivity extends BaseActivity implements BaseCallback<BaseBe
                             adapter.updateData(couponBeanData);
 
                         } else {
-                            Map map = new HashMap();
-                            map.put("p1",couponBeanData.get(position).getCouponData().getTitle());
-                            StatisticsManager.getInstance(mContext).addEventAidl( 2611, map);
                             /**####  start-hjs-addStatisticsEvent   ##**/
                             try {
                                 HashMap<String, Serializable> add_hp = new HashMap<>();

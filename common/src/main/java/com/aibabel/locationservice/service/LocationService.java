@@ -314,15 +314,6 @@ public class LocationService extends Service implements ScreenListener, CardBroa
             } else {
                 ip = "http://api.joner.aibabel.cn:7001";
             }
-            Map<String, String> map = new HashMap<>();
-            map.put("sv", Build.DISPLAY);
-            map.put("sn", CommonUtils.getSN());
-            map.put("sl", CommonUtils.getLocal());
-            map.put("av", CommonUtils.getVerName(this));
-            map.put("no", CommonUtils.getRandom() + "");
-            map.put("lat", latitude + "");
-            map.put("lng", longitude + "");
-            StatisticsManager.getInstance(this).sendDataAidl(ip + "/v1/ddot/JonerLogPush", map);
         }
 
     }

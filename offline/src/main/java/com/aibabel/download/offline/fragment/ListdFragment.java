@@ -734,7 +734,6 @@ public class ListdFragment extends Fragment {
 
                                 //下载
                                     downloadFile(dataBean,status,tv_id.getText().toString());
-                                    StatisticsManager.getInstance(mContext).addEventAidl(2502);
 
                                     /**####  start-hjs-addStatisticsEvent   ##**/
                                     try {

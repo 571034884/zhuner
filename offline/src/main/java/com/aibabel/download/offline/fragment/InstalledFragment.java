@@ -374,8 +374,6 @@ public class InstalledFragment extends Fragment {
                                                 id = dataBean.getId();
                                                 deleteFile(dataBean, tv_tishi,"13");
 
-                                                StatisticsManager.getInstance(mContext).addEventAidl(2501);
-
 
                                             }
                                         }).setOnClickListener(R.id.dialog_tv_cancel, MyApplication.mContext.getString(R.string.quxiao), null).show();

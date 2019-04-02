@@ -202,7 +202,6 @@ public class DialogActivity extends StatisticsBaseActivity implements View.OnCli
         Map map = new HashMap();
         switch (v.getId()) {
             case R.id.iv_close:
-                StatisticsManager.getInstance(this).addEventAidl(1215, map);
 
                 finish();
                 //加动画避免闪屏
@@ -222,10 +221,6 @@ public class DialogActivity extends StatisticsBaseActivity implements View.OnCli
                     ToastUtil.showShort(mContext,"请检查网络连接");
                     return;
                 }
-                map.put("name", data.getNameCh());
-                map.put("addr", data.getAddress());
-                map.put("latlon", lat + "," + lng);
-                StatisticsManager.getInstance(this).addEventAidl(1214, map);
                 toMore();
                 break;
             case R.id.tv_address:
@@ -265,15 +260,6 @@ public class DialogActivity extends StatisticsBaseActivity implements View.OnCli
         bean.setMode(BaiDuUtil.getModeType(BaiDuConstant.TRANSIT_MODE));
         bean.setCoord_type(coord_type);
         bean.setLocationWhere(locationWhere);
-
-
-        Map map = new HashMap();
-        map.put("startLatLon", bean.getStartLoc().getLat() + "," + bean.getStartLoc().getLng());
-        map.put("startName", bean.getStartName());
-        map.put("endLatLon", bean.getEndLoc().getLat() + "," + bean.getEndLoc().getLng());
-        map.put("endName", bean.getEndName());
-        map.put("type", bean.getMode());
-        StatisticsManager.getInstance(this).addEventAidl(1216, map);
 
         /**####  start-hjs-addStatisticsEvent   ##**/
         try {

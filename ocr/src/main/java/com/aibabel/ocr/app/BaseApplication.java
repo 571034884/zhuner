@@ -50,7 +50,6 @@ public class BaseApplication extends com.aibabel.baselibrary.base.BaseApplicatio
         initAppExitConfig();
         configUmeng();
         initLayoutConfig();
-        StatisticsManager.getInstance(this).setConfig(getPackageName(), BuildConfig.VERSION_NAME);
     }
 
     @Override

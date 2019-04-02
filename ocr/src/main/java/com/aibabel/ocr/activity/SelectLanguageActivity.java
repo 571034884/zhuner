@@ -75,10 +75,6 @@ public class SelectLanguageActivity extends BaseActivity implements AdapterView.
         LanBean bean = list.get(position);
         String name = bean.getName();
         String name_code = bean.getLang_code();
-        Map<String, String> map = new HashMap<>();
-        map.put("p2", Constant.LAN_TR);
-        map.put("p1", bean.getName());
-        StatisticsManager.getInstance(SelectLanguageActivity.this).addEventAidl(1411, map);
         saveLan(name, name_code);
 
     }

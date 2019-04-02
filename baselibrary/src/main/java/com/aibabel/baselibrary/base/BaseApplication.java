@@ -138,7 +138,6 @@ public abstract class BaseApplication extends Application {
     }
 
     public void initStatisticsConfig() {
-        StatisticsManager.getInstance(this).setConfig(getAppPackageName(),getAppVersionName());
     }
 
     /**

@@ -83,11 +83,8 @@ public class AllOffThingsActivity extends BaseActivity implements BaseCallback<B
         adapter.setOnItemClickListener(new BaseRecyclerViewAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(View view, Object item, int position) {
-                Map<String, String> map = new HashMap<>();
                 switch (activityTag) {
                     case TAG_AREA:
-                        map.put("p1", ((AreaBean.DataBean) item).getName_cn());
-                        StatisticsManager.getInstance(mContext).addEventAidl(1021, map);
 
                         /**####  start-hjs-addStatisticsEvent   ##**/
                         try {
@@ -111,8 +108,6 @@ public class AllOffThingsActivity extends BaseActivity implements BaseCallback<B
                             e.printStackTrace();
                         }
                         /**####  end-hjs-addStatisticsEvent  ##**/
-                        map.put("p1", ((KindBean.DataBean) item).getName_cn());
-                        StatisticsManager.getInstance(mContext).addEventAidl( 1032, map);
                         startActivity(new Intent(mContext, FilterActivity.class).putExtra(FilterActivity.FILTER_TAG2, ((KindBean.DataBean) item)
                                 .getName_cn()));
                         break;

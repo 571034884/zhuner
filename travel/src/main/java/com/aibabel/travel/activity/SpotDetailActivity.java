@@ -229,11 +229,6 @@ public class SpotDetailActivity extends BaseActivity implements View.OnClickList
             @Override
             public void onItemClick(CommonRecyclerViewHolder holder, final int postion) {
                 try{
-                    Map map3 = new HashMap();
-                    map3.put("p1", children.get(lastOnclick).getName());
-                    map3.put("p2", children.get(postion).getName());
-
-                    StatisticsManager.getInstance(SpotDetailActivity.this).addEventAidl(1655, map3);
 
 
                     if (postion != lastOnclick) {
@@ -500,17 +495,6 @@ public class SpotDetailActivity extends BaseActivity implements View.OnClickList
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.iv_last_one:
-
-                Map map1 = new HashMap();
-                try {
-                    map1.put("p1", children.get(musicPlayer.getCurIndex()).getName());
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-
-                StatisticsManager.getInstance(SpotDetailActivity.this).addEventAidl(1653, map1);
-
-
                 musicPlayer.playPre();
                 position = lastOnclick - 1;
                 if (position < 0) {
@@ -536,40 +520,12 @@ public class SpotDetailActivity extends BaseActivity implements View.OnClickList
                 if (musicPlayer.getPlayState() == MusicPlayState.S_PLAYING) {
                     musicPlayer.pause();
 
-                    Map map2 = new HashMap();
-                    try {
-                        map2.put("p1", children.get(musicPlayer.getCurIndex()).getName());
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-
-                    StatisticsManager.getInstance(SpotDetailActivity.this).addEventAidl(1652, map2);
-
                 } else if (musicPlayer.getPlayState() == MusicPlayState.S_PAUSE) {
                     musicPlayer.play();
-
-                    Map map3 = new HashMap();
-                    try {
-                        map3.put("p1", children.get(musicPlayer.getCurIndex()).getName());
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-
-                    StatisticsManager.getInstance(SpotDetailActivity.this).addEventAidl(1651, map3);
-
                 }
 
                 break;
             case R.id.iv_next_one:
-                Map map4 = new HashMap();
-                try {
-                    map4.put("p1", children.get(musicPlayer.getCurIndex()).getName());
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-                StatisticsManager.getInstance(SpotDetailActivity.this).addEventAidl(1654, map4);
-
-
                 musicPlayer.playNext();
 
 

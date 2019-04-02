@@ -169,9 +169,6 @@ public class DetailsActivity extends BaseActivity implements BaseCallback, View.
         btSubmission.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Map map1 = new HashMap();
-                map1.put("p1", name);
-                StatisticsManager.getInstance(DetailsActivity.this).addEventAidl(1712, map1);
                 popup();
             }
         });
@@ -247,10 +244,6 @@ public class DetailsActivity extends BaseActivity implements BaseCallback, View.
         popupWindow.setBackgroundDrawable(new BitmapDrawable(getResources(), (Bitmap) null));
         popupWindow.setAnimationStyle(R.style.anim_menu_bottombar);
         mIsShowing = false;
-
-        Map map1 = new HashMap();
-        map1.put("p1", skuid);
-        StatisticsManager.getInstance(DetailsActivity.this).addEventAidl(1720, map1);
 
         btnCancel.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -341,9 +334,6 @@ public class DetailsActivity extends BaseActivity implements BaseCallback, View.
     }
 
     private void initPayment(String payType) {
-        Map map1 = new HashMap();
-        map1.put("p1", skuid);
-        StatisticsManager.getInstance(DetailsActivity.this).addEventAidl(1722, map1);
 
 
         Map<String, String> map = new HashMap<>();
@@ -515,25 +505,8 @@ public class DetailsActivity extends BaseActivity implements BaseCallback, View.
 
                 //1 微信  2 支付宝 3 paypal
                 if (!TextUtils.equals(payType, "3")) {
-
-                    Map map1 = new HashMap();
-                    map1.put("p3", skuid);
-                    map1.put("p1", "true");
-                    if (TextUtils.equals(payType, "2")) {
-                        map1.put("p2", "支付宝");
-                    } else {
-                        map1.put("p2", "微信");
-                    }
-
-                    StatisticsManager.getInstance(DetailsActivity.this).addEventAidl(1723, map1);
                     intent = new Intent(DetailsActivity.this, CustomWebViewActivity.class);
                 } else {
-                    Map map1 = new HashMap();
-                    map1.put("p3", skuid);
-                    map1.put("p1", "true");
-                    map1.put("p2", "paypal");
-                    StatisticsManager.getInstance(DetailsActivity.this).addEventAidl(1723, map1);
-
                     intent = new Intent(DetailsActivity.this, PayPalActivity.class);
                 }
                 intent.putExtra("url", url);

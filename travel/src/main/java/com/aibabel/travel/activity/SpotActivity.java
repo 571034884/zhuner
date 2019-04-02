@@ -397,9 +397,6 @@ public class SpotActivity extends BaseActivity implements ResponseCallback {
 
 
         String json = addList(list);
-        Map map1 = new HashMap();
-        map1.put("p1",json);
-        StatisticsManager.getInstance(SpotActivity.this).addEventAidl( 1644, map1);
         Intent intent = new Intent(SpotActivity.this, SpotDetailActivity.class);
         intent.putExtra("position", position);
         intent.putExtra("list", json);

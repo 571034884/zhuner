@@ -410,12 +410,6 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
         }
 
         String tt = Getsystem_info.getSN_SN();
-        //Toast.makeText(MainActivity.this, "sn="+tt, Toast.LENGTH_SHORT).show();
-
-
-//        boolean ss = StatisticsManager.getInstance(MainActivity.this).getBooleanSP("softSim",false);
-//        Toast.makeText(MainActivity.this,ss+"",Toast.LENGTH_SHORT).show();
-//        Log.e("simSoft===",ss+"-------");
 
         //获取iccid
         initMtkDoubleSim();

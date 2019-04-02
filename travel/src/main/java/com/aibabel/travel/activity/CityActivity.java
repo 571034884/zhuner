@@ -202,9 +202,6 @@ public class CityActivity extends BaseActivity implements ResponseCallback, Adap
 
 
     private void toWorld() {
-        Map map = new HashMap();
-        map.put("p1",name);
-        StatisticsManager.getInstance(CityActivity.this).addEventAidl(1621, map);
 
 
 
@@ -213,9 +210,6 @@ public class CityActivity extends BaseActivity implements ResponseCallback, Adap
     }
 
     private void toSearch() {
-        Map map = new HashMap();
-        map.put("p1",name);
-        StatisticsManager.getInstance(CityActivity.this).addEventAidl( 1622, map);
 
         Intent intent = new Intent(this, SearchPageActivity.class);
         startActivity(intent);
@@ -297,9 +291,6 @@ public class CityActivity extends BaseActivity implements ResponseCallback, Adap
      * @param count
      */
     private void toScenic(String id, String url, String count, String name, String audioUrl) {
-        Map map = new HashMap();
-        map.put("p1",name);
-        StatisticsManager.getInstance(CityActivity.this).addEventAidl( 1623, map);
 
 
         Intent intent = new Intent(CityActivity.this, SpotActivity.class);

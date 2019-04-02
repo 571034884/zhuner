@@ -50,7 +50,6 @@ public class MyApplication extends Application {
         initUmengConfig();
         initAppExitConfig();
         initXipc();
-        StatisticsManager.getInstance(this).setConfig(getPackageName(), BuildConfig.VERSION_NAME);
     }
 
     /**

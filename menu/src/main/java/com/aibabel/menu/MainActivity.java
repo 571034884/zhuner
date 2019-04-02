@@ -346,7 +346,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
                 mainReturnImg.postDelayed(new Runnable() {
                     @Override
                     public void run() {
-                        com.aibabel.baselibrary.mode.StatisticsManager.getInstance().uplaodData(getApplicationContext(), SharePrefUtil.getString(context, "order_oid", ""));
+
 
                     }
                 },2000);
@@ -843,7 +843,6 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
                     L.e("fanhuidonghua===============================");
 //     top_ll.getGlobalVisibleRect(new Rect());
                     showPanel();
-                    StatisticsManager.getInstance(mContext).addEventAidl(1133, new HashMap());
                     break;
                 case R.id.notice_start_activity:
                     startActivity(new Intent(this, com.aibabel.messagemanage.MainActivity.class));
@@ -943,7 +942,6 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         ObjectAnimator.ofFloat(top_ll, "alpha", 1f, 0.5f).setDuration(300).start();
         ObjectAnimator.ofFloat(bottom_ll, "translationY", 500).setDuration(300).start();
         ObjectAnimator.ofFloat(bottom_ll, "alpha", 1f, 0.4f).setDuration(300).start();
-        StatisticsManager.getInstance(mContext).addEventAidl(1140, new HashMap<>());
 
 
     }
@@ -956,7 +954,6 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         ObjectAnimator.ofFloat(top_ll, "alpha", 1f, 0.5f).setDuration(10).start();
         ObjectAnimator.ofFloat(bottom_ll, "translationY", 500).setDuration(10).start();
         ObjectAnimator.ofFloat(bottom_ll, "alpha", 1f, 0.4f).setDuration(10).start();
-        StatisticsManager.getInstance(mContext).addEventAidl(1141, new HashMap<>());
 
     }
 
@@ -1143,24 +1140,13 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
     public void bindMenuData(MenuDataBean bean) {
         if (bean == null) return;
         if (mContext == null) return;
-        if (StatisticsManager.getInstance(mContext) == null) return;
 
         try {
             MyApplication.city_id = bean.getData().getCityId();
             MyApplication.country_id = bean.getData().getCountryId();
             if (!TextUtils.equals(oldCity, bean.getData().getCityNameCn())) {
                 if (TextUtils.equals("-10000", bean.getCode())) {
-                    StatisticsManager.getInstance(mContext).addEventAidl(1142, new HashMap() {{
-                        put("type", "离线");
-                        put("city", bean.getData().getCityNameCn());
-
-                    }});
                 } else {
-                    StatisticsManager.getInstance(mContext).addEventAidl(1142, new HashMap() {{
-                        put("type", "在线");
-                        put("city", bean.getData().getCityNameCn());
-
-                    }});
                 }
             }
         } catch (Exception e) {

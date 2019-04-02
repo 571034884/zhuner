@@ -666,7 +666,6 @@ public class IpsilateralFragment extends BaseFragment implements OnResponseListe
                 selectLan(UP_KEY, lan_up);
                 break;
             case R.id.iv_switch:
-                StatisticsManager.getInstance(context).addEventAidl(1305);
 
                 toOppos();
                 break;
@@ -692,7 +691,6 @@ public class IpsilateralFragment extends BaseFragment implements OnResponseListe
 
                 break;
             case R.id.iv_record:
-                StatisticsManager.getInstance(context).addEventAidl(1306);
                 /**####  start-hjs-addStatisticsEvent   ##**/
                 try {
                     ((StatisticsBaseActivity)getActivity()).addStatisticsEvent("translation_main12", null);
@@ -711,9 +709,6 @@ public class IpsilateralFragment extends BaseFragment implements OnResponseListe
      * 播放翻译内容
      */
     private void playAudio() {
-        Map<String, String> map = new HashMap<>();
-        map.put("p1", code_to);
-        StatisticsManager.getInstance(context).addEventAidl(1304);
         /**####  start-hjs-addStatisticsEvent   ##**/
         try {
             ((StatisticsBaseActivity)getActivity()).addStatisticsEvent("translation_main11", null);
@@ -980,11 +975,6 @@ public class IpsilateralFragment extends BaseFragment implements OnResponseListe
                 netChanged();
                 ChangeOffline.getInstance().createOrChange();
             }
-            //添加统计
-            Map<String, String> map = new HashMap<>();
-            map.put("p1", lan_do);
-            map.put("p2", lan_up);
-            StatisticsManager.getInstance(context).addEventAidl(1311, map);
             /**####  start-hjs-addStatisticsEvent   ##**/
             try {
                 ((StatisticsBaseActivity)getActivity()).addStatisticsEvent("translation_language3", null);

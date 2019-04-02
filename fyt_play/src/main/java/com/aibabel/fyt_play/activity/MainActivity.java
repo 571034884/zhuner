@@ -178,8 +178,6 @@ public class MainActivity extends BaseActivity implements AppBarLayout.OnOffsetC
         btnMyOrder.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Map map = new HashMap();
-                StatisticsManager.getInstance(mContext).addEventAidl(1502, map);
 
                 Intent intent = new Intent(MainActivity.this, MyWebActivity.class);
                 intent.putExtra("leaseNo", dev_oid);
@@ -216,9 +214,6 @@ public class MainActivity extends BaseActivity implements AppBarLayout.OnOffsetC
             Constans.CITY = data.getStringExtra("city");
             Constans.COUNTRY = data.getStringExtra("country");
 
-            Map map1 = new HashMap();
-            map1.put("p1", Constans.CITY );
-            StatisticsManager.getInstance(mContext).addEventAidl( 1500, map1);
 
             tvCityName.setText(Constans.CITY );
             Map<String, String> map = new HashMap<>();
@@ -287,10 +282,6 @@ public class MainActivity extends BaseActivity implements AppBarLayout.OnOffsetC
         adapter1 = new CommomRecyclerAdapter(MainActivity.this, playItemBeanList, R.layout.rv_play_item_item, new CommomRecyclerAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(CommonRecyclerViewHolder holder, final int postion) {
-
-                Map map = new HashMap();
-                map.put("p1", playItemBeanList.get(postion).getTitle());
-                StatisticsManager.getInstance(mContext).addEventAidl( 1501, map);
                 /**####  start-hjs-addStatisticsEvent   ##**/
                 HashMap<String, Serializable> add_hp = new HashMap<>();
                 if (statepos == 0) {

@@ -126,9 +126,6 @@ public class PayPalActivity extends BaseActivity implements OnJSClickListener {
         Log.e("subOrderNo_pay", subOrderNo);
         skuid = intent.getStringExtra("SKUID");
 
-        Map map1 = new HashMap();
-        map1.put("p1", skuid);
-        StatisticsManager.getInstance(PayPalActivity.this).addEventAidl(1730, map1);
 
         webView.loadUrl(url);
 
@@ -208,10 +205,6 @@ public class PayPalActivity extends BaseActivity implements OnJSClickListener {
                 tvError.setText(getResources().getString(R.string.success));
                 llIsnet.setVisibility(View.VISIBLE);
 //                insertContact("softsim","00001");
-
-                Map map1 = new HashMap();
-                map1.put("p2", skuid);
-                StatisticsManager.getInstance(PayPalActivity.this).addEventAidl(1732, map1);
                 //TODO 下单成功  判断标识 是否重置Siftsim
                 if (DeviceUtils.getSystem() == DeviceUtils.System.PRO_SELL){
                     Log.e("LK---001", "Pro销售版本");

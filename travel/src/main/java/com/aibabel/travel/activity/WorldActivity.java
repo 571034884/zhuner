@@ -336,10 +336,6 @@ public class WorldActivity extends BaseActivity implements ResponseCallback, Net
                 break;
             case 1://支持离线并下载安装成功了
 
-                Map map1 = new HashMap();
-                map1.put("p1",name);
-                StatisticsManager.getInstance(WorldActivity.this).addEventAidl(1602, map1);
-
 
                 Constant.PREFIX = StringUtil.getKeyByValue(map,id);
                 Intent intent = new Intent(this, CountryActivity.class);
@@ -490,10 +486,6 @@ public class WorldActivity extends BaseActivity implements ResponseCallback, Net
     }
 
     private void online(int id, String name) {
-        Map map = new HashMap();
-        map.put("p1",name);
-        StatisticsManager.getInstance(WorldActivity.this).addEventAidl( 1602, map);
-
         Intent intent = new Intent(this, CountryActivity.class);
         intent.putExtra("id", String.valueOf(id));
         intent.putExtra("name", name);

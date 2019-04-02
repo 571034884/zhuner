@@ -677,7 +677,6 @@ public class OppositeFragment extends BaseFragment implements OnResponseListener
                 selectLan(UP_KEY, lan_up, true);
                 break;
             case R.id.iv_switch:
-                StatisticsManager.getInstance(context).addEventAidl(1305);
                 toIpsil();
                 break;
             case R.id.iv_down_sound:
@@ -701,7 +700,6 @@ public class OppositeFragment extends BaseFragment implements OnResponseListener
                 }
 
             case R.id.iv_record:
-                StatisticsManager.getInstance(context).addEventAidl(1306);
                 /**####  start-hjs-addStatisticsEvent   ##**/
                 try {
                     ((StatisticsBaseActivity)getActivity()).addStatisticsEvent("translation_main12", null);
@@ -719,9 +717,6 @@ public class OppositeFragment extends BaseFragment implements OnResponseListener
      * 播放翻译内容
      */
     private void playAudio() {
-        Map<String, String> map = new HashMap<>();
-        map.put("p1",code_to);
-        StatisticsManager.getInstance(context).addEventAidl(1304);
         /**####  start-hjs-addStatisticsEvent   ##**/
         try {
             ((StatisticsBaseActivity)getActivity()).addStatisticsEvent("translation_main11", null);
@@ -962,12 +957,6 @@ public class OppositeFragment extends BaseFragment implements OnResponseListener
             if (!CommonUtils.isAvailable()) {
                 ChangeOffline.getInstance().createOrChange();
             }
-
-            //添加统计
-            Map<String, String> map = new HashMap<>();
-            map.put("p1",lan_do);
-            map.put("p2",lan_up);
-            StatisticsManager.getInstance(context).addEventAidl(1311,map);
 
             /**####  start-hjs-addStatisticsEvent   ##**/
             try {

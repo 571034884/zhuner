@@ -157,7 +157,6 @@ public class SearchActivity extends BaseActivity implements View.OnClickListener
                 intent1.setAction("com.aibabel.menu.MENULOCATION");
                 sendBroadcast(intent1);
                 finish();
-                StatisticsManager.getInstance(mContext).addEventAidl( 1113, new HashMap());
 
                 break;
 
@@ -302,9 +301,6 @@ public class SearchActivity extends BaseActivity implements View.OnClickListener
                 intent.putExtra("city_name", list.get(i).getCityChj());
                 intent.putExtra("country_name", list.get(i).getCountryChj());
                 setResult(200, intent);
-                StatisticsManager.getInstance(mContext).addEventAidl( 1113, new HashMap(){{
-                    put("city",list.get(i).getCityChj());
-                }});
                 finish();
             }
         });
@@ -384,9 +380,6 @@ public class SearchActivity extends BaseActivity implements View.OnClickListener
                 intent.putExtra("country_name", list.get(position).getCountryChj());
                 setResult(200, intent);
                 finish();
-                StatisticsManager.getInstance(mContext).addEventAidl(1112, new HashMap(){{
-                    put("city",list.get(position).getCityChj());
-                }});
                 return true;
             }
         });

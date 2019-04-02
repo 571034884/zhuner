@@ -133,8 +133,6 @@ public class BaseApplication extends com.aibabel.baselibrary.base.BaseApplicatio
         initSQLite();
         //热修复
         rexiufu();
-        //
-        StatisticsManager.getInstance(this).setConfig(getPackageName(),BuildConfig.VERSION_NAME);
     }
 
     @Override

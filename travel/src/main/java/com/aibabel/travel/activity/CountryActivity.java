@@ -271,10 +271,6 @@ public class CountryActivity extends BaseActivity implements ResponseCallback {
 
     private void toSpots(String id, String url, String name) {
 
-        Map map = new HashMap();
-        map.put("p1",name);
-        StatisticsManager.getInstance(CountryActivity.this).addEventAidl(1613, map);
-
         Intent intent = new Intent(CountryActivity.this, CityActivity.class);
         intent.putExtra("id", id);
         intent.putExtra("url", url);
@@ -284,18 +280,12 @@ public class CountryActivity extends BaseActivity implements ResponseCallback {
     }
 
     private void toWorld() {
-        Map map = new HashMap();
-        map.put("p1",name);
-        StatisticsManager.getInstance(CountryActivity.this).addEventAidl( 1611, map);
         Intent intent = new Intent(CountryActivity.this, WorldActivity.class);
         startActivity(intent);
     }
 
 
     private void toSearch() {
-        Map map = new HashMap();
-        map.put("p1",name);
-        StatisticsManager.getInstance(CountryActivity.this).addEventAidl( 1612, map);
         Intent intent = new Intent(CountryActivity.this, SearchPageActivity.class);
         startActivity(intent);
     }

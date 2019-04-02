@@ -266,9 +266,6 @@ public class Html5Activity extends BaseActivity implements BaseCallback<Html5Url
 
     @JavascriptInterface //仍然必不可少
     public void statisticsOpenCount(String foodName) {
-        Map<String, String> map = new HashMap<>();
-        map.put("p1", foodName);
-        StatisticsManager.getInstance(this).addEventAidl(1015, map);
     }
 
     @Override
@@ -312,11 +309,8 @@ public class Html5Activity extends BaseActivity implements BaseCallback<Html5Url
     @OnClick({R.id.tvTurnTranslate, R.id.tvTurnCamera, R.id.tvTurnHuilv})
     public void onViewClicked(View view) {
         Intent intent = null;
-        Map<String, String> map = new HashMap<>();
-        map.put("p1", shopId);
         switch (view.getId()) {
             case R.id.tvTurnTranslate:
-                StatisticsManager.getInstance(this).addEventAidl(1011, map);
                 /**####  start-hjs-addStatisticsEvent   ##**/
                 try {
                     HashMap<String, Serializable> add_hp = new HashMap<>();
@@ -333,7 +327,6 @@ public class Html5Activity extends BaseActivity implements BaseCallback<Html5Url
 //                intent.setAction(Intent.ACTION_VIEW);
                 break;
             case R.id.tvTurnCamera:
-                StatisticsManager.getInstance(this).addEventAidl(1012, map);
                 /**####  start-hjs-addStatisticsEvent   ##**/
                 try {
                     HashMap<String, Serializable> add_hp = new HashMap<>();
@@ -348,7 +341,6 @@ public class Html5Activity extends BaseActivity implements BaseCallback<Html5Url
                 intent.setClassName("com.aibabel.ocr", "com.aibabel.ocr.activity.LauncherActivity");
                 break;
             case R.id.tvTurnHuilv:
-                StatisticsManager.getInstance(this).addEventAidl(1013, map);
                 /**####  start-hjs-addStatisticsEvent   ##**/
                 try {
                     HashMap<String, Serializable> add_hp = new HashMap<>();

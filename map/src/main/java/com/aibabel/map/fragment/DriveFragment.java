@@ -242,13 +242,6 @@ public class DriveFragment extends BaseFragment implements SensorEventListener ,
 
     private void obtainApi() {
 
-        Map map = new HashMap();
-        map.put("startLatLon",routeBean.getStartLoc().getLat()+","+routeBean.getStartLoc().getLng());
-        map.put("startName",routeBean.getStartName());
-        map.put("endLatLon",routeBean.getEndLoc().getLat()+","+routeBean.getEndLoc().getLng());
-        map.put("endName",routeBean.getEndName());
-        map.put("type",routeBean.getMode());
-        StatisticsManager.getInstance(mContext).addEventAidl(1210,map);
 
         String url = BaiDuUtil.getUrl(routeBean.getLocationWhere(), routeBean.getIndex());
         Map param = new HashMap();
@@ -566,10 +559,6 @@ public class DriveFragment extends BaseFragment implements SensorEventListener ,
                     }
                 }
 
-
-                    Map map = new HashMap();
-                map.put("type",routeBean.getMode());
-                StatisticsManager.getInstance(mContext).addEventAidl(1211,map);
                 /**####  start-hjs-addStatisticsEvent   ##**/
                 try {
                     ((StatisticsBaseActivity)getActivity()).addStatisticsEvent("path_plan_route2", null);

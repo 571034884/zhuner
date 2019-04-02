@@ -119,9 +119,6 @@ public class FilterActivity extends BaseActivity implements BaseCallback<BaseBea
                 .DataBean>() {
             @Override
             public void onItemClick(View view, FilterBean.DataBean item, int position) {
-                Map<String, String> map = new HashMap<>();
-                map.put("p1", item.getShopId());
-                StatisticsManager.getInstance(mContext).addEventAidl(1054, map);
                 startActivity(new Intent(FilterActivity.this, Html5Activity.class)
                         .putExtra("shopId", item.getShopId())
                         .putExtra("shopName", item.getShopName())

@@ -96,7 +96,6 @@ public class StatisticsBaseActivity extends AppCompatActivity {
 
         }
         else {
-            statisticsManager= StatisticsManager.getInstance();
         }
     }
     @Override

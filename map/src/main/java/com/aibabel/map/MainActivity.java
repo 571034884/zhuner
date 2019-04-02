@@ -191,18 +191,13 @@ public class MainActivity extends MapBaseActivity implements SensorEventListener
                     e.printStackTrace();
                 }
                 /**####  end-hjs-addStatisticsEvent  ##**/
-
-                Map map = new HashMap();
-                map.put("type","cate");
                 if (isChecked){
-                    StatisticsManager.getInstance(mContext).addEventAidl(1203, map);
                     tag = "cate";
                     mMetro.setChecked(false);
                     mScenic.setChecked(false);
                     mShop.setChecked(false);
                     getPoi(mCate);
                 }else{
-                    StatisticsManager.getInstance(mContext).addEventAidl(1204, map);
                     clear();
                 }
             }
@@ -230,18 +225,13 @@ public class MainActivity extends MapBaseActivity implements SensorEventListener
                     e.printStackTrace();
                 }
                 /**####  end-hjs-addStatisticsEvent  ##**/
-
-                Map map = new HashMap();
-                map.put("type","metro");
                 if (isChecked){
-                    StatisticsManager.getInstance(mContext).addEventAidl(1203, map);
                     tag = "metro";
                     mCate.setChecked(false);
                     mScenic.setChecked(false);
                     mShop.setChecked(false);
                     getPoi(mMetro);
                 }else{
-                    StatisticsManager.getInstance(mContext).addEventAidl(1204, map);
                     clear();
                 }
             }
@@ -269,17 +259,13 @@ public class MainActivity extends MapBaseActivity implements SensorEventListener
                     e.printStackTrace();
                 }
                 /**####  end-hjs-addStatisticsEvent  ##**/
-                Map map = new HashMap();
-                map.put("type","scenic");
                 if (isChecked){
-                    StatisticsManager.getInstance(mContext).addEventAidl(1203, map);
                     tag = "scenic";
                     mCate.setChecked(false);
                     mMetro.setChecked(false);
                     mShop.setChecked(false);
                     getPoi(mScenic);
                 }else{
-                    StatisticsManager.getInstance(mContext).addEventAidl(1204, map);
                     clear();
                 }
             }
@@ -306,17 +292,13 @@ public class MainActivity extends MapBaseActivity implements SensorEventListener
                     e.printStackTrace();
                 }
                 /**####  end-hjs-addStatisticsEvent  ##**/
-                Map map = new HashMap();
-                map.put("type","shop");
                 if (isChecked){
-                    StatisticsManager.getInstance(mContext).addEventAidl(1203, map);
                     tag = "shop";
                     mCate.setChecked(false);
                     mMetro.setChecked(false);
                     mScenic.setChecked(false);
                     getPoi(mShop);
                 }else{
-                    StatisticsManager.getInstance(mContext).addEventAidl(1204, map);
                     clear();
                 }
             }
@@ -485,14 +467,12 @@ public class MainActivity extends MapBaseActivity implements SensorEventListener
      * @param view
      */
     public void onClick(View view) {
-        Map map = new HashMap();
         switch (view.getId()) {
             case R.id.tv_location:
                 if (!CommonUtils.isNetworkAvailable(this)){
                     ToastUtil.showShort(mContext,"请检查网络连接");
                     return;
                 }
-                StatisticsManager.getInstance(mContext).addEventAidl( 1205, map);
                 /**####  start-hjs-addStatisticsEvent   ##**/
                 try {
                     addStatisticsEvent("map_poi3", null);
@@ -520,9 +500,6 @@ public class MainActivity extends MapBaseActivity implements SensorEventListener
                     e.printStackTrace();
                 }
                 /**####  end-hjs-addStatisticsEvent  ##**/
-
-
-                StatisticsManager.getInstance(mContext).addEventAidl( 1206, map);
                 Intent intent = new Intent(mContext, SearchAddressActivity.class);
                 //TODO 存储当前位置
                 List<AddressResult> resultList = LitePal.findAll(AddressResult.class, true);
@@ -551,7 +528,6 @@ public class MainActivity extends MapBaseActivity implements SensorEventListener
                 }
 
                 if (mLocation != null) {
-                    StatisticsManager.getInstance(mContext).addEventAidl(1201, new HashMap());
 
                     /**####  start-hjs-addStatisticsEvent   ##**/
                     try {
@@ -890,12 +866,6 @@ public class MainActivity extends MapBaseActivity implements SensorEventListener
             intent.putExtra("routes", bean);
             startActivity(intent);
         } else {
-
-            Map map = new HashMap();
-            map.put("type", item.getTagType());
-            map.put("scenicName", item.getNameCh());
-            map.put("scenicAddr", item.getAddress());
-            StatisticsManager.getInstance(mContext).addEventAidl(1213, map);
 
             Intent intent = new Intent(this, DialogActivity.class);
             intent.putExtra("data", item);

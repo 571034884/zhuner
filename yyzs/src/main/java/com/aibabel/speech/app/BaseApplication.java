@@ -53,10 +53,6 @@ public class BaseApplication extends com.aibabel.baselibrary.base.BaseApplicatio
     @Override
     public void onCreate() {
         super.onCreate();
-        StatisticsManager.getInstance(this).setConfig(getPackageName(), BuildConfig.VERSION_NAME);
-        L.e("BaseApplication    onCreate===================");
-
-
         x.Ext.init(this);
         x.Ext.setDebug(true);
         initPlugin();

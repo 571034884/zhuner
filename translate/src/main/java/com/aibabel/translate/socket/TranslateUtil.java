@@ -690,15 +690,7 @@ public class TranslateUtil implements MicArrayUtil.OnDealwithListener, SocketMan
         String nkey = "translation_main9";
 
         try{
-            Map<String, String> map = new HashMap<>();
-            map.put("p2",(endTime-startTime)+"");
-            map.put("p3",(mtTime-endTime)+"");
-            map.put("p4",(soundTime-endTime)+"");
-            map.put("p6",to_lan_code+"");
-            map.put("p5",from_lan_code+"");
-            map.put("p1",isSuccess);
-            map.put("p7",currFrag);
-            map.put("p8",mode);
+
 
             if(key_press==132){
                 key=1302;
@@ -707,7 +699,6 @@ public class TranslateUtil implements MicArrayUtil.OnDealwithListener, SocketMan
                 key=1303;
                 nkey = "translation_main10";
             }
-            StatisticsManager.getInstance(context).addEventAidl(key,map);
 
 
             /**####  start-hjs-addStatisticsEvent   ##**/

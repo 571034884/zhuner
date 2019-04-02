@@ -372,8 +372,6 @@ public class AddCityActivity extends BaseActivity implements BaseCallback {
             @Override
             public void onItemClick(AdapterView<?> parent, View view,
                                     int position, long id) {
-                Map<String, String> map = new HashMap<>();
-                map.put("p1", adapter.getData().get(position).getCityCn());
                 /**####  start-hjs-addStatisticsEvent   ##**/
                 try {
                     HashMap<String, Serializable> add_hp = new HashMap<>();
@@ -384,7 +382,6 @@ public class AddCityActivity extends BaseActivity implements BaseCallback {
                     e.printStackTrace();
                 }
                 /**####  end-hjs-addStatisticsEvent  ##**/
-                StatisticsManager.getInstance(AddCityActivity.this).addEventAidl( 2400, map);
                 Intent intent = new Intent();
                 intent.putExtra("cityCn", adapter.getData().get(position).getCityCn());
                 intent.putExtra("cityEn", adapter.getData().get(position).getCityEn());

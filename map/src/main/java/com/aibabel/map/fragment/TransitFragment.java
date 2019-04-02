@@ -131,10 +131,6 @@ public class TransitFragment extends BaseFragment implements View.OnClickListene
                     return;
                 }
 
-                Map map = new HashMap();
-                map.put("type",routeBean.getMode());
-                StatisticsManager.getInstance(mContext).addEventAidl(1211,map);
-
                 Intent intent = new Intent(mContext, TransitRouteActivity.class);
                 switch (routeBean.getLocationWhere()) {
                     case 1://国内
@@ -305,15 +301,6 @@ public class TransitFragment extends BaseFragment implements View.OnClickListene
     }
 
     private void obtainApi() {
-
-        Map map = new HashMap();
-        map.put("startLatLon",routeBean.getStartLoc().getLat()+","+routeBean.getStartLoc().getLng());
-        map.put("startName",routeBean.getStartName());
-        map.put("endLatLon",routeBean.getEndLoc().getLat()+","+routeBean.getEndLoc().getLng());
-        map.put("endName",routeBean.getEndName());
-        map.put("type",routeBean.getMode());
-        StatisticsManager.getInstance(mContext).addEventAidl(1210,map);
-
         String url = BaiDuUtil.getUrl(routeBean.getLocationWhere(), routeBean.getIndex());
         Map param = new HashMap();
         param.put("origin", routeBean.getStartLoc().getLat() + "," + routeBean.getStartLoc().getLng());

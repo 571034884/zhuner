@@ -222,11 +222,6 @@ public class SearchAddressActivity extends MapBaseActivity implements SensorEven
                 }
                 showMarkerPoi(addressResult.getLocation().getLat(), addressResult.getLocation().getLng());
 
-
-                Map map = new HashMap();
-                map.put("latlon", addressResult.getLocation().getLat() + "," + addressResult.getLocation().getLng());
-                map.put("addr", addressResult.getName());
-                StatisticsManager.getInstance(mContext).addEventAidl(1207, map);
                 /**####  start-hjs-addStatisticsEvent   ##**/
                 try {
                     HashMap<String, Serializable> add_hp = new HashMap<>();
@@ -448,8 +443,6 @@ public class SearchAddressActivity extends MapBaseActivity implements SensorEven
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.iv_close:
-                Map map = new HashMap();
-                StatisticsManager.getInstance(mContext).addEventAidl( 1208, map);
 
                 /**####  start-hjs-addStatisticsEvent   ##**/
                 try {
@@ -624,11 +617,6 @@ public class SearchAddressActivity extends MapBaseActivity implements SensorEven
         if (mLocation != null) {
             if (!mapPoi.getUid().equals("")) {
                 poiSearchOkGo(mapPoi.getUid());
-
-                Map map = new HashMap();
-                map.put("latlon", mapPoi.getPosition() + "");
-                map.put("addr", mapPoi.getName());
-                StatisticsManager.getInstance(mContext).addEventAidl(1207, map);
             }
         }
         return false;

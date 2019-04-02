@@ -48,7 +48,6 @@ public class MyApplication extends BaseApplication {
         initAppExitConfig();
         initOKgoConfig();
         initUmengConfig();
-        StatisticsManager.getInstance(this).setConfig(getPackageName(), BuildConfig.VERSION_NAME);
     }
 
     @Override

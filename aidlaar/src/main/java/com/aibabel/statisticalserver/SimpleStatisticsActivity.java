@@ -42,7 +42,6 @@ public class SimpleStatisticsActivity extends AppCompatActivity {
     protected void onPause() {
         super.onPause();
         outTime = System.currentTimeMillis();
-        StatisticsManager.getInstance(this).addUserPathAidl(getClass().getSimpleName(), inTime, outTime, interactionTimes, getPathParams());
         interactionTimes = 0;
     }
 

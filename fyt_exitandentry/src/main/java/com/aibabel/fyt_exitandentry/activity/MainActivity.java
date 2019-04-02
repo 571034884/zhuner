@@ -185,8 +185,6 @@ public class MainActivity extends BaseActivity implements TabLayout.OnTabSelecte
         choiceCityLlLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-//                HashMap<String,Serializable>  map1 = new HashMap();
-//                StatisticsManager.getInstance(mContext).addEventAidl(1801,map);
                 addStatisticsEvent("fyt_exitandentry_main1",null);
                 Intent intent1 = new Intent(MainActivity.this, ChoiceCityActivity.class);
                 startActivityForResult(intent1, 10);

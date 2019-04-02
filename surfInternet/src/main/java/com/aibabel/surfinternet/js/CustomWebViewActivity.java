@@ -154,9 +154,6 @@ public class CustomWebViewActivity extends BaseActivity implements OnJSClickList
         Log.e("subOrderNo_zfb", subOrderNo);
         String payType = intent.getStringExtra("payType");
         skuid = intent.getStringExtra("SKUID");
-        Map map1 = new HashMap();
-        map1.put("p1", skuid);
-        StatisticsManager.getInstance(CustomWebViewActivity.this).addEventAidl(1730, map1);
 
         switch (payType) {
             case "1":
@@ -283,10 +280,6 @@ public class CustomWebViewActivity extends BaseActivity implements OnJSClickList
                 rl.setVisibility(View.GONE);
                 tvError.setText(getResources().getString(R.string.success));
                 llIsnet.setVisibility(View.VISIBLE);
-
-                Map map1 = new HashMap();
-                map1.put("p2", skuid);
-                StatisticsManager.getInstance(CustomWebViewActivity.this).addEventAidl(1732, map1);
 
                 if (DeviceUtils.getSystem() == DeviceUtils.System.PRO_SELL){
                     Log.e("LK---001", "Pro销售版本");

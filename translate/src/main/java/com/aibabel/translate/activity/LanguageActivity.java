@@ -227,9 +227,6 @@ public class LanguageActivity extends BaseActivity implements ExpandableListView
                     choice = true;
                     SharePrefUtil.saveBoolean(LanguageActivity.this, "choice", choice);
                     //添加统计
-                    Map<String, String> map = new HashMap<>();
-                    map.put("p1",name);
-                    StatisticsManager.getInstance(this).addEventAidl(1310,map);
                 } else {
                     choice = false;
                     SharePrefUtil.saveBoolean(LanguageActivity.this, "choice", choice);
@@ -261,7 +258,6 @@ public class LanguageActivity extends BaseActivity implements ExpandableListView
                 SharePrefUtil.saveString(LanguageActivity.this, Constant.SOUND_UP, sound);
                 SharePrefUtil.saveString(LanguageActivity.this, Constant.OFFLINE_UP, offline);
                 //添加统计
-                StatisticsManager.getInstance(this).addEventAidl(1300);
 
                 /**####  start-hjs-addStatisticsEvent   ##**/
                 try {
@@ -279,7 +275,6 @@ public class LanguageActivity extends BaseActivity implements ExpandableListView
                 SharePrefUtil.saveString(LanguageActivity.this, Constant.SOUND_DOWN, sound);
                 SharePrefUtil.saveString(LanguageActivity.this, Constant.OFFLINE_DOWN, offline);
                 //添加统计
-                StatisticsManager.getInstance(this).addEventAidl(1301);
 
                 /**####  start-hjs-addStatisticsEvent   ##**/
                 try {

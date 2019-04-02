@@ -52,10 +52,6 @@ public class BaseApplication  extends com.aibabel.baselibrary.base.BaseApplicati
 
         initLayoutConfig();
 
-//        CrashHandler.getInstance().init(getApplicationContext());
-//        exit();
-        StatisticsManager.getInstance(this).setConfig(getPackageName(), BuildConfig.VERSION_NAME);
-
     }
 
     @Override

@@ -147,7 +147,6 @@ public class MainActivity extends BaseActivity implements AudioRecordUtil.OnDeal
                     }
                 }
             });
-            StatisticsManager.getInstance(this).addEventAidl(2000);
 
         } catch (Exception e) {
 
@@ -225,7 +224,6 @@ public class MainActivity extends BaseActivity implements AudioRecordUtil.OnDeal
 
         } catch (Exception e) {
         }
-        StatisticsManager.getInstance(this).addEventAidl(2000);
 
     }
 

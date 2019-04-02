@@ -29,7 +29,6 @@ public class BaseApplication extends com.aibabel.baselibrary.base.BaseApplicatio
         if (DeviceUtils.getSystem() != DeviceUtils.System.FLY_TAIWAN) {
             configJPush();
         }
-        StatisticsManager.getInstance(this);
 
     }
 

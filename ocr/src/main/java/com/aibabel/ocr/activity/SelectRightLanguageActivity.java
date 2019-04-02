@@ -69,11 +69,6 @@ public class SelectRightLanguageActivity extends BaseActivity implements Adapter
         LanBean bean = list.get(position);
         String name = bean.getName();
         String name_code = bean.getLang_code();
-        Map<String, String> map = new HashMap<>();
-
-        map.put("p1",Constant.LAN_OR);
-        map.put("p2", bean.getName());
-        StatisticsManager.getInstance(SelectRightLanguageActivity.this).addEventAidl( 1411, map);
 
 
         /**####  start-hjs-addStatisticsEvent   ##**/

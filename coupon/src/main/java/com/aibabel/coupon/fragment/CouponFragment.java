@@ -103,9 +103,6 @@ public class CouponFragment extends BaseFragment implements BaseCallback<BaseBea
             public void onItemClick(CommonRecyclerViewHolder holder, final int postion) {
                 couponId = couponQueryBeanData.get(postion).getCouponId();
                 Log.e("couponId", couponId + "");
-                Map map = new HashMap();
-                map.put("p1",couponId);
-                StatisticsManager.getInstance(mContext).addEventAidl( 2620, map);
 
                 /**####  start-hjs-addStatisticsEvent   ##**/
                 try {
@@ -156,8 +153,6 @@ public class CouponFragment extends BaseFragment implements BaseCallback<BaseBea
 //
 //        }
 
-        Map map = new HashMap();
-        StatisticsManager.getInstance(mContext).addEventAidl(2621, map);
         int type = data.getIntExtra("type", 0);
         activity.showFragment(type);
 

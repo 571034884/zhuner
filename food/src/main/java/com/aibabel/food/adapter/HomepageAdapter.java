@@ -54,8 +54,6 @@ public class HomepageAdapter extends BaseRecyclercAdapter<HomePageAllBean.DataBe
                 @Override
                 public void onClick(View v) {
                     turnToAll(AllOffThingsActivity.class, AllOffThingsActivity.TAG_AREA);
-                    Map<String, String> map = new HashMap<>();
-                    StatisticsManager.getInstance(mContext).addEventAidl(1003, map);
                     /**####  start-hjs-addStatisticsEvent   ##**/
                     try {
                         ((BaseActivity)mContext).addStatisticsEvent("1003", null);
@@ -70,9 +68,6 @@ public class HomepageAdapter extends BaseRecyclercAdapter<HomePageAllBean.DataBe
                 public void onItemClick(View view, Object item, int position) {
                     turnToList(FilterActivity.FILTER_TAG1, ((HomePageAllBean.DataBean
                             .BegionShoptypeJsonBean.ListBean) item).getName());
-                    Map<String, String> map = new HashMap<>();
-                    map.put("p1", ((HomePageAllBean.DataBean.BegionShoptypeJsonBean.ListBean) item).getName());
-                    StatisticsManager.getInstance(mContext).addEventAidl(1004, map);
 
                     /**####  start-hjs-addStatisticsEvent   ##**/
                     try {
@@ -94,8 +89,6 @@ public class HomepageAdapter extends BaseRecyclercAdapter<HomePageAllBean.DataBe
                 @Override
                 public void onClick(View v) {
                     turnToAll(AllOffThingsActivity.class, AllOffThingsActivity.TAG_KIND);
-                    Map<String, String> map = new HashMap<>();
-                    StatisticsManager.getInstance(mContext).addEventAidl(1005, map);
 
                     /**####  start-hjs-addStatisticsEvent   ##**/
                     try {
@@ -110,9 +103,6 @@ public class HomepageAdapter extends BaseRecyclercAdapter<HomePageAllBean.DataBe
                 @Override
                 public void onItemClick(View view, Object item, int position) {
                     turnToList(FilterActivity.FILTER_TAG2, ((HomePageAllBean.DataBean.BegionShoptypeJsonBean.ListBean) item).getName());
-                    Map<String, String> map = new HashMap<>();
-                    map.put("p1", ((HomePageAllBean.DataBean.BegionShoptypeJsonBean.ListBean) item).getName());
-                    StatisticsManager.getInstance(mContext).addEventAidl(1006, map);
                     /**####  start-hjs-addStatisticsEvent   ##**/
                     try {
                         ((BaseActivity)mContext).addStatisticsEvent("food_home6", null);

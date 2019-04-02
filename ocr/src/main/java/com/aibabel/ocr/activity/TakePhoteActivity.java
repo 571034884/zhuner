@@ -662,8 +662,6 @@ public class TakePhoteActivity extends BaseActivity implements CameraPreview.OnC
                 isTaken = true;
                 iv_camera.setClickable(false);
                 takePhoto();
-                Map<String, String> map = new HashMap<>();
-                StatisticsManager.getInstance(TakePhoteActivity.this).addEventAidl(1405, map);
                 /**####  start-hjs-addStatisticsEvent   ##**/
                 try {
                     addStatisticsEvent("ocr_TakePhote8", null);
@@ -793,14 +791,10 @@ public class TakePhoteActivity extends BaseActivity implements CameraPreview.OnC
             Intent intent = new Intent(this, SelectLanguageActivity.class);
             intent.putExtra("type", type);
             startActivityForResult(intent, 100);
-            Map<String, String> map = new HashMap<>();
-            StatisticsManager.getInstance(this).addEventAidl(1400, map);
         } else {
             Intent intent = new Intent(this, SelectRightLanguageActivity.class);
             intent.putExtra("type", type);
             startActivity(intent);
-            Map<String, String> map = new HashMap<>();
-            StatisticsManager.getInstance(this).addEventAidl(1401, map);
         }
     }
 
@@ -961,13 +955,6 @@ public class TakePhoteActivity extends BaseActivity implements CameraPreview.OnC
                         } else if (rg_tag == 2) {//当前选中的是物体识别
                             toObject(response.body(), downX, downY);
                         }
-                        Map<String, String> map = new HashMap<>();
-                        map.put("p1", "成功");
-                        map.put("p2", (System.currentTimeMillis() - beginTime) + "");
-                        map.put("p3", Constant.LAN_OR);
-                        map.put("p4", Constant.LAN_TR);
-                        map.put("p5", rg_tag + "");
-                        StatisticsManager.getInstance(TakePhoteActivity.this).addEventAidl(isFull ? 1403 : 1402, map);
 
                         /**####  start-hjs-addStatisticsEvent   ##**/
                         try {
@@ -988,13 +975,6 @@ public class TakePhoteActivity extends BaseActivity implements CameraPreview.OnC
                     @Override
                     public void onError(Response<String> response) {
 //                        reset();
-                        Map<String, String> map = new HashMap<>();
-                        map.put("p1", "失败");
-                        map.put("p2", (System.currentTimeMillis() - beginTime) + "");
-                        map.put("p3", Constant.LAN_OR);
-                        map.put("p4", Constant.LAN_TR);
-                        map.put("p5", rg_tag + "");
-                        StatisticsManager.getInstance(TakePhoteActivity.this).addEventAidl(isFull ? 1403 : 1402, map);
                         if (rg_tag != 2) showGuaguaka();
                         Toast.makeText(TakePhoteActivity.this, R.string.error_msg, Toast.LENGTH_SHORT).show();
                         //切换服务器

@@ -87,10 +87,6 @@ public class ChoiceCityActivity extends BaseActivity implements BaseCallback<Bas
             @Override
             public void onItemClick(CommonRecyclerViewHolder holder, final int postion) {
 
-                Map map = new HashMap();
-                map.put("p1",cityBeanList.get(postion));
-                StatisticsManager.getInstance(mContext).addEventAidl(1511,map);
-
                 /**####  start-hjs-addStatisticsEvent   ##**/
                 try {
                     HashMap<String, Serializable> add_hp = new HashMap<>();

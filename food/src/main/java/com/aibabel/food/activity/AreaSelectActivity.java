@@ -139,9 +139,6 @@ public class AreaSelectActivity extends BaseActivity implements BaseCallback<Cit
             @Override
             public void onItemClick(AdapterView<?> parent, View view,
                                     int position, long id) {
-                Map<String,String> map = new HashMap<>();
-                map.put("p1",adapter.getData().get(position).getName_cn());
-                StatisticsManager.getInstance(AreaSelectActivity.this).addEventAidl(1062,map);
 
                 /**####  start-hjs-addStatisticsEvent   ##**/
                 try {

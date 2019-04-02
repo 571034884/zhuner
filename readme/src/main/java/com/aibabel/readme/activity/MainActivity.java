@@ -59,8 +59,6 @@ public class MainActivity extends BaseActivity {
 //        proVersion = "S";
         initAdapter();
         initData(version);
-        Map map = new HashMap();
-//        StatisticsManager.getInstance(MainActivity.this).addEventAidl( "进入页面", map);
 
         rexiufu();
     }

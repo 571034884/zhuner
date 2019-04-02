@@ -57,7 +57,6 @@ public class MyApplication extends Application {
     public void onCreate() {
         super.onCreate();
         mContext=this;
-        StatisticsManager.getInstance(this).setConfig(getPackageName(), BuildConfig.VERSION_NAME);
 
         x.Ext.init(this);
         x.Ext.setDebug(true);

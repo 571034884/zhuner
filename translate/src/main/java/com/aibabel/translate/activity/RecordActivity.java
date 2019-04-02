@@ -271,11 +271,6 @@ public class RecordActivity extends BaseActivity {
                             int index = checkList.get(i);
                             SqlUtils.deleteById(newsList.remove(index - j).getId());
                         }
-                        //添加统计
-                        Map<String, String> map = new HashMap<>();
-                        map.put("p1",checkList.size()+"");
-                        StatisticsManager.getInstance(this).addEventAidl(1321,map);
-
 
                         /**####  start-hjs-addStatisticsEvent   ##**/
                         try {
@@ -294,7 +289,6 @@ public class RecordActivity extends BaseActivity {
 
                 break;
             case R.id.iv_close:
-                StatisticsManager.getInstance(this).addEventAidl(1312);
 
                 /**####  start-hjs-addStatisticsEvent   ##**/
                 try {
