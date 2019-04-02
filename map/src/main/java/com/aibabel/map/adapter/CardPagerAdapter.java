@@ -99,20 +99,18 @@ public class CardPagerAdapter extends PagerAdapter implements CardAdapter {
         container.addView(view);
         bind(mData.get(position), view);
         CardView cardView = (CardView) view.findViewById(R.id.cardView);
-        cardView.setOnClickListener(new View.OnClickListener() {
+        try{
+            cardView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                try{
                     if (mData.size()>0){
                         listener.onItemClick(mData.get(position), view);
                     }
-                }catch (Exception e){
-                    Log.e("MAP",e.toString());
                 }
-
-
-            }
-        });
+            });
+        }catch (Exception e){
+            Log.e("MAP",e.toString());
+        }
 
 //        if (mBaseElevation == 0) {
 //            mBaseElevation = cardView.getCar
