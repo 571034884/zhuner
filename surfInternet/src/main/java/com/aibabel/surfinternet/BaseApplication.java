@@ -89,6 +89,7 @@ public class BaseApplication  extends com.aibabel.baselibrary.base.BaseApplicati
     public void initAppExitConfig() {
 
         activityLinkedList = new LinkedList<>();
+        setAllPhysicalButtonsExitEnable(true);
 
         registerActivityLifecycleCallbacks(new ActivityLifecycleCallbacks() {
             @Override
