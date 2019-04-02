@@ -93,6 +93,8 @@ public class TransitFragment extends BaseFragment implements View.OnClickListene
     TransitEnBean tEnBean = null;
     TransitAdapter transitAdapter = null;
 
+    public TransitFragment(){}
+
     @SuppressLint("ValidFragment")
     public TransitFragment(Bundle bundle) {
         routeBean = bundle.getParcelable("routeBean");
