@@ -23,10 +23,12 @@ import com.aibabel.baselibrary.utils.FastJsonUtil;
 import com.aibabel.baselibrary.utils.ProviderUtils;
 import com.aibabel.baselibrary.utils.ToastUtil;
 import com.aibabel.scenic.R;
+import com.aibabel.scenic.adapter.BannerAdapter;
 import com.aibabel.scenic.adapter.CardHomeAdapter;
 import com.aibabel.scenic.adapter.CityAdapter;
 import com.aibabel.scenic.adapter.GridAdapter;
 import com.aibabel.scenic.adapter.HistoryAdapter;
+import com.aibabel.scenic.banner.BannerLayout;
 import com.aibabel.scenic.base.BaseScenicActivity;
 import com.aibabel.scenic.base.ScenicBaseApplication;
 import com.aibabel.scenic.bean.PoiDetailsBean;
@@ -47,8 +49,11 @@ import java.util.Map;
 import butterknife.BindView;
 
 public class CityActivity extends BaseScenicActivity {
-    @BindView(R.id.vp_info)
-    ViewPager vpInfo;
+
+    //    @BindView(R.id.vp_info)
+//    ViewPager vpInfo;
+    @BindView(R.id.recycler)
+    BannerLayout vpInfo;
     @BindView(R.id.tv_hot)
     TextView tvHot;
     @BindView(R.id.tv_about)
@@ -81,8 +86,7 @@ public class CityActivity extends BaseScenicActivity {
     EmptyLayout mEmpty;
 
 
-    private ShadowTransformer mCardTransformer;
-    private CardHomeAdapter mCardAdapter;
+    private BannerAdapter bannerAdapter;
     private HistoryAdapter mHistoryAdapter;
     private GridAdapter mGridAdapter;
     //0 热门   1附近   2收藏
@@ -182,14 +186,13 @@ public class CityActivity extends BaseScenicActivity {
         } else {
             poiTop = data.poiTop;
         }
-        mCardAdapter = new CardHomeAdapter(mContext, poiTop);
-        mCardTransformer = new ShadowTransformer(vpInfo, mCardAdapter);
-        vpInfo.setAdapter(mCardAdapter);
-        mCardTransformer.enableScaling(true);
-        mCardAdapter.setOnItemClickListener(new CardHomeAdapter.onClickListener() {
+        bannerAdapter = new BannerAdapter(mContext,poiTop);
+        vpInfo.setAdapter(bannerAdapter);
+        vpInfo.setAutoPlaying(true);
+        bannerAdapter.setOnBannerItemClickListener(new BannerLayout.OnBannerItemClickListener() {
             @Override
-            public void onItemClick(PoiDetailsBean bean, View view) {
-
+            public void onItemClick(int position) {
+                PoiDetailsBean bean = poiTop.get(position);
                 try{
                     HashMap<String, Serializable> map = new HashMap<>();
                     map.put("scenic_main_top_id",bean.idstring);

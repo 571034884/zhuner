@@ -25,10 +25,12 @@ import com.aibabel.baselibrary.utils.FastJsonUtil;
 import com.aibabel.baselibrary.utils.ProviderUtils;
 import com.aibabel.baselibrary.utils.ToastUtil;
 import com.aibabel.scenic.R;
+import com.aibabel.scenic.adapter.BannerAdapter;
 import com.aibabel.scenic.adapter.CardHomeAdapter;
 import com.aibabel.scenic.adapter.CityAdapter;
 import com.aibabel.scenic.adapter.GridAdapter;
 import com.aibabel.scenic.adapter.HistoryAdapter;
+import com.aibabel.scenic.banner.BannerLayout;
 import com.aibabel.scenic.base.BaseScenicActivity;
 import com.aibabel.scenic.base.ScenicBaseApplication;
 import com.aibabel.scenic.bean.PoiDetailsBean;
@@ -48,11 +50,13 @@ import java.util.Map;
 
 import butterknife.BindView;
 
-public class MainActivity extends BaseScenicActivity {
+public class MainActivity extends BaseScenicActivity{
     @BindView(R.id.tv_location)
     TextView mLocation;
-    @BindView(R.id.vp_info)
-    ViewPager vpInfo;
+//    @BindView(R.id.vp_info)
+//    ViewPager vpInfo;
+    @BindView(R.id.recycler)
+    BannerLayout vpInfo;
     @BindView(R.id.tv_hot)
     TextView tvHot;
     @BindView(R.id.tv_about)
@@ -90,8 +94,7 @@ public class MainActivity extends BaseScenicActivity {
     @BindView(R.id.rl_datas)
     RelativeLayout rlDatas;
 
-    private ShadowTransformer mCardTransformer;
-    private CardHomeAdapter mCardAdapter;
+    private BannerAdapter bannerAdapter;
     private HistoryAdapter mHistoryAdapter;
     private CityAdapter mCityAdapter;
     private GridAdapter mGridAdapter;
@@ -157,22 +160,22 @@ public class MainActivity extends BaseScenicActivity {
     @Override
     public void initData() {
 
-        vpInfo.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
-            @Override
-            public void onPageScrolled(int i, float v, int i1) {
-
-            }
-
-            @Override
-            public void onPageSelected(int i) {
-                addStatisticsEvent("scenic_main_top_move",null);
-            }
-
-            @Override
-            public void onPageScrollStateChanged(int i) {
-
-            }
-        });
+//        vpInfo.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+//            @Override
+//            public void onPageScrolled(int i, float v, int i1) {
+//
+//            }
+//
+//            @Override
+//            public void onPageSelected(int i) {
+//                addStatisticsEvent("scenic_main_top_move",null);
+//            }
+//
+//            @Override
+//            public void onPageScrollStateChanged(int i) {
+//
+//            }
+//        });
 
         mRecyclerHistory.setOnScrollChangeListener(new View.OnScrollChangeListener() {
             @Override
@@ -244,14 +247,13 @@ public class MainActivity extends BaseScenicActivity {
         } else {
             poiTop = data.poiTop;
         }
-        mCardAdapter = new CardHomeAdapter(mContext, poiTop);
-        mCardTransformer = new ShadowTransformer(vpInfo, mCardAdapter);
-        vpInfo.setAdapter(mCardAdapter);
-        mCardTransformer.enableScaling(true);
-        mCardAdapter.setOnItemClickListener(new CardHomeAdapter.onClickListener() {
+        bannerAdapter = new BannerAdapter(mContext,poiTop);
+        vpInfo.setAdapter(bannerAdapter);
+        vpInfo.setAutoPlaying(true);
+        bannerAdapter.setOnBannerItemClickListener(new BannerLayout.OnBannerItemClickListener() {
             @Override
-            public void onItemClick(PoiDetailsBean bean, View view) {
-
+            public void onItemClick(int position) {
+                PoiDetailsBean bean = poiTop.get(position);
                 try{
                     HashMap<String, Serializable> map = new HashMap<>();
                     map.put("scenic_main_top_id",bean.idstring);
