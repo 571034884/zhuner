@@ -61,7 +61,7 @@ public class BaseApplication extends Application {
         SDKInitializer.initialize(this);
 //        registerReceiver(new NotiftLocation(),new IntentFilter("com.aibabel.broadcast.noticelocation")); // 注册广播接受者
 
-        StatisticsManager.getInstance(this).setConfig(getPackageName(), BuildConfig.VERSION_NAME);
+
     }
 
 
@@ -133,6 +133,7 @@ public class BaseApplication extends Application {
             @Override
             public void onActivityCreated(Activity activity, Bundle savedInstanceState) {
                 activityLinkedList.add(activity);
+                canExit=false;
             }
 
             @Override
@@ -145,6 +146,7 @@ public class BaseApplication extends Application {
 
             @Override
             public void onActivityResumed(Activity activity) {
+                canExit=false;
             }
 
             @Override
@@ -179,19 +181,32 @@ public class BaseApplication extends Application {
     }
 
 
+    protected   static  volatile boolean canExit=true;
     /**
      * 退出所有app
      */
     public static void exit() {
         for (Activity activity : activityLinkedList) {
             activity.finish();
+
         }
-        new Handler().postDelayed(new Runnable() {
+        canExit=true;
+        new Thread(new Runnable() {
             @Override
             public void run() {
-                android.os.Process.killProcess(android.os.Process.myPid());
+                try {
+                    Thread.sleep(3000);
+                    Log.e("canExit===",String.valueOf(canExit));
+                    if ( canExit){
+                        android.os.Process.killProcess(android.os.Process.myPid());
+                    }
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+
             }
-        },3000);
+        }).start();
+
     }
 
     @Override

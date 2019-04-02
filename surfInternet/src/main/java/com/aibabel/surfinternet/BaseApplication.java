@@ -98,15 +98,18 @@ public class BaseApplication  extends com.aibabel.baselibrary.base.BaseApplicati
             @Override
             public void onActivityCreated(Activity activity, Bundle savedInstanceState) {
                 activityLinkedList.add(activity);
+                canExit=false;
             }
 
             @Override
             public void onActivityStarted(Activity activity) {
 //                Log.d(TAG, "onActivityStarted: " + activity.getLocalClassName());
                 stateCount++;
+                canExit=false;
             }
             @Override
             public void onActivityResumed(Activity activity) {
+                canExit=false;
             }
 
             @Override
@@ -130,16 +133,6 @@ public class BaseApplication  extends com.aibabel.baselibrary.base.BaseApplicati
     }
 
 
-
-    /**
-     * 退出所有app
-     */
-    public static void exit() {
-        for (Activity activity : activityLinkedList) {
-            activity.finish();
-        }
-        android.os.Process.killProcess(android.os.Process.myPid());
-    }
 
 
 }

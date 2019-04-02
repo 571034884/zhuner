@@ -271,14 +271,15 @@ public abstract class BaseApplication extends Application {
             }
         });
     }
-    private  static  volatile boolean canExit=true;
+    protected   static  volatile boolean canExit=true;
     /**
      * 退出所有app
      */
     public static void exit() {
-        for (Activity activity : activityLinkedList) {
-            activity.finish();
-
+        if(activityLinkedList!=null&& activityLinkedList.size()>0){
+            for (Activity activity : activityLinkedList) {
+                activity.finish();
+            }
         }
         canExit=true;
         new Thread(new Runnable() {
@@ -296,12 +297,6 @@ public abstract class BaseApplication extends Application {
 
             }
         }).start();
-//        handler=new Handler();
-//        handler.postDelayed(new Runnable() {
-//            @Override
-//            public void run() {
-//                android.os.Process.killProcess(android.os.Process.myPid());
-//            }
-//        },1500);
+
     }
 }
