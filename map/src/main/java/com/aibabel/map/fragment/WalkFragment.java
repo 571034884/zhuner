@@ -19,6 +19,8 @@ public class WalkFragment extends BaseFragment{
     private Context mContext;
     RouteBean routeBean;
 
+    public WalkFragment(){}
+
     @SuppressLint("ValidFragment")
     public WalkFragment(Bundle bundle) {
         routeBean = bundle.getParcelable("routeBean");

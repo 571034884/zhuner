@@ -123,6 +123,8 @@ public class DriveFragment extends BaseFragment implements SensorEventListener ,
     private MyGridAdapter gridAdapter = null;
     private int index = 0;
 
+    public DriveFragment(){}
+
     @SuppressLint("ValidFragment")
     public DriveFragment(Bundle bundle) {
         routeBean = bundle.getParcelable("routeBean");
