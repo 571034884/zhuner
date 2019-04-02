@@ -361,6 +361,24 @@ public class CityLocaActivity extends BaseScenicActivity{
                 KeyBords.closeKeybord(etSearch, mContext);
                 lvSearch.setVisibility(View.GONE);
                 break;
+            case R.id.tv_history_city_one:
+                String oneCity = mHistoryOne.getText().toString().trim();
+                if (!TextUtils.isEmpty(oneCity)){
+                    Intent intent = new Intent();
+                    intent.putExtra("city",oneCity);
+                    setResult(1002, intent);
+                    finish();
+                }
+                break;
+            case R.id.tv_history_city_two:
+                String twoCity = mHistoryTwo.getText().toString().trim();
+                if (!TextUtils.isEmpty(twoCity)){
+                    Intent intent = new Intent();
+                    intent.putExtra("city",twoCity);
+                    setResult(1002, intent);
+                    finish();
+                }
+                break;
         }
     }
 }
