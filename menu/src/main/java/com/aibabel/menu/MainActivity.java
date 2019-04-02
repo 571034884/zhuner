@@ -335,6 +335,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         }catch (Exception e){
             e.printStackTrace();
         }
+
     }
     ScreenOffReceiver screenrecive ;
     private class ScreenOffReceiver extends BroadcastReceiver {
