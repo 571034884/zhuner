@@ -29,7 +29,7 @@
                 android:layout_height="wrap_content"
                 android:textSize="@dimen/y28"
                 android:layout_marginLeft="18dp"
-                android:text="租赁订单"
+                android:text="全球上网"
                 android:textColor="@color/clr_fff"
                 />
         </LinearLayout>
