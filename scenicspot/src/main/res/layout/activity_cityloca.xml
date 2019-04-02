@@ -53,6 +53,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="6dp"
+                    android:onClick="onClick"
                     android:text="马达加斯加"
                     android:textColor="@color/c_99"
                     android:textSize="12sp" />
@@ -62,6 +63,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="6dp"
+                    android:onClick="onClick"
                     android:text="马达加斯加"
                     android:textColor="@color/c_99"
                     android:textSize="12sp" />
@@ -93,6 +95,7 @@
             android:id="@+id/lv_search"
             android:background="@android:color/white"
             android:divider="@null"
+            android:visibility="gone"
             android:listSelector="@android:color/transparent"
             android:layout_width="match_parent"
             android:scrollbars="none"

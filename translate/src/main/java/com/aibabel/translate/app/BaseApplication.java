@@ -262,8 +262,10 @@ public class BaseApplication extends com.aibabel.baselibrary.base.BaseApplicatio
      * 退出所有app
      */
     public static void exitAppList() {
-        for (Activity activity : activityLinkedList) {
-            activity.finish();
+        if(activityLinkedList!=null&& activityLinkedList.size()>0){
+            for (Activity activity : activityLinkedList) {
+                activity.finish();
+            }
         }
     }
 

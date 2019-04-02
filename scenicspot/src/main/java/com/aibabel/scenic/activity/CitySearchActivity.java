@@ -21,6 +21,7 @@ import android.widget.TextView;
 import com.aibabel.baselibrary.http.BaseCallback;
 import com.aibabel.baselibrary.http.OkGoUtil;
 import com.aibabel.baselibrary.utils.CommonUtils;
+import com.aibabel.baselibrary.utils.SharePrefUtil;
 import com.aibabel.baselibrary.utils.ToastUtil;
 import com.aibabel.scenic.R;
 import com.aibabel.scenic.adapter.SearchAdapter;
@@ -50,6 +51,7 @@ import butterknife.BindView;
 public class CitySearchActivity extends BaseScenicActivity{
 
 
+
     @BindView(R.id.et_search)
     EditText etSearch;
     @BindView(R.id.iv_clear_et)
@@ -58,6 +60,13 @@ public class CitySearchActivity extends BaseScenicActivity{
     ListView lvSearch;
     @BindView(R.id.empty)
     EmptyLayout mEmpty;
+    @BindView(R.id.tv_history_city_one)
+    TextView tvCityOne;
+    @BindView(R.id.tv_history_city_two)
+    TextView tvCityTwo;
+    @BindView(R.id.tv_history_city_three)
+    TextView tvCityThree;
+
 
     @Override
     public int getLayouts(Bundle var1) {
@@ -140,6 +149,22 @@ public class CitySearchActivity extends BaseScenicActivity{
                 getDataViewSearch(etSearch.getText().toString().trim());
             }
         });
+        showHistory();
+    }
+
+    private void showHistory() {
+        String oneHistory = SharePrefUtil.getString(mContext,"citySearchNameOne","");
+        if (!TextUtils.isEmpty(oneHistory)){
+            tvCityOne.setText(oneHistory.split(",")[0]);
+        }
+        String twoHistory = SharePrefUtil.getString(mContext,"citySearchNameTwo","");
+        if (!TextUtils.isEmpty(twoHistory)){
+            tvCityTwo.setText(twoHistory.split(",")[0]);
+        }
+        String threeHistory = SharePrefUtil.getString(mContext,"citySearchNameThree","");
+        if (!TextUtils.isEmpty(threeHistory)){
+            tvCityThree.setText(threeHistory.split(",")[0]);
+        }
     }
 
     private void getDataViewSearch(String data) {
@@ -204,7 +229,6 @@ public class CitySearchActivity extends BaseScenicActivity{
         searchAdapter.setOnItemClickListener(new SearchWordAdapter.onClickListener() {
             @Override
             public void onItemClick(SearchWordBean.DataBean.CityListBean bean) {
-
                 try{
                     HashMap<String, Serializable> map = new HashMap<>();
                     map.put("scenic_search_resoult_click_name",bean.getName());
@@ -215,6 +239,7 @@ public class CitySearchActivity extends BaseScenicActivity{
                 switch (bean.getType()){
                     case 2:
                         //回到首页
+                        saveDataHistory(bean.getName(),bean.getType(),bean.getIdstring());
                         intent = new Intent();
                         intent.putExtra("city",bean.getName());
                         Logs.e("状态：2，"+bean.getName());
@@ -222,6 +247,7 @@ public class CitySearchActivity extends BaseScenicActivity{
                         CitySearchActivity.this.finish();
                         break;
                     case 3:
+                        saveDataHistory(bean.getName(),bean.getType(),bean.getIdstring());
                         intent = new Intent();
                         intent.setClass(CitySearchActivity.this, SpotsActivity.class);
                         intent.putExtra("poiId", bean.getIdstring());
@@ -229,6 +255,7 @@ public class CitySearchActivity extends BaseScenicActivity{
                         startActivity(intent);
                         break;
                     case 4:
+                        saveDataHistory(bean.getName(),bean.getType(),bean.getPidStr());
                         intent = new Intent();
                         intent.setClass(CitySearchActivity.this, SpotsActivity.class);
                         intent.putExtra("poiId", bean.getPidStr());
@@ -241,6 +268,27 @@ public class CitySearchActivity extends BaseScenicActivity{
 
     }
 
+    private void saveDataHistory(String name, int type, String ids) {
+        String strOne = SharePrefUtil.getString(mContext,"citySearchNameOne","");
+        String strTwo = SharePrefUtil.getString(mContext,"citySearchNameTwo","");
+        String strThree = SharePrefUtil.getString(mContext,"citySearchNameThree","");
+        if (TextUtils.isEmpty(strOne)){
+            SharePrefUtil.saveString(mContext,"citySearchNameOne",name+","+type+","+ids);
+        }else{
+            if (TextUtils.isEmpty(strTwo)){
+                SharePrefUtil.saveString(mContext,"citySearchNameTwo",name+","+type+","+ids);
+            }else{
+                if (TextUtils.isEmpty(strThree)){
+                    SharePrefUtil.saveString(mContext,"citySearchNameThree",name+","+type+","+ids);
+                }else{
+                    SharePrefUtil.saveString(mContext,"citySearchNameThree",strTwo);
+                    SharePrefUtil.saveString(mContext,"citySearchNameTwo",strOne);
+                    SharePrefUtil.saveString(mContext,"citySearchNameOne",name+","+type+","+ids);
+                }
+            }
+        }
+        showHistory();
+    }
 
 
     @Override
@@ -260,7 +308,46 @@ public class CitySearchActivity extends BaseScenicActivity{
                 KeyBords.closeKeybord(etSearch, mContext);
                 lvSearch.setVisibility(View.GONE);
                 break;
+            case R.id.tv_history_city_one:
+                getCityHistory("citySearchNameOne");
+                break;
+            case R.id.tv_history_city_two:
+                getCityHistory("citySearchNameTwo");
+                break;
+            case R.id.tv_history_city_three:
+                getCityHistory("citySearchNameThree");
+                break;
         }
     }
 
+    private void getCityHistory(String key) {
+        String str = SharePrefUtil.getString(mContext,key,"");
+        String[] sr = str.split(",");
+        String sr1 = sr[0];
+        String sr2 = sr[1];
+        String sr3 = sr[2];
+        Logs.e(str);
+        Intent intent;
+        switch (sr2){
+            case "2":
+                intent = new Intent();
+                intent.putExtra("city",sr1);
+                CitySearchActivity.this.setResult(1002, intent);
+                CitySearchActivity.this.finish();
+                break;
+            case "3":
+                intent = new Intent();
+                intent.setClass(CitySearchActivity.this, SpotsActivity.class);
+                intent.putExtra("poiId", sr3);
+                startActivity(intent);
+                break;
+            case "4":
+                intent = new Intent();
+                intent.setClass(CitySearchActivity.this, SpotsActivity.class);
+                intent.putExtra("poiId", sr3);
+                startActivity(intent);
+                break;
+        }
+
+    }
 }

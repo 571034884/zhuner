@@ -382,6 +382,11 @@ public class MainActivity extends BaseScenicActivity{
 
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        vpInfo.setAutoPlaying(true);
+    }
 
     public void onClick(View v) {
         Intent intent = null;
