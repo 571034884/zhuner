@@ -101,9 +101,6 @@ public class DownLoadListActivity extends BaseActivity {
         key = getIntent().getStringExtra("key");
         name = getIntent().getStringExtra("name");
 
-
-
-
         manager = getSupportFragmentManager();
 
         if (manager.findFragmentByTag("list") == null) {

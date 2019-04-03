@@ -24,6 +24,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.aibabel.aidlaar.StatisticsManager;
+import com.aibabel.baselibrary.base.StatisticsBaseActivity;
 import com.aibabel.download.offline.MenuActivity;
 import com.aibabel.download.offline.R;
 import com.aibabel.download.offline.adapter.MyAdapter;
@@ -50,7 +51,9 @@ import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
 
 
 import java.io.File;
+import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -356,11 +359,19 @@ public class PreloadInstalledFragment extends Fragment {
                             return;
 
                         }
-
+                        StatisticsBaseActivity activity= (StatisticsBaseActivity) getActivity();
+                        if (activity!=null){
+                            HashMap<String, Serializable> map=new HashMap<>();
+                            map.put("download.offline_resource5_def",dataBean.getName());
+                            activity.addStatisticsEvent("download.offline_resource5",map);
+                        }
                         String status = MyApplication.dbHelper.queryStatus(dataBean.getId());
                         String installTime = "";
                         switch (status) {
                             case "1":
+
+
+
                                 new OtherDialog.Builder(getContext())
                                         .setGravity(Gravity.CENTER)
                                         .setContentView(R.layout.dialog_tishi)
@@ -390,6 +401,12 @@ public class PreloadInstalledFragment extends Fragment {
                                 T.show(getActivity(), MyApplication.mContext.getString(R.string.zhengzaixiezai), 500);
                                 break;
                             case "14":
+//                                StatisticsBaseActivity statisticsBaseActivity= (StatisticsBaseActivity) getActivity();
+//                                if (statisticsBaseActivity!=null){
+//                                    HashMap<String, Serializable> map=new HashMap<>();
+//                                    map.put("download.offline_resource5_def",dataBean.getName());
+//                                    statisticsBaseActivity.addStatisticsEvent("download.offline_resource5",map);
+//                                }
                                 new OtherDialog.Builder(getContext())
                                         .setGravity(Gravity.CENTER)
                                         .setContentView(R.layout.dialog_tishi)

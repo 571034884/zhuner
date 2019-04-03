@@ -109,7 +109,6 @@ public class PreloadFragment extends Fragment {
                                 getOfflineInstallList();
                                 if (!((String) msg.obj).equals("")) {
                                     T.show(getContext(), MyApplication.mContext.getString(R.string.anzhuangchengong) + MyApplication.dbHelper.queryFiled((String) msg.obj, "lan_name"), 500);
-
                                 }
 
 
@@ -220,6 +219,8 @@ public class PreloadFragment extends Fragment {
 
         super.onMultiWindowModeChanged(isInMultiWindowMode);
     }
+//     String[] eventid = {};
+//     HashMap<String, Serializable> add_hp = new HashMap<>();
 
     Map<String, SwipeLayout> swipeLayoutMap = new HashMap<>();
 
@@ -493,9 +494,13 @@ public class PreloadFragment extends Fragment {
                             return;
 
                         }
+                        StatisticsBaseActivity activity= (StatisticsBaseActivity) getActivity();
+                        if (activity!=null){
+                            HashMap<String, Serializable> map=new HashMap<>();
+                            map.put("download.offline_resource5_def",dataBean.getName());
+                            activity.addStatisticsEvent("download.offline_resource4",map);
+                        }
 
-                        final String[] eventid = {""};
-                        final HashMap<String, Serializable> add_hp = new HashMap<>();
 
                         String status = MyApplication.dbHelper.queryStatus(dataBean.getId());
                         String installTime = "";
@@ -520,7 +525,7 @@ public class PreloadFragment extends Fragment {
                                                         .show();
                                                 id = dataBean.getId();
                                                 deleteFile(dataBean, tv_tishi, "13");
-                                                eventid[0] = "download.offline_resource3";
+//                                                eventid[0] = "download.offline_resource3";
 
                                             }
                                         }).setOnClickListener(R.id.dialog_tv_cancel, MyApplication.mContext.getString(R.string.quxiao), null).show();
@@ -558,9 +563,9 @@ public class PreloadFragment extends Fragment {
                                                 NeizhiList.ListFileBean.CopyPathBean bean = JSON.parseObject(dataBean.getCopyPath(), NeizhiList.ListFileBean.CopyPathBean.class);
                                                 L.e("bean.getZipPath()=================" + bean.getZipPath());
                                                 tv_tishi.setText(MyApplication.mContext.getString(R.string.zhengzaianzhuang));
-                                                add_hp.put("download.offline_resource4_def",dataBean.getName());
-                                                add_hp.put("offline_resource4_status",true);
-                                                eventid[0] = "download.offline_resource4";
+//                                                add_hp.put("download.offline_resource4_def",dataBean.getName());
+//                                                add_hp.put("offline_resource4_status",true);
+//                                                eventid[0] = "download.offline_resource4";
                                                 unzipCopy(dataBean.getId(), bean);
 
 
@@ -642,11 +647,11 @@ public class PreloadFragment extends Fragment {
 
 
                         /**####  start-hjs-addStatisticsEvent   ##**/
-                        try {
-                            ((StatisticsBaseActivity) getActivity()).addStatisticsEvent( eventid[0], add_hp);
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                        }
+//                        try {
+//                            ((StatisticsBaseActivity) getActivity()).addStatisticsEvent( eventid[0], add_hp);
+//                        } catch (Exception e) {
+//                            e.printStackTrace();
+//                        }
                         /**####  end-hjs-addStatisticsEvent  ##**/
 
                     }

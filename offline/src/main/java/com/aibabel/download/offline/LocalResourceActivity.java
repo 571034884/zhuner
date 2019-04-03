@@ -19,6 +19,9 @@ import com.aibabel.download.offline.util.L;
 import com.aibabel.download.offline.util.LanUtil;
 import com.aibabel.download.offline.util.ThreadPoolManager;
 
+import java.io.Serializable;
+import java.util.HashMap;
+
 public class LocalResourceActivity extends BaseActivity {
     private ImageButton ib_return;
     private Fragment  preloadFragment,preloadInstalledFragment;
@@ -132,8 +135,11 @@ public class LocalResourceActivity extends BaseActivity {
 
                 L.e("=========================" + i);
                 if (i == R.id.rl_gp_zy) {
+                    HashMap<String, Serializable> map=new HashMap<>();
+                    addStatisticsEvent("download.offline_resource2",null);
                     transaction.hide(preloadInstalledFragment).show(preloadFragment);
                 } else if (i == R.id.rl_gp_install) {
+                    addStatisticsEvent("download.offline_resource3",null);
                     transaction.hide(preloadFragment).show(preloadInstalledFragment);
                 }
 

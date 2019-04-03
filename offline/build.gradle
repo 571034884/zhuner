@@ -19,8 +19,8 @@ android {
         applicationId "com.aibabel.download.offline"
         minSdkVersion 23
         targetSdkVersion 28
-        versionCode 3
-        versionName "1.0.6"
+        versionCode 4
+        versionName "1.0.7"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         multiDexEnabled true
     }
@@ -41,6 +41,8 @@ android {
         }
 
         debug {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
             resValue("string", "PORT_NUMBER", "9999")
             signingConfig signingConfigs.config
         }

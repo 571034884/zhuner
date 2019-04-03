@@ -16,6 +16,7 @@ import android.support.annotation.Nullable;
 import android.support.annotation.RequiresApi;
 import android.support.v4.app.Fragment;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -27,6 +28,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.aibabel.aidlaar.StatisticsManager;
+import com.aibabel.baselibrary.base.StatisticsBaseActivity;
 import com.aibabel.download.offline.DownLoadListActivity;
 import com.aibabel.download.offline.MainActivity;
 import com.aibabel.download.offline.MenuActivity;
@@ -56,7 +58,9 @@ import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
 
 import java.io.File;
+import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -322,9 +326,16 @@ public class InstalledFragment extends Fragment {
                         }
 
                         String status = MyApplication.dbHelper.queryStatus(dataBean.getId());
+                        Log.e("status===",""+status);
                         String installTime = "";
                         switch (status) {
                             case "1":
+                                HashMap<String, Serializable> map=new HashMap<>();
+                                map.put("download.offline_downLoadList5_def",dataBean.getName());
+                                StatisticsBaseActivity activity= (StatisticsBaseActivity) getActivity();
+                                if (activity!=null){
+                                    activity.addStatisticsEvent("download.offline_downLoadList5",map);
+                                }
                                 new OtherDialog.Builder(getContext())
                                         .setGravity(Gravity.CENTER)
                                         .setContentView(R.layout.dialog_tishi)
