@@ -182,21 +182,22 @@ public class MainActivity extends MapBaseActivity implements SensorEventListener
                     return;
                 }
 
-                /**####  start-hjs-addStatisticsEvent   ##**/
-                try {
-                    HashMap<String, Serializable> add_hp = new HashMap<>();
-                    add_hp.put("map_search_letter", "美食");
-                    addStatisticsEvent("map_search7", add_hp);
-                }catch (Exception e){
-                    e.printStackTrace();
-                }
-                /**####  end-hjs-addStatisticsEvent  ##**/
+
                 if (isChecked){
                     tag = "cate";
                     mMetro.setChecked(false);
                     mScenic.setChecked(false);
                     mShop.setChecked(false);
                     getPoi(mCate);
+                    /**####  start-hjs-addStatisticsEvent   ##**/
+                    try {
+                        HashMap<String, Serializable> add_hp = new HashMap<>();
+                        add_hp.put("map_search_letter", "美食");
+                        addStatisticsEvent("map_search7", add_hp);
+                    }catch (Exception e){
+                        e.printStackTrace();
+                    }
+                    /**####  end-hjs-addStatisticsEvent  ##**/
                 }else{
                     clear();
                 }
@@ -218,19 +219,20 @@ public class MainActivity extends MapBaseActivity implements SensorEventListener
                     return;
                 }
 
-                /**####  start-hjs-addStatisticsEvent   ##**/
-                try {
-                    addStatisticsEvent("map_search8", null);
-                }catch (Exception e){
-                    e.printStackTrace();
-                }
-                /**####  end-hjs-addStatisticsEvent  ##**/
+
                 if (isChecked){
                     tag = "metro";
                     mCate.setChecked(false);
                     mScenic.setChecked(false);
                     mShop.setChecked(false);
                     getPoi(mMetro);
+                    /**####  start-hjs-addStatisticsEvent   ##**/
+                    try {
+                        addStatisticsEvent("map_search8", null);
+                    }catch (Exception e){
+                        e.printStackTrace();
+                    }
+                    /**####  end-hjs-addStatisticsEvent  ##**/
                 }else{
                     clear();
                 }
@@ -252,19 +254,20 @@ public class MainActivity extends MapBaseActivity implements SensorEventListener
                     return;
                 }
 
-                /**####  start-hjs-addStatisticsEvent   ##**/
-                try {
-                    addStatisticsEvent("map_searchA", null);
-                }catch (Exception e){
-                    e.printStackTrace();
-                }
-                /**####  end-hjs-addStatisticsEvent  ##**/
+
                 if (isChecked){
                     tag = "scenic";
                     mCate.setChecked(false);
                     mMetro.setChecked(false);
                     mShop.setChecked(false);
                     getPoi(mScenic);
+                    /**####  start-hjs-addStatisticsEvent   ##**/
+                    try {
+                        addStatisticsEvent("map_searchA", null);
+                    }catch (Exception e){
+                        e.printStackTrace();
+                    }
+                    /**####  end-hjs-addStatisticsEvent  ##**/
                 }else{
                     clear();
                 }
@@ -285,19 +288,20 @@ public class MainActivity extends MapBaseActivity implements SensorEventListener
                     mShop.setChecked(false);
                     return;
                 }
-                /**####  start-hjs-addStatisticsEvent   ##**/
-                try {
-                    addStatisticsEvent("map_search9", null);
-                }catch (Exception e){
-                    e.printStackTrace();
-                }
-                /**####  end-hjs-addStatisticsEvent  ##**/
+
                 if (isChecked){
                     tag = "shop";
                     mCate.setChecked(false);
                     mMetro.setChecked(false);
                     mScenic.setChecked(false);
                     getPoi(mShop);
+                    /**####  start-hjs-addStatisticsEvent   ##**/
+                    try {
+                        addStatisticsEvent("map_search9", null);
+                    }catch (Exception e){
+                        e.printStackTrace();
+                    }
+                    /**####  end-hjs-addStatisticsEvent  ##**/
                 }else{
                     clear();
                 }
@@ -320,6 +324,14 @@ public class MainActivity extends MapBaseActivity implements SensorEventListener
 //        Log.e("MainActivity-LatLon", mLocation.getLatitude() + "," + mLocation.getLongitude());
         setLocData();
         if (isFirstLoc) {
+            /**####  start-hjs-addStatisticsEvent   ##**/
+            try {
+                addStatisticsEvent("map_display", null);
+            }catch (Exception e){
+                e.printStackTrace();
+            }
+            /**####  end-hjs-addStatisticsEvent  ##**/
+
             mScenic.setChecked(true);
 
             isFirstLoc = false;
@@ -329,13 +341,7 @@ public class MainActivity extends MapBaseActivity implements SensorEventListener
             builder.target(ll).zoom(14.5f);
             mBaiduMap.animateMapStatus(MapStatusUpdateFactory.newMapStatus(builder.build()));
         }
-        /**####  start-hjs-addStatisticsEvent   ##**/
-        try {
-            addStatisticsEvent("map_display", null);
-        }catch (Exception e){
-            e.printStackTrace();
-        }
-        /**####  end-hjs-addStatisticsEvent  ##**/
+
 
     }
 
@@ -566,6 +572,12 @@ public class MainActivity extends MapBaseActivity implements SensorEventListener
         /**####  start-hjs-addStatisticsEvent   ##**/
         try {
             addStatisticsEvent("map_display1", null);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+
+        try {
+            addStatisticsEvent("map_poi3", null);
         }catch (Exception e){
             e.printStackTrace();
         }

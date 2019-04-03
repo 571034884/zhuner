@@ -42,6 +42,7 @@ import com.zhouyou.recyclerview.adapter.BaseRecyclerViewAdapter;
 import com.zhouyou.recyclerview.adapter.HelperRecyclerViewAdapter;
 import com.zhouyou.recyclerview.adapter.HelperStateRecyclerViewAdapter;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -119,6 +120,17 @@ public class FilterActivity extends BaseActivity implements BaseCallback<BaseBea
                 .DataBean>() {
             @Override
             public void onItemClick(View view, FilterBean.DataBean item, int position) {
+
+                /**####  start-hjs-addStatisticsEvent   ##**/
+                try {
+                    HashMap<String, Serializable> add_hp = new HashMap<>();
+                    add_hp.put("food_filter4_def",item.getShopName());
+                    addStatisticsEvent("food_filter4", null);
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
+                /**####  end-hjs-addStatisticsEvent  ##**/
+
                 startActivity(new Intent(FilterActivity.this, Html5Activity.class)
                         .putExtra("shopId", item.getShopId())
                         .putExtra("shopName", item.getShopName())
@@ -199,13 +211,7 @@ public class FilterActivity extends BaseActivity implements BaseCallback<BaseBea
                 showWindow(2, llKind);
                 break;
             case R.id.dctvKind3:
-                /**####  start-hjs-addStatisticsEvent   ##**/
-                try {
-                    addStatisticsEvent("food_filter4", null);
-                }catch (Exception e){
-                    e.printStackTrace();
-                }
-                /**####  end-hjs-addStatisticsEvent  ##**/
+
                 dctvKind3.setTextColor(Color.RED);
                 dctvKind3.setCompoundDrawablesWithIntrinsicBounds(null, null, getResources().getDrawable(R.mipmap.fenlei_select), null);
                 showWindow(3, llKind);
