@@ -719,7 +719,6 @@ public class TranslateUtil implements MicArrayUtil.OnDealwithListener, SocketMan
                 }catch (Exception e){
                     e.printStackTrace();
                 }
-                /**####  end-hjs-addStatisticsEvent  ##**/
             }
 
 
