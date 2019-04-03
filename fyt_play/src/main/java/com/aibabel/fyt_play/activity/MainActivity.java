@@ -101,6 +101,7 @@ public class MainActivity extends BaseActivity implements AppBarLayout.OnOffsetC
     private List<PlayBean.DataBean.HomePageMsgBean> playBeanDataHomePageMsg = new ArrayList<>();
     private ImageView ivIcon;
     private CommomRecyclerAdapter adapter1;
+
     private CommomRecyclerAdapter adapter;
 
     private TextView tvCityName1;
@@ -272,73 +273,82 @@ public class MainActivity extends BaseActivity implements AppBarLayout.OnOffsetC
         OkGoUtil.<H5Bean>get(this, Constans.METHOD_GETPLAYH5FORMAT, map2, H5Bean.class, this);
     }
 
-    private void initAdapterPlayItem(List<PlayBean.DataBean.HomePageMsgBean.DetialBean> playItemBeanList) {
+    private void initAdapterPlayItem(List<PlayBean.DataBean.HomePageMsgBean.DetialBean> playItemBeanList,CommomRecyclerAdapter adapter1,int type) {
         LinearLayoutManager layoutManager = new LinearLayoutManager(MainActivity.this);
         //设置布局管理器
         rvItem.setLayoutManager(layoutManager);
         //设置为垂直布局，这也是默认的
         layoutManager.setOrientation(OrientationHelper.HORIZONTAL);
 
-        adapter1 = new CommomRecyclerAdapter(MainActivity.this, playItemBeanList, R.layout.rv_play_item_item, new CommomRecyclerAdapter.OnItemClickListener() {
-            @Override
-            public void onItemClick(CommonRecyclerViewHolder holder, final int postion) {
-                /**####  start-hjs-addStatisticsEvent   ##**/
-                HashMap<String, Serializable> add_hp = new HashMap<>();
-                if (statepos == 0) {
-                    add_hp.put("fyt_play_main2_def",playItemBeanList.get(postion).getTitle() );
-                    addStatisticsEvent("fyt_play_main2", add_hp);
-                } else if (statepos == 1) {
-                    add_hp.put("fyt_play_main4_def",playItemBeanList.get(postion).getTitle() );
-                    addStatisticsEvent("fyt_play_main4", add_hp);
-                } else if (statepos == 2) {
-                    add_hp.put("fyt_play_main6_def", playItemBeanList.get(postion).getTitle());
-                    addStatisticsEvent("fyt_play_main6", add_hp);
+            adapter1 = new CommomRecyclerAdapter(MainActivity.this, playItemBeanList, R.layout.rv_play_item_item, new CommomRecyclerAdapter.OnItemClickListener() {
+                @Override
+                public void onItemClick(CommonRecyclerViewHolder holder, final int postion) {
+                    /**####  start-hjs-addStatisticsEvent   ##**/
+                    try {
+                        HashMap<String, Serializable> add_hp = new HashMap<>();
+                        String titel = tvTitle.getText().toString();
+                        Log.e("hjs", "type==" + type);
+                        if (type==0) {
+                            add_hp.put("fyt_play_main2_def", playItemBeanList.get(postion).getTitle());
+                            addStatisticsEvent("fyt_play_main2", add_hp);
+                        } else if (type==1) {
+                            add_hp.put("fyt_play_main4_def", playItemBeanList.get(postion).getTitle());
+                            addStatisticsEvent("fyt_play_main4", add_hp);
+                        }
+                        if (type==2) {
+                            add_hp.put("fyt_play_main6_def", playItemBeanList.get(postion).getTitle());
+                            addStatisticsEvent("fyt_play_main6", add_hp);
+                        }
+                    } catch (Exception e) {
+                    }
+                    /**####  end-hjs-addStatisticsEvent  ##**/
+
+                    Intent intent = new Intent(MainActivity.this, WebActivity.class);
+                    intent.putExtra("city", tvCityName.getText().toString());
+                    intent.putExtra("country", tvCountryName.getText().toString());
+                    intent.putExtra("title", playItemBeanList.get(postion).getTitle());
+                    intent.putExtra("url", pageIndex);
+                    intent.putExtra("leaseNo", dev_oid);
+                    startActivity(intent);
                 }
-                /**####  end-hjs-addStatisticsEvent  ##**/
+            }, null) {
+                @Override
+                public void convert(CommonRecyclerViewHolder viewHolder, Object o, final int position) {
+                    tvItemTitle = viewHolder.getView(R.id.tv_item_title);
+                    tvItemContext = viewHolder.getView(R.id.tv_item_context);
+                    iv_item = viewHolder.getView(R.id.iv_item);
+                    View view1 = viewHolder.getView(R.id.view1);
+                    View view2 = viewHolder.getView(R.id.view2);
 
-                Intent intent = new Intent(MainActivity.this, WebActivity.class);
-                intent.putExtra("city", tvCityName.getText().toString());
-                intent.putExtra("country", tvCountryName.getText().toString());
-                intent.putExtra("title", playItemBeanList.get(postion).getTitle());
-                intent.putExtra("url", pageIndex);
-                intent.putExtra("leaseNo", dev_oid);
-                startActivity(intent);
-            }
-        }, null) {
-            @Override
-            public void convert(CommonRecyclerViewHolder viewHolder, Object o, final int position) {
-                tvItemTitle = viewHolder.getView(R.id.tv_item_title);
-                tvItemContext = viewHolder.getView(R.id.tv_item_context);
-                iv_item = viewHolder.getView(R.id.iv_item);
-                View view1 = viewHolder.getView(R.id.view1);
-                View view2 = viewHolder.getView(R.id.view2);
-
-                tvItemTitle.setText(playItemBeanList.get(position).getTitle());
+                    tvItemTitle.setText(playItemBeanList.get(position).getTitle());
 //                tvItemTitle.setBackgroundColor(Color.parseColor("#fff"));  //背景透明度
-                tvItemContext.setText(playItemBeanList.get(position).getContext());
-                if (position==playItemBeanList.size()-1){
-                    view1.setVisibility(View.VISIBLE);
-                }
-                if (position==0){
-                    view2.setVisibility(View.VISIBLE);
-                }else {
-                    view2.setVisibility(View.GONE);
-                }
-                CornerTransform transformation = new CornerTransform(MainActivity.this, 30);
-                //只是绘制左上角和右上角圆角
-                transformation.setExceptCorner(false, false, true, true);
-                RequestOptions options = new RequestOptions().transform(transformation).placeholder(R.mipmap.jiazaizhong1).error(R.mipmap.jiazai1);
-                Glide.with(MainActivity.this)
-                        .load(playItemBeanList.get(position).getImage())
-                        .apply(options)
-                        .thumbnail(loadTransform(MainActivity.this, R.mipmap.jiazaizhong1, 30))
-                        .thumbnail(loadTransform(MainActivity.this, R.mipmap.jiazai1, 30))
-                        .into(iv_item);
+                    tvItemContext.setText(playItemBeanList.get(position).getContext());
+                    if (position == playItemBeanList.size() - 1) {
+                        view1.setVisibility(View.VISIBLE);
+                    }
+                    if (position == 0) {
+                        view2.setVisibility(View.VISIBLE);
+                    } else {
+                        view2.setVisibility(View.GONE);
+                    }
+                    CornerTransform transformation = new CornerTransform(MainActivity.this, 30);
+                    //只是绘制左上角和右上角圆角
+                    transformation.setExceptCorner(false, false, true, true);
+                    RequestOptions options = new RequestOptions().transform(transformation).placeholder(R.mipmap.jiazaizhong1).error(R.mipmap.jiazai1);
+                    Glide.with(MainActivity.this)
+                            .load(playItemBeanList.get(position).getImage())
+                            .apply(options)
+                            .thumbnail(loadTransform(MainActivity.this, R.mipmap.jiazaizhong1, 30))
+                            .thumbnail(loadTransform(MainActivity.this, R.mipmap.jiazai1, 30))
+                            .into(iv_item);
 
-            }
-        };
+                }
+            };
+
         rvItem.setAdapter(adapter1);
     }
+
+
 
 
     private static RequestBuilder<Drawable> loadTransform(Context context, @DrawableRes int placeholderId, float radius) {
@@ -361,6 +371,7 @@ public class MainActivity extends BaseActivity implements AppBarLayout.OnOffsetC
 //                Intent intent = new Intent(getActivity(), PhotoViewActivity.class);
 //                intent.putExtra("img", airportImgList.get(postion));
 //                startActivity(intent);
+
             }
         }, null) {
             @Override
@@ -371,28 +382,28 @@ public class MainActivity extends BaseActivity implements AppBarLayout.OnOffsetC
                 View view3 = viewHolder.getView(R.id.view3);
 
                 rvItem.setNestedScrollingEnabled(false);
-                statepos = position;
-
                 if (position == 0) {
                     Glide.with(MainActivity.this).load(R.mipmap.icon_biwan).into(ivIcon);
                     view3.setVisibility(View.VISIBLE);
                     tvTitle.setText("必玩必备");
-                    initAdapterPlayItem(playBeanDataHomePageMsg.get(0).getDetial());
+                    CommomRecyclerAdapter adapter0 =null;
+                    initAdapterPlayItem(playBeanDataHomePageMsg.get(0).getDetial(),adapter0,0);
                 } else if (position == 1) {
                     Glide.with(MainActivity.this).load(R.mipmap.icon_youxiantiyan).into(ivIcon);
                     tvTitle.setText("优选体验");
-                    initAdapterPlayItem(playBeanDataHomePageMsg.get(2).getDetial());
+                    CommomRecyclerAdapter adapter1 = null;
+                    initAdapterPlayItem(playBeanDataHomePageMsg.get(2).getDetial(),    adapter1,1);
                 } else if (position == 2) {
                     Glide.with(MainActivity.this).load(R.mipmap.icon_zhoubiantuijian).into(ivIcon);
                     tvTitle.setText("周边推荐");
-                    initAdapterPlayItem(playBeanDataHomePageMsg.get(1).getDetial());
+                    CommomRecyclerAdapter adapter2 = null;
+                    initAdapterPlayItem(playBeanDataHomePageMsg.get(1).getDetial(),adapter2,2);
                 }
             }
         };
         rvPlay.setAdapter(adapter);
     }
 
-  private  static int statepos = 0;
 
 
     @Override

@@ -89,8 +89,8 @@ public class AllOffThingsActivity extends BaseActivity implements BaseCallback<B
                         /**####  start-hjs-addStatisticsEvent   ##**/
                         try {
                             HashMap<String, Serializable> add_hp = new HashMap<>();
-                            add_hp.put("food_allOff5_def", ((AreaBean.DataBean) item).getName_cn());
-                            addStatisticsEvent("food_allOff5", add_hp);
+                            add_hp.put("food_allOff2_def", ((AreaBean.DataBean) item).getName_cn());
+                            addStatisticsEvent("food_allOff2", add_hp);
                         }catch (Exception e){
                             e.printStackTrace();
                         }

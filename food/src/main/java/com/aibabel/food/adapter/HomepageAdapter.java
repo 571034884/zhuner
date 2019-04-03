@@ -56,7 +56,7 @@ public class HomepageAdapter extends BaseRecyclercAdapter<HomePageAllBean.DataBe
                     turnToAll(AllOffThingsActivity.class, AllOffThingsActivity.TAG_AREA);
                     /**####  start-hjs-addStatisticsEvent   ##**/
                     try {
-                        ((BaseActivity)mContext).addStatisticsEvent("1003", null);
+                        ((BaseActivity)mContext).addStatisticsEvent("food_home4", null);
                     }catch (Exception e){
                         e.printStackTrace();
                     }
@@ -71,7 +71,7 @@ public class HomepageAdapter extends BaseRecyclercAdapter<HomePageAllBean.DataBe
 
                     /**####  start-hjs-addStatisticsEvent   ##**/
                     try {
-                        ((BaseActivity)mContext).addStatisticsEvent("food_home4", null);
+                        ((BaseActivity)mContext).addStatisticsEvent("food_home3", null);
                     }catch (Exception e){
                         e.printStackTrace();
                     }
@@ -92,7 +92,7 @@ public class HomepageAdapter extends BaseRecyclercAdapter<HomePageAllBean.DataBe
 
                     /**####  start-hjs-addStatisticsEvent   ##**/
                     try {
-                        ((BaseActivity)mContext).addStatisticsEvent("food_home5", null);
+                        ((BaseActivity)mContext).addStatisticsEvent("food_home6", null);
                     }catch (Exception e){
                         e.printStackTrace();
                     }
@@ -105,7 +105,7 @@ public class HomepageAdapter extends BaseRecyclercAdapter<HomePageAllBean.DataBe
                     turnToList(FilterActivity.FILTER_TAG2, ((HomePageAllBean.DataBean.BegionShoptypeJsonBean.ListBean) item).getName());
                     /**####  start-hjs-addStatisticsEvent   ##**/
                     try {
-                        ((BaseActivity)mContext).addStatisticsEvent("food_home6", null);
+                        ((BaseActivity)mContext).addStatisticsEvent("food_home5", null);
                     }catch (Exception e){
                         e.printStackTrace();
                     }
