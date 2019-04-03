@@ -826,7 +826,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
                     break;
                 case R.id.bttom_menu_ll_ddwl:
                     startActivity(AppStatusUtils.getAppOpenIntentByPackageName(mContext,"com.aibabel.scenic"));
-
+                    addStatisticsEvent("scenic_click",null);
                     break;
                 case R.id.main_top_ctiy_ll:
 
