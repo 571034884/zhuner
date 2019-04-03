@@ -87,65 +87,33 @@ public class MainActivity extends BaseActivity {
             switch (CommonUtils.getLocalLanguage()) {
                 case "zh_CN":
                 case "zh_TW":
-                    /**####  start-hjs-addStatisticsEvent   ##**/
-                    try {
-                        addStatisticsEvent("alliedclock_main1", null);
-                    }catch (Exception e){
-                        e.printStackTrace();
-                    }
-                    /**####  end-hjs-addStatisticsEvent  ##**/
                     clockBeanList.add(firstUsedAdd("北京", "Beijing", "GMT+8"));
                     clockBeanList.add(firstUsedAdd("东京", "Tokyo", "GMT+9"));
                     clockBeanList.add(firstUsedAdd("曼谷", "Bangkok", "GMT+7"));
                     clockBeanList.add(firstUsedAdd("纽约", "New York", "GMT-5"));
                     break;
                 case "en":
-                    /**####  start-hjs-addStatisticsEvent   ##**/
-                    try {
-                        addStatisticsEvent("alliedclock_main1", null);
-                    }catch (Exception e){
-                        e.printStackTrace();
-                    }
-                    /**####  end-hjs-addStatisticsEvent  ##**/
+
                     clockBeanList.add(firstUsedAdd("Beijing", "Beijing", "GMT+8"));
                     clockBeanList.add(firstUsedAdd("Tokyo", "Tokyo", "GMT+9"));
                     clockBeanList.add(firstUsedAdd("Bangkok", "Bangkok", "GMT+7"));
                     clockBeanList.add(firstUsedAdd("New York", "New York", "GMT-5"));
                     break;
                 case "ja":
-                    /**####  start-hjs-addStatisticsEvent   ##**/
-                    try {
-                        addStatisticsEvent("alliedclock_main1", null);
-                    }catch (Exception e){
-                        e.printStackTrace();
-                    }
-                    /**####  end-hjs-addStatisticsEvent  ##**/
                     clockBeanList.add(firstUsedAdd("北京", "Beijing", "GMT+8"));
                     clockBeanList.add(firstUsedAdd("東京", "Tokyo", "GMT+9"));
                     clockBeanList.add(firstUsedAdd("バンコク", "Bangkok", "GMT+7"));
                     clockBeanList.add(firstUsedAdd("ニューヨーク", "New York", "GMT-5"));
                     break;
                 case "ko":
-                    /**####  start-hjs-addStatisticsEvent   ##**/
-                    try {
-                        addStatisticsEvent("alliedclock_main1", null);
-                    }catch (Exception e){
-                        e.printStackTrace();
-                    }
-                    /**####  end-hjs-addStatisticsEvent  ##**/
+
                     clockBeanList.add(firstUsedAdd("베이징", "Beijing", "GMT+8"));
                     clockBeanList.add(firstUsedAdd("동경", "Tokyo", "GMT+9"));
                     clockBeanList.add(firstUsedAdd("방콕", "Bangkok", "GMT+7"));
                     clockBeanList.add(firstUsedAdd("뉴욕", "New York", "GMT-5"));
                     break;
                 default:
-                    /**####  start-hjs-addStatisticsEvent   ##**/
-                    try {
-                        addStatisticsEvent("alliedclock_main1", null);
-                    }catch (Exception e){
-                        e.printStackTrace();
-                    }
-                    /**####  end-hjs-addStatisticsEvent  ##**/
+
                     clockBeanList.add(firstUsedAdd("北京", "Beijing", "GMT+8"));
                     clockBeanList.add(firstUsedAdd("东京", "Tokyo", "GMT+9"));
                     clockBeanList.add(firstUsedAdd("曼谷", "Bangkok", "GMT+7"));
@@ -194,6 +162,12 @@ public class MainActivity extends BaseActivity {
                 startActivityForResult(intent, 888);
             }
         });
+        rvCity.onLeftScrollListener=new ItemRemoveRecyclerView.OnLeftScrollListener() {
+            @Override
+            public void onLeftScroll() {
+                addStatisticsEvent("alliedclock_main1",null);
+            }
+        };
     }
 
     @Override

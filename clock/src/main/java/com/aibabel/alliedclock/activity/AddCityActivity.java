@@ -92,6 +92,20 @@ public class AddCityActivity extends BaseActivity implements BaseCallback {
                 sbSort.setVisibility(View.GONE);
                 break;
         }
+        etSearch.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (hasFocus){
+                    /**####  start-hjs-addStatisticsEvent   ##**/
+                    try {
+                        addStatisticsEvent("alliedclock_addCity2", null);
+                    }catch (Exception e){
+                        e.printStackTrace();
+                    }
+                    /**####  end-hjs-addStatisticsEvent  ##**/
+                }
+            }
+        });
     }
 
     @Override
@@ -255,13 +269,7 @@ public class AddCityActivity extends BaseActivity implements BaseCallback {
     @Override
     public boolean dispatchTouchEvent(MotionEvent ev) {
         if (ev.getAction() == MotionEvent.ACTION_DOWN) {
-            /**####  start-hjs-addStatisticsEvent   ##**/
-            try {
-                addStatisticsEvent("alliedclock_addCity2", null);
-            }catch (Exception e){
-                e.printStackTrace();
-            }
-            /**####  end-hjs-addStatisticsEvent  ##**/
+
             View v = getCurrentFocus();
             boolean hideInputResult = isShouldHideInput(v, ev);
             Log.v("hideInputResult", "zzz-->>" + hideInputResult);
@@ -352,7 +360,7 @@ public class AddCityActivity extends BaseActivity implements BaseCallback {
                     /**####  start-hjs-addStatisticsEvent   ##**/
                     try {
                         HashMap<String, Serializable> add_hp = new HashMap<>();
-                        add_hp.put("alliedclock_num",position);
+                        add_hp.put("alliedclock_num",s);
                         addStatisticsEvent("alliedclock_addCity7", add_hp);
 
                     }catch (Exception e){

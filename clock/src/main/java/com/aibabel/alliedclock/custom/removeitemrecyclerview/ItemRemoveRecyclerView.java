@@ -16,6 +16,7 @@ import com.aibabel.alliedclock.R;
 
 
 public class ItemRemoveRecyclerView extends RecyclerView {
+    public  OnLeftScrollListener onLeftScrollListener;
     private Context mContext;
 
     //上一次的触摸点
@@ -152,6 +153,9 @@ public class ItemRemoveRecyclerView extends RecyclerView {
 
                 //item自动滑动到指定位置
                 mScroller.startScroll(upScrollX, 0, deltaX, 0, 200);
+                if (upScrollX!=0){
+                    onLeftScrollListener.onLeftScroll();
+                }
                 isStartScroll = true;
                 invalidate();
 
@@ -191,6 +195,9 @@ public class ItemRemoveRecyclerView extends RecyclerView {
     public void onScrollStateChanged(int state) {
         super.onScrollStateChanged(state);
         isDragging = state == SCROLL_STATE_DRAGGING;
+    }
+    public interface OnLeftScrollListener{
+         void onLeftScroll();
     }
 
     public void setOnItemClickListener(OnItemClickListener listener) {

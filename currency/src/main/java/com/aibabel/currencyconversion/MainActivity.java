@@ -6,7 +6,9 @@ import android.graphics.Color;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.constraint.ConstraintLayout;
+import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.util.DisplayMetrics;
 import android.util.Log;
@@ -533,6 +535,7 @@ public class MainActivity extends BaseActivity {
         public void onClick(View v) {
             switch (which) {
                 case 1:
+
                     etCurrencyCount1.setText(canInput(etCurrencyCount1.getText().toString(), Msg));
                     etCurrencyCount2.setText(bigDecimalDo(new Calculate(etCurrencyCount1.getText().toString()).str.toString(), Constant.CURRENCY_VALUE_1_TO_2));
                     etCurrencyCount3.setText(bigDecimalDo(new Calculate(etCurrencyCount1.getText().toString()).str.toString(), Constant.CURRENCY_VALUE_1_TO_3));
@@ -561,6 +564,8 @@ public class MainActivity extends BaseActivity {
 
         @Override
         public void onClick(View v) {
+            addStatisticsEvent("currency_main7",null);
+
             switch (which) {
                 case 1:
                     etCurrencyCount1.setText(canInput(etCurrencyCount1.getText().toString(), Msg));

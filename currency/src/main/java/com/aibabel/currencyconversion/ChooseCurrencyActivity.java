@@ -215,7 +215,8 @@ public class ChooseCurrencyActivity extends BaseActivity {
                 /**####  start-hjs-addStatisticsEvent   ##**/
                 try {
                     HashMap<String, Serializable> add_hp = new HashMap<>();
-                    add_hp.put("currency_choose2_name",position);
+                    NewCurrencyBean newCurrencyBean= (NewCurrencyBean) adapter.getItem(position);
+                    add_hp.put("currency_choose2_name",newCurrencyBean.getZh_ch());
                     addStatisticsEvent("currency_choose2", add_hp);
 
                 }catch (Exception e){
