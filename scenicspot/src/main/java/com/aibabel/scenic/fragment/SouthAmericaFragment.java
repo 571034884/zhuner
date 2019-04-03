@@ -18,6 +18,7 @@ import com.aibabel.scenic.bean.AddressBean;
 import com.aibabel.scenic.okgo.ApiConstant;
 import com.aibabel.scenic.utils.Logs;
 
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -53,6 +54,12 @@ public class SouthAmericaFragment extends BaseFragment {
         adapter.setOnItemClickListener(new CountryCityAdapter.onClickListener() {
             @Override
             public void onItemClick(String cityName) {
+                try{
+                    HashMap<String, Serializable> map = new HashMap<>();
+                    map.put("scenic_loc_city_city",cityName);
+                    ((CityLocaActivity)getActivity()).addStatisticsEvent("scenic_loc_city",map);
+
+                }catch (Exception e){}
                 CityLocaActivity act = (CityLocaActivity) getActivity();
                 Intent intent = new Intent();
                 intent.putExtra("city",cityName);

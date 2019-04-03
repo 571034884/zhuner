@@ -50,7 +50,7 @@ public abstract class BaseRecyclercAdapter<T> extends HelperStateRecyclerViewAda
 
     @Override
     public View getLoadingView(ViewGroup parent) {
-        return mLInflater.inflate(R.layout.adapter_loading_layout, parent, false);
+        return mLInflater.inflate(R.layout.adapter_loading_layouts, parent, false);
     }
 
     public void onBindErrorViewHolder(HelperRecyclerViewHolder holder) {

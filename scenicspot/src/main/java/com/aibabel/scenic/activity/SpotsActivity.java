@@ -119,8 +119,8 @@ public class SpotsActivity extends BaseScenicActivity implements ExpireBroadcast
     Handler handler = new MyHandler(SpotsActivity.this);
     private List<MusicBean> musicList = new ArrayList<>();
 
-    private long startTimer;
-    private long endTimer;
+    private long startTimer = 0;
+    private long endTimer = 0;
 
     @Override
     public int getLayouts(Bundle var1) {
@@ -309,27 +309,8 @@ public class SpotsActivity extends BaseScenicActivity implements ExpireBroadcast
             case R.id.tv_start:
                 if (mIsPlaying) {
                     sendBroadcast(Constants.ACTION_PAUSE);
-                    try {
-                        HashMap<String, Serializable> map = new HashMap<>();
-                        map.put("scenic_spots_auto_off_name", list.get(mPosition).getName());
-                        addStatisticsEvent("scenic_spots_auto_off", map);
-                    } catch (Exception e) {
-                    }
                 } else {
-//                    if (mPosition == 0) {
-//                        sendBroadcast(Constants.ACTION_LIST_ITEM, 0);
-//                    } else {
-//
-//                    }
                     sendBroadcast(Constants.ACTION_PLAY);
-
-                    try {
-                        HashMap<String, Serializable> map = new HashMap<>();
-                        map.put("scenic_spots_auto_on_name", list.get(mPosition).getName());
-                        addStatisticsEvent("scenic_spots_auto_on", map);
-                    } catch (Exception e) {
-                    }
-
                 }
                 break;
             case R.id.tv_next:
@@ -339,12 +320,6 @@ public class SpotsActivity extends BaseScenicActivity implements ExpireBroadcast
                 }
                 if (CommonUtils.isFastClick()) {
                     sendBroadcast(Constants.ACTION_NEXT);
-                    try {
-                        HashMap<String, Serializable> map = new HashMap<>();
-                        map.put("scenic_spots_down_name", list.get(mPosition).getName());
-                        addStatisticsEvent("scenic_spots_down", map);
-                    } catch (Exception e) {
-                    }
                 }
                 break;
             case R.id.tv_pre:
@@ -354,14 +329,6 @@ public class SpotsActivity extends BaseScenicActivity implements ExpireBroadcast
                 }
                 if (CommonUtils.isFastClick()) {
                     sendBroadcast(Constants.ACTION_PRV);
-
-                    try {
-                        HashMap<String, Serializable> map = new HashMap<>();
-                        map.put("scenic_spots_up_name", list.get(mPosition).getName());
-                        addStatisticsEvent("scenic_spots_up", map);
-                    } catch (Exception e) {
-                    }
-
                 }
                 break;
             case R.id.tv_left:
@@ -370,16 +337,6 @@ public class SpotsActivity extends BaseScenicActivity implements ExpireBroadcast
                 sendBroadcast(Constants.ACTION_CLOSE);
                 Intent intent = new Intent(getApplicationContext(), MusicService.class);
                 stopService(intent);// 关闭服务
-
-                try {
-                    endTimer = System.currentTimeMillis();
-                    HashMap<String, Serializable> map = new HashMap<>();
-                    map.put("scenic_spots_over_name", list.get(mPosition).getName());
-                    map.put("scenic_spots_over_long", (endTimer - startTimer) + "");
-                    addStatisticsEvent("scenic_spots_over", map);
-                } catch (Exception e) {
-                }
-
                 break;
             case R.id.iv_scenic:
                 if (!CommonUtils.isNetworkAvailable(this)) {
@@ -398,12 +355,6 @@ public class SpotsActivity extends BaseScenicActivity implements ExpireBroadcast
             return;
         }
         sendBroadcast(Constants.ACTION_LIST_ITEM, position + 1);
-        try {
-            HashMap<String, Serializable> map = new HashMap<>();
-            map.put("scenic_spots_list_name", list.get(mPosition).getName());
-            addStatisticsEvent("scenic_spots_list", map);
-        } catch (Exception e) {
-        }
     }
     //======================================音乐处理=================================================
 
@@ -449,10 +400,13 @@ public class SpotsActivity extends BaseScenicActivity implements ExpireBroadcast
                     int totalDuration = msg.arg2;
 //                    tvTotal.setText(StringUtil.formatTime(totalDuration));
                     pbProgress.setMax(totalDuration / 1000);
+
+//                    startTimer = System.currentTimeMillis();
                     switchUI(mPosition, mIsPlaying);
                 }
                 if (msg.what == Constants.MSG_PLAY_STATE) {
                     mIsPlaying = (boolean) msg.obj;
+//                    startTimer = System.currentTimeMillis();
                     switchUI(mPosition, mIsPlaying);
                 }
                 if (msg.what == Constants.MSG_CANCEL) {
@@ -472,21 +426,8 @@ public class SpotsActivity extends BaseScenicActivity implements ExpireBroadcast
      */
     private void switchUI(int position, boolean mIsPlaying) {
         if (mIsPlaying) {
-            startTimer = System.currentTimeMillis();
             tvStart.setBackgroundResource(R.mipmap.ic_pause);
         } else {
-
-            endTimer = System.currentTimeMillis();
-            try {
-                HashMap<String, Serializable> map = new HashMap<>();
-                map.put("scenic_spots_over_name", list.get(mPosition).getName());
-                map.put("scenic_spots_over_long", (endTimer - startTimer) + "");
-                addStatisticsEvent("scenic_spots_over", map);
-                startTimer = 0;
-                endTimer = 0;
-            } catch (Exception e) {
-            }
-
             tvStart.setBackgroundResource(R.mipmap.ic_play_normal);
         }
         setScenery(musicList.get(position).getImageUrl(), musicList.get(position).getName());

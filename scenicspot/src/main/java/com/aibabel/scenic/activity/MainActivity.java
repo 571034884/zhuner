@@ -115,17 +115,16 @@ public class MainActivity extends BaseScenicActivity{
         city = ProviderUtils.getInfo(ProviderUtils.COLUMN_CITY);
         if (!TextUtils.isEmpty(city)) {
             mLocation.setText(city);
-            isNetWork();
             try{
                 HashMap<String, Serializable> map = new HashMap<>();
-                map.put("scenic_main_download_city",city);
+                map.put("scenic_main_open_city",city);
                 addStatisticsEvent("scenic_main_open",map);
 
                 HashMap<String, Serializable> maps = new HashMap<>();
                 maps.put("scenic_main_location_city",city);
                 addStatisticsEvent("scenic_main_location",maps);
             }catch (Exception e){}
-
+            isNetWork();
         } else {
             try{
                 HashMap<String, Serializable> map = new HashMap<>();
@@ -159,7 +158,6 @@ public class MainActivity extends BaseScenicActivity{
 
     @Override
     public void initData() {
-
 //        vpInfo.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
 //            @Override
 //            public void onPageScrolled(int i, float v, int i1) {
@@ -267,6 +265,7 @@ public class MainActivity extends BaseScenicActivity{
                 startActivity(intent);
             }
         });
+
         //热门
         getShowView(0);
         poiMsgHot = data.poiMsgHot;

@@ -103,7 +103,7 @@ public class ScenicNearFragment extends BaseFragment implements BaseQuickAdapter
             try {
                 HashMap<String, Serializable> map = new HashMap<>();
                 map.put("scenic_list_btn_about_des_id", position);
-                map.put("scenic_list_btn_about_des_name", list.get(position).getCityname());
+                map.put("scenic_list_btn_about_des_name", list.get(position).getName());
                 ((ScenicActivity) getActivity()).addStatisticsEvent("scenic_list_btn_about_des", map);
             }catch (Exception e){}
 

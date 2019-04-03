@@ -69,7 +69,7 @@ public class CustomProgress extends Dialog {
         try{
             dialog = new CustomProgress(context, R.style.Custom_Progress);
             dialog.setTitle("");
-            dialog.setContentView(R.layout.loading_layout);
+            dialog.setContentView(R.layout.load_layout);
             if (message == null || message.length() == 0) {
 //            dialog.findViewById(R.id.message).setVisibility(View.GONE);
             } else {
