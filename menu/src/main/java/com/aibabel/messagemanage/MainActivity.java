@@ -16,7 +16,9 @@ import com.aibabel.messagemanage.sqlite.SqlUtils;
 
 import org.litepal.LitePal;
 
+import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 public class MainActivity extends com.aibabel.baselibrary.base.BaseActivity {
@@ -40,6 +42,11 @@ public class MainActivity extends com.aibabel.baselibrary.base.BaseActivity {
         image_close.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+                HashMap<String, Serializable> map = new HashMap<>();
+                map.put("menu_notice_close_id","关闭");
+                addStatisticsEvent("menu_notice_close",map);
+
                 MainActivity.this.finish();
             }
         });

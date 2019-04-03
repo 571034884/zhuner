@@ -848,6 +848,11 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
                     startActivity(new Intent(this, com.aibabel.messagemanage.MainActivity.class));
                     set_BadgeCount = 0;
                     home_badge.setBadgeCount(set_BadgeCount);
+
+                    HashMap<String, Serializable> map = new HashMap<>();
+                    map.put("menu_notice_click_id","打开");
+                    addStatisticsEvent("menu_notice_click",map);
+
                     break;
 
             }
@@ -872,6 +877,9 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
 
             @Override
             public boolean onTouch(View v, MotionEvent event) {
+
+
+
                 switch (event.getAction()) {
 
                     case MotionEvent.ACTION_DOWN:
@@ -938,6 +946,11 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
      * 上下面板打开动画
      */
     public void hidePanel() {
+
+        HashMap<String, Serializable> map = new HashMap<>();
+        map.put("menu_showPanel_open_id","打开");
+        addStatisticsEvent("menu_showPanel_open",map);
+
         ObjectAnimator.ofFloat(top_ll, "translationY", -700).setDuration(300).start();
         ObjectAnimator.ofFloat(top_ll, "alpha", 1f, 0.5f).setDuration(300).start();
         ObjectAnimator.ofFloat(bottom_ll, "translationY", 500).setDuration(300).start();
@@ -950,6 +963,11 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
      * 上下面板打开动画
      */
     public void hidePanel1() {
+
+        HashMap<String, Serializable> map = new HashMap<>();
+        map.put("menu_showPanel_open_id","关闭");
+        addStatisticsEvent("menu_showPanel_open",map);
+
         ObjectAnimator.ofFloat(top_ll, "translationY", -700).setDuration(10).start();
         ObjectAnimator.ofFloat(top_ll, "alpha", 1f, 0.5f).setDuration(10).start();
         ObjectAnimator.ofFloat(bottom_ll, "translationY", 500).setDuration(10).start();
@@ -961,6 +979,10 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
      * 显示面板打开动画
      */
     public void showPanel() {
+        HashMap<String, Serializable> map = new HashMap<>();
+        map.put("menu_showPanel_close_id","关闭");
+        addStatisticsEvent("menu_showPanel_close",map);
+
         ObjectAnimator.ofFloat(top_ll, "translationY", 0).setDuration(300).start();
         ObjectAnimator.ofFloat(top_ll, "alpha", 0.5f, 1f).setDuration(300).start();
         ObjectAnimator.ofFloat(bottom_ll, "translationY", 0).setDuration(300).start();

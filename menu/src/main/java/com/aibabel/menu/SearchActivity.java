@@ -83,14 +83,14 @@ public class SearchActivity extends BaseActivity implements View.OnClickListener
     protected void assignView() {
 
     }
-
+    String showCity = "";
     @Override
     protected void initView() {
         //判断是否显示  当前定位
         if (!CommonUtils.isAvailable(mContext)) {
             searchCurrLocationLl.setVisibility(View.GONE);
         } else {
-            String showCity= SPUtils.get(mContext,"showCityName","").toString();
+            showCity= SPUtils.get(mContext,"showCityName","").toString();
             if (showCity != null && !TextUtils.isEmpty(showCity)) {
                 searchCurrLocationLl.setVisibility(View.VISIBLE);
                 searchCurrLocationTv.setText(showCity);
@@ -144,6 +144,9 @@ public class SearchActivity extends BaseActivity implements View.OnClickListener
                 finish();
                 break;
             case R.id.search_curr_location_ll:
+                HashMap<String, Serializable> map = new HashMap<>();
+                map.put("menu_search_location_name",showCity+"");
+                addStatisticsEvent("menu_search_location",map);
 
                 Intent intent1 = new Intent();
                 intent1.putExtra("cmd","search");
