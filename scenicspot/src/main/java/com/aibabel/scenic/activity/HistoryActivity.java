@@ -120,6 +120,7 @@ public class HistoryActivity extends BaseScenicActivity implements ExpireBroadca
     private String menuCountryId;
     private String historyPage;
     private String imageCountry;
+    private boolean ifFirst = true;
 
 
     @Override
@@ -248,6 +249,19 @@ public class HistoryActivity extends BaseScenicActivity implements ExpireBroadca
 
     }
 
+    public void addEventLong(){
+        //TODO 播放时长
+
+        if (startTimer != 0.0){
+            endTimer = System.currentTimeMillis();
+            HashMap<String, Serializable> map = new HashMap<>();
+            map.put("scenic_history_over_name",musicList.get(mPosition).getName());
+            map.put("scenic_history_over_long",(endTimer-startTimer)+"");
+            addStatisticsEvent("scenic_history_over",map);
+        }
+        startTimer = 0;
+        endTimer = 0;
+    }
 
     @Override
     public void onClick(View v) {
@@ -255,19 +269,26 @@ public class HistoryActivity extends BaseScenicActivity implements ExpireBroadca
         switch (v.getId()) {
             case R.id.tv_start:
                 if (mIsPlaying) {
-                    try {
-                        HashMap<String, Serializable> map = new HashMap<>();
-                        map.put("scenic_history_auto_off_name", list.get(mPosition).getName());
-                        addStatisticsEvent("scenic_history_auto_off", map);
-                    } catch (Exception e) {}
+                    addEventLong();
+                    //TODO 暂停
+                    HashMap<String, Serializable> maps = new HashMap<>();
+                    maps.put("scenic_history_auto_off_name",musicList.get(mPosition).getName());
+                    addStatisticsEvent("scenic_history_auto_off",maps);
                     sendBroadcast(Constants.ACTION_PAUSE);
                 } else {
-                    try {
-                        HashMap<String, Serializable> map = new HashMap<>();
-                        map.put("scenic_history_auto_on_name", list.get(mPosition).getName());
-                        addStatisticsEvent("scenic_history_auto_on", map);
-                    } catch (Exception e) {}
-                    sendBroadcast(Constants.ACTION_PLAY);
+                    if(!ifFirst){
+                        HashMap<String, Serializable> maps = new HashMap<>();
+                        maps.put("scenic_history_auto_on_name",musicList.get(mPosition).getName());
+                        addStatisticsEvent("scenic_history_auto_on",maps);
+                        sendBroadcast(Constants.ACTION_PLAY);
+                    }else{
+                        HashMap<String, Serializable> maps = new HashMap<>();
+                        maps.put("scenic_history_auto_on_name",musicList.get(mPosition).getName());
+                        addStatisticsEvent("scenic_history_auto_on",maps);
+                        sendBroadcast(Constants.ACTION_LIST_ITEM,mPosition);
+                        ifFirst = false;
+                    }
+
                 }
                 break;
             case R.id.tv_next:
@@ -275,12 +296,8 @@ public class HistoryActivity extends BaseScenicActivity implements ExpireBroadca
                     ToastUtil.showShort(this, "当前网络不可用！");
                     return;
                 }
-                try {
-                    HashMap<String, Serializable> map = new HashMap<>();
-                    map.put("scenic_history_down_name", musicList.get(mPosition).getName());
-                    addStatisticsEvent("scenic_history_down", map);
-                } catch (Exception e) {
-                }
+                addEventLong();
+                addStatisticsEvent("scenic_history_down",null);
                 sendBroadcast(Constants.ACTION_NEXT);
                 break;
             case R.id.tv_pre:
@@ -289,30 +306,19 @@ public class HistoryActivity extends BaseScenicActivity implements ExpireBroadca
                     ToastUtil.showShort(this, "当前网络不可用！");
                     return;
                 }
-                try {
-                    HashMap<String, Serializable> map = new HashMap<>();
-                    map.put("scenic_history_up_name", musicList.get(mPosition).getName());
-                    addStatisticsEvent("scenic_history_up", map);
-                } catch (Exception e) {
-                }
+                addEventLong();
+                addStatisticsEvent("scenic_history_up",null);
                 sendBroadcast(Constants.ACTION_PRV);
                 break;
             case R.id.tv_left:
+                if (mIsPlaying){
+                    addEventLong();
+                }
                 addStatisticsEvent("scenic_history_close", null);
                 onBackPressed();
                 sendBroadcast(Constants.ACTION_CLOSE);
                 Intent intent = new Intent(getApplicationContext(), MusicService.class);
                 stopService(intent);// 关闭服务
-
-//                endTimer = System.currentTimeMillis();
-                try {
-                    HashMap<String, Serializable> map = new HashMap<>();
-                    map.put("scenic_history_over_name", list.get(mPosition).getName());
-                    map.put("scenic_history_over_long", (endTimer - startTimer) + "");
-                    addStatisticsEvent("scenic_history_over", map);
-                } catch (Exception e) {
-                }
-
                 break;
         }
 
@@ -324,21 +330,14 @@ public class HistoryActivity extends BaseScenicActivity implements ExpireBroadca
             ToastUtil.showShort(this, "当前网络不可用！");
             return;
         }
-        sendBroadcast(Constants.ACTION_LIST_ITEM, position);
-        try {
-            HashMap<String, Serializable> map = new HashMap<>();
-            map.put("scenic_history_list_click_id", position);
-            map.put("scenic_history_list_click_name", list.get(mPosition).getName());
-            addStatisticsEvent("scenic_history_list_click", map);
-        } catch (Exception e) {
-        }
+        addEventLong();
 
-        try {
-            HashMap<String, Serializable> map = new HashMap<>();
-            map.put("scenic_history_des_name", list.get(mPosition).getName());
-            addStatisticsEvent("scenic_history_des", map);
-        } catch (Exception e) {
-        }
+        HashMap<String, Serializable> maps = new HashMap<>();
+        maps.put("scenic_history_list_name",musicList.get(position).getName());
+        addStatisticsEvent("scenic_history_list",maps);
+
+        sendBroadcast(Constants.ACTION_LIST_ITEM, position);
+
     }
 
 
@@ -385,12 +384,14 @@ public class HistoryActivity extends BaseScenicActivity implements ExpireBroadca
                     int totalDuration = msg.arg2;
 //                    tvTotal.setText(StringUtil.formatTime(totalDuration));
                     pbProgress.setMax(totalDuration / 1000);
-//                    startTimer = System.currentTimeMillis();
+                    startTimer = System.currentTimeMillis();
                     switchUI(mPosition, mIsPlaying);
                 }
                 if (msg.what == Constants.MSG_PLAY_STATE) {
                     mIsPlaying = (boolean) msg.obj;
-//                    startTimer = System.currentTimeMillis();
+                    if(mIsPlaying && startTimer==0.0){
+                        startTimer = System.currentTimeMillis();
+                    }
                     switchUI(mPosition, mIsPlaying);
                 }
                 if (msg.what == Constants.MSG_CANCEL) {
@@ -413,29 +414,7 @@ public class HistoryActivity extends BaseScenicActivity implements ExpireBroadca
     private void switchUI(int position, boolean mIsPlaying) {
         if (mIsPlaying) {
             tvStart.setBackgroundResource(R.mipmap.ic_pause);
-//            endTimer = System.currentTimeMillis();
-            try {
-                HashMap<String, Serializable> map = new HashMap<>();
-                map.put("scenic_history_over_name", musicList.get(position).getName());
-                map.put("scenic_history_over_long", (endTimer - startTimer) + "");
-                addStatisticsEvent("scenic_history_over", map);
-                startTimer = 0;
-                endTimer = 0;
-            } catch (Exception e) {
-            }
-
         } else {
-//            endTimer = System.currentTimeMillis();
-            try {
-                HashMap<String, Serializable> map = new HashMap<>();
-                map.put("scenic_history_over_name", list.get(mPosition).getName());
-                map.put("scenic_history_over_long", (endTimer - startTimer) + "");
-                addStatisticsEvent("scenic_history_over", map);
-                startTimer = 0;
-                endTimer = 0;
-            } catch (Exception e) {
-            }
-
             tvStart.setBackgroundResource(R.mipmap.ic_play_normal);
         }
         setScenery(musicList.get(position).getImageUrl(), musicList.get(position).getName());

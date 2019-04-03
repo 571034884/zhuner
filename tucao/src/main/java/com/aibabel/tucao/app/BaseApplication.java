@@ -9,11 +9,15 @@ import android.util.Log;
 import android.view.WindowManager;
 
 
+import com.aibabel.baselibrary.impl.IDataManager;
+import com.aibabel.baselibrary.impl.IServerManager;
+import com.aibabel.baselibrary.impl.IStatistics;
 import com.aibabel.tucao.utils.CommonUtils;
 import com.aibabel.tucao.utils.DensityHelper;
 import com.lzy.okgo.OkGo;
 import com.umeng.analytics.MobclickAgent;
 import com.umeng.commonsdk.UMConfigure;
+import com.xuexiang.xipc.XIPC;
 
 import java.util.LinkedList;
 import java.util.concurrent.TimeUnit;
@@ -51,9 +55,20 @@ public class BaseApplication extends Application {
         initAppExitConfig();
         initUmengConfig();
         initLayoutConfig();
-
+        initXipc();
 
     }
+    /**
+     * 跨进程初始化
+     */
+    private void initXipc() {
+        XIPC.init(this);
+        XIPC.register(IDataManager.class);
+        XIPC.register(IServerManager.class);
+        XIPC.register(IStatistics.class);
+
+    }
+
 
 
 

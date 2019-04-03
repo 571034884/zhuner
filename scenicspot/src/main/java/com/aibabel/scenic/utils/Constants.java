@@ -32,6 +32,7 @@ public class Constants {
     public static final int MSG_PROGRESS = 001;
     public static final int MSG_PREPARED = 002;
     public static final int MSG_PLAY_STATE = 003;
+    public static final int MSG_STATE = 004;
     // 取消
     public static final int MSG_CANCEL = 004;
     public static final int NOTIFICATION_CEDE = 100;

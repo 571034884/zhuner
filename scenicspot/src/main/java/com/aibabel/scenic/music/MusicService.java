@@ -121,9 +121,7 @@ public class MusicService extends Service implements MediaPlayer.OnErrorListener
 
     @Override
     public void onPrepared(MediaPlayer mediaPlayer) {
-
         mPlayer.start();//开始播放
-
         if (mMessenger != null) {
             sentPreparedMessageToMain();
             sentPositionToMainByTimer();
@@ -138,6 +136,17 @@ public class MusicService extends Service implements MediaPlayer.OnErrorListener
         mMessage.obj = mPlayer.isPlaying();
         try {
             //发送播放位置
+            mMessenger.send(mMessage);
+        } catch (RemoteException e) {
+            e.printStackTrace();
+        }
+    }
+    private void sentPlayStateLong() {
+        mMessage = Message.obtain();
+        mMessage.what = Constants.MSG_STATE;
+        mMessage.obj = mPlayer.isPlaying();
+        try {
+            //发送播放状态
             mMessenger.send(mMessage);
         } catch (RemoteException e) {
             e.printStackTrace();
@@ -263,6 +272,7 @@ public class MusicService extends Service implements MediaPlayer.OnErrorListener
                     //开始播放
                     if (mPlayer != null) {
                         mPlayer.start();
+//                        sentPlayStateLong();
                         //通知是否在播放
                         sentPlayStateToMain();
                     } else {
