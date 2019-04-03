@@ -232,8 +232,9 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        L.e("MainActivity  onCreate========================");
-        LogUtil.e("MainActivity_onCreate");
+
+        Log.e("menu_main_create====","create");
+
 //        DBUtils.copyAssetsToSd(mContext,"index.html");
         //根据时区选择服务器
         initService();
@@ -348,7 +349,10 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
                     @Override
                     public void run() {
                         com.aibabel.baselibrary.mode.StatisticsManager.getInstance().uplaodData(getApplicationContext(), SharePrefUtil.getString(context, "order_oid", ""));
+
                     }
+
+
                 },2000);
             }
 

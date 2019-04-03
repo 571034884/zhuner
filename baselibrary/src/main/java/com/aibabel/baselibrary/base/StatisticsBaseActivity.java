@@ -40,6 +40,7 @@ public class StatisticsBaseActivity extends AppCompatActivity {
     private JSONObject pageParameters;
     protected  static String appName, appVersion;
     public  IStatistics statisticsManager;
+    boolean hasConnectedXIPC;
 
 
 
@@ -49,7 +50,7 @@ public class StatisticsBaseActivity extends AppCompatActivity {
 
          connectXIPC();
          notifyId=getIntent().getStringExtra(NOTIFY_ID);
-
+         Log.e("notiytId Intent",""+notifyId);
 
         isOpenFromHardwareButton=getIntent().getBooleanExtra(HARDWARE_BUTTON,true);
 
@@ -74,9 +75,8 @@ public class StatisticsBaseActivity extends AppCompatActivity {
 
 
     }
-    private void connectXIPC(){
-        if (statisticsManager!=null)
-            return;
+    protected void connectXIPC(){
+
         if (!getPackageName().equals("com.aibabel.menu")&&DeviceUtils.getSystem()== DeviceUtils.System.PRO_LEASE){
             XIPC.setIPCListener(new IPCListener() {
                 @Override
@@ -86,22 +86,26 @@ public class StatisticsBaseActivity extends AppCompatActivity {
                         statisticsManager=XIPC.getInstance(IStatistics.class);
                         count++;
                     }
-
-
-
-//                    Toast.makeText(getApplicationContext(),"IPC服务已绑定！",Toast.LENGTH_LONG).show();
+                    hasConnectedXIPC=true;
                 }
             });
             XIPC.connectApp(this,"com.aibabel.menu");
 
         }
-        else {
+        if (getPackageName().equals("com.aibabel.menu")){
+           statisticsManager=StatisticsManager.getInstance();
+
         }
+
+
     }
     @Override
     protected void onResume() {
         super.onResume();
-        connectXIPC();
+        if (!hasConnectedXIPC){
+            connectXIPC();
+        }
+
         if (DeviceUtils.getSystem()== DeviceUtils.System.PRO_LEASE){
             try {
                 pageObject=new JSONObject();
@@ -115,7 +119,7 @@ public class StatisticsBaseActivity extends AppCompatActivity {
                     pageObject.put("h",true);
                 }
 
-            } catch (JSONException e) {
+            } catch (Exception e) {
                 e.printStackTrace();
             }
         }
@@ -184,19 +188,28 @@ public class StatisticsBaseActivity extends AppCompatActivity {
 
     }
 
+
+
     @Override
     protected void onStop() {
-        super.onStop();
 
         try {
-            if (System.currentTimeMillis() - pageObject.optLong("it") > 500) {
+            if (System.currentTimeMillis() - pageObject.optLong("it") > 500){
+                if (statisticsManager==null){
+                    if (getPackageName().equals("com.aibabel.menu")){
+                        statisticsManager=StatisticsManager.getInstance();
+                    }else{
+                        statisticsManager=XIPC.getInstance(IStatistics.class);
+                    }
+
+                }
                 addPathToStatisticsManager();
             }
         }catch (Exception e){
             e.printStackTrace();
         }
 
-
+        super.onStop();
     }
 
     /**

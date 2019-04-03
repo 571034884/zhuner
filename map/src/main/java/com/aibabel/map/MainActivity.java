@@ -160,6 +160,7 @@ public class MainActivity extends MapBaseActivity implements SensorEventListener
         animDrawable.start();
 
         initListener();
+        connectXIPC();
     }
 
     private void initListener() {
@@ -822,6 +823,13 @@ public class MainActivity extends MapBaseActivity implements SensorEventListener
         //为系统的方向传感器注册监听器
         mSensorManager.registerListener(this, mSensorManager.getDefaultSensor(Sensor.TYPE_ORIENTATION),
                 SensorManager.SENSOR_DELAY_UI);
+        tvActivity.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                connectXIPC();
+            }
+        },1000);
+
 
     }
 

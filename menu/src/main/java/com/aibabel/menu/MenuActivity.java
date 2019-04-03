@@ -1,6 +1,7 @@
 package com.aibabel.menu;
 
 import android.content.BroadcastReceiver;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
@@ -11,6 +12,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.transition.TransitionInflater;
+import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.widget.ImageView;
@@ -143,7 +145,11 @@ public class MenuActivity extends BaseActivity implements View.OnClickListener {
         super.onResume();
     }
 
-
+    @Override
+    protected void onStop() {
+        super.onStop();
+        Log.e("menu_stop====","stop");
+    }
 
     @Override
     protected void initView() {
@@ -256,7 +262,8 @@ public class MenuActivity extends BaseActivity implements View.OnClickListener {
                     addStatisticsEvent("menu_voice_click",null);
                     break;
                 case R.id.menu_bottom_pzfy_ll:
-                    //调起拍照翻译
+//
+//                    //调起拍照翻译
                     startActivity(AppStatusUtils.getAppOpenIntentByPackageName(mContext, "com.aibabel.ocr"));
                     addStatisticsEvent("menu_photo_click",null);
                     break;
