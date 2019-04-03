@@ -169,9 +169,7 @@ public class AddCityActivity extends BaseActivity implements BaseCallback , Sort
     private void setAdapter() {
         Collections.sort(SourceDateList, new PinyinComparator());
         getIndexerAndCounts(SourceDateList);
-//        adapter = new SortAdapter(this, SourceDateList, mIndexer);
-//        sortListView.setAdapter(adapter);
-//        sortListView.setOnScrollListener(adapter);
+
         //設置頂部固定頭部
         View view = LayoutInflater.from(getApplicationContext()).inflate(R.layout
                 .list_group_item, sortListView, false);
@@ -260,7 +258,7 @@ public class AddCityActivity extends BaseActivity implements BaseCallback , Sort
                 //当输入框里面的值为空，更新为原来的列表，否则为过滤数据列表
                 if (CommonUtils.isNetAvailable(AddCityActivity.this) && SourceDateList != null && SourceDateList.size() > 0){
                     filterData(s.toString());
-                    addStatisticsEvent("weather_addCity3",null);
+
                 }
 
             }
@@ -300,11 +298,16 @@ public class AddCityActivity extends BaseActivity implements BaseCallback , Sort
                         .toUpperCase())) {
                     mSortList.add(sortModel);
                 }
+
             }
         }
+        HashMap<String ,Serializable> map=new HashMap<>();
+        map.put("weather_addCity3_search",filterStr);
+        addStatisticsEvent("weather_addCity3",map);
         // 根据a-z进行排序
         Collections.sort(mSortList, new PinyinComparator());
         getIndexerAndCounts(mSortList);
+
 //        adapter.updateListView(mSortList, mIndexer);
     }
 

@@ -47,6 +47,7 @@ public class BaseApplication extends Application {
                 null);
         MobclickAgent.setScenarioType(this, MobclickAgent.EScenarioType.E_UM_NORMAL);
         initXipc();
+        com.aibabel.baselibrary.base.BaseApplication.setAllPhysicalButtonsExitEnable(true);
 
     }
 
@@ -63,6 +64,7 @@ public class BaseApplication extends Application {
         XIPC.register(IServerManager.class);
 //        XIPC.register(com.aibabel.baselibrary.mode.StatisticsManager.class);
         XIPC.register(IStatistics.class);
+
 
     }
     /**

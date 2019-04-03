@@ -218,11 +218,14 @@ public class StatisticsBaseActivity extends AppCompatActivity {
                     }
                     eventObject.put("p",parametersJson);
 
+
                 }
+                Log.e("addStatisticsEvent", eventObject.toString());
                 if (eventsArray==null){
                     eventsArray=new JSONArray();
                 }
                 eventsArray.put(eventObject);
+
 
 
             } catch (JSONException e) {

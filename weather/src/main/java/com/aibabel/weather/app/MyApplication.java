@@ -7,6 +7,7 @@ import android.os.Handler;
 import android.util.Log;
 
 import com.aibabel.aidlaar.StatisticsManager;
+import com.aibabel.baselibrary.base.BaseApplication;
 import com.aibabel.baselibrary.impl.IDataManager;
 import com.aibabel.baselibrary.impl.IServerManager;
 import com.aibabel.baselibrary.impl.IStatistics;
@@ -47,12 +48,12 @@ public class MyApplication extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
-
+        BaseApplication.setAllPhysicalButtonsExitEnable(true);
         initLayoutConfig();
         initAppExitConfig();
         initOKgoConfig();
         initUmengConfig();
-         initXipc();
+        initXipc();
     }
     /**
      * 跨进程初始化

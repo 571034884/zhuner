@@ -261,6 +261,6 @@ public class EditCityActivity extends BaseActivity implements ItemRemoveRecycler
 
     @Override
     public void onLeftScroll() {
-       addStatisticsEvent("weather_editCity1",null);
+        addStatisticsEvent("weather_editCity1",null);
     }
 }

@@ -159,7 +159,7 @@ public class ItemRemoveRecyclerView extends RecyclerView {
                 }
                 isStartScroll = true;
                 invalidate();
-
+//                addStatisticsEvent("weather_editCity1",null);
                 mVelocityTracker.clear();
                 break;
         }

@@ -1,9 +1,11 @@
 package com.aibabel.food.base;
 
+import android.content.pm.PackageManager;
+
 import com.aibabel.baselibrary.base.BaseApplication;
 import com.aibabel.baselibrary.http.OkGoUtil;
 import com.aibabel.baselibrary.utils.DeviceUtils;
-import com.aibabel.food.BuildConfig;
+
 
 /**
  * 作者：SunSH on 2018/12/3 19:01
@@ -20,7 +22,13 @@ public class MyApp extends BaseApplication {
 
     @Override
     public String getAppVersionName() {
-        return BuildConfig.VERSION_NAME;
+        try {
+            return getPackageManager().getPackageInfo(getPackageName(),0).versionName;
+        } catch (PackageManager.NameNotFoundException e) {
+            e.printStackTrace();
+        }
+        return  null;
+
     }
 
     @Override

@@ -138,7 +138,8 @@ public class MyReceiver extends BroadcastReceiver {
                                 context.sendBroadcast(stopIntent);
                                 LogUtil.e("code  = 1");
                             }
-                            numid = (int) json.get("no");
+                            numid = (Integer) jsonRelet.get("no");
+                            LogUtil.e("numid==" + numid);
                         } catch (JSONException e) {
                             Log.e(TAG, "Get message extra JSON error!");
                         } catch (Exception e) {
@@ -150,7 +151,8 @@ public class MyReceiver extends BroadcastReceiver {
                         if (MainActivity.loopHandler != null) {
                             HashMap<String, Serializable> add_hp = new HashMap<>();
                             add_hp.put("push_notification2_def", code);
-                            add_hp.put("push_notification2_def", numid);
+                            add_hp.put("push_notification2_id", numid);
+                            LogUtil.e("numid=send=" + numid);
                             //MainActivity.loopHandler.obtainMessage(330, add_hp);
                             Message msgtemp = new Message();
                             msgtemp.what = 330;
