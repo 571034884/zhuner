@@ -1,22 +1,9 @@
 package com.aibabel.coupon.app;
 
-import android.app.Activity;
-import android.app.Application;
-import android.os.Bundle;
-import android.text.TextUtils;
-import android.util.Log;
-import android.view.KeyEvent;
+import android.content.pm.PackageManager;
 
 import com.aibabel.baselibrary.http.OkGoUtil;
 import com.aibabel.baselibrary.utils.DeviceUtils;
-import com.aibabel.coupon.BuildConfig;
-import com.aibabel.coupon.utils.DensityHelper;
-import com.lzy.okgo.OkGo;
-
-import java.util.LinkedList;
-import java.util.concurrent.TimeUnit;
-
-import okhttp3.OkHttpClient;
 
 /**
  * Created by Wuqinghua on 2018/6/28 0028.
@@ -32,7 +19,13 @@ public class BaseApplication extends com.aibabel.baselibrary.base.BaseApplicatio
 
     @Override
     public String getAppVersionName() {
-        return BuildConfig.VERSION_NAME;
+        try {
+            return getPackageManager().getPackageInfo(getPackageName(),0).versionName;
+        } catch (PackageManager.NameNotFoundException e) {
+            e.printStackTrace();
+        }
+        return  null;
+
     }
 
     @Override

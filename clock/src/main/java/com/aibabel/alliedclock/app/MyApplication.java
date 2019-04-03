@@ -10,6 +10,7 @@ import com.aibabel.aidlaar.StatisticsManager;
 import com.aibabel.alliedclock.BuildConfig;
 import com.aibabel.alliedclock.utils.CommonUtils;
 import com.aibabel.alliedclock.utils.DensityHelper;
+import com.aibabel.baselibrary.base.BaseApplication;
 import com.aibabel.baselibrary.impl.IDataManager;
 import com.aibabel.baselibrary.impl.IServerManager;
 import com.aibabel.baselibrary.impl.IStatistics;
@@ -61,6 +62,7 @@ public class MyApplication extends Application {
         XIPC.register(IDataManager.class);
         XIPC.register(IServerManager.class);
         XIPC.register(IStatistics.class);
+        BaseApplication.setAllPhysicalButtonsExitEnable(true);
 
     }
 
@@ -167,7 +169,7 @@ public class MyApplication extends Application {
             @Override
             public void run() {
                 try {
-                    Thread.sleep(3000);
+                    Thread.sleep(1500);
                     Log.e("canExit===", String.valueOf(canExit));
                     if (canExit) {
                         android.os.Process.killProcess(android.os.Process.myPid());

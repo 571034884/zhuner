@@ -11,7 +11,7 @@ import android.util.Log;
 import com.aibabel.aidlaar.StatisticsManager;
 import com.aibabel.baselibrary.base.BaseApplication;
 import com.aibabel.baselibrary.utils.DeviceUtils;
-import com.aibabel.currencyconversion.BuildConfig;
+
 import com.aibabel.currencyconversion.utils.CommonUtils;
 import com.aibabel.currencyconversion.utils.DensityHelper;
 import com.aibabel.currencyconversion.utils.SharePrefUtil;
@@ -42,7 +42,7 @@ public class MyApplication extends BaseApplication {
     @Override
     public void onCreate() {
         super.onCreate();
-
+        setAllPhysicalButtonsExitEnable(true);
         initSharedpreferenceConfig();
         initLayoutConfig();
         initAppExitConfig();
@@ -52,7 +52,13 @@ public class MyApplication extends BaseApplication {
 
     @Override
     public String getAppVersionName() {
-        return null;
+        try {
+            return getPackageManager().getPackageInfo(getPackageName(),0).versionName;
+        } catch (PackageManager.NameNotFoundException e) {
+            e.printStackTrace();
+        }
+        return  null;
+
     }
 
     @Override

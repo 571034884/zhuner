@@ -47,8 +47,7 @@ public class BaseApplication extends Application {
         builder.connectTimeout(15000, TimeUnit.MILLISECONDS);
 
         OkGo.getInstance().init(this).setOkHttpClient(builder.build()); //必须调用初始化
-
-
+        com.aibabel.baselibrary.base.BaseApplication.setAllPhysicalButtonsExitEnable(true);
         initAppExitConfig();
         initUmengConfig();
         initLayoutConfig();

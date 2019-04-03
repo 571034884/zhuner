@@ -11,6 +11,7 @@ import android.os.Handler;
 import android.util.Log;
 import android.view.WindowManager;
 
+import com.aibabel.baselibrary.base.BaseApplication;
 import com.aibabel.traveladvisory.R;
 import com.aibabel.traveladvisory.utils.CommonUtils;
 import com.aibabel.traveladvisory.utils.DensityHelper;
@@ -62,7 +63,7 @@ public class MyApplication extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
-
+        BaseApplication.setAllPhysicalButtonsExitEnable(true);
         initOKgoConfig();
 //        initLeakCanaryConfig();
         initAppExitConfig();

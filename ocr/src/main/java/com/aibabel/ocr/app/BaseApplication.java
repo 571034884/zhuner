@@ -42,6 +42,7 @@ public class BaseApplication extends com.aibabel.baselibrary.base.BaseApplicatio
     @Override
     public void onCreate() {
         super.onCreate();
+        setAllPhysicalButtonsExitEnable(true);
         CONTEXT = this;
         configOKGo();
         displayMetrics = getResources().getDisplayMetrics();
