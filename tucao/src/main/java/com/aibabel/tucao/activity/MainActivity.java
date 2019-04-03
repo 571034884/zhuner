@@ -267,6 +267,15 @@ public class MainActivity extends BaseActivity implements BaseCallback, AudioRec
             @Override
             public void onFinished(float seconds, String filePath) {
                 Log.e("filePath=====", filePath);
+
+                /**####  start-hjs-addStatisticsEvent   ##**/
+                try {
+                    addStatisticsEvent("tucao_main5", null);
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
+                /**####  end-hjs-addStatisticsEvent  ##**/
+
                 Record recordModel = new Record();
                 recordModel.setSecond((int) seconds <= 0 ? 1 : (int) seconds);
                 recordModel.setPath(filePath);
@@ -779,9 +788,23 @@ public class MainActivity extends BaseActivity implements BaseCallback, AudioRec
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.iv_close:
+                /**####  start-hjs-addStatisticsEvent   ##**/
+                try {
+                    addStatisticsEvent("tucao_main1", null);
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
+                /**####  end-hjs-addStatisticsEvent  ##**/
                 finish();
                 break;
             case R.id.iv_close1:
+                /**####  start-hjs-addStatisticsEvent   ##**/
+                try {
+                    addStatisticsEvent("tucao_main1", null);
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
+                /**####  end-hjs-addStatisticsEvent  ##**/
                 finish();
                 break;
             case R.id.man_rb:
@@ -791,6 +814,13 @@ public class MainActivity extends BaseActivity implements BaseCallback, AudioRec
                 RadioText = womanRb.getText().toString();
                 break;
             case R.id.tv_submit:
+                /**####  start-hjs-addStatisticsEvent   ##**/
+                try {
+                    addStatisticsEvent("tucao_main2", null);
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
+                /**####  end-hjs-addStatisticsEvent  ##**/
                 if (NetUtil.isNetworkAvailable(MainActivity.this)) {
                     Map<String, String> map = new HashMap<>();
                     String display = Build.DISPLAY;
@@ -889,6 +919,9 @@ public class MainActivity extends BaseActivity implements BaseCallback, AudioRec
             @Override
             public void onConfirmClick() {
                 try {
+                    /**####  start-hjs-addStatisticsEvent   ##**/
+                        addStatisticsEvent("tucao_main4", null);
+                    /**####  end-hjs-addStatisticsEvent  ##**/
                     MainActivity.this.finish();
 
                 } catch (Exception e) {
