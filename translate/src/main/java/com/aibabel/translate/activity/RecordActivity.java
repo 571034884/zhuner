@@ -104,7 +104,7 @@ public class RecordActivity extends BaseActivity {
 
                 try {
                     addStatisticsEvent("translation_record6", add_hp);
-                }catch (Exception e){
+                } catch (Exception e) {
                     e.printStackTrace();
                 }
                 /**####  end-hjs-addStatisticsEvent  ##**/
@@ -124,16 +124,8 @@ public class RecordActivity extends BaseActivity {
                     adapter.setShowCheckBox(true);
                     checkList.add(position);
                 }
-
-
-                /**####  start-hjs-addStatisticsEvent   ##**/
-                try {
-                    addStatisticsEvent("translation_record3", null);
-                }catch (Exception e){
-                    e.printStackTrace();
-                }
-                /**####  end-hjs-addStatisticsEvent  ##**/
-
+                //统计长按事件
+                addStatisticsEvent("translation_record3", null);
                 refreshUI(isShowCheck);
                 isShowCheck = !isShowCheck;
                 if (checkList.size() > 0)
@@ -243,6 +235,8 @@ public class RecordActivity extends BaseActivity {
                     for (int i = 0; i < newsList.size(); i++) {
                         checkList.add(i);
                     }
+                    //统计全选事件
+                    addStatisticsEvent("translation_record7", add_hpn);
                 } else {
                     tvQuanxuan.setText(getResources().getString(R.string.select_all));
                     tvshanchu.setTextColor(getResources().getColor(R.color.gray));
@@ -251,52 +245,31 @@ public class RecordActivity extends BaseActivity {
                     add_hpn.put("translation_record7_select", true);
                 }
 
-                /**####  start-hjs-addStatisticsEvent   ##**/
-                try {
-                    addStatisticsEvent("translation_record7", add_hpn);
-                }catch (Exception e){
-                    e.printStackTrace();
-                }
-                /**####  end-hjs-addStatisticsEvent  ##**/
-
-
                 isSelectAll = !isSelectAll;
                 adapter.notifyDataSetChanged();
                 break;
             case R.id.tvshanchu:
-                try{
+                try {
                     if (checkList.size() > 0) {
 //                    ToastUtil.showShort(checkList.toString());
                         for (int i = 0, j = 0; i < checkList.size(); i++, j++) {
                             int index = checkList.get(i);
                             SqlUtils.deleteById(newsList.remove(index - j).getId());
                         }
+                        //统计删除事件
+                        HashMap<String, Serializable> add_hp = new HashMap<>();
+                        add_hp.put("translation_record8_delete", checkList.size() + "");
+                        addStatisticsEvent("translation_record8", add_hp);
 
-                        /**####  start-hjs-addStatisticsEvent   ##**/
-                        try {
-                            HashMap<String, Serializable> add_hp = new HashMap<>();
-                            add_hp.put("translation_record8_delete",checkList.size()+"" );
-                            addStatisticsEvent("translation_record8", add_hp);
-                        }catch (Exception e){
-                            e.printStackTrace();
-                        }
-                        /**####  end-hjs-addStatisticsEvent  ##**/
                         quxiao();
                     }
-                }catch(Exception e){
+                } catch (Exception e) {
                     e.printStackTrace();
                 }
 
                 break;
             case R.id.iv_close:
-
-                /**####  start-hjs-addStatisticsEvent   ##**/
-                try {
-                    addStatisticsEvent("translation_record5", null);
-                }catch (Exception e){
-                    e.printStackTrace();
-                }
-                /**####  end-hjs-addStatisticsEvent  ##**/
+                addStatisticsEvent("translation_record5", null);
                 finish();
                 break;
         }

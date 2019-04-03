@@ -210,6 +210,9 @@ public class MessageUtil {
             Intent mIntent = new Intent();
             ComponentName componentName = new ComponentName(bean.getPackageName(), bean.getPath());
             mIntent.setComponent(componentName);
+
+            if (bean != null) mIntent.putExtra("notiytId", "" + bean.getNum());
+
             mIntent.putExtra("position", 0);
             mIntent.putExtra("list", FastJsonUtil.changListToString(list));
             mIntent.putExtra("from", "notification");
@@ -237,6 +240,9 @@ public class MessageUtil {
                 mIntent.setComponent(componentName);
                 if (bean.getResultData() != null)
                     mIntent.putExtra("poiId", bean.getResultData().get(0).getIdstring());
+                if (bean != null) mIntent.putExtra("notiytId", "" + bean.getNum());
+                Log.e("hjs","notiytId:startNewScenic="+bean.getNum());
+                Log.e("hjs","notiytId:="+bean.getNum());
 
                 context.startActivity(mIntent);
             }
@@ -254,6 +260,7 @@ public class MessageUtil {
     public static void startOtherScenic(PushMessageBean bean, Context context) {
         try {
             Intent mIntent = new Intent();
+
             if (bean != null) mIntent.putExtra("notiytId", "" + bean.getNum());
             ComponentName componentName = new ComponentName(bean.getPackageName(), bean.getPath());
             mIntent.setComponent(componentName);

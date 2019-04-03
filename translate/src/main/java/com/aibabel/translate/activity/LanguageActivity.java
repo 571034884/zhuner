@@ -104,6 +104,7 @@ public class LanguageActivity extends BaseActivity implements ExpandableListView
     public void onClick(View v) {
         switch (v.getId()){
             case R.id.iv_close:
+                addStatisticsEvent("translation_language1",null);
                 onBackPressed();
                 break;
         }
@@ -191,6 +192,7 @@ public class LanguageActivity extends BaseActivity implements ExpandableListView
         sound = group.get(groupPosition).getSound() + "";
         String offline = group.get(groupPosition).getOffline();
         saveLan(lan_key, lanText, name_str, alert, sound,offline);
+
         return false;
     }
 
@@ -226,7 +228,8 @@ public class LanguageActivity extends BaseActivity implements ExpandableListView
                 if (choice == false) {
                     choice = true;
                     SharePrefUtil.saveBoolean(LanguageActivity.this, "choice", choice);
-                    //添加统计
+                    //统计展开事件
+                    addStatisticsEvent("translation_language3",null);
                 } else {
                     choice = false;
                     SharePrefUtil.saveBoolean(LanguageActivity.this, "choice", choice);
@@ -250,6 +253,8 @@ public class LanguageActivity extends BaseActivity implements ExpandableListView
 
 
     private void saveLan(int key, String name, String code, String lan_alert, String sound,String offline) {
+        //统计语种点击
+        addStatisticsEvent("translation_language2",null);
         switch (key) {
             case 132:
                 SharePrefUtil.saveString(this, Constant.LAN_UP, name);
@@ -257,15 +262,6 @@ public class LanguageActivity extends BaseActivity implements ExpandableListView
                 SharePrefUtil.saveString(LanguageActivity.this, Constant.ALERT_UP, lan_alert);
                 SharePrefUtil.saveString(LanguageActivity.this, Constant.SOUND_UP, sound);
                 SharePrefUtil.saveString(LanguageActivity.this, Constant.OFFLINE_UP, offline);
-                //添加统计
-
-                /**####  start-hjs-addStatisticsEvent   ##**/
-                try {
-                    addStatisticsEvent("translation_main7", null);
-                }catch (Exception e){
-                    e.printStackTrace();
-                }
-                /**####  end-hjs-addStatisticsEvent  ##**/
                 onBackPressed();
                 break;
             case 131:
@@ -274,15 +270,6 @@ public class LanguageActivity extends BaseActivity implements ExpandableListView
                 SharePrefUtil.saveString(LanguageActivity.this, Constant.ALERT_DOWN, lan_alert);
                 SharePrefUtil.saveString(LanguageActivity.this, Constant.SOUND_DOWN, sound);
                 SharePrefUtil.saveString(LanguageActivity.this, Constant.OFFLINE_DOWN, offline);
-                //添加统计
-
-                /**####  start-hjs-addStatisticsEvent   ##**/
-                try {
-                    addStatisticsEvent("translation_main8", null);
-                }catch (Exception e){
-                    e.printStackTrace();
-                }
-                /**####  end-hjs-addStatisticsEvent  ##**/
                 onBackPressed();
                 break;
             default:
@@ -293,17 +280,11 @@ public class LanguageActivity extends BaseActivity implements ExpandableListView
 
 
 
+
+
     @Override
     protected void onStop() {
         super.onStop();
-
-        /**####  start-hjs-addStatisticsEvent   ##**/
-        try {
-            addStatisticsEvent("translation_language1", null);
-        }catch (Exception e){
-            e.printStackTrace();
-        }
-        /**####  end-hjs-addStatisticsEvent  ##**/
         finish();
     }
 
