@@ -65,6 +65,7 @@ import com.baidu.mapapi.map.OverlayOptions;
 import com.baidu.mapapi.map.TextureMapView;
 import com.baidu.mapapi.model.LatLng;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -257,7 +258,9 @@ public class DriveFragment extends BaseFragment implements SensorEventListener ,
                 trafficType(s1);
                 /**####  start-hjs-addStatisticsEvent   ##**/
                 try {
-                    ((StatisticsBaseActivity)getActivity()).addStatisticsEvent("path_plan_route1", null);
+                    HashMap<String, Serializable> add_hp = new HashMap<>();
+                    add_hp.put("map_search_letter13", routeBean.getLocationWhere());
+                    ((StatisticsBaseActivity)getActivity()).addStatisticsEvent("path_plan_route1", add_hp);
                 }catch (Exception e){
                     e.printStackTrace();
                 }
