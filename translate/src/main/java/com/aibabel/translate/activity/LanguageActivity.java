@@ -25,6 +25,7 @@ import com.aibabel.translate.utils.LanguageUtils;
 import com.aibabel.translate.utils.SharePrefUtil;
 import com.aibabel.translate.utils.ToastUtil;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -229,7 +230,9 @@ public class LanguageActivity extends BaseActivity implements ExpandableListView
                     choice = true;
                     SharePrefUtil.saveBoolean(LanguageActivity.this, "choice", choice);
                     //统计展开事件
-                    addStatisticsEvent("translation_language3",null);
+                    HashMap<String,Serializable> map = new HashMap<>();
+                    map.put("open_code",group.get(groupPosition).getLang_code());
+                    addStatisticsEvent("translation_language3",map);
                 } else {
                     choice = false;
                     SharePrefUtil.saveBoolean(LanguageActivity.this, "choice", choice);
@@ -254,6 +257,8 @@ public class LanguageActivity extends BaseActivity implements ExpandableListView
 
     private void saveLan(int key, String name, String code, String lan_alert, String sound,String offline) {
         //统计语种点击
+        HashMap<String,Serializable> map = new HashMap<>();
+        map.put("selected_code",code);
         addStatisticsEvent("translation_language2",null);
         switch (key) {
             case 132:

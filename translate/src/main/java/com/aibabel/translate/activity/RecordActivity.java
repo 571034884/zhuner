@@ -95,7 +95,7 @@ public class RecordActivity extends BaseActivity {
                 if (isShowCheck) {
                     if (checkList.contains(Integer.valueOf(position))) {
                         checkList.remove(Integer.valueOf(position));
-                        add_hp.put("translation_record6__unchecked", position);
+                        add_hp.put("translation_record6_unchecked", position);
                     } else {
                         checkList.add(position);
                         add_hp.put("translation_record6_check", position);
@@ -229,20 +229,20 @@ public class RecordActivity extends BaseActivity {
                 checkList.clear();
                 if (!isSelectAll) {
                     tvQuanxuan.setText(getResources().getString(R.string.select_null));
-                    add_hpn.put("translation_record7_no", true);
+
                     tvshanchu.setTextColor(getResources().getColor(R.color.white));
                     adapter.setCheckAll(true);
                     for (int i = 0; i < newsList.size(); i++) {
                         checkList.add(i);
                     }
                     //统计全选事件
-                    addStatisticsEvent("translation_record7", add_hpn);
+                    addStatisticsEvent("translation_record7", null);
                 } else {
+                    addStatisticsEvent("translation_record7_no", null);
                     tvQuanxuan.setText(getResources().getString(R.string.select_all));
                     tvshanchu.setTextColor(getResources().getColor(R.color.gray));
                     adapter.setCheckAll(false);
                     checkList.clear();
-                    add_hpn.put("translation_record7_select", true);
                 }
 
                 isSelectAll = !isSelectAll;

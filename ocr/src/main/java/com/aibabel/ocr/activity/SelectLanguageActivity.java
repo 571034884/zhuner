@@ -15,6 +15,7 @@ import com.aibabel.ocr.utils.Constant;
 import com.aibabel.ocr.utils.LanguageUtils;
 import com.aibabel.ocr.utils.SharePrefUtil;
 
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -42,6 +43,8 @@ public class SelectLanguageActivity extends BaseActivity implements AdapterView.
         iv_close.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                // TODO: 2019/4/3 统计
+                addStatisticsEvent("ocr_language_close", null);
                 finish();
             }
         });
@@ -76,6 +79,10 @@ public class SelectLanguageActivity extends BaseActivity implements AdapterView.
         String name = bean.getName();
         String name_code = bean.getLang_code();
         saveLan(name, name_code);
+        // TODO: 2019/4/3 统计
+        HashMap<String, Serializable> map = new HashMap<>();
+        map.put("ocr_code", name_code);
+        addStatisticsEvent("ocr_language_code", map);
 
     }
 

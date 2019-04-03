@@ -329,9 +329,13 @@ public class TakePhoteActivity extends BaseActivity implements CameraPreview.OnC
             public void onCheckedChanged(RadioGroup group, int checkedId) {
                 switch (checkedId) {
                     case R.id.rb_h:
+                        // TODO: 2019/4/3
+                        addStatisticsEvent("TakePhoto17", null);
                         SharePrefUtil.saveString(TakePhoteActivity.this, Constant.LAN_OR_CODE, "jpa");
                         break;
                     case R.id.rb_v:
+                        // TODO: 2019/4/3
+                        addStatisticsEvent("TakePhoto18", null);
                         SharePrefUtil.saveString(TakePhoteActivity.this, Constant.LAN_OR_CODE, "jpa_v");
                         break;
 
@@ -446,7 +450,7 @@ public class TakePhoteActivity extends BaseActivity implements CameraPreview.OnC
                 // TODO: 2019/4/3 统计涂抹
                 HashMap<String, Serializable> map = new HashMap<>();
                 map.put("ocr_smear", type);
-                addStatisticsEvent("ocr_TakePhoto12", null);
+                addStatisticsEvent("ocr_TakePhoto12", map);
 
 //                String bitmap = PictureUtil.bitmapToString(PictureUtil.cropDaubed(rectF, BitmapFactory.decodeFile(pathName)));
                 final String path = PictureUtil.cropDaubed(rectF, bitmapData, fangxiang);
@@ -1032,7 +1036,8 @@ public class TakePhoteActivity extends BaseActivity implements CameraPreview.OnC
                 Toast.makeText(this, R.string.error_msg, Toast.LENGTH_SHORT).show();
                 return;
             }
-
+            // TODO: 2019/4/3 统计识别结果
+            addStatisticsEvent("ocr_TakePhoto16", null);
 
             Intent intent = new Intent(this, MainActivity.class);
             intent.putExtra("path", pathName);
@@ -1055,7 +1060,7 @@ public class TakePhoteActivity extends BaseActivity implements CameraPreview.OnC
      */
     private void toMenu(String response, float downX, float downY) {
 
-        // TODO: 2019/4/3 统计物体识别结果
+        // TODO: 2019/4/3 统计识别结果
         addStatisticsEvent("ocr_TakePhoto9", null);
         ResponseBean bean = null;
         try {

@@ -60,6 +60,8 @@ public class TranslateUtil implements MicArrayUtil.OnDealwithListener, SocketMan
     private String asrTextOffline;
     private long newTime;
     private int currentStatue = 0;
+    private long startTimer;
+    private long stopTimer;
 
     //离线缓冲
     private List<byte[]> offlineList = new LinkedList<>();
@@ -189,6 +191,7 @@ public class TranslateUtil implements MicArrayUtil.OnDealwithListener, SocketMan
             if (TextUtils.equals("fr", to)) {
                 to = "fra_fra";
             }
+            startTimer = System.currentTimeMillis();
             SocketManger.getInstance().sendMessage(new JsonDataBean(Constant.RECOGNIZE_BEGIN, getOnlineRecordTag(index, from, to)));
 
         } else {
@@ -572,6 +575,8 @@ public class TranslateUtil implements MicArrayUtil.OnDealwithListener, SocketMan
                         TTSUtil.getInstance().notUnderstand(context, 1, Constant.isSound);
                         listener.reset();
 //                        L.e("reset","setAsr");
+                        isSuccess = "failed";
+                        statistics();
                     }
 
                 }
@@ -679,6 +684,8 @@ public class TranslateUtil implements MicArrayUtil.OnDealwithListener, SocketMan
      * 统计（在线为主）
      */
     private void statistics() {
+        stopTimer = System.currentTimeMillis();
+        long timer = stopTimer - startTime;
         int key = 1303;
         String nkey = "translation_main9";
 
@@ -694,6 +701,7 @@ public class TranslateUtil implements MicArrayUtil.OnDealwithListener, SocketMan
                     add_hp.put("original_language_up", "" + from_lan_code);
                     add_hp.put("translation_language_up", "" + to_lan_code);
                     add_hp.put("translation_status_up", "" + isSuccess);
+                    add_hp.put("translation_status_over", "" + timer);
                     ((BaseActivity) context).addStatisticsEvent(nkey, add_hp);
                 } catch (Exception e) {
                     e.printStackTrace();
