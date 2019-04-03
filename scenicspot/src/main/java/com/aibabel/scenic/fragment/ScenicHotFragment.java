@@ -133,8 +133,18 @@ public class ScenicHotFragment extends BaseFragment implements BaseQuickAdapter.
                     //如果是已收藏，点击取消收藏，反之点击收藏
                     if (TextUtils.equals(list.get(position).getIsMy(), "1")) {
                         cancelCollection(id);
+                        HashMap<String, Serializable> map = new HashMap<>();
+                        map.put("scenic_list_collect_cancel",position);
+                        map.put("scenic_list_collect_cancel_name",list.get(position).getName());
+                        ((ScenicActivity)getActivity()).addStatisticsEvent("scenic_list_collect_cancel",map);
+
                     } else {
                         collection(id);
+
+                        HashMap<String, Serializable> map = new HashMap<>();
+                        map.put("scenic_list_collect_ok",position);
+                        map.put("scenic_list_collect_ok_name",list.get(position).getName());
+                        ((ScenicActivity)getActivity()).addStatisticsEvent("scenic_list_collect_ok",map);
                     }
                 }
                 break;
