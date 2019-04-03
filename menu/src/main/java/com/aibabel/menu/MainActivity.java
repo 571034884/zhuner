@@ -347,8 +347,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
                 mainReturnImg.postDelayed(new Runnable() {
                     @Override
                     public void run() {
-
-
+                        com.aibabel.baselibrary.mode.StatisticsManager.getInstance().uplaodData(getApplicationContext(), SharePrefUtil.getString(context, "order_oid", ""));
                     }
                 },2000);
             }
