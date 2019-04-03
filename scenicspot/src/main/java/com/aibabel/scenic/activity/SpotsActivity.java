@@ -119,6 +119,8 @@ public class SpotsActivity extends BaseScenicActivity implements ExpireBroadcast
     Handler handler = new MyHandler(SpotsActivity.this);
     private List<MusicBean> musicList = new ArrayList<>();
 
+    private boolean isFirst = true;
+    private boolean isScenic = false;
     private long startTimer = 0;
     private long endTimer = 0;
 
@@ -248,6 +250,9 @@ public class SpotsActivity extends BaseScenicActivity implements ExpireBroadcast
         SpotsBean.DataBean.PoiMsgBean bean = spotsBean.getData().getPoiMsg();
         final int size = list == null ? 0 : list.size();
         if (isRefresh) {
+
+
+
             mAdapter.setNewData(list);
             setText(bean);
             rlMusic.setVisibility(View.VISIBLE);
@@ -302,15 +307,48 @@ public class SpotsActivity extends BaseScenicActivity implements ExpireBroadcast
         tvTitle.setText(title);
     }
 
+    public void addEventLong(){
+        //TODO 播放时长
+
+        if (startTimer != 0.0){
+            endTimer = System.currentTimeMillis();
+            HashMap<String, Serializable> map = new HashMap<>();
+            map.put("scenic_spots_over_name",musicList.get(mPosition).getName());
+            map.put("scenic_spots_over_long",(endTimer-startTimer)+"");
+            addStatisticsEvent("scenic_spots_over",map);
+        }
+        startTimer = 0;
+        endTimer = 0;
+    }
+
+
     @Override
     public void onClick(View v) {
         super.onClick(v);
         switch (v.getId()) {
             case R.id.tv_start:
+                isScenic = true;
                 if (mIsPlaying) {
+                    addEventLong();
+                    //TODO 暂停
+                    HashMap<String, Serializable> maps = new HashMap<>();
+                    maps.put("scenic_spots_auto_off_name",musicList.get(mPosition).getName());
+                    addStatisticsEvent("scenic_spots_auto_off",maps);
                     sendBroadcast(Constants.ACTION_PAUSE);
                 } else {
-                    sendBroadcast(Constants.ACTION_PLAY);
+                    if(!isFirst){
+                        HashMap<String, Serializable> maps = new HashMap<>();
+                        maps.put("scenic_spots_auto_on_name",musicList.get(mPosition).getName());
+                        addStatisticsEvent("scenic_spots_auto_on",maps);
+                        sendBroadcast(Constants.ACTION_PLAY);
+                    }else{
+                        HashMap<String, Serializable> maps = new HashMap<>();
+                        maps.put("scenic_spots_auto_on_name",musicList.get(0).getName());
+                        addStatisticsEvent("scenic_spots_auto_on",maps);
+                        sendBroadcast(Constants.ACTION_LIST_ITEM,0);
+                        isFirst = false;
+                    }
+
                 }
                 break;
             case R.id.tv_next:
@@ -319,6 +357,10 @@ public class SpotsActivity extends BaseScenicActivity implements ExpireBroadcast
                     return;
                 }
                 if (CommonUtils.isFastClick()) {
+                    addEventLong();
+                    //TODO 下一首
+                    isScenic = true;
+                    addStatisticsEvent("scenic_spots_down",null);
                     sendBroadcast(Constants.ACTION_NEXT);
                 }
                 break;
@@ -328,21 +370,39 @@ public class SpotsActivity extends BaseScenicActivity implements ExpireBroadcast
                     return;
                 }
                 if (CommonUtils.isFastClick()) {
+                    addEventLong();
+                    //TODO 上一首
+                    isScenic = true;
+                    addStatisticsEvent("scenic_spots_up",null);
                     sendBroadcast(Constants.ACTION_PRV);
                 }
                 break;
             case R.id.tv_left:
+                if (mIsPlaying){
+                    addEventLong();
+                }
                 addStatisticsEvent("scenic_spots_close", null);
                 onBackPressed();
                 sendBroadcast(Constants.ACTION_CLOSE);
                 Intent intent = new Intent(getApplicationContext(), MusicService.class);
                 stopService(intent);// 关闭服务
+
                 break;
             case R.id.iv_scenic:
                 if (!CommonUtils.isNetworkAvailable(this)) {
                     ToastUtil.showShort(this, "当前网络不可用！");
                     return;
                 }
+                if (isScenic){
+                    addEventLong();
+                }else{
+                    isScenic = true;
+                }
+
+                HashMap<String, Serializable> maps = new HashMap<>();
+                maps.put("scenic_spots_list_name",musicList.get(0).getName());
+                addStatisticsEvent("scenic_spots_list",maps);
+
                 sendBroadcast(Constants.ACTION_LIST_ITEM, 0);
                 break;
         }
@@ -354,6 +414,16 @@ public class SpotsActivity extends BaseScenicActivity implements ExpireBroadcast
             ToastUtil.showShort(this, "当前网络不可用！");
             return;
         }
+        if (isScenic){
+            addEventLong();
+        }else {
+            isScenic = true;
+        }
+
+        HashMap<String, Serializable> maps = new HashMap<>();
+        maps.put("scenic_spots_list_name",musicList.get(position+1).getName());
+        addStatisticsEvent("scenic_spots_list",maps);
+
         sendBroadcast(Constants.ACTION_LIST_ITEM, position + 1);
     }
     //======================================音乐处理=================================================
@@ -401,12 +471,14 @@ public class SpotsActivity extends BaseScenicActivity implements ExpireBroadcast
 //                    tvTotal.setText(StringUtil.formatTime(totalDuration));
                     pbProgress.setMax(totalDuration / 1000);
 
-//                    startTimer = System.currentTimeMillis();
+                    startTimer = System.currentTimeMillis();
                     switchUI(mPosition, mIsPlaying);
                 }
                 if (msg.what == Constants.MSG_PLAY_STATE) {
                     mIsPlaying = (boolean) msg.obj;
-//                    startTimer = System.currentTimeMillis();
+                    if(mIsPlaying && startTimer==0.0){
+                        startTimer = System.currentTimeMillis();
+                    }
                     switchUI(mPosition, mIsPlaying);
                 }
                 if (msg.what == Constants.MSG_CANCEL) {
