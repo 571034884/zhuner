@@ -671,6 +671,8 @@ public class OppositeFragment extends BaseFragment implements OnResponseListener
                         return;
                     }
                 }
+                //统计选择语言下
+                activity.addStatisticsEvent("translation_main14", null);
                 selectLan(DOWN_KEY, lan_do, false);
                 break;
             case R.id.tv_up_lan:
@@ -680,6 +682,8 @@ public class OppositeFragment extends BaseFragment implements OnResponseListener
                         return;
                     }
                 }
+                //统计选择语言上
+                activity.addStatisticsEvent("translation_main13", null);
                 selectLan(UP_KEY, lan_up, true);
                 break;
             case R.id.iv_switch:
