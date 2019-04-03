@@ -364,7 +364,7 @@ public class CityLocaActivity extends BaseScenicActivity{
             case R.id.tv_history_city_one:
                 String oneCity = mHistoryOne.getText().toString().trim();
                 HashMap<String, Serializable> map = new HashMap<>();
-                map.put("scenic_loc_history_city",city);
+                map.put("scenic_loc_history_city",oneCity);
                 addStatisticsEvent("scenic_loc_location_history",map);
                 if (!TextUtils.isEmpty(oneCity)){
                     Intent intent = new Intent();
@@ -376,7 +376,7 @@ public class CityLocaActivity extends BaseScenicActivity{
             case R.id.tv_history_city_two:
                 String twoCity = mHistoryTwo.getText().toString().trim();
                 HashMap<String, Serializable> maps = new HashMap<>();
-                maps.put("scenic_loc_history_city",city);
+                maps.put("scenic_loc_history_city",twoCity);
                 addStatisticsEvent("scenic_loc_location_history",maps);
                 if (!TextUtils.isEmpty(twoCity)){
                     Intent intent = new Intent();
