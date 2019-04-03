@@ -46,8 +46,8 @@ import java.util.TimerTask;
 
 public class TranslateUtil implements MicArrayUtil.OnDealwithListener, SocketManger.OnReceiveListener {
 
-    public int readnum = 0;
-    public int oldReadnum=0;
+    public int readnum = (int)System.currentTimeMillis();
+    public int oldReadnum = (int)System.currentTimeMillis();
     private Context context;
     private MicArrayUtil util;
     private OnResponseListener listener;
@@ -70,11 +70,11 @@ public class TranslateUtil implements MicArrayUtil.OnDealwithListener, SocketMan
     private boolean isRead = false;
     private String to_lan_code;
     private String from_lan_code;
-    private int isResultFirst=0;
+    private int isResultFirst = 0;
 
     private Activity mActivity;
     //当前录音开始  是同侧还是异侧
-    private String currFrag="Ipsil";
+    private String currFrag = "Ipsil";
 
     private long startTime;
     private long endTime;
@@ -114,11 +114,11 @@ public class TranslateUtil implements MicArrayUtil.OnDealwithListener, SocketMan
      * @param to
      * @param key_
      */
-    public void sendAudio(String from, String to, int key_,String _currFrag) {
+    public void sendAudio(String from, String to, int key_, String _currFrag) {
         startTime = 0;
-        endTime =0;
-        mtTime =0;
-        soundTime =0;
+        endTime = 0;
+        mtTime = 0;
+        soundTime = 0;
 
         //开始 en
         SocketManger.getInstance().setOnReceiveListener(this);
@@ -127,7 +127,7 @@ public class TranslateUtil implements MicArrayUtil.OnDealwithListener, SocketMan
             //如果两次的时间差＜500ms，就不执行操作
             newTime = SystemClock.uptimeMillis();
             listener.reset();
-            L.e("reset","sendAudio");
+            L.e("reset", "sendAudio");
             return;
         }
         //当前系统时间的毫秒值
@@ -143,24 +143,24 @@ public class TranslateUtil implements MicArrayUtil.OnDealwithListener, SocketMan
         FileUtils.deleteCacheFile();
         //可以读取标识录音标识
         if (ThreadPoolManager.getInstance().getCarryNum() == 0) {
-            isRead=false;
+            isRead = false;
             getOfflineList().clear();
 
         }
 
         isStart = true;
         isRead = true;
-        isResultFirst=0;
+        isResultFirst = 0;
         key_press = key_;
 
         this.to_lan_code = to;
-        from_lan_code=from;
+        from_lan_code = from;
 //        copyofflineList.clear();
-        currFrag=_currFrag;
-        otherAsrResult="";
-        if(offlineTimer!=null)
-        offlineTimer.cancel();
-        sendStartFlag(from, to,readnum, key_);
+        currFrag = _currFrag;
+        otherAsrResult = "";
+        if (offlineTimer != null)
+            offlineTimer.cancel();
+        sendStartFlag(from, to, readnum, key_);
 
 
         L.e(readnum + "");
@@ -182,36 +182,36 @@ public class TranslateUtil implements MicArrayUtil.OnDealwithListener, SocketMan
             mode = "online";
             // TODO: 2019/1/9
             MediaPlayerUtil.playMp3(context, R.raw.start);
-            MicArrayUtil.getInstance().startRecord(true,context);
-            if (TextUtils.equals("fr",from)) {
-                from="fra_fra";
+            MicArrayUtil.getInstance().startRecord(true, context);
+            if (TextUtils.equals("fr", from)) {
+                from = "fra_fra";
             }
-            if (TextUtils.equals("fr",to)) {
-                to="fra_fra";
+            if (TextUtils.equals("fr", to)) {
+                to = "fra_fra";
             }
             SocketManger.getInstance().sendMessage(new JsonDataBean(Constant.RECOGNIZE_BEGIN, getOnlineRecordTag(index, from, to)));
 
         } else {
             mode = "offline";
             //离线
-            if (from.equals("ch_ch")||from.equals("jpa")) {
+            if (from.equals("ch_ch") || from.equals("jpa")) {
                 // TODO: 2019/1/9
                 MediaPlayerUtil.playMp3(context, R.raw.start);
                 //中文离线永不释放  独立
-                MicArrayUtil.getInstance().startRecord(false,context);
-                oldReadnum=readnum;
-                offlineASR(ChangeOffline.getInstance().getSpeech(from,to), ChangeOffline.getInstance().getTran(from,to), index,key);
+                MicArrayUtil.getInstance().startRecord(false, context);
+                oldReadnum = readnum;
+                offlineASR(ChangeOffline.getInstance().getSpeech(from, to), ChangeOffline.getInstance().getTran(from, to), index, key);
             } else {
 //                if (from.equals("jpa")) {
 //                    MicArrayUtil.getInstance().startRecord(false);
 //                    offlineASR(ChangeOffline.getInstance().speechUp, ChangeOffline.getInstance().tranUp, index);
 //                } else {
-                    //其他asr不同的调法
+                //其他asr不同的调法
 //                L.e("======================================"+BaseApplication.isTran);
-                if((ChangeOffline.getInstance().getSpeech(from,to))!=null) {
-                    BaseApplication.isTran=false;
+                if ((ChangeOffline.getInstance().getSpeech(from, to)) != null) {
+                    BaseApplication.isTran = false;
                     ((SpeechType) ChangeOffline.getInstance().getSpeech(from, to)).down();
-                    oldReadnum=readnum;
+                    oldReadnum = readnum;
 //                    L.e("oldReadnum=============="+oldReadnum+"===========readnum:"+readnum);
                     if (key == 132) {
                         if (up_listener == null) {
@@ -235,7 +235,6 @@ public class TranslateUtil implements MicArrayUtil.OnDealwithListener, SocketMan
             }
 
 
-
         }
     }
 
@@ -244,9 +243,9 @@ public class TranslateUtil implements MicArrayUtil.OnDealwithListener, SocketMan
     }
 
 
-    public  synchronized void offlineASR(final SpeechBase speechBase, final TranBase tranBase , final int ui_index, final int key) {
+    public synchronized void offlineASR(final SpeechBase speechBase, final TranBase tranBase, final int ui_index, final int key) {
 //        L.e("kaishioffline==================");
-        BaseApplication.isTran=false;
+        BaseApplication.isTran = false;
         ThreadPoolManager.getInstance().addTask(new Runnable() {
             @Override
             public void run() {
@@ -264,7 +263,7 @@ public class TranslateUtil implements MicArrayUtil.OnDealwithListener, SocketMan
                             isRead = false;
                             return;
                         }
-                        if (readdata!=null) {
+                        if (readdata != null) {
                             num++;
                             speechBase.recognition(readdata, readdata.length, num);
                         }
@@ -290,8 +289,8 @@ public class TranslateUtil implements MicArrayUtil.OnDealwithListener, SocketMan
                     mActivity.runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
-                            if (oldReadnum!=readnum) {
-                                BaseApplication.isTran=true;
+                            if (oldReadnum != readnum) {
+                                BaseApplication.isTran = true;
                                 if (BaseApplication.isIpsil.equals(currFrag)) {
                                     TTSUtil.getInstance().notUnderstand(context, 1, Constant.isSound);
                                 }
@@ -299,7 +298,7 @@ public class TranslateUtil implements MicArrayUtil.OnDealwithListener, SocketMan
                                 return;
                             }
                             if (BaseApplication.isIpsil.equals(currFrag)) {
-                                listener.setAsr(asr,Constant.FLAG_OFFLINE);
+                                listener.setAsr(asr, Constant.FLAG_OFFLINE);
                             }
 
                         }
@@ -320,7 +319,7 @@ public class TranslateUtil implements MicArrayUtil.OnDealwithListener, SocketMan
 //                                        L.e("readnum:"+readnum,"===========oldnum:"+oldReadnum+"============tran:"+res[0]);
                                         listener.setMt(res[0], Constant.FLAG_OFFLINE);
                                         //存入数据库
-                                        insert(from_lan_code,to_lan_code,asrTextOffline,res[0],"");
+                                        insert(from_lan_code, to_lan_code, asrTextOffline, res[0], "");
                                         if (BaseApplication.isIpsil.equals(currFrag)) {
                                             TTSUtil.speekOffline(key, res[0], to_lan_code);
                                         }
@@ -333,14 +332,14 @@ public class TranslateUtil implements MicArrayUtil.OnDealwithListener, SocketMan
                                         }
                                         FileUtils.deleteCacheFile();
                                         listener.reset();
-                                        BaseApplication.isTran=true;
+                                        BaseApplication.isTran = true;
 
                                     }
 
                                 }
                             });
                         } else {
-                             //已不是上一次翻译了  做出界面反馈
+                            //已不是上一次翻译了  做出界面反馈
                             if (TextUtils.isEmpty(asr)) {
                                 if (BaseApplication.isIpsil.equals(currFrag)) {
                                     TTSUtil.getInstance().notUnderstand(context, 1, Constant.isSound);
@@ -362,7 +361,7 @@ public class TranslateUtil implements MicArrayUtil.OnDealwithListener, SocketMan
                         }
                         FileUtils.deleteCacheFile();
                         listener.reset();
-                        BaseApplication.isTran=true;
+                        BaseApplication.isTran = true;
                     }
 
                 } else {
@@ -371,11 +370,10 @@ public class TranslateUtil implements MicArrayUtil.OnDealwithListener, SocketMan
                         TTSUtil.getInstance().notUnderstand(context, 1, Constant.isSound);
                     }
                     listener.reset();
-                    BaseApplication.isTran=true;
+                    BaseApplication.isTran = true;
                 }
             }
         });
-
 
 
     }
@@ -385,7 +383,7 @@ public class TranslateUtil implements MicArrayUtil.OnDealwithListener, SocketMan
      *
      * @param key
      */
-    public void stop(String from,String to,int key) {
+    public void stop(String from, String to, int key) {
         endTime = System.currentTimeMillis();
         //停止录音
 //        ZipFileUtil.createFileWithByte(copyofflineList, SDCardUtils.getSDCardPath() + "pcm/20180829_00_" + System.currentTimeMillis() + ".pcm");
@@ -408,15 +406,15 @@ public class TranslateUtil implements MicArrayUtil.OnDealwithListener, SocketMan
             //无网络，离线识别结束
             if (key == 132) {
                 String lan = LanguageUtils.getCurrentUp(mActivity).get(Constant.CODE_UP);
-                if (!lan.equals("ch_ch") && !lan.equals("jpa")&& ( ChangeOffline.getInstance().getSpeech(from,to))!=null) {
-                    ((SpeechType) ChangeOffline.getInstance().getSpeech(from,to)).up();
+                if (!lan.equals("ch_ch") && !lan.equals("jpa") && (ChangeOffline.getInstance().getSpeech(from, to)) != null) {
+                    ((SpeechType) ChangeOffline.getInstance().getSpeech(from, to)).up();
                 }
 
 
             } else if (key == 131) {
                 String lan = LanguageUtils.getCurrentDown(mActivity).get(Constant.CODE_DOWN);
-                if (!lan.equals("ch_ch") && !lan.equals("jpa")&& (ChangeOffline.getInstance().getSpeech(from,to))!=null) {
-                    ((SpeechType) ChangeOffline.getInstance().getSpeech(from,to)).up();
+                if (!lan.equals("ch_ch") && !lan.equals("jpa") && (ChangeOffline.getInstance().getSpeech(from, to)) != null) {
+                    ((SpeechType) ChangeOffline.getInstance().getSpeech(from, to)).up();
                 }
             }
         }
@@ -488,7 +486,7 @@ public class TranslateUtil implements MicArrayUtil.OnDealwithListener, SocketMan
             jsonObject.put("gps", CommonUtils.getGps(context));
             jsonObject.put("location", CommonUtils.getCountry(context));
             result = jsonObject.toString();
-            Log.e("TranslateUtil",result);
+            Log.e("TranslateUtil", result);
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -526,8 +524,6 @@ public class TranslateUtil implements MicArrayUtil.OnDealwithListener, SocketMan
 //    }
 
 
-
-
     /**
      * 在线成功回调
      *
@@ -549,11 +545,11 @@ public class TranslateUtil implements MicArrayUtil.OnDealwithListener, SocketMan
         }
 
 
-
     }
 
     /**
      * 在线结果赋值到界面上
+     *
      * @param flag
      * @param json
      */
@@ -567,7 +563,7 @@ public class TranslateUtil implements MicArrayUtil.OnDealwithListener, SocketMan
                 if (!TextUtils.isEmpty(text)) {
                     if (TextUtils.equals(id, String.valueOf(readnum))) {
                         //设置识别结果
-                        listener.setAsr(text,Constant.FLAG_ONLINE);
+                        listener.setAsr(text, Constant.FLAG_ONLINE);
                     }
 
                 } else {
@@ -590,10 +586,10 @@ public class TranslateUtil implements MicArrayUtil.OnDealwithListener, SocketMan
                         listener.setMt(text, Constant.FLAG_ONLINE);
 //                        Log.e("mttext",mttext);
                         //存入数据库
-                        insert(from_lan_code,to_lan_code,asrText,mttext,entext);
+                        insert(from_lan_code, to_lan_code, asrText, mttext, entext);
                     }
                 } else {
-                    if (!TextUtils.isEmpty(asrText)&&TextUtils.equals(id, String.valueOf(readnum))) {
+                    if (!TextUtils.isEmpty(asrText) && TextUtils.equals(id, String.valueOf(readnum))) {
                         TTSUtil.getInstance().notUnderstand(context, 4, Constant.isSound);
                     }
                     FileUtils.deleteCacheFile();
@@ -652,9 +648,6 @@ public class TranslateUtil implements MicArrayUtil.OnDealwithListener, SocketMan
     }
 
 
-
-
-
     /**
      * 服务器返回错误54中 包含的101/102/103/104
      *
@@ -685,71 +678,66 @@ public class TranslateUtil implements MicArrayUtil.OnDealwithListener, SocketMan
     /**
      * 统计（在线为主）
      */
-    private void statistics(){
+    private void statistics() {
         int key = 1303;
         String nkey = "translation_main9";
 
-        try{
+        try {
 
 
-            if(key_press==132){
-                key=1302;
+            if (key_press == 132) {
+                key = 1302;
                 nkey = "translation_main9";
                 /**####  start-hjs-addStatisticsEvent   ##**/
                 try {
                     HashMap<String, Serializable> add_hp = new HashMap<>();
-                    add_hp.put("original_language_up", ""+from_lan_code);
-                    add_hp.put("translation_language_up", ""+to_lan_code);
-                    add_hp.put("translation_status_up", ""+isSuccess);
-                    ((BaseActivity)context).addStatisticsEvent(nkey, add_hp);
-                }catch (Exception e){
+                    add_hp.put("original_language_up", "" + from_lan_code);
+                    add_hp.put("translation_language_up", "" + to_lan_code);
+                    add_hp.put("translation_status_up", "" + isSuccess);
+                    ((BaseActivity) context).addStatisticsEvent(nkey, add_hp);
+                } catch (Exception e) {
                     e.printStackTrace();
                 }
                 /**####  end-hjs-addStatisticsEvent  ##**/
-            }else{
-                key=1303;
+            } else {
+                key = 1303;
                 nkey = "translation_main10";
                 /**####  start-hjs-addStatisticsEvent   ##**/
                 try {
                     HashMap<String, Serializable> add_hp = new HashMap<>();
-                    add_hp.put("original_language_down", ""+from_lan_code);
-                    add_hp.put("translation_language_down", ""+to_lan_code);
-                    add_hp.put("translation_status_down", ""+isSuccess);
-                    ((BaseActivity)context).addStatisticsEvent(nkey, add_hp);
-                }catch (Exception e){
+                    add_hp.put("original_language_down", "" + from_lan_code);
+                    add_hp.put("translation_language_down", "" + to_lan_code);
+                    add_hp.put("translation_status_down", "" + isSuccess);
+                    ((BaseActivity) context).addStatisticsEvent(nkey, add_hp);
+                } catch (Exception e) {
                     e.printStackTrace();
                 }
             }
 
 
-
-        }catch(Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
 
     }
 
 
-
-
-
     //asr结果值
-    private String otherAsrResult="";
+    private String otherAsrResult = "";
     Timer offlineTimer;
 
-    private void setOfflineTimeout(long sj){
-        offlineTimer=new Timer();
-        TimerTask timerTask=new TimerTask() {
+    private void setOfflineTimeout(long sj) {
+        offlineTimer = new Timer();
+        TimerTask timerTask = new TimerTask() {
             @Override
             public void run() {
 //                L.e("UP_listener   end===================="+otherAsrResult);
-                BaseApplication.isTran=true;
+                BaseApplication.isTran = true;
 
             }
         };
-        offlineTimer.schedule(timerTask,sj);
+        offlineTimer.schedule(timerTask, sj);
     }
-
 
 
     //gs  asr 识别结果监听
@@ -774,12 +762,12 @@ public class TranslateUtil implements MicArrayUtil.OnDealwithListener, SocketMan
         public void onError(int i) {
 //            L.e("UP_listener onError:"+i);
             //准儿没有听懂
-            if (i==8||i==4) {
+            if (i == 8 || i == 4) {
                 ChangeOffline.getInstance().createAgain(LanguageUtils.getCurrentUp(BaseApplication.getContext()).get(Constant.CODE_UP));
             }
             isResultFirst++;
             if (otherAsrResult.equals("")) {
-                if (isResultFirst==1) {
+                if (isResultFirst == 1) {
                     if (BaseApplication.isIpsil.equals(currFrag)) {
                         TTSUtil.getInstance().notUnderstand(context, 1, Constant.isSound);
 
@@ -794,22 +782,22 @@ public class TranslateUtil implements MicArrayUtil.OnDealwithListener, SocketMan
         @Override
         public void onResult(final String s) {
 //            L.e("result===============");
-            otherAsrResult=s;
+            otherAsrResult = s;
             if (!TextUtils.isEmpty(s)) {
                 //设置识别结果
 
-                if (oldReadnum!=readnum) {
-                    BaseApplication.isTran=true;
+                if (oldReadnum != readnum) {
+                    BaseApplication.isTran = true;
                     return;
                 }
-                listener.setAsr(s,Constant.FLAG_OFFLINE);
+                listener.setAsr(s, Constant.FLAG_OFFLINE);
                 asrTextOffline = s;
 //                 L.e("BaseApplication.isIpsil========="+BaseApplication.isIpsil+"==========currFrag===="+currFrag);
                 //翻译
                 ThreadPoolManager.getInstance().addTask(new Runnable() {
                     @Override
                     public void run() {
-                        String mt = ChangeOffline.getInstance().getTran(from_lan_code,to_lan_code).tran(s, readnum);
+                        String mt = ChangeOffline.getInstance().getTran(from_lan_code, to_lan_code).tran(s, readnum);
                         final String res[] = mt.split("_");
 
                         if (!TextUtils.isEmpty(mt) && res.length == 2) {
@@ -820,10 +808,10 @@ public class TranslateUtil implements MicArrayUtil.OnDealwithListener, SocketMan
                                     public void run() {
                                         listener.setMt(res[0], Constant.FLAG_OFFLINE);
                                         //存入数据库
-                                        insert(from_lan_code,to_lan_code,asrTextOffline,res[0],"");
+                                        insert(from_lan_code, to_lan_code, asrTextOffline, res[0], "");
 //                                        L.e("to_lan_code");
 //                                        TTSUtil.playText(to_lan_code, res[0]);
-                                        BaseApplication.isTran=true;
+                                        BaseApplication.isTran = true;
                                         if (BaseApplication.isIpsil.equals(currFrag)) {
                                             TTSUtil.speekOffline(132, res[0], to_lan_code);
                                         }
@@ -839,7 +827,7 @@ public class TranslateUtil implements MicArrayUtil.OnDealwithListener, SocketMan
                             }
                             FileUtils.deleteCacheFile();
                             listener.reset();
-                            BaseApplication.isTran=true;
+                            BaseApplication.isTran = true;
                         }
 
 
@@ -853,7 +841,7 @@ public class TranslateUtil implements MicArrayUtil.OnDealwithListener, SocketMan
                     TTSUtil.getInstance().notUnderstand(context, 1, Constant.isSound);
                 }
                 listener.reset();
-                BaseApplication.isTran=true;
+                BaseApplication.isTran = true;
             }
 
         }
@@ -886,12 +874,12 @@ public class TranslateUtil implements MicArrayUtil.OnDealwithListener, SocketMan
         public void onError(int i) {
             //准儿没有听懂
 //            L.e("DOWN_listener onError:"+i);
-            if (i==8||i==4) {
+            if (i == 8 || i == 4) {
                 ChangeOffline.getInstance().createAgain(LanguageUtils.getCurrentDown(BaseApplication.getContext()).get(Constant.CODE_DOWN));
             }
             isResultFirst++;
             if (otherAsrResult.equals("")) {
-                if (isResultFirst==1) {
+                if (isResultFirst == 1) {
                     if (BaseApplication.isIpsil.equals(currFrag)) {
                         TTSUtil.getInstance().notUnderstand(context, 1, Constant.isSound);
                     }
@@ -905,21 +893,21 @@ public class TranslateUtil implements MicArrayUtil.OnDealwithListener, SocketMan
         @Override
         public void onResult(final String s) {
 //            L.e("result===============");
-            otherAsrResult=s;
+            otherAsrResult = s;
             if (!TextUtils.isEmpty(s)) {
                 //设置识别结果
-                if (oldReadnum!=readnum) {
-                    BaseApplication.isTran=true;
+                if (oldReadnum != readnum) {
+                    BaseApplication.isTran = true;
                     return;
                 }
 
-                listener.setAsr(s,Constant.FLAG_OFFLINE);
+                listener.setAsr(s, Constant.FLAG_OFFLINE);
                 asrTextOffline = s;
                 //翻译
                 ThreadPoolManager.getInstance().addTask(new Runnable() {
                     @Override
                     public void run() {
-                        String mt = ChangeOffline.getInstance().getTran(from_lan_code,to_lan_code).tran(s, readnum);
+                        String mt = ChangeOffline.getInstance().getTran(from_lan_code, to_lan_code).tran(s, readnum);
                         final String res[] = mt.split("_");
 
                         if (!TextUtils.isEmpty(mt) && res.length == 2) {
@@ -928,10 +916,10 @@ public class TranslateUtil implements MicArrayUtil.OnDealwithListener, SocketMan
                                 mActivity.runOnUiThread(new Runnable() {
                                     @Override
                                     public void run() {
-                                        if (oldReadnum==readnum) {
+                                        if (oldReadnum == readnum) {
                                             listener.setMt(res[0], Constant.FLAG_OFFLINE);
                                             //存入数据库
-                                            insert(from_lan_code,to_lan_code,asrTextOffline,res[0],"");
+                                            insert(from_lan_code, to_lan_code, asrTextOffline, res[0], "");
                                             L.e("to_lan_code");
 //                                        TTSUtil.playText(to_lan_code, res[0]);
                                             if (BaseApplication.isIpsil.equals(currFrag)) {
@@ -940,7 +928,7 @@ public class TranslateUtil implements MicArrayUtil.OnDealwithListener, SocketMan
 
                                         }
 
-                                        BaseApplication.isTran=true;
+                                        BaseApplication.isTran = true;
 
 
                                     }
@@ -950,10 +938,10 @@ public class TranslateUtil implements MicArrayUtil.OnDealwithListener, SocketMan
 
                         } else {
 
-                                TTSUtil.getInstance().notUnderstand(context, 4, Constant.isSound);
-                                FileUtils.deleteCacheFile();
-                                listener.reset();
-                                BaseApplication.isTran = true;
+                            TTSUtil.getInstance().notUnderstand(context, 4, Constant.isSound);
+                            FileUtils.deleteCacheFile();
+                            listener.reset();
+                            BaseApplication.isTran = true;
 
                         }
 
@@ -966,7 +954,7 @@ public class TranslateUtil implements MicArrayUtil.OnDealwithListener, SocketMan
                 //准儿没有听懂
                 TTSUtil.getInstance().notUnderstand(context, 1, Constant.isSound);
                 listener.reset();
-                BaseApplication.isTran=true;
+                BaseApplication.isTran = true;
             }
         }
 
@@ -991,18 +979,18 @@ public class TranslateUtil implements MicArrayUtil.OnDealwithListener, SocketMan
     /**
      * 插入记录到数据库
      */
-    private void insert(String from,String to,String asr,String mt,String en) {
+    private void insert(String from, String to, String asr, String mt, String en) {
 
-            boolean IsSave = SqlUtils.insertData("","" ,from ,to , asr, mt, en, "", System.currentTimeMillis());
+        boolean IsSave = SqlUtils.insertData("", "", from, to, asr, mt, en, "", System.currentTimeMillis());
 
-            if (IsSave) {
-                Log.e("News_db", "存储成功");
-            } else {
-                Log.e("News_db", "存储成功");
-            }
+        if (IsSave) {
+            Log.e("News_db", "存储成功");
+        } else {
+            Log.e("News_db", "存储成功");
         }
+    }
 
-    public void resetListener(){
+    public void resetListener() {
         SocketManger.getInstance().setOnReceiveListener(this);
     }
 
