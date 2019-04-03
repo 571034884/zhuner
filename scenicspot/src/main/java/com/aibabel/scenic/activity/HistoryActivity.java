@@ -135,6 +135,7 @@ public class HistoryActivity extends BaseScenicActivity implements ExpireBroadca
         tvLeft.setOnClickListener(this);
         tvStart.setOnClickListener(this);
         tvTitle.setText(R.string.title_history);
+        rlMusic.setOnClickListener(this);
         ExpireBroadcast.setStopMp3(this, Constants.key_history);
     }
 
@@ -319,6 +320,8 @@ public class HistoryActivity extends BaseScenicActivity implements ExpireBroadca
                 sendBroadcast(Constants.ACTION_CLOSE);
                 Intent intent = new Intent(getApplicationContext(), MusicService.class);
                 stopService(intent);// 关闭服务
+                break;
+            case R.id.rl_music:
                 break;
         }
 

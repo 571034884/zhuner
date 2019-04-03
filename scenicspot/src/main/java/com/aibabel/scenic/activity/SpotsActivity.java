@@ -138,6 +138,7 @@ public class SpotsActivity extends BaseScenicActivity implements ExpireBroadcast
         tvLeft.setOnClickListener(this);
         tvStart.setOnClickListener(this);
         ivScenic.setOnClickListener(this);
+        rlMusic.setOnClickListener(this);
         ExpireBroadcast.setStopMp3(this, Constants.key_spot);
     }
 
@@ -404,6 +405,8 @@ public class SpotsActivity extends BaseScenicActivity implements ExpireBroadcast
                 addStatisticsEvent("scenic_spots_list",maps);
 
                 sendBroadcast(Constants.ACTION_LIST_ITEM, 0);
+                break;
+            case R.id.rl_music:
                 break;
         }
     }
