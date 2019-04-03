@@ -45,6 +45,7 @@ import com.aibabel.translate.utils.ThreadPoolManager;
 import com.aibabel.translate.utils.ToastUtil;
 import com.aibabel.translate.view.AdaptionSizeTextView;
 
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Timer;
@@ -59,7 +60,8 @@ import butterknife.Unbinder;
  *
  * @Author：CreateBy 张文颖
  * @Date：2018/8/3
- * @Desc：异侧模式 ==========================================================================================
+ * @Desc：异侧模式
+ * @==========================================================================================
  */
 public class OppositeFragment extends BaseFragment implements OnResponseListener, ScreenBroadcastReceiver.ScreenListener, SensorEventListener {
 
@@ -164,7 +166,7 @@ public class OppositeFragment extends BaseFragment implements OnResponseListener
     private String code_up;
     private boolean isOnline;
     private String mtText;
-      private String asrtext;
+    private String asrtext;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -281,6 +283,8 @@ public class OppositeFragment extends BaseFragment implements OnResponseListener
                                         direction_down = 2;
                                         return;
                                     }
+                                    //对侧倾斜模式
+                                    activity.addStatisticsEvent("translation_main6", null);
                                     direction_down = 2;
                                     L.e("=======================" + 2 + "=========================");
                                     changeColor(2);
@@ -304,6 +308,8 @@ public class OppositeFragment extends BaseFragment implements OnResponseListener
                                         return;
                                     }
                                     L.e("=======================" + 4 + "=========================");
+                                    //对侧倾斜模式
+                                    activity.addStatisticsEvent("translation_main6", null);
                                     direction_up = 2;
                                     changeColor(2);
                                     AnimationUtils.start(rlUp, rlUp.getHeight(), llRoot.getHeight() * 0.5f, 100, null, null);
@@ -476,7 +482,7 @@ public class OppositeFragment extends BaseFragment implements OnResponseListener
      * @param event
      */
     public void onKeyUp(int keyCode, KeyEvent event) {
-        if (isTimeOut){
+        if (isTimeOut) {
             isRecording = false;
             return;
         }
@@ -683,7 +689,7 @@ public class OppositeFragment extends BaseFragment implements OnResponseListener
             case R.id.iv_up_sound:
                 playAudio();
                 break;
-              case R.id.tv_down_text:
+            case R.id.tv_down_text:
                 if (curr_press == DOWN_KEY) {
 //                    toEdit(code_from, code_to, asrtext);
                     return;
@@ -700,14 +706,6 @@ public class OppositeFragment extends BaseFragment implements OnResponseListener
                 }
 
             case R.id.iv_record:
-                /**####  start-hjs-addStatisticsEvent   ##**/
-                try {
-                    ((StatisticsBaseActivity)getActivity()).addStatisticsEvent("translation_main12", null);
-                }catch (Exception e){
-                    e.printStackTrace();
-                }
-                /**####  end-hjs-addStatisticsEvent  ##**/
-
                 toRecord();
                 break;
         }
@@ -717,13 +715,8 @@ public class OppositeFragment extends BaseFragment implements OnResponseListener
      * 播放翻译内容
      */
     private void playAudio() {
-        /**####  start-hjs-addStatisticsEvent   ##**/
-        try {
-            ((StatisticsBaseActivity)getActivity()).addStatisticsEvent("translation_main11", null);
-        }catch (Exception e){
-            e.printStackTrace();
-        }
-        /**####  end-hjs-addStatisticsEvent  ##**/
+        //统计重播
+        activity.addStatisticsEvent("translation_main11", null);
         if (isOnline) {
             MediaPlayerUtil.playMp3(SharePrefUtil.getString(context, "mp3_1", ""), context);
         } else {
@@ -742,6 +735,10 @@ public class OppositeFragment extends BaseFragment implements OnResponseListener
             return;
         BaseApplication.isIpsil = "Ipsil";
         Constant.isSound = false;
+        //统计跳转对面模式
+        HashMap<String, Serializable> map = new HashMap<>();
+        map.put("translation_same", "same");
+        activity.addStatisticsEvent("translation_main5", map);
         activity.showFragment(0);
     }
 
@@ -778,6 +775,8 @@ public class OppositeFragment extends BaseFragment implements OnResponseListener
             return;
         if (!BaseApplication.isTran)
             return;
+        //统计历史记录按钮
+        activity.addStatisticsEvent("translation_main12", null);
         Intent intent = new Intent();
         intent.setClass(context, RecordActivity.class);
         startActivity(intent);
@@ -957,14 +956,6 @@ public class OppositeFragment extends BaseFragment implements OnResponseListener
             if (!CommonUtils.isAvailable()) {
                 ChangeOffline.getInstance().createOrChange();
             }
-
-            /**####  start-hjs-addStatisticsEvent   ##**/
-            try {
-                ((StatisticsBaseActivity)getActivity()).addStatisticsEvent("translation_language3", null);
-            }catch (Exception e){
-                e.printStackTrace();
-            }
-            /**####  end-hjs-addStatisticsEvent  ##**/
 
         } else if (requestCode == 101 && resultCode == 201) {
             String mt = data.getStringExtra("mt");
@@ -1150,7 +1141,7 @@ public class OppositeFragment extends BaseFragment implements OnResponseListener
     /**
      * 获取当前是否正在录音
      */
-    public boolean getIsRecording(){
+    public boolean getIsRecording() {
 
         return isRecording;
     }

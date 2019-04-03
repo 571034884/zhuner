@@ -46,6 +46,7 @@ import com.aibabel.translate.utils.ThreadPoolManager;
 import com.aibabel.translate.utils.ToastUtil;
 import com.aibabel.translate.view.AdaptionSizeTextView;
 
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -655,6 +656,8 @@ public class IpsilateralFragment extends BaseFragment implements OnResponseListe
                     }
                 }
                 selectLan(DOWN_KEY, lan_do);
+                //统计选择语言下
+                activity.addStatisticsEvent("translation_main8", null);
                 break;
             case R.id.tv_up_lan:
                 if (!CommonUtils.isAvailable()) {
@@ -664,9 +667,10 @@ public class IpsilateralFragment extends BaseFragment implements OnResponseListe
                     }
                 }
                 selectLan(UP_KEY, lan_up);
+                //统计选择语言上
+                activity.addStatisticsEvent("translation_main7", null);
                 break;
             case R.id.iv_switch:
-
                 toOppos();
                 break;
             case R.id.iv_down_sound:
@@ -691,13 +695,6 @@ public class IpsilateralFragment extends BaseFragment implements OnResponseListe
 
                 break;
             case R.id.iv_record:
-                /**####  start-hjs-addStatisticsEvent   ##**/
-                try {
-                    ((StatisticsBaseActivity)getActivity()).addStatisticsEvent("translation_main12", null);
-                }catch (Exception e){
-                    e.printStackTrace();
-                }
-                /**####  end-hjs-addStatisticsEvent  ##**/
                 toRecord();
                 break;
 
@@ -709,13 +706,8 @@ public class IpsilateralFragment extends BaseFragment implements OnResponseListe
      * 播放翻译内容
      */
     private void playAudio() {
-        /**####  start-hjs-addStatisticsEvent   ##**/
-        try {
-            ((StatisticsBaseActivity)getActivity()).addStatisticsEvent("translation_main11", null);
-        }catch (Exception e){
-            e.printStackTrace();
-        }
-        /**####  end-hjs-addStatisticsEvent  ##**/
+        //统计重播
+        activity.addStatisticsEvent("translation_main11", null);
 
         if (isOnline) {
             MediaPlayerUtil.playMp3(SharePrefUtil.getString(context, "mp3_1", ""), context);
@@ -734,6 +726,10 @@ public class IpsilateralFragment extends BaseFragment implements OnResponseListe
             return;
         BaseApplication.isIpsil = "Oppos";
         Constant.isSound = false;
+        //统计跳转对面模式
+        HashMap<String,Serializable>  map = new HashMap<>();
+        map.put("translation_differ", "differ");
+        activity.addStatisticsEvent("translation_main5", map);
         activity.showFragment(1);
     }
 
@@ -746,6 +742,8 @@ public class IpsilateralFragment extends BaseFragment implements OnResponseListe
             return;
         if (!BaseApplication.isTran)
             return;
+        //统计历史记录按钮
+        activity.addStatisticsEvent("translation_main12", null);
         Intent intent = new Intent();
         intent.setClass(context, RecordActivity.class);
         startActivity(intent);
@@ -975,14 +973,6 @@ public class IpsilateralFragment extends BaseFragment implements OnResponseListe
                 netChanged();
                 ChangeOffline.getInstance().createOrChange();
             }
-            /**####  start-hjs-addStatisticsEvent   ##**/
-            try {
-                ((StatisticsBaseActivity)getActivity()).addStatisticsEvent("translation_language3", null);
-            }catch (Exception e){
-                e.printStackTrace();
-            }
-            /**####  end-hjs-addStatisticsEvent  ##**/
-
         } else if (requestCode == 101 && resultCode == 201) {//编辑修改页面返回设置参数
             String mt = data.getStringExtra("mt");
             String en = data.getStringExtra("en");
