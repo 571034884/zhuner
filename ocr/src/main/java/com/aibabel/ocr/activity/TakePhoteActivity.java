@@ -73,6 +73,7 @@ import com.xiaoqi.libjpegcompress.ImageUtils;
 
 import org.json.JSONObject;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -304,40 +305,16 @@ public class TakePhoteActivity extends BaseActivity implements CameraPreview.OnC
             public void onCheckedChanged(RadioGroup group, int checkedId) {
                 switch (checkedId) {
                     case R.id.rb_article:
-
-                        /**####  start-hjs-addStatisticsEvent   ##**/
-                        try {
-                            addStatisticsEvent("ocr_TakePhote3", null);
-                        }catch (Exception e){
-                            e.printStackTrace();
-                        }
-                        /**####  end-hjs-addStatisticsEvent  ##**/
                         tvHint.setVisibility(View.VISIBLE);
                         selectArticleOrMeau(1);
                         iv_camera.setClickable(true);
                         break;
                     case R.id.rb_menu:
-
-                        /**####  start-hjs-addStatisticsEvent   ##**/
-                        try {
-                            addStatisticsEvent("ocr_TakePhote2", null);
-                        }catch (Exception e){
-                            e.printStackTrace();
-                        }
-                        /**####  end-hjs-addStatisticsEvent  ##**/
                         tvHint.setVisibility(View.GONE);
                         selectArticleOrMeau(0);
                         iv_camera.setClickable(true);
                         break;
                     case R.id.rb_object:
-
-                        /**####  start-hjs-addStatisticsEvent   ##**/
-                        try {
-                            addStatisticsEvent("ocr_TakePhote1", null);
-                        }catch (Exception e){
-                            e.printStackTrace();
-                        }
-                        /**####  end-hjs-addStatisticsEvent  ##**/
                         tvHint.setVisibility(View.GONE);
                         selectArticleOrMeau(2);
                         iv_camera.setClickable(true);
@@ -466,6 +443,10 @@ public class TakePhoteActivity extends BaseActivity implements CameraPreview.OnC
                     dialog.dismiss();
                     return;
                 }
+                // TODO: 2019/4/3 统计涂抹
+                HashMap<String, Serializable> map = new HashMap<>();
+                map.put("ocr_smear", type);
+                addStatisticsEvent("ocr_TakePhoto12", null);
 
 //                String bitmap = PictureUtil.bitmapToString(PictureUtil.cropDaubed(rectF, BitmapFactory.decodeFile(pathName)));
                 final String path = PictureUtil.cropDaubed(rectF, bitmapData, fangxiang);
@@ -544,6 +525,10 @@ public class TakePhoteActivity extends BaseActivity implements CameraPreview.OnC
         if (mCameraPreview != null) {
             mCameraPreview.takePicture();
             fv_focus.setVisibility(View.GONE);
+            // TODO: 2019/4/3  添加拍照统计
+            HashMap<String, Serializable> map = new HashMap<>();
+            map.put("ocr_take", type);
+            addStatisticsEvent("ocr_TakePhoto8", map);
         }
     }
 
@@ -597,84 +582,42 @@ public class TakePhoteActivity extends BaseActivity implements CameraPreview.OnC
 //                changeLanguage();
 //                break;
             case R.id.tv_back://返回涂抹界面
-                if (rg_tag != 2){
+                if (rg_tag != 2) {
                     showGuaguaka();
-                }else{
-                    reset();
-                }
-                /**####  start-hjs-addStatisticsEvent   ##**/
-                try {
-                    String aidlmsg ="ocr_TakePhote12";
-                    if(type == Constant.TYPE_MENU){//菜单
-                        aidlmsg ="ocr_menu7";
-                    }else if(type == Constant.TYPE_ARTICAL){//文
-                        aidlmsg ="ocr_menu22";
-                    }else if(type == Constant.TYPE_OBJECT){//物体
-                        aidlmsg ="ocr_TakePhote12";
-                    }
-                    addStatisticsEvent(aidlmsg, null);
-                }catch (Exception e){
-                    e.printStackTrace();
-                }
-                /**####  end-hjs-addStatisticsEvent  ##**/
+                    // TODO: 2019/4/3  添加返回识别界面统计
+                    HashMap<String, Serializable> map = new HashMap<>();
+                    map.put("ocr_backAsr", type);
+                    addStatisticsEvent("ocr_TakePhoto13", map);
 
+                } else {
+                    reset();
+                    // TODO: 2019/4/3  添加返回拍照界面统计
+                    HashMap<String, Serializable> map = new HashMap<>();
+                    map.put("ocr_backTake", type);
+                    addStatisticsEvent("ocr_TakePhoto14", map);
+                }
                 break;
             case R.id.tv_close://返回涂抹界面
-
-                /**####  start-hjs-addStatisticsEvent   ##**/
-                try {
-                    String aidlmsg ="ocr_TakePhote14";
-                    if(type == Constant.TYPE_MENU){//菜单
-                        aidlmsg ="ocr_menu9";
-                    }else if(type == Constant.TYPE_ARTICAL){//文
-                        aidlmsg ="ocr_main1";
-                    }else if(type == Constant.TYPE_OBJECT){//物体
-                        aidlmsg ="ocr_TakePhote14";
-                    }
-                    addStatisticsEvent(aidlmsg, null);
-                }catch (Exception e){
-                    e.printStackTrace();
-                }
-                /**####  end-hjs-addStatisticsEvent  ##**/
                 finish();
                 break;
             case R.id.iv_recamera://重新拍照
                 isTaken = false;
-
-                /**####  start-hjs-addStatisticsEvent   ##**/
-                try {
-                    String aidlmsg ="ocr_TakePhote10";
-                    if(type == Constant.TYPE_MENU){
-                        aidlmsg ="ocr_menu10";
-                    }else if(type == Constant.TYPE_ARTICAL){
-                        aidlmsg ="ocr_menu20";
-                    }else if(type == Constant.TYPE_OBJECT){
-                        aidlmsg ="ocr_TakePhote10";
-                    }
-                    addStatisticsEvent(aidlmsg, null);
-                }catch (Exception e){
-                    e.printStackTrace();
-                }
-                /**####  end-hjs-addStatisticsEvent  ##**/
+                // TODO: 2019/4/3  添加重拍统计
+                HashMap<String, Serializable> map = new HashMap<>();
+                map.put("ocr_reTake", type);
+                addStatisticsEvent("ocr_TakePhoto10", map);
                 reset();
                 break;
             case R.id.iv_camera://拍照
                 isTaken = true;
                 iv_camera.setClickable(false);
                 takePhoto();
-                /**####  start-hjs-addStatisticsEvent   ##**/
-                try {
-                    addStatisticsEvent("ocr_TakePhote8", null);
-                }catch (Exception e){
-                    e.printStackTrace();
-                }
-                /**####  end-hjs-addStatisticsEvent  ##**/
                 break;
             case R.id.rb_object:
                 /**####  start-hjs-addStatisticsEvent   ##**/
                 try {
-                    addStatisticsEvent("ocr_TakePhote1", null);
-                }catch (Exception e){
+                    addStatisticsEvent("ocr_TakePhoto1", null);
+                } catch (Exception e) {
                     e.printStackTrace();
                 }
                 /**####  end-hjs-addStatisticsEvent  ##**/
@@ -683,8 +626,8 @@ public class TakePhoteActivity extends BaseActivity implements CameraPreview.OnC
             case R.id.rb_menu:
                 /**####  start-hjs-addStatisticsEvent   ##**/
                 try {
-                    addStatisticsEvent("ocr_TakePhote2", null);
-                }catch (Exception e){
+                    addStatisticsEvent("ocr_TakePhoto2", null);
+                } catch (Exception e) {
                     e.printStackTrace();
                 }
                 /**####  end-hjs-addStatisticsEvent  ##**/
@@ -693,8 +636,8 @@ public class TakePhoteActivity extends BaseActivity implements CameraPreview.OnC
             case R.id.rb_article:
                 /**####  start-hjs-addStatisticsEvent   ##**/
                 try {
-                    addStatisticsEvent("ocr_TakePhote3", null);
-                }catch (Exception e){
+                    addStatisticsEvent("ocr_TakePhoto3", null);
+                } catch (Exception e) {
                     e.printStackTrace();
                 }
                 /**####  end-hjs-addStatisticsEvent  ##**/
@@ -702,35 +645,16 @@ public class TakePhoteActivity extends BaseActivity implements CameraPreview.OnC
                 break;
             case R.id.iv_translation://识别翻译确定
 
-                /**####  start-hjs-addStatisticsEvent   ##**/
-                try {
-                    String aidlmsg ="ocr_TakePhote11";
-                    if(type == Constant.TYPE_MENU){//菜单
-                        aidlmsg ="ocr_menu6";
-                    }else if(type == Constant.TYPE_ARTICAL){//文
-                        aidlmsg ="ocr_menu21";
-                    }else if(type == Constant.TYPE_OBJECT){//物体
-                        aidlmsg ="ocr_TakePhote11";
-                    }
-                    addStatisticsEvent(aidlmsg, null);
-                }catch (Exception e){
-                    e.printStackTrace();
-                }
-                /**####  end-hjs-addStatisticsEvent  ##**/
+                // TODO: 2019/4/3  识别翻译确定
+                HashMap<String, Serializable> map_commit = new HashMap<>();
+                map_commit.put("ocr_commit", type);
+                addStatisticsEvent("ocr_TakePhoto11", map_commit);
                 if (CommonUtils.isFastClick()) {
                     dialog.show();
                     getData(true, pathName, 0f, 0f);
                 }
                 break;
             case R.id.tv_light://开启关闭闪光灯
-
-                /**####  start-hjs-addStatisticsEvent   ##**/
-                try {
-                    addStatisticsEvent("ocr_TakePhote4", null);
-                }catch (Exception e){
-                    e.printStackTrace();
-                }
-                /**####  end-hjs-addStatisticsEvent  ##**/
                 setFlashMode();
                 break;
             default:
@@ -742,6 +666,8 @@ public class TakePhoteActivity extends BaseActivity implements CameraPreview.OnC
      * 开启关闭闪光灯
      */
     private void setFlashMode() {
+        // TODO: 2019/4/3  添加闪光灯统计
+        HashMap<String, Serializable> map_commit = new HashMap<>();
         if (isOpenFlashMode) {
             isOpenFlashMode = false;
             tv_light.setBackground(getDrawable(R.mipmap.ic_flashclose));
@@ -749,6 +675,10 @@ public class TakePhoteActivity extends BaseActivity implements CameraPreview.OnC
             isOpenFlashMode = true;
             tv_light.setBackground(getDrawable(R.mipmap.ic_flashlight));
         }
+
+        map_commit.put("ocr_flash", isOpenFlashMode);
+        addStatisticsEvent("ocr_TakePhoto4", map_commit);
+
         mCameraPreview.setIsOpenFlashMode(isOpenFlashMode);
     }
 
@@ -787,6 +717,11 @@ public class TakePhoteActivity extends BaseActivity implements CameraPreview.OnC
      * @param type
      */
     private void selectLanguage(int type) {
+
+        // TODO: 2019/4/3  语言选择
+        HashMap<String, Serializable> map_commit = new HashMap<>();
+        map_commit.put("ocr_lang", this.type);
+        addStatisticsEvent("TakePhoto7", map_commit);
         if (type == 1) {
             Intent intent = new Intent(this, SelectLanguageActivity.class);
             intent.putExtra("type", type);
@@ -805,7 +740,6 @@ public class TakePhoteActivity extends BaseActivity implements CameraPreview.OnC
         if (resultCode == 200) {
             String or_code = SharePrefUtil.getString(this, Constant.LAN_OR_CODE, "en");
             if (TextUtils.equals(or_code, "jpa")) {
-
                 ShowHVDialog();
             } else {
                 rl_hv.setVisibility(View.GONE);
@@ -836,7 +770,7 @@ public class TakePhoteActivity extends BaseActivity implements CameraPreview.OnC
                 /**####  start-hjs-addStatisticsEvent   ##**/
                 try {
                     addStatisticsEvent("ocr_menu", null);
-                }catch (Exception e){
+                } catch (Exception e) {
                     e.printStackTrace();
                 }
                 /**####  end-hjs-addStatisticsEvent  ##**/
@@ -856,7 +790,7 @@ public class TakePhoteActivity extends BaseActivity implements CameraPreview.OnC
                 /**####  start-hjs-addStatisticsEvent   ##**/
                 try {
                     addStatisticsEvent("ocr_menu1", null);
-                }catch (Exception e){
+                } catch (Exception e) {
                     e.printStackTrace();
                 }
                 /**####  end-hjs-addStatisticsEvent  ##**/
@@ -956,13 +890,6 @@ public class TakePhoteActivity extends BaseActivity implements CameraPreview.OnC
                             toObject(response.body(), downX, downY);
                         }
 
-                        /**####  start-hjs-addStatisticsEvent   ##**/
-                        try {
-                            addStatisticsEvent("ocr_TakePhote15", null);
-                        }catch (Exception e){
-                            e.printStackTrace();
-                        }
-                        /**####  end-hjs-addStatisticsEvent  ##**/
                     }
 
                     @Override
@@ -1127,6 +1054,9 @@ public class TakePhoteActivity extends BaseActivity implements CameraPreview.OnC
      * @param downY
      */
     private void toMenu(String response, float downX, float downY) {
+
+        // TODO: 2019/4/3 统计物体识别结果
+        addStatisticsEvent("ocr_TakePhoto9", null);
         ResponseBean bean = null;
         try {
             bean = FastJsonUtil.changeJsonToBean(response, ResponseBean.class);
@@ -1200,7 +1130,6 @@ public class TakePhoteActivity extends BaseActivity implements CameraPreview.OnC
     }
 
 
-
     /**
      * 跳转到物体识别
      *
@@ -1212,6 +1141,10 @@ public class TakePhoteActivity extends BaseActivity implements CameraPreview.OnC
         rl_confirm.setVisibility(View.GONE);//此处为临时办法
         mCameraPreview.stop();
         dialog.cancle();
+
+        // TODO: 2019/4/3 统计物体识别结果
+        addStatisticsEvent("ocr_TakePhoto15", null);
+
         ObjectResponseBean bean = FastJsonUtil.changeJsonToBean(response, ObjectResponseBean.class);
         if (null != bean.getData() && bean.getData().size() > 0) {
             tv_back.setVisibility(View.VISIBLE);

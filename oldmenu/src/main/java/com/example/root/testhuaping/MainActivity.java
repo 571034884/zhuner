@@ -497,10 +497,18 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
 
         @Override
         public void onSoftSIMStateChange(SoftSIMInfo info) {
-            mSoftSIMInfo = info;
-            DataManager.getInstance().setSaveString("softSimType", mSoftSIMInfo.getType().toString());
-            Log.e("LK---001", "存储LK标识" + mSoftSIMInfo.getType().toString());
-            mHandler.sendMessage(mHandler.obtainMessage(10000, mSoftSIMInfo));
+            try {
+                mSoftSIMInfo = info;
+                if (info != null && !TextUtils.isEmpty(mSoftSIMInfo.getType().toString())){
+                    DataManager.getInstance().setSaveString("softSimType", mSoftSIMInfo.getType().toString());
+                    Log.e("LK---001", "存储LK标识" + mSoftSIMInfo.getType().toString());
+                    mHandler.sendMessage(mHandler.obtainMessage(10000, mSoftSIMInfo));
+                }else{
+                    saveFile(false);
+                }
+            }catch (Exception e){
+                e.printStackTrace();
+            }
         }
     };
 

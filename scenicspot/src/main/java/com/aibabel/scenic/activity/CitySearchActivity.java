@@ -281,6 +281,7 @@ public class CitySearchActivity extends BaseScenicActivity{
                 if (TextUtils.isEmpty(strThree)){
                     SharePrefUtil.saveString(mContext,"citySearchNameThree",name+","+type+","+ids);
                 }else{
+                    addStatisticsEvent("scenic_search_clear_history",null);
                     SharePrefUtil.saveString(mContext,"citySearchNameThree",strTwo);
                     SharePrefUtil.saveString(mContext,"citySearchNameTwo",strOne);
                     SharePrefUtil.saveString(mContext,"citySearchNameOne",name+","+type+","+ids);
@@ -327,6 +328,11 @@ public class CitySearchActivity extends BaseScenicActivity{
         String sr2 = sr[1];
         String sr3 = sr[2];
         Logs.e(str);
+        try{
+            HashMap<String, Serializable> map = new HashMap<>();
+            map.put("scenic_search_near_name",sr1);
+            addStatisticsEvent("scenic_search_near",map);
+        }catch (Exception e){}
         Intent intent;
         switch (sr2){
             case "2":

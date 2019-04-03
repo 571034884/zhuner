@@ -104,6 +104,7 @@ public class DialogActivity extends StatisticsBaseActivity implements View.OnCli
         ButterKnife.bind(this);
         init();
 
+        addStatisticsEvent("map_poi5",null);
     }
 
 
@@ -203,6 +204,7 @@ public class DialogActivity extends StatisticsBaseActivity implements View.OnCli
         switch (v.getId()) {
             case R.id.iv_close:
 
+                addStatisticsEvent("map_poi6",null);
                 finish();
                 //加动画避免闪屏
                 overridePendingTransition(R.anim.dialog_enter, R.anim.dialog_exit);
@@ -243,6 +245,9 @@ public class DialogActivity extends StatisticsBaseActivity implements View.OnCli
      * 跳转到路线规划中
      */
     private void toRoute() {
+
+
+
         //TODO 跳转到路线规划中
         Intent intent = new Intent(this, RouteLineActivity.class);
         RouteBean bean = new RouteBean();

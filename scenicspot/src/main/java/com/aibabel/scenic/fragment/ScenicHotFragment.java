@@ -125,7 +125,7 @@ public class ScenicHotFragment extends BaseFragment implements BaseQuickAdapter.
                 try{
                     HashMap<String, Serializable> map = new HashMap<>();
                     map.put("scenic_list_btn_hot_collect_id",position);
-                    map.put("scenic_list_btn_hot_collect_name",list.get(position).getCityname());
+                    map.put("scenic_list_btn_hot_collect_name",list.get(position).getName());
                     ((ScenicActivity)getActivity()).addStatisticsEvent("scenic_list_btn_hot_collect",map);
                 }catch (Exception e){}
 
