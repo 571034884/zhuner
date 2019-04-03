@@ -104,7 +104,7 @@ public class ScenicCollectFragment extends BaseFragment implements BaseQuickAdap
             try {
                 HashMap<String, Serializable> map = new HashMap<>();
                 map.put("scenic_list_btn_collect_des_id", position);
-                map.put("scenic_list_btn_collect_des_name", list.get(position).getCityname());
+                map.put("scenic_list_btn_collect_des_name", list.get(position).getName());
                 ((ScenicActivity) getActivity()).addStatisticsEvent("scenic_list_btn_collect_des", map);
             }catch (Exception e){}
             Intent intent = new Intent();

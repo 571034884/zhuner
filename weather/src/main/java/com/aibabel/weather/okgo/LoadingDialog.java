@@ -33,7 +33,7 @@ public class LoadingDialog extends Dialog {
         mLoadingProgress.setCanceledOnTouchOutside(false);
 
         mLoadingProgress.setTitle("");
-        mLoadingProgress.setContentView(R.layout.loading_layout);
+        mLoadingProgress.setContentView(R.layout.load_layout);
         mLoadingProgress.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
         if (message == null || TextUtils.isEmpty(message)) {
             mLoadingProgress.findViewById(R.id.loading_tv).setVisibility(View.GONE);
@@ -55,7 +55,7 @@ public class LoadingDialog extends Dialog {
         mLoadingProgress.setCanceledOnTouchOutside(false);
 
         mLoadingProgress.setTitle("");
-        mLoadingProgress.setContentView(R.layout.loading_layout);
+        mLoadingProgress.setContentView(R.layout.load_layout);
         mLoadingProgress.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
 
         mLoadingProgress.findViewById(R.id.loading_tv).setVisibility(View.GONE);
@@ -73,7 +73,7 @@ public class LoadingDialog extends Dialog {
         mLoadingProgress.setCanceledOnTouchOutside(false);
 
         mLoadingProgress.setTitle("");
-        mLoadingProgress.setContentView(R.layout.loading_layout);
+        mLoadingProgress.setContentView(R.layout.load_layout);
         mLoadingProgress.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
 
         mLoadingProgress.findViewById(R.id.loading_tv).setVisibility(View.GONE);

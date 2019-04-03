@@ -146,4 +146,18 @@ public class SearchResultFragment extends BaseFragment implements BaseCallback<F
     public void requestAgain() {
         getSearchResult(currentInput, Constant.CURRENT_CITY, 1, SearchActivity.pageSize);
     }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        /**####  start-hjs-addStatisticsEvent   ##**/
+        try {
+            ((StatisticsBaseActivity)getActivity()).addStatisticsEvent("food_Search8", null);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        /**####  end-hjs-addStatisticsEvent  ##**/
+
+
+    }
 }

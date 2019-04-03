@@ -112,13 +112,6 @@ public class SearchActivity extends BaseActivity implements View.OnClickListener
             @Override
             public void onItemClick(AdapterView<?> parent, View view,
                                     int position, long id) {
-                //todo 选择城市后处理
-                try{
-                    HashMap<String, Serializable> map = new HashMap<>();
-                    map.put("popular_list_click_id","List");
-                    addStatisticsEvent("popular_list_c",map);
-                }catch (Exception e){}
-
                 finish();
             }
         });
@@ -163,7 +156,7 @@ public class SearchActivity extends BaseActivity implements View.OnClickListener
         }
 
     }
-
+    CityListBean cityListBeans;
 
     /**
      * 请求城市列表
@@ -177,7 +170,7 @@ public class SearchActivity extends BaseActivity implements View.OnClickListener
                 @Override
                 public void onSuccess(String s, CityListBean cityListBean, String s1) {
                     L.e("bindMenuData  onsuccess================" + cityListBean.toString());
-
+                    cityListBeans = cityListBean;
                     Collections.sort(cityListBean.getData().getPopularAddr(), new PinyinComparator());
                     View view = LayoutInflater.from(getApplicationContext()).inflate(R.layout.list_group_item, searchCity, false);
 
@@ -293,9 +286,12 @@ public class SearchActivity extends BaseActivity implements View.OnClickListener
         searchCity.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                try{
+                    HashMap<String, Serializable> map = new HashMap<>();
+                    map.put("popular_list_click_id",list.get(i).getCityChj()+"");
+                    addStatisticsEvent("popular_list_c",map);
+                }catch (Exception e){}
                 Intent intent = new Intent();
-
-
                 intent.putExtra("city_id", list.get(i).getCityId());
                 intent.putExtra("country_id", list.get(i).getCountryId());
                 intent.putExtra("city_name", list.get(i).getCityChj());
@@ -314,7 +310,7 @@ public class SearchActivity extends BaseActivity implements View.OnClickListener
                 if (mIndexer != null) {
                     try{
                         HashMap<String, Serializable> map = new HashMap<>();
-                        map.put("popular_list_click_id","List");
+                        map.put("popular_list_click_id",s+"");
                         addStatisticsEvent("index_slide",map);
                     }catch (Exception e){}
 
@@ -367,7 +363,7 @@ public class SearchActivity extends BaseActivity implements View.OnClickListener
 
                 try{
                     HashMap<String, Serializable> map = new HashMap<>();
-                    map.put("popular_click_id",view.getTag()+"");
+                    map.put("popular_click_id",list.get(position).getCityChj()+"");
                     addStatisticsEvent("popular_click",map);
                 }catch (Exception e){}
 
