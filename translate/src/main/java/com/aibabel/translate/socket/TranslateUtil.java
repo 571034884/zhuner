@@ -716,6 +716,7 @@ public class TranslateUtil implements MicArrayUtil.OnDealwithListener, SocketMan
                     add_hp.put("original_language_down", "" + from_lan_code);
                     add_hp.put("translation_language_down", "" + to_lan_code);
                     add_hp.put("translation_status_down", "" + isSuccess);
+                    add_hp.put("translation_status_over", "" + timer);
                     ((BaseActivity) context).addStatisticsEvent(nkey, add_hp);
                 } catch (Exception e) {
                     e.printStackTrace();
