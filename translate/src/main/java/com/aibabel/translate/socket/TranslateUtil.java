@@ -46,8 +46,8 @@ import java.util.TimerTask;
 
 public class TranslateUtil implements MicArrayUtil.OnDealwithListener, SocketManger.OnReceiveListener {
 
-    public int readnum = (int)System.currentTimeMillis();
-    public int oldReadnum = (int)System.currentTimeMillis();
+    public int readnum = 0;
+    public int oldReadnum = 0;
     private Context context;
     private MicArrayUtil util;
     private OnResponseListener listener;
@@ -162,6 +162,8 @@ public class TranslateUtil implements MicArrayUtil.OnDealwithListener, SocketMan
         otherAsrResult = "";
         if (offlineTimer != null)
             offlineTimer.cancel();
+
+        readnum = StringUtils.long2Int();
         sendStartFlag(from, to, readnum, key_);
 
 

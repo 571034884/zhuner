@@ -56,7 +56,6 @@ public class StringUtils {
 
 
     /**
-     *
      * @param text
      * @return
      */
@@ -71,6 +70,22 @@ public class StringUtils {
             e.printStackTrace();
         }
         return result;
+    }
+
+    /**
+     * long去掉4位转int
+     * @return
+     */
+    public static int long2Int() {
+
+        String str = String.valueOf(System.currentTimeMillis());
+        String r_str = str.substring(4);
+
+        int res = Integer.parseInt(r_str);
+
+        return res;
+
+
     }
 
 
