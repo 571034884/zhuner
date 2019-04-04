@@ -27,6 +27,7 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.github.chrisbanes.photoview.PhotoView;
 import com.lzy.okgo.model.Response;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -215,7 +216,9 @@ public class DetailsActivity extends BaseActivity implements BaseCallback<BaseBe
 
                         /**####  start-hjs-addStatisticsEvent   ##**/
                         try {
-                            addStatisticsEvent("coupon_Details4", null);
+                            HashMap<String,Serializable> map = new HashMap<>();
+                            map.put("title",shopBeanData.getTitle());
+                            addStatisticsEvent("coupon_Details4", map);
                         }catch (Exception e){
                             e.printStackTrace();
                         }
