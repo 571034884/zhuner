@@ -128,4 +128,9 @@ public class MenuThreeFragment extends BaseFragment implements View.OnClickListe
         super.onDestroyView();
         unbinder.unbind();
     }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+    }
 }

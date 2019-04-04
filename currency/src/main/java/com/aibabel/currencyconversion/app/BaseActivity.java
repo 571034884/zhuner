@@ -94,6 +94,7 @@ public abstract class BaseActivity extends com.aibabel.baselibrary.base.BaseActi
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         switch (keyCode){
             case 133:
+                case 134:
                 MyApplication.exit();
                 break;
         }
