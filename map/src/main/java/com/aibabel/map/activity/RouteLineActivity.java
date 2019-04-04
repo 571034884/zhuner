@@ -66,6 +66,9 @@ public class RouteLineActivity extends MapBaseActivity {
 
     @Override
     public void initMap() {
+
+        addStatisticsEvent("map_route_open",null);
+
         fragmentManager = getSupportFragmentManager();
         //接收参数
         initDataBean();
@@ -87,9 +90,23 @@ public class RouteLineActivity extends MapBaseActivity {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
                int pos = tab.getPosition();
+
+               switch (pos){
+                   case 0:
+                       addStatisticsEvent("map_route_drive",null);
+                       break;
+                   case 1:
+                       addStatisticsEvent("map_route_transit",null);
+                       break;
+                   case 2:
+                       addStatisticsEvent("map_route_walk",null);
+                       break;
+               }
+
                routeBean.setIndex(pos);
                routeBean.setMode(BaiDuUtil.getModeType(pos));
                switchFragment(pos);
+
             }
 
             @Override
@@ -274,6 +291,8 @@ public class RouteLineActivity extends MapBaseActivity {
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.iv_return://退出页面
+
+                addStatisticsEvent("map_route_close",null);
                 this.finish();
                 break;
             case R.id.iv_change://切换
@@ -281,6 +300,8 @@ public class RouteLineActivity extends MapBaseActivity {
                     ToastUtil.showShort(mContext,"请检查网络连接");
                     return;
                 }
+
+                addStatisticsEvent("map_route_change",null);
                 changeStartEnd();
                 break;
             case R.id.tv_start://搜索起点
@@ -289,6 +310,7 @@ public class RouteLineActivity extends MapBaseActivity {
                     ToastUtil.showShort(mContext,"请检查网络连接");
                     return;
                 }
+                addStatisticsEvent("map_route_start_route",null);
                 skipSearchAty(mTextStart.getText().toString(), "0");
                 break;
             case R.id.tv_end://搜索终点
@@ -297,6 +319,8 @@ public class RouteLineActivity extends MapBaseActivity {
                     ToastUtil.showShort(mContext,"请检查网络连接");
                     return;
                 }
+
+                addStatisticsEvent("map_route_end_route",null);
                 skipSearchAty(mTextEnd.getText().toString(), "1");
                 break;
         }
@@ -354,17 +378,6 @@ public class RouteLineActivity extends MapBaseActivity {
                 routeBean.setEndLoc(new LocationBean(address.getLocation().getLat(), address.getLocation().getLng()));
                 mTextEnd.setText(routeBean.getEndName());
             }
-
-            /**####  start-hjs-addStatisticsEvent   ##**/
-            try {
-                HashMap<String, Serializable> add_hp = new HashMap<>();
-                add_hp.put("map_search_letter11",routeBean.getStartName()+routeBean.getEndName() );
-                addStatisticsEvent("path_plan_car1", add_hp);
-            }catch (Exception e){
-                e.printStackTrace();
-            }
-            /**####  end-hjs-addStatisticsEvent  ##**/
-
             changeDataFragment();
         }
     }

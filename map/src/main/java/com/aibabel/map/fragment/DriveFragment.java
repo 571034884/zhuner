@@ -31,6 +31,7 @@ import com.aibabel.baselibrary.http.OkGoUtil;
 import com.aibabel.baselibrary.utils.FastJsonUtil;
 import com.aibabel.baselibrary.utils.ToastUtil;
 import com.aibabel.map.R;
+import com.aibabel.map.activity.RouteLineActivity;
 import com.aibabel.map.activity.TrafficDetailActivity;
 import com.aibabel.map.adapter.MyGridAdapter;
 import com.aibabel.map.bean.LocationBean;
@@ -145,14 +146,6 @@ public class DriveFragment extends BaseFragment implements SensorEventListener ,
         //地图初始化
         initBaiDuOption();
         initListener();
-
-        /**####  start-hjs-addStatisticsEvent   ##**/
-        try {
-            ((StatisticsBaseActivity)getActivity()).addStatisticsEvent("path_plan_route", null);
-        }catch (Exception e){
-            e.printStackTrace();
-        }
-        /**####  end-hjs-addStatisticsEvent  ##**/
     }
 
     private void initListener() {
@@ -256,15 +249,6 @@ public class DriveFragment extends BaseFragment implements SensorEventListener ,
             public void onSuccess(String s, BaseBean baseBean, String s1) {
                 index = 0;
                 trafficType(s1);
-                /**####  start-hjs-addStatisticsEvent   ##**/
-                try {
-                    HashMap<String, Serializable> add_hp = new HashMap<>();
-                    add_hp.put("map_search_letter13", routeBean.getLocationWhere());
-                    ((StatisticsBaseActivity)getActivity()).addStatisticsEvent("path_plan_route1", add_hp);
-                }catch (Exception e){
-                    e.printStackTrace();
-                }
-                /**####  end-hjs-addStatisticsEvent  ##**/
             }
 
             @Override
@@ -549,7 +533,7 @@ public class DriveFragment extends BaseFragment implements SensorEventListener ,
                     ToastUtil.showShort(mContext,"请检查网络连接");
                     return;
                 }
-
+                ((RouteLineActivity)getActivity()).addStatisticsEvent("map_route_detail_open",null);
                 if (routeBean.getLocationWhere() ==1){
                     if (driveZhBean.getData().getResult().getRoutes().size() == 0){
                         ToastUtil.showShort(mContext,"路线过短，请修改起点或终点");
@@ -561,14 +545,6 @@ public class DriveFragment extends BaseFragment implements SensorEventListener ,
                         return;
                     }
                 }
-
-                /**####  start-hjs-addStatisticsEvent   ##**/
-                try {
-                    ((StatisticsBaseActivity)getActivity()).addStatisticsEvent("path_plan_route2", null);
-                }catch (Exception e){
-                    e.printStackTrace();
-                }
-                /**####  end-hjs-addStatisticsEvent  ##**/
 
                 Intent intent = new Intent(mContext, TrafficDetailActivity.class);
                 if (routeBean.getLocationWhere() == 1) {
