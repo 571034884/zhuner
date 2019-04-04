@@ -130,6 +130,9 @@ public class SearchAddressActivity extends MapBaseActivity implements SensorEven
 
     @Override
     public void initMap() {
+
+        addStatisticsEvent("map_searchaddress_open",null);
+
         initBaiDuOption();
         //监听EditText
         newAdapterEt();
@@ -222,15 +225,9 @@ public class SearchAddressActivity extends MapBaseActivity implements SensorEven
                 }
                 showMarkerPoi(addressResult.getLocation().getLat(), addressResult.getLocation().getLng());
 
-                /**####  start-hjs-addStatisticsEvent   ##**/
-                try {
-                    HashMap<String, Serializable> add_hp = new HashMap<>();
-                    add_hp.put("map_search_letter1", addressResult.getName());
-                    addStatisticsEvent("map_search5", add_hp);
-                }catch (Exception e){
-                    e.printStackTrace();
-                }
-                /**####  end-hjs-addStatisticsEvent  ##**/
+                HashMap<String, Serializable> add_hp = new HashMap<>();
+                add_hp.put("map_searchaddress_list_name", addressResult.getName());
+                addStatisticsEvent("map_searchaddress_list", add_hp);
 
                 tvName.setText(addressResult.getName());
                 flagSearch = true;
@@ -444,13 +441,8 @@ public class SearchAddressActivity extends MapBaseActivity implements SensorEven
         switch (view.getId()) {
             case R.id.iv_close:
 
-                /**####  start-hjs-addStatisticsEvent   ##**/
-                try {
-                    addStatisticsEvent("map_search1", null);
-                }catch (Exception e){
-                    e.printStackTrace();
-                }
-                /**####  end-hjs-addStatisticsEvent  ##**/
+
+                addStatisticsEvent("map_searchaddress_close",null);
 
                 this.finish();
                 overridePendingTransition(R.anim.fade_out, R.anim.fade_in);
@@ -464,17 +456,9 @@ public class SearchAddressActivity extends MapBaseActivity implements SensorEven
                 }
                 KeyBords.closeKeybord(etSearch, mContext);
                 searchOkGo(loca);
-
-
-                /**####  start-hjs-addStatisticsEvent   ##**/
-                try {
-                    HashMap<String, Serializable> add_hp = new HashMap<>();
-                    add_hp.put("map_search3_key", loca);
-                    addStatisticsEvent("map_search3", add_hp);
-                }catch (Exception e){
-                    e.printStackTrace();
-                }
-                /**####  end-hjs-addStatisticsEvent  ##**/
+                HashMap<String, Serializable> add_hp = new HashMap<>();
+                add_hp.put("map_searchaddress_search_name", loca);
+                addStatisticsEvent("map_searchaddress_search", add_hp);
 
                 break;
             case R.id.et_search:
@@ -513,17 +497,9 @@ public class SearchAddressActivity extends MapBaseActivity implements SensorEven
                 intent.putExtra("routes", routeBean);
                 startActivity(intent);
 
-                /**####  start-hjs-addStatisticsEvent   ##**/
-                try {
-                    HashMap<String, Serializable> add_hp = new HashMap<>();
-                    add_hp.put("map_search_letter2", addressResult.getName());
-                    addStatisticsEvent("map_search6", add_hp);
-                }catch (Exception e){
-                    e.printStackTrace();
-                }
-                /**####  end-hjs-addStatisticsEvent  ##**/
-
-//                finish();
+                HashMap<String, Serializable> add = new HashMap<>();
+                add.put("map_searchaddress_go_mdd", addressResult.getName());
+                addStatisticsEvent("map_searchaddress_go", add);
                 break;
             case R.id.tv_maker:
                 if (!CommonUtils.isNetworkAvailable(SearchAddressActivity.this)){
@@ -545,13 +521,7 @@ public class SearchAddressActivity extends MapBaseActivity implements SensorEven
                 break;
             case R.id.iv_clear_et:
 
-                /**####  start-hjs-addStatisticsEvent   ##**/
-                try {
-                    addStatisticsEvent("map_search4", null);
-                }catch (Exception e){
-                    e.printStackTrace();
-                }
-                /**####  end-hjs-addStatisticsEvent  ##**/
+                addStatisticsEvent("map_searchaddress_search_clear", null);
 
                 etSearch.setText("");
                 //数据库操作
@@ -634,6 +604,10 @@ public class SearchAddressActivity extends MapBaseActivity implements SensorEven
                 PoiAddressResult poiAddressResult = FastJsonUtil.changeJsonToBean(s1, PoiAddressResult.class);
                 if (poiAddressResult.getData() != null) {
                     addressResult = poiAddressResult.getData();
+
+                    HashMap<String, Serializable> add = new HashMap<>();
+                    add.put("map_searchaddress_map_click_name", addressResult.getName());
+                    addStatisticsEvent("map_searchaddress_map_click",add);
                     showMarkerPoi(addressResult.getLocation().getLat(), addressResult.getLocation().getLng());
                     tvName.setText(addressResult.getName());
                     tvAddress.setText(addressResult.getAddr());

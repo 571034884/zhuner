@@ -104,7 +104,7 @@ public class DialogActivity extends StatisticsBaseActivity implements View.OnCli
         ButterKnife.bind(this);
         init();
 
-        addStatisticsEvent("map_poi5",null);
+        addStatisticsEvent("map_dialog_open",null);
     }
 
 
@@ -204,7 +204,7 @@ public class DialogActivity extends StatisticsBaseActivity implements View.OnCli
         switch (v.getId()) {
             case R.id.iv_close:
 
-                addStatisticsEvent("map_poi6",null);
+                addStatisticsEvent("map_dialog_close",null);
                 finish();
                 //加动画避免闪屏
                 overridePendingTransition(R.anim.dialog_enter, R.anim.dialog_exit);
@@ -215,6 +215,7 @@ public class DialogActivity extends StatisticsBaseActivity implements View.OnCli
                     ToastUtil.showShort(mContext,"请检查网络连接");
                     return;
                 }
+                addStatisticsEvent("map_dialog_play",null);
                 play();
                 break;
             case R.id.tv_more:
@@ -266,15 +267,10 @@ public class DialogActivity extends StatisticsBaseActivity implements View.OnCli
         bean.setCoord_type(coord_type);
         bean.setLocationWhere(locationWhere);
 
-        /**####  start-hjs-addStatisticsEvent   ##**/
-        try {
-            HashMap<String, Serializable> add_hp = new HashMap<>();
-            add_hp.put("map_search_letter3", ""+bean.getStartName()+bean.getEndName());
-            addStatisticsEvent("map_poi7", add_hp);
-        }catch (Exception e){
-            e.printStackTrace();
-        }
-        /**####  end-hjs-addStatisticsEvent  ##**/
+        HashMap<String, Serializable> add_hp = new HashMap<>();
+        add_hp.put("map_dialog_route_startname", ""+bean.getStartName());
+        add_hp.put("map_dialog_route_endname", ""+bean.getEndName());
+        addStatisticsEvent("map_dialog_route", add_hp);
 
         intent.putExtra("routes", bean);
         startActivity(intent);
@@ -356,7 +352,9 @@ public class DialogActivity extends StatisticsBaseActivity implements View.OnCli
                 break;
         }
 
-
+        HashMap<String, Serializable> add_hp = new HashMap<>();
+        add_hp.put("map_dialog_skip_type", data.getTagType());
+        addStatisticsEvent("map_dialog_skip", add_hp);
     }
 
 
@@ -387,15 +385,6 @@ public class DialogActivity extends StatisticsBaseActivity implements View.OnCli
             intent.putExtra("routes", bean);
             startActivity(intent);
 
-            /**####  start-hjs-addStatisticsEvent   ##**/
-            try {
-                HashMap<String, Serializable> add_hp = new HashMap<>();
-                add_hp.put("map_search_letter5", locationWhere + "");
-                addStatisticsEvent("map_poi9", add_hp);
-            }catch (Exception e){
-                e.printStackTrace();
-            }
-            /**####  end-hjs-addStatisticsEvent  ##**/
             this.finish();
         }
 
@@ -415,17 +404,6 @@ public class DialogActivity extends StatisticsBaseActivity implements View.OnCli
             intent.putExtra("id", destinationId + "");
             intent.putExtra("from", "map");
             startActivity(intent);
-
-            /**####  start-hjs-addStatisticsEvent   ##**/
-            try {
-                HashMap<String, Serializable> add_hp = new HashMap<>();
-                add_hp.put("map_search_letter6", destinationId + "");
-                addStatisticsEvent("map_poi10", add_hp);
-            }catch (Exception e){
-                e.printStackTrace();
-            }
-            /**####  end-hjs-addStatisticsEvent  ##**/
-
             this.finish();
         }
 
@@ -443,17 +421,6 @@ public class DialogActivity extends StatisticsBaseActivity implements View.OnCli
         Intent intent = getPackageManager().getLaunchIntentForPackage("com.aibabel.coupon");
         intent.putExtra("from", "map");
         startActivity(intent);
-
-        /**####  start-hjs-addStatisticsEvent   ##**/
-        try {
-            HashMap<String, Serializable> add_hp = new HashMap<>();
-            add_hp.put("map_search_letter4", "map");
-            addStatisticsEvent("map_poi8", add_hp);
-        }catch (Exception e){
-            e.printStackTrace();
-        }
-        /**####  end-hjs-addStatisticsEvent  ##**/
-
         this.finish();
 //        }
 

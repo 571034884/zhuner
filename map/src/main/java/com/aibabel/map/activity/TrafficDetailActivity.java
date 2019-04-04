@@ -380,13 +380,8 @@ public class TrafficDetailActivity extends BaseActivity{
     public void onClick(View view){
         switch (view.getId()){
             case R.id.tv_close:
-                /**####  start-hjs-addStatisticsEvent   ##**/
-                try {
-                    addStatisticsEvent("path_plan_car3", null);
-                }catch (Exception e){
-                    e.printStackTrace();
-                }
-                /**####  end-hjs-addStatisticsEvent  ##**/
+                addStatisticsEvent("map_route_detail_close",null);
+
                 finish();
                 break;
             case R.id.rl_scheme_one:
@@ -395,6 +390,7 @@ public class TrafficDetailActivity extends BaseActivity{
                     return;
                 }
 
+                addStatisticsEvent("map_route_detail_one",null);
                 index = 0;
                 defaultView(index);
                 break;
@@ -404,6 +400,7 @@ public class TrafficDetailActivity extends BaseActivity{
                     return;
                 }
 
+                addStatisticsEvent("map_route_detail_two",null);
                 index = 1;
                 defaultView(index);
                 break;
@@ -413,6 +410,7 @@ public class TrafficDetailActivity extends BaseActivity{
                     return;
                 }
 
+                addStatisticsEvent("map_route_detail_three",null);
                 index = 2;
                 defaultView(index);
                 break;

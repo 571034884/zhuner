@@ -313,34 +313,12 @@ public class RouteActivity extends BaseActivity implements SensorEventListener {
                 break;
             case R.id.tv_device:
                 defaultSetting(BaiDuConstant.DRIVING_MODE);
-
-                /**####  start-hjs-addStatisticsEvent   ##**/
-                try {
-                    addStatisticsEvent("path_plan10", null);
-                }catch (Exception e){
-                    e.printStackTrace();
-                }
-                /**####  end-hjs-addStatisticsEvent  ##**/
                 break;
             case R.id.tv_transit:
                 defaultSetting(BaiDuConstant.TRANSIT_MODE);
-                /**####  start-hjs-addStatisticsEvent   ##**/
-                try {
-                    addStatisticsEvent("path_plan11", null);
-                }catch (Exception e){
-                    e.printStackTrace();
-                }
-                /**####  end-hjs-addStatisticsEvent  ##**/
                 break;
             case R.id.tv_walk:
                 defaultSetting(BaiDuConstant.WALKING_MODE);
-                /**####  start-hjs-addStatisticsEvent   ##**/
-                try {
-                    addStatisticsEvent("path_plan12", null);
-                }catch (Exception e){
-                    e.printStackTrace();
-                }
-                /**####  end-hjs-addStatisticsEvent  ##**/
                 break;
             case R.id.rl_scheme_one:
                 defaultView(0);
@@ -584,7 +562,7 @@ public class RouteActivity extends BaseActivity implements SensorEventListener {
                 //隐藏or显示
                 rlDeviceWalk.setVisibility(View.VISIBLE);
                 rlTransit.setVisibility(View.GONE);
-
+                addStatisticsEvent("path_plan10", null);
                 break;
             case BaiDuConstant.TRANSIT_MODE:
                 tvTransit.setTextColor(res.getColor(R.color.c_ff));
@@ -592,6 +570,7 @@ public class RouteActivity extends BaseActivity implements SensorEventListener {
                 tvTransit.setBackgroundResource(R.drawable.tv_routetype_bg);
                 rlDeviceWalk.setVisibility(View.GONE);
                 rlTransit.setVisibility(View.VISIBLE);
+                addStatisticsEvent("path_plan11", null);
                 break;
             case BaiDuConstant.WALKING_MODE:
                 tvWalk.setTextColor(res.getColor(R.color.c_ff));
@@ -599,6 +578,7 @@ public class RouteActivity extends BaseActivity implements SensorEventListener {
                 tvWalk.setBackgroundResource(R.drawable.tv_routetype_bg);
                 rlDeviceWalk.setVisibility(View.VISIBLE);
                 rlTransit.setVisibility(View.GONE);
+                addStatisticsEvent("path_plan12", null);
                 break;
         }
 
