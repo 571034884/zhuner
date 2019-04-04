@@ -305,7 +305,6 @@ public class MainActivity extends MapBaseActivity implements SensorEventListener
                     addStatisticsEvent("map_main_search_shop", add_hp);
                 }else{
                     clear();
-
                     HashMap<String, Serializable> add_hp = new HashMap<>();
                     add_hp.put("map_main_search_shop_type", tag);
                     add_hp.put("map_main_search_shop_load", "取消");
