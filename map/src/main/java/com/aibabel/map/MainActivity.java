@@ -139,7 +139,7 @@ public class MainActivity extends MapBaseActivity implements SensorEventListener
         // TODO: 2019/3/25
         /**####  start-hjs-addStatisticsEvent ##**/
         try {
-            addStatisticsEvent("map_main", null);
+            addStatisticsEvent("map_app_open", null);
         }catch (Exception e){
             e.printStackTrace();
         }
@@ -190,17 +190,17 @@ public class MainActivity extends MapBaseActivity implements SensorEventListener
                     mScenic.setChecked(false);
                     mShop.setChecked(false);
                     getPoi(mCate);
-                    /**####  start-hjs-addStatisticsEvent   ##**/
-                    try {
-                        HashMap<String, Serializable> add_hp = new HashMap<>();
-                        add_hp.put("map_search_letter", "美食");
-                        addStatisticsEvent("map_search7", add_hp);
-                    }catch (Exception e){
-                        e.printStackTrace();
-                    }
-                    /**####  end-hjs-addStatisticsEvent  ##**/
+                    HashMap<String, Serializable> add_hp = new HashMap<>();
+                    add_hp.put("map_main_search_cate_type", tag);
+                    add_hp.put("map_main_search_cate_load", "加载");
+                    addStatisticsEvent("map_main_search_cate", add_hp);
                 }else{
                     clear();
+
+                    HashMap<String, Serializable> add_hp = new HashMap<>();
+                    add_hp.put("map_main_search_cate_type", tag);
+                    add_hp.put("map_main_search_cate_load", "取消");
+                    addStatisticsEvent("map_main_search_cate", add_hp);
                 }
             }
         });
@@ -227,15 +227,17 @@ public class MainActivity extends MapBaseActivity implements SensorEventListener
                     mScenic.setChecked(false);
                     mShop.setChecked(false);
                     getPoi(mMetro);
-                    /**####  start-hjs-addStatisticsEvent   ##**/
-                    try {
-                        addStatisticsEvent("map_search8", null);
-                    }catch (Exception e){
-                        e.printStackTrace();
-                    }
-                    /**####  end-hjs-addStatisticsEvent  ##**/
+                    HashMap<String, Serializable> add_hp = new HashMap<>();
+                    add_hp.put("map_main_search_metro_type", tag);
+                    add_hp.put("map_main_search_metro_load", "加载");
+                    addStatisticsEvent("map_main_search_metro", add_hp);
                 }else{
                     clear();
+
+                    HashMap<String, Serializable> add_hp = new HashMap<>();
+                    add_hp.put("map_main_search_metro_type", tag);
+                    add_hp.put("map_main_search_metro_load", "取消");
+                    addStatisticsEvent("map_main_search_metro", add_hp);
                 }
             }
         });
@@ -262,15 +264,17 @@ public class MainActivity extends MapBaseActivity implements SensorEventListener
                     mMetro.setChecked(false);
                     mShop.setChecked(false);
                     getPoi(mScenic);
-                    /**####  start-hjs-addStatisticsEvent   ##**/
-                    try {
-                        addStatisticsEvent("map_searchA", null);
-                    }catch (Exception e){
-                        e.printStackTrace();
-                    }
-                    /**####  end-hjs-addStatisticsEvent  ##**/
+                    HashMap<String, Serializable> add_hp = new HashMap<>();
+                    add_hp.put("map_main_search_scenic_type", tag);
+                    add_hp.put("map_main_search_scenic_load", "加载");
+                    addStatisticsEvent("map_search_scenic", add_hp);
                 }else{
                     clear();
+
+                    HashMap<String, Serializable> add_hp = new HashMap<>();
+                    add_hp.put("map_main_search_scenic_type", tag);
+                    add_hp.put("map_main_search_scenic_load", "取消");
+                    addStatisticsEvent("map_main_search_scenic", add_hp);
                 }
             }
         });
@@ -296,21 +300,23 @@ public class MainActivity extends MapBaseActivity implements SensorEventListener
                     mMetro.setChecked(false);
                     mScenic.setChecked(false);
                     getPoi(mShop);
-                    /**####  start-hjs-addStatisticsEvent   ##**/
-                    try {
-                        addStatisticsEvent("map_search9", null);
-                    }catch (Exception e){
-                        e.printStackTrace();
-                    }
-                    /**####  end-hjs-addStatisticsEvent  ##**/
+                    HashMap<String, Serializable> add_hp = new HashMap<>();
+                    add_hp.put("map_main_search_shop_type", tag);
+                    add_hp.put("map_main_search_shop_load", "加载");
+                    addStatisticsEvent("map_main_search_shop", add_hp);
                 }else{
                     clear();
+                    HashMap<String, Serializable> add_hp = new HashMap<>();
+                    add_hp.put("map_main_search_shop_type", tag);
+                    add_hp.put("map_main_search_shop_load", "取消");
+                    addStatisticsEvent("map_main_search_shop", add_hp);
                 }
             }
         });
         mCloseApp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                addStatisticsEvent("map_app_close", null);
                 BaseApplication.exit();
             }
         });
@@ -480,14 +486,8 @@ public class MainActivity extends MapBaseActivity implements SensorEventListener
                     ToastUtil.showShort(mContext,"请检查网络连接");
                     return;
                 }
-                /**####  start-hjs-addStatisticsEvent   ##**/
-                try {
-                    addStatisticsEvent("map_poi3", null);
-                }catch (Exception e){
-                    e.printStackTrace();
-                }
-                /**####  end-hjs-addStatisticsEvent  ##**/
 
+                addStatisticsEvent("map_main_location", null);
                 updateLocation();
                 break;
             case R.id.tv_search:
@@ -502,7 +502,7 @@ public class MainActivity extends MapBaseActivity implements SensorEventListener
 
                 /**####  start-hjs-addStatisticsEvent   ##**/
                 try {
-                    addStatisticsEvent("map_search", null);
+                    addStatisticsEvent("map_main_search", null);
                 }catch (Exception e){
                     e.printStackTrace();
                 }
@@ -538,7 +538,7 @@ public class MainActivity extends MapBaseActivity implements SensorEventListener
 
                     /**####  start-hjs-addStatisticsEvent   ##**/
                     try {
-                        addStatisticsEvent("map_poi4", null);
+                        addStatisticsEvent("map_main_active", null);
                     }catch (Exception e){
                         e.printStackTrace();
                     }
@@ -568,21 +568,6 @@ public class MainActivity extends MapBaseActivity implements SensorEventListener
         MapStatus.Builder builder = new MapStatus.Builder();
         builder.target(ll).zoom(14.5f);
         mBaiduMap.animateMapStatus(MapStatusUpdateFactory.newMapStatus(builder.build()));
-
-
-        /**####  start-hjs-addStatisticsEvent   ##**/
-        try {
-            addStatisticsEvent("map_display1", null);
-        }catch (Exception e){
-            e.printStackTrace();
-        }
-
-        try {
-            addStatisticsEvent("map_poi3", null);
-        }catch (Exception e){
-            e.printStackTrace();
-        }
-        /**####  end-hjs-addStatisticsEvent  ##**/
 
         //以下是定位类型
 //        switch (mCurrentMode) {
@@ -793,7 +778,7 @@ public class MainActivity extends MapBaseActivity implements SensorEventListener
         vpInfo.setCurrentItem(id);
         /**####  start-hjs-addStatisticsEvent   ##**/
         try {
-            addStatisticsEvent("map_poi1", null);
+            addStatisticsEvent("map_main_poi_marker", null);
         }catch (Exception e){
             e.printStackTrace();
         }
@@ -865,6 +850,13 @@ public class MainActivity extends MapBaseActivity implements SensorEventListener
     public void onItemClick(BusinessBean.DataBean item, View view) {
 
         if(!CommonUtils.isFastClick())return;
+
+
+        HashMap<String, Serializable> map = new HashMap<>();
+        map.put("map_main_card_click_name",item.getNameCh());
+        map.put("map_main_card_click_type",item.getTagType());
+        addStatisticsEvent("map_main_card_click", map);
+
         if (TextUtils.equals(item.getTagType(), "metro")) {
             // TODO: 2018/12/10
             Intent intent = new Intent(this, RouteLineActivity.class);
@@ -886,7 +878,6 @@ public class MainActivity extends MapBaseActivity implements SensorEventListener
             intent.putExtra("routes", bean);
             startActivity(intent);
         } else {
-
             Intent intent = new Intent(this, DialogActivity.class);
             intent.putExtra("data", item);
             intent.putExtra("mCurrentLat", mLocation.getLatitude());
@@ -896,13 +887,6 @@ public class MainActivity extends MapBaseActivity implements SensorEventListener
             intent.putExtra("city", mLocation.getAddress().city);
             startActivity(intent);
         }
-        /**####  start-hjs-addStatisticsEvent   ##**/
-        try {
-            addStatisticsEvent("map_poi2", null);
-        }catch (Exception e){
-            e.printStackTrace();
-        }
-        /**####  end-hjs-addStatisticsEvent  ##**/
     }
 
     @Override

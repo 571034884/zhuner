@@ -25,6 +25,7 @@ import com.aibabel.baselibrary.http.OkGoUtil;
 import com.aibabel.baselibrary.utils.FastJsonUtil;
 import com.aibabel.baselibrary.utils.ToastUtil;
 import com.aibabel.map.R;
+import com.aibabel.map.activity.RouteLineActivity;
 import com.aibabel.map.activity.TransitRouteActivity;
 import com.aibabel.map.adapter.TransitAdapter;
 import com.aibabel.map.bean.RouteBean;
@@ -143,6 +144,8 @@ public class TransitFragment extends BaseFragment implements View.OnClickListene
                         intent.putExtra("route", enRoute);
                         break;
                 }
+
+                ((RouteLineActivity)getActivity()).addStatisticsEvent("map_route_transit",null);
 
                 intent.putExtra("locationWhere", routeBean.getLocationWhere());
                 intent.putExtra("index", position);
@@ -356,16 +359,6 @@ public class TransitFragment extends BaseFragment implements View.OnClickListene
                     lvTransit.setVisibility(View.GONE);
                     iconShow(101010);
                 }
-
-                /**####  start-hjs-addStatisticsEvent   ##**/
-                try {
-                    HashMap<String, Serializable> add_hp = new HashMap<>();
-                    add_hp.put("map_search_letter12", routeBean.getLocationWhere());
-                    ((StatisticsBaseActivity)getActivity()).addStatisticsEvent("path_plan_bus1", add_hp);
-                }catch (Exception e){
-                    e.printStackTrace();
-                }
-                /**####  end-hjs-addStatisticsEvent  ##**/
                 break;
             case 1://国内
                 tZhBean = FastJsonUtil.changeJsonToBean(json, TransitZhBean.class);
@@ -385,16 +378,6 @@ public class TransitFragment extends BaseFragment implements View.OnClickListene
                     lvTransit.setVisibility(View.GONE);
                     iconShow(101010);
                 }
-
-                /**####  start-hjs-addStatisticsEvent   ##**/
-                try {
-                    HashMap<String, Serializable> add_hp = new HashMap<>();
-                    add_hp.put("map_search_letter12", routeBean.getLocationWhere());
-                    ((StatisticsBaseActivity)getActivity()).addStatisticsEvent("path_plan_bus1", add_hp);
-                }catch (Exception e){
-                    e.printStackTrace();
-                }
-                /**####  end-hjs-addStatisticsEvent  ##**/
                 break;
         }
     }
@@ -411,13 +394,10 @@ public class TransitFragment extends BaseFragment implements View.OnClickListene
                     routeView.setVisibility(View.VISIBLE);
                     routeView.setAnimation(animation);
                 }
-                /**####  start-hjs-addStatisticsEvent   ##**/
-                try {
-                    ((StatisticsBaseActivity)getActivity()).addStatisticsEvent("path_plan_bus2", null);
-                }catch (Exception e){
-                    e.printStackTrace();
-                }
-                /**####  end-hjs-addStatisticsEvent  ##**/
+
+                ((RouteLineActivity)getActivity()).addStatisticsEvent("map_route_transit_timer",null);
+
+
                 break;
         }
     }

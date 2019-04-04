@@ -309,7 +309,7 @@ public class ReceiveActivity extends BaseActivity implements BaseCallback<BaseBe
                         /**####  start-hjs-addStatisticsEvent   ##**/
                         try {
                             HashMap<String, Serializable> add_hp = new HashMap<>();
-                            add_hp.put("coupon_receive3_def", "优惠券详情");
+                            add_hp.put("coupon_receive3_def", couponBeanData.get(position).getCouponData().getTitle());
                             addStatisticsEvent("coupon_receive3", add_hp);
                         }catch (Exception e){
                             e.printStackTrace();

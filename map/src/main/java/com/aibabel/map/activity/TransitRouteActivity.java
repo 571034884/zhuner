@@ -98,6 +98,8 @@ public class TransitRouteActivity extends BaseActivity{
         mBaiduMap = mapView.getMap();
         initView();
 
+        addStatisticsEvent("map_transit_open",null);
+
         locationWhere = getIntent().getIntExtra("locationWhere",0);//国内外类型
         index = getIntent().getIntExtra("index",0);//第几条数据类型
         startName = getIntent().getStringExtra("startName");//起点
@@ -155,13 +157,8 @@ public class TransitRouteActivity extends BaseActivity{
     }
 
     private void showTranistLine(int position) {
-        /**####  start-hjs-addStatisticsEvent   ##**/
-        try {
-           addStatisticsEvent("path_plan_bus5", null);
-        }catch (Exception e){
-            e.printStackTrace();
-        }
-        /**####  end-hjs-addStatisticsEvent  ##**/
+
+        addStatisticsEvent("map_transit_change",null);
 
         mBaiduMap.clear();
         switch (locationWhere){
@@ -214,6 +211,8 @@ public class TransitRouteActivity extends BaseActivity{
         ivClose.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+                addStatisticsEvent("map_transit_close",null);
                 TransitRouteActivity.this.finish();
             }
         });
@@ -240,35 +239,6 @@ public class TransitRouteActivity extends BaseActivity{
         public void onScrollFinished(ScrollLayout.Status currentStatus) {
             if (currentStatus.equals(ScrollLayout.Status.EXIT)) {
                 vpDetails.setVisibility(View.VISIBLE);
-            }
-
-            if (currentStatus.equals(ScrollLayout.Status.OPENED)) {
-                /**####  start-hjs-addStatisticsEvent   ##**/
-                try {
-                    addStatisticsEvent("path_plan_bus7", null);
-                }catch (Exception e){
-                    e.printStackTrace();
-                }
-                /**####  end-hjs-addStatisticsEvent  ##**/
-            }else if(currentStatus.equals(ScrollLayout.Status.CLOSED)) {
-
-                /**####  start-hjs-addStatisticsEvent   ##**/
-                try {
-                    addStatisticsEvent("path_plan_bus8", null);
-                }catch (Exception e){
-                    e.printStackTrace();
-                }
-                /**####  end-hjs-addStatisticsEvent  ##**/
-
-            }else if(currentStatus.equals(ScrollLayout.Status.EXIT)) {
-
-                /**####  start-hjs-addStatisticsEvent   ##**/
-                try {
-                    addStatisticsEvent("path_plan_bus6", null);
-                }catch (Exception e){
-                    e.printStackTrace();
-                }
-                /**####  end-hjs-addStatisticsEvent  ##**/
             }
         }
 

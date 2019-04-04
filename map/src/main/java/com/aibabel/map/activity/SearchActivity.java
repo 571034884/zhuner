@@ -71,6 +71,8 @@ public class SearchActivity extends BaseActivity{
 
     @Override
     public void init() {
+
+        addStatisticsEvent("map_search_open",null);
         String value = getIntent().getStringExtra("value");
         type = getIntent().getStringExtra("type");
         city = getIntent().getStringExtra("city");
@@ -128,6 +130,8 @@ public class SearchActivity extends BaseActivity{
                     addressResult.save();
                     addressResult.getLocation().save();
                 }
+
+
                 Intent intent = new Intent();
                 intent.putExtra("type",type);
                 intent.putExtra("address",addressResult);
@@ -135,20 +139,11 @@ public class SearchActivity extends BaseActivity{
                 SearchActivity.this.finish();
                 overridePendingTransition(R.anim.fade_out,R.anim.fade_in);
 
-                /**####  start-hjs-addStatisticsEvent   ##**/
-                try {
-                    HashMap<String, Serializable> add_hp = new HashMap<>();
-                    if((!TextUtils.isEmpty(type))&&type.equals("0")) {
-                        add_hp.put("map_search_letter8", resultList.get(0).getAddr());
-                        addStatisticsEvent("path_plan4", add_hp);
-                    }else {
-                        add_hp.put("map_search_letter10", resultList.get(0).getAddr());
-                        addStatisticsEvent("path_plan8", add_hp);
-                    }
-                }catch (Exception e){
-                    e.printStackTrace();
-                }
-                /**####  end-hjs-addStatisticsEvent  ##**/
+
+                HashMap<String, Serializable> add_hp = new HashMap<>();
+                add_hp.put("map_search_list_click_name",addressResult.getName());
+                addStatisticsEvent("map_search_list_click", add_hp);
+
             }
         });
 
@@ -203,6 +198,9 @@ public class SearchActivity extends BaseActivity{
                     }
                     return;
                 }
+                HashMap<String, Serializable> add_hp = new HashMap<>();
+                add_hp.put("map_search_keyword_name",cs.toString());
+                addStatisticsEvent("map_search_keyword", add_hp);
                 searchOkGo(cs.toString());
             }
         });
@@ -211,6 +209,7 @@ public class SearchActivity extends BaseActivity{
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.iv_return:
+                addStatisticsEvent("map_search_close",null);
                 this.finish();
                 overridePendingTransition(R.anim.fade_out, R.anim.fade_in);
                 KeyBords.closeKeybord(etLoca,mContext);
@@ -221,6 +220,9 @@ public class SearchActivity extends BaseActivity{
                     ToastUtil.showShort(mContext,"请输入位置信息");
                     return;
                 }
+                HashMap<String, Serializable> add_hp = new HashMap<>();
+                add_hp.put("map_search_keyword_name",loca);
+                addStatisticsEvent("map_search_keyword", add_hp);
                 searchOkGo(loca);
                 break;
         }
@@ -272,21 +274,6 @@ public class SearchActivity extends BaseActivity{
         addressAdapter = new SearchAddressAdapter(mContext,resultList);
         lvItemDes.setAdapter(addressAdapter);
         addressAdapter.notifyDataSetChanged();
-
-        /**####  start-hjs-addStatisticsEvent   ##**/
-        try {
-            HashMap<String, Serializable> add_hp = new HashMap<>();
-            if((!TextUtils.isEmpty(type))&&type.equals("0")) {
-                add_hp.put("map_search_letter7", resultList.get(0).getAddr());
-                addStatisticsEvent("path_plan3", add_hp);
-            }else{
-                add_hp.put("map_search_letter9", resultList.get(0).getAddr());
-                addStatisticsEvent("path_plan7", add_hp);
-            }
-        }catch (Exception e){
-            e.printStackTrace();
-        }
-        /**####  end-hjs-addStatisticsEvent  ##**/
     }
     @Override
     protected void onDestroy() {
