@@ -183,50 +183,6 @@ public class MenuActivity extends BaseActivity implements View.OnClickListener {
         menuViewpager.setAdapter(new FragmentPagerAdapter(getSupportFragmentManager()) {
             @Override
             public Fragment getItem(int position) {
-                switch (position){
-                    case 0:
-                        if (indexFlag != position){
-                            try{
-                                HashMap<String, Serializable> map = new HashMap<>();
-                                map.put("menu_right_left_page","88");
-                                addStatisticsEvent("menu_right_left",map);
-                            }catch (Exception e){}
-                        }
-                        indexFlag =0;
-                        break;
-                    case 1:
-                        if (indexFlag > position){
-                            try{
-                                HashMap<String, Serializable> map = new HashMap<>();
-                                map.put("menu_right_left_page","88");
-                                addStatisticsEvent("menu_right_left",map);
-                            }catch (Exception e){}
-                        }else{
-                            try{
-                                HashMap<String, Serializable> map = new HashMap<>();
-                                map.put("menu_left_right_page","88");
-                                addStatisticsEvent("menu_left_right",map);
-                            }catch (Exception e){}
-                        }
-                        break;
-                    case 2:
-
-                        if (indexFlag > position){
-                            try{
-                                HashMap<String, Serializable> map = new HashMap<>();
-                                map.put("menu_right_left_page","88");
-                                addStatisticsEvent("menu_right_left",map);
-                            }catch (Exception e){}
-                        }else{
-                            try{
-                                HashMap<String, Serializable> map = new HashMap<>();
-                                map.put("menu_left_right_page","88");
-                                addStatisticsEvent("menu_left_right",map);
-                            }catch (Exception e){}
-                        }
-
-                        break;
-                }
                 indexFlag =position;
                 return datas.get(position);
             }

@@ -1318,7 +1318,6 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         }
 
         oldCity = bean.getData().getCityNameCn();
-        addStatisticsEvent("mdd_up",null);
     }
 
 
