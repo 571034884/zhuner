@@ -247,7 +247,7 @@ public class EditCityActivity extends BaseActivity implements ItemRemoveRecycler
                 weatherUrlBeanList.add(0, weatherUrlBean);
                 saveLishichengshi(weatherUrlBeanList);
                 saveLishitianqi(weatherBeanList);
-                MyApplication.exit();
+
                 break;
         }
         return super.onKeyDown(keyCode, event);

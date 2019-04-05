@@ -85,15 +85,7 @@ public abstract class BaseActivity extends com.aibabel.baselibrary.base.BaseActi
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
     }
 
-    @Override
-    public boolean onKeyDown(int keyCode, KeyEvent event) {
-        switch (keyCode){
-            case 133:
-                MyApplication.exit();
-                break;
-        }
-        return super.onKeyDown(keyCode, event);
-    }
+
 }
 //public abstract class BaseActivity extends com.aibabel.baselibrary.base.BaseActivity {
 //}

@@ -191,32 +191,6 @@ public class BaseApplication extends com.aibabel.baselibrary.base.BaseApplicatio
         return BaseApplication.stateCount == 0;
     }
 
-    protected   static  volatile boolean canExit=true;
-    /**
-     * 退出所有app
-     */
-    public static void exit() {
-        for (Activity activity : activityLinkedList) {
-            activity.finish();
 
-        }
-        canExit=true;
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    Thread.sleep(3000);
-                    Log.e("canExit===",String.valueOf(canExit));
-                    if ( canExit){
-                        android.os.Process.killProcess(android.os.Process.myPid());
-                    }
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-
-            }
-        }).start();
-
-    }
 
 }

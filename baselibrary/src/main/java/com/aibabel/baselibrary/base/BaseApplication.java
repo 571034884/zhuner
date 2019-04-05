@@ -280,22 +280,23 @@ public abstract class BaseApplication extends Application {
                 activity.finish();
             }
         }
-        canExit=true;
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    Thread.sleep(3000);
-                    Log.e("canExit===",String.valueOf(canExit));
-                    if ( canExit){
-                        android.os.Process.killProcess(android.os.Process.myPid());
-                    }
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
+        android.os.Process.killProcess(android.os.Process.myPid());
 
-            }
-        }).start();
+//        new Thread(new Runnable() {
+//            @Override
+//            public void run() {
+//                try {
+//                    Thread.sleep(1000);
+//                    Log.e("canExit1111===",String.valueOf(canExit));
+//                    if ( canExit){
+//                        android.os.Process.killProcess(android.os.Process.myPid());
+//                    }
+//                } catch (InterruptedException e) {
+//                    e.printStackTrace();
+//                }
+//
+//            }
+//        }).start();
 
     }
 }

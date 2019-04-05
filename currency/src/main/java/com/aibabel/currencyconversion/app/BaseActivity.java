@@ -1,6 +1,7 @@
 package com.aibabel.currencyconversion.app;
 
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.view.KeyEvent;
 import android.view.View;
@@ -90,14 +91,16 @@ public abstract class BaseActivity extends com.aibabel.baselibrary.base.BaseActi
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
     }
 
-    @Override
-    public boolean onKeyDown(int keyCode, KeyEvent event) {
-        switch (keyCode){
-            case 133:
-                case 134:
-                MyApplication.exit();
-                break;
-        }
-        return super.onKeyDown(keyCode, event);
-    }
+//    @Override
+//    public boolean onKeyDown(int keyCode, KeyEvent event) {
+//
+//        if (keyCode==133||keyCode==134){
+//
+//            onStop();
+//
+////            getWindow().getDecorView().postDelayed(() -> MyApplication.exit(),500);
+//        }
+//
+//        return super.onKeyDown(keyCode, event);
+//    }
 }

@@ -48,6 +48,8 @@ public abstract class BaseActivity extends StatisticsBaseActivity {
 
 
 
+
+    private boolean killedToBackground=true;
     public String TAG = this.getClass().getSimpleName();
     public Unbinder mUnbinder;
     public Context mContext;
@@ -160,7 +162,9 @@ public abstract class BaseActivity extends StatisticsBaseActivity {
     public void setCurrentPhysicalButtonsExitEnable(boolean currentPhysicalButtonsExitEnable) {
         isCurrentPhysicalButtonsExitEnable = currentPhysicalButtonsExitEnable;
     }
-
+    public void setKilledToBackground(boolean killedToBackground) {
+        this.killedToBackground = killedToBackground;
+    }
     /**
      * 设置当前页面是否需要请求更新
      *
@@ -347,17 +351,17 @@ public abstract class BaseActivity extends StatisticsBaseActivity {
 
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
-        if (BaseApplication.isAllPhysicalButtonsExitEnable() &&
-                isCurrentPhysicalButtonsExitEnable) {
-            switch (keyCode) {
-                case 133:
-                case 134:
-                    OkGo.cancelAll(OkGo.getInstance().getOkHttpClient());
+       if (killedToBackground){
+           switch (keyCode) {
+               case 133:
+               case 134:
 
-                    BaseApplication.exit();
-                    break;
-            }
-        }
+                   onStop();
+                   android.os.Process.killProcess(android.os.Process.myPid());
+                   break;
+           }
+       }
+
         return super.onKeyDown(keyCode, event);
     }
 

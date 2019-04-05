@@ -151,28 +151,33 @@ public class MyApplication extends Application {
             @Override
             public void onActivityCreated(Activity activity, Bundle savedInstanceState) {
                 activityLinkedList.add(activity);
-                canExit=false;
+//                canExit=false;
+
             }
 
             @Override
             public void onActivityStarted(Activity activity) {
-                Log.d(TAG, "onActivityStarted: " + activity.getLocalClassName());
+
                 stateCount++;
-                canExit=false;
+                Log.d(TAG, "onActivityStarted: " + activity.getLocalClassName()+stateCount);
+//                canExit=false;
             }
 
             @Override
             public void onActivityResumed(Activity activity) {
-                canExit=false;
+//                canExit=false;
+
             }
 
             @Override
             public void onActivityPaused(Activity activity) {
+
             }
 
             @Override
             public void onActivityStopped(Activity activity) {
                 stateCount--;
+                Log.d(TAG, "onActivityStopped: " + activity.getLocalClassName()+stateCount);
             }
 
             @Override
@@ -182,36 +187,12 @@ public class MyApplication extends Application {
 
             @Override
             public void onActivityDestroyed(Activity activity) {
+
                 activityLinkedList.remove(activity);
+
             }
         });
     }
 
-    protected   static  volatile boolean canExit=true;
-    /**
-     * 退出所有app
-     */
-    public static void exit() {
-        for (Activity activity : activityLinkedList) {
-            activity.finish();
 
-        }
-        canExit=true;
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    Thread.sleep(3000);
-                    Log.e("canExit===",String.valueOf(canExit));
-                    if ( canExit){
-                        android.os.Process.killProcess(android.os.Process.myPid());
-                    }
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-
-            }
-        }).start();
-
-    }
 }

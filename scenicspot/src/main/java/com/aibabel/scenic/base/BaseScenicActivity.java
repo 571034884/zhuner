@@ -33,6 +33,7 @@ public abstract class BaseScenicActivity extends BaseActivity implements OnClick
 
     @Override
     public void init() {
+        setKilledToBackground(false);
         initView();
         initData();
     }

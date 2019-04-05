@@ -155,46 +155,46 @@ public class MyApplication extends BaseApplication {
 
         activityLinkedList = new LinkedList<>();
 
-        registerActivityLifecycleCallbacks(new ActivityLifecycleCallbacks() {
-            @Override
-            public void onActivityCreated(Activity activity, Bundle savedInstanceState) {
-                activityLinkedList.add(activity);
-                canExit=false;
-
-            }
-
-            @Override
-            public void onActivityStarted(Activity activity) {
-                Log.d(TAG, "onActivityStarted: " + activity.getLocalClassName());
-                stateCount++;
-                canExit=false;
-
-            }
-
-            @Override
-            public void onActivityResumed(Activity activity) {
-                canExit=false;
-            }
-
-            @Override
-            public void onActivityPaused(Activity activity) {
-            }
-
-            @Override
-            public void onActivityStopped(Activity activity) {
-                stateCount--;
-            }
-
-            @Override
-            public void onActivitySaveInstanceState(Activity activity, Bundle outState) {
-
-            }
-
-            @Override
-            public void onActivityDestroyed(Activity activity) {
-                activityLinkedList.remove(activity);
-            }
-        });
+//        registerActivityLifecycleCallbacks(new ActivityLifecycleCallbacks() {
+//            @Override
+//            public void onActivityCreated(Activity activity, Bundle savedInstanceState) {
+//                activityLinkedList.add(activity);
+//                canExit=false;
+//
+//            }
+//
+//            @Override
+//            public void onActivityStarted(Activity activity) {
+//                Log.d(TAG, "onActivityStarted: " + activity.getLocalClassName());
+//                stateCount++;
+//                canExit=false;
+//
+//            }
+//
+//            @Override
+//            public void onActivityResumed(Activity activity) {
+//                canExit=false;
+//            }
+//
+//            @Override
+//            public void onActivityPaused(Activity activity) {
+//            }
+//
+//            @Override
+//            public void onActivityStopped(Activity activity) {
+//                stateCount--;
+//            }
+//
+//            @Override
+//            public void onActivitySaveInstanceState(Activity activity, Bundle outState) {
+//
+//            }
+//
+//            @Override
+//            public void onActivityDestroyed(Activity activity) {
+//                activityLinkedList.remove(activity);
+//            }
+//        });
     }
 
 
