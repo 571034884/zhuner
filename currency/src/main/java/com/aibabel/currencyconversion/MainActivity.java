@@ -281,22 +281,11 @@ public class MainActivity extends BaseActivity {
             buttonsCal[idcal] = findViewById(idCal[idcal]);
             buttonsCal[idcal].setOnClickListener(new CalOnClick(buttonsCal[idcal].getText().toString()));
         }
-//        for (int i = 0; i < idNum.length; i++) {
-//            buttonsNum[i] = findViewById(idNum[i]);
-//            /**####  start-hjs-addStatisticsEvent   ##**/
-//            try {
-//                HashMap<String, Serializable> add_hp = new HashMap<>();
-//                add_hp.put("currency_main7_status",true);
-//                add_hp.put("currency_main7_people",i);
-//                addStatisticsEvent("currency_main7", add_hp);
-//
-//            }catch (Exception e){
-//                e.printStackTrace();
-//            }
-//            /**####  end-hjs-addStatisticsEvent  ##**/
-//            buttonsNum[i].setOnClickListener(new NumberOnClick(buttonsNum[i].getText().toString())
-//            );
-//        }
+        for (int i = 0; i < idNum.length; i++) {
+            buttonsNum[i] = findViewById(idNum[i]);
+            buttonsNum[i].setOnClickListener(new NumberOnClick(buttonsNum[i].getText().toString())
+            );
+        }
     }
 
     /**
