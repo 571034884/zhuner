@@ -21,7 +21,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
 
-public class RentKeepUseActivity extends BaseActivity {
+public class RentKeepUseActivity extends Activity {
     private Unbinder mUnbinder;
 
 
