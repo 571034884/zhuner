@@ -35,6 +35,7 @@ import org.json.JSONObject;
 
 import java.io.IOException;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -50,7 +51,7 @@ import butterknife.Unbinder;
  */
 public abstract class BaseActivity extends StatisticsBaseActivity  {
 
-    private static KillSelfListener killSelfListener=null;
+    private ArrayList<BaseActivity> activitiesList=new ArrayList<>();
 
     private boolean killedToBackground=true;
     public String TAG = this.getClass().getSimpleName();
@@ -138,7 +139,7 @@ public abstract class BaseActivity extends StatisticsBaseActivity  {
             });
         }
 
-
+       activitiesList.add(this);
     }
 
     //交互次数增长
@@ -360,7 +361,12 @@ public abstract class BaseActivity extends StatisticsBaseActivity  {
                case 133:
                case 134:
                    onStop();
-                   android.os.Process.killProcess(android.os.Process.myPid());
+                   int size=activitiesList.size();
+                   for (int i=size-1; i<0;i--){
+                      BaseActivity baseActivity=activitiesList.get(i);
+                      baseActivity.finish();
+                   }
+//                   android.os.Process.killProcess(android.os.Process.myPid());
            }
        }
 
