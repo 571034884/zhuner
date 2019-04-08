@@ -131,8 +131,6 @@ public class SpotsActivity extends BaseScenicActivity implements ExpireBroadcast
 
     @Override
     public void initView() {
-
-//        remoteViews = new RemoteViews(getPackageName(), R.layout.customnotice);//通知栏布局
         tvPre.setOnClickListener(this);
         tvNext.setOnClickListener(this);
         tvLeft.setOnClickListener(this);
@@ -202,13 +200,11 @@ public class SpotsActivity extends BaseScenicActivity implements ExpireBroadcast
 
         Map<String, String> map = new HashMap<>();
         map.put("poiId", poiId);
-//        map.put("poiId", "CurrentScenicId1467");
         map.put("page", String.valueOf(page));
         map.put("pageSize", String.valueOf(PAGE_SIZE));
         OkGoUtil.get(mContext, ApiConstant.GET_SPOT, map, BaseBean.class, new BaseCallback() {
             @Override
             public void onSuccess(String method, BaseBean model, String json) {
-//                ToastUtil.showShort(mContext, "成功");
                 SpotsBean spotsBean = FastJsonUtil.changeJsonToBean(json, SpotsBean.class);
                 Logs.e(json);
                 boolean isRefresh = false;
@@ -426,7 +422,7 @@ public class SpotsActivity extends BaseScenicActivity implements ExpireBroadcast
         HashMap<String, Serializable> maps = new HashMap<>();
         maps.put("scenic_spots_list_name",musicList.get(position+1).getName());
         addStatisticsEvent("scenic_spots_list",maps);
-
+        isFirst = false;
         sendBroadcast(Constants.ACTION_LIST_ITEM, position + 1);
     }
     //======================================音乐处理=================================================

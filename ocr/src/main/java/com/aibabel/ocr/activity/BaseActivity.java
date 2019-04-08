@@ -46,16 +46,16 @@ public class BaseActivity extends com.aibabel.baselibrary.base.BaseActivity impl
 //        MobclickAgent.onPause(this);
 //    }
 //
-//    @Override
-//    public boolean onKeyDown(int keyCode, KeyEvent event) {
-//        switch (keyCode){
-//            case 133:
-//                Log.e("onKeyDown","11111111111111111111111111111111111111");
-//                BaseApplication.exit();
-//                break;
-//        }
-//        return super.onKeyDown(keyCode, event);
-//    }
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        switch (keyCode){
+            case 133:
+                Log.e("onKeyDown","11111111111111111111111111111111111111");
+                BaseApplication.exit();
+                break;
+        }
+        return super.onKeyDown(keyCode, event);
+    }
 
     /**
      * 设置导航栏显示状态
