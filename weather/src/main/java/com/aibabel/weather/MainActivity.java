@@ -210,24 +210,29 @@ public class MainActivity extends BaseActivity implements BaseCallback {
     }
 
     public void initData(int position, int size) {
-        llDot.removeAllViews();
-        dots.removeAll(dots);
-        // 将要分页显示的View装入数组中
-        for (int i = 0; i < size; i++) {
-            TextView v_dot = (TextView) LayoutInflater.from(getApplicationContext()).inflate(R.layout.item_for_viewpager_point, null);
-            LinearLayout.LayoutParams docParams;
-            if (i == position) {
-                docParams = new LinearLayout.LayoutParams(10, 10);
-                v_dot.setBackgroundResource(R.drawable.dot_focused);
-            } else {
-                docParams = new LinearLayout.LayoutParams(10, 10);
-                v_dot.setBackgroundResource(R.drawable.dot_normal);
+        try {
+            llDot.removeAllViews();
+            dots.removeAll(dots);
+            // 将要分页显示的View装入数组中
+            for (int i = 0; i < size; i++) {
+                TextView v_dot = (TextView) LayoutInflater.from(getApplicationContext()).inflate(R.layout.item_for_viewpager_point, null);
+                LinearLayout.LayoutParams docParams;
+                if (i == position) {
+                    docParams = new LinearLayout.LayoutParams(10, 10);
+                    v_dot.setBackgroundResource(R.drawable.dot_focused);
+                } else {
+                    docParams = new LinearLayout.LayoutParams(10, 10);
+                    v_dot.setBackgroundResource(R.drawable.dot_normal);
+                }
+                docParams.setMargins(4, 0, 4, 0);
+                v_dot.setLayoutParams(docParams);
+                llDot.addView(v_dot);
+                dots.add(v_dot);
             }
-            docParams.setMargins(4, 0, 4, 0);
-            v_dot.setLayoutParams(docParams);
-            llDot.addView(v_dot);
-            dots.add(v_dot);
+        }catch (Exception e){
+            e.printStackTrace();
         }
+
 
     }
 

@@ -31,6 +31,7 @@ public abstract class BaseActivity extends com.aibabel.baselibrary.base.BaseActi
         initView();
         initListener();
         initData();
+        setKilledToBackground(false);
     }
 
     protected abstract void assignView();

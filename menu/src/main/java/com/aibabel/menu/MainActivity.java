@@ -331,6 +331,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
 
             IntentFilter filter = new IntentFilter();
             filter.addAction(Intent.ACTION_SCREEN_OFF);
+
             screenrecive = new ScreenOffReceiver();
             mContext.registerReceiver(screenrecive, filter);
         }catch (Exception e){
@@ -358,6 +359,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
 
         }
     }
+
 
     @Override
     public int getLayout(Bundle bundle) {
@@ -1692,6 +1694,9 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
             }
         }catch (Exception e){
 
+        }
+        if (screenrecive!=null){
+            unregisterReceiver(screenrecive);
         }
         super.onDestroy();
     }

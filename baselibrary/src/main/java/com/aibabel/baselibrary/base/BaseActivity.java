@@ -1,5 +1,6 @@
 package com.aibabel.baselibrary.base;
 
+import android.app.ActivityManager;
 import android.content.Context;
 import android.content.Entity;
 import android.content.Intent;
@@ -19,6 +20,7 @@ import com.aibabel.aidlaar.StatisticsManager;
 import com.aibabel.baselibrary.bean.RepaireBean;
 import com.aibabel.baselibrary.http.BaseCallback;
 import com.aibabel.baselibrary.http.OkGoUtil;
+import com.aibabel.baselibrary.impl.KillSelfListener;
 import com.aibabel.baselibrary.utils.CommonUtils;
 import com.aibabel.baselibrary.utils.SharePrefUtil;
 import com.google.gson.JsonObject;
@@ -31,9 +33,11 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.IOException;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import butterknife.ButterKnife;
@@ -44,9 +48,9 @@ import butterknife.Unbinder;
  * 功能：
  * 版本：1.0
  */
-public abstract class BaseActivity extends StatisticsBaseActivity {
+public abstract class BaseActivity extends StatisticsBaseActivity  {
 
-
+    private static KillSelfListener killSelfListener=null;
 
     private boolean killedToBackground=true;
     public String TAG = this.getClass().getSimpleName();
@@ -133,6 +137,7 @@ public abstract class BaseActivity extends StatisticsBaseActivity {
                 }
             });
         }
+
 
     }
 
@@ -354,10 +359,8 @@ public abstract class BaseActivity extends StatisticsBaseActivity {
            switch (keyCode) {
                case 133:
                case 134:
-
                    onStop();
                    android.os.Process.killProcess(android.os.Process.myPid());
-                   break;
            }
        }
 
@@ -411,4 +414,6 @@ public abstract class BaseActivity extends StatisticsBaseActivity {
         }
         return super.onTouchEvent(event);
     }
+
+
 }
