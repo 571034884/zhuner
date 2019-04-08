@@ -1681,10 +1681,17 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
 
     @Override
     protected void onDestroy() {
-        //注销  租赁逻辑里面的广播和资源
-        renUtils.destroyRes();
-        if (netBroadcastReceiver != null) {
-            unregisterReceiver(netBroadcastReceiver);
+        try {
+            //注销  租赁逻辑里面的广播和资源
+            renUtils.destroyRes();
+            if (netBroadcastReceiver != null) {
+                unregisterReceiver(netBroadcastReceiver);
+            }
+            if(screenrecive!=null){
+                unregisterReceiver(screenrecive);
+            }
+        }catch (Exception e){
+
         }
         super.onDestroy();
     }
