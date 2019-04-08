@@ -361,9 +361,9 @@ public abstract class BaseActivity extends StatisticsBaseActivity  {
            switch (keyCode) {
                case 133:
                case 134:
-                   onStop();
+//                   onStop();
                    int size=activitiesList.size();
-                   for (int i=size-1; i<0;i--){
+                   for (int i=size-1; i>=0;i--){
                       BaseActivity baseActivity=activitiesList.get(i);
                       baseActivity.finish();
                    }
