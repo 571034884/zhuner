@@ -51,7 +51,7 @@ import butterknife.Unbinder;
  */
 public abstract class BaseActivity extends StatisticsBaseActivity  {
 
-    private ArrayList<BaseActivity> activitiesList=new ArrayList<>();
+    private static ArrayList<BaseActivity> activitiesList=new ArrayList<>();
 
     private boolean killedToBackground=true;
     public String TAG = this.getClass().getSimpleName();
