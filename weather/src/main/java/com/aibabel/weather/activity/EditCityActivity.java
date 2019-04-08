@@ -216,9 +216,14 @@ public class EditCityActivity extends BaseActivity implements ItemRemoveRecycler
 
     @OnClick(R.id.cl_dingwei)
     public void onViewClicked() {
-//        weatherBeanList.get(0)
+
         HashMap<String, Serializable> map = new HashMap<>();
-//        map.put("weather_editCity2_name", weatherBeanList.get(0).getTitle() + adapter.getmUrlList().get(position).getCountryCN());
+
+
+        if (weatherUrlBean != null) {
+            map.put("weather_editCity2_name", weatherUrlBean.getCityCN() + "," + weatherUrlBean.getCountryCN());
+        }
+
         addStatisticsEvent("weather_editCity2",  map);
         resultIntent.putExtra("delPosition", (Serializable) delPosition);
         resultIntent.putExtra("clickPosition", 0);
