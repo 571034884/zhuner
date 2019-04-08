@@ -231,6 +231,7 @@ public abstract class BaseActivity extends StatisticsBaseActivity  {
 
         super.onDestroy();
         try {
+            activitiesList.remove(this);
             if(mUnbinder!=null)mUnbinder.unbind();
         }catch (Exception e){
             e.printStackTrace();
