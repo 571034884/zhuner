@@ -21,7 +21,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
 
-public class RentKeepUseActivity extends Activity {
+public class RentKeepUseActivity extends BaseActivity {
     private Unbinder mUnbinder;
 
 
@@ -48,7 +48,7 @@ public class RentKeepUseActivity extends Activity {
 
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         setNavigationBarVisibility();
