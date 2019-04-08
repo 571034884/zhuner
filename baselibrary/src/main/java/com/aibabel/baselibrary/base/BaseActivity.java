@@ -48,7 +48,6 @@ public abstract class BaseActivity extends StatisticsBaseActivity {
 
 
 
-
     private boolean killedToBackground=true;
     public String TAG = this.getClass().getSimpleName();
     public Unbinder mUnbinder;
