@@ -128,7 +128,4 @@ public class BaseApplication  extends com.aibabel.baselibrary.base.BaseApplicati
         });
     }
 
-
-
-
 }
