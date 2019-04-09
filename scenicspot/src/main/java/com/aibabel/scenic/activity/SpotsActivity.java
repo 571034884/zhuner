@@ -447,7 +447,6 @@ public class SpotsActivity extends BaseScenicActivity implements ExpireBroadcast
     private class MyHandler extends Handler {
         private final WeakReference<SpotsActivity> mActivity;
 
-
         public MyHandler(SpotsActivity activity) {
             mActivity = new WeakReference<SpotsActivity>(activity);
         }

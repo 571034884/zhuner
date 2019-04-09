@@ -7,4 +7,5 @@
     <color name="black">#000000</color>
     <color name="grey">#5A5A5A</color>
     <color name="gray66">#666666</color>
+    <color name="bg_activity">#F9F9F9</color>
 </resources>
