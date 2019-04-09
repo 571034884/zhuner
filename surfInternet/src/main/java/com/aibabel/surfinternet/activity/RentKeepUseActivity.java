@@ -14,14 +14,16 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.aibabel.baselibrary.base.BaseActivity;
 import com.aibabel.surfinternet.R;
+import com.aibabel.surfinternet.base.BaseNetActivity;
 
 import butterknife.BindString;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
 
-public class RentKeepUseActivity extends Activity {
+public class RentKeepUseActivity extends BaseNetActivity {
     private Unbinder mUnbinder;
 
 
@@ -45,17 +47,13 @@ public class RentKeepUseActivity extends Activity {
     @BindString(R.string.kefu_keepuse)
     String keepuse;
 
-
+    @Override
+    public int getLayouts(Bundle var1) {
+        return R.layout.activity_rent_keep_use;
+    }
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        requestWindowFeature(Window.FEATURE_NO_TITLE);
-        setNavigationBarVisibility();
-
-        setContentView(R.layout.activity_rent_keep_use);
-        mUnbinder = ButterKnife.bind(this);
-
+    public void initView() {
         Intent intent = getIntent();
         if (intent == null) {
         } else {
@@ -103,34 +101,35 @@ public class RentKeepUseActivity extends Activity {
                 }
             });
         }
+    }
 
+    @Override
+    public void initData() {
 
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        if (mUnbinder != null) mUnbinder.unbind();
     }
 
-
-    /**
-     * 设置导航栏显示状态
-     */
-    public void setNavigationBarVisibility() {
-        int flag = 0;
-        if (!false) {
-            flag = View.SYSTEM_UI_FLAG_LAYOUT_STABLE | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY;
-            getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager
-                    .LayoutParams.FLAG_FULLSCREEN);// 设置全屏
-            //透明导航栏
-            getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
-        } else {
-            flag = View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN | View.SYSTEM_UI_FLAG_LAYOUT_STABLE;
-            getWindow().clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
-            getWindow().addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
-            getWindow().setStatusBarColor(Color.TRANSPARENT); // 底部导航栏颜色也可以由系统设置
-        }
-        getWindow().getDecorView().setSystemUiVisibility(flag);
-    }
+//    /**
+//     * 设置导航栏显示状态
+//     */
+//    public void setNavigationBarVisibility() {
+//        int flag = 0;
+//        if (!false) {
+//            flag = View.SYSTEM_UI_FLAG_LAYOUT_STABLE | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY;
+//            getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager
+//                    .LayoutParams.FLAG_FULLSCREEN);// 设置全屏
+//            //透明导航栏
+//            getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
+//        } else {
+//            flag = View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN | View.SYSTEM_UI_FLAG_LAYOUT_STABLE;
+//            getWindow().clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+//            getWindow().addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+//            getWindow().setStatusBarColor(Color.TRANSPARENT); // 底部导航栏颜色也可以由系统设置
+//        }
+//        getWindow().getDecorView().setSystemUiVisibility(flag);
+//    }
 }

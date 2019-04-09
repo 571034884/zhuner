@@ -7,10 +7,12 @@ import android.util.Log;
 
 import com.aibabel.aidlaar.StatisticsManager;
 import com.aibabel.baselibrary.http.OkGoUtil;
+import com.aibabel.surfinternet.net.Api;
 import com.aibabel.surfinternet.utils.CommonUtils;
 import com.aibabel.surfinternet.utils.CrashHandler;
 import com.aibabel.surfinternet.utils.DensityHelper;
 
+import com.aibabel.surfinternet.utils.Logs;
 import com.lzy.okgo.OkGo;
 import com.umeng.analytics.MobclickAgent;
 import com.umeng.commonsdk.UMConfigure;
@@ -33,25 +35,12 @@ public class BaseApplication  extends com.aibabel.baselibrary.base.BaseApplicati
     @Override
     public void onCreate() {
         super.onCreate();
-
-        OkHttpClient.Builder builder = new OkHttpClient.Builder();
-        //全局的读取超时时间
-        builder.readTimeout(15000, TimeUnit.MILLISECONDS);
-        //全局的写入超时时间
-        builder.writeTimeout(15000, TimeUnit.MILLISECONDS);
-        //全局的连接超时时间
-        builder.connectTimeout(15000, TimeUnit.MILLISECONDS);
-
-        OkGo.getInstance().init(this).setOkHttpClient(builder.build()); //必须调用初始化
-
         //初始化组件化基础库, 统计SDK/推送SDK/分享SDK都必须调用此初始化接口
-        UMConfigure.init(this, "5b519fd78f4a9d48b8000053", CommonUtils.getSN(), UMConfigure.DEVICE_TYPE_PHONE,
-                null);
+//        UMConfigure.init(this, "5b519fd78f4a9d48b8000053", CommonUtils.getSN(), UMConfigure.DEVICE_TYPE_PHONE,null);
         MobclickAgent.setScenarioType(this, MobclickAgent.EScenarioType.E_UM_NORMAL);
         initAppExitConfig();
-
         initLayoutConfig();
-
+        Logs.e("开启");
     }
 
     @Override
@@ -66,7 +55,8 @@ public class BaseApplication  extends com.aibabel.baselibrary.base.BaseApplicati
 
     @Override
     public void setServerUrlAndInterfaceGroup() {
-
+        OkGoUtil.setDefualtServerUrl(Api.HOST);
+        OkGoUtil.setDefaultInterfaceGroup(Api.HOST_GROUP);
     }
 
     @Override

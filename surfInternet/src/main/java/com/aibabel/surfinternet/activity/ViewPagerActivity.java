@@ -11,16 +11,16 @@ import android.widget.TextView;
 
 import com.aibabel.surfinternet.R;
 import com.aibabel.surfinternet.adapter.ViewPagerAdapter;
-import com.aibabel.surfinternet.bean.Constans;
+import com.aibabel.surfinternet.base.BaseNetActivity;
+import com.aibabel.surfinternet.net.Api;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class ViewPagerActivity extends BaseActivity {
+public class ViewPagerActivity extends BaseNetActivity {
 
 
     @BindView(R.id.fragmentviewpager)
@@ -42,13 +42,12 @@ public class ViewPagerActivity extends BaseActivity {
     private ImageView iv3;
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+    public int getLayouts(Bundle var1) {
+        return R.layout.activity_view_pager;
+    }
 
-        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);// 设置全屏
-        setNavigationBarVisibility(false);
-        setContentView(R.layout.activity_view_pager);
-        ButterKnife.bind(this);
+    @Override
+    public void initView() {
         initViewPager();
 
         tvNext.setOnClickListener(new View.OnClickListener() {
@@ -69,40 +68,28 @@ public class ViewPagerActivity extends BaseActivity {
         });
     }
 
+    @Override
+    public void initData() {
 
-    /**
-     * 设置导航栏显示状态
-     *
-     * @param visible
-     */
-    private void setNavigationBarVisibility(boolean visible) {
-        int flag = 0;
-        if (!visible) {
-            flag = View.SYSTEM_UI_FLAG_LAYOUT_STABLE | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY;
-        }
-        getWindow().getDecorView().setSystemUiVisibility(flag);
-        //透明导航栏
-        getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
     }
-
     //初始化ViewPager的方法
     public void initViewPager() {
 
-        if (Constans.PHONE_COUNTRY.equals("CN")) {
+        if (Api.PHONE_COUNTRY.equals("CN")) {
             iv1 = new ImageView(this);
             iv1.setImageResource(R.mipmap.help1);
             iv2 = new ImageView(this);
             iv2.setImageResource(R.mipmap.help2);
             iv3 = new ImageView(this);
             iv3.setImageResource(R.mipmap.help3);
-        } else if (Constans.PHONE_COUNTRY.equals("TW")) {
+        } else if (Api.PHONE_COUNTRY.equals("TW")) {
             iv1 = new ImageView(this);
             iv1.setImageResource(R.mipmap.help11);
             iv2 = new ImageView(this);
             iv2.setImageResource(R.mipmap.help12);
             iv3 = new ImageView(this);
             iv3.setImageResource(R.mipmap.help13);
-        }else if (Constans.PHONE_LANGUAGE.equals("en")){
+        }else if (Api.PHONE_LANGUAGE.equals("en")){
             iv1 = new ImageView(this);
             iv1.setImageResource(R.mipmap.help1_en);
             iv2 = new ImageView(this);
@@ -185,4 +172,6 @@ public class ViewPagerActivity extends BaseActivity {
             }
         });
     }
+
+
 }

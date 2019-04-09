@@ -31,6 +31,7 @@
     <string name="weixin">WeChat로 QR 코드를 스캔하여 지불 가능합니다.</string>
 
     <string name="day">day(s)</string>
+    <string name="sun">day(s)</string>
     <string name="gong">altogether&#160;</string>
     <string name="gong1">&#160;,&#160;</string>
     <string name="rmb">&#160;¥&#160;</string>
@@ -55,4 +56,6 @@
     <string name="zhifubao_pay">알리페이 지불</string>
     <string name="paypal_pay">PayPal 지불</string>
     <string name="pay_type">지불 방식을 선택하세요</string>
+    <string name="view_des">보기</string>
+    <string name="pay_ment">구입</string>
 </resources>

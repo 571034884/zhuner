@@ -1,17 +1,13 @@
 package com.aibabel.surfinternet.js;
 
-import android.app.AlertDialog;
 import android.content.ContentValues;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Message;
 import android.util.Log;
 import android.view.KeyEvent;
-import android.view.MotionEvent;
 import android.view.View;
 import android.webkit.WebChromeClient;
 import android.webkit.WebView;
@@ -20,19 +16,15 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.aibabel.aidlaar.StatisticsManager;
+import com.aibabel.baselibrary.base.BaseActivity;
 import com.aibabel.baselibrary.impl.IDataManager;
-import com.aibabel.baselibrary.utils.CommonUtils;
 import com.aibabel.baselibrary.utils.DeviceUtils;
-import com.aibabel.baselibrary.utils.ToastUtil;
 import com.aibabel.baselibrary.utils.XIPCUtils;
 import com.aibabel.surfinternet.MainActivity;
 import com.aibabel.surfinternet.R;
-import com.aibabel.surfinternet.activity.BaseActivity;
-import com.aibabel.surfinternet.activity.DetailsActivity;
-import com.aibabel.surfinternet.bean.Constans;
+import com.aibabel.surfinternet.base.BaseNetActivity;
+import com.aibabel.surfinternet.net.Api;
 import com.aibabel.surfinternet.utils.NetUtil;
 import com.bumptech.glide.Glide;
 import com.umeng.analytics.MobclickAgent;
@@ -43,8 +35,6 @@ import com.xuexiang.xipc.core.channel.IPCService;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -53,7 +43,7 @@ import butterknife.ButterKnife;
 
 import static com.xuexiang.xipc.XIPC.getContext;
 
-public class CustomWebViewActivity extends BaseActivity implements OnJSClickListener {
+public class CustomWebViewActivity extends BaseNetActivity implements OnJSClickListener {
 
 
     @BindView(R.id.webview_1)
@@ -80,14 +70,21 @@ public class CustomWebViewActivity extends BaseActivity implements OnJSClickList
     private String skuid;
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_custom_web_view);
-        ButterKnife.bind(this);
+    public int getLayouts(Bundle var1) {
+        return R.layout.activity_custom_web_view;
+    }
+
+    @Override
+    public void initView() {
+
+    }
+
+    @Override
+    public void initData() {
         if (NetUtil.isNetworkAvailable(CustomWebViewActivity.this)) {
 
-            initView();
-            initData();
+            initViews();
+            initDatas();
         } else {
             rl.setVisibility(View.GONE);
             llIsnet.setVisibility(View.VISIBLE);
@@ -101,7 +98,7 @@ public class CustomWebViewActivity extends BaseActivity implements OnJSClickList
         });
     }
 
-    public void initView() {
+    public void initViews() {
         webView = findViewById(R.id.webview_1);
         // 允许 使用js
         webView.getSettings().setJavaScriptEnabled(true);
@@ -145,7 +142,7 @@ public class CustomWebViewActivity extends BaseActivity implements OnJSClickList
         MobclickAgent.onPause(this);
     }
 
-    public void initData() {
+    public void initDatas() {
 
         Intent intent = getIntent();
         String url = intent.getStringExtra("url");
@@ -167,7 +164,7 @@ public class CustomWebViewActivity extends BaseActivity implements OnJSClickList
         time = intent.getStringExtra("time");
 
 
-        webView.loadUrl(Constans.HOST_XS + "/test/index.html" + "?url=" + url + "&subOrderNo=" + subOrderNo + "&payType=" + payType);
+        webView.loadUrl(Api.HOST_WEB + "/test/index.html" + "?url=" + url + "&subOrderNo=" + subOrderNo + "&payType=" + payType);
         rlWeb.setVisibility(View.VISIBLE);
 
         webView.setWebChromeClient(new WebChromeClient() {
@@ -189,6 +186,8 @@ public class CustomWebViewActivity extends BaseActivity implements OnJSClickList
         clearCache();
         super.onDestroy();
     }
+
+
 
     public void clearCache() {
         try {
@@ -302,6 +301,7 @@ public class CustomWebViewActivity extends BaseActivity implements OnJSClickList
                         @Override
                         public void run() {
                             startActivity(new Intent(CustomWebViewActivity.this, MainActivity.class));
+                            CustomWebViewActivity.this.finish();
                         }
                     }, 3000);
                 }
@@ -326,6 +326,7 @@ public class CustomWebViewActivity extends BaseActivity implements OnJSClickList
             @Override
             public void run() {
                 startActivity(new Intent(CustomWebViewActivity.this, MainActivity.class));
+                CustomWebViewActivity.this.finish();
             }
         }, 3000);
     }
