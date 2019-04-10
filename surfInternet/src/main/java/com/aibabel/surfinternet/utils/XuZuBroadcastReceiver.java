@@ -3,11 +3,10 @@ package com.aibabel.surfinternet.utils;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import android.os.Build;
 import android.text.TextUtils;
 import android.util.Log;
 
-import com.aibabel.surfinternet.bean.Constans;
+import com.aibabel.surfinternet.net.Api;
 
 
 /**
@@ -22,7 +21,7 @@ public class XuZuBroadcastReceiver extends BroadcastReceiver {
     public void onReceive(Context context, Intent intent) {
 
 
-        if (TextUtils.equals(Constans.PRO_VERSION_NUMBER,"L")){
+        if (TextUtils.equals(Api.PRO_VERSION_NUMBER,"L")){
             String time_start = intent.getStringExtra("Time_Start");
             String time_end =intent.getStringExtra("Time_End");
             String time_end_first =intent.getStringExtra("Time_End_First");

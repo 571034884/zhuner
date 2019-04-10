@@ -1,6 +1,6 @@
 package com.aibabel.surfinternet.bean;
+import com.aibabel.baselibrary.http.BaseBean;
 
-import com.aibabel.surfinternet.okgo.BaseBean;
 import java.io.Serializable;
 import java.util.List;
 

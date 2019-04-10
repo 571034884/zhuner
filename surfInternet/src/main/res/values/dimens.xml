@@ -22,7 +22,9 @@
     <dimen name="px0.5">0.5pt</dimen>
     <dimen name="px5">5pt</dimen>
     <dimen name="px10">10pt</dimen>
+    <dimen name="px12">12pt</dimen>
     <dimen name="px20">20pt</dimen>
+    <dimen name="px24">24pt</dimen>
     <dimen name="px100">100pt</dimen>
     <dimen name="text_size500">500pt</dimen>
     <dimen name="px32">32pt</dimen>

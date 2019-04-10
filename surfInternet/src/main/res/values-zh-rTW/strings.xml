@@ -32,6 +32,7 @@
     <string name="weixin"> 請用微信掃描QR碼支付</string>
 
     <string name="day">天</string>
+    <string name="sun">日</string>
     <string name="gong">共</string>
     <string name="gong1">共</string>
     <string name="rmb">元</string>
@@ -57,4 +58,7 @@
     <string name="zhifubao_pay">支付寶支付</string>
     <string name="paypal_pay">PayPal 支付</string>
     <string name="pay_type">請選擇付款方式</string>
+    <string name="view_des">查看</string>
+    <string name="pay_ment">購買</string>
+    <string name="mb_des">當地4G網絡</string>
 </resources>

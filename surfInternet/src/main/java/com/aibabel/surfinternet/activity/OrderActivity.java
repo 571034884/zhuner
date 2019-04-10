@@ -5,8 +5,6 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
-import android.content.SharedPreferences;
-import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
@@ -14,16 +12,12 @@ import android.os.IBinder;
 import android.os.Message;
 import android.os.Messenger;
 import android.os.RemoteException;
-import android.provider.Settings;
 import android.support.annotation.RequiresApi;
 import android.support.constraint.ConstraintLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.OrientationHelper;
 import android.support.v7.widget.RecyclerView;
-import android.text.Spannable;
-import android.text.SpannableString;
 import android.text.TextUtils;
-import android.text.style.ForegroundColorSpan;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
@@ -31,18 +25,13 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.aibabel.surfinternet.MainActivity;
 import com.aibabel.surfinternet.R;
 import com.aibabel.surfinternet.adapter.CommomRecyclerAdapter;
 import com.aibabel.surfinternet.adapter.CommonRecyclerViewHolder;
-import com.aibabel.surfinternet.bean.Constans;
+import com.aibabel.surfinternet.base.BaseNetActivity;
+import com.aibabel.surfinternet.net.Api;
 import com.aibabel.surfinternet.bean.OrderitemBean;
-import com.aibabel.surfinternet.js.CustomWebViewActivity;
-import com.aibabel.surfinternet.okgo.BaseBean;
-import com.aibabel.surfinternet.okgo.BaseCallback;
 import com.aibabel.surfinternet.utils.NetUtil;
-import com.aibabel.surfinternet.utils.SharePrefUtil;
-import com.lzy.okgo.model.Response;
 import com.umeng.analytics.MobclickAgent;
 
 import java.text.ParseException;
@@ -50,12 +39,11 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.Locale;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class OrderActivity extends BaseActivity {
+public class OrderActivity extends BaseNetActivity {
 
 
     @BindView(R.id.iv_back1)
@@ -93,12 +81,14 @@ public class OrderActivity extends BaseActivity {
     private TextView tv_help;
     private TextView tv_xuzu;
 
+    @Override
+    public int getLayouts(Bundle var1) {
+        return R.layout.activity_order;
+    }
+
     @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_order);
-        ButterKnife.bind(this);
+    public void initView() {
         Intent intent = getIntent();
         int first = intent.getIntExtra("first", 0);
         if (first == 1) {
@@ -107,11 +97,7 @@ public class OrderActivity extends BaseActivity {
         }
         if (NetUtil.isNetworkAvailable(OrderActivity.this)) {
             initAdapter();
-            try {
-                initData();
-            } catch (ParseException e) {
-                e.printStackTrace();
-            }
+            initDatas();
         } else {
             clOrder.setVisibility(View.GONE);
             rlNoNet.setVisibility(View.VISIBLE);
@@ -133,6 +119,11 @@ public class OrderActivity extends BaseActivity {
         bindMessage();
     }
 
+    @Override
+    public void initData() {
+
+    }
+
     private  void bindMessage(){
         Intent intent = new Intent();
         intent.setAction("action.menu.MenuMessengerService");
@@ -141,13 +132,13 @@ public class OrderActivity extends BaseActivity {
     }
 
     private void initCountry() {
-        if (Constans.PHONE_LANGUAGE.equals("zh") || Constans.PHONE_LANGUAGE.equals("en")) {
+        if (Api.PHONE_LANGUAGE.equals("zh") || Api.PHONE_LANGUAGE.equals("en")) {
             tv_help.setVisibility(View.VISIBLE);
         } else {
             tv_help.setVisibility(View.GONE);
         }
 
-        if(Constans.PRO_VERSION_NUMBER.equalsIgnoreCase("L")) {
+        if(Api.PRO_VERSION_NUMBER.equalsIgnoreCase("L")) {
             tv_help.setVisibility(View.GONE);
         }
 
@@ -244,7 +235,7 @@ public class OrderActivity extends BaseActivity {
                     @Override
                     public void onClick(View v) {
                         Log.e("hjs", "startActivity_APN");
-//                        if(Constans.PRO_VERSION_NUMBER.equalsIgnoreCase("L")) {
+//                        if(Api.PRO_VERSION_NUMBER.equalsIgnoreCase("L")) {
 //                            Log.e("hjs", "APN_L");
 //
 //                            startActivity_APN();
@@ -263,8 +254,8 @@ public class OrderActivity extends BaseActivity {
                     @Override
                     public void onClick(View v) {
 
-                        Log.e("hjs","pro:"+Constans.PRO_VERSION_NUMBER);
-                       if(Constans.PRO_VERSION_NUMBER.equalsIgnoreCase("L")) {
+                        Log.e("hjs","pro:"+ Api.PRO_VERSION_NUMBER);
+                       if(Api.PRO_VERSION_NUMBER.equalsIgnoreCase("L")) {
                            startacitivy_rent(1,channel);
                        }else{
 
@@ -288,7 +279,7 @@ public class OrderActivity extends BaseActivity {
 
                 });
 
-                switch (Constans.PRO_VERSION_NUMBER) {
+                switch (Api.PRO_VERSION_NUMBER) {
                     case "L":
                         tv_xuzu.setText(getResources().getString(R.string.xuzu));
                         break;
@@ -390,7 +381,7 @@ public class OrderActivity extends BaseActivity {
     }
 
     @RequiresApi(api = Build.VERSION_CODES.N)
-    private void initData() throws ParseException {
+    private void initDatas(){
         Intent intent = getIntent();
         orderitemBean = (OrderitemBean) intent.getSerializableExtra("orderitemBean");
         datalist = orderitemBean.getData();

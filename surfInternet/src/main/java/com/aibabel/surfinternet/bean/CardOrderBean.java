@@ -1,6 +1,7 @@
 package com.aibabel.surfinternet.bean;
 
-import com.aibabel.surfinternet.okgo.BaseBean;
+
+import com.aibabel.baselibrary.http.BaseBean;
 
 import java.util.List;
 
