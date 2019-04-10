@@ -18,6 +18,7 @@ import android.widget.TextView;
 import com.aibabel.baselibrary.http.BaseBean;
 import com.aibabel.baselibrary.http.BaseCallback;
 import com.aibabel.baselibrary.http.OkGoUtil;
+import com.aibabel.baselibrary.utils.DeviceUtils;
 import com.aibabel.surfinternet.R;
 import com.aibabel.surfinternet.adapter.CommomRecyclerAdapter;
 import com.aibabel.surfinternet.adapter.CommonRecyclerViewHolder;
@@ -274,17 +275,11 @@ public class TrandActivity extends BaseNetActivity{
     private void initDatas() {
 
         Map<String, String> map = new HashMap<>();
-        if (TextUtils.equals(Api.PHONE_MOBILE_NUMBER,"PH")&&TextUtils.equals(Api.COUNTRY_VERSION_NUMBER,"5")&&TextUtils.equals(Api.PRO_VERSION_NUMBER,"S")){
-            map.put("currencyType", "Dollar");
-            map.put("priceFor", "forSell");
-        }else if (TextUtils.equals(Api.PRO_VERSION_NUMBER,"S")){
-            map.put("priceFor", "forSell");
-        }else {
-            map.put("priceFor", "forLease");
+        if (DeviceUtils.getSystem() == DeviceUtils.System.PRO_LEASE){
+            map.put("deviceType", "L");
+        }else{
+            map.put("deviceType", "S");
         }
-
-        map.put("sysLanguage", Api.SETCOUNTRYlANGUAGE);
-        map.put("hasBaseDays", "true");
         map.put("iccid", Api.PHONE_ICCID);
         if (Api.Lk_CARDTYPE){
             map.put("cardType","lksc");
