@@ -242,7 +242,7 @@ public class MainActivity extends BaseNetActivity{
             // for ActivityCompat#requestPermissions for more details.
             return;
         }
-        Api.PHONE_ICCID = telephonyManager.getDeviceId(0);
+        Api.PHONE_ICCID = telephonyManager.getDeviceId(1);
         Log.e("LK---001","LK卡IMEI获取成功："+ Api.PHONE_ICCID);
 //        Log.e("imei_2", telephonyManager.getDeviceId(1));
         //Toast.makeText(MainActivity.this, "slot=" + slot, Toast.LENGTH_LONG).show();
