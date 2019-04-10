@@ -185,7 +185,7 @@ public class DetailsPayActivity extends BaseNetActivity{
         stepCount = Integer.parseInt(dataBean.getQuantity_step());
         price = Double.parseDouble(dataBean.getPriceCny());
 
-        tvPageName.setText(dataBean.getName()+"流量套餐");
+        tvPageName.setText(dataBean.getPackageName());
         tvPageCount.setText(dataBean.getHighFlowSize()+"M/");
         tvReadme.setText(dataBean.getIntroduct());
         String[] s = dataBean.getPriceCny().split("\\.");

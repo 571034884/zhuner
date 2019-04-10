@@ -60,4 +60,5 @@
     <string name="pay_type">お支払い方法をお選びください</string>
     <string name="view_des">詳しく</string>
     <string name="pay_ment">購入</string>
+    <string name="mb_des">ローカル4 Gネットワーク</string>
 </resources>

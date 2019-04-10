@@ -57,9 +57,12 @@
                 android:layout_height="wrap_content">
                 <TextView
                     android:id="@+id/tv_page_name"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="- - "
+                    android:ellipsize="end"
+                    android:singleLine="true"
+                    android:layout_marginRight="@dimen/x100"
                     android:textColor="#ffffff"
                     android:textSize="@dimen/y30"
                     android:textStyle="bold"
@@ -102,7 +105,7 @@
                     android:layout_alignParentStart="true"
                     android:text="￥"
                     android:textColor="#FF8B01"
-                    android:textSize="@dimen/y40" />
+                    android:textSize="@dimen/y30" />
                 <TextView
                     android:id="@+id/tv_price"
                     android:layout_toRightOf="@id/tv_types"

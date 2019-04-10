@@ -58,4 +58,5 @@
     <string name="pay_type">지불 방식을 선택하세요</string>
     <string name="view_des">보기</string>
     <string name="pay_ment">구입</string>
+    <string name="mb_des">현지 4G 네트워크</string>
 </resources>

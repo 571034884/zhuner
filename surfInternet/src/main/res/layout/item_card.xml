@@ -57,7 +57,7 @@
         </RelativeLayout>
 
         <TextView
-            android:text="当地4G网络"
+            android:text="@string/mb_des"
             android:paddingLeft="@dimen/x25"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

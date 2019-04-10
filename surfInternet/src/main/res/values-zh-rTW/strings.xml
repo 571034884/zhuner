@@ -60,4 +60,5 @@
     <string name="pay_type">請選擇付款方式</string>
     <string name="view_des">查看</string>
     <string name="pay_ment">購買</string>
+    <string name="mb_des">當地4G網絡</string>
 </resources>

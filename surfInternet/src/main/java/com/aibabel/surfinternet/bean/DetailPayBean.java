@@ -24,6 +24,7 @@ public class DetailPayBean extends BaseBean {
         /**
          * sku_id : DP20190307000265
          * name : 乌拉圭
+         * packageName:巴林岛-流量套餐
          * highFlowSize : 100
          * priceCny : 13.00
          * priceUsd :
@@ -46,6 +47,7 @@ public class DetailPayBean extends BaseBean {
         private String introduct;
         private String countryName;
         private String flowPic;
+        private String packageName;
 
         public String getSku_id() {
             return sku_id;
@@ -133,6 +135,14 @@ public class DetailPayBean extends BaseBean {
 
         public void setFlowPic(String flowPic) {
             this.flowPic = flowPic;
+        }
+
+        public String getPackageName() {
+            return packageName;
+        }
+
+        public void setPackageName(String packageName) {
+            this.packageName = packageName;
         }
     }
 }
