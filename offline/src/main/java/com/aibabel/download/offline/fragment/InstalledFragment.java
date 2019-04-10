@@ -46,6 +46,7 @@ import com.aibabel.download.offline.util.FileUtil;
 import com.aibabel.download.offline.util.L;
 import com.aibabel.download.offline.util.LanUtil;
 import com.aibabel.download.offline.util.SDCardUtils;
+import com.aibabel.download.offline.util.StringUtils;
 import com.aibabel.download.offline.util.T;
 import com.aibabel.download.offline.util.ThreadPoolManager;
 import com.aibabel.download.offline.util.UrlUtil;
@@ -279,7 +280,7 @@ public class InstalledFragment extends Fragment {
 
 
                 imageView.setVisibility(View.GONE);
-                tv_name.setText(dataBean.getName());
+                tv_name.setText(StringUtils.setCH2TW(dataBean.getName()));
                 tv_size.setText(dataBean.getSize());
                 switch (dataBean.getStatus()) {
                     case "1":
