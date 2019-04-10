@@ -239,21 +239,17 @@ public class TrandActivity extends BaseNetActivity{
                 tv_qian = holder.getView(R.id.tv_qian);
 
                 RequestOptions options = new RequestOptions()
-                        .placeholder(R.mipmap.morentu)//图片加载出来前，显示的图片
-                        .fallback(R.mipmap.morentu) //url为空的时候,显示的图片
-                        .error(R.mipmap.morentu);//图片加载失败后，显示的图片
+                        .placeholder(R.mipmap.ic_country_default)//图片加载出来前，显示的图片
+                        .fallback(R.mipmap.ic_country_default) //url为空的时候,显示的图片
+                        .error(R.mipmap.ic_country_default);//图片加载失败后，显示的图片
 
-                Glide.with(TrandActivity.this)
-                        .load(bean.getImageUrl())
-                        .apply(options)
-                        .into(iv_country);
-
-
-
+                if (DeviceUtils.getSystem() != DeviceUtils.System.FLY_TAIWAN){
+                    Glide.with(TrandActivity.this)
+                            .load(bean.getImageUrl())
+                            .apply(options)
+                            .into(iv_country);
+                }
                 tv_zhongwen.setText(bean.getCountryName());
-
-
-
 
 //                String days = ((TrandBean.DataBean) o).getDays().toString();
 //                String s = ((TrandBean.DataBean) o).getPrice().toString();

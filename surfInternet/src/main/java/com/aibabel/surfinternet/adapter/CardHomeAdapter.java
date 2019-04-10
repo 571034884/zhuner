@@ -11,6 +11,7 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.aibabel.baselibrary.utils.DeviceUtils;
 import com.aibabel.surfinternet.R;
 import com.aibabel.surfinternet.bean.DetailPayBean;
 import com.aibabel.surfinternet.utils.CommonUtils;
@@ -81,7 +82,6 @@ public class CardHomeAdapter extends PagerAdapter implements CardAdapter{
     private void bindViewData(DetailPayBean.DataBean beans, View view) {
         ImageView iv = view.findViewById(R.id.imagerl);
         Glide.with(mContext).load(beans.getFlowPic()).apply(CommonUtils.options).into(iv);
-
         TextView tv = view.findViewById(R.id.tv_name);
         tv.setText(beans.getHighFlowSize()+"");
     }
