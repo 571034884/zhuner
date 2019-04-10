@@ -9,9 +9,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
-        android:layout_marginRight="10dp"
-        android:layout_marginTop="10dp"
-        android:padding="10dp"
+        android:layout_marginRight="@dimen/x15"
+        android:layout_marginTop="@dimen/x15"
+        android:padding="@dimen/x15"
         android:src="@mipmap/close" />
 
     <TextView
@@ -21,14 +21,14 @@
         android:layout_below="@id/btn_cancel"
         android:layout_centerHorizontal="true"
         android:text="@string/pay_type"
-        android:textSize="25sp" />
+        android:textSize="@dimen/y30" />
 
     <LinearLayout
         android:layout_below="@id/title_name"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingTop="30dp"
-        android:paddingBottom="10dp"
+        android:paddingTop="@dimen/y45"
+        android:paddingBottom="@dimen/y15"
         android:orientation="horizontal">
 
         <LinearLayout
@@ -43,12 +43,12 @@
                 android:id="@+id/tv_WeChat"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:drawablePadding="10dp"
+                android:drawablePadding="@dimen/x15"
                 android:drawableTop="@mipmap/weixin"
                 android:gravity="center"
                 android:text="@string/weixin_pay"
                 android:textColor="#030303"
-                android:textSize="20sp" />
+                android:textSize="@dimen/y30" />
         </LinearLayout>
 
         <LinearLayout
@@ -63,12 +63,12 @@
                 android:id="@+id/tv_Alipay"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:drawablePadding="10dp"
+                android:drawablePadding="@dimen/x15"
                 android:drawableTop="@mipmap/zhifubao"
                 android:gravity="center"
                 android:text="@string/zhifubao_pay"
                 android:textColor="#030303"
-                android:textSize="20sp" />
+                android:textSize="@dimen/y30" />
         </LinearLayout>
 
         <LinearLayout
@@ -83,12 +83,12 @@
                 android:id="@+id/tv_PayPal"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:drawablePadding="10dp"
+                android:drawablePadding="@dimen/x15"
                 android:drawableTop="@mipmap/paypal"
                 android:gravity="center"
                 android:text="@string/paypal_pay"
                 android:textColor="#030303"
-                android:textSize="20sp" />
+                android:textSize="@dimen/y30" />
         </LinearLayout>
     </LinearLayout>
 </RelativeLayout>

@@ -10,12 +10,12 @@
     <RelativeLayout
         android:id="@+id/rl_bar"
         android:layout_width="match_parent"
-        android:layout_height="70dp">
+        android:layout_height="@dimen/y105">
         <ImageView
             android:id="@+id/iv_back"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:padding="10dp"
+            android:padding="@dimen/y15"
             android:onClick="onClick"
             android:layout_centerVertical="true"
             android:src="@mipmap/back" />
@@ -25,7 +25,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="- -"
-            android:textSize="24sp"
+            android:textSize="@dimen/y36"
             android:textStyle="bold"
             android:layout_centerInParent="true"
             android:textColor="@android:color/white"
@@ -34,7 +34,7 @@
     <ScrollView
         android:layout_below="@id/rl_bar"
         android:layout_width="match_parent"
-        android:paddingBottom="90dp"
+        android:paddingBottom="@dimen/y135"
         android:layout_height="match_parent">
         <LinearLayout
             android:layout_width="match_parent"
@@ -43,17 +43,17 @@
             <android.support.v4.view.ViewPager
                 android:id="@+id/vp_info"
                 android:layout_width="match_parent"
-                android:layout_height="113dp"
+                android:layout_height="@dimen/y190"
                 android:clipToPadding="false"
                 android:background="@color/black"
                 android:overScrollMode="never"
-                android:paddingEnd="50dp"
-                android:paddingStart="50dp" />
+                android:paddingEnd="@dimen/x75"
+                android:paddingStart="@dimen/x75" />
             <RelativeLayout
                 android:layout_width="match_parent"
-                android:paddingLeft="50dp"
-                android:paddingRight="20dp"
-                android:layout_marginTop="10dp"
+                android:paddingLeft="@dimen/x75"
+                android:paddingRight="@dimen/x30"
+                android:layout_marginTop="@dimen/y15"
                 android:layout_height="wrap_content">
                 <TextView
                     android:id="@+id/tv_page_name"
@@ -61,18 +61,18 @@
                     android:layout_height="wrap_content"
                     android:text="- - "
                     android:textColor="#ffffff"
-                    android:textSize="20sp"
+                    android:textSize="@dimen/y30"
                     android:textStyle="bold"
                     />
                 <TextView
                     android:id="@+id/tv_page_sun"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/sun"
+                    android:text="@string/day"
                     android:textColor="#FFFFFF"
                     android:layout_centerInParent="true"
                     android:layout_alignParentRight="true"
-                    android:textSize="12sp"
+                    android:textSize="@dimen/y18"
                     />
                 <TextView
                     android:id="@+id/tv_page_count"
@@ -82,25 +82,27 @@
                     android:text="- -/"
                     android:textColor="#FFFFFF"
                     android:layout_centerInParent="true"
-                    android:textSize="12sp"
+                    android:textSize="@dimen/y18"
                     />
             </RelativeLayout>
             <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_marginTop="20dp"
-                android:paddingLeft="50dp"
+                android:layout_marginTop="@dimen/y30"
+                android:paddingLeft="@dimen/x75"
                 android:gravity="center_vertical"
-                android:paddingRight="20dp"
+                android:paddingRight="@dimen/x30"
                 android:layout_height="wrap_content">
 
                 <TextView
                     android:id="@+id/tv_types"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_alignBaseline="@+id/tv_price"
+                    android:layout_alignBottom="@+id/tv_price"
+                    android:layout_alignParentStart="true"
                     android:text="￥"
                     android:textColor="#FF8B01"
-                    android:textSize="40sp"
-                    />
+                    android:textSize="@dimen/y40" />
                 <TextView
                     android:id="@+id/tv_price"
                     android:layout_toRightOf="@id/tv_types"
@@ -108,7 +110,7 @@
                     android:layout_height="wrap_content"
                     android:text="0"
                     android:textColor="#FF8B01"
-                    android:textSize="40sp"
+                    android:textSize="@dimen/y60"
                     />
 
                 <TextView
@@ -120,7 +122,7 @@
                     android:layout_toEndOf="@+id/tv_price"
                     android:text=".00"
                     android:textColor="#FF8B01"
-                    android:textSize="17sp" />
+                    android:textSize="@dimen/y25" />
 
                 <ImageView
                     android:layout_width="wrap_content"
@@ -135,25 +137,25 @@
                     android:layout_toLeftOf="@id/add_count"
                     android:id="@+id/tv_tian"
                     android:layout_width="wrap_content"
-                    android:layout_marginRight="8dp"
+                    android:layout_marginRight="@dimen/x12"
                     android:layout_height="wrap_content"
                     android:text="@string/day"
                     android:gravity="center"
                     android:layout_centerVertical="true"
                     android:textColor="#ff8b01"
-                    android:textSize="17sp"
+                    android:textSize="@dimen/y25"
                     />
                 <TextView
                     android:layout_toLeftOf="@id/tv_tian"
                     android:id="@+id/tv_count"
-                    android:layout_marginLeft="8dp"
+                    android:layout_marginLeft="@dimen/x12"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="0"
                     android:gravity="center"
                     android:layout_centerVertical="true"
                     android:textColor="#ff8b01"
-                    android:textSize="17sp"
+                    android:textSize="@dimen/y25"
                     />
                 <ImageView
                     android:layout_toLeftOf="@id/tv_count"
@@ -167,30 +169,31 @@
             </RelativeLayout>
             <View
                 android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:layout_marginTop="20dp"
-                android:layout_marginLeft="50dp"
+                android:layout_height="@dimen/y2"
+                android:layout_marginTop="@dimen/y30"
+                android:layout_marginLeft="@dimen/x75"
                 android:background="#333333"
                 />
             <TextView
-                android:layout_marginLeft="50dp"
+                android:layout_marginLeft="@dimen/x75"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/shangwangshuoming"
-                android:layout_marginTop="20dp"
+                android:layout_marginTop="@dimen/y30"
                 android:textColor="#ffffff"
-                android:textSize="17sp"
+                android:textSize="@dimen/y25"
                 android:textStyle="bold"
                 />
             <TextView
                 android:id="@+id/tv_readme"
-                android:layout_marginLeft="50dp"
-                android:layout_marginRight="20dp"
+                android:layout_marginLeft="@dimen/x75"
+                android:layout_marginRight="@dimen/x30"
+                android:layout_marginTop="@dimen/y30"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="- -"
                 android:textColor="#ffffff"
-                android:textSize="17sp"
+                android:textSize="@dimen/y25"
                 />
 
 
@@ -199,10 +202,10 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingLeft="20dp"
-        android:paddingRight="20dp"
-        android:paddingTop="16dp"
-        android:paddingBottom="16dp"
+        android:paddingLeft="@dimen/x30"
+        android:paddingRight="@dimen/x30"
+        android:paddingTop="@dimen/y22"
+        android:paddingBottom="@dimen/y22"
         android:layout_alignParentBottom="true"
         android:background="@android:color/black">
         <TextView
@@ -211,10 +214,10 @@
             android:layout_height="wrap_content"
             android:background="@drawable/tv_pay_bg"
             android:text="@string/pay_ment"
-            android:paddingTop="13dp"
-            android:paddingBottom="13dp"
+            android:paddingTop="@dimen/y20"
+            android:paddingBottom="@dimen/y20"
             android:onClick="onClick"
-            android:textSize="24sp"
+            android:textSize="@dimen/y30"
             android:textColor="#333333"
             android:gravity="center"
             />
