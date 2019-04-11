@@ -404,189 +404,189 @@ public class ListdFragment extends Fragment {
     Map<String,SwipeLayout> swipeLayoutMap=new HashMap<>();
 
     public void getOfflineList() {
-        if (mBuilder!=null) {
-            mBuilder.dismiss();
-        }
-        swipeLayoutMap.clear();
-        listView.setAdapter(null);
-        L.e("type=================="+getArguments().getString("key")+"====================="+URL_API.getList_file()+"&type="+((String)getArguments().getString("key")));
-        RequestParams rp = new RequestParams(URL_API.getList_file()+"&type="+((String)getArguments().getString("key")));
+        try {
+
+            if (mBuilder != null) {
+                mBuilder.dismiss();
+            }
+            swipeLayoutMap.clear();
+            listView.setAdapter(null);
+
+            L.e("type==================" + getArguments().getString("key") + "=====================" + URL_API.getList_file() + "&type=" + ((String) getArguments().getString("key")));
+
+            RequestParams rp = new RequestParams(URL_API.getList_file() + "&type=" + ((String) getArguments().getString("key")));
 //        RequestParams rp = new RequestParams(URL_API.getList_file()+"&type="+((String)getArguments().getString("key")+"&status=false"));
 
-        x.http().get(rp, new Callback.CommonCallback<String>() {
+            x.http().get(rp, new Callback.CommonCallback<String>() {
 
-            @Override
-            public void onSuccess(String result) {
-                final OfflineList bean = JSON.parseObject(result, OfflineList.class);
-                listData = bean.getData().getData();
+                @Override
+                public void onSuccess(String result) {
+                    final OfflineList bean = JSON.parseObject(result, OfflineList.class);
+                    listData = bean.getData().getData();
 
-                L.e("listData111111111============"+listData.toString());
+                    L.e("listData111111111============" + listData.toString());
 
 
-                Cursor cursor = MyApplication.dbHelper.queryCursor();
+                    Cursor cursor = MyApplication.dbHelper.queryCursor();
 
-                if (cursor.moveToFirst()) {
-                    //遍历Cursor对象，取出数据
-                    do {
-                        String id = cursor.getString(cursor.getColumnIndex("Id"));
-                        String status = cursor.getString(cursor.getColumnIndex("status"));
-                        String prog = cursor.getString(cursor.getColumnIndex("progress"));
+                    if (cursor.moveToFirst()) {
+                        //遍历Cursor对象，取出数据
+                        do {
+                            String id = cursor.getString(cursor.getColumnIndex("Id"));
+                            String status = cursor.getString(cursor.getColumnIndex("status"));
+                            String prog = cursor.getString(cursor.getColumnIndex("progress"));
 
-                        for (int i = 0; i < listData.size(); i++) {
+                            for (int i = 0; i < listData.size(); i++) {
 
-                            if (!MyApplication.dbHelper.queryID(listData.get(i).getId())) {
-                                ContentValues contentValues = new ContentValues();
-                                contentValues.put("Id", listData.get(i).getId());
-                                contentValues.put("name", listData.get(i).getName());
-                                contentValues.put("size", listData.get(i).getSize());
-                                contentValues.put("progress", "0%");
-                                contentValues.put("status", "99");
-                                contentValues.put("down_url", "");
-                                contentValues.put("from_path", listData.get(i).getCopy_path());
-                                contentValues.put("to_path", "--");
-                                contentValues.put("lan_name", listData.get(i).getLan_name());
-                                contentValues.put("lan_code", listData.get(i).getLan_code());
-                                contentValues.put("down_start_time", System.currentTimeMillis());
-                                contentValues.put("copy_start_time", 0);
-                                contentValues.put("uninstall_start_time", 0);
-                                contentValues.put("need_again_unzip", "false");
-                                contentValues.put("down_zip_filename", "");
+                                if (!MyApplication.dbHelper.queryID(listData.get(i).getId())) {
+                                    ContentValues contentValues = new ContentValues();
+                                    contentValues.put("Id", listData.get(i).getId());
+                                    contentValues.put("name", listData.get(i).getName());
+                                    contentValues.put("size", listData.get(i).getSize());
+                                    contentValues.put("progress", "0%");
+                                    contentValues.put("status", "99");
+                                    contentValues.put("down_url", "");
+                                    contentValues.put("from_path", listData.get(i).getCopy_path());
+                                    contentValues.put("to_path", "--");
+                                    contentValues.put("lan_name", listData.get(i).getLan_name());
+                                    contentValues.put("lan_code", listData.get(i).getLan_code());
+                                    contentValues.put("down_start_time", System.currentTimeMillis());
+                                    contentValues.put("copy_start_time", 0);
+                                    contentValues.put("uninstall_start_time", 0);
+                                    contentValues.put("need_again_unzip", "false");
+                                    contentValues.put("down_zip_filename", "");
 
-                                contentValues.put("version_code", listData.get(i).getLan_code());
+                                    contentValues.put("version_code", listData.get(i).getLan_code());
 
-                                MyApplication.dbHelper.insert(contentValues);
+                                    MyApplication.dbHelper.insert(contentValues);
+                                }
+                                if (isShow(listData.get(i).getId(), id, status)) {
+
+                                    listData.remove(i);
+                                }
+
                             }
-                            if (isShow(listData.get(i).getId(), id, status)) {
-
-                                listData.remove(i);
-                            }
-
-                        }
-                    } while (cursor.moveToNext());
+                        } while (cursor.moveToNext());
 
 
-                }
+                    }
 
-                L.e("listData22222222============"+listData.toString());
-
-
-                if (myAdapter == null) {
-                    listView.setAdapter(new MyAdapter<OfflineList.DataBeanX.DataBean>(getActivity(), listData, R.layout.item_download) {
-                        @Override
-                        public void convert(ViewHolder holder, final OfflineList.DataBeanX.DataBean dataBean) {
+                    L.e("listData22222222============" + listData.toString());
 
 
-                            final TextView tv_title = ((TextView) holder.getView(R.id.item_dl_title));
-                            TextView tv_desc = ((TextView) holder.getView(R.id.item_dl_size));
+                    if (myAdapter == null) {
+                        listView.setAdapter(new MyAdapter<OfflineList.DataBeanX.DataBean>(getActivity(), listData, R.layout.item_download) {
+                            @Override
+                            public void convert(ViewHolder holder, final OfflineList.DataBeanX.DataBean dataBean) {
 
 
-                            final TextView tv_tishi = ((TextView) holder.getView(R.id.item_dl_tishi));
-                            final ImageView iv_img = ((ImageView) holder.getView(R.id.item_dl_shibai_iv));
-                            final TextView tv_id = ((TextView) holder.getView(R.id.item_dl_key));
-                            tv_id.setText(dataBean.getId());
-                            RelativeLayout rl = ((RelativeLayout) holder.getView(R.id.item_dl_rl));
-                            final DownViewBean viewBean = new DownViewBean(dataBean.getId(),"","",dataBean.getLan_name(),rl,tv_title,tv_desc,tv_id,iv_img,tv_tishi);
+                                final TextView tv_title = ((TextView) holder.getView(R.id.item_dl_title));
+                                TextView tv_desc = ((TextView) holder.getView(R.id.item_dl_size));
 
 
-                            tv_title.setText(dataBean.getLan_name());
-                            tv_desc.setText( dataBean.getSize());
-                            tv_tishi.setText(MyApplication.mContext.getString(R.string.xiazai));
-                            map_child.put(dataBean.getId(), viewBean);
+                                final TextView tv_tishi = ((TextView) holder.getView(R.id.item_dl_tishi));
+                                final ImageView iv_img = ((ImageView) holder.getView(R.id.item_dl_shibai_iv));
+                                final TextView tv_id = ((TextView) holder.getView(R.id.item_dl_key));
+                                tv_id.setText(dataBean.getId());
+                                RelativeLayout rl = ((RelativeLayout) holder.getView(R.id.item_dl_rl));
+                                final DownViewBean viewBean = new DownViewBean(dataBean.getId(), "", "", dataBean.getLan_name(), rl, tv_title, tv_desc, tv_id, iv_img, tv_tishi);
 
-                            TextView tv_del=((TextView) holder.getView(R.id.item_dl_delect1));
-                            SwipeLayout swipeLayout=((SwipeLayout) holder.getView(R.id.item_dl_swipeLayout));
-                            swipeLayoutMap.put(dataBean.getId(),swipeLayout);
-                            swipeLayout.setSwipeEnabled(false);
 
-                            swipeLayout.addSwipeListener(new SimpleSwipeListener(){
-                                @Override
-                                public void onOpen(SwipeLayout layout) {
-                                    L.e("kai ====================");
-                                    for (String key : swipeLayoutMap.keySet()) {
-                                        swipeLayoutMap.get(key).close();
+                                tv_title.setText(dataBean.getLan_name());
+                                tv_desc.setText(dataBean.getSize());
+                                tv_tishi.setText(MyApplication.mContext.getString(R.string.xiazai));
+                                map_child.put(dataBean.getId(), viewBean);
+
+                                TextView tv_del = ((TextView) holder.getView(R.id.item_dl_delect1));
+                                SwipeLayout swipeLayout = ((SwipeLayout) holder.getView(R.id.item_dl_swipeLayout));
+                                swipeLayoutMap.put(dataBean.getId(), swipeLayout);
+                                swipeLayout.setSwipeEnabled(false);
+
+                                swipeLayout.addSwipeListener(new SimpleSwipeListener() {
+                                    @Override
+                                    public void onOpen(SwipeLayout layout) {
+                                        L.e("kai ====================");
+                                        for (String key : swipeLayoutMap.keySet()) {
+                                            swipeLayoutMap.get(key).close();
+                                        }
+
+                                        layout.open();
+                                        super.onOpen(layout);
                                     }
+                                });
 
-                                    layout.open();
-                                    super.onOpen(layout);
-                                }
-                            });
+                                tv_del.setOnClickListener(new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View view) {
+                                        new OtherDialog.Builder(getContext())
+                                                .setGravity(Gravity.CENTER)
+                                                .setContentView(R.layout.dialog_tishi)
+                                                .setText(R.id.dialog_title, MyApplication.mContext.getString(R.string.shanchu))
+                                                .setText(R.id.dialog_desc, MyApplication.mContext.getString(R.string.shanchu_content))
+                                                .setCancelable(false)
+                                                .setOnClickListener(R.id.dialog_tv_sure, MyApplication.mContext.getString(R.string.queding), new View.OnClickListener() {
+                                                    @Override
+                                                    public void onClick(View view) {
 
-                            tv_del.setOnClickListener(new View.OnClickListener() {
-                                @Override
-                                public void onClick(View view) {
-                                    new OtherDialog.Builder(getContext())
-                                            .setGravity(Gravity.CENTER)
-                                            .setContentView(R.layout.dialog_tishi)
-                                            .setText(R.id.dialog_title, MyApplication.mContext.getString(R.string.shanchu))
-                                            .setText(R.id.dialog_desc,MyApplication.mContext.getString(R.string.shanchu_content))
-                                            .setCancelable(false)
-                                            .setOnClickListener(R.id.dialog_tv_sure, MyApplication.mContext.getString(R.string.queding), new View.OnClickListener() {
-                                                @Override
-                                                public void onClick(View view) {
-
-                                                    mBuilder = new ProgressDialog.Builder(getActivity());
-                                                    mBuilder.setCanceledOnTouchOutside(false)
-                                                            .showProgress(true)
-                                                            .setTitle(MyApplication.mContext.getString(R.string.shanchu_tishi))
-                                                            .setDesc(MyApplication.mContext.getString(R.string.shanchu_tishi_content))
-                                                            .showProgress(false)
-                                                            .show();
+                                                        mBuilder = new ProgressDialog.Builder(getActivity());
+                                                        mBuilder.setCanceledOnTouchOutside(false)
+                                                                .showProgress(true)
+                                                                .setTitle(MyApplication.mContext.getString(R.string.shanchu_tishi))
+                                                                .setDesc(MyApplication.mContext.getString(R.string.shanchu_tishi_content))
+                                                                .showProgress(false)
+                                                                .show();
 
 
-                                                    deleteFile(new Offline_database(dataBean.getId(),"","","",dataBean.getCopy_path()),tv_tishi,"");
+                                                        deleteFile(new Offline_database(dataBean.getId(), "", "", "", dataBean.getCopy_path()), tv_tishi, "");
 
-                                                    /**####  start-hjs-addStatisticsEvent   ##**/
-                                                    try {
-                                                        HashMap<String, Serializable> add_hp = new HashMap<>();
-                                                        add_hp.put("download.offline_downLoadList5_def", tv_id.getText().toString());
-                                                        ((StatisticsBaseActivity)getActivity()).addStatisticsEvent("download.offline_downLoadList5", add_hp);
-                                                    }catch (Exception e){
-                                                        e.printStackTrace();
+                                                        /**####  start-hjs-addStatisticsEvent   ##**/
+                                                        try {
+                                                            HashMap<String, Serializable> add_hp = new HashMap<>();
+                                                            add_hp.put("download.offline_downLoadList5_def", tv_id.getText().toString());
+                                                            ((StatisticsBaseActivity) getActivity()).addStatisticsEvent("download.offline_downLoadList5", add_hp);
+                                                        } catch (Exception e) {
+                                                            e.printStackTrace();
+                                                        }
+                                                        /**####  end-hjs-addStatisticsEvent  ##**/
+
+
                                                     }
-                                                    /**####  end-hjs-addStatisticsEvent  ##**/
+                                                }).setOnClickListener(R.id.dialog_tv_cancel, MyApplication.mContext.getString(R.string.quxiao), null).show();
 
 
-
-                                                }
-                                            }).setOnClickListener(R.id.dialog_tv_cancel, MyApplication.mContext.getString(R.string.quxiao), null).show();
-
-
-                                }
-                            });
+                                    }
+                                });
 
 
-
-
-                            final String status = MyApplication.dbHelper.queryStatus(dataBean.getId());
-                            if (status != null && !status.equals("") && MyApplication.dbHelper.queryID(dataBean.getId())) {
-                                switch (status) {
-                                    case "2":
-                                        //正在下载
-
+                                final String status = MyApplication.dbHelper.queryStatus(dataBean.getId());
+                                if (status != null && !status.equals("") && MyApplication.dbHelper.queryID(dataBean.getId())) {
+                                    switch (status) {
+                                        case "2":
+                                            //正在下载
 
 
 //                                        prog.setProgress(Integer.valueOf(MyApplication.dbHelper.queryProgess(dataBean.getId()).replace("%","")));
-                                        tv_tishi.setText(MyApplication.mContext.getString(R.string.zhengzaixiazai));
+                                            tv_tishi.setText(MyApplication.mContext.getString(R.string.zhengzaixiazai));
 
-                                        long downstartTime = MyApplication.dbHelper.queryFiledLong(dataBean.getId(), "down_start_time");
-                                        if (downstartTime > 0 && System.currentTimeMillis() - downstartTime > 12 * 60 * 60 * 1000) {
-                                            //12小时后  算作下载失败
+                                            long downstartTime = MyApplication.dbHelper.queryFiledLong(dataBean.getId(), "down_start_time");
+                                            if (downstartTime > 0 && System.currentTimeMillis() - downstartTime > 12 * 60 * 60 * 1000) {
+                                                //12小时后  算作下载失败
 
-                                            tv_tishi.setText(MyApplication.mContext.getString(R.string.chongshi));
-                                            MyApplication.dbHelper.updateStatusId(dataBean.getId(), "5");
-                                        }
+                                                tv_tishi.setText(MyApplication.mContext.getString(R.string.chongshi));
+                                                MyApplication.dbHelper.updateStatusId(dataBean.getId(), "5");
+                                            }
 //
 //                                        iv_img.setVisibility(View.VISIBLE);
 
 
-                                        break;
-                                    case "3":
-                                        //  正在安装
+                                            break;
+                                        case "3":
+                                            //  正在安装
 //                                       prog.setProgress(100);
-                                        tv_tishi.setText(getString(R.string.zhengzaianzhuang));
+                                            tv_tishi.setText(getString(R.string.zhengzaianzhuang));
 
 
-                                        long copyTime = MyApplication.dbHelper.queryFiledLong(dataBean.getId(), "copy_start_time");
+                                            long copyTime = MyApplication.dbHelper.queryFiledLong(dataBean.getId(), "copy_start_time");
                                             if (copyTime > 0 && System.currentTimeMillis() - copyTime > 40 * 60 * 1000) {
                                                 //后期做重新解压拷贝
 
@@ -650,134 +650,138 @@ public class ListdFragment extends Fragment {
 //                                        iv_img.setVisibility(View.VISIBLE);
 
 
-                                        break;
-                                    case "4":
-                                        // 暂停
+                                            break;
+                                        case "4":
+                                            // 暂停
 //                                        prog.setProgress(Integer.valueOf(MyApplication.dbHelper.queryProgess(dataBean.getId()).replace("%","")));
-                                        tv_tishi.setText(getString(R.string.ms_zt));
-                                        iv_img.setVisibility(View.VISIBLE);
+                                            tv_tishi.setText(getString(R.string.ms_zt));
+                                            iv_img.setVisibility(View.VISIBLE);
 
-                                        break;
-                                    case "5":
-                                        //下载失败
-                                      swipeLayout.setSwipeEnabled(true);
+                                            break;
+                                        case "5":
+                                            //下载失败
+                                            swipeLayout.setSwipeEnabled(true);
 //                                        prog.setProgress(Integer.valueOf(MyApplication.dbHelper.queryProgess(dataBean.getId()).replace("%","")));
-                                        tv_tishi.setText(MyApplication.mContext.getString(R.string.chongshi));
-                                        iv_img.setVisibility(View.VISIBLE);
+                                            tv_tishi.setText(MyApplication.mContext.getString(R.string.chongshi));
+                                            iv_img.setVisibility(View.VISIBLE);
 
-                                        break;
-                                    default:
-                                        iv_img.setVisibility(View.GONE);
+                                            break;
+                                        default:
+                                            iv_img.setVisibility(View.GONE);
 //                                        prog.setProgress(0);
 
 
-                                        break;
+                                            break;
 
+                                    }
                                 }
-                            }
 
-                            //下载点击事件
-                            rl.setOnClickListener(new View.OnClickListener() {
-                                @Override
-                                public void onClick(View view) {
-                                    if (MyApplication.dbHelper.queryID(dataBean.getId())) {
+                                //下载点击事件
+                                rl.setOnClickListener(new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View view) {
+                                        if (MyApplication.dbHelper.queryID(dataBean.getId())) {
 //                                    T.show(getActivity(),"==================xizaizhuangtai>>>>"+MyApplication.dbHelper.queryStatus(dataBean.getId()),500);
-                                        L.e("==================xizaizhuangtai>>>>" + MyApplication.dbHelper.queryStatus(dataBean.getId()));
-                                        switch (MyApplication.dbHelper.queryStatus(dataBean.getId())) {
-                                            case "2":
-                                                T.show(getActivity(), tv_tishi.getText().toString(), 500);
-                                                return;
+                                            L.e("==================xizaizhuangtai>>>>" + MyApplication.dbHelper.queryStatus(dataBean.getId()));
+                                            switch (MyApplication.dbHelper.queryStatus(dataBean.getId())) {
+                                                case "2":
+                                                    T.show(getActivity(), tv_tishi.getText().toString(), 500);
+                                                    return;
 
-                                            case "3":
-                                                T.show(getActivity(), tv_tishi.getText().toString(), 500);
-                                                return;
-                                            case "4":
+                                                case "3":
+                                                    T.show(getActivity(), tv_tishi.getText().toString(), 500);
+                                                    return;
+                                                case "4":
 //
-                                                tv_tishi.setText(getString(R.string.zhengzaixiazai));
-                                                MyApplication.dbHelper.updateStatusId(dataBean.getId(), "2");
+                                                    tv_tishi.setText(getString(R.string.zhengzaixiazai));
+                                                    MyApplication.dbHelper.updateStatusId(dataBean.getId(), "2");
 
 
-                                                return;
-                                            case "5":
+                                                    return;
+                                                case "5":
 
-                                                String needAgainUnzip = MyApplication.dbHelper.queryFiled(dataBean.getId(), "need_again_unzip");
+                                                    String needAgainUnzip = MyApplication.dbHelper.queryFiled(dataBean.getId(), "need_again_unzip");
 
-                                                if (needAgainUnzip.equals("true")&&new File("/sdcard/download_offline/"+dataBean.getName()+".zip").exists()) {
-                                                    //直接做安装解压
-                                                    MyApplication.dbHelper.updateFiled(dataBean.getId(), "need_again_unzip","false");
+                                                    if (needAgainUnzip.equals("true") && new File("/sdcard/download_offline/" + dataBean.getName() + ".zip").exists()) {
+                                                        //直接做安装解压
+                                                        MyApplication.dbHelper.updateFiled(dataBean.getId(), "need_again_unzip", "false");
 
-                                                    mBuilder = new ProgressDialog.Builder(getActivity());
-                                                    mBuilder.setCanceledOnTouchOutside(false)
-                                                            .showProgress(true)
-                                                            .setTitle(MyApplication.mContext.getString(R.string.anzhaungtishi))
-                                                            .setDesc(MyApplication.mContext.getString(R.string.anzhaungtishi_content1)+MyApplication.mContext.getString(R.string.anzhaungtishi_content2))
-                                                            .showProgress(true)
-                                                            .show();
-                                                    mBuilder.setProgress(100);
+                                                        mBuilder = new ProgressDialog.Builder(getActivity());
+                                                        mBuilder.setCanceledOnTouchOutside(false)
+                                                                .showProgress(true)
+                                                                .setTitle(MyApplication.mContext.getString(R.string.anzhaungtishi))
+                                                                .setDesc(MyApplication.mContext.getString(R.string.anzhaungtishi_content1) + MyApplication.mContext.getString(R.string.anzhaungtishi_content2))
+                                                                .showProgress(true)
+                                                                .show();
+                                                        mBuilder.setProgress(100);
 
-                                                  unZipAndInstall(dataBean.getId(),dataBean.getName());
-
-
-                                                } else {
-                                                    //连接没失效续传  否则会重下
-
-                                                        downloadFile(dataBean,status,tv_id.getText().toString());
+                                                        unZipAndInstall(dataBean.getId(), dataBean.getName());
 
 
-                                                }
+                                                    } else {
+                                                        //连接没失效续传  否则会重下
 
-                                             return;
+                                                        downloadFile(dataBean, status, tv_id.getText().toString());
+
+
+                                                    }
+
+                                                    return;
+
+                                            }
 
                                         }
 
+                                        //下载
+                                        downloadFile(dataBean, status, tv_id.getText().toString());
+
+                                        /**####  start-hjs-addStatisticsEvent   ##**/
+                                        try {
+                                            HashMap<String, Serializable> add_hp = new HashMap<>();
+                                            add_hp.put("download.offline_downLoadList4_def", tv_id.getText().toString());
+                                            ((StatisticsBaseActivity) getActivity()).addStatisticsEvent("download.offline_downLoadList4", add_hp);
+                                        } catch (Exception e) {
+                                            e.printStackTrace();
+                                        }
+                                        /**####  end-hjs-addStatisticsEvent  ##**/
+
                                     }
+                                });
 
-                                //下载
-                                    downloadFile(dataBean,status,tv_id.getText().toString());
+                            }
+                        });
 
-                                    /**####  start-hjs-addStatisticsEvent   ##**/
-                                    try {
-                                        HashMap<String, Serializable> add_hp = new HashMap<>();
-                                        add_hp.put("download.offline_downLoadList4_def", tv_id.getText().toString());
-                                        ((StatisticsBaseActivity)getActivity()).addStatisticsEvent("download.offline_downLoadList4", add_hp);
-                                    }catch (Exception e){
-                                        e.printStackTrace();
-                                    }
-                                    /**####  end-hjs-addStatisticsEvent  ##**/
+                    } else {
+                        myAdapter.fresh(listData);
+                    }
 
-                                }
-                            });
 
-                        }
-                    });
-
-                } else {
-                    myAdapter.fresh(listData);
                 }
 
+                @Override
+                public void onError(Throwable ex, boolean isOnCallback) {
+                    listView.setAdapter(null);
+                    refreshLayout.finishRefresh(true);
+                    if (CommonUtils.isAvailable(MyApplication.mContext)) {
+                        T.show(MyApplication.mContext, MyApplication.mContext.getString(R.string.ts_sxsb), 500);
+                    }
 
-            }
-
-            @Override
-            public void onError(Throwable ex, boolean isOnCallback) {
-                listView.setAdapter(null);
-                refreshLayout.finishRefresh(true);
-                if (CommonUtils.isAvailable(MyApplication.mContext)) {
-                    T.show(MyApplication.mContext, MyApplication.mContext.getString(R.string.ts_sxsb), 500);
                 }
 
-            }
+                @Override
+                public void onCancelled(CancelledException cex) {
 
-            @Override
-            public void onCancelled(CancelledException cex) {
+                }
 
-            }
+                @Override
+                public void onFinished() {
+                    refreshLayout.finishRefresh(true);
+                }
+            });
+        }catch (Exception e){
+            e.printStackTrace();
+        }
 
-            @Override
-            public void onFinished() {
-                refreshLayout.finishRefresh(true);
-            }
-        });
     }
 
 

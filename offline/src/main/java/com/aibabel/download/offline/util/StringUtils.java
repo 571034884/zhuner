@@ -1,6 +1,7 @@
 package com.aibabel.download.offline.util;
 
 import android.text.TextUtils;
+import android.util.Log;
 
 import com.aibabel.baselibrary.utils.DeviceUtils;
 import com.aibabel.download.offline.app.MyApplication;
@@ -29,5 +30,11 @@ public class StringUtils {
         }
 
         return result;
+    }
+
+    public static void main(String args[]){
+        ZHConverter converter2 = ZHConverter.getInstance(ZHConverter.TRADITIONAL);
+        String traditionalStr = converter2.convert(" 1 景区导览-法国 ");
+        System.out.println(traditionalStr);
     }
 }

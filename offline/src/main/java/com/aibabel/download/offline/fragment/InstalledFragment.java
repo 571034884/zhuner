@@ -172,7 +172,7 @@ public class InstalledFragment extends Fragment {
                 if (status.equals("1") || status.equals("13") || status.equals("14")) {
                     if(cursor.getString(cursor.getColumnIndex("down_url")).contains("http")){
 
-                        if (local_lan.equals("zh_CN")) {
+                        if (local_lan.startsWith("zh")) {
                             String id = cursor.getString(cursor.getColumnIndex("Id"));
                             String name = cursor.getString(cursor.getColumnIndex("lan_name"));
                             String size = cursor.getString(cursor.getColumnIndex("size"));

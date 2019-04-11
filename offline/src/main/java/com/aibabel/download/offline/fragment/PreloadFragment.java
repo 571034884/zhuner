@@ -245,7 +245,7 @@ public class PreloadFragment extends Fragment {
                 Log.e("hjs", "lan_code==" +lan_code);
                 String local_lan = CommonUtils.getLocal(getContext());
                 if (status.equals("10") || status.equals("11") || status.equals("12")) {
-                    if (local_lan.equals("zh_CN")) {
+                    if (local_lan.startsWith("zh")) {
                         String id = cursor.getString(cursor.getColumnIndex("Id"));
                         String name = cursor.getString(cursor.getColumnIndex("lan_name"));
                         String size = cursor.getString(cursor.getColumnIndex("size"));

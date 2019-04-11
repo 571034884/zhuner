@@ -45,7 +45,7 @@ public class MyApplication extends Application {
 
     // TODO: 2019/4/1
     /////是否显示景区导览资源包？？？
-    public static boolean ifshowjqdl = false;
+    public static boolean ifshowjqdl = true;
 
     //文件执行 是否继续
     public static boolean isFile =true;
