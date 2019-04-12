@@ -161,7 +161,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
     LinearLayout bttomMenuLlPzfy;
     @BindView(R.id.bttom_menu_ll_ddwl)
     LinearLayout bttomMenuLlDdwl;
-//    @BindView(R.id.main_shanghua_img)
+    //    @BindView(R.id.main_shanghua_img)
 //    ImageView mainShanghuaImg;
     @BindView(R.id.main_middle_tianqi_du1)
     TextView mainMiddleTianqiDu1;
@@ -233,7 +233,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        Log.e("menu_main_create====","create");
+        Log.e("menu_main_create====", "create");
 
 //        DBUtils.copyAssetsToSd(mContext,"index.html");
         //根据时区选择服务器
@@ -334,12 +334,14 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
 
             screenrecive = new ScreenOffReceiver();
             mContext.registerReceiver(screenrecive, filter);
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
 
     }
-    ScreenOffReceiver screenrecive ;
+
+    ScreenOffReceiver screenrecive;
+
     private class ScreenOffReceiver extends BroadcastReceiver {
 
         @Override
@@ -354,7 +356,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
                     }
 
 
-                },2000);
+                }, 2000);
             }
 
         }
@@ -370,7 +372,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
     @Override
     public void init() {
         loopHandler = new LooptempHandler(this);
-        addStatisticsEvent("menu_main_open",null);
+        addStatisticsEvent("menu_main_open", null);
     }
 
     public static MaterialBadgeTextView home_badge;
@@ -460,7 +462,6 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
 
         JPushInterface.setAlias(this, 1, CommonUtils.getSN());
         LogUtil.e("getSN:" + CommonUtils.getSN());
-
 
 
     }
@@ -590,10 +591,8 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
      * 90天锁机逻辑,或者
      */
     public void lock90day() {
-
         ///没有网络情况下
         try {
-
             int lock_type = boot_start_lock();
             LogUtil.e("lock_type =" + lock_type);
             if (lock_type == 1) return;
@@ -612,8 +611,8 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
                     LogUtil.e("neverUseNet_end=endtime = null");
                 }
             } else if (spnettemp.equalsIgnoreCase("net_ok")) {
-                String endtime = SharePrefUtil.getString(mContext, neverUseNet_end, "");//90天未使用
-                lockloopmsg(endtime);//以前连接过网络，快到期断网，4个小时检测一次
+                // String endtime = SharePrefUtil.getString(mContext, neverUseNet_end, "");//90天未使用
+                //lockloopmsg(endtime);//以前连接过网络，快到期断网，4个小时检测一次
             }
 
         } catch (Exception e) {
@@ -625,13 +624,15 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
 
     /**
      * 更新时间
+     *
      * @param partime
      */
     private void updatetime(String partime) {
+        if (partime == null) return;
         try {
             String end90time = CalenderUtil.calculateTimeDifferenceadd90(partime);
-            SharePrefUtil.put(mContext, neverUseNet_start, "" + partime);
-            SharePrefUtil.put(mContext, neverUseNet_end, "" + end90time);
+            SharePrefUtil.put(mContext, neverUseNet_start, partime);
+            SharePrefUtil.put(mContext, neverUseNet_end, end90time);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -654,99 +655,85 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
             int attime = OrderBody.getAt();
             int isZhuner = OrderBody.getIsZhuner();
 
-            if (!TextUtils.isEmpty(chanelname)) {
-                SharePrefUtil.saveString(context, order_channelName, chanelname);
-            } else LogUtil.e("chanelname empty");
-
-            if (!TextUtils.isEmpty(oid)) {
-                SharePrefUtil.saveString(context, order_oid, oid);
-                SPHelper.save(order_oid, oid);
-                DataManager.getInstance().setSaveString(order_oid, oid);
-            } else LogUtil.e("oid empty");
-            if (!TextUtils.isEmpty(uid)) {
-                SharePrefUtil.saveString(context, order_uid, uid);
-            } else LogUtil.e("uid = null");
-            if (!TextUtils.isEmpty(uname)) {
-                SharePrefUtil.saveString(context, order_uname, uname);
-            } else LogUtil.e("uname = null");
-
+            SharePrefUtil.saveString(context, order_channelName, chanelname);
+            SharePrefUtil.saveString(context, order_oid, oid);
+            SPHelper.save(order_oid, oid);
+            DataManager.getInstance().setSaveString(order_oid, oid);
+            SharePrefUtil.saveString(context, order_uid, uid);
+            SharePrefUtil.saveString(context, order_uname, uname);
             if (!TextUtils.isEmpty(from_time)) {
                 SharePrefUtil.saveString(context, order_from, from_time);
-
                 updatetime(from_time);
+            } else {
 
-            } else LogUtil.e("from_time = null");
-            if (!TextUtils.isEmpty(end_time)) {
-                SharePrefUtil.saveString(context, order_endttime, end_time);
+                try {
+                    String[] startstr = CalenderUtil.calculateTimeDifferenceByDuration();
+                    if (startstr != null) {
+                        String starttime_str = startstr[0];
+                        String end_time_str = startstr[1];
+                        LogUtil.e(" = order starttime= " + starttime_str);
+                        LogUtil.e(" =order  end_time= " + end_time_str);
+                        SharePrefUtil.saveString(mContext, neverUseNet_start, starttime_str);
+                        SharePrefUtil.saveString(mContext, neverUseNet_end, end_time_str);
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
 
-            } else LogUtil.e("end_time = null");
-            if (!TextUtils.isEmpty(sn)) {
-                SharePrefUtil.saveString(context, order_sn, sn);
-            } else LogUtil.e("sn = null");
+
+            SharePrefUtil.saveString(context, order_endttime, end_time);
+            SharePrefUtil.saveString(context, order_sn, sn);
             if (islock >= 0) {
                 SharePrefUtil.saveInt(context, order_islock, islock);
                 try {
                     boolean RentLocked_fore = DetectUtil.isForeground(this, RentLockedActivity.class);
-                    if (RentLocked_fore&&islock==0) {
+                    if (RentLocked_fore && islock == 0) {
                         LogUtil.e("RentLocked_fore = " + RentLocked_fore);
                         if (loopHandler != null) loopHandler.sendEmptyMessage(200);
                     }
-                }catch (Exception e){
+                } catch (Exception e) {
                     e.printStackTrace();
                 }
-            } else LogUtil.e("order_islock = null");
-            if (attime >= 0) {
-                SharePrefUtil.saveInt(context, order_lockattime, attime);
-            } else LogUtil.e("order_lockattime == null;");
+            }
 
-            if (isZhuner >= 0) {
-                SharePrefUtil.saveInt(context, order_isZhuner, isZhuner);
-            } else LogUtil.e("order_isZhuner == null;");
+            SharePrefUtil.saveInt(context, order_lockattime, attime);
+            SharePrefUtil.saveInt(context, order_isZhuner, isZhuner);
+
 
             try {
-                Message message = new Message();
-                message.what = 100;
-                Bundle bun = new Bundle();
-                if ((isZhuner == 1)) {
-                    bun.putString(bunder_iszhuner, "zhuner");
-                } else if (isZhuner == 0) {
-                    bun.putString(bunder_qudao, chanelname);
-                } else {
-                    if (TextUtils.isEmpty(chanelname)) {
-                        bun.putString(bunder_iszhuner, "zhuner");
-                        bun.putString(bunder_qudao, "");
-                    } else {
-                        bun.putString(bunder_iszhuner, "zz");
-                        bun.putString(bunder_qudao, chanelname);
-                    }
-                }
-                message.setData(bun);
-
-
-                int comparetime = CalenderUtil.compaeTimeWithNow(end_time);
-
-                LogUtil.e("服务器锁机 ");
                 ///服务器锁机
                 if (islock == 1) {
+                    LogUtil.e("服务器锁机 ");
+                    Message message = new Message();
+                    message.what = 100;
+                    Bundle bun = new Bundle();
+                    if ((isZhuner == 1)) {
+                        bun.putString(bunder_iszhuner, "zhuner");
+                    } else if (isZhuner == 0) {
+                        bun.putString(bunder_qudao, chanelname);
+                    } else {
+                        if (TextUtils.isEmpty(chanelname)) {
+                            bun.putString(bunder_iszhuner, "zhuner");
+                            bun.putString(bunder_qudao, "");
+                        } else {
+                            bun.putString(bunder_iszhuner, "zz");
+                            bun.putString(bunder_qudao, chanelname);
+                        }
+                    }
+                    message.setData(bun);
                     if (loopHandler != null) loopHandler.sendMessage(message);
                     return;
                 }
 
+                int comparetime = CalenderUtil.compaeTimeWithNow(end_time);
                 LogUtil.e("提醒续租 ");
                 //提醒续租
                 if (((comparetime <= toast_rent_Time) && (comparetime >= 11))) {
                     if (loopHandler != null) loopHandler.sendEmptyMessage(120);
                     return;
                 }
-                LogUtil.e("到期后24小时内锁机 ");
-                ////到期后24小时内锁机
-//                if ( CalenderUtil.compaeTimeWithAfter24(end_time)<=0) {
-//                    if (loopHandler != null) loopHandler.sendMessage(message);
-//                    return;
-//                }
-
                 LogUtil.e("到期后24小时内锁机 _fail ");
-
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -757,10 +744,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
             if ((LocationUtils.locationWhere(context) == 0) && (TextUtils.isEmpty(order_id))) {
                 LogUtil.e("国外 并且无订单  ");
             }
-
         }
-
-
     }
 
 
@@ -776,7 +760,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         OkGoUtil.get(false, UrlConstants.GET_MENU, mapPram, MenuDataBean.class, new BaseCallback<MenuDataBean>() {
             @Override
             public void onSuccess(String s, MenuDataBean menuDataBean, String s1) {
-                Log.e("XINMENU",s1);
+                Log.e("XINMENU", s1);
                 bindMenuData(menuDataBean);
             }
 
@@ -804,43 +788,43 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
                 case R.id.bttom_menu_ll_gd:
                     ActivityOptions compat = ActivityOptions.makeSceneTransitionAnimation(this);
                     startActivity(new Intent(mContext, MenuActivity.class), compat.toBundle());
-                    addStatisticsEvent("more_click",null);
+                    addStatisticsEvent("more_click", null);
                     break;
                 case R.id.main_middle_time_ll:
                     //调起时钟
                     startActivity(AppStatusUtils.getAppOpenIntentByPackageName(mContext, "com.aibabel.alliedclock"));
-                    addStatisticsEvent("time_click",null);
+                    addStatisticsEvent("time_click", null);
 
                     break;
                 case R.id.main_middle_tianqi_ll:
                     //调起天气
                     startActivity(AppStatusUtils.getAppOpenIntentByPackageName(mContext, "com.aibabel.weather"));
-                    addStatisticsEvent("weather_click",null);
+                    addStatisticsEvent("weather_click", null);
                     break;
                 case R.id.main_middle_huilv_ll:
                     //调起汇率
                     startActivity(AppStatusUtils.getAppOpenIntentByPackageName(mContext, "com.aibabel.currencyconversion"));
-                    addStatisticsEvent("currency_click",null);
+                    addStatisticsEvent("currency_click", null);
 
                     break;
                 case R.id.main_map_rl:
                     //调起地图
                     startActivity(AppStatusUtils.getAppOpenIntentByPackageName(mContext, "com.aibabel.map"));
-                    addStatisticsEvent("map_click",null);
+                    addStatisticsEvent("map_click", null);
                     break;
                 case R.id.bttom_menu_ll_yyfy:
                     //调起语音翻译
                     startActivity(AppStatusUtils.getAppOpenIntentByPackageName(mContext, "com.aibabel.translate"));
-                    addStatisticsEvent("voice_click",null);
+                    addStatisticsEvent("voice_click", null);
                     break;
                 case R.id.bttom_menu_ll_pzfy:
                     //调起拍照翻译
                     startActivity(AppStatusUtils.getAppOpenIntentByPackageName(mContext, "com.aibabel.ocr"));
-                    addStatisticsEvent("photo_click",null);
+                    addStatisticsEvent("photo_click", null);
                     break;
                 case R.id.bttom_menu_ll_ddwl:
-                    startActivity(AppStatusUtils.getAppOpenIntentByPackageName(mContext,"com.aibabel.scenic"));
-                    addStatisticsEvent("scenic_click",null);
+                    startActivity(AppStatusUtils.getAppOpenIntentByPackageName(mContext, "com.aibabel.scenic"));
+                    addStatisticsEvent("scenic_click", null);
                     break;
                 case R.id.main_top_ctiy_ll:
 
@@ -850,11 +834,12 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
                     //调起搜索页面
                     ((MainActivity) mContext).startActivityForResult(new Intent(mContext, SearchActivity.class), 100);
 
-                    try{
+                    try {
                         HashMap<String, Serializable> map = new HashMap<>();
-                        map.put("mddname",oldCity+"");
-                        addStatisticsEvent("mdd_click",map);
-                    }catch (Exception e){}
+                        map.put("mddname", oldCity + "");
+                        addStatisticsEvent("mdd_click", map);
+                    } catch (Exception e) {
+                    }
                     break;
 
                 case R.id.main_return_img_ll:
@@ -868,8 +853,8 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
                     home_badge.setBadgeCount(set_BadgeCount);
 
                     HashMap<String, Serializable> map = new HashMap<>();
-                    map.put("menu_notice_click_id","打开");
-                    addStatisticsEvent("menu_notice_click",map);
+                    map.put("menu_notice_click_id", "打开");
+                    addStatisticsEvent("menu_notice_click", map);
 
                     break;
 
@@ -895,7 +880,6 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
 
             @Override
             public boolean onTouch(View v, MotionEvent event) {
-
 
 
                 switch (event.getAction()) {
@@ -966,8 +950,8 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
     public void hidePanel() {
 
         HashMap<String, Serializable> map = new HashMap<>();
-        map.put("menu_showPanel_open_id","打开");
-        addStatisticsEvent("menu_showPanel_open",map);
+        map.put("menu_showPanel_open_id", "打开");
+        addStatisticsEvent("menu_showPanel_open", map);
 
         ObjectAnimator.ofFloat(top_ll, "translationY", -700).setDuration(300).start();
         ObjectAnimator.ofFloat(top_ll, "alpha", 1f, 0.5f).setDuration(300).start();
@@ -983,8 +967,8 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
     public void hidePanel1() {
 
         HashMap<String, Serializable> map = new HashMap<>();
-        map.put("menu_showPanel_open_id","关闭");
-        addStatisticsEvent("menu_showPanel_open",map);
+        map.put("menu_showPanel_open_id", "关闭");
+        addStatisticsEvent("menu_showPanel_open", map);
 
         ObjectAnimator.ofFloat(top_ll, "translationY", -700).setDuration(10).start();
         ObjectAnimator.ofFloat(top_ll, "alpha", 1f, 0.5f).setDuration(10).start();
@@ -998,8 +982,8 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
      */
     public void showPanel() {
         HashMap<String, Serializable> map = new HashMap<>();
-        map.put("menu_showPanel_close_id","关闭");
-        addStatisticsEvent("menu_showPanel_close",map);
+        map.put("menu_showPanel_close_id", "关闭");
+        addStatisticsEvent("menu_showPanel_close", map);
 
         ObjectAnimator.ofFloat(top_ll, "translationY", 0).setDuration(300).start();
         ObjectAnimator.ofFloat(top_ll, "alpha", 0.5f, 1f).setDuration(300).start();
@@ -1261,29 +1245,29 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
 
         // 汇率
         try {
-            if (!TextUtils.isEmpty(bean.getData().getCurrency100WaiBi())){
-                tvHuilvOne.setText(bean.getData().getCurrency100WaiBi()+"");
-            }else{
+            if (!TextUtils.isEmpty(bean.getData().getCurrency100WaiBi())) {
+                tvHuilvOne.setText(bean.getData().getCurrency100WaiBi() + "");
+            } else {
                 tvHuilvOne.setText("--·--");
             }
 
-            if (!TextUtils.isEmpty(bean.getData().getCurrencyCny())){
-                tvHuilvTwo.setText(bean.getData().getCurrencyCny()+"");
-            }else{
+            if (!TextUtils.isEmpty(bean.getData().getCurrencyCny())) {
+                tvHuilvTwo.setText(bean.getData().getCurrencyCny() + "");
+            } else {
                 tvHuilvTwo.setText("--·--");
             }
-        }catch (Exception e){
+        } catch (Exception e) {
             tvHuilvOne.setText("--·--");
             tvHuilvTwo.setText("--·--");
         }
 
         try {
-            if (!TextUtils.isEmpty(bean.getData().getCityNameCn())){
-                tvAddressCity.setText(bean.getData().getCityNameCn()+"");
-            }else{
+            if (!TextUtils.isEmpty(bean.getData().getCityNameCn())) {
+                tvAddressCity.setText(bean.getData().getCityNameCn() + "");
+            } else {
                 tvAddressCity.setText("--·--");
             }
-        }catch (Exception e){
+        } catch (Exception e) {
             tvAddressCity.setText("--·--");
         }
 
@@ -1558,7 +1542,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
                                 syncOrder(activity);
                             } else {
                                 ///没有网络情况下
-                                lock90day();
+                                //lock90day();
                             }
                             break;
                         case 200:
@@ -1577,11 +1561,11 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
                             set_BadgeCount += 1;
                             home_badge.setBadgeCount(set_BadgeCount);
                             try {
-                                PushMessageBean bean = (PushMessageBean)msg.obj;
+                                PushMessageBean bean = (PushMessageBean) msg.obj;
                                 bean.setBadge(true);
                                 SqlUtils.updateBadgeBean(bean);
                                 LogUtil.e("++++++++++++new ");
-                            }catch (Exception e){
+                            } catch (Exception e) {
                             }
                             break;
                         case 302:
@@ -1595,9 +1579,9 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
                         case 310:
                             /**####  start-hjs-addStatisticsEvent   ##**/
                             try {
-                                HashMap<String, Serializable> add_hp = ( HashMap<String, Serializable>)msg.obj;
+                                HashMap<String, Serializable> add_hp = (HashMap<String, Serializable>) msg.obj;
                                 addStatisticsEvent("push_notification", add_hp);
-                            }catch (Exception e){
+                            } catch (Exception e) {
                                 e.printStackTrace();
                             }
                             /**####  end-hjs-addStatisticsEvent  ##**/
@@ -1628,7 +1612,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
                             break;
                         case 400:
                             HashMap<String, Serializable> add_hp = (HashMap<String, Serializable>) msg.obj;
-                            LogUtil.e("hjs"+add_hp.get("key"));
+                            LogUtil.e("hjs" + add_hp.get("key"));
                             break;
                         default:
                             break;
@@ -1701,13 +1685,13 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
             if (netBroadcastReceiver != null) {
                 unregisterReceiver(netBroadcastReceiver);
             }
-            if(screenrecive!=null){
+            if (screenrecive != null) {
                 unregisterReceiver(screenrecive);
             }
-        }catch (Exception e){
+        } catch (Exception e) {
 
         }
-        if (screenrecive!=null){
+        if (screenrecive != null) {
             unregisterReceiver(screenrecive);
         }
         super.onDestroy();
@@ -1731,7 +1715,6 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
     protected void onPause() {
         super.onPause();
     }
-
 
 
     private void requestNetwork() {
@@ -1812,6 +1795,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         }
         Log.e("SERVICE_FUWU", "时区：" + timerID + "----选择服务器:" + Constans.HOST_SERVER);
     }
+
     private int servers = 0;
 
     /**
@@ -1855,7 +1839,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
                     @Override
                     public void onError(Response<String> response) {
                         super.onError(response);
-                        switch (servers){
+                        switch (servers) {
                             case 0:
                                 servers = 1;
                                 getInternetService();
@@ -1870,8 +1854,6 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
                 });
 
     }
-
-
 
 
     private void saveService(String response) {
