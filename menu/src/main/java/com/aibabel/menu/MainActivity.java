@@ -599,7 +599,6 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
 
             String spnettemp = SharePrefUtil.getString(mContext, neverUseNetflag, "");
             LogUtil.e("neverUseNetflag =" + spnettemp);
-            if (TextUtils.isEmpty(spnettemp)) {
                 String endtime = SharePrefUtil.getString(mContext, neverUseNet_end, "");//90天未使用
                 LogUtil.e(" neverUseNet_end =" + endtime);
                 if (!TextUtils.isEmpty(endtime)) {
@@ -607,13 +606,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
                         LogUtil.e(" compaeTimeWithAfter24  lockloopmsg()  <=0");
                         lockloopmsg(endtime);
                     }
-                } else {
-                    LogUtil.e("neverUseNet_end=endtime = null");
                 }
-            } else if (spnettemp.equalsIgnoreCase("net_ok")) {
-                // String endtime = SharePrefUtil.getString(mContext, neverUseNet_end, "");//90天未使用
-                //lockloopmsg(endtime);//以前连接过网络，快到期断网，4个小时检测一次
-            }
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -661,11 +654,15 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
             DataManager.getInstance().setSaveString(order_oid, oid);
             SharePrefUtil.saveString(context, order_uid, uid);
             SharePrefUtil.saveString(context, order_uname, uname);
-            if (!TextUtils.isEmpty(from_time)) {
-                SharePrefUtil.saveString(context, order_from, from_time);
-                updatetime(from_time);
-            } else {
 
+            SharePrefUtil.saveString(context, order_endttime, end_time);
+            SharePrefUtil.saveString(context, order_sn, sn);
+            SharePrefUtil.saveString(context, order_from, from_time);
+
+            if (!TextUtils.isEmpty(end_time)) {
+                SharePrefUtil.saveString(context, end_time, end_time);
+                updatetime(end_time);
+            } else {
                 try {
                     String[] startstr = CalenderUtil.calculateTimeDifferenceByDuration();
                     if (startstr != null) {
@@ -682,8 +679,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
             }
 
 
-            SharePrefUtil.saveString(context, order_endttime, end_time);
-            SharePrefUtil.saveString(context, order_sn, sn);
+
             if (islock >= 0) {
                 SharePrefUtil.saveInt(context, order_islock, islock);
                 try {
@@ -1542,7 +1538,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
                                 syncOrder(activity);
                             } else {
                                 ///没有网络情况下
-                                //lock90day();
+                                lock90day();
                             }
                             break;
                         case 200:
@@ -1554,7 +1550,6 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
                             //接受到文颖的消息
                             if (msg != null) {
                                 Bundle getdata = msg.getData();
-
                             }
                             break;
                         case 301:

@@ -914,7 +914,7 @@ public class CalenderUtil {
         try {
 //            calculateTimeDifferenceByDuration();
             System.out.print(calculateTimeDifferenceadd90("20190112102745"));
-            System.out.println(compaeTimeWithAfter24("20190412202745"));
+            System.out.println(compaeTimeWithAfter24("20190415202745"));
         } catch (Exception e) {
             e.printStackTrace();
         }
