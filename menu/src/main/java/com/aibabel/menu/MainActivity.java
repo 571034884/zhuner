@@ -1631,9 +1631,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
     private void lockloopmsg(String order_end) {
 //        String order_end = SharePrefUtil.getString(mContext, order_endttime, "");
         String channelName = SharePrefUtil.getString(mContext, order_channelName, "");
-
         LogUtil.e("channelName=" + (channelName));
-
         int isZhuner = SharePrefUtil.getInt(mContext, order_isZhuner, -1);
         if (TextUtils.isEmpty(order_end)) {
             return;

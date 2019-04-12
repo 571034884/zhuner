@@ -99,7 +99,7 @@ public class CalenderUtil {
 
             Calendar calendar = Calendar.getInstance();
             calendar.setTime(fromDate1);
-            calendar.add(Calendar.DATE, 90);//增加一天
+            calendar.add(Calendar.DATE, 91);//增加一天
             Date time90 = calendar.getTime();
             String format2 = df.format(time90);
 
@@ -175,7 +175,7 @@ public class CalenderUtil {
      * @return
      */
     public static int compaeTimeWithAfter24(String endtime) throws ParseException {
-        if(TextUtils.isEmpty(endtime))return 0;
+        if((endtime).equalsIgnoreCase(""))return 0;
         try {
             endtime = calendaradd24(endtime);
             SimpleDateFormat simpleFormat = new SimpleDateFormat("yyyyMMddhhmmss");
@@ -913,8 +913,8 @@ public class CalenderUtil {
     public static void main(String[] args) {
         try {
 //            calculateTimeDifferenceByDuration();
-            System.out.print(calculateTimeDifferenceadd90("20190224181400"));
-//            compaeTimeWithAfter24("20190224181400");
+            System.out.print(calculateTimeDifferenceadd90("20190112102745"));
+            System.out.println(compaeTimeWithAfter24("20190412202745"));
         } catch (Exception e) {
             e.printStackTrace();
         }
