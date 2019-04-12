@@ -590,6 +590,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
      * 90天锁机逻辑,或者
      */
     public void lock90day() {
+
         ///没有网络情况下
         try {
 
@@ -621,6 +622,23 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
 
     }
 
+
+    private void updatetime(String partime) {
+        String get_starttime = "";
+        String get_endtime = "";
+        try {
+            get_starttime = SharePrefUtil.getString(mContext, neverUseNet_start, "");
+            get_endtime = SharePrefUtil.getString(mContext, neverUseNet_end, "");
+
+
+            String end90time = CalenderUtil.calculateTimeDifferenceadd90(get_starttime);
+            SharePrefUtil.put(mContext, neverUseNet_start, "" + partime);
+            SharePrefUtil.put(mContext, neverUseNet_end, "" + end90time);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
     /**
      * 锁机逻辑，hjs
      */
@@ -642,14 +660,6 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
                 SharePrefUtil.saveString(context, order_channelName, chanelname);
             } else LogUtil.e("chanelname empty");
 
-////张月测试用
-//            ((Activity)mContext).runOnUiThread(new Runnable() {
-//                @Override
-//                public void run() {
-//                    ToastUtil.show(context,"oid="+oid,Toast.LENGTH_LONG);
-//                }
-//            });
-
             if (!TextUtils.isEmpty(oid)) {
                 SharePrefUtil.saveString(context, order_oid, oid);
                 SPHelper.save(order_oid, oid);
@@ -664,9 +674,13 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
 
             if (!TextUtils.isEmpty(from_time)) {
                 SharePrefUtil.saveString(context, order_from, from_time);
+
+                updatetime(from_time);
+
             } else LogUtil.e("from_time = null");
             if (!TextUtils.isEmpty(end_time)) {
                 SharePrefUtil.saveString(context, order_endttime, end_time);
+
             } else LogUtil.e("end_time = null");
             if (!TextUtils.isEmpty(sn)) {
                 SharePrefUtil.saveString(context, order_sn, sn);

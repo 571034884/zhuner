@@ -91,6 +91,27 @@ public class CalenderUtil {
         return  rst;
     }
 
+
+    public static String calculateTimeDifferenceadd90(String strtime) {
+        try {
+            SimpleDateFormat df = new SimpleDateFormat("yyyyMMddHHmmss");
+            Date fromDate1 = df.parse(strtime);
+
+            Calendar calendar = Calendar.getInstance();
+            calendar.setTime(fromDate1);
+            calendar.add(Calendar.DATE, 90);//增加一天
+            Date time90 = calendar.getTime();
+            String format2 = df.format(time90);
+
+            System.out.println(format2);
+
+            return format2;
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return  "";
+    }
+
 //    public static String[] calculateTimeDifferenceByDuration() {
 //        Instant inst1 = Instant.now();  //当前的时间
 //        System.out.println("Inst1：" + instant2Str(inst1));
@@ -891,9 +912,10 @@ public class CalenderUtil {
      */
     public static void main(String[] args) {
         try {
-            calculateTimeDifferenceByDuration();
-            compaeTimeWithAfter24("20190224181400");
-        } catch (ParseException e) {
+//            calculateTimeDifferenceByDuration();
+            System.out.print(calculateTimeDifferenceadd90("20190224181400"));
+//            compaeTimeWithAfter24("20190224181400");
+        } catch (Exception e) {
             e.printStackTrace();
         }
 
