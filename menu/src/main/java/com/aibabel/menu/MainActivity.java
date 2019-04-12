@@ -623,15 +623,13 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
     }
 
 
+    /**
+     * 更新时间
+     * @param partime
+     */
     private void updatetime(String partime) {
-        String get_starttime = "";
-        String get_endtime = "";
         try {
-            get_starttime = SharePrefUtil.getString(mContext, neverUseNet_start, "");
-            get_endtime = SharePrefUtil.getString(mContext, neverUseNet_end, "");
-
-
-            String end90time = CalenderUtil.calculateTimeDifferenceadd90(get_starttime);
+            String end90time = CalenderUtil.calculateTimeDifferenceadd90(partime);
             SharePrefUtil.put(mContext, neverUseNet_start, "" + partime);
             SharePrefUtil.put(mContext, neverUseNet_end, "" + end90time);
         } catch (Exception e) {
