@@ -29,6 +29,7 @@
     <string name="fail">下单失败</string>
     <string name="weixin">请用微信扫码付款</string>
     <string name="day">天</string>
+    <string name="sun">日</string>
     <string name="gong">共</string>
     <string name="gong1">共</string>
     <string name="rmb">元</string>
@@ -61,4 +62,7 @@
 
     <string name="activi_starttime">生效时间</string>
     <string name="activi_endtime">截止时间</string>
+    <string name="view_des">查看</string>
+    <string name="pay_ment">购买</string>
+    <string name="mb_des">当地4G网络</string>
 </resources>

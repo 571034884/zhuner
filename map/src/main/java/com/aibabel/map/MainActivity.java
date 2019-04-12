@@ -167,10 +167,6 @@ public class MainActivity extends MapBaseActivity implements SensorEventListener
         mCate.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if(!CommonUtils.isFastClick()){
-                    mCate.setChecked(false);
-                    return;
-                }
                 if (!CommonUtils.isNetworkAvailable(mContext)){
                     ToastUtil.showShort(mContext,"请检查网络连接");
                     mCate.setChecked(false);

@@ -331,6 +331,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
 
             IntentFilter filter = new IntentFilter();
             filter.addAction(Intent.ACTION_SCREEN_OFF);
+
             screenrecive = new ScreenOffReceiver();
             mContext.registerReceiver(screenrecive, filter);
         }catch (Exception e){
@@ -358,6 +359,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
 
         }
     }
+
 
     @Override
     public int getLayout(Bundle bundle) {
@@ -1681,10 +1683,20 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
 
     @Override
     protected void onDestroy() {
-        //注销  租赁逻辑里面的广播和资源
-        renUtils.destroyRes();
-        if (netBroadcastReceiver != null) {
-            unregisterReceiver(netBroadcastReceiver);
+        try {
+            //注销  租赁逻辑里面的广播和资源
+            renUtils.destroyRes();
+            if (netBroadcastReceiver != null) {
+                unregisterReceiver(netBroadcastReceiver);
+            }
+            if(screenrecive!=null){
+                unregisterReceiver(screenrecive);
+            }
+        }catch (Exception e){
+
+        }
+        if (screenrecive!=null){
+            unregisterReceiver(screenrecive);
         }
         super.onDestroy();
     }

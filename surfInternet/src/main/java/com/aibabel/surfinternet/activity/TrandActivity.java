@@ -1,17 +1,11 @@
 package com.aibabel.surfinternet.activity;
 
-import android.content.ActivityNotFoundException;
-import android.content.ComponentName;
 import android.content.Intent;
-import android.os.Build;
 import android.os.Bundle;
-import android.support.annotation.RequiresApi;
 import android.support.constraint.ConstraintLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.OrientationHelper;
 import android.support.v7.widget.RecyclerView;
-import android.telephony.SubscriptionInfo;
-import android.telephony.SubscriptionManager;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
@@ -21,19 +15,20 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.aibabel.aidlaar.StatisticsManager;
+import com.aibabel.baselibrary.http.BaseBean;
+import com.aibabel.baselibrary.http.BaseCallback;
+import com.aibabel.baselibrary.http.OkGoUtil;
+import com.aibabel.baselibrary.utils.DeviceUtils;
 import com.aibabel.surfinternet.R;
 import com.aibabel.surfinternet.adapter.CommomRecyclerAdapter;
 import com.aibabel.surfinternet.adapter.CommonRecyclerViewHolder;
-import com.aibabel.surfinternet.bean.Constans;
+import com.aibabel.surfinternet.base.BaseNetActivity;
+import com.aibabel.surfinternet.net.Api;
 import com.aibabel.surfinternet.bean.TrandBean;
-import com.aibabel.surfinternet.okgo.BaseBean;
-import com.aibabel.surfinternet.okgo.BaseCallback;
-import com.aibabel.surfinternet.okgo.OkGoUtil;
+import com.aibabel.surfinternet.utils.Logs;
 import com.aibabel.surfinternet.utils.NetUtil;
 import com.aibabel.surfinternet.utils.ToastUtil;
 import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.RequestOptions;
 import com.lzy.okgo.model.Response;
 import com.umeng.analytics.MobclickAgent;
@@ -46,9 +41,8 @@ import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import jp.wasabeef.glide.transformations.CropCircleTransformation;
 
-public class TrandActivity extends BaseActivity implements BaseCallback {
+public class TrandActivity extends BaseNetActivity{
 
 
     @BindView(R.id.iv_back)
@@ -75,14 +69,14 @@ public class TrandActivity extends BaseActivity implements BaseCallback {
     private TextView tv_qian;
     private boolean is_onclick = true;
     private String iccid;
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);// 设置全屏
-        setNavigationBarVisibility(false);
-        setContentView(R.layout.activity_trand);
-        ButterKnife.bind(this);
 
+    @Override
+    public int getLayouts(Bundle var1) {
+        return R.layout.activity_trand;
+    }
+
+    @Override
+    public void initView() {
         Intent intent = getIntent();
         int first = intent.getIntExtra("first", 0);
         if (first == 1) {
@@ -90,7 +84,7 @@ public class TrandActivity extends BaseActivity implements BaseCallback {
         }
         if (NetUtil.isNetworkAvailable(TrandActivity.this)) {
             initAdapter();
-            initData();
+            initDatas();
         } else {
             rl2.setVisibility(View.GONE);
             llIsnet.setVisibility(View.VISIBLE);
@@ -115,6 +109,11 @@ public class TrandActivity extends BaseActivity implements BaseCallback {
                 finish();
             }
         });
+    }
+
+    @Override
+    public void initData() {
+
     }
 
     /**
@@ -194,19 +193,23 @@ public class TrandActivity extends BaseActivity implements BaseCallback {
                 if (isFastClick()) {
                     return;
                 }
-                String skuid = trandList.get(postion).getSkuid();
+//                String skuid = trandList.get(postion).getSkuid();
+//
+//                String price = trandList.get(postion).getPrice();
+//                float s1 = Float.valueOf(price);
+//                DecimalFormat fnum = new DecimalFormat("##0.00");
+//                String dd = fnum.format(s1);
+//                String name = trandList.get(postion).getCountry().toString();
+//                String days = trandList.get(postion).getDays().toString();
+//                Intent intent = new Intent(TrandActivity.this, DetailsActivity.class);
+//                intent.putExtra("skuid", skuid);
+//                intent.putExtra("price", dd + "");
+//                intent.putExtra("name", name);
+//                intent.putExtra("days", days);
+                TrandBean.DataBean bean = trandList.get(postion);
 
-                String price = trandList.get(postion).getPrice();
-                float s1 = Float.valueOf(price);
-                DecimalFormat fnum = new DecimalFormat("##0.00");
-                String dd = fnum.format(s1);
-                String name = trandList.get(postion).getCountry().toString();
-                String days = trandList.get(postion).getDays().toString();
-                Intent intent = new Intent(TrandActivity.this, DetailsActivity.class);
-                intent.putExtra("skuid", skuid);
-                intent.putExtra("price", dd + "");
-                intent.putExtra("name", name);
-                intent.putExtra("days", days);
+                Intent intent = new Intent(TrandActivity.this, DetailsPayActivity.class);
+                intent.putExtra("countryName", bean.getCountryName());
 
 
                 if (NetUtil.isNetworkAvailable(TrandActivity.this)) {
@@ -229,73 +232,77 @@ public class TrandActivity extends BaseActivity implements BaseCallback {
             @Override
             public void convert(CommonRecyclerViewHolder holder, Object o, int position) {
 
+                TrandBean.DataBean bean = trandList.get(position);
+
                 ImageView iv_country = holder.getView(R.id.iv_country);
                 TextView tv_zhongwen = holder.getView(R.id.tv_zhongwen);
                 tv_qian = holder.getView(R.id.tv_qian);
 
                 RequestOptions options = new RequestOptions()
-                        .placeholder(R.mipmap.morentu)//图片加载出来前，显示的图片
-                        .fallback(R.mipmap.morentu) //url为空的时候,显示的图片
-                        .error(R.mipmap.morentu);//图片加载失败后，显示的图片
+                        .placeholder(R.mipmap.ic_country_default)//图片加载出来前，显示的图片
+                        .fallback(R.mipmap.ic_country_default) //url为空的时候,显示的图片
+                        .error(R.mipmap.ic_country_default);//图片加载失败后，显示的图片
 
-                Glide.with(TrandActivity.this)
-                        .load(((TrandBean.DataBean) o).getImpage())
-                        .apply(options)
-                        .into(iv_country);
-                tv_zhongwen.setText(((TrandBean.DataBean) o).getCountry());
-                String days = ((TrandBean.DataBean) o).getDays().toString();
-                String s = ((TrandBean.DataBean) o).getPrice().toString();
-                float s1 = Float.valueOf(s);
-
-                DecimalFormat fnum = new DecimalFormat("##0.00");
-                String dd = fnum.format(s1);
-                if (TextUtils.equals(Constans.PHONE_MOBILE_NUMBER,"PH")&&TextUtils.equals(Constans.COUNTRY_VERSION_NUMBER,"5")&&TextUtils.equals(Constans.PRO_VERSION_NUMBER,"S")){
-                        tv_qian.setText("$ " + dd + "/" + getResources().getString(R.string.day));
-                }else {
-                    tv_qian.setText("¥ " + dd + "/" + getResources().getString(R.string.day));
+                if (DeviceUtils.getSystem() != DeviceUtils.System.FLY_TAIWAN){
+                    Glide.with(TrandActivity.this)
+                            .load(bean.getImageUrl())
+                            .apply(options)
+                            .into(iv_country);
                 }
+                tv_zhongwen.setText(bean.getCountryName());
+
+//                String days = ((TrandBean.DataBean) o).getDays().toString();
+//                String s = ((TrandBean.DataBean) o).getPrice().toString();
+//                float s1 = Float.valueOf(s);
+//                DecimalFormat fnum = new DecimalFormat("##0.00");
+//                String dd = fnum.format(s1);
+//                if (TextUtils.equals(Api.PHONE_MOBILE_NUMBER,"PH")&&TextUtils.equals(Api.COUNTRY_VERSION_NUMBER,"5")&&TextUtils.equals(Api.PRO_VERSION_NUMBER,"S")){
+//                        tv_qian.setText("$ " + dd + "/" + getResources().getString(R.string.day));
+//                }else {
+//                    tv_qian.setText("¥ " + dd + "/" + getResources().getString(R.string.day));
+//                }
             }
         };
         rv.setAdapter(adapter);
     }
 
-    private void initData() {
+
+
+    private void initDatas() {
 
         Map<String, String> map = new HashMap<>();
-        if (TextUtils.equals(Constans.PHONE_MOBILE_NUMBER,"PH")&&TextUtils.equals(Constans.COUNTRY_VERSION_NUMBER,"5")&&TextUtils.equals(Constans.PRO_VERSION_NUMBER,"S")){
-            map.put("currencyType", "Dollar");
-            map.put("priceFor", "forSell");
-        }else if (TextUtils.equals(Constans.PRO_VERSION_NUMBER,"S")){
-            map.put("priceFor", "forSell");
-        }else {
-            map.put("priceFor", "forLease");
+        if (DeviceUtils.getSystem() == DeviceUtils.System.PRO_LEASE){
+            map.put("deviceType", "L");
+        }else{
+            map.put("deviceType", "S");
         }
-
-        map.put("sysLanguage", Constans.SETCOUNTRYlANGUAGE);
-        map.put("hasBaseDays", "true");
-        map.put("iccid",Constans.PHONE_ICCID);
-        if (Constans.Lk_CARDTYPE){
-
-        map.put("cardType","lksc");
+        map.put("iccid", Api.PHONE_ICCID);
+        if (Api.Lk_CARDTYPE){
+            map.put("cardType","lksc");
         }
-        OkGoUtil.<TrandBean>get(TrandActivity.this, Constans.METHOD_GUOJIALIEBIAO, map, TrandBean.class, this);
-    }
+        Logs.e(map.toString());
+        OkGoUtil.get(mContext, Api.GET_COUNTRY_LIST, map, TrandBean.class, new BaseCallback<TrandBean>() {
 
+            @Override
+            public void onSuccess(String method, TrandBean trandBean, String resoureJson) {
+                Logs.e(Api.GET_COUNTRY_LIST+":"+resoureJson);
+                if (trandBean.getData() != null){
+                    trandList = trandBean.getData();
+                    adapter.updateData(trandList);
+                    clTrand.setVisibility(View.VISIBLE);
+                }
+            }
 
-    @Override
-    public void onSuccess(String method, BaseBean model) {
+            @Override
+            public void onError(String method, String message, String resoureJson) {
+                Logs.e(Api.GET_COUNTRY_LIST+":"+message.toString());
+                rl2.setVisibility(View.GONE);
+                llIsnet.setVisibility(View.VISIBLE);
+                tvError.setText(getResources().getString(R.string.zoudiule));
+            }
 
-        trandBean = (TrandBean) model;
-        trandList = trandBean.getData();
-        adapter.updateData(trandList);
-        clTrand.setVisibility(View.VISIBLE);
-    }
-
-
-    @Override
-    public void onError(String method, Response<String> response) {
-        rl2.setVisibility(View.GONE);
-        llIsnet.setVisibility(View.VISIBLE);
-        tvError.setText(getResources().getString(R.string.zoudiule));
+            @Override
+            public void onFinsh(String method) {}
+        });
     }
 }

@@ -12,7 +12,7 @@ public class RouteBean implements Parcelable{
     private String endName;//终点名称
     private int index;//0 驾车 1公交  2 步行
     private String mode;//driving transit walking
-    private int locationWhere;//0国外 1国内
+    private int locationWhere = 0;//0国外 1国内
     private String city;//城市
     private String coord_type;//wgs84  bd09ll
     private LocationBean startLoc;//起始经纬度

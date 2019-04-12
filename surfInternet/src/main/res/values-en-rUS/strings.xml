@@ -32,6 +32,7 @@
     <string name="weixin">Please scan the QR code with WeChat to pay</string>
 
     <string name="day">day(s)</string>
+    <string name="sun">day(s)</string>
     <string name="gong">altogether&#160;</string>
     <string name="gong1">&#160;,&#160;</string>
     <string name="rmb">&#160;¥&#160;</string>
@@ -56,4 +57,7 @@
     <string name="zhifubao_pay">Alipay pay</string>
     <string name="paypal_pay">PayPal pay</string>
     <string name="pay_type">Please choose payment method</string>
+    <string name="view_des">View</string>
+    <string name="pay_ment">Buy</string>
+    <string name="mb_des">Local 4G Network</string>
 </resources>

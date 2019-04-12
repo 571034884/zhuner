@@ -6,11 +6,14 @@ import android.net.NetworkInfo;
 import android.text.TextUtils;
 import android.util.Log;
 
+import com.aibabel.surfinternet.R;
+import com.bumptech.glide.request.RequestOptions;
+
 import java.lang.reflect.Method;
 import java.util.Locale;
 
 public class CommonUtils {
-
+    public static RequestOptions options = new RequestOptions().placeholder(R.mipmap.placeholder_h).error(R.mipmap.error_h);
 
     /**
      * 判断网络是否可用

@@ -194,15 +194,16 @@ public class ChooseCurrencyActivity extends BaseActivity {
                         HashMap<String, Serializable> add_hp = new HashMap<>();
                         add_hp.put("currency_choose5_num",position);
                         addStatisticsEvent("currency_choose5", add_hp);
+                        if (position != -1&& sortListView!=null) {
+                            //因为列表默认加上了常用的分组 所以位置需要再-1
+                            sortListView.setSelection(position + 1 - 1);
+                        }
 
                     }catch (Exception e){
                         e.printStackTrace();
                     }
                     /**####  end-hjs-addStatisticsEvent  ##**/
-                    if (position != -1) {
-                        //因为列表默认加上了常用的分组 所以位置需要再-1
-                        sortListView.setSelection(position + 1 - 1);
-                    }
+
                 }
             }
         });

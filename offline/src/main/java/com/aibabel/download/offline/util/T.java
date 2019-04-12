@@ -81,8 +81,14 @@ public class T
      */
     public static void show(Context context, CharSequence message, int duration)
     {
-        if (isShow)
-            Toast.makeText(context, message, duration).show();
+        try {
+            if (message != null) message = StringUtils.setCH2TW(message.toString());
+
+            if (isShow)
+                Toast.makeText(context, message, duration).show();
+        }catch (Exception e){
+
+        }
     }
 
     /**

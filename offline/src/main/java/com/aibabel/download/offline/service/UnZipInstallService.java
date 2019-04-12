@@ -38,37 +38,38 @@ public class UnZipInstallService extends Service {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        String comm=intent.getStringExtra("comm");
+        if(intent!=null) {
+            String comm = intent.getStringExtra("comm");
 
-        String id="";
-        String  filename="";
-        String delType="";
-        String bean="";
-        acquireWakeLock();
+            String id = "";
+            String filename = "";
+            String delType = "";
+            String bean = "";
+            acquireWakeLock();
 
-        switch (comm) {
-            case "unzip":
-                id=intent.getStringExtra("id");
-                filename=intent.getStringExtra("filename");
-                unZipAndInstall(id,filename);
-                break;
-            case "copy":
-                id=intent.getStringExtra("id");
-                unzipCopy(id,JSON.parseObject( intent.getStringExtra("copyBean"),NeizhiList.ListFileBean.CopyPathBean.class));
+            switch (comm) {
+                case "unzip":
+                    id = intent.getStringExtra("id");
+                    filename = intent.getStringExtra("filename");
+                    unZipAndInstall(id, filename);
+                    break;
+                case "copy":
+                    id = intent.getStringExtra("id");
+                    unzipCopy(id, JSON.parseObject(intent.getStringExtra("copyBean"), NeizhiList.ListFileBean.CopyPathBean.class));
 
 
-                break;
-            case "del":
+                    break;
+                case "del":
 
-                delType=intent.getStringExtra("delType");
-                bean=intent.getStringExtra("bean");
-                deleteFile(JSON.parseObject(bean,Offline_database.class),delType,intent.getStringExtra("frag"));
+                    delType = intent.getStringExtra("delType");
+                    bean = intent.getStringExtra("bean");
+                    deleteFile(JSON.parseObject(bean, Offline_database.class), delType, intent.getStringExtra("frag"));
 
-                break;
+                    break;
+
+            }
 
         }
-
-
 
 
         return super.onStartCommand(intent, flags, startId);

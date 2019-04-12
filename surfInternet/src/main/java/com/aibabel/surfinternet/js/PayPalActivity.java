@@ -26,7 +26,7 @@ import com.aibabel.baselibrary.utils.DeviceUtils;
 import com.aibabel.baselibrary.utils.XIPCUtils;
 import com.aibabel.surfinternet.MainActivity;
 import com.aibabel.surfinternet.R;
-import com.aibabel.surfinternet.activity.BaseActivity;
+import com.aibabel.surfinternet.base.BaseNetActivity;
 import com.aibabel.surfinternet.utils.NetUtil;
 import com.bumptech.glide.Glide;
 import com.xuexiang.xipc.XIPC;
@@ -44,7 +44,7 @@ import butterknife.ButterKnife;
 
 import static com.xuexiang.xipc.XIPC.getContext;
 
-public class PayPalActivity extends BaseActivity implements OnJSClickListener {
+public class PayPalActivity extends BaseNetActivity implements OnJSClickListener {
 
 
     @BindView(R.id.rl)
@@ -67,13 +67,15 @@ public class PayPalActivity extends BaseActivity implements OnJSClickListener {
     private String skuid;
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_paypal);
-        ButterKnife.bind(this);
+    public int getLayouts(Bundle var1) {
+        return R.layout.activity_paypal;
+    }
+
+    @Override
+    public void initView() {
         if (NetUtil.isNetworkAvailable(PayPalActivity.this)) {
-            initView();
-            initData();
+            initViews();
+            initDatas();
         } else {
             rl.setVisibility(View.GONE);
             llIsnet.setVisibility(View.VISIBLE);
@@ -87,7 +89,12 @@ public class PayPalActivity extends BaseActivity implements OnJSClickListener {
         });
     }
 
-    private void initView() {
+    @Override
+    public void initData() {
+
+    }
+
+    private void initViews() {
         webView = findViewById(R.id.wbv_paypal);
         // 允许 使用js
 
@@ -115,7 +122,7 @@ public class PayPalActivity extends BaseActivity implements OnJSClickListener {
 
     }
 
-    public void initData() {
+    public void initDatas() {
         Intent intent = getIntent();
         String url = intent.getStringExtra("url");
         Log.e("url_pay", url);
@@ -227,6 +234,7 @@ public class PayPalActivity extends BaseActivity implements OnJSClickListener {
                         @Override
                         public void run() {
                             startActivity(new Intent(PayPalActivity.this, MainActivity.class));
+                            PayPalActivity.this.finish();
                         }
                     }, 3000);
                 }
@@ -253,6 +261,7 @@ public class PayPalActivity extends BaseActivity implements OnJSClickListener {
             @Override
             public void run() {
                 startActivity(new Intent(PayPalActivity.this, MainActivity.class));
+                PayPalActivity.this.finish();
             }
         }, 3000);
     }

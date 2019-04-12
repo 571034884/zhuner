@@ -34,6 +34,7 @@
     <string name="weixin">WeChatでQRコードをスキャンしてお支払い可能です。</string>
 
     <string name="day">day(s)</string>
+    <string name="sun">day(s)</string>
     <string name="gong">altogether&#160;</string>
     <string name="gong1">&#160;,&#160;</string>
     <string name="rmb">&#160;¥&#160;</string>
@@ -57,4 +58,7 @@
     <string name="zhifubao_pay">アリペイで支払</string>
     <string name="paypal_pay">PayPalで支払</string>
     <string name="pay_type">お支払い方法をお選びください</string>
+    <string name="view_des">詳しく</string>
+    <string name="pay_ment">購入</string>
+    <string name="mb_des">ローカル4 Gネットワーク</string>
 </resources>

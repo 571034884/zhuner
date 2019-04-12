@@ -7,8 +7,6 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.RequiresApi;
 import android.support.constraint.ConstraintLayout;
-import android.telephony.SubscriptionInfo;
-import android.telephony.SubscriptionManager;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.Gravity;
@@ -17,27 +15,28 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
-import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.aibabel.aidlaar.StatisticsManager;
+import com.aibabel.baselibrary.http.BaseBean;
+import com.aibabel.baselibrary.http.BaseCallback;
+import com.aibabel.baselibrary.http.OkGoUtil;
 import com.aibabel.surfinternet.R;
-import com.aibabel.surfinternet.bean.Constans;
+import com.aibabel.surfinternet.base.BaseNetActivity;
+import com.aibabel.surfinternet.net.Api;
 import com.aibabel.surfinternet.bean.DetailsBean;
 import com.aibabel.surfinternet.bean.PaymentBean;
 import com.aibabel.surfinternet.bean.PriceBeans;
 import com.aibabel.surfinternet.js.CustomWebViewActivity;
 import com.aibabel.surfinternet.js.PayPalActivity;
-import com.aibabel.surfinternet.okgo.BaseBean;
-import com.aibabel.surfinternet.okgo.BaseCallback;
-import com.aibabel.surfinternet.okgo.OkGoUtil;
+import com.aibabel.surfinternet.net.OkGoUtilWeb;
+import com.aibabel.surfinternet.utils.Logs;
 import com.aibabel.surfinternet.utils.NetUtil;
 import com.aibabel.surfinternet.utils.ToastUtil;
+import com.lzy.okgo.OkGo;
 import com.lzy.okgo.model.Response;
 import com.umeng.analytics.MobclickAgent;
 
@@ -47,7 +46,6 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Locale;
 import java.util.Map;
 
 import butterknife.BindView;
@@ -56,7 +54,7 @@ import butterknife.ButterKnife;
 /**
  *
  */
-public class DetailsActivity extends BaseActivity implements BaseCallback, View.OnClickListener {
+public class DetailsActivity extends BaseNetActivity implements View.OnClickListener {
 
 
     @BindView(R.id.tv_country)
@@ -151,14 +149,17 @@ public class DetailsActivity extends BaseActivity implements BaseCallback, View.
     private String language;
     private String country;
 
+
     @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_details);
-        ButterKnife.bind(this);
+    public int getLayouts(Bundle var1) {
+        return R.layout.activity_details;
+    }
+
+    @Override
+    public void initView() {
         params = getWindow().getAttributes();
         if (NetUtil.isNetworkAvailable(DetailsActivity.this)) {
-            initData();
+            initDatas();
         } else {
             rl.setVisibility(View.VISIBLE);
             clDetails.setVisibility(View.GONE);
@@ -186,6 +187,11 @@ public class DetailsActivity extends BaseActivity implements BaseCallback, View.
                 finish();
             }
         });
+    }
+
+    @Override
+    public void initData() {
+
     }
 
     /**
@@ -222,7 +228,7 @@ public class DetailsActivity extends BaseActivity implements BaseCallback, View.
         LinAlipay = pop.findViewById(R.id.Lin_Alipay);
         LinPayPal = pop.findViewById(R.id.Lin_PayPal);
 
-        if (TextUtils.equals(Constans.PHONE_MOBILE_NUMBER, "PH") && TextUtils.equals(Constans.COUNTRY_VERSION_NUMBER, "5") && TextUtils.equals(Constans.PRO_VERSION_NUMBER, "S")) {
+        if (TextUtils.equals(Api.PHONE_MOBILE_NUMBER, "PH") && TextUtils.equals(Api.COUNTRY_VERSION_NUMBER, "5") && TextUtils.equals(Api.PRO_VERSION_NUMBER, "S")) {
             LinPayPal.setVisibility(View.VISIBLE);
             LinWeChat.setVisibility(View.GONE);
             LinAlipay.setVisibility(View.GONE);
@@ -305,27 +311,27 @@ public class DetailsActivity extends BaseActivity implements BaseCallback, View.
     }
 
     private void initLanguage() {
-        if (Constans.PHONE_LANGUAGE.equals("zh")) {
+        if (Api.PHONE_LANGUAGE.equals("zh")) {
             tvPriceNum6.setVisibility(View.GONE);
             tvPriceNum4.setVisibility(View.VISIBLE);
-            if (TextUtils.equals(Constans.PHONE_MOBILE_NUMBER, "PH") && TextUtils.equals(Constans.COUNTRY_VERSION_NUMBER, "5") && TextUtils.equals(Constans.PRO_VERSION_NUMBER, "S")) {
+            if (TextUtils.equals(Api.PHONE_MOBILE_NUMBER, "PH") && TextUtils.equals(Api.COUNTRY_VERSION_NUMBER, "5") && TextUtils.equals(Api.PRO_VERSION_NUMBER, "S")) {
                 tvPriceNum4.setText(getResources().getString(R.string.dollar));
             } else {
                 tvPriceNum4.setText(getResources().getString(R.string.rmb));
             }
-        } else if (Constans.PHONE_LANGUAGE.equals("en") || Constans.PHONE_LANGUAGE.equals("ja") || Constans.PHONE_LANGUAGE.equals("ko")) {
+        } else if (Api.PHONE_LANGUAGE.equals("en") || Api.PHONE_LANGUAGE.equals("ja") || Api.PHONE_LANGUAGE.equals("ko")) {
             tvPriceNum6.setVisibility(View.VISIBLE);
             tvPriceNum4.setVisibility(View.GONE);
-            if (TextUtils.equals(Constans.PHONE_MOBILE_NUMBER, "PH") && TextUtils.equals(Constans.COUNTRY_VERSION_NUMBER, "5") && TextUtils.equals(Constans.PRO_VERSION_NUMBER, "S")) {
+            if (TextUtils.equals(Api.PHONE_MOBILE_NUMBER, "PH") && TextUtils.equals(Api.COUNTRY_VERSION_NUMBER, "5") && TextUtils.equals(Api.PRO_VERSION_NUMBER, "S")) {
                 tvPriceNum6.setText(getResources().getString(R.string.dollar));
             } else {
                 tvPriceNum6.setText(getResources().getString(R.string.rmb));
             }
         } else {
-            Constans.SETCOUNTRYlANGUAGE = "Chj";
+            Api.SETCOUNTRYlANGUAGE = "Chj";
             tvPriceNum6.setVisibility(View.GONE);
             tvPriceNum4.setVisibility(View.VISIBLE);
-            if (TextUtils.equals(Constans.PHONE_MOBILE_NUMBER, "PH") && TextUtils.equals(Constans.COUNTRY_VERSION_NUMBER, "5") && TextUtils.equals(Constans.PRO_VERSION_NUMBER, "S")) {
+            if (TextUtils.equals(Api.PHONE_MOBILE_NUMBER, "PH") && TextUtils.equals(Api.COUNTRY_VERSION_NUMBER, "5") && TextUtils.equals(Api.PRO_VERSION_NUMBER, "S")) {
                 tvPriceNum4.setText(getResources().getString(R.string.dollar));
             } else {
                 tvPriceNum4.setText(getResources().getString(R.string.rmb));
@@ -334,10 +340,8 @@ public class DetailsActivity extends BaseActivity implements BaseCallback, View.
     }
 
     private void initPayment(String payType) {
-
-
         Map<String, String> map = new HashMap<>();
-        map.put("iccId", Constans.PHONE_ICCID);
+        map.put("iccId", Api.PHONE_ICCID);
         map.put("skuId", skuid);
         map.put("describe", desc);
         map.put("copies", tvNumber.getText().toString());
@@ -345,159 +349,22 @@ public class DetailsActivity extends BaseActivity implements BaseCallback, View.
         String s = bigDecimalDo(s1, 100);
         String s2 = s.substring(0, s.length() - 3);
         //TODO 订单价格
-        map.put("spend", s2);
-//        map.put("spend", "1");
+//        map.put("spend", s2);
+        map.put("spend", "1");
         map.put("skuName", operator);
         map.put("days", days);
         map.put("payType", payType);
-        map.put("language", Constans.SETCOUNTRYlANGUAGE);
-        if (Constans.Lk_CARDTYPE){
-
+        map.put("language", Api.SETCOUNTRYlANGUAGE);
+        if (Api.Lk_CARDTYPE){
             map.put("cardType","lksc");
         }
-        OkGoUtil.<PaymentBean>post(DetailsActivity.this, Constans.METHOD_CHUANGJIANDINGDAN, new JSONObject(map), PaymentBean.class, this);
-        for (Map.Entry<String, String> entry : map.entrySet()) {
-            Log.e("map_chuangjiandingdan", entry.getKey() + "====" + map.get(entry.getKey()));
-        }
 
-    }
+        OkGoUtilWeb.post(mContext,Api.METHOD_CHUANGJIANDINGDAN, new JSONObject(map),PaymentBean.class, new BaseCallback<PaymentBean>(){
 
-    @Override
-    protected void onResume() {
-        super.onResume();
-        MobclickAgent.onResume(this);
-        initLanguage();
-        is_onclick = true;
-    }
-
-    @Override
-    protected void onPause() {
-        super.onPause();
-        MobclickAgent.onPause(this);
-    }
-
-    private void initShopping() {
-        Map<String, String> map = new HashMap<>();
-
-        if (TextUtils.equals(Constans.PHONE_MOBILE_NUMBER, "PH") && TextUtils.equals(Constans.COUNTRY_VERSION_NUMBER, "5") && TextUtils.equals(Constans.PRO_VERSION_NUMBER, "S")) {
-            map.put("currencyType", "Dollar");
-            map.put("priceFor", "forSell");
-        } else if (TextUtils.equals(Constans.PRO_VERSION_NUMBER, "S")) {
-            map.put("priceFor", "forSell");
-        } else {
-            map.put("priceFor", "forLease");
-        }
-        map.put("sysLanguage", Constans.SETCOUNTRYlANGUAGE);
-        map.put("hasBaseDays", "true");
-        map.put("iccid", Constans.PHONE_ICCID);
-        if (Constans.Lk_CARDTYPE){
-
-            map.put("cardType","lksc");
-        }
-        OkGoUtil.<PriceBeans>get(DetailsActivity.this, Constans.METHOD_GUOJIALIEBIAOXIANQINGYEPIRCE, map, PriceBeans.class, this);
-        for (Map.Entry<String, String> entry : map.entrySet()) {
-            Log.e("map_gouwujiaqian", entry.getKey() + "====" + map.get(entry.getKey()));
-        }
-    }
-
-    private void initonClick() {
-        btReduce.setOnClickListener(this);
-        btPlus.setOnClickListener(this);
-    }
-
-    private void initData() {
-        Intent intent = getIntent();
-        trand_skuid = intent.getStringExtra("skuid");
-        //单价
-        price = intent.getStringExtra("price");
-
-        price11 = Double.valueOf(price);
-        name = intent.getStringExtra("name");
-        days = intent.getStringExtra("days");
-
-        Map<String, String> map = new HashMap<>();
-        map.put("sysLanguage", Constans.SETCOUNTRYlANGUAGE);
-        map.put("iccid", Constans.PHONE_ICCID);
-        if (Constans.Lk_CARDTYPE){
-
-            map.put("cardType","lksc");
-        }
-        OkGoUtil.<DetailsBean>get(DetailsActivity.this, Constans.METHOD_GUOJIALIEBIAOXIANQINGYE, map, DetailsBean.class, this);
-
-        for (Map.Entry<String, String> entry : map.entrySet()) {
-            Log.e("map_kadingdanxiangqing", entry.getKey() + "====" + map.get(entry.getKey()));
-        }
-
-    }
-
-
-    @Override
-    public void onSuccess(String method, BaseBean model) {
-
-
-        switch (method) {
-            case Constans.METHOD_GUOJIALIEBIAOXIANQINGYE:
-                detailsBean = (DetailsBean) model;
-                detalist = detailsBean.getData();
-                for (int i = 0; i < detalist.size(); i++) {
-                    String skuId = detalist.get(i).getSkuId();
-
-                    if (TextUtils.equals(trand_skuid, skuId)) {
-                        operator = detalist.get(i).getName();
-                        desc = detalist.get(i).getDesc();
-                        tvCountry.setText(name);
-                        try {
-                            int index = desc.indexOf("运营商：");
-                            String desc2 = desc.substring(index);
-                            int index2 = desc2.indexOf("，");
-                            String yys = desc2.substring(4, index2);
-                            tvOperator.setText(yys);
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                        }
-                        if (TextUtils.equals(Constans.PHONE_MOBILE_NUMBER, "PH") && TextUtils.equals(Constans.COUNTRY_VERSION_NUMBER, "5") && TextUtils.equals(Constans.PRO_VERSION_NUMBER, "S")) {
-                            tvPriceDay.setText("$ " + price + "/" + getResources().getString(R.string.day));
-                        } else {
-                            tvPriceDay.setText("¥ " + price + "/" + getResources().getString(R.string.day));
-                        }
-                        String chaka = desc.replaceAll("插卡", "");
-                        tvRoaming.setText(chaka);
-                        tvOperatorName.setText(operator);
-                        tvPriceNum3.setText(price);
-                        skuid = detalist.get(i).getSkuId();
-                        clDetails.setVisibility(View.VISIBLE);
-                        rl.setVisibility(View.VISIBLE);
-                    }
-
-                }
-
-                break;
-            case Constans.METHOD_GUOJIALIEBIAOXIANQINGYEPIRCE:
-                priceBeans = (PriceBeans) model;
-                pricelist = priceBeans.getData();
-                for (int i = 0; i < pricelist.size(); i++) {
-                    String skuId = pricelist.get(i).getSkuId();
-                    if (TextUtils.equals(trand_skuid, skuId)) {
-                        copyslist = pricelist.get(i).getPrice();
-                        for (int j = 0; j < copyslist.size(); j++) {
-                            copys_num.add(copyslist.get(j).getCopies());
-                        }
-                        tvNumber.setText(copys_num.get(0));
-                        tvPriceNum1.setText(copys_num.get(0));
-                        tvPriceNum3.setText(bigDecimalDo(copys_num.get(0), price11));
-                        if (TextUtils.equals("L", Constans.PRO_VERSION_NUMBER)) {
-                            tvMinDays.setVisibility(View.GONE);
-                        } else {
-                            tvMinDays.setVisibility(View.VISIBLE);
-                            tvMinDays.setText("(" + getResources().getString(R.string.min_days1) + copys_num.get(0) + getResources().getString(R.string.min_days2) + ")");
-                        }
-                    }
-                }
-                break;
-
-            case Constans.METHOD_CHUANGJIANDINGDAN:
-                paymentBean = (PaymentBean) model;
-                Log.e("paymentBean", paymentBean.getMsg() + "==" + paymentBean.getCode() + "==" + paymentBean.getSubOrderNo() + "==" + paymentBean.getUrl());
+            @Override
+            public void onSuccess(String method, PaymentBean model, String resoureJson) {
+                Logs.e(Api.METHOD_CHUANGJIANDINGDAN+":"+resoureJson);
+                paymentBean = model;
                 String url = paymentBean.getUrl();
                 Log.e("url_xs", url);
                 String subOrderNo = paymentBean.getSubOrderNo();
@@ -520,12 +387,175 @@ public class DetailsActivity extends BaseActivity implements BaseCallback, View.
                     popuDismiss();
                     is_onclick = false;
                 }
-                break;
-        }
+            }
 
+            @Override
+            public void onError(String method, String message, String resoureJson) {
+                Logs.e(Api.METHOD_CHUANGJIANDINGDAN+":"+message.toString());
+                rl.setVisibility(View.VISIBLE);
+                clDetails.setVisibility(View.GONE);
+                rlNoNet.setVisibility(View.VISIBLE);
+                tvError.setText(getResources().getString(R.string.zoudiule));
+            }
+
+            @Override
+            public void onFinsh(String method) {
+
+            }
+        });
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        MobclickAgent.onResume(this);
+        initLanguage();
+        is_onclick = true;
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        MobclickAgent.onPause(this);
+    }
+
+    private void initShopping() {
+        Map<String, String> map = new HashMap<>();
+
+        if (TextUtils.equals(Api.PHONE_MOBILE_NUMBER, "PH") && TextUtils.equals(Api.COUNTRY_VERSION_NUMBER, "5") && TextUtils.equals(Api.PRO_VERSION_NUMBER, "S")) {
+            map.put("currencyType", "Dollar");
+            map.put("priceFor", "forSell");
+        } else if (TextUtils.equals(Api.PRO_VERSION_NUMBER, "S")) {
+            map.put("priceFor", "forSell");
+        } else {
+            map.put("priceFor", "forLease");
+        }
+        map.put("sysLanguage", Api.SETCOUNTRYlANGUAGE);
+        map.put("hasBaseDays", "true");
+        map.put("iccid", Api.PHONE_ICCID);
+        if (Api.Lk_CARDTYPE){
+            map.put("cardType","lksc");
+        }
+        OkGoUtil.get(mContext, Api.METHOD_GUOJIALIEBIAOXIANQINGYEPIRCE, map, PriceBeans.class, new BaseCallback<PriceBeans>() {
+
+            @Override
+            public void onSuccess(String method, PriceBeans priceBeans, String resoureJson) {
+                Logs.e(Api.METHOD_GUOJIALIEBIAOXIANQINGYEPIRCE+":"+resoureJson);
+                if (priceBeans.getData() != null){
+                    pricelist = priceBeans.getData();
+                    for (int i = 0; i < pricelist.size(); i++) {
+                        String skuId = pricelist.get(i).getSkuId();
+                        if (TextUtils.equals(trand_skuid, skuId)) {
+                            copyslist = pricelist.get(i).getPrice();
+                            for (int j = 0; j < copyslist.size(); j++) {
+                                copys_num.add(copyslist.get(j).getCopies());
+                            }
+                            tvNumber.setText(copys_num.get(0));
+                            tvPriceNum1.setText(copys_num.get(0));
+                            tvPriceNum3.setText(bigDecimalDo(copys_num.get(0), price11));
+                            if (TextUtils.equals("L", Api.PRO_VERSION_NUMBER)) {
+                                tvMinDays.setVisibility(View.GONE);
+                            } else {
+                                tvMinDays.setVisibility(View.VISIBLE);
+                                tvMinDays.setText("(" + getResources().getString(R.string.min_days1) + copys_num.get(0) + getResources().getString(R.string.min_days2) + ")");
+                            }
+                        }
+                    }
+                }
+            }
+
+            @Override
+            public void onError(String method, String message, String resoureJson) {
+                Logs.e(Api.METHOD_GUOJIALIEBIAOXIANQINGYEPIRCE+":"+message.toString());
+                rl.setVisibility(View.VISIBLE);
+                clDetails.setVisibility(View.GONE);
+                rlNoNet.setVisibility(View.VISIBLE);
+                tvError.setText(getResources().getString(R.string.zoudiule));
+            }
+
+            @Override
+            public void onFinsh(String method) {}
+        });
 
     }
 
+    private void initonClick() {
+        btReduce.setOnClickListener(this);
+        btPlus.setOnClickListener(this);
+    }
+
+
+
+    private void initDatas() {
+        Intent intent = getIntent();
+        trand_skuid = intent.getStringExtra("skuid");
+        //单价
+        price = intent.getStringExtra("price");
+
+        price11 = Double.valueOf(price);
+        name = intent.getStringExtra("name");
+        days = intent.getStringExtra("days");
+
+        Map<String, String> map = new HashMap<>();
+        map.put("sysLanguage", Api.SETCOUNTRYlANGUAGE);
+        map.put("iccid", Api.PHONE_ICCID);
+        if (Api.Lk_CARDTYPE){
+
+            map.put("cardType","lksc");
+        }
+        OkGoUtil.get(mContext, Api.METHOD_GUOJIALIEBIAOXIANQINGYE, map, DetailsBean.class, new BaseCallback<DetailsBean>() {
+            @Override
+            public void onSuccess(String method, DetailsBean detailsBean, String resoureJson) {
+                Logs.e(Api.METHOD_GUOJIALIEBIAOXIANQINGYE+":"+resoureJson);
+                if (detailsBean.getData() != null){
+                    detalist = detailsBean.getData();
+                    for (int i = 0; i < detalist.size(); i++) {
+                        String skuId = detalist.get(i).getSkuId();
+
+                        if (TextUtils.equals(trand_skuid, skuId)) {
+                            operator = detalist.get(i).getName();
+                            desc = detalist.get(i).getDesc();
+                            tvCountry.setText(name);
+                            try {
+                                int index = desc.indexOf("运营商：");
+                                String desc2 = desc.substring(index);
+                                int index2 = desc2.indexOf("，");
+                                String yys = desc2.substring(4, index2);
+                                tvOperator.setText(yys);
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            }
+                            if (TextUtils.equals(Api.PHONE_MOBILE_NUMBER, "PH") && TextUtils.equals(Api.COUNTRY_VERSION_NUMBER, "5") && TextUtils.equals(Api.PRO_VERSION_NUMBER, "S")) {
+                                tvPriceDay.setText("$ " + price + "/" + getResources().getString(R.string.day));
+                            } else {
+                                tvPriceDay.setText("¥ " + price + "/" + getResources().getString(R.string.day));
+                            }
+                            String chaka = desc.replaceAll("插卡", "");
+                            tvRoaming.setText(chaka);
+                            tvOperatorName.setText(operator);
+                            tvPriceNum3.setText(price);
+                            skuid = detalist.get(i).getSkuId();
+                            clDetails.setVisibility(View.VISIBLE);
+                            rl.setVisibility(View.VISIBLE);
+                        }
+                    }
+                }
+            }
+
+            @Override
+            public void onError(String method, String message, String resoureJson) {
+                Logs.e(Api.METHOD_GUOJIALIEBIAOXIANQINGYE+":"+message.toString());
+                rl.setVisibility(View.VISIBLE);
+                clDetails.setVisibility(View.GONE);
+                rlNoNet.setVisibility(View.VISIBLE);
+                tvError.setText(getResources().getString(R.string.zoudiule));
+            }
+
+            @Override
+            public void onFinsh(String method) {}
+        });
+
+    }
     /**
      * @param view
      * @param b    是否可点击
@@ -536,17 +566,6 @@ public class DetailsActivity extends BaseActivity implements BaseCallback, View.
         } else {
             view.setClickable(false);
         }
-    }
-
-    @Override
-    public void onError(String method, Response<String> response) {
-
-        rl.setVisibility(View.VISIBLE);
-        clDetails.setVisibility(View.GONE);
-        rlNoNet.setVisibility(View.VISIBLE);
-        tvError.setText(getResources().getString(R.string.zoudiule));
-
-
     }
 
     @RequiresApi(api = Build.VERSION_CODES.N)

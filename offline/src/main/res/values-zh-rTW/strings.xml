@@ -58,7 +58,6 @@
 	<string name="wuwangluo">當前無網絡</string>
 	<string name="kongjianbuzu">記憶體空間不足</string>
 
-
 	<string name="xiazaitishi">下載提示</string>
 	<string name="xiazaitishi_wifi">，建議WI-FI網路環境中下載 </string>
 	<string name="xiazaitishi_content"> 檔案正在下載中，請您耐心等候… </string>
