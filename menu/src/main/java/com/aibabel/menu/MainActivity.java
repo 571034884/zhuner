@@ -456,8 +456,8 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
                     lock90day();
 
                     String spnettemp = SharePrefUtil.getString(mContext, neverUseNetflag, "");
-                    if(spnettemp.equalsIgnoreCase("")) {
-                        if(!isNetworkConnected()) {
+                    if (TextUtils.isEmpty(spnettemp)) {
+                        if (!isNetworkConnected()) {
                             intentFilter_sys_time = new IntentFilter();
                             intentFilter_sys_time.addAction(Intent.ACTION_TIME_CHANGED);//设置了系统时间
                             timeChangeReceiver = new TimeChangeReceiver();
@@ -610,25 +610,25 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
             if (lock_type == 1) return;
 
             String endtime = SharePrefUtil.getString(mContext, neverUseNet_end, "");//90天未使用
-            if(!TextUtils.isEmpty(endtime)){
-            int comparetime = CalenderUtil.compaeTimeWithNow(endtime);
-            LogUtil.e("lock90day "+comparetime);
-            if (((comparetime <= toast_rent_Time) && (comparetime >= 11))) {
-                if (loopHandler != null) loopHandler.sendEmptyMessage(120);
-                return;
-            }}
-
+            if (!TextUtils.isEmpty(endtime)) {
+                int comparetime = CalenderUtil.compaeTimeWithNow(endtime);
+                LogUtil.e("lock90day " + comparetime);
+                if (((comparetime <= toast_rent_Time) && (comparetime >= 11))) {
+                    if (loopHandler != null) loopHandler.sendEmptyMessage(120);
+                    return;
+                }
+            }
 
 
             String spnettemp = SharePrefUtil.getString(mContext, neverUseNetflag, "");
             LogUtil.e("neverUseNetflag =" + spnettemp);
             LogUtil.e(" neverUseNet_end =" + endtime);
-                if (!TextUtils.isEmpty(endtime)) {
-                    if (CalenderUtil.compaeTimeWithAfter24(endtime) <= 0) {
-                        LogUtil.e(" compaeTimeWithAfter24  lockloopmsg()  <=0");
-                        lockloopmsg(endtime);
-                    }
+            if (!TextUtils.isEmpty(endtime)) {
+                if (CalenderUtil.compaeTimeWithAfter24(endtime) <= 0) {
+                    LogUtil.e(" compaeTimeWithAfter24  lockloopmsg()  <=0");
+                    lockloopmsg(endtime);
                 }
+            }
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -1703,10 +1703,10 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
                 unregisterReceiver(screenrecive);
             }
             try {
-                if(timeChangeReceiver!=null){
+                if (timeChangeReceiver != null) {
                     unregisterReceiver(timeChangeReceiver);
                 }
-            }catch (Exception e){
+            } catch (Exception e) {
                 e.printStackTrace();
             }
 
@@ -1925,11 +1925,8 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
     }
 
 
-
     private IntentFilter intentFilter_sys_time;
     private TimeChangeReceiver timeChangeReceiver;
-
-
 
 
     /**
@@ -1941,36 +1938,37 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
             switch (intent.getAction()) {
                 case Intent.ACTION_TIME_TICK:
                     //每过一分钟 触发
-                    Log.e("hjs","ACTION_TIME_TICK");
+                    Log.e("hjs", "ACTION_TIME_TICK");
                     //Toast.makeText(context, "1 min passed", Toast.LENGTH_SHORT).show();
                     break;
                 case Intent.ACTION_TIME_CHANGED:
                     //设置了系统时间
-                    Log.e("hjs","ACTION_TIME_CHANGED");
+                    Log.e("hjs", "ACTION_TIME_CHANGED");
                     String spnettemp = SharePrefUtil.getString(mContext, neverUseNetflag, "");
-                    if(spnettemp.equalsIgnoreCase("")) {
-                        if (!isNetworkConnected()) {
-                            SharePrefUtil.put(mContext, neverUseNetflag, "error");
-                            try {
-                                String  get_starttime = SharePrefUtil.getString(mContext, neverUseNet_start, "");
-                                String  get_endtime = SharePrefUtil.getString(mContext, neverUseNet_end, "");
-                                String nowtime =  CalenderUtil.getyyyyMMddHHmmss();
-                                if((!TextUtils.isEmpty(get_starttime))&&(!TextUtils.isEmpty(nowtime))) {
-                                    if (CalenderUtil.compae2Time(nowtime, get_starttime) > 24 * 30) { ///30天内没有更新过网络时间
-                                        if (MainActivity.loopHandler != null)
-                                            MainActivity.loopHandler.sendEmptyMessageDelayed(300, 8000);
-                                    }
+                    Log.e("hjs", "spnettemp" + spnettemp);
+                    if (!isNetworkConnected()) {
+                        Log.e("hjs", "neverUseNetflag error");
+                        SharePrefUtil.put(mContext, neverUseNetflag, "error");
+                        try {
+                            String get_starttime = SharePrefUtil.getString(mContext, neverUseNet_start, "");
+                            String nowtime = CalenderUtil.getyyyyMMddHHmmss();
+                            Log.e("hjs", "nowtime error" + nowtime);
+                            if ((!TextUtils.isEmpty(get_starttime)) && (!TextUtils.isEmpty(nowtime))) {
+                                Log.e("hjs", "nowtime true" + (CalenderUtil.compae2Time(get_starttime, nowtime)));
+                                if (CalenderUtil.compae2Time(get_starttime, nowtime) > 24 * 30) { ///30天内没有更新过网络时间
+                                    if (MainActivity.loopHandler != null)
+                                        MainActivity.loopHandler.sendEmptyMessageDelayed(300, 8000);
                                 }
-                            } catch (Exception e) {
-                                e.printStackTrace();
                             }
+                        } catch (Exception e) {
+                            e.printStackTrace();
                         }
                     }
-                    //Toast.makeText(context, "system time changed", Toast.LENGTH_SHORT).show();
+
                     break;
                 case Intent.ACTION_TIMEZONE_CHANGED:
                     //设置了系统时区的action
-                    Log.e("hjs","ACTION_TIMEZONE_CHANGED");
+                    Log.e("hjs", "ACTION_TIMEZONE_CHANGED");
                     //Toast.makeText(context, "system time zone changed", Toast.LENGTH_SHORT).show();
                     break;
             }
