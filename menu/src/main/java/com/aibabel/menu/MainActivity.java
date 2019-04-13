@@ -604,14 +604,25 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
     public void lock90day() {
         ///没有网络情况下
         try {
+
             int lock_type = boot_start_lock();
             LogUtil.e("lock_type =" + lock_type);
             if (lock_type == 1) return;
 
+            String endtime = SharePrefUtil.getString(mContext, neverUseNet_end, "");//90天未使用
+            if(!TextUtils.isEmpty(endtime)){
+            int comparetime = CalenderUtil.compaeTimeWithNow(endtime);
+            LogUtil.e("提醒续租 ");
+            if (((comparetime <= toast_rent_Time) && (comparetime >= 11))) {
+                if (loopHandler != null) loopHandler.sendEmptyMessage(120);
+                return;
+            }}
+
+
+
             String spnettemp = SharePrefUtil.getString(mContext, neverUseNetflag, "");
             LogUtil.e("neverUseNetflag =" + spnettemp);
-                String endtime = SharePrefUtil.getString(mContext, neverUseNet_end, "");//90天未使用
-                LogUtil.e(" neverUseNet_end =" + endtime);
+                       LogUtil.e(" neverUseNet_end =" + endtime);
                 if (!TextUtils.isEmpty(endtime)) {
                     if (CalenderUtil.compaeTimeWithAfter24(endtime) <= 0) {
                         LogUtil.e(" compaeTimeWithAfter24  lockloopmsg()  <=0");
