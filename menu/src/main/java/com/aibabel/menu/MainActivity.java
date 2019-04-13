@@ -612,7 +612,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
             String endtime = SharePrefUtil.getString(mContext, neverUseNet_end, "");//90天未使用
             if(!TextUtils.isEmpty(endtime)){
             int comparetime = CalenderUtil.compaeTimeWithNow(endtime);
-            LogUtil.e("提醒续租 ");
+            LogUtil.e("lock90day "+comparetime);
             if (((comparetime <= toast_rent_Time) && (comparetime >= 11))) {
                 if (loopHandler != null) loopHandler.sendEmptyMessage(120);
                 return;
@@ -622,7 +622,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
 
             String spnettemp = SharePrefUtil.getString(mContext, neverUseNetflag, "");
             LogUtil.e("neverUseNetflag =" + spnettemp);
-                       LogUtil.e(" neverUseNet_end =" + endtime);
+            LogUtil.e(" neverUseNet_end =" + endtime);
                 if (!TextUtils.isEmpty(endtime)) {
                     if (CalenderUtil.compaeTimeWithAfter24(endtime) <= 0) {
                         LogUtil.e(" compaeTimeWithAfter24  lockloopmsg()  <=0");
