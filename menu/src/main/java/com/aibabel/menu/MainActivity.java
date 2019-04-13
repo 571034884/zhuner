@@ -1702,15 +1702,16 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
             if (screenrecive != null) {
                 unregisterReceiver(screenrecive);
             }
-            if(timeChangeReceiver!=null){
-                unregisterReceiver(timeChangeReceiver);
+            try {
+                if(timeChangeReceiver!=null){
+                    unregisterReceiver(timeChangeReceiver);
+                }
+            }catch (Exception e){
+                e.printStackTrace();
             }
 
         } catch (Exception e) {
-
-        }
-        if (screenrecive != null) {
-            unregisterReceiver(screenrecive);
+            e.printStackTrace();
         }
         super.onDestroy();
     }
