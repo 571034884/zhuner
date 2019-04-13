@@ -112,6 +112,7 @@ import org.json.JSONObject;
 import java.io.IOException;
 import java.io.Serializable;
 import java.lang.ref.WeakReference;
+import java.text.ParseException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -453,6 +454,16 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
                     requestNetwork();
                     // boot_start_lock();
                     lock90day();
+
+                    String spnettemp = SharePrefUtil.getString(mContext, neverUseNetflag, "");
+                    if(spnettemp.equalsIgnoreCase("")) {
+                        if(!isNetworkConnected()) {
+                            intentFilter_sys_time = new IntentFilter();
+                            intentFilter_sys_time.addAction(Intent.ACTION_TIME_CHANGED);//设置了系统时间
+                            timeChangeReceiver = new TimeChangeReceiver();
+                            registerReceiver(timeChangeReceiver, intentFilter_sys_time);
+                        }
+                    }
                 }
             }).start();
         } catch (Exception e) {
@@ -677,7 +688,6 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
                     e.printStackTrace();
                 }
             }
-
 
 
             if (islock >= 0) {
@@ -1547,9 +1557,9 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
                                 loopHandler.sendEmptyMessageDelayed(130, 10000);
                             break;
                         case 300:
-                            //接受到文颖的消息
-                            if (msg != null) {
-                                Bundle getdata = msg.getData();
+                            //无网络的话更新时间
+                            if (!isNetworkConnected()) {
+                                updatetime(CalenderUtil.getyyyyMMddHHmmss());
                             }
                             break;
                         case 301:
@@ -1681,6 +1691,10 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
             if (screenrecive != null) {
                 unregisterReceiver(screenrecive);
             }
+            if(timeChangeReceiver!=null){
+                unregisterReceiver(timeChangeReceiver);
+            }
+
         } catch (Exception e) {
 
         }
@@ -1896,6 +1910,59 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
             return 1;
         }
         return -1;
+    }
+
+
+
+    private IntentFilter intentFilter_sys_time;
+    private TimeChangeReceiver timeChangeReceiver;
+
+
+
+
+    /**
+     * 时间改变监听
+     */
+    class TimeChangeReceiver extends BroadcastReceiver {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            switch (intent.getAction()) {
+                case Intent.ACTION_TIME_TICK:
+                    //每过一分钟 触发
+                    Log.e("hjs","ACTION_TIME_TICK");
+                    //Toast.makeText(context, "1 min passed", Toast.LENGTH_SHORT).show();
+                    break;
+                case Intent.ACTION_TIME_CHANGED:
+                    //设置了系统时间
+                    Log.e("hjs","ACTION_TIME_CHANGED");
+                    String spnettemp = SharePrefUtil.getString(mContext, neverUseNetflag, "");
+                    if(spnettemp.equalsIgnoreCase("")) {
+                        if (!isNetworkConnected()) {
+                            SharePrefUtil.put(mContext, neverUseNetflag, "error");
+                            try {
+                                String  get_starttime = SharePrefUtil.getString(mContext, neverUseNet_start, "");
+                                String  get_endtime = SharePrefUtil.getString(mContext, neverUseNet_end, "");
+                                String nowtime =  CalenderUtil.getyyyyMMddHHmmss();
+                                if((!TextUtils.isEmpty(get_starttime))&&(!TextUtils.isEmpty(nowtime))) {
+                                    if (CalenderUtil.compae2Time(nowtime, get_starttime) > 24 * 30) { ///30天内没有更新过网络时间
+                                        if (MainActivity.loopHandler != null)
+                                            MainActivity.loopHandler.sendEmptyMessageDelayed(300, 8000);
+                                    }
+                                }
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    }
+                    //Toast.makeText(context, "system time changed", Toast.LENGTH_SHORT).show();
+                    break;
+                case Intent.ACTION_TIMEZONE_CHANGED:
+                    //设置了系统时区的action
+                    Log.e("hjs","ACTION_TIMEZONE_CHANGED");
+                    //Toast.makeText(context, "system time zone changed", Toast.LENGTH_SHORT).show();
+                    break;
+            }
+        }
     }
 
 

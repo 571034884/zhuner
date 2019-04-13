@@ -90,6 +90,13 @@ public class CalenderUtil {
 
         return  rst;
     }
+    public static String getyyyyMMddHHmmss() {
+        SimpleDateFormat df = new SimpleDateFormat("yyyyMMddHHmmss");
+        Calendar calendar = Calendar.getInstance();
+        Date time = calendar.getTime();
+        String format = df.format(time);
+        return format;
+    }
 
 
     public static String calculateTimeDifferenceadd90(String strtime) {
@@ -915,6 +922,7 @@ public class CalenderUtil {
 //            calculateTimeDifferenceByDuration();
             System.out.print(calculateTimeDifferenceadd90("20190112102745"));
             System.out.println(compaeTimeWithAfter24("20190415202745"));
+            System.out.println(compae2Time("20190112102745","20190415202745")>24*30);
         } catch (Exception e) {
             e.printStackTrace();
         }
