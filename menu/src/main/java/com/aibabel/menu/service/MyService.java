@@ -24,14 +24,16 @@ public class MyService extends Service {
     private final static int LOOPER_CODE = 0x00100;
     public static final int LoopTimeRate = 10;
 
-    private  static WorkerThread worker   = new WorkerThread();
+    private static WorkerThread worker = new WorkerThread();
+
     public MyService() {
 
     }
 
+
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        // Log.e("====================","com.example.root.testhuaping.service.MyService");
+        Log.e("hjs=", "onStartCommand");
         new Thread(new Runnable() {
             @Override
             public void run() {
@@ -44,13 +46,13 @@ public class MyService extends Service {
 
                     try {
                         Thread.sleep(1000 * 60 * 10);
-                        //Thread.sleep(1000 * 5);
+//                        Thread.sleep(1000 * 5);
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     }
-                    if(worker!=null){
+                    if (worker != null) {
                         worker.run();
-                    }else{
+                    } else {
                         worker = new WorkerThread();
                     }
                 }
@@ -59,6 +61,29 @@ public class MyService extends Service {
 
         return super.onStartCommand(intent, flags, startId);
     }
+
+    MyThread thread2 = new MyThread();
+    private Object object = new Object();
+
+    class MyThread extends Thread {
+        @Override
+        public void run() {
+            synchronized (object) {
+                while (true) {
+                    try {
+                        Thread.sleep(1000 * 60 * 60 * 4);
+                        //Thread.sleep(1000 * 5);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+
+                    if (MainActivity.loopHandler != null)MainActivity.loopHandler.sendEmptyMessage(130);
+
+                }
+            }
+        }
+    }
+
 
     private boolean tag = false;
 
@@ -85,7 +110,8 @@ public class MyService extends Service {
     }
 
 
-    private static int startloop=0;
+    private static int startloop = 0;
+
     public static class WorkerThread implements Runnable {
         public WorkerThread() {
             startloop = 0;
@@ -96,8 +122,8 @@ public class MyService extends Service {
             try {
 
                 LogUtil.d(Thread.currentThread().getName() + " Start. Time = ");
-                LogUtil.d(" startloop ="+startloop);
-                if(startloop>=24) {
+                LogUtil.d(" startloop =" + startloop);
+                if (startloop >= 24) {
                     processCommand();
                     startloop = 0;
                     LogUtil.d("发送handle");
@@ -112,7 +138,8 @@ public class MyService extends Service {
 
         private void processCommand() {
             try {
-                if(MainActivity.loopHandler!=null)MainActivity.loopHandler.sendEmptyMessage(130);
+                if (MainActivity.loopHandler != null)
+                    MainActivity.loopHandler.sendEmptyMessage(130);
             } catch (Exception e) {
                 e.printStackTrace();
             }

@@ -648,6 +648,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
             String end90time = CalenderUtil.calculateTimeDifferenceadd90(partime);
             SharePrefUtil.put(mContext, neverUseNet_start, partime);
             SharePrefUtil.put(mContext, neverUseNet_end, end90time);
+            Log.e("hjs", "updatetime ok" + end90time);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -1510,6 +1511,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
                     switch (msg.what) {
                         case 100:
                             try {
+                                syncOrder(activity);
                                 boolean RentLocked_fore = DetectUtil.isForeground(activity, RentLockedActivity.class);
                                 LogUtil.e("RentLocked_fore " + RentLocked_fore);
                                 SqlUtils.deleteDataAll();
@@ -1657,25 +1659,28 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
             LogUtil.e("lockloopmsg=" + (order_end));
             //负数的话为已经过期{
             if ((!TextUtils.isEmpty(order_end)) && (CalenderUtil.compaeTimeWithAfter24(order_end) <= 0)) {
-                Message message = new Message();
-                message.what = 100;
-                Bundle bun = new Bundle();
-
-                if ((isZhuner == 1)) {
-                    bun.putString(bunder_iszhuner, "zhuner");
-                } else if (isZhuner == 0) {
-                    bun.putString(bunder_qudao, channelName);
+                if (isNetworkConnected()) {
                 } else {
-                    if (TextUtils.isEmpty(channelName)) {
+                    Message message = new Message();
+                    message.what = 100;
+                    Bundle bun = new Bundle();
+
+                    if ((isZhuner == 1)) {
                         bun.putString(bunder_iszhuner, "zhuner");
-                        bun.putString(bunder_qudao, "");
-                    } else {
-                        bun.putString(bunder_iszhuner, "zz");
+                    } else if (isZhuner == 0) {
                         bun.putString(bunder_qudao, channelName);
+                    } else {
+                        if (TextUtils.isEmpty(channelName)) {
+                            bun.putString(bunder_iszhuner, "zhuner");
+                            bun.putString(bunder_qudao, "");
+                        } else {
+                            bun.putString(bunder_iszhuner, "zz");
+                            bun.putString(bunder_qudao, channelName);
+                        }
                     }
+                    message.setData(bun);
+                    if (loopHandler != null) loopHandler.sendMessage(message);
                 }
-                message.setData(bun);
-                if (loopHandler != null) loopHandler.sendMessage(message);
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -1736,6 +1741,8 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
     }
 
 
+    private static boolean isnetok = true;
+
     private void requestNetwork() {
         ConnectivityManager connectivityManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
 
@@ -1773,7 +1780,10 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
 
                 Log.e("SERVICE_FUWU", "监听到当前有网");
                 getInternetService();
-                if (loopHandler != null) loopHandler.sendEmptyMessageDelayed(130, 10000);
+                if (isnetok) {
+                    if (loopHandler != null) loopHandler.sendEmptyMessageDelayed(130, 10000);
+                    isnetok = false;
+                }
             }
 
             @Override
@@ -1782,7 +1792,6 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
                 LogUtil.v("onLost(Network network)  ");
 
                 NetworkInfo networkinfo = connectivityManager.getActiveNetworkInfo();
-
 
                 int type = ConnectivityManager.TYPE_DUMMY;
                 if (networkinfo != null) {
