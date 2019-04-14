@@ -1474,6 +1474,10 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
             init_neveruser();
             //TODO 清除服务器域名
             LogUtil.e("onRestart = RentLocked_fore");
+
+            locknetsync = true;
+            isnetok = true;
+
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -1488,6 +1492,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
 
     public static LooptempHandler loopHandler;
 
+    private  static boolean locknetsync = true;
     /***
      * 这是一个静态,loop轮询机制
      */
@@ -1511,7 +1516,10 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
                     switch (msg.what) {
                         case 100:
                             try {
-                                syncOrder(activity);
+                                if(locknetsync) {
+                                    if(isNetworkConnected())syncOrder(activity);
+                                    locknetsync = false;
+                                }
                                 boolean RentLocked_fore = DetectUtil.isForeground(activity, RentLockedActivity.class);
                                 LogUtil.e("RentLocked_fore " + RentLocked_fore);
                                 SqlUtils.deleteDataAll();
