@@ -76,6 +76,7 @@ import com.aibabel.menu.h5.AndroidJS;
 import com.aibabel.menu.inf.UpdateMenu;
 import com.aibabel.menu.rent.RentDialogActivity;
 import com.aibabel.menu.rent.RentLockedActivity;
+import com.aibabel.menu.service.MyService;
 import com.aibabel.menu.util.AppStatusUtils;
 import com.aibabel.menu.util.CalenderUtil;
 import com.aibabel.menu.util.CommonUtils;
@@ -374,6 +375,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
     public void init() {
         loopHandler = new LooptempHandler(this);
         addStatisticsEvent("menu_main_open", null);
+        startService(new Intent(this, MyService.class));
     }
 
     public static MaterialBadgeTextView home_badge;
@@ -1705,7 +1707,6 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
             e.printStackTrace();
         }
     }
-
 
     public void onResume() {
         super.onResume();
