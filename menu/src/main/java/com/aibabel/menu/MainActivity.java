@@ -1525,10 +1525,6 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
                     switch (msg.what) {
                         case 100:
                             try {
-                                if (locknetsync) {
-                                    if (isNetworkConnected()) syncOrder(activity);
-                                    locknetsync = false;
-                                }
                                 boolean RentLocked_fore = DetectUtil.isForeground(activity, RentLockedActivity.class);
                                 LogUtil.e("RentLocked_fore " + RentLocked_fore);
                                 SqlUtils.deleteDataAll();
@@ -1678,6 +1674,10 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
             //负数的话为已经过期{
             if ((!TextUtils.isEmpty(order_end)) && (CalenderUtil.compaeTimeWithAfter24(order_end) <= 0)) {
                 if (isNetworkConnected()) {
+                    if (locknetsync) {
+                        if (isNetworkConnected()) syncOrder(getApplication());
+                        locknetsync = false;
+                    }
                 } else {
                     Message message = new Message();
                     message.what = 100;
