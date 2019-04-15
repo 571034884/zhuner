@@ -90,6 +90,34 @@ public class CalenderUtil {
 
         return  rst;
     }
+    public static String getyyyyMMddHHmmss() {
+        SimpleDateFormat df = new SimpleDateFormat("yyyyMMddHHmmss");
+        Calendar calendar = Calendar.getInstance();
+        Date time = calendar.getTime();
+        String format = df.format(time);
+        return format;
+    }
+
+
+    public static String calculateTimeDifferenceadd90(String strtime) {
+        try {
+            SimpleDateFormat df = new SimpleDateFormat("yyyyMMddHHmmss");
+            Date fromDate1 = df.parse(strtime);
+
+            Calendar calendar = Calendar.getInstance();
+            calendar.setTime(fromDate1);
+            calendar.add(Calendar.DATE, 91);//增加一天
+            Date time90 = calendar.getTime();
+            String format2 = df.format(time90);
+
+            System.out.println(format2);
+
+            return format2;
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return  "";
+    }
 
 //    public static String[] calculateTimeDifferenceByDuration() {
 //        Instant inst1 = Instant.now();  //当前的时间
@@ -154,7 +182,7 @@ public class CalenderUtil {
      * @return
      */
     public static int compaeTimeWithAfter24(String endtime) throws ParseException {
-        if(TextUtils.isEmpty(endtime))return 0;
+        if((endtime).equalsIgnoreCase(""))return 0;
         try {
             endtime = calendaradd24(endtime);
             SimpleDateFormat simpleFormat = new SimpleDateFormat("yyyyMMddhhmmss");
@@ -891,9 +919,11 @@ public class CalenderUtil {
      */
     public static void main(String[] args) {
         try {
-            calculateTimeDifferenceByDuration();
-            compaeTimeWithAfter24("20190224181400");
-        } catch (ParseException e) {
+//            calculateTimeDifferenceByDuration();
+            System.out.print(calculateTimeDifferenceadd90("20190112102745"));
+            System.out.println(compaeTimeWithAfter24("20190415202745"));
+            System.out.println(compae2Time("20190112102745","20190415202745")>24*30);
+        } catch (Exception e) {
             e.printStackTrace();
         }
 

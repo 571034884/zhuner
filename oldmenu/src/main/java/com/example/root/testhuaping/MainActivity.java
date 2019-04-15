@@ -426,7 +426,6 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
             saveFile(true);
             initService();
             Log.e("LK---001", "启动成功");
-//            mSoftSIMManager.isSoftSIMEnabled();
         } else {
             isnet = true;
             initReceiver();
@@ -660,7 +659,7 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
             // for ActivityCompat#requestPermissions for more details.
             imei =  "";
         }
-        imei = telephonyManager.getDeviceId(0);
+        imei = telephonyManager.getDeviceId(1);
         //Toast.makeText(MainActivity.this, "slot=" + slot, Toast.LENGTH_LONG).show();
 
     }

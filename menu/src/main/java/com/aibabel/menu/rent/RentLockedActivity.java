@@ -18,6 +18,7 @@ public class RentLockedActivity extends Activity {
 
     private  static  Activity myrentlock;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -71,6 +72,12 @@ public class RentLockedActivity extends Activity {
         }catch (Exception e){
             e.printStackTrace();
         }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        myrentlock = null;
     }
 
     public boolean onKeyDown(int keyCode, KeyEvent event) {
