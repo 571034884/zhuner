@@ -76,7 +76,6 @@ import com.aibabel.menu.h5.AndroidJS;
 import com.aibabel.menu.inf.UpdateMenu;
 import com.aibabel.menu.rent.RentDialogActivity;
 import com.aibabel.menu.rent.RentLockedActivity;
-import com.aibabel.menu.service.MyService;
 import com.aibabel.menu.util.AppStatusUtils;
 import com.aibabel.menu.util.CalenderUtil;
 import com.aibabel.menu.util.CommonUtils;
@@ -201,7 +200,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
     NetBroadcastReceiver netBroadcastReceiver;
 
     //泽峰  租赁逻辑类
-//    RenUtils renUtils;
+    RenUtils renUtils;
 
     private final String moren_error = "file:///sdcard/offline/menu/moren_error.html";
 
@@ -375,7 +374,6 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
     public void init() {
         loopHandler = new LooptempHandler(this);
         addStatisticsEvent("menu_main_open", null);
-        startService(new Intent(this, MyService.class));
     }
 
     public static MaterialBadgeTextView home_badge;
@@ -443,8 +441,8 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
 
         getMenuData(mContext, "location", "2");
 
-//        renUtils = new RenUtils(this);
-//        renUtils.startZl(); //启动租赁
+        renUtils = new RenUtils(this);
+        renUtils.startZl(); //启动租赁
 
 
         try {
@@ -606,36 +604,35 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
     public void lock90day() {
         ///没有网络情况下
         try {
-            if (!isNetworkConnected()) {
-                int lock_type = boot_start_lock();
-                LogUtil.e("lock_type =" + lock_type);
-                if (lock_type == 1) return;
 
-                String endtime = SharePrefUtil.getString(mContext, neverUseNet_end, "");//90天未使用
-                if (!TextUtils.isEmpty(endtime)) {
-                    int comparetime = CalenderUtil.compaeTimeWithNow(endtime);
-                    LogUtil.e("lock90day " + comparetime);
-                    if (((comparetime <= toast_rent_Time) && (comparetime >= 11))) {
-                        if (loopHandler != null) loopHandler.sendEmptyMessage(120);
-                        return;
-                    }
-                }
+            int lock_type = boot_start_lock();
+            LogUtil.e("lock_type =" + lock_type);
+            if (lock_type == 1) return;
 
-
-                String spnettemp = SharePrefUtil.getString(mContext, neverUseNetflag, "");
-                LogUtil.e("neverUseNetflag =" + spnettemp);
-                LogUtil.e(" neverUseNet_end =" + endtime);
-                if (!TextUtils.isEmpty(endtime)) {
-                    if (CalenderUtil.compaeTimeWithAfter24(endtime) <= 0) {
-                        LogUtil.e(" compaeTimeWithAfter24  lockloopmsg()  <=0");
-                        lockloopmsg(endtime);
-                    }
+            String endtime = SharePrefUtil.getString(mContext, neverUseNet_end, "");//90天未使用
+            if (!TextUtils.isEmpty(endtime)) {
+                int comparetime = CalenderUtil.compaeTimeWithNow(endtime);
+                LogUtil.e("lock90day " + comparetime);
+                if (((comparetime <= toast_rent_Time) && (comparetime >= 11))) {
+                    if (loopHandler != null) loopHandler.sendEmptyMessage(120);
+                    return;
                 }
             }
+
+
+            String spnettemp = SharePrefUtil.getString(mContext, neverUseNetflag, "");
+            LogUtil.e("neverUseNetflag =" + spnettemp);
+            LogUtil.e(" neverUseNet_end =" + endtime);
+            if (!TextUtils.isEmpty(endtime)) {
+                if (CalenderUtil.compaeTimeWithAfter24(endtime) <= 0) {
+                    LogUtil.e(" compaeTimeWithAfter24  lockloopmsg()  <=0");
+                    lockloopmsg(endtime);
+                }
+            }
+
         } catch (Exception e) {
             e.printStackTrace();
         }
-
 
     }
 
@@ -1528,6 +1525,10 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
                     switch (msg.what) {
                         case 100:
                             try {
+                                if (locknetsync) {
+                                    if (isNetworkConnected()) syncOrder(activity);
+                                    locknetsync = false;
+                                }
                                 boolean RentLocked_fore = DetectUtil.isForeground(activity, RentLockedActivity.class);
                                 LogUtil.e("RentLocked_fore " + RentLocked_fore);
                                 SqlUtils.deleteDataAll();
@@ -1677,10 +1678,6 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
             //负数的话为已经过期{
             if ((!TextUtils.isEmpty(order_end)) && (CalenderUtil.compaeTimeWithAfter24(order_end) <= 0)) {
                 if (isNetworkConnected()) {
-                    if (locknetsync) {
-                        if (isNetworkConnected()) syncOrder(getApplication());
-                        locknetsync = false;
-                    }
                 } else {
                     Message message = new Message();
                     message.what = 100;
@@ -1718,7 +1715,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
     protected void onDestroy() {
         try {
             //注销  租赁逻辑里面的广播和资源
-//            renUtils.destroyRes();
+            renUtils.destroyRes();
             if (netBroadcastReceiver != null) {
                 unregisterReceiver(netBroadcastReceiver);
             }
@@ -1889,10 +1886,16 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
                             case 0:
                                 servers = 1;
                                 getInternetService();
+                                Log.e("SERVICE_FUWU","获取服务器列表 第一次 出错");
                                 break;
                             case 1:
-                                //ToastUtil.showShort(mContext, "服务器出错，请重启设备");
-                                Log.e("SERVICE_FUWU", "服务器出错，请重启设备");
+                                servers = 2;
+                                getInternetService();
+                                Log.e("SERVICE_FUWU","获取服务器列表 第二次 出错");
+                                break;
+                            case 2:
+                                servers = 0;
+                                Log.e("SERVICE_FUWU","获取服务器列表 第三次 出错");
                                 break;
                         }
 
