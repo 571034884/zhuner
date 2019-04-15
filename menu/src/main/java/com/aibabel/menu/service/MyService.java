@@ -62,27 +62,27 @@ public class MyService extends Service {
         return super.onStartCommand(intent, flags, startId);
     }
 
-    MyThread thread2 = new MyThread();
-    private Object object = new Object();
-
-    class MyThread extends Thread {
-        @Override
-        public void run() {
-            synchronized (object) {
-                while (true) {
-                    try {
-                        Thread.sleep(1000 * 60 * 60 * 4);
-                        //Thread.sleep(1000 * 5);
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
-
-                    if (MainActivity.loopHandler != null)MainActivity.loopHandler.sendEmptyMessage(130);
-
-                }
-            }
-        }
-    }
+//    MyThread thread2 = new MyThread();
+//    private Object object = new Object();
+//
+//    class MyThread extends Thread {
+//        @Override
+//        public void run() {
+//            synchronized (object) {
+//                while (true) {
+//                    try {
+//                        Thread.sleep(1000 * 60 * 60 * 4);
+//                        //Thread.sleep(1000 * 5);
+//                    } catch (InterruptedException e) {
+//                        e.printStackTrace();
+//                    }
+//
+//                    if (MainActivity.loopHandler != null)MainActivity.loopHandler.sendEmptyMessage(130);
+//
+//                }
+//            }
+//        }
+//    }
 
 
     private boolean tag = false;

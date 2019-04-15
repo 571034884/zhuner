@@ -654,6 +654,9 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         }
     }
 
+
+    public static boolean synctimefore = true;
+
     /**
      * 锁机逻辑，hjs
      */
@@ -708,7 +711,12 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
                     boolean RentLocked_fore = DetectUtil.isForeground(this, RentLockedActivity.class);
                     if (RentLocked_fore && islock == 0) {
                         LogUtil.e("RentLocked_fore = " + RentLocked_fore);
-                        if (loopHandler != null) loopHandler.sendEmptyMessage(200);
+                        try {
+                            RentLockedActivity.finsRentlock();
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                        //if (loopHandler != null) loopHandler.sendEmptyMessage(200);
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -1492,7 +1500,8 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
 
     public static LooptempHandler loopHandler;
 
-    private  static boolean locknetsync = true;
+    private static boolean locknetsync = true;
+
     /***
      * 这是一个静态,loop轮询机制
      */
@@ -1516,8 +1525,8 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
                     switch (msg.what) {
                         case 100:
                             try {
-                                if(locknetsync) {
-                                    if(isNetworkConnected())syncOrder(activity);
+                                if (locknetsync) {
+                                    if (isNetworkConnected()) syncOrder(activity);
                                     locknetsync = false;
                                 }
                                 boolean RentLocked_fore = DetectUtil.isForeground(activity, RentLockedActivity.class);
@@ -1575,7 +1584,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
                         case 200:
                             unlock_ok_clear();  //清除flag等
                             if (loopHandler != null)
-                                loopHandler.sendEmptyMessageDelayed(130, 10000);
+                                loopHandler.sendEmptyMessageDelayed(130, 1000 * 60 * 5);
                             break;
                         case 300:
                             //无网络的话更新时间
@@ -1640,6 +1649,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
                             HashMap<String, Serializable> add_hp = (HashMap<String, Serializable>) msg.obj;
                             LogUtil.e("hjs" + add_hp.get("key"));
                             break;
+
                         default:
                             break;
 
@@ -1699,9 +1709,6 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
     public void onResume() {
         super.onResume();
         MobclickAgent.onResume(this);
-
-        L.e("MainActivity  onResume========================");
-//        if(loopHandler!=null)loopHandler.sendEmptyMessageDelayed(100,4000);
     }
 
     @Override
