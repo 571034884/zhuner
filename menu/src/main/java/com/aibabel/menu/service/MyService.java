@@ -36,6 +36,7 @@ public class MyService extends Service {
     public int onStartCommand(Intent intent, int flags, int startId) {
         Log.e("hjs=", "onStartCommand");
         issleeep4runing = false;
+
         new Thread(new Runnable() {
             @Override
             public void run() {
@@ -43,11 +44,11 @@ public class MyService extends Service {
                 while (!issleeep4runing) {
                     issleeep4runing = true;
                     try {
+                        LogUtil.d("  Thread.sleep(4h) start= " + issleeep4runing);
                         Thread.sleep(1000 * 60 * 60 * 4);
                         //Thread.sleep(1000 * 10);
-                        LogUtil.d("  issleeep4runing = " + issleeep4runing);
                         thread2.run();
-                    } catch (InterruptedException e) {
+                    } catch (Exception e) {
                         e.printStackTrace();
                     }
                 }
@@ -64,11 +65,11 @@ public class MyService extends Service {
     class MyThread extends Thread {
         @Override
         public void run() {
-            synchronized (object) {
-                if (MainActivity.loopHandler != null)
-                    MainActivity.loopHandler.sendEmptyMessage(130);
-                issleeep4runing = false;
-            }
+            if (MainActivity.loopHandler != null)
+                MainActivity.loopHandler.sendEmptyMessage(130);
+            issleeep4runing = false;
+            LogUtil.d("  Thread.sleep(4h) end= " + issleeep4runing);
+
         }
     }
 
