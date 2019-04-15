@@ -5,9 +5,7 @@ import android.content.res.AssetManager;
 import android.text.TextUtils;
 
 import com.aibabel.translate.R;
-import com.aibabel.translate.app.BaseApplication;
 import com.aibabel.translate.bean.LanguageBean;
-import com.aibabel.translate.offline.ChangeOffline;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -33,10 +31,17 @@ import java.util.Map;
 public class LanguageUtils {
 
 
+    /**
+     * 获取语言列表
+     *
+     * @param context
+     * @return
+     */
     public static List<LanguageBean> getLanList(Context context) {
         String country = Locale.getDefault().getCountry();
         String language = Locale.getDefault().getLanguage();
         List<LanguageBean> list = null;
+        String code = "";
         switch (language) {
             case "zh":
                 if (TextUtils.equals("CN", country)) {
@@ -99,9 +104,9 @@ public class LanguageUtils {
             if (code.contains("ch_")) {
                 code = "ch_ch";
             } else if (code.contains("en_")) {
-                code="en";
-            }  else if (code.contains("fr")) {
-                code="fr";
+                code = "en";
+            } else if (code.contains("fr")) {
+                code = "fr";
             }
         }
         String alert = SharePrefUtil.getString(context, Constant.ALERT_UP, context.getResources().getString(R.string.hint_up));
@@ -119,11 +124,11 @@ public class LanguageUtils {
         String code = SharePrefUtil.getString(context, Constant.CODE_DOWN, "ch_ch");
         if (!CommonUtils.isAvailable()) {
             if (code.contains("ch_")) {
-                code="ch_ch";
+                code = "ch_ch";
             } else if (code.contains("en_")) {
-                code="en";
+                code = "en";
             } else if (code.contains("fr")) {
-                code="fr";
+                code = "fr";
             }
         }
         String alert = SharePrefUtil.getString(context, Constant.ALERT_DOWN, context.getResources().getString(R.string.hint_down));
@@ -178,41 +183,40 @@ public class LanguageUtils {
 
         String name = "";
 
-        if(TextUtils.equals(code,"ch_ch")){
+        if (TextUtils.equals(code, "ch_ch")) {
             name = "离线";
         }
-        if(TextUtils.equals(code,"jpa")){
+        if (TextUtils.equals(code, "jpa")) {
             name = "オフライン";
         }
 
-        if(TextUtils.equals(code,"kor")){
+        if (TextUtils.equals(code, "kor")) {
             name = "오프라인";
         }
-        if(TextUtils.equals(code,"rus")){
+        if (TextUtils.equals(code, "rus")) {
             name = "Офлайновый";
         }
-        if(code.contains("en")){
+        if (code.contains("en")) {
             name = "offline";
         }
-        if(code.contains("fr")){
+        if (code.contains("fr")) {
             name = "";
         }
         return name;
     }
 
 
-
-    public static String getNameByCode(String code,Context context){
+    public static String getNameByCode(String code, Context context) {
         List<LanguageBean> list = getLanList(context);
         String name = "";
-        for (LanguageBean bean : list){
-            if(TextUtils.equals(bean.getLang_code(),code)){
+        for (LanguageBean bean : list) {
+            if (TextUtils.equals(bean.getLang_code(), code)) {
                 name = bean.getName();
             }
 
-            if(null!=bean.getChild()&&bean.getChild().size()>0){
-                for (int i=0;i<bean.getChild().size();  i++){
-                    if(TextUtils.equals(bean.getChild().get(i).getVar_code(),code)){
+            if (null != bean.getChild() && bean.getChild().size() > 0) {
+                for (int i = 0; i < bean.getChild().size(); i++) {
+                    if (TextUtils.equals(bean.getChild().get(i).getVar_code(), code)) {
                         name = bean.getChild().get(i).getVar();
                     }
                 }
@@ -224,5 +228,57 @@ public class LanguageUtils {
     }
 
 
+    /**
+     * 获取粤语不支持的语言列表
+     *
+     * @return
+     */
+    public static List<String> getNotSupport() {
+        List<String> list = new ArrayList<>();
+        list.add("kk-KZ");
+        list.add("ka-GE");
+        list.add("am-ET");
+        list.add("az-AZ");
+        list.add("ne-NP");
+        list.add("lo-LA");
+        list.add("km-KH");
+        list.add("gl");
+        list.add("ja");
+        list.add("zu");
+        return list;
+    }
+
+
+    /**
+     * 获取粤语不支持语言列表(不支持的,显示不同的状态)
+     *
+     * @return
+     */
+    public static List<LanguageBean> getSpecailList(List<LanguageBean> lans) {
+        for(LanguageBean bean:lans){
+                if(getNotSupport().contains(bean.getLang_code())){
+                    bean.setNotSupport(true);
+                }
+            }
+        return lans;
+    }
+
+    /**
+     * 获取10种不支持粤语语言列表(不支持的,显示不同的状态)
+     *
+     * @return
+     */
+    public static List<LanguageBean> getList(List<LanguageBean> lans) {
+        for(LanguageBean bean:lans){
+            if (TextUtils.equals(bean.getLang_code(), "ch_yy") || TextUtils.equals(bean.getLang_code(), "ch_hk_j")) {
+                bean.setNotSupport(true);
+                for(LanguageBean.ChildBean childBean : bean.getChild()){
+                    childBean.setNotSupport(true);
+                }
+            }
+
+        }
+        return lans;
+    }
 
 }

@@ -30,16 +30,9 @@ public class LanguageBean {
     private String offline;
     private String offline_code;
     private List<ChildBean> child;
-
-    public boolean getIsOffline() {
-        return isOffline;
-    }
-
-    public void setIsOffline(boolean offline) {
-        isOffline = offline;
-    }
-
     private boolean isOffline;
+    private boolean isNotSupport;
+
 
     public int getId() {
         return id;
@@ -113,6 +106,22 @@ public class LanguageBean {
         this.child = child;
     }
 
+    public boolean getIsOffline() {
+        return isOffline;
+    }
+
+    public void setIsOffline(boolean offline) {
+        isOffline = offline;
+    }
+
+    public boolean isNotSupport() {
+        return isNotSupport;
+    }
+
+    public void setNotSupport(boolean notSupport) {
+        isNotSupport = notSupport;
+    }
+
     public static class ChildBean {
         /**
          * var_id : 0
@@ -133,6 +142,7 @@ public class LanguageBean {
         private int sound;
         private String offline_code;
         private String alert;
+        private boolean isNotSupport;
 
         public int getVar_id() {
             return var_id;
@@ -196,6 +206,14 @@ public class LanguageBean {
 
         public void setAlert(String alert) {
             this.alert = alert;
+        }
+
+        public boolean isNotSupport() {
+            return isNotSupport;
+        }
+
+        public void setNotSupport(boolean notSupport) {
+            isNotSupport = notSupport;
         }
     }
 }

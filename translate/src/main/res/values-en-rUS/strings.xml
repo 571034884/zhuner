@@ -44,6 +44,7 @@
     <string name="timeout_read">Read timed out, please try again.</string>
     <string name="timeout_connect">Connection timed out, please try again.</string>
     <string name="error_connect">Connection failed, please try again later.</string>
-
+    <!--粤语不支持-->
+    <string name="not_support">Translation to this language is not yet supported.</string>
 
 </resources>

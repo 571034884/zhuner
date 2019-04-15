@@ -11,10 +11,8 @@ import android.widget.TextView;
 import com.aibabel.translate.R;
 import com.aibabel.translate.bean.LanguageBean;
 import com.aibabel.translate.offline.ChangeOffline;
-import com.aibabel.translate.utils.L;
 import com.aibabel.translate.utils.SharePrefUtil;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
@@ -30,13 +28,13 @@ public class NewCountryLanguageAdapter extends BaseExpandableListAdapter {
     private Context context;
     private int idi;
     //由上层传入是否处于离线
-    private boolean isNetwork=true;
+    private boolean isNetwork = true;
 
-    public  NewCountryLanguageAdapter(List<LanguageBean> group, Context context,boolean isNet) {
+    public NewCountryLanguageAdapter(List<LanguageBean> group, Context context, boolean isNet) {
 
         this.group = group;
         this.context = context;
-        isNetwork=isNet;
+        isNetwork = isNet;
     }
 
     @Override
@@ -105,36 +103,52 @@ public class NewCountryLanguageAdapter extends BaseExpandableListAdapter {
 
         idi = SharePrefUtil.getInt(context, "idi", -1);
 
-        if (group.get(i).getChild().size()>0) {
-            if(!b){
+        if (group.get(i).getChild().size() > 0) {
+            if (!b) {
                 holder.img_elv.setImageResource(R.mipmap.right);
-            }else{
+            } else {
                 holder.img_elv.setImageResource(R.mipmap.buttom);
             }
         } else {
             holder.img_elv.setImageResource(0);
         }
-            holder.Choice.setImageResource(0);
-            if (group.get(i).getChild().size() == 0) {
-                holder.Choice.setVisibility(View.VISIBLE);
-                if (idi == group.get(i).getId()) {
-                    holder.Choice.setImageResource(R.mipmap.select);
-                }
-            }else if(!isNetwork&&ChangeOffline.getInstance().offlineListMap.containsKey(group.get(i).getLang_code())){
-                holder.Choice.setVisibility(View.VISIBLE);
-                if (idi == group.get(i).getId()) {
-                    holder.Choice.setImageResource(R.mipmap.select);
-                }
-           } else {
-                holder.Choice.setImageResource(0);
-                holder.Choice.setVisibility(View.GONE);
+        holder.Choice.setImageResource(0);
+        if (group.get(i).getChild().size() == 0) {
+            holder.Choice.setVisibility(View.VISIBLE);
+            if (idi == group.get(i).getId()) {
+                holder.Choice.setImageResource(R.mipmap.select);
             }
+        } else if (!isNetwork && ChangeOffline.getInstance().offlineListMap.containsKey(group.get(i).getLang_code())) {
+            holder.Choice.setVisibility(View.VISIBLE);
+            if (idi == group.get(i).getId()) {
+                holder.Choice.setImageResource(R.mipmap.select);
+            }
+        } else {
+            holder.Choice.setImageResource(0);
+            holder.Choice.setVisibility(View.GONE);
+        }
+
 
         if (isNetwork) {
-            holder.language.setText(group.get(i).getName());
-            holder.languageClassification.setText(group.get(i).getName_local());
+//            holder.language.setText(group.get(i).getName());
+//            holder.languageClassification.setText(group.get(i).getName_local());
+            //是否支持粤语到改语言的翻译
+            if (!group.get(i).isNotSupport()) {
+                holder.language.setText(group.get(i).getName());
+                holder.language.setTextColor(context.getResources().getColor(R.color.fe5000));
+                holder.languageClassification.setText(group.get(i).getName_local());
+                holder.languageClassification.setTextColor(context.getResources().getColor(R.color.offline_list_999));
+            } else {
+                holder.language.setText(group.get(i).getName());
+                holder.language.setTextColor(context.getResources().getColor(R.color.offline_list_name));
+                holder.languageClassification.setText(group.get(i).getName_local());
+                holder.languageClassification.setTextColor(context.getResources().getColor(R.color.offline_list_name_child));
+
+            }
+
+
         } else {
-                //不支持的离线的语言
+            //不支持的离线的语言
             if (ChangeOffline.getInstance().offlineListMap.containsKey(group.get(i).getLang_code())) {
                 holder.language.setText(group.get(i).getName());
                 holder.language.setTextColor(context.getResources().getColor(R.color.fe5000));
@@ -151,7 +165,6 @@ public class NewCountryLanguageAdapter extends BaseExpandableListAdapter {
             }
 
         }
-
 
 
         return view;
@@ -182,7 +195,6 @@ public class NewCountryLanguageAdapter extends BaseExpandableListAdapter {
 //            }
 
 
-
             if (var_name.equals(group.get(i).getChild().get(i1).getVar())) {
 
                 holder.Choice_child.setImageResource(R.mipmap.select);
@@ -190,8 +202,20 @@ public class NewCountryLanguageAdapter extends BaseExpandableListAdapter {
         }
 
 
-        holder.language.setText(group.get(i).getChild().get(i1).getVar());
-        holder.languageClassification.setText(group.get(i).getChild().get(i1).getVar_local());
+        //是否支持粤语到改语言的翻译
+        if (!group.get(i).getChild().get(i1).isNotSupport()) {
+            holder.language.setText(group.get(i).getChild().get(i1).getVar());
+            holder.language.setTextColor(context.getResources().getColor(R.color.fe5000));
+            holder.languageClassification.setText(group.get(i).getChild().get(i1).getVar_local());
+            holder.languageClassification.setTextColor(context.getResources().getColor(R.color.offline_list_999));
+        } else {
+            holder.language.setText(group.get(i).getChild().get(i1).getVar());
+            holder.languageClassification.setText(group.get(i).getChild().get(i1).getVar_local());
+            holder.language.setTextColor(context.getResources().getColor(R.color.offline_list_name));
+            holder.languageClassification.setTextColor(context.getResources().getColor(R.color.offline_list_name_child));
+        }
+
+
         return view;
     }
 
