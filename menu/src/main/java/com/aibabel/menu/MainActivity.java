@@ -1888,7 +1888,8 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
                                 getInternetService();
                                 break;
                             case 1:
-                                ToastUtil.showShort(mContext, "服务器出错，请重启设备");
+                                //ToastUtil.showShort(mContext, "服务器出错，请重启设备");
+                                Log.e("SERVICE_FUWU", "服务器出错，请重启设备");
                                 break;
                         }
 
