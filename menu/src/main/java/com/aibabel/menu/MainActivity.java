@@ -75,6 +75,7 @@ import com.aibabel.menu.dialog.CustomDialog;
 import com.aibabel.menu.h5.AndroidJS;
 import com.aibabel.menu.inf.UpdateMenu;
 import com.aibabel.menu.rent.RentDialogActivity;
+import com.aibabel.menu.rent.RentKeepUseActivity;
 import com.aibabel.menu.rent.RentLockedActivity;
 import com.aibabel.menu.service.MyService;
 import com.aibabel.menu.util.AppStatusUtils;
@@ -375,7 +376,6 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
     public void init() {
         loopHandler = new LooptempHandler(this);
         addStatisticsEvent("menu_main_open", null);
-        startService(new Intent(this, MyService.class));
     }
 
     public static MaterialBadgeTextView home_badge;
@@ -445,7 +445,8 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
 
 //        renUtils = new RenUtils(this);
 //        renUtils.startZl(); //启动租赁
-
+        Log.e("hjs", "myservice(4h)");
+        startService(new Intent(this, MyService.class));
 
         try {
             new Thread(new Runnable() {
@@ -712,10 +713,12 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
                 SharePrefUtil.saveInt(context, order_islock, islock);
                 try {
                     boolean RentLocked_fore = DetectUtil.isForeground(this, RentLockedActivity.class);
-                    if (RentLocked_fore && islock == 0) {
+                    boolean RentKeepUse = DetectUtil.isForeground(this, RentKeepUseActivity.class);
+                    if ((RentKeepUse || RentLocked_fore) && islock == 0) {
                         LogUtil.e("RentLocked_fore = " + RentLocked_fore);
                         try {
                             RentLockedActivity.finsRentlock();
+                            RentKeepUseActivity.finsRentlock();
                         } catch (Exception e) {
                             e.printStackTrace();
                         }
@@ -1477,9 +1480,16 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         try {
             boolean RentLocked_fore = DetectUtil.isForeground(this, RentLockedActivity.class);
             LogUtil.e("RentLocked_fore = " + RentLocked_fore);
-            if (RentLocked_fore) {
+            try {
+                if (RentLocked_fore) {
+                    RentLockedActivity.finsRentlock();
+                }
+                RentKeepUseActivity.finsRentlock();
                 RentLockedActivity.finsRentlock();
+            } catch (Exception e) {
+
             }
+
             clearALlsharePreutil();
 
             init_neveruser();
@@ -1504,6 +1514,11 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
     public static LooptempHandler loopHandler;
 
     private static boolean locknetsync = true;
+
+    /**
+     * 如果锁机了，再次同步一次
+     */
+    private static boolean iflocksyncAgain = true;
 
     /***
      * 这是一个静态,loop轮询机制
@@ -1549,6 +1564,10 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
                                 keepuse.putExtra(bunder_iszhuner, zhuner_str);
                                 keepuse.putExtra(bunder_qudao, qudao_str);
                                 startActivity(keepuse);
+                                if (iflocksyncAgain) {
+                                    iflocksyncAgain = false;
+                                    loopHandler.sendEmptyMessageDelayed(130, 1000 * 5);
+                                }
                             } catch (Exception e) {
                                 e.printStackTrace();
                             }
@@ -1708,9 +1727,15 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         }
     }
 
+    boolean aaa = true;
+
     public void onResume() {
         super.onResume();
         MobclickAgent.onResume(this);
+        if (aaa) {
+            aaa = false;
+            loopHandler.sendEmptyMessage(100);
+        }
     }
 
     @Override
@@ -1888,16 +1913,16 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
                             case 0:
                                 servers = 1;
                                 getInternetService();
-                                Log.e("SERVICE_FUWU","获取服务器列表 第一次 出错");
+                                Log.e("SERVICE_FUWU", "获取服务器列表 第一次 出错");
                                 break;
                             case 1:
                                 servers = 2;
                                 getInternetService();
-                                Log.e("SERVICE_FUWU","获取服务器列表 第二次 出错");
+                                Log.e("SERVICE_FUWU", "获取服务器列表 第二次 出错");
                                 break;
                             case 2:
                                 servers = 0;
-                                Log.e("SERVICE_FUWU","获取服务器列表 第三次 出错");
+                                Log.e("SERVICE_FUWU", "获取服务器列表 第三次 出错");
                                 break;
                         }
 

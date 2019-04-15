@@ -13,6 +13,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.aibabel.menu.R;
+import com.aibabel.menu.util.LogUtil;
 
 import butterknife.BindString;
 import butterknife.BindView;
@@ -44,14 +45,14 @@ public class RentKeepUseActivity extends Activity {
     String keepuse;
 
 
-
+    private  static  Activity myrentlock;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.activity_rent_keep_use);
         mUnbinder = ButterKnife.bind(this);
-
+        myrentlock = this;
         Intent intent = getIntent();
         if (intent == null) {
         } else {
@@ -105,10 +106,22 @@ public class RentKeepUseActivity extends Activity {
 
     }
 
+    public static void finsRentlock(){
+        try {
+            if (myrentlock != null) {
+                LogUtil.e("  myrentlock.finish();");
+                myrentlock.finish();
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+    }
+
     @Override
     protected void onDestroy() {
         super.onDestroy();
         try {
+            myrentlock = null;
             if(mUnbinder!=null)mUnbinder.unbind();
         }catch (Exception e){
             e.printStackTrace();
