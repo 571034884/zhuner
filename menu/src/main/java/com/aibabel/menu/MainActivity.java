@@ -1727,15 +1727,9 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         }
     }
 
-    boolean aaa = true;
-
     public void onResume() {
         super.onResume();
         MobclickAgent.onResume(this);
-        if (aaa) {
-            aaa = false;
-            loopHandler.sendEmptyMessage(100);
-        }
     }
 
     @Override
