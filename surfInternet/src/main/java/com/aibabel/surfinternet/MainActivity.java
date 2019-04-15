@@ -129,6 +129,7 @@ public class MainActivity extends BaseNetActivity{
         });
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
     public void initData() {
 

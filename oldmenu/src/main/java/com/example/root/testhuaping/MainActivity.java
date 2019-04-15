@@ -29,6 +29,7 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.ViewPager;
 import android.telephony.SubscriptionInfo;
+
 import android.telephony.SubscriptionManager;
 import android.telephony.TelephonyManager;
 import android.text.TextUtils;
@@ -47,6 +48,8 @@ import android.widget.Toast;
 import com.aibabel.baselibrary.mode.DataManager;
 import com.aibabel.baselibrary.utils.FileUtil;
 import com.aibabel.baselibrary.utils.FilesUtil;
+import com.aibabel.baselibrary.utils.SIMUtils;
+import com.aibabel.baselibrary.utils.TimeZoneUtils;
 import com.aibabel.baselibrary.utils.ToastUtil;
 import com.example.root.testhuaping.service.Getsystem_info;
 import com.example.root.testhuaping.util.CommonUtils;
@@ -69,6 +72,7 @@ import com.umeng.analytics.MobclickAgent;
 
 import org.json.JSONObject;
 
+import java.lang.reflect.Method;
 import java.security.cert.CertificateException;
 import java.security.cert.X509Certificate;
 import java.text.ParseException;
@@ -436,9 +440,18 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
     /**
      * 启动软卡 领科
      */
+    @TargetApi(Build.VERSION_CODES.N)
     public void start_soft() {
         try {
-            mSoftSIMManager.setSoftSIMEnabled(true);
+            if (SIMUtils.getDefaultDataSubId(this)==0){  // 当前使用的是外置卡的话，不真正打开softSIM。只是通知softSIM下次切换到内置卡时候自动启动
+                Intent intent = new Intent();
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                intent.setAction(" com.aibabel.softSIM.used");
+                sendBroadcast(intent);
+            }else{
+                mSoftSIMManager.setSoftSIMEnabled(true);
+            }
+
             saveFile(true);
         } catch (RemoteException e) {
             e.printStackTrace();
@@ -593,6 +606,7 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
                 e.printStackTrace();
             }
         }
+        TimeZoneUtils.startChecksIPThread(this);
     }
 
     @Override
@@ -616,8 +630,16 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
     }
 
 
-    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP_MR1)
+    @TargetApi(Build.VERSION_CODES.N)
     private void initMtkDoubleSim() {
+        try {
+
+
+            Log.e("subID subId",SIMUtils.getDefaultDataSubId(this)+"");
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
         try {
             List<SubscriptionInfo> list = SubscriptionManager.from(this).getActiveSubscriptionInfoList();
@@ -627,10 +649,13 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
 
 
             for (int i = 0; i < list.size(); i++) {
-                if (DEG) Log.e("Q_M", "ICCID-->" + list.get(i).getIccId());
-                if (DEG) Log.e("Q_M", "sim_id-->" + list.get(i).getSimSlotIndex());
+                if (DEG)
+                    Log.e("Q_M", "ICCID-->" + list.get(i).getIccId());
+                if (DEG)
+                    Log.e("Q_M", "sim_id-->" + list.get(i).getSimSlotIndex());
                 if (list.get(i).getSimSlotIndex() == 1) {
-                    if (DEG) Log.e("iccid123", list.get(i).getIccId());
+                    if (DEG)
+                        Log.e("iccid123", list.get(i).getIccId());
                     String iccids = list.get(i).getIccId();
 
                     iccid =  iccids;
