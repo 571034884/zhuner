@@ -1861,9 +1861,16 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
                             case 0:
                                 servers = 1;
                                 getInternetService();
+                                Log.e("SERVICE_FUWU","获取服务器列表 第一次 出错");
                                 break;
                             case 1:
-                                ToastUtil.showShort(mContext, "服务器出错，请重启设备");
+                                servers = 2;
+                                getInternetService();
+                                Log.e("SERVICE_FUWU","获取服务器列表 第二次 出错");
+                                break;
+                            case 2:
+                                servers = 0;
+                                Log.e("SERVICE_FUWU","获取服务器列表 第三次 出错");
                                 break;
                         }
 
