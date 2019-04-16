@@ -1195,6 +1195,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
             e.printStackTrace();
         }
 
+
         try {
             if (TextUtils.equals(SPUtils.get(mContext, "showCityName", "").toString(), bean.getData().getCityNameCn())) {
                 //显示的桌面  就是当前城市

@@ -36,7 +36,7 @@ public class MyService extends Service {
     public int onStartCommand(Intent intent, int flags, int startId) {
 
         Log.e("hjs=", "onStartCommand");
-               return super.onStartCommand(intent, flags, startId);
+        return super.onStartCommand(intent, flags, startId);
     }
 
     private static boolean issleeep4runing = false;
@@ -63,7 +63,7 @@ public class MyService extends Service {
         Log.e("hjs", "MyServic=onCreate-");
 //        startLoopRent();
 //        SharePrefUtil.saveString(getApplicationContext(),"","");
-        if(!issleeep4runing) {
+        if (!issleeep4runing) {
             new Thread(new Runnable() {
                 @Override
                 public void run() {
@@ -73,7 +73,7 @@ public class MyService extends Service {
                         try {
                             LogUtil.d("  Thread.sleep(4h) start= " + issleeep4runing);
                             Thread.sleep(1000 * 60 * 60 * 4);
-                           // Thread.sleep(1000 * 5);
+                             //Thread.sleep(1000 * 30);
                             thread2.run();
                         } catch (Exception e) {
                             e.printStackTrace();
