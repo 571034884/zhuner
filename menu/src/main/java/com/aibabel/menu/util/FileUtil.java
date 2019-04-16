@@ -401,23 +401,32 @@ public class FileUtil {
 
 
     public  static void saveImage(Context mContext,Bitmap bmp,String fileName) {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    File appDir = new File(mContext.getFilesDir().getAbsolutePath());
+                    if (!appDir.exists()) {
+                        appDir.mkdir();
+                    }
+                    String currfileName = fileName + ".jpg";
+                    File file = new File(appDir, currfileName);
+                    try {
+                        FileOutputStream fos = new FileOutputStream(file);
+                        bmp.compress(Bitmap.CompressFormat.JPEG, 100, fos);
+                        fos.flush();
+                        fos.close();
+                    } catch (FileNotFoundException e) {
+                        e.printStackTrace();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }catch (Exception e){
 
-        File appDir = new File(mContext.getFilesDir().getAbsolutePath());
-        if (!appDir.exists()) {
-            appDir.mkdir();
-        }
-        String currfileName = fileName + ".jpg";
-        File file = new File(appDir, currfileName);
-        try {
-            FileOutputStream fos = new FileOutputStream(file);
-            bmp.compress(Bitmap.CompressFormat.JPEG, 100, fos);
-            fos.flush();
-            fos.close();
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+                }
+
+            }
+        }).start();
     }
 
 }

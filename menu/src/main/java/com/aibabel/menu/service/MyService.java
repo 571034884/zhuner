@@ -48,8 +48,7 @@ public class MyService extends Service {
         public void run() {
             if (MainActivity.loopHandler != null)
                 MainActivity.loopHandler.sendEmptyMessage(130);
-            issleeep4runing = false;
-            LogUtil.d("  Thread.sleep(4h) end= " + issleeep4runing);
+
 
         }
     }
@@ -64,26 +63,27 @@ public class MyService extends Service {
         Log.e("hjs", "MyServic=onCreate-");
 //        startLoopRent();
 //        SharePrefUtil.saveString(getApplicationContext(),"","");
-        issleeep4runing = false;
+        if(!issleeep4runing) {
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
 
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-
-                while (!issleeep4runing) {
-                    issleeep4runing = true;
-                    try {
-                        LogUtil.d("  Thread.sleep(4h) start= " + issleeep4runing);
-                        Thread.sleep(1000 * 60 * 60 * 4);
-                        //Thread.sleep(1000 * 10);
-                        thread2.run();
-                    } catch (Exception e) {
-                        e.printStackTrace();
+                    while (!issleeep4runing) {
+                        issleeep4runing = true;
+                        try {
+                            LogUtil.d("  Thread.sleep(4h) start= " + issleeep4runing);
+                            Thread.sleep(1000 * 60 * 60 * 4);
+                           // Thread.sleep(1000 * 5);
+                            thread2.run();
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                        issleeep4runing = false;
+                        LogUtil.d("  Thread.sleep(4h) end= " + issleeep4runing);
                     }
                 }
-            }
-        }).start();
-
+            }).start();
+        }
 
     }
 
