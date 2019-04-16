@@ -73,9 +73,6 @@ public class MenuActivity extends BaseActivity implements View.OnClickListener {
         L.e("=============================");
         super.onCreate(savedInstanceState);
         addStatisticsEvent("more_inface_open",null);
-
-
-
     }
 
     @Override

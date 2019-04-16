@@ -10,7 +10,6 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.graphics.Bitmap;
 import android.graphics.Rect;
-import android.graphics.drawable.AnimationDrawable;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.ConnectivityManager;
@@ -45,32 +44,24 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextClock;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.aibabel.aidlaar.StatisticsManager;
 import com.aibabel.baselibrary.http.BaseCallback;
 import com.aibabel.baselibrary.http.OkGoUtil;
 import com.aibabel.baselibrary.mode.DataManager;
-import com.aibabel.baselibrary.mode.ServerManager;
 import com.aibabel.baselibrary.sphelper.SPHelper;
 import com.aibabel.baselibrary.utils.FastJsonUtil;
 import com.aibabel.baselibrary.utils.ProviderUtils;
-import com.aibabel.baselibrary.utils.ServerKeyUtils;
 import com.aibabel.baselibrary.utils.SharePrefUtil;
+import com.aibabel.baselibrary.utils.TimeZoneUtils;
 import com.aibabel.baselibrary.utils.ToastUtil;
 import com.aibabel.menu.app.MyApplication;
 import com.aibabel.menu.base.BaseActivity;
-import com.aibabel.menu.bean.Domain;
 import com.aibabel.menu.bean.MenuDataBean;
 import com.aibabel.menu.bean.PublicBean;
 import com.aibabel.menu.bean.PushMessageBean;
-import com.aibabel.menu.bean.ReletSn;
-import com.aibabel.menu.bean.ServerBean;
 import com.aibabel.menu.bean.SyncOrder;
 import com.aibabel.menu.bitmap.MyTransformtion;
 import com.aibabel.menu.broadcast.NetBroadcastReceiver;
-import com.aibabel.menu.broadcast.NotificationClickReceiver;
-import com.aibabel.menu.broadcast.ResidentNotificationHelper;
 import com.aibabel.menu.dialog.CustomDialog;
 import com.aibabel.menu.h5.AndroidJS;
 import com.aibabel.menu.inf.UpdateMenu;
@@ -95,8 +86,6 @@ import com.aibabel.menu.util.RenUtils;
 import com.aibabel.menu.util.SPUtils;
 import com.aibabel.menu.util.ServerUtils;
 import com.aibabel.menu.util.UrlConstants;
-import com.aibabel.menu.view.MagicTextView;
-import com.aibabel.messagemanage.JiGuangActivity;
 import com.aibabel.messagemanage.sqlite.SqlUtils;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
@@ -108,15 +97,10 @@ import com.lzy.okgo.model.Response;
 import com.matrixxun.starry.badgetextview.MaterialBadgeTextView;
 import com.umeng.analytics.MobclickAgent;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import java.io.IOException;
 import java.io.Serializable;
 import java.lang.ref.WeakReference;
-import java.text.ParseException;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.TimeZone;
 
@@ -340,6 +324,8 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         } catch (Exception e) {
             e.printStackTrace();
         }
+
+
 
     }
 
@@ -1729,6 +1715,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
 
     public void onResume() {
         super.onResume();
+        TimeZoneUtils.startChecksIPThread(this);
         MobclickAgent.onResume(this);
     }
 

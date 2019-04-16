@@ -45,4 +45,6 @@
     <string name="timeout_connect">接続がタイムアウトしました、もう一度お試し下さい。</string>
     <string name="error_connect">サーバーに接続できません、後ほど再度お試し下さい。</string>
 
+    <!--粤语不支持-->
+    <string name="not_support">未だに当該言語ヘ翻訳できません。</string>
 </resources>

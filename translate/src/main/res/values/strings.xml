@@ -39,5 +39,7 @@
     <string name="timeout_read">网络超时，请重试！</string>
     <string name="timeout_connect">连接超时！</string>
     <string name="error_connect">服务器连接失败，请重试！</string>
+    <!--粤语不支持-->
+    <string name="not_support">不支持该语种的翻译</string>
 
 </resources>

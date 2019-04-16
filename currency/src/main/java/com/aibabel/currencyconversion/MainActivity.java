@@ -7,6 +7,7 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.constraint.ConstraintLayout;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
@@ -138,19 +139,27 @@ public class MainActivity extends BaseActivity {
     private String key = "";
 
     @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+    }
+
+    @Override
     public int initLayout() {
         return R.layout.activity_main;
     }
 
     @Override
     public void init() {
-        rexiufu();
-        String guangbi = getIntent().getStringExtra("from");
-        if (guangbi != null && guangbi.equals("food")) {
+//        initView();
+//        rexiufu();
+//        String guangbi = getIntent().getStringExtra("from");
+//        if (guangbi != null && guangbi.equals("food")) {
             clGuanbi.setVisibility(View.VISIBLE);
-        } else {
-            clGuanbi.setVisibility(View.GONE);
-        }
+//        } else {
+//            clGuanbi.setVisibility(View.GONE);
+//        }
+
         try {
             Cursor cursor = getContentResolver().query(CONTENT_URI, null, null, null, null);
             cursor.moveToFirst();
@@ -182,6 +191,33 @@ public class MainActivity extends BaseActivity {
         etCurrencyCount2.getViewTreeObserver().addOnGlobalLayoutListener(new MyGlobalLayoutListener(llZuo2, llYou2, tvCurrencyAbbreviations2, ivXiala2));
         etCurrencyCount3.getViewTreeObserver().addOnGlobalLayoutListener(new MyGlobalLayoutListener(llZuo3, llYou3, tvCurrencyAbbreviations3, ivXiala3));
 
+    }
+
+    private void initView(){
+        tvCurrencyAbbreviations1 = findViewById(R.id.tv_currency_abbreviations1);
+        tvCurrencyAbbreviations2 = findViewById(R.id.tv_currency_abbreviations2);
+        tvCurrencyAbbreviations3 = findViewById(R.id.tv_currency_abbreviations3);
+        tvCurrencyName1 = findViewById(R.id.tv_currency_name1);
+        tvCurrencyName2 = findViewById(R.id.tv_currency_name2);
+        tvCurrencyName3 = findViewById(R.id.tv_currency_name3);
+        tvProvider = findViewById(R.id.tv_provider);
+        ivCountryFlag1 = findViewById(R.id.iv_country_flag1);
+        ivCountryFlag2 = findViewById(R.id.iv_country_flag2);
+        ivCountryFlag3 = findViewById(R.id.iv_country_flag3);
+        ivGuanbi = findViewById(R.id.iv_guanbi);
+        ivXiala1 = findViewById(R.id.iv_xiala1);
+        ivXiala2 = findViewById(R.id.iv_xiala2);
+        ivXiala3 = findViewById(R.id.iv_xiala3);
+        clGuanbi = findViewById(R.id.clGuanbi);
+        llYou1 = findViewById(R.id.ll_you1);
+        llYou2 = findViewById(R.id.ll_you2);
+        llYou3 = findViewById(R.id.ll_you3);
+        llZuo1 = findViewById(R.id.ll_zuo1);
+        llYou2 = findViewById(R.id.ll_zuo2);
+        llYou3 = findViewById(R.id.ll_zuo3);
+        vCursor1 = findViewById(R.id.v_cursor1);
+        vCursor2 = findViewById(R.id.v_cursor2);
+        vCursor3 = findViewById(R.id.v_cursor3);
     }
 
     @OnClick(R.id.iv_guanbi)

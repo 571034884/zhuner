@@ -2,10 +2,8 @@ package com.aibabel.translate.activity;
 
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
-import android.database.Cursor;
 import android.os.Bundle;
 import android.text.TextUtils;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.ExpandableListView;
@@ -13,24 +11,18 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.aibabel.aidlaar.StatisticsManager;
 import com.aibabel.translate.R;
 import com.aibabel.translate.adapter.NewCountryLanguageAdapter;
 import com.aibabel.translate.bean.LanguageBean;
 import com.aibabel.translate.offline.ChangeOffline;
 import com.aibabel.translate.utils.CommonUtils;
 import com.aibabel.translate.utils.Constant;
-import com.aibabel.translate.utils.L;
 import com.aibabel.translate.utils.LanguageUtils;
 import com.aibabel.translate.utils.SharePrefUtil;
 import com.aibabel.translate.utils.ToastUtil;
 
-import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Locale;
-import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -57,7 +49,7 @@ public class LanguageActivity extends BaseActivity implements ExpandableListView
     private String sound;
 
     //进来的那一次网络状态  就是这次列表的最终状态
-    private boolean isNet=true;
+    private boolean isNet = true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -74,6 +66,9 @@ public class LanguageActivity extends BaseActivity implements ExpandableListView
 
     private void initIntent() {
         Intent intent = getIntent();
+        /**
+         * 132为上，131为下
+         */
         lan_key = intent.getIntExtra("lan_key", 0);
         lan_name = intent.getStringExtra("lan_name");
         flipp = intent.getBooleanExtra("flipp", false);
@@ -88,54 +83,61 @@ public class LanguageActivity extends BaseActivity implements ExpandableListView
     }
 
 
-
-
-
-
     private void initView() {
-      ivClose.setOnClickListener(this);
+        ivClose.setOnClickListener(this);
 
-      elLan.setOnChildClickListener(this);
+        elLan.setOnChildClickListener(this);
 
-      elLan.setOnGroupClickListener(this);
+        elLan.setOnGroupClickListener(this);
 
     }
 
     @Override
     public void onClick(View v) {
-        switch (v.getId()){
+        switch (v.getId()) {
             case R.id.iv_close:
-                addStatisticsEvent("translation_language1",null);
                 onBackPressed();
                 break;
         }
     }
 
 
-
     public void onBackPressed() {
-        /////////////////可能需要同异侧判断
+        //可能需要同异侧判断
         setResult(200);
         Constant.IS_NEED_SHOW = false;
         super.onBackPressed();
     }
 
 
-
     private void initData() {
-        //获取当前手机的语言
-        String country = Locale.getDefault().getCountry();
-        String language = getResources().getConfiguration().locale.getLanguage();
         //读取语言选择的 json 文件
-        group = LanguageUtils.getLanList(this);
+//        group = LanguageUtils.getLanList(this);
+        if (lan_key == 132) {
+            String code = SharePrefUtil.getString(this, Constant.CODE_DOWN, "");
+            if (TextUtils.equals(code, "ch_yy") || TextUtils.equals(code, "ch_hk_j")) {
+                group = LanguageUtils.getSpecailList(LanguageUtils.getLanList(this));
+            } else if (LanguageUtils.getNotSupport().contains(code)) {
+                group = LanguageUtils.getList(LanguageUtils.getLanList(this));
+            } else {
+                group = LanguageUtils.getLanList(this);
+            }
+        }
 
-
-          isNet=CommonUtils.isAvailable();
+        if (lan_key == 131) {
+            String code = SharePrefUtil.getString(this, Constant.CODE_UP, "");
+            if (TextUtils.equals(code, "ch_yy") || TextUtils.equals(code, "ch_hk_j")) {
+                group = LanguageUtils.getSpecailList(LanguageUtils.getLanList(this));
+            } else if (LanguageUtils.getNotSupport().contains(code)) {
+                group = LanguageUtils.getList(LanguageUtils.getLanList(this));
+            } else {
+                group = LanguageUtils.getLanList(this);
+            }
+        }
+        isNet = CommonUtils.isAvailable();
         if (!isNet) {
-
-             ChangeOffline.getInstance().getOfflineList();
-
-            List<LanguageBean> list=new ArrayList<>();
+            ChangeOffline.getInstance().getOfflineList();
+            List<LanguageBean> list = new ArrayList<>();
             for (int i = 0; i < group.size(); i++) {
                 if (ChangeOffline.getInstance().offlineListMap.containsKey(group.get(i).getLang_code())) {
                     group.get(i).setIsOffline(true);
@@ -144,7 +146,7 @@ public class LanguageActivity extends BaseActivity implements ExpandableListView
                     list.add(group.get(i));
                 }
             }
-            group=list;
+            group = list;
         }
         newExlistAdapter = new NewCountryLanguageAdapter(group, LanguageActivity.this, isNet);
         elLan.setAdapter(newExlistAdapter);
@@ -173,9 +175,12 @@ public class LanguageActivity extends BaseActivity implements ExpandableListView
     public boolean onChildClick(ExpandableListView parent, View v, int groupPosition, int childPosition, long id) {
         String name_str;
         String lanText;
+        if (group.get(groupPosition).getChild().get(childPosition).isNotSupport()) {
+            ToastUtil.showShort(getString(R.string.not_support));
+            return false;
+        }
         LanguageBean.ChildBean newLanguageBean = group.get(groupPosition).getChild().get(childPosition);
         LanguageBean languageBean = group.get(groupPosition);
-//                group.get(i).getChild().get(i1).setVar_choice(1);
         newExlistAdapter.notifyDataSetChanged();
 
         SharePrefUtil.saveString(LanguageActivity.this, "var_name", newLanguageBean.getVar());
@@ -185,15 +190,14 @@ public class LanguageActivity extends BaseActivity implements ExpandableListView
 
         String alert = group.get(groupPosition).getAlert();
         try {
-            alert=group.get(groupPosition).getChild().get(childPosition).getAlert();
+            alert = group.get(groupPosition).getChild().get(childPosition).getAlert();
         } catch (Exception e) {
 
         }
 
         sound = group.get(groupPosition).getSound() + "";
         String offline = group.get(groupPosition).getOffline();
-        saveLan(lan_key, lanText, name_str, alert, sound,offline);
-
+        saveLan(lan_key, lanText, name_str, alert, sound, offline);
         return false;
     }
 
@@ -209,12 +213,12 @@ public class LanguageActivity extends BaseActivity implements ExpandableListView
 
         if (!isNet && ChangeOffline.getInstance().offlineListMap.containsKey(group.get(groupPosition).getLang_code())) {
 
-                SharePrefUtil.saveInt(LanguageActivity.this, "idi", group.get(groupPosition).getId());
-                LanguageBean newLanguageBean = group.get(groupPosition);
-                lanText = newLanguageBean.getName();
-                name_str = newLanguageBean.getLang_code();
-                sound = newLanguageBean.getSound() + "";
-                saveLan(lan_key, lanText, name_str, lan_alert, sound,offline);
+            SharePrefUtil.saveInt(LanguageActivity.this, "idi", group.get(groupPosition).getId());
+            LanguageBean newLanguageBean = group.get(groupPosition);
+            lanText = newLanguageBean.getName();
+            name_str = newLanguageBean.getLang_code();
+            sound = newLanguageBean.getSound() + "";
+            saveLan(lan_key, lanText, name_str, lan_alert, sound, offline);
 //            L.e("==============================离线并支持的语言");
             return true;
 
@@ -224,27 +228,30 @@ public class LanguageActivity extends BaseActivity implements ExpandableListView
             return true;
         } else if (isNet) {
 //            L.e("==============================在线支持的语言");
-            if (group.get(groupPosition).getChild().size() > 0) {
+            if (group.get(groupPosition).getChild().size() > 0) {//点击展开二级列表
+
                 SharePrefUtil.saveString(LanguageActivity.this, "choice_name", name);
                 if (choice == false) {
                     choice = true;
                     SharePrefUtil.saveBoolean(LanguageActivity.this, "choice", choice);
-                    //统计展开事件
-                    HashMap<String,Serializable> map = new HashMap<>();
-                    map.put("open_code",group.get(groupPosition).getLang_code());
-                    addStatisticsEvent("translation_language3",map);
                 } else {
                     choice = false;
                     SharePrefUtil.saveBoolean(LanguageActivity.this, "choice", choice);
                 }
                 newExlistAdapter.notifyDataSetChanged();
+
             } else {
-                SharePrefUtil.saveInt(LanguageActivity.this, "idi", group.get(groupPosition).getId());
-                LanguageBean newLanguageBean = group.get(groupPosition);
-                lanText = newLanguageBean.getName();
-                name_str = newLanguageBean.getLang_code();
-                sound = newLanguageBean.getSound() + "";
-                saveLan(lan_key, lanText, name_str, lan_alert, sound,offline);
+                if (!group.get(groupPosition).isNotSupport()) {//是否支持粤语
+                    SharePrefUtil.saveInt(LanguageActivity.this, "idi", group.get(groupPosition).getId());
+                    LanguageBean newLanguageBean = group.get(groupPosition);
+                    lanText = newLanguageBean.getName();
+                    name_str = newLanguageBean.getLang_code();
+                    sound = newLanguageBean.getSound() + "";
+                    saveLan(lan_key, lanText, name_str, lan_alert, sound, offline);
+                } else {
+                    ToastUtil.showShort(getString(R.string.not_support));
+                }
+
             }
 
             return false;
@@ -255,11 +262,7 @@ public class LanguageActivity extends BaseActivity implements ExpandableListView
     }
 
 
-    private void saveLan(int key, String name, String code, String lan_alert, String sound,String offline) {
-        //统计语种点击
-        HashMap<String,Serializable> map = new HashMap<>();
-        map.put("selected_code",code);
-        addStatisticsEvent("translation_language2",null);
+    private void saveLan(int key, String name, String code, String lan_alert, String sound, String offline) {
         switch (key) {
             case 132:
                 SharePrefUtil.saveString(this, Constant.LAN_UP, name);
@@ -284,7 +287,31 @@ public class LanguageActivity extends BaseActivity implements ExpandableListView
     }
 
 
+    /**
+     * @param list
+     * @return
+     */
+    private List<LanguageBean> specialLan(List<LanguageBean> list) {
 
+        for (int i = list.size() - 1; i >= 0; i--) {
+            LanguageBean bean = list.get(i);
+            if (TextUtils.equals(bean.getLang_code(), "kk-KZ")//哈萨克语
+                    || TextUtils.equals(bean.getLang_code(), "ka-GE")//格鲁吉亚
+                    || TextUtils.equals(bean.getLang_code(), "am-ET")//阿姆哈拉语
+                    || TextUtils.equals(bean.getLang_code(), "az-AZ")//阿塞拜疆语
+                    || TextUtils.equals(bean.getLang_code(), "ne-NP")//尼泊尔语
+                    || TextUtils.equals(bean.getLang_code(), "lo-LA")//老挝语
+                    || TextUtils.equals(bean.getLang_code(), "km-KH")//高棉语
+                    || TextUtils.equals(bean.getLang_code(), "gl")//加利西亚语
+                    || TextUtils.equals(bean.getLang_code(), "ja")//爪哇语
+                    || TextUtils.equals(bean.getLang_code(), "zu")) {//祖鲁语
+
+                list.remove(i);
+
+            }
+        }
+        return list;
+    }
 
 
     @Override

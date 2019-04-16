@@ -16,6 +16,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.aibabel.aidlaar.StatisticsManager;
+import com.aibabel.baselibrary.utils.SIMUtils;
 import com.aibabel.weather.activity.AddCityActivity;
 import com.aibabel.weather.activity.EditCityActivity;
 import com.aibabel.weather.adapter.WeatherAdapter;
@@ -128,6 +129,8 @@ public class MainActivity extends BaseActivity implements BaseCallback {
         }
         initClickEvent();
     }
+
+
 
     public void initViewPager() {
         fragmentList = new ArrayList<>();

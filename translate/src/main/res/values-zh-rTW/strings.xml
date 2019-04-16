@@ -41,4 +41,7 @@
     <string name="timeout_read">網絡讀取超時，請重試。</string>
     <string name="timeout_connect">網絡連接超時，請重試。</string>
     <string name="error_connect">伺服器連接失敗，請稍候再試。</string>
+
+    <!--粤语不支持-->
+    <string name="not_support">暫不支援到該語言的翻譯。</string>
 </resources>

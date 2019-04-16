@@ -6,11 +6,10 @@ import android.os.SystemClock;
 import android.text.TextUtils;
 import android.util.Log;
 
-import com.aibabel.aidlaar.StatisticsManager;
 import com.aibabel.translate.R;
 import com.aibabel.translate.activity.BaseActivity;
 import com.aibabel.translate.app.BaseApplication;
-import com.aibabel.translate.audio.MicArrayUtil;
+import com.aibabel.translate.audio.AudioRecordUtil;
 import com.aibabel.translate.bean.AsrAndTranResultBean;
 import com.aibabel.translate.bean.ByteDataBean;
 import com.aibabel.translate.bean.ErrorResultBean;
@@ -36,20 +35,27 @@ import org.json.JSONObject;
 
 import java.io.Serializable;
 import java.nio.charset.Charset;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Map;
 import java.util.Timer;
 import java.util.TimerTask;
 
-public class TranslateUtil implements MicArrayUtil.OnDealwithListener, SocketManger.OnReceiveListener {
+/**
+ * ==========================================================================================
+ *
+ * @Author： 张文颖
+ * @Date：2019/4/15
+ * @Desc：
+ * @Updtae：2019/4/15，将mic阵列改回原来的单麦（张明需求），修改人：张文颖 ==========================================================================================
+ */
+public class TranslateUtil implements AudioRecordUtil.OnDealwithListener, SocketManger.OnReceiveListener {
 
     public int readnum = 0;
     public int oldReadnum = 0;
     private Context context;
-    private MicArrayUtil util;
+    //    private MicArrayUtil util;
+    private AudioRecordUtil util;
     private OnResponseListener listener;
     private String id = "0";
     private long clickTime = 0;
@@ -95,7 +101,7 @@ public class TranslateUtil implements MicArrayUtil.OnDealwithListener, SocketMan
     public TranslateUtil(Context context, Activity activity) {
         this.context = context;
         mActivity = activity;
-        util = MicArrayUtil.getInstance();
+        util = AudioRecordUtil.getInstance();
         util.setOnDealwithListener(this);
 //        SocketManger.getInstance().setOnReceiveListener(this);
     }
@@ -186,7 +192,7 @@ public class TranslateUtil implements MicArrayUtil.OnDealwithListener, SocketMan
             mode = "online";
             // TODO: 2019/1/9
             MediaPlayerUtil.playMp3(context, R.raw.start);
-            MicArrayUtil.getInstance().startRecord(true, context);
+            AudioRecordUtil.getInstance().startRecord(true);
             if (TextUtils.equals("fr", from)) {
                 from = "fra_fra";
             }
@@ -203,7 +209,7 @@ public class TranslateUtil implements MicArrayUtil.OnDealwithListener, SocketMan
                 // TODO: 2019/1/9
                 MediaPlayerUtil.playMp3(context, R.raw.start);
                 //中文离线永不释放  独立
-                MicArrayUtil.getInstance().startRecord(false, context);
+                AudioRecordUtil.getInstance().startRecord(false);
                 oldReadnum = readnum;
                 offlineASR(ChangeOffline.getInstance().getSpeech(from, to), ChangeOffline.getInstance().getTran(from, to), index, key);
             } else {
@@ -393,9 +399,9 @@ public class TranslateUtil implements MicArrayUtil.OnDealwithListener, SocketMan
         //停止录音
 //        ZipFileUtil.createFileWithByte(copyofflineList, SDCardUtils.getSDCardPath() + "pcm/20180829_00_" + System.currentTimeMillis() + ".pcm");
         isStart = false;
-        MicArrayUtil.getInstance().stopRecord();
+        AudioRecordUtil.getInstance().stopRecord();
         if (SystemClock.uptimeMillis() - clickTime <= 300) {
-            //如果两次的时间差＜500ms，就不执行操作
+            //如果两次的时间差＜300ms，就不执行操作
             clickTime = SystemClock.uptimeMillis();
             listener.reset();
 //            L.e("发送结束标志函数");
@@ -574,9 +580,11 @@ public class TranslateUtil implements MicArrayUtil.OnDealwithListener, SocketMan
                 } else {
                     if (TextUtils.equals(id, String.valueOf(readnum))) {
                         //准儿没有听懂
-                        TTSUtil.getInstance().notUnderstand(context, 1, Constant.isSound);
+                        Log.e("_time:", String.valueOf(endTime - startTime));
+                        if (endTime - startTime > 700) {//防止误触（返回结果为空，并且返回时间小于一秒，不提示准儿没有听懂）
+                            TTSUtil.getInstance().notUnderstand(context, 1, Constant.isSound);
+                        }
                         listener.reset();
-//                        L.e("reset","setAsr");
                         isSuccess = "failed";
                         statistics();
                     }
@@ -666,7 +674,11 @@ public class TranslateUtil implements MicArrayUtil.OnDealwithListener, SocketMan
         L.e("cmd:", bean.getEcode());
         switch (cmd) {
             case 101://识别失败
-                TTSUtil.getInstance().notUnderstand(context, 1, Constant.isSound);
+                //准儿没有听懂
+                Log.e("_time:", String.valueOf(endTime - startTime));
+                if (endTime - startTime > 700) {//防止误触（返回结果为空，并且返回时间小于一秒，不提示准儿没有听懂）
+                    TTSUtil.getInstance().notUnderstand(context, 1, Constant.isSound);
+                }
                 listener.reset();
                 break;
             case 102://翻译失败
