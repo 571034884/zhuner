@@ -3,7 +3,7 @@ apply plugin: 'com.android.application'
 android {
     compileSdkVersion 28
     defaultConfig {
-        applicationId "com.aibabel.launcher.launcher"
+        applicationId "com.aibabel.launcher"
         minSdkVersion 23
         targetSdkVersion 28
         versionCode 1
@@ -26,4 +26,8 @@ dependencies {
     androidTestImplementation 'com.android.support.test:runner:1.0.2'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
     implementation project(':baselibrary')
+    //状态栏
+    implementation 'com.jaeger.statusbarutil:library:1.4.0'
+    //注解
+    annotationProcessor 'com.jakewharton:butterknife-compiler:8.8.1'
 }
