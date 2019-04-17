@@ -34,28 +34,9 @@ public class MyService extends Service {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
+
         Log.e("hjs=", "onStartCommand");
-        issleeep4runing = false;
-
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-
-                while (!issleeep4runing) {
-                    issleeep4runing = true;
-                    try {
-                        LogUtil.d("  Thread.sleep(4h) start= " + issleeep4runing);
-                        Thread.sleep(1000 * 60 * 60 * 4);
-                        //Thread.sleep(1000 * 10);
-                        thread2.run();
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                }
-            }
-        }).start();
-
-        return super.onStartCommand(intent, flags, startId);
+               return super.onStartCommand(intent, flags, startId);
     }
 
     private static boolean issleeep4runing = false;
@@ -67,8 +48,7 @@ public class MyService extends Service {
         public void run() {
             if (MainActivity.loopHandler != null)
                 MainActivity.loopHandler.sendEmptyMessage(130);
-            issleeep4runing = false;
-            LogUtil.d("  Thread.sleep(4h) end= " + issleeep4runing);
+
 
         }
     }
@@ -83,6 +63,28 @@ public class MyService extends Service {
         Log.e("hjs", "MyServic=onCreate-");
 //        startLoopRent();
 //        SharePrefUtil.saveString(getApplicationContext(),"","");
+        if(!issleeep4runing) {
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+
+                    while (!issleeep4runing) {
+                        issleeep4runing = true;
+                        try {
+                            LogUtil.d("  Thread.sleep(4h) start= " + issleeep4runing);
+                            Thread.sleep(1000 * 60 * 60 * 4);
+                           // Thread.sleep(1000 * 5);
+                            thread2.run();
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                        issleeep4runing = false;
+                        LogUtil.d("  Thread.sleep(4h) end= " + issleeep4runing);
+                    }
+                }
+            }).start();
+        }
+
     }
 
     @Override

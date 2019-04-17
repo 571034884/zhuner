@@ -3,6 +3,8 @@ package com.aibabel.weather.activity;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.telephony.SubscriptionManager;
+import android.telephony.TelephonyManager;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
@@ -35,6 +37,7 @@ import com.aibabel.weather.okgo.OkGoUtil;
 import com.aibabel.weather.utils.CommonUtils;
 
 import java.io.Serializable;
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -101,6 +104,8 @@ public class AddCityActivity extends BaseActivity implements BaseCallback , Sort
                 sbSort.setVisibility(View.GONE);
                 break;
         }
+
+
     }
 
     /**

@@ -39,8 +39,11 @@ public abstract class BaseActivity extends com.aibabel.baselibrary.base.BaseActi
 
         setStateFlag(true);
         //沉浸式状态栏
-        super.onCreate(savedInstanceState);
-
+        try {
+            super.onCreate(savedInstanceState);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
 
 //        setContentView(getLayout(savedInstanceState));
 //        setContext(this);

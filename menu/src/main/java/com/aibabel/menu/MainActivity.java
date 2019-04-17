@@ -10,7 +10,6 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.graphics.Bitmap;
 import android.graphics.Rect;
-import android.graphics.drawable.AnimationDrawable;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.ConnectivityManager;
@@ -45,32 +44,24 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextClock;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.aibabel.aidlaar.StatisticsManager;
 import com.aibabel.baselibrary.http.BaseCallback;
 import com.aibabel.baselibrary.http.OkGoUtil;
 import com.aibabel.baselibrary.mode.DataManager;
-import com.aibabel.baselibrary.mode.ServerManager;
 import com.aibabel.baselibrary.sphelper.SPHelper;
 import com.aibabel.baselibrary.utils.FastJsonUtil;
 import com.aibabel.baselibrary.utils.ProviderUtils;
-import com.aibabel.baselibrary.utils.ServerKeyUtils;
 import com.aibabel.baselibrary.utils.SharePrefUtil;
+import com.aibabel.baselibrary.utils.TimeZoneUtils;
 import com.aibabel.baselibrary.utils.ToastUtil;
 import com.aibabel.menu.app.MyApplication;
 import com.aibabel.menu.base.BaseActivity;
-import com.aibabel.menu.bean.Domain;
 import com.aibabel.menu.bean.MenuDataBean;
 import com.aibabel.menu.bean.PublicBean;
 import com.aibabel.menu.bean.PushMessageBean;
-import com.aibabel.menu.bean.ReletSn;
-import com.aibabel.menu.bean.ServerBean;
 import com.aibabel.menu.bean.SyncOrder;
 import com.aibabel.menu.bitmap.MyTransformtion;
 import com.aibabel.menu.broadcast.NetBroadcastReceiver;
-import com.aibabel.menu.broadcast.NotificationClickReceiver;
-import com.aibabel.menu.broadcast.ResidentNotificationHelper;
 import com.aibabel.menu.dialog.CustomDialog;
 import com.aibabel.menu.h5.AndroidJS;
 import com.aibabel.menu.inf.UpdateMenu;
@@ -95,8 +86,6 @@ import com.aibabel.menu.util.RenUtils;
 import com.aibabel.menu.util.SPUtils;
 import com.aibabel.menu.util.ServerUtils;
 import com.aibabel.menu.util.UrlConstants;
-import com.aibabel.menu.view.MagicTextView;
-import com.aibabel.messagemanage.JiGuangActivity;
 import com.aibabel.messagemanage.sqlite.SqlUtils;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
@@ -108,15 +97,10 @@ import com.lzy.okgo.model.Response;
 import com.matrixxun.starry.badgetextview.MaterialBadgeTextView;
 import com.umeng.analytics.MobclickAgent;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import java.io.IOException;
 import java.io.Serializable;
 import java.lang.ref.WeakReference;
-import java.text.ParseException;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.TimeZone;
 
@@ -341,6 +325,8 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
             e.printStackTrace();
         }
 
+
+
     }
 
     ScreenOffReceiver screenrecive;
@@ -459,15 +445,15 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
                     // boot_start_lock();
                     lock90day();
 
-                    String spnettemp = SharePrefUtil.getString(mContext, neverUseNetflag, "");
-                    if (TextUtils.isEmpty(spnettemp)) {
-                        if (!isNetworkConnected()) {
-                            intentFilter_sys_time = new IntentFilter();
-                            intentFilter_sys_time.addAction(Intent.ACTION_TIME_CHANGED);//设置了系统时间
-                            timeChangeReceiver = new TimeChangeReceiver();
-                            registerReceiver(timeChangeReceiver, intentFilter_sys_time);
-                        }
-                    }
+//                    String spnettemp = SharePrefUtil.getString(mContext, neverUseNetflag, "");
+//                    if (TextUtils.isEmpty(spnettemp)) {
+//                        if (!isNetworkConnected()) {
+//                            intentFilter_sys_time = new IntentFilter();
+//                            intentFilter_sys_time.addAction(Intent.ACTION_TIME_CHANGED);//设置了系统时间
+//                            timeChangeReceiver = new TimeChangeReceiver();
+//                            registerReceiver(timeChangeReceiver, intentFilter_sys_time);
+//                        }
+//                    }
                 }
             }).start();
         } catch (Exception e) {
@@ -1730,6 +1716,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
 
     public void onResume() {
         super.onResume();
+        TimeZoneUtils.startChecksIPThread(this);
         MobclickAgent.onResume(this);
     }
 
@@ -1744,13 +1731,13 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
             if (screenrecive != null) {
                 unregisterReceiver(screenrecive);
             }
-            try {
-                if (timeChangeReceiver != null) {
-                    unregisterReceiver(timeChangeReceiver);
-                }
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
+//            try {
+//                if (timeChangeReceiver != null) {
+//                    unregisterReceiver(timeChangeReceiver);
+//                }
+//            } catch (Exception e) {
+//                e.printStackTrace();
+//            }
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -1979,54 +1966,54 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
 
 
     private IntentFilter intentFilter_sys_time;
-    private TimeChangeReceiver timeChangeReceiver;
+//    private TimeChangeReceiver timeChangeReceiver;
 
 
-    /**
-     * 时间改变监听
-     */
-    class TimeChangeReceiver extends BroadcastReceiver {
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            switch (intent.getAction()) {
-                case Intent.ACTION_TIME_TICK:
-                    //每过一分钟 触发
-                    Log.e("hjs", "ACTION_TIME_TICK");
-                    //Toast.makeText(context, "1 min passed", Toast.LENGTH_SHORT).show();
-                    break;
-                case Intent.ACTION_TIME_CHANGED:
-                    //设置了系统时间
-                    Log.e("hjs", "ACTION_TIME_CHANGED");
-                    String spnettemp = SharePrefUtil.getString(mContext, neverUseNetflag, "");
-                    Log.e("hjs", "spnettemp" + spnettemp);
-                    if (!isNetworkConnected()) {
-                        Log.e("hjs", "neverUseNetflag error");
-                        SharePrefUtil.put(mContext, neverUseNetflag, "error");
-                        try {
-                            String get_starttime = SharePrefUtil.getString(mContext, neverUseNet_start, "");
-                            String nowtime = CalenderUtil.getyyyyMMddHHmmss();
-                            Log.e("hjs", "nowtime error" + nowtime);
-                            if ((!TextUtils.isEmpty(get_starttime)) && (!TextUtils.isEmpty(nowtime))) {
-                                Log.e("hjs", "nowtime true" + (CalenderUtil.compae2Time(get_starttime, nowtime)));
-                                if (CalenderUtil.compae2Time(get_starttime, nowtime) > 24 * 30) { ///30天内没有更新过网络时间
-                                    if (MainActivity.loopHandler != null)
-                                        MainActivity.loopHandler.sendEmptyMessageDelayed(300, 8000);
-                                }
-                            }
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                        }
-                    }
-
-                    break;
-                case Intent.ACTION_TIMEZONE_CHANGED:
-                    //设置了系统时区的action
-                    Log.e("hjs", "ACTION_TIMEZONE_CHANGED");
-                    //Toast.makeText(context, "system time zone changed", Toast.LENGTH_SHORT).show();
-                    break;
-            }
-        }
-    }
+//    /**
+//     * 时间改变监听
+//     */
+//    class TimeChangeReceiver extends BroadcastReceiver {
+//        @Override
+//        public void onReceive(Context context, Intent intent) {
+//            switch (intent.getAction()) {
+//                case Intent.ACTION_TIME_TICK:
+//                    //每过一分钟 触发
+//                    Log.e("hjs", "ACTION_TIME_TICK");
+//                    //Toast.makeText(context, "1 min passed", Toast.LENGTH_SHORT).show();
+//                    break;
+//                case Intent.ACTION_TIME_CHANGED:
+//                    //设置了系统时间
+//                    Log.e("hjs", "ACTION_TIME_CHANGED");
+//                    String spnettemp = SharePrefUtil.getString(mContext, neverUseNetflag, "");
+//                    Log.e("hjs", "spnettemp" + spnettemp);
+//                    if (!isNetworkConnected()) {
+//                        Log.e("hjs", "neverUseNetflag error");
+//                        SharePrefUtil.put(mContext, neverUseNetflag, "error");
+//                        try {
+//                            String get_starttime = SharePrefUtil.getString(mContext, neverUseNet_start, "");
+//                            String nowtime = CalenderUtil.getyyyyMMddHHmmss();
+//                            Log.e("hjs", "nowtime error" + nowtime);
+//                            if ((!TextUtils.isEmpty(get_starttime)) && (!TextUtils.isEmpty(nowtime))) {
+//                                Log.e("hjs", "nowtime true" + (CalenderUtil.compae2Time(get_starttime, nowtime)));
+//                                if (CalenderUtil.compae2Time(get_starttime, nowtime) > 24 * 30) { ///30天内没有更新过网络时间
+//                                    if (MainActivity.loopHandler != null)
+//                                        MainActivity.loopHandler.sendEmptyMessageDelayed(300, 8000);
+//                                }
+//                            }
+//                        } catch (Exception e) {
+//                            e.printStackTrace();
+//                        }
+//                    }
+//
+//                    break;
+//                case Intent.ACTION_TIMEZONE_CHANGED:
+//                    //设置了系统时区的action
+//                    Log.e("hjs", "ACTION_TIMEZONE_CHANGED");
+//                    //Toast.makeText(context, "system time zone changed", Toast.LENGTH_SHORT).show();
+//                    break;
+//            }
+//        }
+//    }
 
 
 }

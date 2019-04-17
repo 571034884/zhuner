@@ -24,7 +24,7 @@
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" /> <!-- 允许读取wifi网络状态 -->
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
     <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
-
+    <uses-permission android:name="android.permission.SET_TIME_ZONE"/>
 
     <!-- Optional for location -->
     <uses-permission android:name="android.permission.VIBRATE" />
