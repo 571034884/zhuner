@@ -1,12 +1,17 @@
 package com.aibabel.launcher;
 
+import android.app.ActivityManager;
 import android.content.Context;
+import android.content.Intent;
 
 import com.aibabel.baselibrary.base.BaseApplication;
 import com.aibabel.baselibrary.http.OkGoUtil;
 import com.aibabel.baselibrary.utils.CommonUtils;
+import com.aibabel.launcher.service.MyService;
 import com.aibabel.launcher.utils.Logs;
 import com.aibabel.message.helper.DemoHelper;
+
+import java.util.List;
 
 /**
  * Created by fytworks on 2019/4/16.
@@ -26,6 +31,8 @@ public class LauncherApplication extends BaseApplication{
         applicationContext = this;
         //init helper
         DemoHelper.getInstance().init(applicationContext);
+
+        startService(new Intent(this, MyService.class));
 
     }
 

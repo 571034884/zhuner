@@ -472,7 +472,6 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
      * 清除所有sharep 订单信息
      */
     public void clearALlsharePreutil() {
-
         SqlUtils.deleteDataAll();
         SharePrefUtil.put(mContext, neverUseNetflag, "");
         SharePrefUtil.put(mContext, neverUseNet_start, "");
@@ -487,12 +486,9 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         SharePrefUtil.put(mContext, order_islock, 0);
         SharePrefUtil.put(mContext, order_lockattime, 0);
         SharePrefUtil.put(mContext, order_isZhuner, 0);
-
-
         int lockflag = SharePrefUtil.getInt(mContext, order_islock, 0);
         String get_starttime = SharePrefUtil.getString(mContext, neverUseNet_start, "");
         String get_endtime = SharePrefUtil.getString(mContext, neverUseNet_end, "");
-
 
         LogUtil.e("get_starttime==" + get_starttime);
         LogUtil.e("get_endtime==" + get_endtime);
@@ -1732,13 +1728,13 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
             if (screenrecive != null) {
                 unregisterReceiver(screenrecive);
             }
-//            try {
-//                if (timeChangeReceiver != null) {
-//                    unregisterReceiver(timeChangeReceiver);
-//                }
-//            } catch (Exception e) {
-//                e.printStackTrace();
-//            }
+            try {
+                if (timeChangeReceiver != null) {
+                    unregisterReceiver(timeChangeReceiver);
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -1967,24 +1963,24 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
 
 
     private IntentFilter intentFilter_sys_time;
-//    private TimeChangeReceiver timeChangeReceiver;
+    private TimeChangeReceiver timeChangeReceiver;
 
 
-//    /**
-//     * 时间改变监听
-//     */
-//    class TimeChangeReceiver extends BroadcastReceiver {
-//        @Override
-//        public void onReceive(Context context, Intent intent) {
-//            switch (intent.getAction()) {
+    /**
+     * 时间改变监听
+     */
+    class TimeChangeReceiver extends BroadcastReceiver {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            switch (intent.getAction()) {
 //                case Intent.ACTION_TIME_TICK:
 //                    //每过一分钟 触发
 //                    Log.e("hjs", "ACTION_TIME_TICK");
 //                    //Toast.makeText(context, "1 min passed", Toast.LENGTH_SHORT).show();
 //                    break;
-//                case Intent.ACTION_TIME_CHANGED:
-//                    //设置了系统时间
-//                    Log.e("hjs", "ACTION_TIME_CHANGED");
+                case Intent.ACTION_TIME_CHANGED:
+                    //设置了系统时间
+                    Log.e("hjs", "ACTION_TIME_CHANGED");
 //                    String spnettemp = SharePrefUtil.getString(mContext, neverUseNetflag, "");
 //                    Log.e("hjs", "spnettemp" + spnettemp);
 //                    if (!isNetworkConnected()) {
@@ -2005,16 +2001,16 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
 //                            e.printStackTrace();
 //                        }
 //                    }
-//
-//                    break;
-//                case Intent.ACTION_TIMEZONE_CHANGED:
-//                    //设置了系统时区的action
-//                    Log.e("hjs", "ACTION_TIMEZONE_CHANGED");
-//                    //Toast.makeText(context, "system time zone changed", Toast.LENGTH_SHORT).show();
-//                    break;
-//            }
-//        }
-//    }
+                    updatetime(CalenderUtil.getyyyyMMddHHmmss());
+                    break;
+                case Intent.ACTION_TIMEZONE_CHANGED:
+                    //设置了系统时区的action
+                    Log.e("hjs", "ACTION_TIMEZONE_CHANGED");
+                    //Toast.makeText(context, "system time zone changed", Toast.LENGTH_SHORT).show();
+                    break;
+            }
+        }
+    }
 
 
 }
