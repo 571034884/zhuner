@@ -119,7 +119,7 @@ public class EaseChatInputMenu extends LinearLayout {
     public void setCustomEmojiconMenu(EaseEmojiconMenuBase customEmojiconMenu){
         this.emojiconMenu = customEmojiconMenu;
     }
-    
+
     /**
      * set custom primary menu
      * @param customPrimaryMenu
@@ -135,11 +135,11 @@ public class EaseChatInputMenu extends LinearLayout {
     public EaseChatExtendMenu getExtendMenu(){
         return chatExtendMenu;
     }
-    
+
     public EaseEmojiconMenuBase getEmojiconMenu(){
         return emojiconMenu;
     }
-    
+
 
     /**
      * register menu item
@@ -161,7 +161,7 @@ public class EaseChatInputMenu extends LinearLayout {
     /**
      * register menu item
      * 
-     * @param name
+     * @param nameRes
      *            resource id of item name
      * @param drawableRes
      *            background of item

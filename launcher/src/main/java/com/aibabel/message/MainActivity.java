@@ -13,6 +13,7 @@ import android.widget.TextView;
 import com.aibabel.baselibrary.base.BaseActivity;
 import com.aibabel.launcher.R;
 import com.aibabel.message.fragment.Fragment_Chat;
+import com.aibabel.message.fragment.Fragment_Convertions;
 import com.aibabel.message.fragment.Fragment_Message;
 import com.aibabel.message.fragment.Fragment_Task;
 
@@ -27,6 +28,7 @@ public class MainActivity extends BaseActivity  {
 
     Fragment_Chat fragmentChat;
     Fragment_Task fragmentTask;
+    Fragment_Convertions fragmentConvertions;
     Fragment_Message fragmentMessage;
     @BindView(R.id.btn_msg)
     Button btnMsg;
@@ -84,11 +86,14 @@ public class MainActivity extends BaseActivity  {
         mViews[0].setVisibility(View.VISIBLE);
 
         fragmentChat = new Fragment_Chat();
+//        fragmentConvertions = new Fragment_Convertions();
         fragmentTask = new Fragment_Task();
         fragmentMessage = new Fragment_Message();
         fragments = new Fragment[]{fragmentMessage, fragmentChat, fragmentTask};
+//        fragments = new Fragment[]{fragmentMessage, fragmentConvertions, fragmentTask};
         getSupportFragmentManager().beginTransaction()
                 .show(fragmentMessage)
+//                .hide(fragmentConvertions)
                 .hide(fragmentChat)
                 .hide(fragmentTask)
                 .commit();
