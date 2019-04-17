@@ -1,6 +1,5 @@
 package com.aibabel.launcher.activity;
 
-import android.graphics.Color;
 import android.os.Bundle;
 import android.view.KeyEvent;
 import android.view.View;
@@ -11,9 +10,11 @@ import android.widget.TextView;
 import com.aibabel.launcher.R;
 import com.aibabel.launcher.base.LaunBaseActivity;
 import com.aibabel.launcher.utils.Logs;
+import com.aibabel.launcher.view.BlurTransformation;
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
 
 /**
  * Created by fytworks on 2019/4/17.
@@ -57,6 +58,8 @@ public class MoreActivity extends LaunBaseActivity {
     TextView tvAbout;
     @BindView(R.id.rl_about)
     RelativeLayout rlAbout;
+    @BindView(R.id.iv_more_gs)
+    ImageView ivMoreGS;
 
     @Override
     public int getLayout(Bundle savedInstanceState) {
@@ -67,6 +70,9 @@ public class MoreActivity extends LaunBaseActivity {
     public void init() {
         //默认第一个
         switchSelect(rlTravel,ivTravel,tvTravel);
+        int topPic = R.mipmap.ic_top_default;
+        RequestOptions options = new RequestOptions().bitmapTransform(new BlurTransformation(this, 14, 3));
+        Glide.with(mContext).load(topPic).apply(options).into(ivMoreGS);
     }
 
     @Override

@@ -2,14 +2,19 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     xmlns:tools="http://schemas.android.com/tools"
-    android:background="@color/color_f9"
+    android:background="@color/color_f990"
     android:layout_height="match_parent">
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:foreground="@mipmap/ic_top_g"
+        android:layout_height="wrap_content">
     <ImageView
         android:layout_width="match_parent"
         android:layout_height="@dimen/y320"
-        android:src="@mipmap/test"
+        android:src="@mipmap/ic_top_default"
         android:scaleType="centerCrop"
         />
+    </FrameLayout>
     <TextView
         android:id="@+id/tv_location"
         android:layout_width="wrap_content"
@@ -126,6 +131,8 @@
         android:layout_below="@id/main_layout_one"
         android:layout_width="match_parent"
         android:layout_marginTop="@dimen/y30"
+        android:layout_marginLeft="@dimen/x30"
+        android:layout_marginRight="@dimen/x30"
         android:layout_height="wrap_content">
         <LinearLayout
             android:layout_width="0dp"
@@ -135,20 +142,32 @@
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:background="@mipmap/ic_scenic_bg"
+                android:elevation="@dimen/x10"
                 android:layout_height="@dimen/y220">
             </RelativeLayout>
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/y20"/>
             <RelativeLayout
                 android:layout_width="match_parent"
+                android:elevation="@dimen/x10"
                 android:background="@mipmap/ic_camre_bg"
                 android:layout_height="@dimen/y150">
             </RelativeLayout>
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/y20"/>
             <RelativeLayout
                 android:layout_width="match_parent"
+                android:elevation="@dimen/x10"
                 android:background="@mipmap/ic_translate_bg"
                 android:layout_height="@dimen/y90">
             </RelativeLayout>
 
         </LinearLayout>
+        <View
+            android:layout_width="@dimen/x20"
+            android:layout_height="match_parent"/>
         <LinearLayout
             android:layout_width="0dp"
             android:layout_weight="1"
@@ -157,19 +176,27 @@
 
             <RelativeLayout
                 android:layout_width="match_parent"
+                android:elevation="@dimen/x10"
                 android:background="@mipmap/ic_map_bg"
                 android:layout_height="@dimen/y150">
             </RelativeLayout>
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/y20"/>
             <RelativeLayout
                 android:layout_width="match_parent"
-                android:elevation="@dimen/x2"
+                android:elevation="@dimen/x10"
                 android:background="@mipmap/ic_shop_bg"
                 android:layout_height="@dimen/y220">
             </RelativeLayout>
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/y20"/>
             <RelativeLayout
                 android:id="@+id/rl_more"
                 android:layout_width="match_parent"
                 android:onClick="onClick"
+                android:elevation="@dimen/x10"
                 android:gravity="center_horizontal"
                 android:background="@mipmap/ic_more_bg"
                 android:layout_height="@dimen/y90">

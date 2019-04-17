@@ -3,12 +3,17 @@
     android:layout_width="match_parent"
     android:background="@color/color_f9"
     android:layout_height="match_parent">
-    <ImageView
+    <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="@dimen/y320"
-        android:src="@mipmap/test"
-        android:scaleType="centerCrop"
-        />
+        android:foreground="@mipmap/ic_top_g"
+        android:layout_height="wrap_content">
+        <ImageView
+            android:id="@+id/iv_more_gs"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/y320"
+            android:scaleType="centerCrop"
+            />
+    </FrameLayout>
 
     <RelativeLayout
         android:id="@+id/rl_more_one"
