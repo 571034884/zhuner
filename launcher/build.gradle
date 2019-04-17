@@ -16,6 +16,12 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+    sourceSets {
+        main {
+            jniLibs.srcDirs = ['libs']
+            jni.srcDirs = []
+        }
+    }
 }
 
 dependencies {
@@ -30,4 +36,10 @@ dependencies {
     implementation 'com.jaeger.statusbarutil:library:1.4.0'
     //注解
     annotationProcessor 'com.jakewharton:butterknife-compiler:8.8.1'
+
+    implementation 'com.github.CymChad:BaseRecyclerViewAdapterHelper:2.9.46'
+    implementation files('libs/pinyin4j-2.5.0.jar')
+    implementation files('libs/jpush-android-3.2.0.jar')
+    implementation files('libs/jcore-android-1.2.7.jar')
+    implementation files('libs/hyphenatechat_3.5.4.jar')
 }
