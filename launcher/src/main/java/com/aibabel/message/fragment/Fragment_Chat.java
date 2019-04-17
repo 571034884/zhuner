@@ -11,11 +11,9 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.aibabel.baselibrary.base.BaseFragment;
-import com.aibabel.menu.R;
+import com.aibabel.launcher.R;
 import com.aibabel.message.adapter.ChatAdapter;
 import com.aibabel.message.utiles.ChatUiHelper;
-import com.aibabel.messagemanage.adapter.ChatAdapter;
-import com.aibabel.messagemanage.utiles.ChatUiHelper;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.hyphenate.chat.EMClient;
 import com.hyphenate.chat.EMConversation;

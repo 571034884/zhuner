@@ -27,7 +27,7 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class MainActivity extends BaseActivity implements EMMessageListener {
+public class MainActivity extends BaseActivity  {
 
 
     @BindView(R.id.fl_content)
@@ -61,8 +61,7 @@ public class MainActivity extends BaseActivity implements EMMessageListener {
     private Fragment[] fragments;
     private int index;
     private int currentTabIndex;
-
-    protected EMConversation conversation;
+    private String toChatUsername;
 
 //    @Override
 //    public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -77,6 +76,8 @@ public class MainActivity extends BaseActivity implements EMMessageListener {
 
     @Override
     public void init() {
+        //get user id or group id
+        toChatUsername = getIntent().getExtras().getString("userId");
         mTabs = new Button[3];
         mTabs[0] = findViewById(R.id.btn_msg);
         mTabs[1] = findViewById(R.id.btn_chat);
@@ -137,61 +138,4 @@ public class MainActivity extends BaseActivity implements EMMessageListener {
 
     }
 
-
-//=============================消息发送状态变化，接收=====================================
-
-
-    @Override
-    public void onMessageReceived(List<EMMessage> messages) {
-        //收到消息
-//        for (EMMessage message : messages) {
-//            String username = null;
-//            // group message
-//            if (message.getChatType() == EMMessage.ChatType.GroupChat || message.getChatType() == EMMessage.ChatType.ChatRoom) {
-//                username = message.getTo();
-//            }
-//
-//            // if the message is for current conversation
-//            if (username.equals(toChatUsername) || message.getTo().equals(toChatUsername) || message.conversationId().equals(toChatUsername)) {
-//                messageList.refreshSelectLast();
-//                conversation.markMessageAsRead(message.getMsgId());
-//            }
-//        }
-    }
-
-    @Override
-    public void onCmdMessageReceived(List<EMMessage> messages) {
-        //收到透传消息
-    }
-
-    @Override
-    public void onMessageRead(List<EMMessage> messages) {
-        //收到已读回执
-    }
-
-    @Override
-    public void onMessageDelivered(List<EMMessage> message) {
-        //收到已送达回执
-    }
-    @Override
-    public void onMessageRecalled(List<EMMessage> messages) {
-        //消息被撤回
-    }
-
-    @Override
-    public void onMessageChanged(EMMessage message, Object change) {
-        //消息状态变动
-    }
-
-    //=============================消息发送状态变化，接收，结束=====================================
-
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-//
-//        if (groupListener != null) {
-//            EMClient.getInstance().groupManager().removeGroupChangeListener(groupListener);
-//        }
-
-    }
 }
