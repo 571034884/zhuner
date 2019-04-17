@@ -69,7 +69,7 @@ public class MainActivity extends BaseActivity  {
     @Override
     public void init() {
         //get user id or group id
-        toChatUsername = getIntent().getExtras().getString("userId");
+//        toChatUsername = getIntent().getExtras().getString("userId");
         mTabs = new Button[3];
         mTabs[0] = findViewById(R.id.btn_msg);
         mTabs[1] = findViewById(R.id.btn_chat);

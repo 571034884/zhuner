@@ -1,9 +1,12 @@
 package com.aibabel.launcher;
 
+import android.content.Context;
+
 import com.aibabel.baselibrary.base.BaseApplication;
 import com.aibabel.baselibrary.http.OkGoUtil;
 import com.aibabel.baselibrary.utils.CommonUtils;
 import com.aibabel.launcher.utils.Logs;
+import com.aibabel.message.helper.DemoHelper;
 
 /**
  * Created by fytworks on 2019/4/16.
@@ -11,9 +14,18 @@ import com.aibabel.launcher.utils.Logs;
 
 public class LauncherApplication extends BaseApplication{
 
+    private static LauncherApplication instance;
+    public static Context applicationContext;
+
+
+
     @Override
     public void onCreate() {
         super.onCreate();
+        instance = this;
+        applicationContext = this;
+        //init helper
+        DemoHelper.getInstance().init(applicationContext);
 
     }
 
@@ -49,5 +61,9 @@ public class LauncherApplication extends BaseApplication{
     @Override
     public String setUmengKey() {
         return null;
+    }
+
+    public static LauncherApplication getInstance() {
+        return instance;
     }
 }
