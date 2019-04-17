@@ -40,7 +40,8 @@ public class MusicService extends Service implements MediaPlayer.OnErrorListener
     public static int prv_position;
     private Message mMessage;
     private static boolean isLoseFocus;
-//    private NotificationManager notificationManager;
+    private AudioManager audioManager;
+    //    private NotificationManager notificationManager;
 
     @Override
     public void onCreate() {
@@ -49,7 +50,7 @@ public class MusicService extends Service implements MediaPlayer.OnErrorListener
         initPlayer();
 
         //创建audioManger
-        AudioManager audioManager = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
+        audioManager = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
         int result = audioManager.requestAudioFocus(this, AudioManager.STREAM_MUSIC, AudioManager.AUDIOFOCUS_GAIN);
 //        notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
         mRandom = new Random();
@@ -121,6 +122,8 @@ public class MusicService extends Service implements MediaPlayer.OnErrorListener
 
     @Override
     public void onPrepared(MediaPlayer mediaPlayer) {
+        if (null != audioManager)
+            audioManager.requestAudioFocus(this, AudioManager.STREAM_MUSIC, AudioManager.AUDIOFOCUS_GAIN);
         mPlayer.start();//开始播放
         if (mMessenger != null) {
             sentPreparedMessageToMain();
@@ -141,6 +144,7 @@ public class MusicService extends Service implements MediaPlayer.OnErrorListener
             e.printStackTrace();
         }
     }
+
     private void sentPlayStateLong() {
         mMessage = Message.obtain();
         mMessage.what = Constants.MSG_STATE;
@@ -271,6 +275,8 @@ public class MusicService extends Service implements MediaPlayer.OnErrorListener
                     Logs.e("onReceive:" + mPosition);
                     //开始播放
                     if (mPlayer != null) {
+                        if (null != audioManager)
+                            audioManager.requestAudioFocus(MusicService.this, AudioManager.STREAM_MUSIC, AudioManager.AUDIOFOCUS_GAIN);
                         mPlayer.start();
 //                        sentPlayStateLong();
                         //通知是否在播放
@@ -367,6 +373,8 @@ public class MusicService extends Service implements MediaPlayer.OnErrorListener
                 // resume playback
                 if (null != mPlayer && isLoseFocus) {
                     isLoseFocus = false;
+                    if (null != audioManager)
+                        audioManager.requestAudioFocus(MusicService.this, AudioManager.STREAM_MUSIC, AudioManager.AUDIOFOCUS_GAIN);
                     mPlayer.start();
                     mPlayer.setVolume(1.0f, 1.0f);
                     sentPlayStateToMain();

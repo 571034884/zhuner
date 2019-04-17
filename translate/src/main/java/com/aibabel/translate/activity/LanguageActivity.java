@@ -212,7 +212,6 @@ public class LanguageActivity extends BaseActivity implements ExpandableListView
         String name = group.get(groupPosition).getName();
 
         if (!isNet && ChangeOffline.getInstance().offlineListMap.containsKey(group.get(groupPosition).getLang_code())) {
-
             SharePrefUtil.saveInt(LanguageActivity.this, "idi", group.get(groupPosition).getId());
             LanguageBean newLanguageBean = group.get(groupPosition);
             lanText = newLanguageBean.getName();
@@ -229,7 +228,6 @@ public class LanguageActivity extends BaseActivity implements ExpandableListView
         } else if (isNet) {
 //            L.e("==============================在线支持的语言");
             if (group.get(groupPosition).getChild().size() > 0) {//点击展开二级列表
-
                 SharePrefUtil.saveString(LanguageActivity.this, "choice_name", name);
                 if (choice == false) {
                     choice = true;
@@ -239,7 +237,6 @@ public class LanguageActivity extends BaseActivity implements ExpandableListView
                     SharePrefUtil.saveBoolean(LanguageActivity.this, "choice", choice);
                 }
                 newExlistAdapter.notifyDataSetChanged();
-
             } else {
                 if (!group.get(groupPosition).isNotSupport()) {//是否支持粤语
                     SharePrefUtil.saveInt(LanguageActivity.this, "idi", group.get(groupPosition).getId());

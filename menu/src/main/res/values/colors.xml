@@ -19,5 +19,9 @@
     <color name="c_f3f3f3">#f3f3f3</color>
     <color name="c_666">#666666</color>
     <color name="c_ff0000">#ff0000</color>
+    <color name="c_bar">#FF840B</color>
+    <color name="common_bg">#f9f9f9</color>
+
+
 
 </resources>

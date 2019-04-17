@@ -14,8 +14,6 @@ import com.aibabel.menu.bean.PushMessageBean;
 import com.aibabel.menu.util.LogUtil;
 import com.aibabel.messagemanage.sqlite.SqlUtils;
 
-import org.litepal.LitePal;
-
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;

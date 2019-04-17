@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/color_f9"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:id="@+id/main_top"
+        android:layout_width="match_parent"
+        android:layout_height="133dp"
+        android:background="@color/white"
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:paddingLeft="20dp"
+        android:paddingRight="20dp"
+        android:paddingTop="16dp"
+        tools:ignore="DisableBaselineAlignment">
+
+        <RelativeLayout
+            android:id="@+id/btn_container_msg"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1">
+
+            <Button
+                android:id="@+id/btn_msg"
+                style="?android:attr/borderlessButtonStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:background="@color/white"
+                android:drawableTop="@drawable/msg_drawable"
+                android:gravity="center_horizontal"
+                android:onClick="onTabClicked"
+                android:paddingBottom="2dip"
+                android:scaleType="matrix"
+                android:text="消息"
+                android:textColor="@color/color_f9"
+                android:textSize="15sp"
+                android:textStyle="bold" />
+
+
+            <TextView
+                android:id="@+id/tv_unread_msg_number"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/em_unread_count_bg"
+                android:gravity="center"
+                android:textColor="@android:color/white"
+                android:textSize="15sp"
+                android:visibility="invisible" />
+
+            <View
+                android:id="@+id/v_msg"
+                android:layout_width="60dp"
+                android:layout_height="5dp"
+                android:layout_alignParentBottom="true"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="10dp"
+                android:background="@mipmap/ic_view"
+                android:visibility="invisible" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/btn_container_chat"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1">
+
+            <Button
+                android:id="@+id/btn_chat"
+                style="?android:attr/borderlessButtonStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:background="@color/white"
+                android:drawableTop="@drawable/chat_drawable"
+                android:gravity="center_horizontal"
+                android:onClick="onTabClicked"
+                android:paddingBottom="2dip"
+                android:scaleType="matrix"
+                android:text="准儿帮"
+                android:textColor="@color/color_FF840B"
+                android:textSize="15sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/tv_unread_number"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/em_unread_dot"
+                android:visibility="visible" />
+
+            <View
+                android:id="@+id/v_chat"
+                android:layout_width="60dp"
+                android:layout_height="5dp"
+                android:layout_alignParentBottom="true"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="10dp"
+                android:background="@mipmap/ic_view"
+                android:visibility="invisible" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/btn_container_task"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1">
+
+            <Button
+                android:id="@+id/btn_task"
+                style="?android:attr/borderlessButtonStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:background="@color/white"
+                android:drawableTop="@drawable/task_drawable"
+                android:onClick="onTabClicked"
+                android:paddingBottom="2dip"
+                android:scaleType="matrix"
+                android:text="任务"
+                android:textColor="@color/color_FF840B"
+                android:textSize="15sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/tv_new"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_marginTop="14dp"
+                android:background="@mipmap/ic_new"
+                android:visibility="visible" />
+
+            <View
+                android:id="@+id/v_task"
+                android:layout_width="60dp"
+                android:layout_height="5dp"
+                android:layout_alignParentBottom="true"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="10dp"
+                android:background="@mipmap/ic_view"
+                android:visibility="invisible" />
+        </RelativeLayout>
+    </LinearLayout>
+
+    <FrameLayout
+        android:id="@+id/fl_content"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+</LinearLayout>
