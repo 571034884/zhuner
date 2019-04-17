@@ -1,153 +1,197 @@
 package com.aibabel.messagemanage;
 
 import android.os.Bundle;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
-import android.util.Log;
+import android.support.annotation.Nullable;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.view.View;
-import android.view.Window;
-import android.view.WindowManager;
-import android.widget.ImageView;
+import android.widget.Button;
+import android.widget.FrameLayout;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
+import android.widget.VideoView;
 
+import com.aibabel.baselibrary.base.BaseActivity;
 import com.aibabel.menu.R;
-import com.aibabel.menu.bean.PushMessageBean;
-import com.aibabel.menu.util.LogUtil;
-import com.aibabel.messagemanage.sqlite.SqlUtils;
+import com.aibabel.messagemanage.fragment.Fragment_Chat;
+import com.aibabel.messagemanage.fragment.Fragment_Message;
+import com.aibabel.messagemanage.fragment.Fragment_Task;
+import com.hyphenate.EMMessageListener;
+import com.hyphenate.chat.EMClient;
+import com.hyphenate.chat.EMConversation;
+import com.hyphenate.chat.EMMessage;
 
-import org.litepal.LitePal;
-
-import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
-public class MainActivity extends com.aibabel.baselibrary.base.BaseActivity {
+import butterknife.BindView;
+import butterknife.ButterKnife;
 
-    private ArrayList<PushMessageBean> msglist = new ArrayList<>();
-    RecyclerViewAdapter adapter;
+public class MainActivity extends BaseActivity implements EMMessageListener {
 
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        requestWindowFeature(Window.FEATURE_NO_TITLE);
-        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
-        getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
+    @BindView(R.id.fl_content)
+    FrameLayout flContent;
 
-        setContentView(R.layout.activity_main_mm);
-        initRecyclerView();
-        addItem();
+    Fragment_Chat fragmentChat;
+    Fragment_Task fragmentTask;
+    Fragment_Message fragmentMessage;
+    @BindView(R.id.btn_msg)
+    Button btnMsg;
+    @BindView(R.id.tv_unread_msg_number)
+    TextView tvUnreadMsgNumber;
+    @BindView(R.id.btn_container_msg)
+    RelativeLayout btnContainerMsg;
+    @BindView(R.id.btn_chat)
+    Button btnChat;
+    @BindView(R.id.tv_unread_number)
+    TextView tvUnreadNumber;
+    @BindView(R.id.btn_container_chat)
+    RelativeLayout btnContainerChat;
+    @BindView(R.id.btn_task)
+    Button btnTask;
+    @BindView(R.id.tv_new)
+    TextView tvNew;
+    @BindView(R.id.btn_container_task)
+    RelativeLayout btnContainerTask;
+    @BindView(R.id.main_top)
+    LinearLayout mainTop;
+    private View[] mViews;
+    private Button[] mTabs;
+    private Fragment[] fragments;
+    private int index;
+    private int currentTabIndex;
 
-        ImageView image_close = findViewById(R.id.image_close);
-        image_close.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+    protected EMConversation conversation;
 
-                HashMap<String, Serializable> map = new HashMap<>();
-                map.put("menu_notice_close_id","关闭");
-                addStatisticsEvent("menu_notice_close",map);
-
-                MainActivity.this.finish();
-            }
-        });
-
-    }
+//    @Override
+//    public void onCreate(@Nullable Bundle savedInstanceState) {
+//        super.onCreate(savedInstanceState);
+//        setContentView(R.layout.activity_main_mm);
+//    }
 
     @Override
     public int getLayout(Bundle savedInstanceState) {
-        return -1;
+        return R.layout.activity_main_mm;
     }
 
     @Override
     public void init() {
+        mTabs = new Button[3];
+        mTabs[0] = findViewById(R.id.btn_msg);
+        mTabs[1] = findViewById(R.id.btn_chat);
+        mTabs[2] = findViewById(R.id.btn_task);
+        mViews = new View[3];
+        mViews[0] = findViewById(R.id.v_msg);
+        mViews[1] = findViewById(R.id.v_chat);
+        mViews[2] = findViewById(R.id.v_task);
 
+        // select first tab
+        mTabs[0].setSelected(true);
+        mViews[0].setVisibility(View.VISIBLE);
+
+        fragmentChat = new Fragment_Chat();
+        fragmentTask = new Fragment_Task();
+        fragmentMessage = new Fragment_Message();
+        fragments = new Fragment[]{fragmentMessage, fragmentChat, fragmentTask};
+        getSupportFragmentManager().beginTransaction()
+                .show(fragmentMessage)
+                .hide(fragmentChat)
+                .hide(fragmentTask)
+                .commit();
+
+
+    }
+
+    /**
+     * tab点击切换
+     *
+     * @param view
+     */
+    public void onTabClicked(View view) {
+        switch (view.getId()) {
+            case R.id.btn_msg:
+                index = 0;
+                break;
+            case R.id.btn_chat:
+                index = 1;
+                break;
+            case R.id.btn_task:
+                index = 2;
+                break;
+        }
+        if (currentTabIndex != index) {
+            FragmentTransaction trx = getSupportFragmentManager().beginTransaction();
+            trx.hide(fragments[currentTabIndex]);
+            if (!fragments[index].isAdded()) {
+                trx.add(R.id.fl_content, fragments[index]);
+            }
+            trx.show(fragments[index]).commit();
+        }
+        mTabs[currentTabIndex].setSelected(false);
+        // set current tab selected
+        mTabs[index].setSelected(true);
+        mViews[currentTabIndex].setVisibility(View.INVISIBLE);
+        mViews[index].setVisibility(View.VISIBLE);
+        currentTabIndex = index;
+
+    }
+
+
+//=============================消息发送状态变化，接收=====================================
+
+
+    @Override
+    public void onMessageReceived(List<EMMessage> messages) {
+        //收到消息
+//        for (EMMessage message : messages) {
+//            String username = null;
+//            // group message
+//            if (message.getChatType() == EMMessage.ChatType.GroupChat || message.getChatType() == EMMessage.ChatType.ChatRoom) {
+//                username = message.getTo();
+//            }
+//
+//            // if the message is for current conversation
+//            if (username.equals(toChatUsername) || message.getTo().equals(toChatUsername) || message.conversationId().equals(toChatUsername)) {
+//                messageList.refreshSelectLast();
+//                conversation.markMessageAsRead(message.getMsgId());
+//            }
+//        }
     }
 
     @Override
-    protected void onResume() {
-        super.onResume();
+    public void onCmdMessageReceived(List<EMMessage> messages) {
+        //收到透传消息
     }
 
-    private void initRecyclerView() {
-        Log.d(TAG, "initRecyclerView: init recyclerview.");
-        RecyclerView recyclerView = findViewById(R.id.recyclerv_view);
-
-        LinearLayoutManager layout = new LinearLayoutManager(this);
-        layout.setStackFromEnd(true);//列表再底部开始展示，反转后由上面开始展示
-        layout.setReverseLayout(true);//列表翻转
-        //recyclerView.setLayoutManager(layout);
-
-
-        adapter = new RecyclerViewAdapter(this, msglist);
-        recyclerView.setAdapter(adapter);
-        recyclerView.setLayoutManager(layout);
-
-
+    @Override
+    public void onMessageRead(List<EMMessage> messages) {
+        //收到已读回执
     }
 
-    private void addItem() {
-//        PushMessageBean msgbean = new PushMessageBean();
-//        msgbean.setTitle("你有附近3个景点");
-//        msgbean.setContent("雍和宫、天坛、故宫，12345667890");
-//        msgbean.setTimeCode("");
-//        msgbean.setBadge(false);
-//        PushMessageBean msgbean2= new PushMessageBean();
-//        msgbean2.setTitle("你有附近3个景点");
-//        msgbean2.setContent("雍和宫、天坛、故宫，12345667890");
-//        msgbean2.setTimeCode("");
+    @Override
+    public void onMessageDelivered(List<EMMessage> message) {
+        //收到已送达回执
+    }
+    @Override
+    public void onMessageRecalled(List<EMMessage> messages) {
+        //消息被撤回
+    }
+
+    @Override
+    public void onMessageChanged(EMMessage message, Object change) {
+        //消息状态变动
+    }
+
+    //=============================消息发送状态变化，接收，结束=====================================
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
 //
-//        PushMessageBean msgbean3= new PushMessageBean();
-//        msgbean3.setTitle("你有附近3个景点");
-//        msgbean3.setContent("雍和宫、天坛、故宫，12345667890");
-//        msgbean3.setTimeCode("");
-//        msgbean3.setBadge(true);
-//
-//        msglist.add(msgbean2);
-//        msglist.add(msgbean);
-//        msglist.add(msgbean3);
-
-        List<PushMessageBean> tt = SqlUtils.queryMethed();
-        if (tt != null) {
-            for (PushMessageBean pushobj : tt) {
-
-                LogUtil.e("timecode = "+pushobj.getTimeCode()+"= baseg="+pushobj.isBadge());
-
-            }
-
-            msglist.addAll(tt);
-            if (adapter != null) adapter.notifyDataSetChanged();
-        }
-
-
-//        updateMessBean(tt.get(0),tt.get(0).getId());
-//        PushMessageBean tttttt = tt.get(0);
-//        tttttt.setContent("update ");
-//        tttttt.setBadge(false);
-//        tttttt.update(tttttt.getId());
-
-//        tt = SqlUtils.queryMethed();
-//        if (tt != null) {
-//            for (PushMessageBean pushobj : tt) {
-//                LogUtil.e("new pushobj = " + pushobj.isBadge());
-//                LogUtil.e("new pushobj id= " + pushobj.getId());
-//            }
+//        if (groupListener != null) {
+//            EMClient.getInstance().groupManager().removeGroupChangeListener(groupListener);
 //        }
 
     }
-
-    public  static void updateMessBean(PushMessageBean sqlbean,Long ID) {
-        sqlbean.setBadge(false);
-        sqlbean.update(ID);
-        sqlbean.save();
-
-        List<PushMessageBean> tt = SqlUtils.queryMethed();
-        if (tt != null) {
-            for (PushMessageBean pushobj : tt) {
-                LogUtil.e("query = id" + pushobj.getId() + " new  = " + pushobj.isBadge());
-            }
-        }
-
-    }
-
-
 }

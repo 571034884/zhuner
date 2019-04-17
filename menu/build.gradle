@@ -47,7 +47,7 @@ android {
 
     }
 
-    lintOptions{
+    lintOptions {
         checkReleaseBuilds false
         // Or, if you prefer, you can continue to check for errors in release builds,
         // but continue the build even when errors are found:
@@ -103,6 +103,8 @@ dependencies {
     compile project(path: ':badgelibrary')
     implementation files('libs/jpush-android-3.2.0.jar')
     implementation files('libs/jcore-android-1.2.7.jar')
+    implementation files('libs/hyphenatechat_3.5.4.jar')
+    implementation 'com.github.CymChad:BaseRecyclerViewAdapterHelper:2.9.46'
 }
 
 repositories {

@@ -345,6 +345,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
 
     ScreenOffReceiver screenrecive;
 
+
     private class ScreenOffReceiver extends BroadcastReceiver {
 
         @Override

@@ -144,7 +144,10 @@
 
         <activity
             android:name="com.aibabel.messagemanage.MainActivity"
-            android:launchMode="singleTop" />
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden" />
 
 
         <service android:name=".service.MyAidlMessageService">
@@ -288,8 +291,35 @@
         <provider
             android:name="com.aibabel.baselibrary.sphelper.SPContentProvider"
             android:authorities="com.pl.sphelper"
-            android:process=":sphelper"
-            android:exported="false" />
+            android:exported="false"
+            android:process=":sphelper" />
+
+        <!--=================================== 设置环信应用的AppKey ================================= -->
+        <meta-data
+            android:name="EASEMOB_APPKEY"
+            android:value="Your AppKey" />
+        <!-- 声明SDK所需的service SDK核心功能-->
+        <service
+            android:name="com.hyphenate.chat.EMChatService"
+            android:exported="true" />
+        <service
+            android:name="com.hyphenate.chat.EMJobService"
+            android:exported="true"
+            android:permission="android.permission.BIND_JOB_SERVICE" />
+        <!-- 声明SDK所需的receiver -->
+        <receiver android:name="com.hyphenate.chat.EMMonitorReceiver">
+            <intent-filter>
+                <action android:name="android.intent.action.PACKAGE_REMOVED" />
+                <data android:scheme="package" />
+            </intent-filter>
+            <!-- 可选filter -->
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+                <action android:name="android.intent.action.USER_PRESENT" />
+            </intent-filter>
+        </receiver>
+        <!-- ==================================== 环信结束 ========================================== -->
+
     </application>
 
 </manifest>
