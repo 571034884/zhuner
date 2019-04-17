@@ -46,7 +46,7 @@
             android:orientation="horizontal">
 
 
-            <com.aibabel.messagemanage.widget.BubbleImageView
+            <com.aibabel.message.widget.BubbleImageView
                 android:id="@+id/bivPic"
                 android:layout_width="100dp"
                 android:layout_height="100dp"

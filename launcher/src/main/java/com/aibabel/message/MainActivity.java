@@ -85,16 +85,16 @@ public class MainActivity extends BaseActivity  {
         mTabs[0].setSelected(true);
         mViews[0].setVisibility(View.VISIBLE);
 
-//        fragmentChat = new Fragment_Chat();
-        fragmentConvertions = new Fragment_Convertions();
+        fragmentChat = new Fragment_Chat();
+//        fragmentConvertions = new Fragment_Convertions();
         fragmentTask = new Fragment_Task();
         fragmentMessage = new Fragment_Message();
-//        fragments = new Fragment[]{fragmentMessage, fragmentChat, fragmentTask};
-        fragments = new Fragment[]{fragmentMessage, fragmentConvertions, fragmentTask};
+        fragments = new Fragment[]{fragmentMessage, fragmentChat, fragmentTask};
+//        fragments = new Fragment[]{fragmentMessage, fragmentConvertions, fragmentTask};
         getSupportFragmentManager().beginTransaction()
                 .show(fragmentMessage)
-                .hide(fragmentConvertions)
-//                .hide(fragmentChat)
+//                .hide(fragmentConvertions)
+                .hide(fragmentChat)
                 .hide(fragmentTask)
                 .commit();
 
