@@ -39,7 +39,6 @@ import com.hyphenate.chat.EMImageMessageBody;
 import com.hyphenate.chat.EMMessage;
 import com.hyphenate.chat.EMMessage.ChatType;
 import com.hyphenate.chat.EMTextMessageBody;
-import com.hyphenate.chat.adapter.EMAChatRoomManagerListener;
 import com.hyphenate.easeui.EaseConstant;
 import com.hyphenate.easeui.EaseUI;
 import com.hyphenate.easeui.R;
@@ -117,7 +116,7 @@ public class EaseChatFragment extends EaseBaseFragment implements EMMessageListe
     protected boolean haveMoreData = true;
     protected int pagesize = 20;
     protected GroupListener groupListener;
-    protected ChatRoomListener chatRoomListener;
+//    protected ChatRoomListener chatRoomListener;
     protected EMMessage contextMenuMessage;
     
     static final int ITEM_TAKE_PICTURE = 1;
@@ -314,8 +313,8 @@ public class EaseChatFragment extends EaseBaseFragment implements EMMessageListe
                 groupListener = new GroupListener();
                 EMClient.getInstance().groupManager().addGroupChangeListener(groupListener);
             } else {
-                chatRoomListener = new ChatRoomListener();
-                EMClient.getInstance().chatroomManager().addChatRoomChangeListener(chatRoomListener);
+//                chatRoomListener = new ChatRoomListener();
+//                EMClient.getInstance().chatroomManager().addChatRoomChangeListener(chatRoomListener);
                 onChatRoomViewCreation();
             }
 
@@ -631,9 +630,9 @@ public class EaseChatFragment extends EaseBaseFragment implements EMMessageListe
             EMClient.getInstance().groupManager().removeGroupChangeListener(groupListener);
         }
 
-        if (chatRoomListener != null) {
-            EMClient.getInstance().chatroomManager().removeChatRoomListener(chatRoomListener);
-        }
+//        if (chatRoomListener != null) {
+//            EMClient.getInstance().chatroomManager().removeChatRoomListener(chatRoomListener);
+//        }
 
         if(chatType == EaseConstant.CHATTYPE_CHATROOM){
             EMClient.getInstance().chatroomManager().leaveChatRoom(toChatUsername);
@@ -1165,71 +1164,71 @@ public class EaseChatFragment extends EaseBaseFragment implements EMMessageListe
     /**
      * listen chat room event
      */
-    class ChatRoomListener extends EaseChatRoomListener {
-
-        @Override
-        public void onChatRoomDestroyed(final String roomId, final String roomName) {
-            getActivity().runOnUiThread(new Runnable() {
-                public void run() {
-                    if (roomId.equals(toChatUsername)) {
-                        Toast.makeText(getActivity(), R.string.the_current_chat_room_destroyed, Toast.LENGTH_LONG).show();
-                        Activity activity = getActivity();
-                        if (activity != null && !activity.isFinishing()) {
-                            activity.finish();
-                        }
-                    }
-                }
-            });
-        }
-
-        @Override
-        public void onRemovedFromChatRoom(final int reason, final String roomId, final String roomName, final String participant) {
-            getActivity().runOnUiThread(new Runnable() {
-                public void run() {
-                    if (roomId.equals(toChatUsername)) {
-                        if (reason == EMAChatRoomManagerListener.BE_KICKED) {
-                            Toast.makeText(getActivity(), R.string.quiting_the_chat_room, Toast.LENGTH_LONG).show();
-                            Activity activity = getActivity();
-                            if (activity != null && !activity.isFinishing()) {
-                                activity.finish();
-                            }
-                        } else { // BE_KICKED_FOR_OFFLINE
-                            // Current logged in user be kicked out by server for current user offline,
-                            // show disconnect title bar, click to rejoin.
-                            Toast.makeText(getActivity(), "User be kicked for offline", Toast.LENGTH_SHORT).show();
-                            kickedForOfflineLayout.setVisibility(View.VISIBLE);
-                        }
-                    }
-                }
-            });
-        }
-
-
-
-        @Override
-        public void onMemberJoined(final String roomId, final String participant) {
-            if (roomId.equals(toChatUsername)) {
-                getActivity().runOnUiThread(new Runnable() {
-                    public void run() {
-                        Toast.makeText(getActivity(), "member join:" + participant, Toast.LENGTH_LONG).show();
-                    }
-                });
-            }
-        }
-
-        @Override
-        public void onMemberExited(final String roomId, final String roomName, final String participant) {
-            if (roomId.equals(toChatUsername)) {
-                getActivity().runOnUiThread(new Runnable() {
-                    public void run() {
-                        Toast.makeText(getActivity(), "member exit:" + participant, Toast.LENGTH_LONG).show();
-                    }
-                });
-            }
-        }
-
-
-    }
+//    class ChatRoomListener extends EaseChatRoomListener {
+//
+//        @Override
+//        public void onChatRoomDestroyed(final String roomId, final String roomName) {
+//            getActivity().runOnUiThread(new Runnable() {
+//                public void run() {
+//                    if (roomId.equals(toChatUsername)) {
+//                        Toast.makeText(getActivity(), R.string.the_current_chat_room_destroyed, Toast.LENGTH_LONG).show();
+//                        Activity activity = getActivity();
+//                        if (activity != null && !activity.isFinishing()) {
+//                            activity.finish();
+//                        }
+//                    }
+//                }
+//            });
+//        }
+//
+//        @Override
+//        public void onRemovedFromChatRoom(final int reason, final String roomId, final String roomName, final String participant) {
+//            getActivity().runOnUiThread(new Runnable() {
+//                public void run() {
+//                    if (roomId.equals(toChatUsername)) {
+//                        if (reason == EMAChatRoomManagerListener.BE_KICKED) {
+//                            Toast.makeText(getActivity(), R.string.quiting_the_chat_room, Toast.LENGTH_LONG).show();
+//                            Activity activity = getActivity();
+//                            if (activity != null && !activity.isFinishing()) {
+//                                activity.finish();
+//                            }
+//                        } else { // BE_KICKED_FOR_OFFLINE
+//                            // Current logged in user be kicked out by server for current user offline,
+//                            // show disconnect title bar, click to rejoin.
+//                            Toast.makeText(getActivity(), "User be kicked for offline", Toast.LENGTH_SHORT).show();
+//                            kickedForOfflineLayout.setVisibility(View.VISIBLE);
+//                        }
+//                    }
+//                }
+//            });
+//        }
+//
+//
+//
+//        @Override
+//        public void onMemberJoined(final String roomId, final String participant) {
+//            if (roomId.equals(toChatUsername)) {
+//                getActivity().runOnUiThread(new Runnable() {
+//                    public void run() {
+//                        Toast.makeText(getActivity(), "member join:" + participant, Toast.LENGTH_LONG).show();
+//                    }
+//                });
+//            }
+//        }
+//
+//        @Override
+//        public void onMemberExited(final String roomId, final String roomName, final String participant) {
+//            if (roomId.equals(toChatUsername)) {
+//                getActivity().runOnUiThread(new Runnable() {
+//                    public void run() {
+//                        Toast.makeText(getActivity(), "member exit:" + participant, Toast.LENGTH_LONG).show();
+//                    }
+//                });
+//            }
+//        }
+//
+//
+//    }
 
     protected EaseChatFragmentHelper chatFragmentHelper;
     public void setChatFragmentHelper(EaseChatFragmentHelper chatFragmentHelper){

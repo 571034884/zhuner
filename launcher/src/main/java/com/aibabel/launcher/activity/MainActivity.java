@@ -34,7 +34,7 @@ public class MainActivity extends LaunBaseActivity {
                 startAct(MoreActivity.class);
                 break;
             case R.id.fl_notice:
-                ToastUtil.showShort(mContext,"跳转消息");
+                startAct(com.aibabel.message.MainActivity.class);
                 break;
         }
     }

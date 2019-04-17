@@ -12,7 +12,7 @@ import android.util.AttributeSet;
 import android.util.Log;
 import android.util.TypedValue;
 
-import com.aibabel.menu.R;
+import com.aibabel.launcher.R;
 
 
 /**
@@ -29,6 +29,7 @@ public class BubbleImageView extends AppCompatImageView {
     private float mArrowPosition;
     private Bitmap mBitmap;
     private BubbleDrawable.ArrowLocation mArrowLocation;
+
     public BubbleImageView(Context context) {
         super(context);
         initView(null);
@@ -44,8 +45,8 @@ public class BubbleImageView extends AppCompatImageView {
         initView(attrs);
     }
 
-    private void initView(AttributeSet attrs){
-        if (attrs != null){
+    private void initView(AttributeSet attrs) {
+        if (attrs != null) {
             TypedArray array = getContext().obtainStyledAttributes(attrs, R.styleable.BubbleView);
             mArrowWidth = array.getDimension(R.styleable.BubbleView_arrowWidth,
                     BubbleDrawable.Builder.DEFAULT_ARROW_WITH);
@@ -66,18 +67,18 @@ public class BubbleImageView extends AppCompatImageView {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
         int width = getMeasuredWidth();
         int height = getMeasuredHeight();
-        if (width <= 0 && height > 0){
-            setMeasuredDimension(height , height);
+        if (width <= 0 && height > 0) {
+            setMeasuredDimension(height, height);
         }
-        if (height <= 0 && width > 0){
-            setMeasuredDimension(width , width);
+        if (height <= 0 && width > 0) {
+            setMeasuredDimension(width, width);
         }
     }
 
     @Override
     protected void onSizeChanged(int w, int h, int oldw, int oldh) {
         super.onSizeChanged(w, h, oldw, oldh);
-        if (w > 0 && h > 0){
+        if (w > 0 && h > 0) {
             setUp(w, h);
         }
     }
@@ -97,7 +98,7 @@ public class BubbleImageView extends AppCompatImageView {
         canvas.restoreToCount(saveCount);
     }
 
-    private void setUp(int left, int right, int top, int bottom){
+    private void setUp(int left, int right, int top, int bottom) {
         Log.d("setUp", "left-->" + left);
         Log.d("setUp", "right-->" + right);
         Log.d("setUp", "top-->" + top);
@@ -120,25 +121,25 @@ public class BubbleImageView extends AppCompatImageView {
                 .build();
     }
 
-    private void setUp(int width, int height){
+    private void setUp(int width, int height) {
         setUp(getPaddingLeft(), width - getPaddingRight(),
                 getPaddingTop(), height - getPaddingBottom());
     }
 
-    private void setUp(){
+    private void setUp() {
         int width = getWidth();
         int height = getHeight();
         int scale;
 
-        if (width > 0 && height <= 0 && sourceDrawable != null){
-            if (sourceDrawable.getIntrinsicWidth() >= 0){
+        if (width > 0 && height <= 0 && sourceDrawable != null) {
+            if (sourceDrawable.getIntrinsicWidth() >= 0) {
                 scale = width / sourceDrawable.getIntrinsicWidth();
                 height = scale * sourceDrawable.getIntrinsicHeight();
             }
         }
 
-        if (height > 0 &&  width <= 0 && sourceDrawable != null){
-            if (sourceDrawable.getIntrinsicHeight() >= 0){
+        if (height > 0 && width <= 0 && sourceDrawable != null) {
+            if (sourceDrawable.getIntrinsicHeight() >= 0) {
                 scale = height / sourceDrawable.getIntrinsicHeight();
                 width = scale * sourceDrawable.getIntrinsicWidth();
             }
@@ -157,8 +158,8 @@ public class BubbleImageView extends AppCompatImageView {
     }
 
     @Override
-    public void setImageDrawable(Drawable drawable){
-        if (drawable == null )
+    public void setImageDrawable(Drawable drawable) {
+        if (drawable == null)
             return;
         sourceDrawable = drawable;
         setUp();
@@ -166,12 +167,12 @@ public class BubbleImageView extends AppCompatImageView {
     }
 
     @Override
-    public void setImageResource(int res){
+    public void setImageResource(int res) {
         setImageDrawable(getDrawable(res));
     }
 
-    private Drawable getDrawable(int res){
-        if (res == 0){
+    private Drawable getDrawable(int res) {
+        if (res == 0) {
             throw new IllegalArgumentException("getDrawable res can not be zero");
         }
         return getContext().getResources().getDrawable(res);
@@ -190,10 +191,10 @@ public class BubbleImageView extends AppCompatImageView {
         }
         try {
             Bitmap bitmap;
-            if (width > 0 && height > 0){
+            if (width > 0 && height > 0) {
                 bitmap = Bitmap.createBitmap(width,
                         height, Bitmap.Config.ARGB_8888);
-            }else{
+            } else {
                 bitmap = Bitmap.createBitmap(dp2px(mContext, defaultSize),
                         dp2px(mContext, defaultSize), Bitmap.Config.ARGB_8888);
             }
