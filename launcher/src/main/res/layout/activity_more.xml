@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:background="@color/color_f9"
+    android:background="@color/color_f990"
     android:layout_height="match_parent">
     <FrameLayout
         android:layout_width="match_parent"
@@ -51,7 +51,6 @@
         android:orientation="horizontal">
         <LinearLayout
             android:layout_width="@dimen/x160"
-            android:elevation="@dimen/x2"
             android:background="@drawable/more_left_bg"
             android:layout_height="match_parent"
             android:paddingTop="@dimen/y40"
@@ -239,7 +238,6 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:elevation="@dimen/x2"
             android:background="@drawable/more_right_bg"
             android:layout_height="match_parent">
 
