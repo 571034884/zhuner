@@ -1,11 +1,14 @@
 package com.aibabel.message.fragment;
 
+import android.graphics.Rect;
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -14,6 +17,7 @@ import com.aibabel.baselibrary.base.BaseFragment;
 import com.aibabel.launcher.R;
 import com.aibabel.message.adapter.ChatAdapter;
 import com.aibabel.message.utiles.ChatUiHelper;
+import com.aibabel.message.utiles.SizeUtils;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.hyphenate.EMMessageListener;
 import com.hyphenate.chat.EMClient;
@@ -59,6 +63,8 @@ public class Fragment_Chat extends BaseFragment implements SwipeRefreshLayout.On
     TextView mBtnSend;
     @BindView(R.id.llContent)
     LinearLayout mLlContent;
+    @BindView(R.id.v)
+    View v;
     protected EMConversation conversation;
     private ExecutorService fetchQueue;
 
@@ -99,6 +105,25 @@ public class Fragment_Chat extends BaseFragment implements SwipeRefreshLayout.On
 
 
     private void initChatUi() {
+        mEtContent.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+            @Override
+            public void onGlobalLayout() {
+                Rect r = new Rect();
+                //获取当前界面可视部分
+                 getActivity().getWindow().getDecorView().getWindowVisibleDisplayFrame(r);
+                //获取屏幕的高度
+                int screenHeight =  getActivity().getWindow().getDecorView().getRootView().getHeight();
+                //此处就是用来获取键盘的高度的， 在键盘没有弹出的时候 此高度为0 键盘弹出的时候为一个正数
+                int heightDifference = screenHeight - r.bottom;
+
+                lockContentHeight();
+                unlockContentHeightDelayed(heightDifference);
+
+
+            }
+        });
+
+
         //mBtnAudio
         final ChatUiHelper mUiHelper = ChatUiHelper.with(getActivity());
         mUiHelper.bindContentLayout(mLlContent)
@@ -319,4 +344,35 @@ public class Fragment_Chat extends BaseFragment implements SwipeRefreshLayout.On
 //        记得在不需要的时候移除listener，如在activity的onDestroy()时
         EMClient.getInstance().chatManager().removeMessageListener(this);
     }
+
+    /**
+     * 锁定内容高度，防止跳闪
+     */
+    private void lockContentHeight() {
+        LinearLayout.LayoutParams params = (LinearLayout.LayoutParams) mLlContent.getLayoutParams();
+        params.height = mLlContent.getHeight();
+        params.weight = 0.0F;
+    }
+
+
+    /**
+     * 释放被锁定的内容高度
+     */
+    public void unlockContentHeightDelayed(final int heightDifference) {
+        mEtContent.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                if (mLlContent == null) {
+                    return;
+                }
+                ((LinearLayout.LayoutParams) mLlContent.getLayoutParams()).weight = 1.0F;
+                ViewGroup.LayoutParams layoutParams = v.getLayoutParams();
+                layoutParams.height = heightDifference - SizeUtils.dp2px(mContext,36);
+                v.setLayoutParams(layoutParams);
+            }
+        }, 10L);
+    }
+
+
+
 }
