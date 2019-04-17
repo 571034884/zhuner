@@ -17,14 +17,18 @@
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
     <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
     <uses-permission android:name="android.permission.SET_TIME_ZONE"/>
-
     <!-- Optional for location -->
     <uses-permission android:name="android.permission.VIBRATE" />
     <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" /> <!-- 用于开启 debug 版本的应用在6.0 系统上 层叠窗口权限 -->
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_LOCATION_EXTRA_COMMANDS" />
-
+    <!-- 读取手机状态 -->
+    <uses-permission android:name="android.permission.READ_PHONE_STATE"/>
+    <!-- 允许读写系统设置项 使用设置时需要 -->
+    <uses-permission android:name="android.permission.WRITE_SETTINGS"/>
+    <!-- 读取启动设置 -->
+    <uses-permission android:name="com.android.launcher.permission.READ_SETTINGS"/>
 
     <application
         android:allowBackup="true"
