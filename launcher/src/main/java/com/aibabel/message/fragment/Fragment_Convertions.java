@@ -45,12 +45,6 @@ public class Fragment_Convertions extends EaseChatFragment implements EaseChatFr
         super.setUpView();
     }
 
-    @Override
-    protected void registerExtendMenuItem() {
-        //use the menu in base class
-        super.registerExtendMenuItem();
-    }
-
 
     @Override
     public void onSetMessageAttributes(EMMessage message) {
