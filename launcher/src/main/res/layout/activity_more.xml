@@ -55,8 +55,8 @@
             <RelativeLayout
                 android:id="@+id/rl_travel"
                 android:layout_marginBottom="@dimen/y10"
-                android:background="@drawable/more_select_bg"
                 android:layout_width="@dimen/x90"
+                android:onClick="onClick"
                 android:layout_gravity="center"
                 android:gravity="center"
                 android:layout_height="@dimen/y110">
@@ -66,7 +66,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerHorizontal="true"
-                    android:src="@mipmap/ic_travel"
+                    android:src="@drawable/travel_drawable"
                     />
                 <TextView
                     android:id="@+id/tv_travel"
@@ -76,7 +76,7 @@
                     android:text="吃喝玩乐"
                     android:layout_marginTop="@dimen/y5"
                     android:textStyle="bold"
-                    android:textColor="@android:color/white"
+                    android:textColor="#FF8B01"
                     android:textSize="@dimen/y18"
                     android:layout_below="@id/iv_travel"
                     />
@@ -87,6 +87,7 @@
                 android:layout_marginBottom="@dimen/y10"
                 android:layout_width="@dimen/x90"
                 android:layout_gravity="center"
+                android:onClick="onClick"
                 android:gravity="center"
                 android:layout_height="@dimen/y110">
 
@@ -95,14 +96,14 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerHorizontal="true"
-                    android:src="@mipmap/ic_travel"
+                    android:src="@mipmap/ic_bus_select"
                     />
                 <TextView
                     android:id="@+id/tv_bus"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerHorizontal="true"
-                    android:text="交通购物"
+                    android:text="交通"
                     android:layout_marginTop="@dimen/y5"
                     android:textStyle="bold"
                     android:textColor="#FF8B01"
@@ -111,10 +112,41 @@
                     />
             </RelativeLayout>
             <RelativeLayout
+                android:id="@+id/rl_shop"
+                android:layout_marginBottom="@dimen/y10"
+                android:layout_width="@dimen/x90"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:onClick="onClick"
+                android:layout_height="@dimen/y110">
+
+                <ImageView
+                    android:id="@+id/iv_shop"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    android:src="@mipmap/ic_shop_select"
+                    />
+                <TextView
+                    android:id="@+id/tv_shop"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    android:text="购物"
+                    android:layout_marginTop="@dimen/y5"
+                    android:textStyle="bold"
+                    android:textColor="#FF8B01"
+                    android:textSize="@dimen/y18"
+                    android:layout_below="@id/iv_shop"
+                    />
+            </RelativeLayout>
+
+            <RelativeLayout
                 android:id="@+id/rl_tour"
                 android:layout_marginBottom="@dimen/y10"
                 android:layout_width="@dimen/x90"
                 android:layout_gravity="center"
+                android:onClick="onClick"
                 android:gravity="center"
                 android:layout_height="@dimen/y110">
 
@@ -123,7 +155,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerHorizontal="true"
-                    android:src="@mipmap/ic_travel"
+                    android:src="@mipmap/ic_tour_select"
                     />
                 <TextView
                     android:id="@+id/tv_tour"
@@ -138,12 +170,12 @@
                     android:layout_below="@id/iv_tour"
                     />
             </RelativeLayout>
-
             <RelativeLayout
                 android:id="@+id/rl_my"
                 android:layout_marginBottom="@dimen/y10"
                 android:layout_width="@dimen/x90"
                 android:layout_gravity="center"
+                android:onClick="onClick"
                 android:gravity="center"
                 android:layout_height="@dimen/y110">
 
@@ -152,7 +184,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerHorizontal="true"
-                    android:src="@mipmap/ic_travel"
+                    android:src="@mipmap/ic_my_select"
                     />
                 <TextView
                     android:id="@+id/tv_my"
@@ -169,10 +201,10 @@
             </RelativeLayout>
             <RelativeLayout
                 android:id="@+id/rl_about"
-                android:layout_marginBottom="@dimen/y10"
                 android:layout_width="@dimen/x90"
                 android:layout_gravity="center"
                 android:gravity="center"
+                android:onClick="onClick"
                 android:layout_height="@dimen/y110">
 
                 <ImageView
@@ -180,46 +212,19 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerHorizontal="true"
-                    android:src="@mipmap/ic_travel"
+                    android:src="@mipmap/ic_about_select"
                     />
                 <TextView
                     android:id="@+id/tv_about"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerHorizontal="true"
-                    android:text="关于设备"
+                    android:text="关于机器"
                     android:layout_marginTop="@dimen/y5"
                     android:textStyle="bold"
                     android:textColor="#FF8B01"
                     android:textSize="@dimen/y18"
                     android:layout_below="@id/iv_about"
-                    />
-            </RelativeLayout>
-            <RelativeLayout
-                android:id="@+id/rl_beta"
-                android:layout_width="@dimen/x90"
-                android:layout_gravity="center"
-                android:gravity="center"
-                android:layout_height="@dimen/y110">
-
-                <ImageView
-                    android:id="@+id/iv_beta"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerHorizontal="true"
-                    android:src="@mipmap/ic_travel"
-                    />
-                <TextView
-                    android:id="@+id/tv_beta"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerHorizontal="true"
-                    android:text="BETA版"
-                    android:layout_marginTop="@dimen/y5"
-                    android:textStyle="bold"
-                    android:textColor="#FF8B01"
-                    android:textSize="@dimen/y18"
-                    android:layout_below="@id/iv_beta"
                     />
             </RelativeLayout>
         </LinearLayout>
