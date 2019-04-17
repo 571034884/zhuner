@@ -51,17 +51,15 @@
 
         <activity
             android:name="com.aibabel.message.MainActivity"
-            android:configChanges="keyboardHidden|orientation|screenSize"
             android:launchMode="singleTop"
             android:screenOrientation="portrait"
-            android:theme="@style/Theme.AppCompat.NoActionBar"
             android:windowSoftInputMode="stateHidden|adjustResize" />
 
 
         <!--=================================== 设置环信应用的AppKey ================================= -->
         <meta-data
             android:name="EASEMOB_APPKEY"
-            android:value="" />
+            android:value="1108190415090119#leaderhelper" />
         <!-- 声明SDK所需的service SDK核心功能-->
         <service
             android:name="com.hyphenate.chat.EMChatService"

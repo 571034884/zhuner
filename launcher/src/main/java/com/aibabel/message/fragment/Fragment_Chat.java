@@ -83,6 +83,7 @@ public class Fragment_Chat extends BaseFragment implements SwipeRefreshLayout.On
     protected void initContent() {
         mAdapter = new ChatAdapter(mContext, new ArrayList<EMMessage>());
         LinearLayoutManager mLinearLayout = new LinearLayoutManager(mContext);
+        mLinearLayout.setStackFromEnd(true);
         mRvChat.setLayoutManager(mLinearLayout);
         mRvChat.setAdapter(mAdapter);
         mSwipeRefresh.setOnRefreshListener(this);
