@@ -47,27 +47,6 @@ import butterknife.Unbinder;
 public class Fragment_Chat extends BaseFragment implements SwipeRefreshLayout.OnRefreshListener {
 
 
-    private static final int ITEM_VIDEO = 11;
-    private static final int ITEM_FILE = 12;
-    private static final int ITEM_VOICE_CALL = 13;
-    private static final int ITEM_VIDEO_CALL = 14;
-    private static final int ITEM_CONFERENCE_CALL = 15;
-    private static final int ITEM_LIVE = 16;
-
-    private static final int REQUEST_CODE_SELECT_VIDEO = 11;
-    private static final int REQUEST_CODE_SELECT_FILE = 12;
-    private static final int REQUEST_CODE_GROUP_DETAIL = 13;
-    private static final int REQUEST_CODE_CONTEXT_MENU = 14;
-    private static final int REQUEST_CODE_SELECT_AT_USER = 15;
-
-
-    private static final int MESSAGE_TYPE_SENT_VOICE_CALL = 1;
-    private static final int MESSAGE_TYPE_RECV_VOICE_CALL = 2;
-    private static final int MESSAGE_TYPE_SENT_VIDEO_CALL = 3;
-    private static final int MESSAGE_TYPE_RECV_VIDEO_CALL = 4;
-    private static final int MESSAGE_TYPE_CONFERENCE_INVITE = 5;
-    private static final int MESSAGE_TYPE_LIVE_INVITE = 6;
-    private static final int MESSAGE_TYPE_RECALL = 9;
     @BindView(R.id.group_title)
     TextView groupTitle;
     @BindView(R.id.rv_chat_list)
