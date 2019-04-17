@@ -1,11 +1,14 @@
 package com.aibabel.message.fragment;
 
+import android.graphics.Rect;
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -14,15 +17,24 @@ import com.aibabel.baselibrary.base.BaseFragment;
 import com.aibabel.launcher.R;
 import com.aibabel.message.adapter.ChatAdapter;
 import com.aibabel.message.utiles.ChatUiHelper;
+import com.aibabel.message.utiles.SizeUtils;
 import com.chad.library.adapter.base.BaseQuickAdapter;
+import com.hyphenate.EMMessageListener;
 import com.hyphenate.chat.EMClient;
+import com.hyphenate.chat.EMCmdMessageBody;
 import com.hyphenate.chat.EMConversation;
 import com.hyphenate.chat.EMGroup;
 import com.hyphenate.chat.EMMessage;
+import com.hyphenate.easeui.EaseConstant;
+import com.hyphenate.easeui.EaseUI;
+import com.hyphenate.easeui.model.EaseAtMessageHelper;
+import com.hyphenate.easeui.utils.EaseCommonUtils;
 import com.hyphenate.exceptions.HyphenateException;
+import com.hyphenate.util.EMLog;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ExecutorService;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -35,8 +47,9 @@ import butterknife.OnClick;
  * @Desc：聊天界面
  * @==========================================================================================
  */
-public class Fragment_Chat extends BaseFragment implements SwipeRefreshLayout.OnRefreshListener {
+public class Fragment_Chat extends BaseFragment implements SwipeRefreshLayout.OnRefreshListener,EMMessageListener {
 
+    private String TAG = Fragment_Chat.class.getSimpleName().toString();
 
     @BindView(R.id.group_title)
     TextView groupTitle;
@@ -50,9 +63,17 @@ public class Fragment_Chat extends BaseFragment implements SwipeRefreshLayout.On
     TextView mBtnSend;
     @BindView(R.id.llContent)
     LinearLayout mLlContent;
+    @BindView(R.id.v)
+    View v;
     protected EMConversation conversation;
+    private ExecutorService fetchQueue;
 
     private ChatAdapter mAdapter;
+    private String toChatUsername;
+    protected int chatType;
+    protected boolean isRoaming = false;
+    private int pagesize = 20;
+
 
     @Override
     public int getLayout() {
@@ -68,6 +89,7 @@ public class Fragment_Chat extends BaseFragment implements SwipeRefreshLayout.On
     protected void initContent() {
         mAdapter = new ChatAdapter(mContext, new ArrayList<EMMessage>());
         LinearLayoutManager mLinearLayout = new LinearLayoutManager(mContext);
+        mLinearLayout.setStackFromEnd(true);
         mRvChat.setLayoutManager(mLinearLayout);
         mRvChat.setAdapter(mAdapter);
         mSwipeRefresh.setOnRefreshListener(this);
@@ -83,6 +105,25 @@ public class Fragment_Chat extends BaseFragment implements SwipeRefreshLayout.On
 
 
     private void initChatUi() {
+        mEtContent.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+            @Override
+            public void onGlobalLayout() {
+                Rect r = new Rect();
+                //获取当前界面可视部分
+                 getActivity().getWindow().getDecorView().getWindowVisibleDisplayFrame(r);
+                //获取屏幕的高度
+                int screenHeight =  getActivity().getWindow().getDecorView().getRootView().getHeight();
+                //此处就是用来获取键盘的高度的， 在键盘没有弹出的时候 此高度为0 键盘弹出的时候为一个正数
+                int heightDifference = screenHeight - r.bottom;
+
+                lockContentHeight();
+                unlockContentHeightDelayed(heightDifference);
+
+
+            }
+        });
+
+
         //mBtnAudio
         final ChatUiHelper mUiHelper = ChatUiHelper.with(getActivity());
         mUiHelper.bindContentLayout(mLlContent)
@@ -114,8 +155,55 @@ public class Fragment_Chat extends BaseFragment implements SwipeRefreshLayout.On
             }
         });
 
-
+//        onConversationInit();
     }
+
+
+    protected void onConversationInit(){
+        conversation = EMClient.getInstance().chatManager().getConversation(toChatUsername, EaseCommonUtils.getConversationType(chatType), true);
+        conversation.markAllMessagesAsRead();
+        // the number of messages loaded into conversation is getChatOptions().getNumberOfMessagesLoaded
+        // you can change this number
+
+        if (!isRoaming) {
+            final List<EMMessage> msgs = conversation.getAllMessages();
+            int msgCount = msgs != null ? msgs.size() : 0;
+            if (msgCount < conversation.getAllMsgCount() && msgCount < pagesize) {
+                String msgId = null;
+                if (msgs != null && msgs.size() > 0) {
+                    msgId = msgs.get(0).getMsgId();
+                }
+                conversation.loadMoreMsgFromDB(msgId, pagesize - msgCount);
+            }
+        } else {
+            fetchQueue.execute(new Runnable() {
+                @Override
+                public void run() {
+                    try {
+                        EMClient.getInstance().chatManager().fetchHistoryMessages(
+                                toChatUsername, EaseCommonUtils.getConversationType(chatType), pagesize, "");
+                        final List<EMMessage> msgs = conversation.getAllMessages();
+                        int msgCount = msgs != null ? msgs.size() : 0;
+                        if (msgCount < conversation.getAllMsgCount() && msgCount < pagesize) {
+                            String msgId = null;
+                            if (msgs != null && msgs.size() > 0) {
+                                msgId = msgs.get(0).getMsgId();
+                            }
+                            conversation.loadMoreMsgFromDB(msgId, pagesize - msgCount);
+                        }
+
+//                        messageList.refreshSelectLast();
+//                        mAdapter.addData();
+
+                    } catch (HyphenateException e) {
+                        e.printStackTrace();
+                    }
+                }
+            });
+        }
+    }
+
+
 
 
     @Override
@@ -184,6 +272,107 @@ public class Fragment_Chat extends BaseFragment implements SwipeRefreshLayout.On
 
 
     }
+
+    //=========================================================================
+
+    @Override
+    public void onMessageReceived(List<EMMessage> list) {
+        //收到消息
+        for (EMMessage message : list) {
+            String username = null;
+            // group message
+            if (message.getChatType() == EMMessage.ChatType.GroupChat || message.getChatType() == EMMessage.ChatType.ChatRoom) {
+                username = message.getTo();
+            } else {
+                // single chat message
+                username = message.getFrom();
+            }
+
+            // if the message is for current conversation
+            if (username.equals(toChatUsername) || message.getTo().equals(toChatUsername) || message.conversationId().equals(toChatUsername)) {
+//                messageList.refreshSelectLast();
+//                conversation.markMessageAsRead(message.getMsgId());
+            }
+            EaseUI.getInstance().getNotifier().vibrateAndPlayTone(message);
+        }
+    }
+
+    @Override
+    public void onCmdMessageReceived(List<EMMessage> list) {
+        //收到透传消息
+    }
+
+    @Override
+    public void onMessageRead(List<EMMessage> list) {
+        //收到已读回执
+    }
+
+    @Override
+    public void onMessageDelivered(List<EMMessage> list) {
+        //收到已送达回执
+    }
+
+    @Override
+    public void onMessageRecalled(List<EMMessage> list) {
+        //消息被撤回
+    }
+
+    @Override
+    public void onMessageChanged(EMMessage emMessage, Object o) {
+        //消息状态变动
+    }
+    //=========================================================================
+
+
+    @Override
+    public void onResume() {
+        super.onResume();
+//        if(isMessageListInited)
+//            messageList.refresh();
+        EaseUI.getInstance().pushActivity(getActivity());
+        // register the event listener when enter the foreground
+        EMClient.getInstance().chatManager().addMessageListener(this);
+
+        if(chatType == EaseConstant.CHATTYPE_GROUP){
+            EaseAtMessageHelper.get().removeAtMeGroup(toChatUsername);
+        }
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+//        记得在不需要的时候移除listener，如在activity的onDestroy()时
+        EMClient.getInstance().chatManager().removeMessageListener(this);
+    }
+
+    /**
+     * 锁定内容高度，防止跳闪
+     */
+    private void lockContentHeight() {
+        LinearLayout.LayoutParams params = (LinearLayout.LayoutParams) mLlContent.getLayoutParams();
+        params.height = mLlContent.getHeight();
+        params.weight = 0.0F;
+    }
+
+
+    /**
+     * 释放被锁定的内容高度
+     */
+    public void unlockContentHeightDelayed(final int heightDifference) {
+        mEtContent.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                if (mLlContent == null) {
+                    return;
+                }
+                ((LinearLayout.LayoutParams) mLlContent.getLayoutParams()).weight = 1.0F;
+                ViewGroup.LayoutParams layoutParams = v.getLayoutParams();
+                layoutParams.height = heightDifference - SizeUtils.dp2px(mContext,36);
+                v.setLayoutParams(layoutParams);
+            }
+        }, 10L);
+    }
+
 
 
 }

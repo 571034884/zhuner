@@ -90,7 +90,6 @@ public abstract class BaseActivity extends StatisticsBaseActivity  {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         mContext = this;
         //setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         setNavigationBarVisibility();

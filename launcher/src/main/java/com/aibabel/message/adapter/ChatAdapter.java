@@ -36,7 +36,7 @@ public class ChatAdapter extends BaseQuickAdapter<EMMessage, BaseViewHolder> {
         setMultiTypeDelegate(new MultiTypeDelegate<EMMessage>() {
             @Override
             protected int getItemType(EMMessage entity) {
-                boolean isSend = entity.direct()==EMMessage.Direct.SEND;
+                boolean isSend = entity.direct() == EMMessage.Direct.SEND;
                 if (EMMessage.Type.TXT == entity.getType()) {
                     return isSend ? TYPE_SEND_TEXT : TYPE_RECEIVE_TEXT;
                 } else if (EMMessage.Type.IMAGE == entity.getType()) {
@@ -62,7 +62,7 @@ public class ChatAdapter extends BaseQuickAdapter<EMMessage, BaseViewHolder> {
     private void setStatus(BaseViewHolder helper, EMMessage item) {
         if (EMMessage.Type.TXT == item.getType()) {
             //只需要设置自己发送的状态
-            boolean isSend = item.direct()==EMMessage.Direct.SEND;
+            boolean isSend = item.direct() == EMMessage.Direct.SEND;
             if (isSend) {
                 if (item.status() == EMMessage.Status.INPROGRESS) {
                     helper.setVisible(R.id.chat_item_progress, true).setVisible(R.id.chat_item_fail, false);
@@ -77,25 +77,16 @@ public class ChatAdapter extends BaseQuickAdapter<EMMessage, BaseViewHolder> {
     }
 
     private void setContent(BaseViewHolder helper, EMMessage item) {
-        if (item.getType()==EMMessage.Type.TXT) {
-//            TextMsgBody msgBody = (TextMsgBody) item.getBody();
-            helper.setText(R.id.chat_item_content_text, item.getBody().toString());
-        } else if (item.getType()==EMMessage.Type.IMAGE) {
-//            ImageMsgBody msgBody = (ImageMsgBody) item.getBody();
+        if (item.getType() == EMMessage.Type.TXT) {
+            helper.setText(R.id.chat_item_content_text, "22222222");
+        } else if (item.getType() == EMMessage.Type.IMAGE) {
             Glide.with(mContext).load("").into((ImageView) helper.getView(R.id.bivPic));
-//            GlideUtils.loadChatImage(mContext, msgBody.getThumbUrl(), (ImageView) helper.getView(R.id.bivPic));
-//            if (TextUtils.isEmpty(msgBody.getThumbPath())) {
-//                GlideUtils.loadChatImage(mContext, msgBody.getThumbUrl(), (ImageView) helper.getView(R.id.bivPic));
-//            } else {
-//                File file = new File(msgBody.getThumbPath());
-//                if (file.exists()) {
-//                    GlideUtils.loadChatImage(mContext, msgBody.getThumbPath(), (ImageView) helper.getView(R.id.bivPic));
-//                } else {
-//                    GlideUtils.loadChatImage(mContext, msgBody.getThumbUrl(), (ImageView) helper.getView(R.id.bivPic));
-//                }
-//            }
         }
     }
+
+
+
+
 
 
 }
