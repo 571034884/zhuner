@@ -66,7 +66,7 @@ public class MainActivity extends LaunBaseActivity {
 
     public void onClick(View view){
         switch (view.getId()){
-            case R.id.rl_more:
+            case R.id.cv_more:
                 startAct(MoreActivity.class);
                 break;
             case R.id.fl_notice:
