@@ -10,32 +10,25 @@ import android.net.NetworkInfo;
 import android.net.NetworkRequest;
 import android.os.Build;
 import android.os.Bundle;
-import android.util.Log;
 import android.os.Handler;
 import android.os.Message;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
+import android.widget.FrameLayout;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.aibabel.baselibrary.sphelper.SPHelper;
 import com.aibabel.baselibrary.mode.DataManager;
 import com.aibabel.baselibrary.sphelper.SPHelper;
 import com.aibabel.baselibrary.utils.CommonUtils;
 import com.aibabel.baselibrary.utils.FastJsonUtil;
 import com.aibabel.baselibrary.utils.SharePrefUtil;
-import com.aibabel.baselibrary.utils.ToastUtil;
 import com.aibabel.launcher.R;
 import com.aibabel.launcher.base.LaunBaseActivity;
-import com.hyphenate.EMCallBack;
-import com.hyphenate.EMError;
-import com.hyphenate.chat.EMClient;
-import com.hyphenate.chat.EMGroup;
-import com.tencent.mmkv.MMKV;
-
-import java.util.List;
 import com.aibabel.launcher.bean.PushMessageBean;
 import com.aibabel.launcher.bean.SyncOrder;
 import com.aibabel.launcher.rent.RentDialogActivity;
@@ -48,6 +41,11 @@ import com.aibabel.launcher.utils.LocationUtils;
 import com.aibabel.launcher.utils.LogUtil;
 import com.aibabel.launcher.view.MaterialBadgeTextView;
 import com.aibabel.message.sqlite.SqlUtils;
+import com.hyphenate.EMCallBack;
+import com.hyphenate.EMError;
+import com.hyphenate.EMMessageListener;
+import com.hyphenate.chat.EMClient;
+import com.hyphenate.chat.EMMessage;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.StringCallback;
 import com.lzy.okgo.model.Response;
@@ -55,10 +53,31 @@ import com.lzy.okgo.model.Response;
 import java.io.Serializable;
 import java.lang.ref.WeakReference;
 import java.util.HashMap;
+import java.util.List;
 
 import butterknife.BindView;
+import butterknife.ButterKnife;
 
 public class MainActivity extends LaunBaseActivity {
+
+    @BindView(R.id.tv_location)
+    TextView tvLocation;
+    @BindView(R.id.home_badge_icon)
+    ImageView homeBadgeIcon;
+    @BindView(R.id.home_badge)
+    MaterialBadgeTextView homeBadge;
+    @BindView(R.id.fl_notice)
+    FrameLayout flNotice;
+    @BindView(R.id.tv_wifi)
+    TextView tvWifi;
+    @BindView(R.id.main_layout_one)
+    LinearLayout mainLayoutOne;
+    @BindView(R.id.tv_more)
+    TextView tvMore;
+    @BindView(R.id.rl_more)
+    RelativeLayout rlMore;
+    private int fragment_type;
+
 
     @Override
     public int getLayout(Bundle savedInstanceState) {
@@ -81,9 +100,22 @@ public class MainActivity extends LaunBaseActivity {
                 startAct(MoreActivity.class);
                 break;
             case R.id.fl_notice:
-                startAct(com.aibabel.message.MainActivity.class);
+                startActivity(fragment_type);
                 break;
         }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        EMClient.getInstance().chatManager().addMessageListener(messageListener);
+    }
+
+    private void startActivity(int fragment_type) {
+        Intent intent = new Intent(this, com.aibabel.message.MainActivity.class);
+        intent.putExtra("fragment", fragment_type);
+        startActivity(intent);
+
     }
 
 
@@ -114,20 +146,20 @@ public class MainActivity extends LaunBaseActivity {
                         EMClient.getInstance().chatManager().loadAllConversations();
                         // 加载所有群组到内存，如果使用了群组的话
                         EMClient.getInstance().groupManager().loadAllGroups();
-                        new Thread(new Runnable() {
-                            @Override
-                            public void run() {
-                                try {
-                                    //从服务器获取自己加入的和创建的群组列表，此api获取的群组sdk会自动保存到内存和db。
-                                    List<EMGroup> grouplist = EMClient.getInstance().groupManager().getJoinedGroupsFromServer();//需异步处理
-                                    String groupId = grouplist.get(0).getGroupId();
-                                    SPHelper.save("groupId", groupId);
-                                    Log.d("groupId", groupId);
-                                } catch (Exception e) {
-                                    e.printStackTrace();
-                                }
-                            }
-                        }).start();
+//                        new Thread(new Runnable() {
+//                            @Override
+//                            public void run() {
+//                                try {
+//                                    //从服务器获取自己加入的和创建的群组列表，此api获取的群组sdk会自动保存到内存和db。
+//                                    List<EMGroup> grouplist = EMClient.getInstance().groupManager().getJoinedGroupsFromServer();//需异步处理
+//                                    String groupId = grouplist.get(0).getGroupId();
+//                                    SPHelper.save("groupId", groupId);
+//                                    Log.d("groupId", groupId);
+//                                } catch (Exception e) {
+//                                    e.printStackTrace();
+//                                }
+//                            }
+//                        }).start();
 
                     }
                 });
@@ -201,7 +233,76 @@ public class MainActivity extends LaunBaseActivity {
         });
     }
 
+    EMMessageListener messageListener = new EMMessageListener() {
 
+        @Override
+        public void onMessageReceived(List<EMMessage> messages) {
+            // notify new message
+//            for (EMMessage message : messages) {
+//                DemoHelper.getInstance().getNotifier().vibrateAndPlayTone(message);
+//            }
+            refreshUIWithMessage();
+        }
+
+        @Override
+        public void onCmdMessageReceived(List<EMMessage> messages) {
+            refreshUIWithMessage();
+        }
+
+        @Override
+        public void onMessageRead(List<EMMessage> messages) {
+        }
+
+        @Override
+        public void onMessageDelivered(List<EMMessage> message) {
+        }
+
+        @Override
+        public void onMessageRecalled(List<EMMessage> messages) {
+            refreshUIWithMessage();
+        }
+
+        @Override
+        public void onMessageChanged(EMMessage message, Object change) {
+        }
+    };
+
+    /**
+     * 更新未读数量
+     */
+    private void refreshUIWithMessage() {
+        runOnUiThread(new Runnable() {
+            public void run() {
+                // refresh unread count
+                updateUnreadLabel();
+
+            }
+        });
+    }
+
+    /**
+     * update unread message count
+     */
+    public void updateUnreadLabel() {
+        int count = getUnreadMsgCountTotal();
+        if (count > 0) {
+            homeBadge.setBadgeCount(count);
+            homeBadge.setVisibility(View.VISIBLE);
+        } else {
+            homeBadge.setVisibility(View.INVISIBLE);
+        }
+    }
+
+    /**
+     * get unread message count
+     *
+     * @return
+     */
+    public int getUnreadMsgCountTotal() {
+        return EMClient.getInstance().chatManager().getUnreadMessageCount();
+    }
+
+//===================================环信结束==============================================
 
     public static MaterialBadgeTextView home_badge;
     public static int set_BadgeCount = 0;
@@ -229,6 +330,9 @@ public class MainActivity extends LaunBaseActivity {
      * 如果锁机了，再次同步一次
      */
     private static boolean iflocksyncAgain = true;
+
+
+
     /***
      * 这是一个静态,loop轮询机制
      */
@@ -434,6 +538,7 @@ public class MainActivity extends LaunBaseActivity {
             e.printStackTrace();
         }
     }
+
     private static boolean isnetok = true;
 
     private void requestNetwork() {
@@ -503,6 +608,7 @@ public class MainActivity extends LaunBaseActivity {
         });
 
     }
+
     /*
     * 是否连接
     * */
@@ -511,6 +617,7 @@ public class MainActivity extends LaunBaseActivity {
         NetworkInfo networkInfo = connectivityManager.getActiveNetworkInfo();
         return (networkInfo != null && networkInfo.isConnected());
     }
+
     public int boot_start_lock() {
         int lockflag = SharePrefUtil.getInt(mContext, order_islock, 0);
 
@@ -521,6 +628,7 @@ public class MainActivity extends LaunBaseActivity {
         }
         return -1;
     }
+
     /**
      * 测试IP
      */
@@ -541,7 +649,7 @@ public class MainActivity extends LaunBaseActivity {
                     .params("isInChina", LocationUtils.locationWhere(context))
                     .execute(new StringCallback() {
                         @Override
-                        public void onSuccess(com.lzy.okgo.model.Response<String> response) {
+                        public void onSuccess(Response<String> response) {
                             if ((response != null) && (response.body() != null)) {
                                 String reposStr = response.body().toString();
                                 LogUtil.e("sync = " + reposStr);
@@ -749,6 +857,7 @@ public class MainActivity extends LaunBaseActivity {
             }
         }
     }
+
     /**
      * 扫码解锁后 清除标志位、清楚90天未联网日期、关闭lock按钮界面
      */
@@ -779,6 +888,7 @@ public class MainActivity extends LaunBaseActivity {
             e.printStackTrace();
         }
     }
+
     /**
      * 清除所有sharep 订单信息
      */

@@ -20,7 +20,7 @@ import com.aibabel.message.fragment.Fragment_Task;
 
 import butterknife.BindView;
 
-public class MainActivity extends BaseActivity  {
+public class MainActivity extends BaseActivity {
 
 
     @BindView(R.id.fl_content)
@@ -56,6 +56,7 @@ public class MainActivity extends BaseActivity  {
     private int index;
     private int currentTabIndex;
     private String toChatUsername;
+    private int fragment;
 
 //    @Override
 //    public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -72,6 +73,8 @@ public class MainActivity extends BaseActivity  {
     public void init() {
         //get user id or group id
 //        toChatUsername = getIntent().getExtras().getString("userId");
+        fragment = getIntent().getExtras().getInt("fragment", 0);
+
         mTabs = new Button[3];
         mTabs[0] = findViewById(R.id.btn_msg);
         mTabs[1] = findViewById(R.id.btn_chat);
@@ -80,10 +83,9 @@ public class MainActivity extends BaseActivity  {
         mViews[0] = findViewById(R.id.v_msg);
         mViews[1] = findViewById(R.id.v_chat);
         mViews[2] = findViewById(R.id.v_task);
-
-        // select first tab
-        mTabs[0].setSelected(true);
-        mViews[0].setVisibility(View.VISIBLE);
+        // select tab
+        mTabs[fragment].setSelected(true);
+        mViews[fragment].setVisibility(View.VISIBLE);
 
         fragmentChat = new Fragment_Chat();
 //        fragmentConvertions = new Fragment_Convertions();
@@ -91,13 +93,27 @@ public class MainActivity extends BaseActivity  {
         fragmentMessage = new Fragment_Message();
         fragments = new Fragment[]{fragmentMessage, fragmentChat, fragmentTask};
 //        fragments = new Fragment[]{fragmentMessage, fragmentConvertions, fragmentTask};
-        getSupportFragmentManager().beginTransaction()
-                .show(fragmentMessage)
-//                .hide(fragmentConvertions)
-                .hide(fragmentChat)
-                .hide(fragmentTask)
-                .commit();
 
+        if (fragment == 0) {
+            getSupportFragmentManager().beginTransaction()
+                    .show(fragmentMessage)
+//                .hide(fragmentConvertions)
+                    .hide(fragmentChat)
+                    .hide(fragmentTask)
+                    .commit();
+        } else if (fragment == 1) {
+            getSupportFragmentManager().beginTransaction()
+                    .hide(fragmentMessage)
+                    .show(fragmentChat)
+                    .hide(fragmentTask)
+                    .commit();
+        } else {
+            getSupportFragmentManager().beginTransaction()
+                    .hide(fragmentMessage)
+                    .hide(fragmentChat)
+                    .show(fragmentTask)
+                    .commit();
+        }
 
     }
 

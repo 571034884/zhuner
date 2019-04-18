@@ -66,6 +66,7 @@ public class Fragment_Chat extends BaseFragment implements SwipeRefreshLayout.On
     View v;
     protected EMConversation conversation;
     private ExecutorService fetchQueue;
+    private List<EMMessage> list = new ArrayList<>();
 
     private ChatAdapter mAdapter;
     private String toChatUsername;
@@ -229,10 +230,13 @@ public class Fragment_Chat extends BaseFragment implements SwipeRefreshLayout.On
         //创建一条文本消息，content为消息文字内容，toChatUsername为对方用户或者群聊的id，后文皆是如此
         final EMMessage message = EMMessage.createTxtSendMessage(content, "79769202917377");
         //如果是群聊，设置chattype，默认是群聊
-//        if (chatType == CHATTYPE_GROUP)
         message.setChatType(EMMessage.ChatType.GroupChat);
         //发送消息
         EMClient.getInstance().chatManager().sendMessage(message);
+
+        mAdapter.addData(message);
+        list.add(message);
+        mRvChat.scrollToPosition(mAdapter.getItemCount() - 1);
 
         message.setMessageStatusCallback(new EMCallBack() {
             @Override
@@ -240,8 +244,7 @@ public class Fragment_Chat extends BaseFragment implements SwipeRefreshLayout.On
                 // 消息发送成功，打印下日志，正常操作应该去刷新ui
                 Log.e("lzan13", "send message on success");
                 message.setStatus(EMMessage.Status.SUCCESS);
-                mAdapter.addData(message);
-                mRvChat.scrollToPosition(mAdapter.getItemCount() - 1);
+
             }
 
             @Override
@@ -249,8 +252,7 @@ public class Fragment_Chat extends BaseFragment implements SwipeRefreshLayout.On
                 // 消息发送失败，打印下失败的信息，正常操作应该去刷新ui
                 Log.e("lzan13", "send message on error " + i + " - " + s);
                 message.setStatus(EMMessage.Status.FAIL);
-                mAdapter.addData(message);
-                mRvChat.scrollToPosition(mAdapter.getItemCount() - 1);
+//                mAdapter.notifyItemChanged();
             }
 
             @Override
