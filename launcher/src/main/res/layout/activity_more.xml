@@ -121,7 +121,7 @@
                 android:layout_width="@dimen/x90"
                 android:layout_gravity="center"
                 android:gravity="center"
-                android:visibility="gone"
+                android:visibility="visible"
                 android:onClick="onClick"
                 android:layout_height="@dimen/y110">
 
