@@ -72,8 +72,8 @@ public class MainActivity extends LaunBaseActivity {
     TextView tvWifi;
     @BindView(R.id.main_layout_one)
     LinearLayout mainLayoutOne;
-    @BindView(R.id.tv_more)
-    TextView tvMore;
+    @BindView(R.id.rl_mask)
+    RelativeLayout mRlMask;
 
     /**
      * 跳转到制定的消息fragment中
@@ -93,6 +93,12 @@ public class MainActivity extends LaunBaseActivity {
 
     @Override
     public void initView() {
+        boolean mainMasking = SPHelper.getBoolean("mainMasking",false);
+        if (mainMasking){
+            mRlMask.setVisibility(View.GONE);
+        }else{
+            mRlMask.setVisibility(View.VISIBLE);
+        }
         homeBadge = findViewById(R.id.home_badge);
         signIn();
     }
@@ -105,6 +111,13 @@ public class MainActivity extends LaunBaseActivity {
             case R.id.fl_notice:
                 startActivity(fragment_index);
                 break;
+            case R.id.rl_mask:
+                break;
+            case R.id.tv_mask:
+                SPHelper.save("mainMasking",true);
+                mRlMask.setVisibility(View.GONE);
+                break;
+
         }
     }
 
