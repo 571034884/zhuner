@@ -111,7 +111,6 @@ public class MainActivity extends LaunBaseActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        EMClient.getInstance().chatManager().addMessageListener(messageListener);
     }
 
     private void startActivity(int fragment_type) {
@@ -237,39 +236,7 @@ public class MainActivity extends LaunBaseActivity {
         });
     }
 
-    EMMessageListener messageListener = new EMMessageListener() {
 
-        @Override
-        public void onMessageReceived(List<EMMessage> messages) {
-            // notify new message
-//            for (EMMessage message : messages) {
-//                DemoHelper.getInstance().getNotifier().vibrateAndPlayTone(message);
-//            }
-            refreshUIWithMessage();
-        }
-
-        @Override
-        public void onCmdMessageReceived(List<EMMessage> messages) {
-            refreshUIWithMessage();
-        }
-
-        @Override
-        public void onMessageRead(List<EMMessage> messages) {
-        }
-
-        @Override
-        public void onMessageDelivered(List<EMMessage> message) {
-        }
-
-        @Override
-        public void onMessageRecalled(List<EMMessage> messages) {
-//            refreshUIWithMessage();
-        }
-
-        @Override
-        public void onMessageChanged(EMMessage message, Object change) {
-        }
-    };
 
     /**
      * 更新未读数量

@@ -63,7 +63,7 @@ public class EaseChatPrimaryMenu extends EaseChatPrimaryMenuBase implements OnCl
         faceChecked = (ImageView) findViewById(R.id.iv_face_checked);
         RelativeLayout faceLayout = (RelativeLayout) findViewById(R.id.rl_face);
         buttonMore = (Button) findViewById(R.id.btn_more);
-        edittext_layout.setBackgroundResource(R.drawable.ease_input_bar_bg_normal);
+//        edittext_layout.setBackgroundResource(R.drawable.ease_input_bar_bg_normal);
         
         buttonSend.setOnClickListener(this);
         buttonSetModeKeyboard.setOnClickListener(this);
@@ -91,11 +91,11 @@ public class EaseChatPrimaryMenu extends EaseChatPrimaryMenuBase implements OnCl
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 if (!TextUtils.isEmpty(s)) {
-                    buttonMore.setVisibility(View.GONE);
+//                    buttonMore.setVisibility(View.GONE);
                     buttonSend.setVisibility(View.VISIBLE);
                 } else {
-                    buttonMore.setVisibility(View.VISIBLE);
-                    buttonSend.setVisibility(View.GONE);
+//                    buttonMore.setVisibility(View.VISIBLE);
+                    buttonSend.setVisibility(View.VISIBLE);
                 }
 
                 if (listener != null) {

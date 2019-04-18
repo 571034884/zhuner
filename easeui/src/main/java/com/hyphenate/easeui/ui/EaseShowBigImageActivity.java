@@ -39,6 +39,7 @@ import android.util.DisplayMetrics;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 
 /**
  * download and show original image
@@ -48,6 +49,7 @@ public class EaseShowBigImageActivity extends EaseBaseActivity {
 	private static final String TAG = "ShowBigImage"; 
 	private ProgressDialog pd;
 	private EasePhotoView image;
+	private TextView tv_back;
 	private int default_res = R.drawable.ease_default_image;
 	private String localFilePath;
 	private Bitmap bitmap;
@@ -59,13 +61,15 @@ public class EaseShowBigImageActivity extends EaseBaseActivity {
 		setContentView(R.layout.ease_activity_show_big_image);
 		super.onCreate(savedInstanceState);
 
-		image = (EasePhotoView) findViewById(R.id.image);
+		image = findViewById(R.id.image);
+		tv_back = findViewById(R.id.tv_back);
 		ProgressBar loadLocalPb = (ProgressBar) findViewById(R.id.pb_load_local);
-		default_res = getIntent().getIntExtra("default_image", R.drawable.ease_default_avatar);
+		default_res = getIntent().getIntExtra("default_image", R.drawable.ease_default_image);
 		Uri uri = getIntent().getParcelableExtra("uri");
 		localFilePath = getIntent().getExtras().getString("localUrl");
 		String msgId = getIntent().getExtras().getString("messageId");
 		EMLog.d(TAG, "show big msgId:" + msgId );
+
 
 		//show the image if it exist in local path
 		if (uri != null && new File(uri.getPath()).exists()) {
@@ -98,12 +102,13 @@ public class EaseShowBigImageActivity extends EaseBaseActivity {
 				finish();
 			}
 		});
+
 	}
 	
 	/**
 	 * download image
 	 * 
-	 * @param remoteFilePath
+	 * @param msgId
 	 */
 	@SuppressLint("NewApi")
 	private void downloadImage(final String msgId) {

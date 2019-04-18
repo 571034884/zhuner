@@ -12,6 +12,8 @@ import com.chad.library.adapter.base.util.MultiTypeDelegate;
 import com.hyphenate.chat.EMImageMessageBody;
 import com.hyphenate.chat.EMMessage;
 import com.hyphenate.chat.EMTextMessageBody;
+import com.hyphenate.easeui.utils.EaseImageUtils;
+import com.hyphenate.easeui.widget.chatrow.EaseChatRowImage;
 
 import java.util.List;
 
@@ -80,15 +82,12 @@ public class ChatAdapter extends BaseQuickAdapter<EMMessage, BaseViewHolder> {
 
     private void setContent(BaseViewHolder helper, EMMessage item) {
         if (item.getType() == EMMessage.Type.TXT) {
-            helper.setText(R.id.chat_item_content_text, ((EMTextMessageBody)item.getBody()).getMessage());
+            helper.setText(R.id.chat_item_content_text, ((EMTextMessageBody) item.getBody()).getMessage());
         } else if (item.getType() == EMMessage.Type.IMAGE) {
-            Glide.with(mContext).load(((EMImageMessageBody)item.getBody()).getRemoteUrl()).into((ImageView) helper.getView(R.id.bivPic));
+            String path = EaseImageUtils.getImagePath(((EMImageMessageBody) item.getBody()).getRemoteUrl());
+            Glide.with(mContext).load(path).into((ImageView) helper.getView(R.id.bivPic));
         }
     }
-
-
-
-
 
 
 }

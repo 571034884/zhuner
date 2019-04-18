@@ -4,7 +4,7 @@
     android:id="@+id/ll_text_send"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-     android:orientation="vertical"
+    android:orientation="vertical"
     android:padding="5dp">
 
     <TextView
@@ -14,7 +14,7 @@
         android:layout_gravity="center_horizontal"
         android:textColor="#999999"
         android:textSize="12dp"
-         android:visibility="gone" />
+        android:visibility="gone" />
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -28,8 +28,8 @@
             android:layout_width="40dp"
             android:layout_height="40dp"
             android:layout_alignParentRight="true"
-             android:scaleType="centerInside"
             android:layout_marginLeft="5dp"
+            android:scaleType="centerInside"
             android:src="@mipmap/ic_launcher" />
 
 
@@ -38,12 +38,12 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
-             android:layout_toLeftOf="@id/chat_item_header"
+            android:layout_toLeftOf="@id/chat_item_header"
             android:gravity="right|center_vertical"
             android:orientation="horizontal">
 
 
-            <com.hrl.chaui.widget.BubbleImageView
+            <com.aibabel.message.widget.BubbleImageView
                 android:id="@+id/bivPic"
                 android:layout_width="100dp"
                 android:layout_height="100dp"
@@ -51,7 +51,7 @@
                 android:layout_marginStart="0dp"
                 android:adjustViewBounds="true"
                 android:scaleType="centerCrop"
-                 android:transitionName="sharedView"
+                android:transitionName="sharedView"
                 app:angle="6dp"
                 app:arrowHeight="8dp"
                 app:arrowLocation="right"

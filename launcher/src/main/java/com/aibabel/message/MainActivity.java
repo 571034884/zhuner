@@ -88,29 +88,31 @@ public class MainActivity extends BaseActivity {
         mViews[fragment].setVisibility(View.VISIBLE);
 
         fragmentChat = new Fragment_Chat();
-//        fragmentConvertions = new Fragment_Convertions();
+        fragmentConvertions = new Fragment_Convertions();
         fragmentTask = new Fragment_Task();
         fragmentMessage = new Fragment_Message();
-        fragments = new Fragment[]{fragmentMessage, fragmentChat, fragmentTask};
-//        fragments = new Fragment[]{fragmentMessage, fragmentConvertions, fragmentTask};
+//        fragments = new Fragment[]{fragmentMessage, fragmentChat, fragmentTask};
+        fragments = new Fragment[]{fragmentMessage, fragmentConvertions, fragmentTask};
 
         if (fragment == 0) {
             getSupportFragmentManager().beginTransaction()
                     .show(fragmentMessage)
-//                .hide(fragmentConvertions)
-                    .hide(fragmentChat)
+                    .hide(fragmentConvertions)
+//                    .hide(fragmentChat)
                     .hide(fragmentTask)
                     .commit();
         } else if (fragment == 1) {
             getSupportFragmentManager().beginTransaction()
                     .hide(fragmentMessage)
-                    .show(fragmentChat)
+                    .hide(fragmentConvertions)
+//                    .show(fragmentChat)
                     .hide(fragmentTask)
                     .commit();
         } else {
             getSupportFragmentManager().beginTransaction()
                     .hide(fragmentMessage)
-                    .hide(fragmentChat)
+                    .hide(fragmentConvertions)
+//                    .hide(fragmentChat)
                     .show(fragmentTask)
                     .commit();
         }

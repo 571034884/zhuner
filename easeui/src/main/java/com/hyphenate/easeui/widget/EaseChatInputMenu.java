@@ -308,7 +308,7 @@ public class EaseChatInputMenu extends LinearLayout {
     /**
      * hide keyboard
      */
-    private void hideKeyboard() {
+    public void hideKeyboard() {
         chatPrimaryMenu.hideKeyboard();
     }
 

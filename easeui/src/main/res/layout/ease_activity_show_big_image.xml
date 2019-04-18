@@ -5,8 +5,20 @@
     android:background="#000"
     android:orientation="vertical" >
 
+    <TextView
+        android:id="@+id/tv_back"
+        android:layout_marginTop="10dp"
+        android:layout_marginLeft="10dp"
+        android:onClick="back"
+        android:clickable="true"
+        android:background="@drawable/ease_mm_title_back"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
     <com.hyphenate.easeui.widget.photoview.EasePhotoView
         android:id="@+id/image"
+        android:clickable="true"
+        android:layout_below="@+id/tv_back"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:scaleType="fitCenter" />

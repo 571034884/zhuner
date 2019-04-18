@@ -4,19 +4,44 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:animateLayoutChanges="true"
-    android:background="#f2f0eb">
+    android:background="#f9f9f9">
 
     <com.hyphenate.easeui.widget.EaseTitleBar
         android:id="@+id/title_bar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:visibility="gone"
         hyphenate:titleBarLeftImage="@drawable/ease_mm_title_back" />
+    <LinearLayout
+        android:id="@+id/ll_grout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/group_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
+            android:layout_marginTop="16dp"
+            android:background="@drawable/text_hint"
+            android:paddingBottom="10dp"
+            android:paddingLeft="55dp"
+            android:paddingRight="55dp"
+            android:paddingTop="10dp"
+            android:text="日本准儿帮帮群"
+            android:textColor="#999999"
+            android:textSize="17dp"
+            android:textStyle="bold" />
+
+    </LinearLayout>
 
     <LinearLayout
         android:id="@+id/layout_alert_kicked_off"
         android:layout_width="match_parent"
         android:layout_height="50dp"
-        android:layout_below="@id/title_bar"
+        android:layout_below="@id/ll_grout"
         android:background="@drawable/ease_alert_click_bg"
         android:gravity="center_vertical"
         android:visibility="gone">
@@ -32,8 +57,9 @@
     </LinearLayout>
 
     <RelativeLayout
+        android:id="@+id/rl_list"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:layout_above="@+id/input_menu"
         android:layout_below="@id/layout_alert_kicked_off">
 

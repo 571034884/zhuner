@@ -64,6 +64,11 @@
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden|adjustResize" />
 
+        <!-- 显示下载大图页面 -->
+        <activity
+            android:name="com.hyphenate.easeui.ui.EaseShowBigImageActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/horizontal_slide" />
         <provider
             android:name="com.aibabel.baselibrary.sphelper.SPContentProvider"
             android:authorities="com.pl.sphelper"
