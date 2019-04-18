@@ -14,7 +14,7 @@
     <LinearLayout
         android:id="@+id/main_top"
         android:layout_width="match_parent"
-        android:layout_height="133dp"
+        android:layout_height="130dp"
         android:background="@color/white"
         android:gravity="center"
         android:orientation="horizontal"
@@ -41,7 +41,7 @@
                 android:paddingBottom="2dip"
                 android:scaleType="matrix"
                 android:text="消息"
-                android:textColor="@color/color_f9"
+                android:textColor="@drawable/text_color"
                 android:textSize="15sp"
                 android:textStyle="bold" />
 
@@ -64,7 +64,7 @@
                 android:layout_height="5dp"
                 android:layout_alignParentBottom="true"
                 android:layout_centerHorizontal="true"
-                android:layout_marginTop="10dp"
+                android:layout_marginTop="8dp"
                 android:background="@mipmap/ic_view"
                 android:visibility="invisible" />
         </RelativeLayout>
@@ -88,7 +88,7 @@
                 android:paddingBottom="2dip"
                 android:scaleType="matrix"
                 android:text="准儿帮"
-                android:textColor="@color/color_FF840B"
+                android:textColor="@drawable/text_color"
                 android:textSize="15sp"
                 android:textStyle="bold" />
 
@@ -107,7 +107,7 @@
                 android:layout_height="5dp"
                 android:layout_alignParentBottom="true"
                 android:layout_centerHorizontal="true"
-                android:layout_marginTop="10dp"
+                android:layout_marginTop="8dp"
                 android:background="@mipmap/ic_view"
                 android:visibility="invisible" />
         </RelativeLayout>
@@ -130,7 +130,7 @@
                 android:paddingBottom="2dip"
                 android:scaleType="matrix"
                 android:text="任务"
-                android:textColor="@color/color_FF840B"
+                android:textColor="@drawable/text_color"
                 android:textSize="15sp"
                 android:textStyle="bold" />
 
@@ -149,7 +149,7 @@
                 android:layout_height="5dp"
                 android:layout_alignParentBottom="true"
                 android:layout_centerHorizontal="true"
-                android:layout_marginTop="10dp"
+                android:layout_marginTop="8dp"
                 android:background="@mipmap/ic_view"
                 android:visibility="invisible" />
         </RelativeLayout>

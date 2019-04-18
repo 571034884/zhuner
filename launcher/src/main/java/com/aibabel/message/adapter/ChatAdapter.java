@@ -9,7 +9,9 @@ import com.bumptech.glide.Glide;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
 import com.chad.library.adapter.base.util.MultiTypeDelegate;
+import com.hyphenate.chat.EMImageMessageBody;
 import com.hyphenate.chat.EMMessage;
+import com.hyphenate.chat.EMTextMessageBody;
 
 import java.util.List;
 
@@ -78,9 +80,9 @@ public class ChatAdapter extends BaseQuickAdapter<EMMessage, BaseViewHolder> {
 
     private void setContent(BaseViewHolder helper, EMMessage item) {
         if (item.getType() == EMMessage.Type.TXT) {
-            helper.setText(R.id.chat_item_content_text, "22222222");
+            helper.setText(R.id.chat_item_content_text, ((EMTextMessageBody)item.getBody()).getMessage());
         } else if (item.getType() == EMMessage.Type.IMAGE) {
-            Glide.with(mContext).load("").into((ImageView) helper.getView(R.id.bivPic));
+            Glide.with(mContext).load(((EMImageMessageBody)item.getBody()).getThumbnailUrl()).into((ImageView) helper.getView(R.id.bivPic));
         }
     }
 

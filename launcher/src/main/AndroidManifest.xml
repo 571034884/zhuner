@@ -29,6 +29,10 @@
     <uses-permission android:name="android.permission.WRITE_SETTINGS"/>
     <!-- 读取启动设置 -->
     <uses-permission android:name="com.android.launcher.permission.READ_SETTINGS"/>
+    <!--  -->
+    <uses-permission android:name="android.permission.WAKE_LOCK"/>
+    <!-- 连续广播（允许一个程序收到广播后快速收到下一个广播） -->
+    <uses-permission android:name="android.permission.BROADCAST_STICKY"/>
 
     <application
         android:allowBackup="true"
@@ -60,6 +64,11 @@
             android:windowSoftInputMode="stateHidden" />
 
 
+        <provider
+            android:name="com.aibabel.baselibrary.sphelper.SPContentProvider"
+            android:authorities="com.pl.sphelper"
+            android:exported="false"
+            android:process=":sphelper" />
         <!--=================================== 设置环信应用的AppKey ================================= -->
         <meta-data
             android:name="EASEMOB_APPKEY"
