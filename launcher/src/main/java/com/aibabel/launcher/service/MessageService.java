@@ -22,7 +22,6 @@ public class MessageService extends Service {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-
         /**
          * 添加接受消息监听
          */
