@@ -1,14 +1,24 @@
 package com.aibabel.launcher.activity;
 
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.view.KeyEvent;
 import android.view.View;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.aibabel.launcher.R;
 import com.aibabel.launcher.base.LaunBaseActivity;
+import com.aibabel.launcher.fragment.AboutFragment;
+import com.aibabel.launcher.fragment.BusFragment;
+import com.aibabel.launcher.fragment.MyFragment;
+import com.aibabel.launcher.fragment.ShopFragment;
+import com.aibabel.launcher.fragment.TourFragment;
+import com.aibabel.launcher.fragment.TravelFragment;
 import com.aibabel.launcher.utils.Logs;
 import com.aibabel.launcher.view.BlurTransformation;
 import com.bumptech.glide.Glide;
@@ -61,6 +71,15 @@ public class MoreActivity extends LaunBaseActivity {
     @BindView(R.id.iv_more_gs)
     ImageView ivMoreGS;
 
+    private FragmentManager fragmentManager;
+    private AboutFragment aboutFragment;
+    private BusFragment busFragment;
+    private MyFragment myFragment;
+    private ShopFragment shopFragment;
+    private TourFragment tourFragment;
+    private TravelFragment travelFragment;
+    private Fragment fragment;
+
     @Override
     public int getLayout(Bundle savedInstanceState) {
         return R.layout.activity_more;
@@ -68,16 +87,17 @@ public class MoreActivity extends LaunBaseActivity {
 
     @Override
     public void init() {
-        //默认第一个
-        switchSelect(rlTravel,ivTravel,tvTravel);
-        int topPic = R.mipmap.ic_top_default;
-        RequestOptions options = new RequestOptions().bitmapTransform(new BlurTransformation(this, 14, 3));
-        Glide.with(mContext).load(topPic).apply(options).into(ivMoreGS);
+        Logs.e("执行了一次");
     }
 
     @Override
     protected void initView() {
+        int topPic = R.mipmap.ic_top_default;
+        RequestOptions options = new RequestOptions().bitmapTransform(new BlurTransformation(this, 14, 3));
+        Glide.with(mContext).load(topPic).apply(options).into(ivMoreGS);
 
+        fragmentManager = getSupportFragmentManager();
+        switchSelect(rlTravel,ivTravel,tvTravel);
     }
 
     public void onClick(View view) {
@@ -162,9 +182,39 @@ public class MoreActivity extends LaunBaseActivity {
         }
         if (draw != 0){
             iv.setImageResource(draw);
+            switchFragment(rl);
         }
     }
 
+    private void switchFragment(RelativeLayout index) {
+        switch (index.getId()){
+            case R.id.rl_travel:
+                fragment = new TravelFragment();
+                break;
+            case R.id.rl_bus:
+                fragment = new BusFragment();
+                break;
+            case R.id.rl_shop:
+                fragment = new ShopFragment();
+                break;
+            case R.id.rl_tour:
+                fragment = new TourFragment();
+                break;
+            case R.id.rl_my:
+                fragment = new MyFragment();
+                break;
+            case R.id.rl_about:
+                fragment = new AboutFragment();
+                break;
+        }
+        switchChange(fragment);
+    }
+
+    private void switchChange(Fragment fragment) {
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.replace(R.id.more_scheme, fragment);
+        fragmentTransaction.commit();
+    }
 
 
     @Override
