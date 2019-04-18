@@ -295,22 +295,10 @@ public class Fragment_Chat extends BaseFragment implements SwipeRefreshLayout.On
     public void onMessageReceived(List<EMMessage> list) {
         //收到消息
         for (EMMessage message : list) {
-            String username = null;
-            // group message
-            if (message.getChatType() == EMMessage.ChatType.GroupChat) {
-                username = message.getTo();
-            } else {
-                // single chat message
-                username = message.getFrom();
-            }
-
-            // if the message is for current conversation
-//            if (username.equals(toChatUsername) || message.getTo().equals(toChatUsername) || message.conversationId().equals(toChatUsername)) {
-//                messageList.refreshSelectLast();
+            // 只有群组消息
+            String username = message.getTo();
             mAdapter.addData(message);
             conversation.markMessageAsRead(message.getMsgId());
-//            }
-            EaseUI.getInstance().getNotifier().vibrateAndPlayTone(message);
         }
     }
 

@@ -5,7 +5,6 @@
 
     <uses-permission android:name="android.permission.RECEIVE_USER_PRESENT" />
     <uses-permission android:name="android.permission.WRITE_SETTINGS" />
-
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.CHANGE_NETWORK_STATE" />
     <uses-permission android:name="android.permission.GET_TASKS" /> <!-- 创建和删除文件 -->
@@ -17,7 +16,7 @@
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" /> <!-- 允许读取wifi网络状态 -->
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
     <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
-    <uses-permission android:name="android.permission.SET_TIME_ZONE"/>
+    <uses-permission android:name="android.permission.SET_TIME_ZONE" />
     <!-- Optional for location -->
     <uses-permission android:name="android.permission.VIBRATE" />
     <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" /> <!-- 用于开启 debug 版本的应用在6.0 系统上 层叠窗口权限 -->
@@ -25,21 +24,21 @@
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_LOCATION_EXTRA_COMMANDS" />
     <!-- 读取手机状态 -->
-    <uses-permission android:name="android.permission.READ_PHONE_STATE"/>
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
     <!-- 允许读写系统设置项 使用设置时需要 -->
-    <uses-permission android:name="android.permission.WRITE_SETTINGS"/>
+    <uses-permission android:name="android.permission.WRITE_SETTINGS" />
     <!-- 读取启动设置 -->
-    <uses-permission android:name="com.android.launcher.permission.READ_SETTINGS"/>
+    <uses-permission android:name="com.android.launcher.permission.READ_SETTINGS" />
     <!--  -->
-    <uses-permission android:name="android.permission.WAKE_LOCK"/>
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
     <!-- 连续广播（允许一个程序收到广播后快速收到下一个广播） -->
-    <uses-permission android:name="android.permission.BROADCAST_STICKY"/>
+    <uses-permission android:name="android.permission.BROADCAST_STICKY" />
 
     <application
+        android:name=".LauncherApplication"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
-        android:name=".LauncherApplication"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.AppCompat.Light.NoActionBar"
@@ -51,31 +50,30 @@
             android:launchMode="singleTask">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
                 <category android:name="android.intent.category.HOME" />
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.MONKEY" />
             </intent-filter>
         </activity>
-        <activity android:name=".activity.MoreActivity"/>
-
+        <activity android:name=".activity.MoreActivity" />
         <activity
             android:name="com.aibabel.message.MainActivity"
             android:launchMode="singleTop"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden|adjustResize" />
 
-
         <provider
             android:name="com.aibabel.baselibrary.sphelper.SPContentProvider"
             android:authorities="com.pl.sphelper"
             android:exported="false"
             android:process=":sphelper" />
-        <!--=================================== 设置环信应用的AppKey ================================= -->
+        <!-- =================================== 设置环信应用的AppKey ================================= -->
         <meta-data
             android:name="EASEMOB_APPKEY"
             android:value="1108190415090119#leaderhelper" />
-        <!-- 声明SDK所需的service SDK核心功能-->
+        <!-- 声明SDK所需的service SDK核心功能 -->
         <service
             android:name="com.hyphenate.chat.EMChatService"
             android:exported="true" />
@@ -87,6 +85,7 @@
         <receiver android:name="com.hyphenate.chat.EMMonitorReceiver">
             <intent-filter>
                 <action android:name="android.intent.action.PACKAGE_REMOVED" />
+
                 <data android:scheme="package" />
             </intent-filter>
             <!-- 可选filter -->
@@ -97,6 +96,7 @@
         </receiver>
         <!-- ==================================== 环信结束 ========================================== -->
         <service android:name=".service.MyService" />
+
         <activity
             android:name=".rent.RentDialogActivity"
             android:launchMode="singleTop"
@@ -113,16 +113,15 @@
             android:name=".rent.RentLockedActivity"
             android:launchMode="singleTop"
             android:theme="@android:style/Theme.Translucent" />
-
         <activity
             android:name="com.aibabel.message.fragment.JiGuangActivity"
             android:theme="@style/dialogstyle" />
+
         <service android:name=".service.MyAidlMessageService">
             <intent-filter>
                 <action android:name="action.menu.MyAidlMessageService" />
             </intent-filter>
         </service>
-
         <service
             android:name=".service.MenuMessengerService"
             android:exported="true">
@@ -130,6 +129,10 @@
                 <action android:name="action.menu.MenuMessengerService" />
             </intent-filter>
         </service>
+        <service
+            android:name=".service.MessageService"
+            android:enabled="true"
+            android:exported="true"></service>
     </application>
 
 </manifest>

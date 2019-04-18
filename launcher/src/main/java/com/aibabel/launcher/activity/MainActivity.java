@@ -74,9 +74,11 @@ public class MainActivity extends LaunBaseActivity {
     LinearLayout mainLayoutOne;
     @BindView(R.id.tv_more)
     TextView tvMore;
-    @BindView(R.id.rl_more)
-    RelativeLayout rlMore;
-    private int fragment_type;
+
+    /**
+     * 跳转到制定的消息fragment中
+     */
+    private int fragment_index;
 
 
     @Override
@@ -91,16 +93,17 @@ public class MainActivity extends LaunBaseActivity {
 
     @Override
     public void initView() {
+        homeBadge = findViewById(R.id.home_badge);
         signIn();
     }
 
     public void onClick(View view) {
         switch (view.getId()) {
-            case R.id.rl_more:
+            case R.id.cv_more:
                 startAct(MoreActivity.class);
                 break;
             case R.id.fl_notice:
-                startActivity(fragment_type);
+                startActivity(fragment_index);
                 break;
         }
     }
@@ -115,6 +118,7 @@ public class MainActivity extends LaunBaseActivity {
         Intent intent = new Intent(this, com.aibabel.message.MainActivity.class);
         intent.putExtra("fragment", fragment_type);
         startActivity(intent);
+        homeBadge.setVisibility(View.GONE);
 
     }
 
@@ -259,7 +263,7 @@ public class MainActivity extends LaunBaseActivity {
 
         @Override
         public void onMessageRecalled(List<EMMessage> messages) {
-            refreshUIWithMessage();
+//            refreshUIWithMessage();
         }
 
         @Override

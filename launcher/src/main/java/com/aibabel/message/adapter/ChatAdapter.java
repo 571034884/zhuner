@@ -82,7 +82,7 @@ public class ChatAdapter extends BaseQuickAdapter<EMMessage, BaseViewHolder> {
         if (item.getType() == EMMessage.Type.TXT) {
             helper.setText(R.id.chat_item_content_text, ((EMTextMessageBody)item.getBody()).getMessage());
         } else if (item.getType() == EMMessage.Type.IMAGE) {
-            Glide.with(mContext).load(((EMImageMessageBody)item.getBody()).getThumbnailUrl()).into((ImageView) helper.getView(R.id.bivPic));
+            Glide.with(mContext).load(((EMImageMessageBody)item.getBody()).getRemoteUrl()).into((ImageView) helper.getView(R.id.bivPic));
         }
     }
 
