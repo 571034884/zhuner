@@ -1,18 +1,15 @@
-package com.aibabel.menu.service;
+package com.aibabel.launcher.service;
 
 import android.app.Service;
 import android.content.Intent;
-import android.os.Handler;
 import android.os.IBinder;
-import android.support.annotation.WorkerThread;
 import android.util.Log;
 
-import com.aibabel.menu.MainActivity;
-import com.aibabel.menu.util.LogUtil;
 
-import java.util.concurrent.Executors;
+import com.aibabel.launcher.activity.MainActivity;
+import com.aibabel.launcher.utils.LogUtil;
+
 import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.TimeUnit;
 
 /***
  * 租赁主service

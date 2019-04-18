@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="com.aibabel.launcher">
 
     <uses-permission android:name="android.permission.RECEIVE_USER_PRESENT" />
@@ -41,7 +42,8 @@
         android:name=".LauncherApplication"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.AppCompat.Light.NoActionBar">
+        android:theme="@style/Theme.AppCompat.Light.NoActionBar"
+        tools:ignore="GoogleAppIndexingWarning">
         <activity
             android:name=".activity.MainActivity"
             android:clearTaskOnLaunch="true"
@@ -94,7 +96,40 @@
             </intent-filter>
         </receiver>
         <!-- ==================================== 环信结束 ========================================== -->
+        <service android:name=".service.MyService" />
+        <activity
+            android:name=".rent.RentDialogActivity"
+            android:launchMode="singleTop"
+            android:theme="@android:style/Theme.Translucent" />
+        <activity
+            android:name=".rent.SimDetectActivity"
+            android:launchMode="singleTop"
+            android:theme="@android:style/Theme.Translucent" />
+        <activity
+            android:name=".rent.RentKeepUseActivity"
+            android:launchMode="singleTop"
+            android:theme="@android:style/Theme.Translucent" />
+        <activity
+            android:name=".rent.RentLockedActivity"
+            android:launchMode="singleTop"
+            android:theme="@android:style/Theme.Translucent" />
 
+        <activity
+            android:name="com.aibabel.message.fragment.JiGuangActivity"
+            android:theme="@style/dialogstyle" />
+        <service android:name=".service.MyAidlMessageService">
+            <intent-filter>
+                <action android:name="action.menu.MyAidlMessageService" />
+            </intent-filter>
+        </service>
+
+        <service
+            android:name=".service.MenuMessengerService"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="action.menu.MenuMessengerService" />
+            </intent-filter>
+        </service>
     </application>
 
 </manifest>
