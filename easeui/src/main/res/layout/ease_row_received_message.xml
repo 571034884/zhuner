@@ -34,7 +34,7 @@
             android:layout_below="@+id/tv_userid"
             android:layout_marginLeft="@dimen/margin_chat_activity"
             android:layout_toRightOf="@id/iv_userhead"
-            android:background="@drawable/bg_ease_chatfrom">
+            android:background="@drawable/ease_chatfrom_bg">
 
             <TextView
                 android:id="@+id/tv_chatcontent"
