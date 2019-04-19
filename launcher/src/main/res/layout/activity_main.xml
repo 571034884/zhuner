@@ -21,6 +21,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="北京"
+        android:onClick="onClick"
         android:layout_marginLeft="@dimen/x30"
         android:drawableLeft="@mipmap/main_top_location_icn"
         android:drawablePadding="@dimen/x15"

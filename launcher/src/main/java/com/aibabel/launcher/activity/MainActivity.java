@@ -59,7 +59,7 @@ import butterknife.BindView;
 public class MainActivity extends LaunBaseActivity implements NetBroadcastReceiver.NetListener {
 
     @BindView(R.id.tv_location)
-    TextView tvLocation;
+    TextView mMainLocation;
     @BindView(R.id.home_badge_icon)
     ImageView homeBadgeIcon;
     @BindView(R.id.home_badge)
@@ -74,6 +74,8 @@ public class MainActivity extends LaunBaseActivity implements NetBroadcastReceiv
     RelativeLayout mRlMask;
     //环信交互handler
     Handler handler = new MyHandler(MainActivity.this);
+
+
 
     /**
      * 跳转到制定的消息fragment中
@@ -121,6 +123,10 @@ public class MainActivity extends LaunBaseActivity implements NetBroadcastReceiv
                 SPHelper.save("mainMasking", true);
                 mRlMask.setVisibility(View.GONE);
                 break;
+            case R.id.tv_location:
+                startActResult(SearchActivity.class,100);
+                break;
+
 
         }
     }

@@ -46,4 +46,5 @@ dependencies {
     implementation files('libs/jcore-android-1.2.7.jar')
 /*    implementation files('libs/hyphenatechat_3.5.4.jar')*/
     implementation project(path: ':easeui')
+    implementation 'com.zhy:flowlayout-lib:1.0.3'
 }
