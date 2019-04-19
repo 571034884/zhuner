@@ -4,6 +4,7 @@ import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.net.ConnectivityManager;
 import android.net.Network;
 import android.net.NetworkInfo;
@@ -12,6 +13,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.os.Messenger;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
@@ -20,7 +22,6 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.aibabel.baselibrary.mode.DataManager;
 import com.aibabel.baselibrary.sphelper.SPHelper;
@@ -40,12 +41,11 @@ import com.aibabel.launcher.utils.DetectUtil;
 import com.aibabel.launcher.utils.LocationUtils;
 import com.aibabel.launcher.utils.LogUtil;
 import com.aibabel.launcher.view.MaterialBadgeTextView;
+import com.aibabel.message.receiver.NetBroadcastReceiver;
+import com.aibabel.message.service.MessageService;
 import com.aibabel.message.sqlite.SqlUtils;
-import com.hyphenate.EMCallBack;
-import com.hyphenate.EMError;
-import com.hyphenate.EMMessageListener;
+import com.aibabel.message.utiles.Constant;
 import com.hyphenate.chat.EMClient;
-import com.hyphenate.chat.EMMessage;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.StringCallback;
 import com.lzy.okgo.model.Response;
@@ -53,12 +53,10 @@ import com.lzy.okgo.model.Response;
 import java.io.Serializable;
 import java.lang.ref.WeakReference;
 import java.util.HashMap;
-import java.util.List;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
 
-public class MainActivity extends LaunBaseActivity {
+public class MainActivity extends LaunBaseActivity implements NetBroadcastReceiver.NetListener {
 
     @BindView(R.id.tv_location)
     TextView tvLocation;
@@ -74,11 +72,14 @@ public class MainActivity extends LaunBaseActivity {
     LinearLayout mainLayoutOne;
     @BindView(R.id.rl_mask)
     RelativeLayout mRlMask;
+    //环信交互handler
+    Handler handler = new MyHandler(MainActivity.this);
 
     /**
      * 跳转到制定的消息fragment中
      */
     private int fragment_index;
+    private NetBroadcastReceiver broadcastReceiver;
 
 
     @Override
@@ -93,14 +94,17 @@ public class MainActivity extends LaunBaseActivity {
 
     @Override
     public void initView() {
-        boolean mainMasking = SPHelper.getBoolean("mainMasking",false);
-        if (mainMasking){
+        boolean mainMasking = SPHelper.getBoolean("mainMasking", false);
+        if (mainMasking) {
             mRlMask.setVisibility(View.GONE);
-        }else{
+        } else {
             mRlMask.setVisibility(View.VISIBLE);
         }
         homeBadge = findViewById(R.id.home_badge);
-        signIn();
+        registerNet();
+        startMessageService();
+        signIn("user1","123");
+
     }
 
     public void onClick(View view) {
@@ -114,7 +118,7 @@ public class MainActivity extends LaunBaseActivity {
             case R.id.rl_mask:
                 break;
             case R.id.tv_mask:
-                SPHelper.save("mainMasking",true);
+                SPHelper.save("mainMasking", true);
                 mRlMask.setVisibility(View.GONE);
                 break;
 
@@ -126,6 +130,16 @@ public class MainActivity extends LaunBaseActivity {
         super.onResume();
     }
 
+    private void registerNet() {
+        //网络变化广播监听
+        broadcastReceiver = new NetBroadcastReceiver();
+        IntentFilter intentFilter = new IntentFilter();
+        intentFilter.addAction("android.net.conn.CONNECTIVITY_CHANGE");
+        registerReceiver(broadcastReceiver, intentFilter);
+        broadcastReceiver.setListener(this);
+    }
+
+
     private void startActivity(int fragment_type) {
         Intent intent = new Intent(this, com.aibabel.message.MainActivity.class);
         intent.putExtra("fragment", fragment_type);
@@ -134,156 +148,64 @@ public class MainActivity extends LaunBaseActivity {
 
     }
 
-
     /**
-     * 环信登录方法
+     * 开始环信服务并传输数据
      */
-    private void signIn() {
-
-        String username = "user1";
-        String password = "123";
-        /**
-         * 保存账号密码到全局
-         */
-        SPHelper.save("username", username);
-        SPHelper.save("password", password);
-
-        EMClient.getInstance().login(username, password, new EMCallBack() {
-            /**
-             * 登陆成功的回调
-             */
-            @Override
-            public void onSuccess() {
-                runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        Log.d("MainActivity", "登录成功");
-                        // 加载所有会话到内存
-                        EMClient.getInstance().chatManager().loadAllConversations();
-                        // 加载所有群组到内存，如果使用了群组的话
-                        EMClient.getInstance().groupManager().loadAllGroups();
-//                        new Thread(new Runnable() {
-//                            @Override
-//                            public void run() {
-//                                try {
-//                                    //从服务器获取自己加入的和创建的群组列表，此api获取的群组sdk会自动保存到内存和db。
-//                                    List<EMGroup> grouplist = EMClient.getInstance().groupManager().getJoinedGroupsFromServer();//需异步处理
-//                                    String groupId = grouplist.get(0).getGroupId();
-//                                    SPHelper.save("groupId", groupId);
-//                                    Log.d("groupId", groupId);
-//                                } catch (Exception e) {
-//                                    e.printStackTrace();
-//                                }
-//                            }
-//                        }).start();
-
-                    }
-                });
-            }
-
-            /**
-             * 登陆错误的回调
-             * @param i
-             * @param s
-             */
-            @Override
-            public void onError(final int i, final String s) {
-                runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-
-                        Log.d("lzan13", "登录失败 Error code:" + i + ", message:" + s);
-                        /**
-                         * 关于错误码可以参考官方api详细说明
-                         * http://www.easemob.com/apidoc/android/chat3.0/classcom_1_1hyphenate_1_1_e_m_error.html
-                         */
-                        switch (i) {
-                            // 网络异常 2
-                            case EMError.NETWORK_ERROR:
-                                Toast.makeText(MainActivity.this, "网络错误 code: " + i + ", message:" + s, Toast.LENGTH_LONG).show();
-                                break;
-                            // 无效的用户名 101
-                            case EMError.INVALID_USER_NAME:
-                                Toast.makeText(MainActivity.this, "无效的用户名 code: " + i + ", message:" + s, Toast.LENGTH_LONG).show();
-                                break;
-                            // 无效的密码 102
-                            case EMError.INVALID_PASSWORD:
-                                Toast.makeText(MainActivity.this, "无效的密码 code: " + i + ", message:" + s, Toast.LENGTH_LONG).show();
-                                break;
-                            // 用户认证失败，用户名或密码错误 202
-                            case EMError.USER_AUTHENTICATION_FAILED:
-                                Toast.makeText(MainActivity.this, "用户认证失败，用户名或密码错误 code: " + i + ", message:" + s, Toast.LENGTH_LONG).show();
-                                break;
-                            // 用户不存在 204
-                            case EMError.USER_NOT_FOUND:
-                                Toast.makeText(MainActivity.this, "用户不存在 code: " + i + ", message:" + s, Toast.LENGTH_LONG).show();
-                                break;
-                            // 无法访问到服务器 300
-                            case EMError.SERVER_NOT_REACHABLE:
-                                Toast.makeText(MainActivity.this, "无法访问到服务器 code: " + i + ", message:" + s, Toast.LENGTH_LONG).show();
-                                break;
-                            // 等待服务器响应超时 301
-                            case EMError.SERVER_TIMEOUT:
-                                Toast.makeText(MainActivity.this, "等待服务器响应超时 code: " + i + ", message:" + s, Toast.LENGTH_LONG).show();
-                                break;
-                            // 服务器繁忙 302
-                            case EMError.SERVER_BUSY:
-                                Toast.makeText(MainActivity.this, "服务器繁忙 code: " + i + ", message:" + s, Toast.LENGTH_LONG).show();
-                                break;
-                            // 未知 Server 异常 303 一般断网会出现这个错误
-                            case EMError.SERVER_UNKNOWN_ERROR:
-                                Toast.makeText(MainActivity.this, "未知的服务器异常 code: " + i + ", message:" + s, Toast.LENGTH_LONG).show();
-                                break;
-                            default:
-                                Toast.makeText(MainActivity.this, "ml_sign_in_failed code: " + i + ", message:" + s, Toast.LENGTH_LONG).show();
-                                break;
-                        }
-                    }
-                });
-            }
-
-            @Override
-            public void onProgress(int i, String s) {
-
-            }
-        });
-    }
-
-
-
-    /**
-     * 更新未读数量
-     */
-    private void refreshUIWithMessage() {
-        runOnUiThread(new Runnable() {
-            public void run() {
-                // refresh unread count
-                updateUnreadLabel();
-
-            }
-        });
+    private void startMessageService() {
+        Intent messageService = new Intent();
+        messageService.setClass(getApplicationContext(), MessageService.class);
+        messageService.putExtra("messenger", new Messenger(handler));
+        startService(messageService);
     }
 
     /**
-     * update unread message count
+     * 登录环信
+     * @param username
+     * @param password
      */
-    public void updateUnreadLabel() {
-        int count = getUnreadMsgCountTotal();
-        if (count > 0) {
-            homeBadge.setBadgeCount(count);
-            homeBadge.setVisibility(View.VISIBLE);
-        } else {
-            homeBadge.setVisibility(View.INVISIBLE);
+    private void signIn(String username, String password) {
+        Intent intent = new Intent(Constant.ACTION_LOGIN);
+        intent.putExtra(Constant.EM_USERNAME, username);
+        intent.putExtra(Constant.EM_PASSWORD, password);
+        sendBroadcast(intent);
+    }
+
+    @Override
+    public void netState(boolean isAvailable) {
+        //判定如果有网络检查环信是否登录，未登录去登录
+        if(isAvailable && !EMClient.getInstance().isLoggedInBefore()){
+//            signIn("","");
         }
+
     }
 
+
     /**
-     * get unread message count
-     *
-     * @return
+     * 声明静态内部类不会持有外部类的隐式引用
      */
-    public int getUnreadMsgCountTotal() {
-        return EMClient.getInstance().chatManager().getUnreadMessageCount();
+    private class MyHandler extends Handler {
+        private final WeakReference<MainActivity> mActivity;
+
+        public MyHandler(MainActivity activity) {
+            mActivity = new WeakReference<MainActivity>(activity);
+        }
+
+        @Override
+        public void handleMessage(Message msg) {
+            MainActivity activity = mActivity.get();
+            if (activity != null) {
+                if (msg.what == Constant.MSG_RECEIVER) {
+                    int count = msg.arg1;
+                    if (count > 0) {
+                        homeBadge.setBadgeCount(count);
+                        homeBadge.setVisibility(View.VISIBLE);
+                    } else {
+                        homeBadge.setVisibility(View.INVISIBLE);
+                    }
+
+                }
+            }
+        }
     }
 
 //===================================环信结束==============================================
@@ -314,7 +236,6 @@ public class MainActivity extends LaunBaseActivity {
      * 如果锁机了，再次同步一次
      */
     private static boolean iflocksyncAgain = true;
-
 
 
     /***
@@ -938,4 +859,11 @@ public class MainActivity extends LaunBaseActivity {
         }
     }
 
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (null != broadcastReceiver)
+            unregisterReceiver(broadcastReceiver);
+    }
 }

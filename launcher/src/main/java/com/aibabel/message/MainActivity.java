@@ -1,8 +1,10 @@
 package com.aibabel.message;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
 import android.widget.FrameLayout;
@@ -11,16 +13,21 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.aibabel.baselibrary.base.BaseActivity;
+import com.aibabel.baselibrary.sphelper.SPHelper;
+import com.aibabel.baselibrary.utils.CommonUtils;
 import com.aibabel.launcher.R;
 import com.aibabel.message.fragment.Fragment_Chat;
 import com.aibabel.message.fragment.Fragment_Convertions;
 import com.aibabel.message.fragment.Fragment_Message;
 import com.aibabel.message.fragment.Fragment_Task;
+import com.aibabel.message.receiver.MessageListener;
+import com.aibabel.message.service.MessageService;
+import com.hyphenate.chat.EMClient;
 
 
 import butterknife.BindView;
 
-public class MainActivity extends BaseActivity {
+public class MainActivity extends BaseActivity implements MessageListener {
 
 
     @BindView(R.id.fl_content)
@@ -73,8 +80,8 @@ public class MainActivity extends BaseActivity {
     public void init() {
         //get user id or group id
 //        toChatUsername = getIntent().getExtras().getString("userId");
+        tvUnreadNumber = findViewById(R.id.tv_unread_number);
         fragment = getIntent().getExtras().getInt("fragment", 0);
-
         mTabs = new Button[3];
         mTabs[0] = findViewById(R.id.btn_msg);
         mTabs[1] = findViewById(R.id.btn_chat);
@@ -89,35 +96,53 @@ public class MainActivity extends BaseActivity {
 
         fragmentChat = new Fragment_Chat();
         fragmentConvertions = new Fragment_Convertions();
-        fragmentTask = new Fragment_Task();
         fragmentMessage = new Fragment_Message();
-//        fragments = new Fragment[]{fragmentMessage, fragmentChat, fragmentTask};
+        fragmentTask = new Fragment_Task();
         fragments = new Fragment[]{fragmentMessage, fragmentConvertions, fragmentTask};
+
+        //判定是否支持，以便于显示不同的布局
+        selectUI();
 
         if (fragment == 0) {
             getSupportFragmentManager().beginTransaction()
                     .show(fragmentMessage)
                     .hide(fragmentConvertions)
-//                    .hide(fragmentChat)
                     .hide(fragmentTask)
                     .commit();
         } else if (fragment == 1) {
             getSupportFragmentManager().beginTransaction()
+                    .show(fragmentConvertions)
                     .hide(fragmentMessage)
-                    .hide(fragmentConvertions)
-//                    .show(fragmentChat)
                     .hide(fragmentTask)
                     .commit();
         } else {
             getSupportFragmentManager().beginTransaction()
                     .hide(fragmentMessage)
                     .hide(fragmentConvertions)
-//                    .hide(fragmentChat)
                     .show(fragmentTask)
                     .commit();
         }
-
     }
+
+
+    private void selectUI() {
+        if (isSupported()) {
+            btnContainerChat.setVisibility(View.VISIBLE);
+        } else {
+            btnContainerChat.setVisibility(View.GONE);
+        }
+    }
+
+
+    private boolean isSupported() {
+        boolean isSupported = false;
+        String country = SPHelper.getString("country", "cn");
+        if (TextUtils.equals(country, "jpa") || TextUtils.equals(country, "th")) {
+            isSupported = true;
+        }
+        return isSupported;
+    }
+
 
     /**
      * tab点击切换
@@ -131,6 +156,7 @@ public class MainActivity extends BaseActivity {
                 break;
             case R.id.btn_chat:
                 index = 1;
+                makeReaded();
                 break;
             case R.id.btn_task:
                 index = 2;
@@ -153,4 +179,46 @@ public class MainActivity extends BaseActivity {
 
     }
 
+    /**
+     * 获取未读消息数
+     */
+    private void setUnreadNum() {
+
+        if (isSupported()) {
+            if (!CommonUtils.isNetworkAvailable(this)) {
+                tvUnreadNumber.setVisibility(View.GONE);
+                return;
+            }
+            if (EMClient.getInstance().isConnected() && currentTabIndex != 1) {
+                int count = EMClient.getInstance().chatManager().getUnreadMessageCount();
+                tvUnreadNumber.setVisibility(View.VISIBLE);
+                if (count > 0) {
+                    tvUnreadNumber.setText(count);
+                }
+            } else {
+                tvUnreadNumber.setVisibility(View.GONE);
+            }
+        }
+    }
+
+    private void makeReaded() {
+        tvUnreadNumber.setText("");
+        tvUnreadNumber.setVisibility(View.GONE);
+    }
+
+
+    @Override
+    public void getMessage(Intent intent) {
+        if (EMClient.getInstance().isLoggedInBefore() && currentTabIndex != 1) {
+            int count = EMClient.getInstance().chatManager().getUnreadMessageCount();
+            tvUnreadNumber.setVisibility(View.VISIBLE);
+            if (count > 0) {
+                tvUnreadNumber.setText(count);
+            }
+        } else {
+            tvUnreadNumber.setVisibility(View.GONE);
+        }
+
+
+    }
 }

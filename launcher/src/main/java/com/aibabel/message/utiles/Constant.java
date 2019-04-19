@@ -49,9 +49,26 @@ public class Constant extends EaseConstant {
     public static final String OP_REQUEST_TOBE_SPEAKER = "request_tobe_speaker";
     public static final String OP_REQUEST_TOBE_AUDIENCE = "request_tobe_audience";
 
+    //====================================环信使用===============================================
+
     public static final int FRAGMENT_MSG = 0;
     public static final int FRAGMENT_CHAT = 1;
     public static final int FRAGMENT_TASK = 2;
+    /**
+     * 环信相关的
+     */
+    public static final String EM_USERNAME = "em_userId";
+    public static final String EM_PASSWORD = "em_password";
+    public static final int MSG_RECEIVER = 001;
+    public static final int MSG_UNREAD_NUM = 002;
+    public static final int MSG_LOGIN_STATE = 003;
+    public static final int MSG_STATE = 004;
+    public static final int STATE_UPDATEUNREAD = 004;
+    public static final int STATE_LOGIN_SUCCESS = 200;
+    public static final int STATE_LOGIN_FAILED = 404;
+
+    public static final String ACTION_LOGIN = "com.aibabel.launcher.login";
+    public static final String ACTION_MESSAGE = "com.aibabel.launcher.message";
 
 
 }

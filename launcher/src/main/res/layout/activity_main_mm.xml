@@ -18,8 +18,8 @@
         android:background="@color/white"
         android:gravity="center"
         android:orientation="horizontal"
-        android:paddingLeft="20dp"
-        android:paddingRight="20dp"
+        android:paddingLeft="80dp"
+        android:paddingRight="80dp"
         tools:ignore="DisableBaselineAlignment">
 
         <RelativeLayout
@@ -98,8 +98,9 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
                 android:layout_marginTop="10dp"
+                android:layout_marginRight="16dp"
                 android:background="@drawable/em_unread_dot"
-                android:visibility="visible" />
+                android:visibility="gone" />
 
             <View
                 android:id="@+id/v_chat"
@@ -115,6 +116,7 @@
         <RelativeLayout
             android:id="@+id/btn_container_task"
             android:layout_width="0dp"
+            android:visibility="gone"
             android:layout_height="match_parent"
             android:layout_weight="1">
 
