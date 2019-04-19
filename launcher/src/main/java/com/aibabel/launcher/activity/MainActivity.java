@@ -14,7 +14,6 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.os.Messenger;
-import android.support.annotation.Nullable;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
@@ -149,6 +148,7 @@ public class MainActivity extends LaunBaseActivity implements NetBroadcastReceiv
         mMainHuiLvChg.setText("—·—");
         mMainLocation.setCompoundDrawablesWithIntrinsicBounds(null,null,null,null);
 
+        requestNetwork();
     }
 
     public void onClick(View view) {
@@ -622,6 +622,10 @@ public class MainActivity extends LaunBaseActivity implements NetBroadcastReceiv
                             HashMap<String, Serializable> add_hp = (HashMap<String, Serializable>) msg.obj;
                             LogUtil.e("hjs" + add_hp.get("key"));
                             break;
+
+                        case 800:
+
+                            break;
                         default:
                             break;
 
@@ -898,6 +902,13 @@ public class MainActivity extends LaunBaseActivity implements NetBroadcastReceiv
             int islock = OrderBody.getIsLock();
             int attime = OrderBody.getAt();
             int isZhuner = OrderBody.getIsZhuner();
+
+            if(!TextUtils.isEmpty(oid)){
+                String order_id = SharePrefUtil.getString(context, order_oid, "");
+                if((!TextUtils.isEmpty(order_id))&&(!order_id.equalsIgnoreCase(oid))){
+                    if (loopHandler != null) loopHandler.sendEmptyMessage(800);
+                }
+            }
 
             SharePrefUtil.saveString(context, order_channelName, chanelname);
             SharePrefUtil.saveString(context, order_oid, oid);
