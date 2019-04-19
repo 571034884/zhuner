@@ -114,6 +114,7 @@ public class MainActivity extends LaunBaseActivity implements NetBroadcastReceiv
     private String locationCountry;//国家
     private String locationLatLng;//经纬度
     private boolean flagApi = false;//判断请求
+    private String oldCity;
 
 
     /**
@@ -224,16 +225,26 @@ public class MainActivity extends LaunBaseActivity implements NetBroadcastReceiv
             switch (resultCode){
                 case 200://目的地回调
                     String type = data.getStringExtra("type");
+                    String cityName = data.getStringExtra("city_name");
                     if (TextUtils.isEmpty(type)){return;}
                     if (type.equals("1")){
                         //定位
-                        changeView();
+                        if (!cityName.equals(oldCity)){
+                            oldCity = cityName;
+                            changeView();
+                        }
                     }else if (type.equals("0")){
                         //选择
                         String cityID = data.getStringExtra("city_id");
                         String countryID = data.getStringExtra("country_id");
-                        if (!TextUtils.isEmpty(cityID) && !TextUtils.isEmpty(countryID)){
+                        if (!TextUtils.isEmpty(cityID) && !TextUtils.isEmpty(countryID) && !cityName.equals(oldCity)){
+                            oldCity = cityName;
                             isNetWorkCity(cityID,countryID,"");
+                        }
+                        boolean isDialog = mmkv.decodeBool("isDialog",false);
+                        if (!TextUtils.isEmpty(locationLatLng) && !isDialog){
+                            //判断有定位
+
                         }
                     }
                     break;
@@ -325,7 +336,7 @@ public class MainActivity extends LaunBaseActivity implements NetBroadcastReceiv
         locationCity = ProviderUtils.getInfo(ProviderUtils.COLUMN_CITY);
         locationCountry = ProviderUtils.getInfo(ProviderUtils.COLUMN_COUNTRY);
         locationLatLng = ProviderUtils.getInfo(ProviderUtils.COLUMN_LATITUDE)+","+ProviderUtils.getInfo(ProviderUtils.COLUMN_LONGITUDE);
-
+        oldCity = locationCity;
         if (!TextUtils.isEmpty(locationCity) && !TextUtils.isEmpty(locationCountry) && !TextUtils.isEmpty(locationLatLng)){
             isNetWorkCity(locationCity,locationCountry,locationLatLng);
         }else{

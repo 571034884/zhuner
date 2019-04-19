@@ -132,6 +132,7 @@ public class SearchActivity extends LaunBaseActivity implements View.OnClickList
 
                 Intent intent = new Intent();
                 intent.putExtra("type","1");
+                intent.putExtra("city_name", searchCurrLocationTv.getText().toString().trim());
                 setResult(200, intent);
                 finish();
                 break;
@@ -279,6 +280,7 @@ public class SearchActivity extends LaunBaseActivity implements View.OnClickList
                 intent.putExtra("type","0");
                 intent.putExtra("city_id", list.get(i).getCityId());
                 intent.putExtra("country_id", list.get(i).getCountryId());
+                intent.putExtra("city_name", list.get(i).getCityChj());
                 setResult(200, intent);
                 finish();
             }
@@ -353,6 +355,7 @@ public class SearchActivity extends LaunBaseActivity implements View.OnClickList
                 intent.putExtra("type","0");
                 intent.putExtra("city_id", list.get(position).getCityId());
                 intent.putExtra("country_id", list.get(position).getCountryId());
+                intent.putExtra("city_name", list.get(position).getCityChj());
                 setResult(200, intent);
                 finish();
                 return true;
