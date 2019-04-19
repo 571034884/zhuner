@@ -74,9 +74,10 @@ public class MyService extends Service {
                             thread2.run();
                         } catch (Exception e) {
                             e.printStackTrace();
+                        }finally {
+                            issleeep4runing = false;
+                            LogUtil.d("  Thread.sleep(4h) end= " + issleeep4runing);
                         }
-                        issleeep4runing = false;
-                        LogUtil.d("  Thread.sleep(4h) end= " + issleeep4runing);
                     }
                 }
             }).start();
