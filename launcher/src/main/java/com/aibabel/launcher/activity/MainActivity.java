@@ -70,13 +70,13 @@ import butterknife.BindView;
 
 public class MainActivity extends LaunBaseActivity implements NetBroadcastReceiver.NetListener {
 
-    @BindView(R.id.tv_location)
+    @BindView(R.id.main_location_app)
     TextView mMainLocation;
     @BindView(R.id.home_badge_icon)
     ImageView homeBadgeIcon;
     @BindView(R.id.home_badge)
     MaterialBadgeTextView homeBadge;
-    @BindView(R.id.fl_notice)
+    @BindView(R.id.main_notice_app)
     FrameLayout flNotice;
     @BindView(R.id.main_layout_one)
     LinearLayout mainLayoutOne;
@@ -96,7 +96,7 @@ public class MainActivity extends LaunBaseActivity implements NetBroadcastReceiv
     TextClock mMainTimerClock;
     @BindView(R.id.main_timer_data)
     TextClock mMainTimerData;
-    @BindView(R.id.rl_main_five)
+    @BindView(R.id.main_five_rl)
     RelativeLayout mMainFiveRl;
     @BindView(R.id.iv_main_five)
     ImageView mMainFiveIv;
@@ -104,7 +104,7 @@ public class MainActivity extends LaunBaseActivity implements NetBroadcastReceiv
     TextView mMainFiveTv;
     @BindView(R.id.main_address_pic)
     ImageView mMainAddressPic;
-    @BindView(R.id.main_tv_wifi)
+    @BindView(R.id.main_wifi_app)
     TextView mMainWifi;
 
     //环信交互handler
@@ -154,23 +154,55 @@ public class MainActivity extends LaunBaseActivity implements NetBroadcastReceiv
 
     public void onClick(View view) {
         switch (view.getId()) {
-            case R.id.cv_more:
-                startAct(MoreActivity.class);
-                break;
-            case R.id.fl_notice:
-                startActivity(fragment_index);
-                break;
-            case R.id.rl_mask:
+            case R.id.rl_mask://空， 拦截透传事件
                 break;
             case R.id.tv_mask:
                 mmkv.encode("mainMasking",true);
                 mRlMask.setVisibility(View.GONE);
                 break;
-            case R.id.tv_location:
+            case R.id.main_notice_app://跳转到消息中心
+                startActivity(fragment_index);
+                break;
+            case R.id.main_location_app://跳转到目的地
                 startActResult(SearchActivity.class,100);
                 break;
-            case R.id.main_tv_wifi:
+            case R.id.main_wifi_app://跳转到wifi
                 launcherApp("com.zhuner.administrator.settings");
+                break;
+            case R.id.main_timer_app://跳转到世界钟
+                launcherApp("com.aibabel.alliedclock");
+                break;
+            case R.id.main_weather_app://天气
+                launcherApp("com.aibabel.weather");
+                break;
+            case R.id.main_huilv_app://汇率
+                launcherApp("com.aibabel.currencyconversion");
+                break;
+            case R.id.main_one_app://定位1
+                launcherApp("com.aibabel.scenic");
+                break;
+            case R.id.main_two_app://定位2
+                launcherApp("com.aibabel.ocr");
+                break;
+            case R.id.main_three_app://定位3
+                launcherApp("com.aibabel.translate");
+                break;
+            case R.id.main_four_app://定位4
+                launcherApp("com.aibabel.map");
+                break;
+            case R.id.main_five_app://定位点5
+                switch (mmkv.decodeString("mainFive","1")){
+                    case "1":
+                        launcherApp("com.aibabel.fyt_play");
+                        break;
+                    case "2":
+                        //TODO 跳转到H5
+                        ToastUtil.showShort(mContext,"敬请期待");
+                        break;
+                }
+                break;
+            case R.id.main_six_app://定位点6
+                startAct(MoreActivity.class);
                 break;
         }
     }
@@ -409,7 +441,7 @@ public class MainActivity extends LaunBaseActivity implements NetBroadcastReceiv
                 mMainFiveIv.setImageResource(R.mipmap.ic_game_img);
                 mMainFiveTv.setText("当地玩乐");
                 break;
-            case "0"://特价商品
+            case "2"://特价商品
                 mMainFiveRl.setBackgroundResource(R.mipmap.ic_shop_bg);
                 mMainFiveIv.setImageResource(R.mipmap.ic_shop_img);
                 mMainFiveTv.setText("特价商品");
