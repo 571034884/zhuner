@@ -104,7 +104,7 @@ public class MainActivity extends LaunBaseActivity implements NetBroadcastReceiv
         registerNet();
         startMessageService();
         signIn("user1","123");
-
+        requestNetwork();
     }
 
     public void onClick(View view) {
