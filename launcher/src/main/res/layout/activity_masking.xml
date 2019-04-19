@@ -3,6 +3,7 @@
     android:layout_width="match_parent"
     android:id="@+id/rl_mask"
     android:onClick="onClick"
+    android:visibility="gone"
     xmlns:tools="http://schemas.android.com/tools"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@mipmap/ic_main_masking"

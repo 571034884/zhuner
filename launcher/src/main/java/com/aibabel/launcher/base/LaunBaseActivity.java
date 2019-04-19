@@ -9,6 +9,7 @@ import android.view.Window;
 
 import com.aibabel.baselibrary.base.BaseActivity;
 import com.aibabel.launcher.R;
+import com.aibabel.launcher.activity.SearchActivity;
 
 import butterknife.ButterKnife;
 
@@ -35,6 +36,10 @@ public abstract class LaunBaseActivity extends BaseActivity{
 
     protected abstract void initView();
 
+    public void startActResult(Class act,int results){
+        startActivityForResult(new Intent(mContext, act), results);
+        overridePendingTransition(R.anim.right_in, R.anim.left_out);
+    }
 
     public void startAct(Class act){
         startActivity(new Intent(mContext,act));
