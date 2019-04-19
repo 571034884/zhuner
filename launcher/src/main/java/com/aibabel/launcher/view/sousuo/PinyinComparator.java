@@ -5,7 +5,7 @@ package com.aibabel.launcher.view.sousuo;
 
  //* 用来对ListView中的数据根据A-Z进行排序，前面两个if判断主要是将不是以汉字开头的数据放在后面
 
-import com.aibabel.launcher.mode.CityListBean;
+import com.aibabel.launcher.bean.CityListBean;
 
 import java.util.Comparator;
 

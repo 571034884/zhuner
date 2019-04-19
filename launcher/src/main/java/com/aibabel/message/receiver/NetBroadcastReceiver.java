@@ -3,12 +3,18 @@ package com.aibabel.message.receiver;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
+import android.net.wifi.WifiInfo;
+import android.net.wifi.WifiManager;
 import android.util.Log;
 
 import com.aibabel.baselibrary.utils.CommonUtils;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import static android.content.Context.WIFI_SERVICE;
 
 
 /**
@@ -32,8 +38,20 @@ public class NetBroadcastReceiver extends BroadcastReceiver {
             if (this_networkAvailable) {
                 Log.e(TAG, this_networkAvailable + "---");
                 listener.netState(true);
+                //判断是否是wifi
+                ConnectivityManager connectivityManager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+                NetworkInfo activeNetInfo = connectivityManager.getActiveNetworkInfo();
+                if (activeNetInfo != null) {
+                    // 判断是wifi连接
+                    if (activeNetInfo.getType() == ConnectivityManager.TYPE_WIFI) {
+                        WifiManager wifiManager = (WifiManager) context.getSystemService(WIFI_SERVICE);
+                        WifiInfo wifiInfo = wifiManager.getConnectionInfo();
+                        listener.netState(wifiInfo.getSSID().replaceAll("\"",""));
+                    }
+                }
             } else {
                 listener.netState(false);
+                listener.netState("WIFI");
             }
         }
 
@@ -46,6 +64,7 @@ public class NetBroadcastReceiver extends BroadcastReceiver {
 
     public interface NetListener {
         void netState(boolean isAvailable);
+        void netState(String nameWifi);
     }
 
 

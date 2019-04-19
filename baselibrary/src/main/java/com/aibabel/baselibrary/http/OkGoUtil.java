@@ -166,7 +166,7 @@ public class OkGoUtil {
 ////        getRequest.params("lng", ProviderUtils.getInfo(ProviderUtils.COLUMN_LONGITUDE));
 //        getRequest.params("lat", "1111");
 //        getRequest.params("lng", "11");
-
+        Log.e("LOGS_DEBUG",getRequest.getUrl());
         getRequest.execute(new DialogCallBack(context, interfaceName) {
 
             @Override

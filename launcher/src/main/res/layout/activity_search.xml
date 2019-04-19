@@ -43,7 +43,7 @@
         android:orientation="vertical"
         app:layout_constraintTop_toBottomOf="@id/ll"
         android:layout_marginTop="@dimen/y20"
-        android:visibility="gone"
+        android:visibility="visible"
         >
 
         <View

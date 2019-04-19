@@ -86,15 +86,24 @@ public class MoreActivity extends LaunBaseActivity {
     }
 
     @Override
-    public void init() {
-        Logs.e("执行了一次");
-    }
-
-    @Override
     protected void initView() {
-        int topPic = R.mipmap.ic_top_default;
+        String addressUrl = mmkv.decodeString("addressUrl","null");
         RequestOptions options = new RequestOptions().bitmapTransform(new BlurTransformation(this, 14, 3));
-        Glide.with(mContext).load(topPic).apply(options).into(ivMoreGS);
+        if (addressUrl.equals("null")){
+            int topPic = R.mipmap.ic_top_default;
+            Glide.with(mContext).load(topPic).apply(options).into(ivMoreGS);
+        }else{
+            Glide.with(mContext).load(addressUrl).apply(options).into(ivMoreGS);
+        }
+
+        switch (mmkv.decodeString("moreThree","0")){
+            case "0":
+                rlShop.setVisibility(View.GONE);
+                break;
+            case "1":
+                rlShop.setVisibility(View.VISIBLE);
+                break;
+        }
 
         fragmentManager = getSupportFragmentManager();
         switchSelect(rlTravel,ivTravel,tvTravel);

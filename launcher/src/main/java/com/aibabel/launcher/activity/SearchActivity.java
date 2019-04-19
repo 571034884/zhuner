@@ -12,13 +12,12 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.aibabel.baselibrary.base.BaseActivity;
 import com.aibabel.baselibrary.http.BaseCallback;
 import com.aibabel.baselibrary.http.OkGoUtil;
-import com.aibabel.baselibrary.utils.CommonUtils;
+import com.aibabel.baselibrary.utils.ProviderUtils;
 import com.aibabel.launcher.R;
 import com.aibabel.launcher.base.LaunBaseActivity;
-import com.aibabel.launcher.mode.CityListBean;
+import com.aibabel.launcher.bean.CityListBean;
 import com.aibabel.launcher.net.Api;
 import com.aibabel.launcher.utils.DBUtils;
 import com.aibabel.launcher.utils.Logs;
@@ -29,7 +28,6 @@ import com.aibabel.launcher.view.sousuo.PinnedHeaderListView;
 import com.aibabel.launcher.view.sousuo.PinyinComparator;
 import com.aibabel.launcher.view.sousuo.SideBar;
 import com.aibabel.launcher.view.sousuo.SortAdapter;
-import com.aibabel.message.utiles.L;
 import com.zhy.view.flowlayout.FlowLayout;
 import com.zhy.view.flowlayout.TagAdapter;
 import com.zhy.view.flowlayout.TagFlowLayout;
@@ -84,7 +82,7 @@ public class SearchActivity extends LaunBaseActivity implements View.OnClickList
         if (!NetWorkUtil.isAvailable(mContext)) {
             searchCurrLocationLl.setVisibility(View.GONE);
         } else {
-            showCity= SPUtils.get(mContext,"showCityName","").toString();
+            showCity= ProviderUtils.getInfo(ProviderUtils.COLUMN_CITY);
             if (showCity != null && !TextUtils.isEmpty(showCity)) {
                 searchCurrLocationLl.setVisibility(View.VISIBLE);
                 searchCurrLocationTv.setText(showCity);
@@ -93,7 +91,6 @@ public class SearchActivity extends LaunBaseActivity implements View.OnClickList
             }
 
         }
-
         initData();
     }
 
@@ -132,10 +129,10 @@ public class SearchActivity extends LaunBaseActivity implements View.OnClickList
                 HashMap<String, Serializable> map = new HashMap<>();
                 map.put("menu_search_location_name",showCity+"");
                 addStatisticsEvent("menu_search_location",map);
-                Intent intent1 = new Intent();
-                intent1.putExtra("cmd","search");
-                intent1.setAction("com.aibabel.menu.MENULOCATION");
-                sendBroadcast(intent1);
+
+                Intent intent = new Intent();
+                intent.putExtra("type","1");
+                setResult(200, intent);
                 finish();
                 break;
 
@@ -155,7 +152,7 @@ public class SearchActivity extends LaunBaseActivity implements View.OnClickList
             OkGoUtil.get(mContext, Api.GET_CITYLIST, mapPram, CityListBean.class, new BaseCallback<CityListBean>() {
                 @Override
                 public void onSuccess(String s, CityListBean cityListBean, String s1) {
-                    Logs.e("bindMenuData  onsuccess================" + cityListBean.toString());
+                    Logs.e(Api.GET_CITYLIST+"" + s1);
                     cityListBeans = cityListBean;
                     Collections.sort(cityListBean.getData().getPopularAddr(), new PinyinComparator());
                     View view = LayoutInflater.from(getApplicationContext()).inflate(R.layout.list_group_item, searchCity, false);
@@ -168,7 +165,7 @@ public class SearchActivity extends LaunBaseActivity implements View.OnClickList
 
                 @Override
                 public void onError(String s, String s1, String s2) {
-                    Logs.e("bindMenuData  onError ================" + s);
+                    Logs.e(Api.GET_CITYLIST+"" + s1);
 
                 }
 
@@ -278,10 +275,10 @@ public class SearchActivity extends LaunBaseActivity implements View.OnClickList
                     addStatisticsEvent("popular_list_c",map);
                 }catch (Exception e){}
                 Intent intent = new Intent();
+
+                intent.putExtra("type","0");
                 intent.putExtra("city_id", list.get(i).getCityId());
                 intent.putExtra("country_id", list.get(i).getCountryId());
-                intent.putExtra("city_name", list.get(i).getCityChj());
-                intent.putExtra("country_name", list.get(i).getCountryChj());
                 setResult(200, intent);
                 finish();
             }
@@ -345,8 +342,6 @@ public class SearchActivity extends LaunBaseActivity implements View.OnClickList
         searchAutonext.setOnTagClickListener(new TagFlowLayout.OnTagClickListener() {
             @Override
             public boolean onTagClick(View view, int position, FlowLayout parent) {
-                Logs.e("onTagClick========" + (String) view.getTag());
-
                 try{
                     HashMap<String, Serializable> map = new HashMap<>();
                     map.put("popular_click_id",list.get(position).getCityChj()+"");
@@ -355,11 +350,9 @@ public class SearchActivity extends LaunBaseActivity implements View.OnClickList
 
 
                 Intent intent = new Intent();
-//                intent.putExtra("url",list.get(position).getMenuAddrId());
+                intent.putExtra("type","0");
                 intent.putExtra("city_id", list.get(position).getCityId());
                 intent.putExtra("country_id", list.get(position).getCountryId());
-                intent.putExtra("city_name", list.get(position).getCityChj());
-                intent.putExtra("country_name", list.get(position).getCountryChj());
                 setResult(200, intent);
                 finish();
                 return true;

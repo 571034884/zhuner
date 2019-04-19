@@ -1,4 +1,4 @@
-package com.aibabel.launcher.mode;
+package com.aibabel.launcher.bean;
 
 import com.aibabel.baselibrary.http.BaseBean;
 

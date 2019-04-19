@@ -10,6 +10,7 @@ import android.view.Window;
 import com.aibabel.baselibrary.base.BaseActivity;
 import com.aibabel.launcher.R;
 import com.aibabel.launcher.activity.SearchActivity;
+import com.tencent.mmkv.MMKV;
 
 import butterknife.ButterKnife;
 
@@ -18,8 +19,8 @@ import butterknife.ButterKnife;
  */
 
 public abstract class LaunBaseActivity extends BaseActivity{
-
-
+    //统一处理 数据机制
+    public MMKV mmkv = null;
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         setStateFlag(true);
@@ -29,14 +30,19 @@ public abstract class LaunBaseActivity extends BaseActivity{
             setContentView(getlayout);
             mUnbinder = ButterKnife.bind(this);
         }
-        init();
+        mmkv = MMKV.defaultMMKV();
         initView();
         setKilledToBackground(false);
     }
 
     protected abstract void initView();
 
-    public void startActResult(Class act,int results){
+    @Override
+    public void init() {
+
+    }
+
+    public void startActResult(Class act, int results){
         startActivityForResult(new Intent(mContext, act), results);
         overridePendingTransition(R.anim.right_in, R.anim.left_out);
     }

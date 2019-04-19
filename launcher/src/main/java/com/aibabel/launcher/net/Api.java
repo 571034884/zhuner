@@ -6,7 +6,7 @@ package com.aibabel.launcher.net;
 
 public class Api {
 
-    public static final String  GET_MENU="/ServerGetMenuV2";
-    public static final String GET_CITYLIST="/GetCityList";
+    public static final String  GET_MENU="ServerGetMenuV3";//菜单数据
+    public static final String GET_CITYLIST="GetCityList";//目的地城市列表
 
 }

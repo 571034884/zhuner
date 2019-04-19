@@ -9,8 +9,7 @@ import android.widget.BaseAdapter;
 import android.widget.TextView;
 
 import com.aibabel.launcher.R;
-import com.aibabel.launcher.activity.SearchActivity;
-import com.aibabel.launcher.mode.CityListBean;
+import com.aibabel.launcher.bean.CityListBean;
 
 import java.util.List;
 

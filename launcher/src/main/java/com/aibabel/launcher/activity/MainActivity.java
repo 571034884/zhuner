@@ -14,6 +14,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.os.Messenger;
+import android.support.annotation.Nullable;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
@@ -21,30 +22,40 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
+import android.widget.TextClock;
 import android.widget.TextView;
 
+import com.aibabel.baselibrary.http.BaseCallback;
+import com.aibabel.baselibrary.http.OkGoUtil;
 import com.aibabel.baselibrary.mode.DataManager;
 import com.aibabel.baselibrary.sphelper.SPHelper;
 import com.aibabel.baselibrary.utils.CommonUtils;
 import com.aibabel.baselibrary.utils.FastJsonUtil;
+import com.aibabel.baselibrary.utils.ProviderUtils;
 import com.aibabel.baselibrary.utils.SharePrefUtil;
+import com.aibabel.baselibrary.utils.ToastUtil;
 import com.aibabel.launcher.R;
 import com.aibabel.launcher.base.LaunBaseActivity;
+import com.aibabel.launcher.bean.MenuDataBean;
 import com.aibabel.launcher.bean.PushMessageBean;
 import com.aibabel.launcher.bean.SyncOrder;
+import com.aibabel.launcher.net.Api;
 import com.aibabel.launcher.rent.RentDialogActivity;
 import com.aibabel.launcher.rent.RentKeepUseActivity;
 import com.aibabel.launcher.rent.RentLockedActivity;
 import com.aibabel.launcher.rent.SimDetectActivity;
 import com.aibabel.launcher.utils.CalenderUtil;
 import com.aibabel.launcher.utils.DetectUtil;
+import com.aibabel.launcher.utils.I18NUtils;
 import com.aibabel.launcher.utils.LocationUtils;
 import com.aibabel.launcher.utils.LogUtil;
+import com.aibabel.launcher.utils.Logs;
 import com.aibabel.launcher.view.MaterialBadgeTextView;
 import com.aibabel.message.receiver.NetBroadcastReceiver;
 import com.aibabel.message.service.MessageService;
 import com.aibabel.message.sqlite.SqlUtils;
 import com.aibabel.message.utiles.Constant;
+import com.bumptech.glide.Glide;
 import com.hyphenate.chat.EMClient;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.StringCallback;
@@ -53,6 +64,7 @@ import com.lzy.okgo.model.Response;
 import java.io.Serializable;
 import java.lang.ref.WeakReference;
 import java.util.HashMap;
+import java.util.Map;
 
 import butterknife.BindView;
 
@@ -66,15 +78,42 @@ public class MainActivity extends LaunBaseActivity implements NetBroadcastReceiv
     MaterialBadgeTextView homeBadge;
     @BindView(R.id.fl_notice)
     FrameLayout flNotice;
-    @BindView(R.id.tv_wifi)
-    TextView tvWifi;
     @BindView(R.id.main_layout_one)
     LinearLayout mainLayoutOne;
     @BindView(R.id.rl_mask)
     RelativeLayout mRlMask;
+    @BindView(R.id.main_timer_city)
+    TextView mMainTimerCity;
+    @BindView(R.id.main_weather_c)
+    TextView mMainWeatherC;
+    @BindView(R.id.main_weather_des)
+    TextView mMainWeatherDes;
+    @BindView(R.id.main_huilv_cny)
+    TextView mMainHuiLvCny;
+    @BindView(R.id.main_huilv_chg)
+    TextView mMainHuiLvChg;
+    @BindView(R.id.main_timer_clock)
+    TextClock mMainTimerClock;
+    @BindView(R.id.main_timer_data)
+    TextClock mMainTimerData;
+    @BindView(R.id.rl_main_five)
+    RelativeLayout mMainFiveRl;
+    @BindView(R.id.iv_main_five)
+    ImageView mMainFiveIv;
+    @BindView(R.id.tv_main_five)
+    TextView mMainFiveTv;
+    @BindView(R.id.main_address_pic)
+    ImageView mMainAddressPic;
+    @BindView(R.id.main_tv_wifi)
+    TextView mMainWifi;
+
     //环信交互handler
     Handler handler = new MyHandler(MainActivity.this);
 
+    private String locationCity;//城市
+    private String locationCountry;//国家
+    private String locationLatLng;//经纬度
+    private boolean flagApi = false;//判断请求
 
 
     /**
@@ -90,13 +129,8 @@ public class MainActivity extends LaunBaseActivity implements NetBroadcastReceiv
     }
 
     @Override
-    public void init() {
-
-    }
-
-    @Override
     public void initView() {
-        boolean mainMasking = SPHelper.getBoolean("mainMasking", false);
+        boolean mainMasking = mmkv.decodeBool("mainMasking",false);
         if (mainMasking) {
             mRlMask.setVisibility(View.GONE);
         } else {
@@ -106,6 +140,14 @@ public class MainActivity extends LaunBaseActivity implements NetBroadcastReceiv
         registerNet();
         startMessageService();
         signIn("user1","123");
+
+        mMainLocation.setText("—·—");
+        mMainTimerCity.setText("—·—");
+        mMainWeatherC.setText("—·—");
+        mMainWeatherDes.setText("—·—");
+        mMainHuiLvCny.setText("—·—");
+        mMainHuiLvChg.setText("—·—");
+        mMainLocation.setCompoundDrawablesWithIntrinsicBounds(null,null,null,null);
 
     }
 
@@ -120,14 +162,49 @@ public class MainActivity extends LaunBaseActivity implements NetBroadcastReceiv
             case R.id.rl_mask:
                 break;
             case R.id.tv_mask:
-                SPHelper.save("mainMasking", true);
+                mmkv.encode("mainMasking",true);
                 mRlMask.setVisibility(View.GONE);
                 break;
             case R.id.tv_location:
                 startActResult(SearchActivity.class,100);
                 break;
+            case R.id.main_tv_wifi:
+                launcherApp("com.zhuner.administrator.settings");
+                break;
+        }
+    }
+
+    public void launcherApp(String packageStr){
+        try {
+            Intent LaunchIntent = getPackageManager().getLaunchIntentForPackage(packageStr);
+            startActivity(LaunchIntent);
+        } catch (Exception e) {
+            Logs.e(packageStr+":"+e.toString());
+        }
+    }
 
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == 100) {
+            switch (resultCode){
+                case 200://目的地回调
+                    String type = data.getStringExtra("type");
+                    if (TextUtils.isEmpty(type)){return;}
+                    if (type.equals("1")){
+                        //定位
+                        changeView();
+                    }else if (type.equals("0")){
+                        //选择
+                        String cityID = data.getStringExtra("city_id");
+                        String countryID = data.getStringExtra("country_id");
+                        if (!TextUtils.isEmpty(cityID) && !TextUtils.isEmpty(countryID)){
+                            isNetWorkCity(cityID,countryID,"");
+                        }
+                    }
+                    break;
+            }
         }
     }
 
@@ -183,6 +260,160 @@ public class MainActivity extends LaunBaseActivity implements NetBroadcastReceiv
 //            signIn("","");
         }
 
+        /**
+         * 获取首页数据，
+         * 第一次必须走网络监听广播。
+         * 第N次监听到广播不做处理
+         */
+        if (isAvailable){
+            if (!flagApi){
+                Logs.e("netState:首页获取数据一次");
+                flagApi = true;
+                //获取当前定位信息并改变UI状态
+                changeView();
+            }
+        }
+    }
+
+    @Override
+    public void netState(String nameWifi) {
+        mMainWifi.setText(nameWifi);
+    }
+
+    /**
+     * 1.监听到有网络
+     * 2.开始获取定位信息
+     * 3.判断是否定位成功
+     *  3.1 定位成功，修改UI，请求API获取首页数据
+     *  3.2 定位失败，修改UI。不做处理
+     *      等待后台定位成功的广播以及切换目的地
+     */
+    private void changeView() {
+        locationCity = ProviderUtils.getInfo(ProviderUtils.COLUMN_CITY);
+        locationCountry = ProviderUtils.getInfo(ProviderUtils.COLUMN_COUNTRY);
+        locationLatLng = ProviderUtils.getInfo(ProviderUtils.COLUMN_LATITUDE)+","+ProviderUtils.getInfo(ProviderUtils.COLUMN_LONGITUDE);
+
+        if (!TextUtils.isEmpty(locationCity) && !TextUtils.isEmpty(locationCountry) && !TextUtils.isEmpty(locationLatLng)){
+            isNetWorkCity(locationCity,locationCountry,locationLatLng);
+        }else{
+            Logs.e("changeViewType:"+"定位失败");
+        }
+    }
+
+    /**
+     * 请求接口进行数据查询
+     * 之所以加网络判断是用于第N次切换目的地
+     * 请悉知
+     */
+    public void isNetWorkCity(String cityID,String countryID,String latlng){
+        if (CommonUtils.isNetworkAvailable(mContext)){
+            Logs.e("isNetWorkCity:有网,"+countryID+","+cityID);
+            getOkGo(cityID,countryID,latlng);
+        }else{
+            Logs.e("isNetWorkCity:无网,"+countryID+","+cityID);
+            ToastUtil.showShort(mContext,"当前没有网络");
+        }
+    }
+
+    private void getOkGo(String cityID, String countryID,String latlng) {
+        Map<String, String> mapPram = new HashMap<>();
+        if (!TextUtils.isEmpty(latlng)){
+            mapPram.put("location",latlng);
+        }else{
+            mapPram.put("countryId",countryID);
+            mapPram.put("cityId",cityID);
+        }
+
+        OkGoUtil.get(false, Api.GET_MENU,mapPram,MenuDataBean.class,new BaseCallback<MenuDataBean>(){
+
+            @Override
+            public void onSuccess(String method, MenuDataBean model, String resoureJson) {
+                Logs.e(Api.GET_MENU+","+resoureJson);
+                showViewData(model);
+            }
+
+            @Override
+            public void onError(String method, String message, String resoureJson) {
+                Logs.e(Api.GET_MENU+message);
+            }
+
+            @Override
+            public void onFinsh(String method) {
+
+            }
+        });
+    }
+
+    private void showViewData(MenuDataBean bean) {
+        if (bean.getData() == null){
+            return;
+        }
+        MenuDataBean.DataBean menu = bean.getData();
+        mmkv.encode("moreThree",menu.getFgBPageHasCheep());
+        mmkv.encode("mainFive",menu.getFgAPageHasCheep());
+
+        if (locationCity.equals(menu.getCityNameCn())){
+            mMainLocation.setText(menu.getCityNameCn());
+            mMainLocation.setCompoundDrawablesWithIntrinsicBounds(getDrawable(R.mipmap.main_top_location_icn),null,null,null);
+        }else{
+            mMainLocation.setText(menu.getCityNameCn());
+            mMainLocation.setCompoundDrawablesWithIntrinsicBounds(null,null,null,null);
+        }
+
+
+        mMainTimerCity.setText(menu.getCityNameCn());
+        try {
+            mMainTimerClock.setTimeZone(!TextUtils.equals(bean.getCode(), "-10000") ? !TextUtils.isEmpty(bean.getData().getTimeZone()) ? bean.getData().getTimeZone() : I18NUtils.getCurrentTimeZone() : I18NUtils.getCurrentTimeZone());
+            mMainTimerData.setTimeZone(!TextUtils.equals(bean.getCode(), "-10000") ? !TextUtils.isEmpty(bean.getData().getTimeZone()) ? bean.getData().getTimeZone() : I18NUtils.getCurrentTimeZone() : I18NUtils.getCurrentTimeZone());
+        } catch (Exception e) {
+            mMainTimerClock.setTimeZone(I18NUtils.getCurrentTimeZone());
+            mMainTimerData.setTimeZone(I18NUtils.getCurrentTimeZone());
+        }
+
+        if (!TextUtils.isEmpty(menu.getWeatherNowData().getTemperature_string())){
+            mMainWeatherC.setText(menu.getWeatherNowData().getTemperature_string());
+        }else{
+            mMainWeatherC.setText("—·—");
+        }
+        if (!TextUtils.isEmpty(menu.getWeatherNowData().getWeather())){
+            mMainWeatherDes.setText(menu.getWeatherNowData().getWeather());
+        }else{
+            mMainWeatherDes.setText("—·—");
+        }
+        if (!TextUtils.isEmpty(menu.getCurrency100WaiBi())){
+            mMainHuiLvCny.setText(menu.getCurrency100WaiBi());
+        }else{
+            mMainHuiLvCny.setText("—·—");
+        }
+        if (!TextUtils.isEmpty(menu.getCurrencyCny())){
+            mMainHuiLvChg.setText(menu.getCurrencyCny());
+        }else{
+            mMainHuiLvChg.setText("—·—");
+        }
+
+        if (!TextUtils.isEmpty(menu.getAddrPicUrl())){
+            mmkv.encode("addressUrl",menu.getAddrPicUrl());
+            Glide.with(mContext).load(menu.getAddrPicUrl()).into(mMainAddressPic);
+        }else{
+            mmkv.encode("addressUrl","null");
+            mMainAddressPic.setImageResource(R.mipmap.ic_top_default);
+        }
+
+
+
+        //根据后台参数配置 默认1
+        switch (mmkv.decodeString("mainFive","1")){
+            case "1"://当地玩乐
+                mMainFiveRl.setBackgroundResource(R.mipmap.ic_game_bg);
+                mMainFiveIv.setImageResource(R.mipmap.ic_game_img);
+                mMainFiveTv.setText("当地玩乐");
+                break;
+            case "0"://特价商品
+                mMainFiveRl.setBackgroundResource(R.mipmap.ic_shop_bg);
+                mMainFiveIv.setImageResource(R.mipmap.ic_shop_img);
+                mMainFiveTv.setText("特价商品");
+                break;
+        }
     }
 
 

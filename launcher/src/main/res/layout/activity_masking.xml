@@ -112,7 +112,7 @@
         android:textStyle="bold"
         android:textColor="@android:color/white"
         android:textSize="@dimen/y30"
-        android:background="@mipmap/ic_wifi_bg"
+        android:background="@mipmap/ic_wifi_masking"
         />
 
     <TextView
