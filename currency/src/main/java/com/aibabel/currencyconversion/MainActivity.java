@@ -966,7 +966,7 @@ public class MainActivity extends BaseActivity {
         }
 
         Map<String, String> map = new HashMap<>();
-        map.put("countryName", "日本");
+        map.put("countryName", "中国");
 
 //        OkGoUtil.get(Constant.URL_COUPON, map, CouponBean.class, new BaseCallback<CouponBean>() {
 //            @Override
@@ -974,7 +974,9 @@ public class MainActivity extends BaseActivity {
 //                if (null != model && null != model.getData()&&model.getData().size()>0) {
 //                    adapterCoupon.setNewData(model.getData());
 //        el_error.setErrorType(EmptyLayout.SUCCESS_EMPTY);
-//                }
+//                }else{
+//        el_error.setErrorType(EmptyLayout.NORMAL_EMPTY);
+//                     }
 //            }
 //
 //            @Override
@@ -1007,7 +1009,7 @@ public class MainActivity extends BaseActivity {
                         adapterCoupon.setNewData(list);
                         el_error.setErrorType(EmptyLayout.SUCCESS_EMPTY);
                     }else{
-                        el_error.setErrorType(EmptyLayout.ERROR_EMPTY);
+                        el_error.setErrorType(EmptyLayout.NORMAL_EMPTY);
                     }
 
                 } catch (Exception e) {

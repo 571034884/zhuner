@@ -6,7 +6,7 @@ import com.aibabel.baselibrary.http.BaseBean;
 import com.aibabel.baselibrary.http.BaseCallback;
 import com.aibabel.baselibrary.http.DialogCallBack;
 import com.aibabel.baselibrary.utils.FastJsonUtil;
-import com.aibabel.message.bean.Api;
+import com.aibabel.launcher.net.Api;
 import com.aibabel.message.bean.IMUser;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.model.Response;

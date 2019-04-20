@@ -51,13 +51,14 @@ import com.aibabel.launcher.utils.LocationUtils;
 import com.aibabel.launcher.utils.LogUtil;
 import com.aibabel.launcher.utils.Logs;
 import com.aibabel.launcher.view.MaterialBadgeTextView;
-import com.aibabel.message.bean.Api;
 import com.aibabel.message.bean.IMUser;
 import com.aibabel.message.helper.DemoHelper;
 import com.aibabel.message.receiver.NetBroadcastReceiver;
 import com.aibabel.message.service.MessageService;
 import com.aibabel.message.sqlite.SqlUtils;
 import com.aibabel.message.utiles.Constant;
+import com.aibabel.message.utiles.OkGoUtilWeb;
+import com.bumptech.glide.Glide;
 import com.hyphenate.chat.EMClient;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.StringCallback;
@@ -136,7 +137,7 @@ public class MainActivity extends LaunBaseActivity implements NetBroadcastReceiv
 
     @Override
     public void initView() {
-        boolean mainMasking = mmkv.decodeBool("mainMasking",false);
+        boolean mainMasking = mmkv.decodeBool("mainMasking", false);
         if (mainMasking) {
             mRlMask.setVisibility(View.GONE);
         } else {
@@ -153,7 +154,7 @@ public class MainActivity extends LaunBaseActivity implements NetBroadcastReceiv
         mMainWeatherDes.setText("—·—");
         mMainHuiLvCny.setText("—·—");
         mMainHuiLvChg.setText("—·—");
-        mMainLocation.setCompoundDrawablesWithIntrinsicBounds(null,null,null,null);
+        mMainLocation.setCompoundDrawablesWithIntrinsicBounds(null, null, null, null);
 
         requestNetwork();
     }
@@ -163,14 +164,14 @@ public class MainActivity extends LaunBaseActivity implements NetBroadcastReceiv
             case R.id.rl_mask://空， 拦截透传事件
                 break;
             case R.id.tv_mask:
-                mmkv.encode("mainMasking",true);
+                mmkv.encode("mainMasking", true);
                 mRlMask.setVisibility(View.GONE);
                 break;
             case R.id.main_notice_app://跳转到消息中心
                 startActivity(fragment_index);
                 break;
             case R.id.main_location_app://跳转到目的地
-                startActResult(SearchActivity.class,100);
+                startActResult(SearchActivity.class, 100);
                 break;
             case R.id.main_wifi_app://跳转到wifi
                 launcherApp("com.zhuner.administrator.settings");
@@ -197,13 +198,13 @@ public class MainActivity extends LaunBaseActivity implements NetBroadcastReceiv
                 launcherApp("com.aibabel.map");
                 break;
             case R.id.main_five_app://定位点5
-                switch (mmkv.decodeString("mainFive","1")){
+                switch (mmkv.decodeString("mainFive", "1")) {
                     case "1":
                         launcherApp("com.aibabel.fyt_play");
                         break;
                     case "2":
                         //TODO 跳转到H5
-                        ToastUtil.showShort(mContext,"敬请期待");
+                        ToastUtil.showShort(mContext, "敬请期待");
                         break;
                 }
                 break;
@@ -213,12 +214,12 @@ public class MainActivity extends LaunBaseActivity implements NetBroadcastReceiv
         }
     }
 
-    public void launcherApp(String packageStr){
+    public void launcherApp(String packageStr) {
         try {
             Intent LaunchIntent = getPackageManager().getLaunchIntentForPackage(packageStr);
             startActivity(LaunchIntent);
         } catch (Exception e) {
-            Logs.e(packageStr+":"+e.toString());
+            Logs.e(packageStr + ":" + e.toString());
         }
     }
 
@@ -227,27 +228,29 @@ public class MainActivity extends LaunBaseActivity implements NetBroadcastReceiv
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == 100) {
-            switch (resultCode){
+            switch (resultCode) {
                 case 200://目的地回调
                     String type = data.getStringExtra("type");
                     String cityName = data.getStringExtra("city_name");
-                    if (TextUtils.isEmpty(type)){return;}
-                    if (type.equals("1")){
+                    if (TextUtils.isEmpty(type)) {
+                        return;
+                    }
+                    if (type.equals("1")) {
                         //定位
-                        if (!cityName.equals(oldCity)){
+                        if (!cityName.equals(oldCity)) {
                             oldCity = cityName;
                             changeView();
                         }
-                    }else if (type.equals("0")){
+                    } else if (type.equals("0")) {
                         //选择
                         String cityID = data.getStringExtra("city_id");
                         String countryID = data.getStringExtra("country_id");
-                        if (!TextUtils.isEmpty(cityID) && !TextUtils.isEmpty(countryID) && !cityName.equals(oldCity)){
+                        if (!TextUtils.isEmpty(cityID) && !TextUtils.isEmpty(countryID) && !cityName.equals(oldCity)) {
                             oldCity = cityName;
-                            isNetWorkCity(cityID,countryID,"");
+                            isNetWorkCity(cityID, countryID, "");
                         }
-                        boolean isDialog = mmkv.decodeBool("isDialog",false);
-                        if (!TextUtils.isEmpty(locationLatLng) && !isDialog){
+                        boolean isDialog = mmkv.decodeBool("isDialog", false);
+                        if (!TextUtils.isEmpty(locationLatLng) && !isDialog) {
                             //判断有定位
 
                         }
@@ -284,19 +287,6 @@ public class MainActivity extends LaunBaseActivity implements NetBroadcastReceiv
 
     //=================================================环信消息开始===================================
 
-
-    @Override
-    public void netState(boolean isAvailable) {
-        //判定如果有网络检查环信是否登录，未登录去登录
-        if (isAvailable && !DemoHelper.getInstance().isLoggedIn()) {
-            String userId = MMKV.defaultMMKV().decodeString(Constant.EM_USERNAME, "");
-            String password = MMKV.defaultMMKV().decodeString(Constant.EM_PASSWORD, "");
-            if (TextUtils.isEmpty(userId) || TextUtils.isEmpty(password)) {
-                getUserInfo();
-            }
-        }
-
-    }
 
     private void getUserInfo() {
         try {
@@ -355,9 +345,14 @@ public class MainActivity extends LaunBaseActivity implements NetBroadcastReceiv
 
     @Override
     public void netState(boolean isAvailable) {
+
         //判定如果有网络检查环信是否登录，未登录去登录
-        if(isAvailable && !EMClient.getInstance().isLoggedInBefore()){
-//            signIn("","");
+        if (isAvailable && !DemoHelper.getInstance().isLoggedIn()) {
+            String userId = MMKV.defaultMMKV().decodeString(Constant.EM_USERNAME, "");
+            String password = MMKV.defaultMMKV().decodeString(Constant.EM_PASSWORD, "");
+            if (TextUtils.isEmpty(userId) || TextUtils.isEmpty(password)) {
+                getUserInfo();
+            }
         }
 
         /**
@@ -365,8 +360,8 @@ public class MainActivity extends LaunBaseActivity implements NetBroadcastReceiv
          * 第一次必须走网络监听广播。
          * 第N次监听到广播不做处理
          */
-        if (isAvailable){
-            if (!flagApi){
+        if (isAvailable) {
+            if (!flagApi) {
                 Logs.e("netState:首页获取数据一次");
                 flagApi = true;
                 //获取当前定位信息并改变UI状态
@@ -384,19 +379,19 @@ public class MainActivity extends LaunBaseActivity implements NetBroadcastReceiv
      * 1.监听到有网络
      * 2.开始获取定位信息
      * 3.判断是否定位成功
-     *  3.1 定位成功，修改UI，请求API获取首页数据
-     *  3.2 定位失败，修改UI。不做处理
-     *      等待后台定位成功的广播以及切换目的地
+     * 3.1 定位成功，修改UI，请求API获取首页数据
+     * 3.2 定位失败，修改UI。不做处理
+     * 等待后台定位成功的广播以及切换目的地
      */
     private void changeView() {
         locationCity = ProviderUtils.getInfo(ProviderUtils.COLUMN_CITY);
         locationCountry = ProviderUtils.getInfo(ProviderUtils.COLUMN_COUNTRY);
-        locationLatLng = ProviderUtils.getInfo(ProviderUtils.COLUMN_LATITUDE)+","+ProviderUtils.getInfo(ProviderUtils.COLUMN_LONGITUDE);
+        locationLatLng = ProviderUtils.getInfo(ProviderUtils.COLUMN_LATITUDE) + "," + ProviderUtils.getInfo(ProviderUtils.COLUMN_LONGITUDE);
         oldCity = locationCity;
-        if (!TextUtils.isEmpty(locationCity) && !TextUtils.isEmpty(locationCountry) && !TextUtils.isEmpty(locationLatLng)){
-            isNetWorkCity(locationCity,locationCountry,locationLatLng);
-        }else{
-            Logs.e("changeViewType:"+"定位失败");
+        if (!TextUtils.isEmpty(locationCity) && !TextUtils.isEmpty(locationCountry) && !TextUtils.isEmpty(locationLatLng)) {
+            isNetWorkCity(locationCity, locationCountry, locationLatLng);
+        } else {
+            Logs.e("changeViewType:" + "定位失败");
         }
     }
 
@@ -405,36 +400,36 @@ public class MainActivity extends LaunBaseActivity implements NetBroadcastReceiv
      * 之所以加网络判断是用于第N次切换目的地
      * 请悉知
      */
-    public void isNetWorkCity(String cityID,String countryID,String latlng){
-        if (CommonUtils.isNetworkAvailable(mContext)){
-            Logs.e("isNetWorkCity:有网,"+countryID+","+cityID);
-            getOkGo(cityID,countryID,latlng);
-        }else{
-            Logs.e("isNetWorkCity:无网,"+countryID+","+cityID);
-            ToastUtil.showShort(mContext,"当前没有网络");
+    public void isNetWorkCity(String cityID, String countryID, String latlng) {
+        if (CommonUtils.isNetworkAvailable(mContext)) {
+            Logs.e("isNetWorkCity:有网," + countryID + "," + cityID);
+            getOkGo(cityID, countryID, latlng);
+        } else {
+            Logs.e("isNetWorkCity:无网," + countryID + "," + cityID);
+            ToastUtil.showShort(mContext, "当前没有网络");
         }
     }
 
-    private void getOkGo(String cityID, String countryID,String latlng) {
+    private void getOkGo(String cityID, String countryID, String latlng) {
         Map<String, String> mapPram = new HashMap<>();
-        if (!TextUtils.isEmpty(latlng)){
-            mapPram.put("location",latlng);
-        }else{
-            mapPram.put("countryId",countryID);
-            mapPram.put("cityId",cityID);
+        if (!TextUtils.isEmpty(latlng)) {
+            mapPram.put("location", latlng);
+        } else {
+            mapPram.put("countryId", countryID);
+            mapPram.put("cityId", cityID);
         }
 
-        OkGoUtil.get(false, Api.GET_MENU,mapPram,MenuDataBean.class,new BaseCallback<MenuDataBean>(){
+        OkGoUtil.get(false, Api.GET_MENU, mapPram, MenuDataBean.class, new BaseCallback<MenuDataBean>() {
 
             @Override
             public void onSuccess(String method, MenuDataBean model, String resoureJson) {
-                Logs.e(Api.GET_MENU+","+resoureJson);
+                Logs.e(Api.GET_MENU + "," + resoureJson);
                 showViewData(model);
             }
 
             @Override
             public void onError(String method, String message, String resoureJson) {
-                Logs.e(Api.GET_MENU+message);
+                Logs.e(Api.GET_MENU + message);
             }
 
             @Override
@@ -445,19 +440,19 @@ public class MainActivity extends LaunBaseActivity implements NetBroadcastReceiv
     }
 
     private void showViewData(MenuDataBean bean) {
-        if (bean.getData() == null){
+        if (bean.getData() == null) {
             return;
         }
         MenuDataBean.DataBean menu = bean.getData();
-        mmkv.encode("moreThree",menu.getFgBPageHasCheep());
-        mmkv.encode("mainFive",menu.getFgAPageHasCheep());
+        mmkv.encode("moreThree", menu.getFgBPageHasCheep());
+        mmkv.encode("mainFive", menu.getFgAPageHasCheep());
 
-        if (locationCity.equals(menu.getCityNameCn())){
+        if (locationCity.equals(menu.getCityNameCn())) {
             mMainLocation.setText(menu.getCityNameCn());
-            mMainLocation.setCompoundDrawablesWithIntrinsicBounds(getDrawable(R.mipmap.main_top_location_icn),null,null,null);
-        }else{
+            mMainLocation.setCompoundDrawablesWithIntrinsicBounds(getDrawable(R.mipmap.main_top_location_icn), null, null, null);
+        } else {
             mMainLocation.setText(menu.getCityNameCn());
-            mMainLocation.setCompoundDrawablesWithIntrinsicBounds(null,null,null,null);
+            mMainLocation.setCompoundDrawablesWithIntrinsicBounds(null, null, null, null);
         }
 
 
@@ -470,39 +465,38 @@ public class MainActivity extends LaunBaseActivity implements NetBroadcastReceiv
             mMainTimerData.setTimeZone(I18NUtils.getCurrentTimeZone());
         }
 
-        if (!TextUtils.isEmpty(menu.getWeatherNowData().getTemperature_string())){
+        if (!TextUtils.isEmpty(menu.getWeatherNowData().getTemperature_string())) {
             mMainWeatherC.setText(menu.getWeatherNowData().getTemperature_string());
-        }else{
+        } else {
             mMainWeatherC.setText("—·—");
         }
-        if (!TextUtils.isEmpty(menu.getWeatherNowData().getWeather())){
+        if (!TextUtils.isEmpty(menu.getWeatherNowData().getWeather())) {
             mMainWeatherDes.setText(menu.getWeatherNowData().getWeather());
-        }else{
+        } else {
             mMainWeatherDes.setText("—·—");
         }
-        if (!TextUtils.isEmpty(menu.getCurrency100WaiBi())){
+        if (!TextUtils.isEmpty(menu.getCurrency100WaiBi())) {
             mMainHuiLvCny.setText(menu.getCurrency100WaiBi());
-        }else{
+        } else {
             mMainHuiLvCny.setText("—·—");
         }
-        if (!TextUtils.isEmpty(menu.getCurrencyCny())){
+        if (!TextUtils.isEmpty(menu.getCurrencyCny())) {
             mMainHuiLvChg.setText(menu.getCurrencyCny());
-        }else{
+        } else {
             mMainHuiLvChg.setText("—·—");
         }
 
-        if (!TextUtils.isEmpty(menu.getAddrPicUrl())){
-            mmkv.encode("addressUrl",menu.getAddrPicUrl());
+        if (!TextUtils.isEmpty(menu.getAddrPicUrl())) {
+            mmkv.encode("addressUrl", menu.getAddrPicUrl());
             Glide.with(mContext).load(menu.getAddrPicUrl()).into(mMainAddressPic);
-        }else{
-            mmkv.encode("addressUrl","null");
+        } else {
+            mmkv.encode("addressUrl", "null");
             mMainAddressPic.setImageResource(R.mipmap.ic_top_default);
         }
 
 
-
         //根据后台参数配置 默认1
-        switch (mmkv.decodeString("mainFive","1")){
+        switch (mmkv.decodeString("mainFive", "1")) {
             case "1"://当地玩乐
                 mMainFiveRl.setBackgroundResource(R.mipmap.ic_game_bg);
                 mMainFiveIv.setImageResource(R.mipmap.ic_game_img);
@@ -1002,9 +996,9 @@ public class MainActivity extends LaunBaseActivity implements NetBroadcastReceiv
             int attime = OrderBody.getAt();
             int isZhuner = OrderBody.getIsZhuner();
 
-            if(!TextUtils.isEmpty(oid)){
+            if (!TextUtils.isEmpty(oid)) {
                 String order_id = SharePrefUtil.getString(context, order_oid, "");
-                if((!TextUtils.isEmpty(order_id))&&(!order_id.equalsIgnoreCase(oid))){
+                if ((!TextUtils.isEmpty(order_id)) && (!order_id.equalsIgnoreCase(oid))) {
                     if (loopHandler != null) loopHandler.sendEmptyMessage(800);
                 }
             }
