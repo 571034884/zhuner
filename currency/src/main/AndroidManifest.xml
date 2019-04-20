@@ -6,10 +6,10 @@
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"></uses-permission>
     <!--<uses-permission android:name="android:sharedUserId=android.uid.system"></uses-permission>-->
     <!--友盟-->
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
-    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/>
-    <uses-permission android:name="android.permission.READ_PHONE_STATE"/>
-    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <uses-permission android:name="android.permission.INTERNET" />
 
     <application
         android:name=".app.MyApplication"
@@ -28,7 +28,9 @@
         <meta-data
             android:name="com.taobao.android.hotfix.RSASECRET"
             android:value="MIIEvwIBADANBgkqhkiG9w0BAQEFAASCBKkwggSlAgEAAoIBAQDY0v6rNLtyc14MpbzTvl6id/MmtCsDV/E/OGvW3otExwG+UeAsBWaRky35PQGrcBNOrjOi4aJbL5boiQkx225qQUZ7NwYM8Y4ovB+SzE8jFZdNORBvwZFsXTwhMP6mI4ZZkOQ7PYnFHJMhs+RUbOSvc/ypFpC/8UTav07SeACqblFTWN2qPLQkpbtMnd8gWq8px20q8OdJzbZOJs1qQMosnq6qCeZY32P6/rbng3SOvxZoqtxpHk2ApdPsTOb0MsgHJ5vQEtD1/puno1sdlbHwny+0ytj9wIEESEVwyTU3+oQc3PVSraJG2Hgzw3NYxNBxEgortfJn18Aq213+61RVAgMBAAECggEBANMyUlW5e4wzy7xOA+vMVqmyZOmiPPN4ychm0MPu6YEIxy322oCGki3iSrmnLuUqueO90xYo6dggNsIyGP6zWo2tH1YNdptM/se21ppK4BqwgTv7BYOV7Gy9NECwVJrHp6m+dFEv0+5nsvj1HMcPeoFcXRLmpAASpprcFY70zNEz7zgrPwPdHO4DXUU+3slgmDPNSVepYzIc5GS5zPbTGEFHUQZ/8huyaPSszx1kzb2gJ4pYpWhr9H3iRfxLdfqhB3WQaGObh3dyz8lYAIjGycjiICzs9/o/H/NYa/KI4NZbAVjn1DAg0X4m9mSVXpprwgt+/HHyJhpkWF70IRkfGYECgYEA/l7/wK7qtfXSy1iiiit8KscDOI3SCLD3LUnQroaKVlvOcaqpQwviWinao5HDTFmitonp/XRbVCrwb3hN5BWaF5jOQYUG22C/Hc/rcMXYxWshkfeEvqBmBFPeDs3hG/SBmjCVRYeqtVn06/9Ftilw0j1rdgfa4V8uz8lLXmLo5pkCgYEA2jZxkCkRqjYSyKZf1Eoxv4MAyca0R+zH4TA7a+Z80gYKHxLY9bSQUz2iyPnBVN9Ih+5HyyxSkf2Zh46J0mKJ29wmo5Ggvoi19UzV20sFJZCfopZq7gOfhOiGctfCPoOa9EUUMLtJf/ZV0oPY87WdYRDq5eG9bCEMcmnB6w5E/R0CgYEAsq9fLyZwgBPH2MpRm4fCeHZGX/LX6P0PFUQ2EHM4OEPTeGtu7Ucq4TVnfeGF9Fs+/sVQlpenFC/5qAQ1ixRVo1/W+5WL5I1Ik5OcCyMgDEYeVeAu4o3gPAgCBBpBmJageATKxwXvN+eSMjmm6bigpT85/raz3f8z7gi0JgCLJHkCgYAXMoh6EdOd66etivpPACAvwsZ3rNcHemV5S/5VJyiHzzqOORu1ax+Yqcm/YcWqtx3nzW32bFzOxk3m+kEui2kqZUn6Q4X6G2B0lll5uYzvhGNkDmeJq/ruTyXT2Zn9uVHku988mvxiTRasjXWn2tvDMOA31fqkHxNKqnGCAn9VBQKBgQD99rAsP4emklm/0omDlb13ZKttilzM5R1zMv/ycNVaUJaIOv3YMfkJGPeCXAyXt/RaqjtCuRBruwmp1h2X9TYQgqblOL8TtyoOSEefSRgK5hdQxmSLkZc+XKykjzujDQMFVy5nAhxKNbE4dYkbPvOU/8ktvvXchFvj9fVmi6NgDA==" />
-        <activity android:name="com.aibabel.currencyconversion.MainActivity"
+
+        <activity
+            android:name="com.aibabel.currencyconversion.MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -36,6 +38,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".PhotoViewActivity" />
         <activity android:name=".ChooseCurrencyActivity"></activity>
 
     </application>

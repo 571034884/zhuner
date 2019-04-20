@@ -1,10 +1,14 @@
 package com.aibabel.message;
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.FrameLayout;
@@ -17,13 +21,18 @@ import com.aibabel.baselibrary.sphelper.SPHelper;
 import com.aibabel.baselibrary.utils.CommonUtils;
 import com.aibabel.launcher.R;
 import com.aibabel.message.fragment.Fragment_Chat;
-import com.aibabel.message.fragment.Fragment_Convertions;
+import com.aibabel.message.fragment.Fragment_Conversation;
 import com.aibabel.message.fragment.Fragment_Message;
 import com.aibabel.message.fragment.Fragment_Task;
 import com.aibabel.message.receiver.MessageListener;
 import com.aibabel.message.service.MessageService;
+import com.aibabel.message.utiles.Constant;
+import com.hyphenate.EMMessageListener;
 import com.hyphenate.chat.EMClient;
+import com.hyphenate.chat.EMMessage;
 
+
+import java.util.List;
 
 import butterknife.BindView;
 
@@ -35,7 +44,7 @@ public class MainActivity extends BaseActivity implements MessageListener {
 
     Fragment_Chat fragmentChat;
     Fragment_Task fragmentTask;
-    Fragment_Convertions fragmentConvertions;
+    Fragment_Conversation fragmentConversation;
     Fragment_Message fragmentMessage;
     @BindView(R.id.btn_msg)
     Button btnMsg;
@@ -95,35 +104,40 @@ public class MainActivity extends BaseActivity implements MessageListener {
         mViews[fragment].setVisibility(View.VISIBLE);
 
         fragmentChat = new Fragment_Chat();
-        fragmentConvertions = new Fragment_Convertions();
+        fragmentConversation = new Fragment_Conversation();
         fragmentMessage = new Fragment_Message();
         fragmentTask = new Fragment_Task();
-        fragments = new Fragment[]{fragmentMessage, fragmentConvertions, fragmentTask};
+        fragments = new Fragment[]{fragmentMessage, fragmentConversation, fragmentTask};
 
         //判定是否支持，以便于显示不同的布局
-        selectUI();
+//        selectUI();
 
         if (fragment == 0) {
             getSupportFragmentManager().beginTransaction()
                     .show(fragmentMessage)
-                    .hide(fragmentConvertions)
+                    .hide(fragmentConversation)
                     .hide(fragmentTask)
                     .commit();
         } else if (fragment == 1) {
             getSupportFragmentManager().beginTransaction()
-                    .show(fragmentConvertions)
+                    .show(fragmentConversation)
                     .hide(fragmentMessage)
                     .hide(fragmentTask)
                     .commit();
         } else {
             getSupportFragmentManager().beginTransaction()
                     .hide(fragmentMessage)
-                    .hide(fragmentConvertions)
+                    .hide(fragmentConversation)
                     .show(fragmentTask)
                     .commit();
         }
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        EMClient.getInstance().chatManager().addMessageListener(messageListener);
+    }
 
     private void selectUI() {
         if (isSupported()) {
@@ -133,6 +147,12 @@ public class MainActivity extends BaseActivity implements MessageListener {
         }
     }
 
+
+    /**
+     * 是否支持微领队
+     *
+     * @return
+     */
 
     private boolean isSupported() {
         boolean isSupported = false;
@@ -179,27 +199,6 @@ public class MainActivity extends BaseActivity implements MessageListener {
 
     }
 
-    /**
-     * 获取未读消息数
-     */
-    private void setUnreadNum() {
-
-        if (isSupported()) {
-            if (!CommonUtils.isNetworkAvailable(this)) {
-                tvUnreadNumber.setVisibility(View.GONE);
-                return;
-            }
-            if (EMClient.getInstance().isConnected() && currentTabIndex != 1) {
-                int count = EMClient.getInstance().chatManager().getUnreadMessageCount();
-                tvUnreadNumber.setVisibility(View.VISIBLE);
-                if (count > 0) {
-                    tvUnreadNumber.setText(count);
-                }
-            } else {
-                tvUnreadNumber.setVisibility(View.GONE);
-            }
-        }
-    }
 
     private void makeReaded() {
         tvUnreadNumber.setText("");
@@ -221,4 +220,52 @@ public class MainActivity extends BaseActivity implements MessageListener {
 
 
     }
+
+
+    EMMessageListener messageListener = new EMMessageListener() {
+
+        @Override
+        public void onMessageReceived(List<EMMessage> messages) {
+            refreshUIWithMessage();
+        }
+
+        @Override
+        public void onCmdMessageReceived(List<EMMessage> messages) {
+
+        }
+
+        @Override
+        public void onMessageRead(List<EMMessage> messages) {
+        }
+
+        @Override
+        public void onMessageDelivered(List<EMMessage> message) {
+        }
+
+        @Override
+        public void onMessageRecalled(List<EMMessage> messages) {
+
+        }
+
+        @Override
+        public void onMessageChanged(EMMessage message, Object change) {
+
+        }
+    };
+
+    private void refreshUIWithMessage() {
+        if (isSupported()) {
+            if (EMClient.getInstance().isConnected() && currentTabIndex != 1) {
+                int count = EMClient.getInstance().chatManager().getUnreadMessageCount();
+                tvUnreadNumber.setVisibility(View.VISIBLE);
+                if (count > 0) {
+                    tvUnreadNumber.setText(count);
+                }
+            } else {
+                tvUnreadNumber.setVisibility(View.GONE);
+            }
+        }
+    }
+
+
 }

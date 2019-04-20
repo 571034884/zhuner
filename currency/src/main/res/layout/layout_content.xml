@@ -20,7 +20,17 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintTop_toTopOf="parent"/>
 
-
+        <TextView
+            android:id="@+id/tv_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="40px"
+            android:textColor="@color/white"
+            android:text="汇率换算"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent" />
 
     </android.support.constraint.ConstraintLayout>
 
@@ -102,9 +112,9 @@
                             android:ellipsize="start"
                             android:gravity="right"
                             android:singleLine="true"
-                            android:textColor="#fe5000"
+                            android:textColor="#FE5000"
                             android:textColorHint="#fe5000"
-                            android:textSize="30px" />
+                            android:textSize="60px" />
 
                         <View
                             android:id="@+id/v_cursor1"
@@ -119,10 +129,10 @@
 
 
                     <TextView
-                        android:id="@+id/tv_currency_name1"
+                        android:id="@+id/tv_currency_abbreviations1"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="16px"
+                        android:layout_marginTop="0px"
                         android:textColor="#999999"
                         android:textSize="24px" />
                 </LinearLayout>
@@ -145,11 +155,11 @@
                         android:src="@mipmap/ic_launcher_round" />
 
                     <TextView
-                        android:id="@+id/tv_currency_abbreviations1"
+                        android:id="@+id/tv_currency_name1"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginRight="16px"
-                        android:text="ABC"
+                        android:minWidth="50px"
                         android:textColor="#ffffff"
                         android:textSize="30px" />
 
@@ -206,10 +216,11 @@
                             android:cursorVisible="true"
                             android:ellipsize="start"
                             android:gravity="right"
+                            android:layout_marginTop="16px"
                             android:singleLine="true"
                             android:textColor="#ffffff"
                             android:textColorHint="#ffffff"
-                            android:textSize="30px" />
+                            android:textSize="40dp" />
 
                         <View
                             android:id="@+id/v_cursor2"
@@ -224,10 +235,10 @@
 
 
                     <TextView
-                        android:id="@+id/tv_currency_name2"
+                        android:id="@+id/tv_currency_abbreviations2"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="16px"
+                        android:layout_marginTop="0px"
                         android:textColor="#999999"
                         android:textSize="24px" />
                 </LinearLayout>
@@ -251,7 +262,7 @@
                         android:src="@mipmap/ic_launcher_round" />
 
                     <TextView
-                        android:id="@+id/tv_currency_abbreviations2"
+                        android:id="@+id/tv_currency_name2"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginRight="16px"
@@ -304,11 +315,11 @@
                         android:src="@mipmap/ic_launcher_round" />
 
                     <TextView
-                        android:id="@+id/tv_currency_abbreviations3"
+                        android:id="@+id/tv_currency_name3"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginRight="16px"
-                        android:text="ABC"
+                        android:minWidth="50px"
                         android:textColor="#ffffff"
                         android:textSize="30px" />
 
@@ -344,6 +355,7 @@
                             android:cursorVisible="true"
                             android:ellipsize="start"
                             android:gravity="right"
+                            android:layout_marginTop="16px"
                             android:singleLine="true"
                             android:textColor="#ffffff"
                             android:textColorHint="#ffffff"
@@ -362,10 +374,10 @@
 
 
                     <TextView
-                        android:id="@+id/tv_currency_name3"
+                        android:id="@+id/tv_currency_abbreviations3"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="16px"
+                        android:layout_marginTop="0px"
                         android:textColor="#999999"
                         android:textSize="24px" />
                 </LinearLayout>

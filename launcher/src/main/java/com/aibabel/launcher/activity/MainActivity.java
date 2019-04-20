@@ -23,6 +23,8 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.aibabel.baselibrary.http.BaseCallback;
+import com.aibabel.baselibrary.http.OkGoUtil;
 import com.aibabel.baselibrary.mode.DataManager;
 import com.aibabel.baselibrary.sphelper.SPHelper;
 import com.aibabel.baselibrary.utils.CommonUtils;
@@ -41,14 +43,21 @@ import com.aibabel.launcher.utils.DetectUtil;
 import com.aibabel.launcher.utils.LocationUtils;
 import com.aibabel.launcher.utils.LogUtil;
 import com.aibabel.launcher.view.MaterialBadgeTextView;
+import com.aibabel.message.bean.Api;
+import com.aibabel.message.bean.IMUser;
+import com.aibabel.message.helper.DemoHelper;
 import com.aibabel.message.receiver.NetBroadcastReceiver;
 import com.aibabel.message.service.MessageService;
 import com.aibabel.message.sqlite.SqlUtils;
 import com.aibabel.message.utiles.Constant;
+import com.aibabel.message.utiles.OkGoUtilWeb;
 import com.hyphenate.chat.EMClient;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.StringCallback;
 import com.lzy.okgo.model.Response;
+import com.tencent.mmkv.MMKV;
+
+import org.json.JSONObject;
 
 import java.io.Serializable;
 import java.lang.ref.WeakReference;
@@ -103,7 +112,7 @@ public class MainActivity extends LaunBaseActivity implements NetBroadcastReceiv
         homeBadge = findViewById(R.id.home_badge);
         registerNet();
         startMessageService();
-        signIn("user1","123");
+        signIn("user1", "123");
 
     }
 
@@ -128,6 +137,7 @@ public class MainActivity extends LaunBaseActivity implements NetBroadcastReceiv
     @Override
     protected void onResume() {
         super.onResume();
+        int count = EMClient.getInstance().chatManager().getUnreadMessageCount();
     }
 
     private void registerNet() {
@@ -141,12 +151,60 @@ public class MainActivity extends LaunBaseActivity implements NetBroadcastReceiv
 
 
     private void startActivity(int fragment_type) {
+        fragment_type = 1;
         Intent intent = new Intent(this, com.aibabel.message.MainActivity.class);
         intent.putExtra("fragment", fragment_type);
         startActivity(intent);
         homeBadge.setVisibility(View.GONE);
 
     }
+
+    //=================================================环信消息开始===================================
+
+
+    @Override
+    public void netState(boolean isAvailable) {
+        //判定如果有网络检查环信是否登录，未登录去登录
+        if (isAvailable && !DemoHelper.getInstance().isLoggedIn()) {
+            String userId = MMKV.defaultMMKV().decodeString(Constant.EM_USERNAME, "");
+            String password = MMKV.defaultMMKV().decodeString(Constant.EM_PASSWORD, "");
+            if (TextUtils.isEmpty(userId) || TextUtils.isEmpty(password)) {
+                getUserInfo();
+            }
+        }
+
+    }
+
+    private void getUserInfo() {
+        try {
+            JSONObject jsonObject = new JSONObject();
+            jsonObject.put("sn", CommonUtils.getSN());
+
+            OkGoUtilWeb.<String>post(this, Api.METHOD_IM, jsonObject, IMUser.class, new BaseCallback<IMUser>() {
+                @Override
+                public void onSuccess(String method, IMUser model, String resoureJson) {
+                    if (null != method) {
+                        signIn(model.getBody().getUser_id(), model.getBody().getPwd());
+                    }
+
+                }
+
+                @Override
+                public void onError(String method, String message, String resoureJson) {
+
+                }
+
+                @Override
+                public void onFinsh(String method) {
+
+                }
+            });
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+    }
+
 
     /**
      * 开始环信服务并传输数据
@@ -158,8 +216,10 @@ public class MainActivity extends LaunBaseActivity implements NetBroadcastReceiv
         startService(messageService);
     }
 
+
     /**
      * 登录环信
+     *
      * @param username
      * @param password
      */
@@ -168,15 +228,6 @@ public class MainActivity extends LaunBaseActivity implements NetBroadcastReceiv
         intent.putExtra(Constant.EM_USERNAME, username);
         intent.putExtra(Constant.EM_PASSWORD, password);
         sendBroadcast(intent);
-    }
-
-    @Override
-    public void netState(boolean isAvailable) {
-        //判定如果有网络检查环信是否登录，未登录去登录
-        if(isAvailable && !EMClient.getInstance().isLoggedInBefore()){
-//            signIn("","");
-        }
-
     }
 
 
@@ -202,7 +253,6 @@ public class MainActivity extends LaunBaseActivity implements NetBroadcastReceiv
                     } else {
                         homeBadge.setVisibility(View.INVISIBLE);
                     }
-
                 }
             }
         }

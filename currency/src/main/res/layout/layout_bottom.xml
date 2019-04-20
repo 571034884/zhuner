@@ -1,18 +1,40 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="360dp">
-    <TextView
-        android:id="@+id/tv_pull"
+    android:layout_height="480dp"
+    android:background="@color/common_transparent">
+
+
+    <RelativeLayout
         android:background="@mipmap/bg_pull"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
+        android:layout_height="wrap_content">
+
+
+        <ImageView
+            android:id="@+id/iv_up"
+            android:src="@mipmap/ic_up"
+            android:layout_marginTop="5px"
+            android:layout_centerHorizontal="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+    </RelativeLayout>
+
+
+
 
     <android.support.v7.widget.RecyclerView
+        android:id="@+id/rv_coupon"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:layout_marginTop="20dp"
-        android:background="@color/bg_activity"
+        android:padding="20dp"
+        android:background="@color/bg_activity" />
+
+    <com.aibabel.currencyconversion.custom.EmptyLayout
+        android:id="@+id/el_error"
+        android:visibility="gone"
+        android:layout_marginTop="20dp"
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>
-
-
 </RelativeLayout>

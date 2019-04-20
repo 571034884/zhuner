@@ -8,9 +8,11 @@ package com.aibabel.currencyconversion.app;
 public class Constant {
 
     public static String IP_PORT = "http://abroad.api.joner.aibabel.cn:7001";
+    public static String IP_PORT_TEST = "http://39.107.238.111:7001";
 
     //汇率网址
     public final static String URL = "/v1/currency?c=";
+    public final static String URL_COUPON = "/v1/GetCurrencyCouponData";
     //币种网址
 //    public final static String URL_CURRENCY = "/v1/currency/list";
     public final static String URL_CURRENCY = "/v1/currencylistByLanguage";

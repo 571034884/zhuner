@@ -10,6 +10,7 @@ import android.os.Message;
 import android.os.Messenger;
 import android.os.RemoteException;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.aibabel.baselibrary.sphelper.SPHelper;
 import com.aibabel.message.helper.DemoHelper;
@@ -19,6 +20,7 @@ import com.hyphenate.EMError;
 import com.hyphenate.EMMessageListener;
 import com.hyphenate.chat.EMClient;
 import com.hyphenate.chat.EMMessage;
+import com.tencent.mmkv.MMKV;
 
 import java.util.List;
 
@@ -50,7 +52,6 @@ public class MessageService extends Service {
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         //添加接受消息监听
-
         EMClient.getInstance().chatManager().addMessageListener(messageListener);
 
         if (intent != null) {
@@ -142,9 +143,8 @@ public class MessageService extends Service {
         /**
          * 保存账号密码到全局
          */
-        SPHelper.save("launcher_username", username);
-        SPHelper.save("launcher_password", password);
-
+        MMKV.defaultMMKV().encode(Constant.EM_USERNAME,username);
+        MMKV.defaultMMKV().encode(Constant.EM_PASSWORD,password);
         EMClient.getInstance().login(username, password, new EMCallBack() {
             /**
              * 登陆成功的回调
@@ -185,6 +185,7 @@ public class MessageService extends Service {
                     // 无效的用户名 101
                     case EMError.INVALID_USER_NAME:
                         Log.e(TAG, "无效的用户名 code: " + i + ", message:" + s);
+                        Toast.makeText(MessageService.this, "无效的用户名 code: " + i + ", message:" + s, Toast.LENGTH_LONG).show();
 //                        Toast.makeText(MessageService.this, "无效的用户名 code: " + i + ", message:" + s, Toast.LENGTH_LONG).show();
                         break;
                     // 无效的密码 102
@@ -263,7 +264,7 @@ public class MessageService extends Service {
     private void refreshUIWithMessage() {
         // refresh unread count
         Message mMessage = Message.obtain();
-        mMessage.what = Constant.MSG_UNREAD_NUM;
+        mMessage.what = Constant.MSG_RECEIVER;
         int count = getUnreadMsgCountTotal();
         mMessage.arg1 = count;
         try {

@@ -6,14 +6,15 @@ import android.graphics.Color;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.constraint.ConstraintLayout;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 import android.view.WindowManager;
 import android.view.animation.AlphaAnimation;
@@ -24,11 +25,15 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.aibabel.aidlaar.StatisticsManager;
+import com.aibabel.baselibrary.http.BaseCallback;
+import com.aibabel.baselibrary.http.OkGoUtil;
+import com.aibabel.currencyconversion.adapter.Adapter_Coupon;
 import com.aibabel.currencyconversion.app.BaseActivity;
 import com.aibabel.currencyconversion.app.Constant;
+import com.aibabel.currencyconversion.bean.CouponBean;
 import com.aibabel.currencyconversion.bean.ExchangeRateBean;
 import com.aibabel.currencyconversion.bean.NewCurrencyBean;
+import com.aibabel.currencyconversion.custom.EmptyLayout;
 import com.aibabel.currencyconversion.utils.Calculate;
 import com.aibabel.currencyconversion.utils.CheckFlag;
 import com.aibabel.currencyconversion.utils.CommonUtils;
@@ -37,7 +42,7 @@ import com.aibabel.currencyconversion.utils.InternationalizationUtil;
 import com.aibabel.currencyconversion.utils.NetUtil;
 import com.aibabel.currencyconversion.utils.SharePrefUtil;
 import com.aibabel.currencyconversion.utils.ToastUtil;
-import com.aibabel.currencyconversion.utils.WeizhiUtil;
+import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.StringCallback;
 import com.lzy.okgo.model.Response;
@@ -47,9 +52,9 @@ import com.taobao.sophix.SophixManager;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import java.io.Serializable;
 import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -57,7 +62,6 @@ import java.util.Map;
 import java.util.regex.Pattern;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
 import butterknife.OnClick;
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -117,9 +121,15 @@ public class MainActivity extends BaseActivity {
     ImageView ivGuanbi;
     @BindView(R.id.clGuanbi)
     ConstraintLayout clGuanbi;
+    RecyclerView rvCoupon;
+    ConstraintLayout cl_footer;
+    EmptyLayout el_error;
+    List<CouponBean.DataBean> list = new ArrayList<>();
 
     private int screenWidth;
     private ViewTreeObserver.OnGlobalLayoutListener globalLayoutListener;
+    private Adapter_Coupon adapterCoupon;
+
 
     private int[] idNum = {R.id.tv_0, R.id.tv_1, R.id.tv_2, R.id.tv_3, R.id.tv_4, R.id.tv_5, R.id.tv_6, R.id.tv_7, R.id.tv_8, R.id.tv_9};  //数字Number输入
     private int[] idCal = {R.id.tv_add, R.id.tv_subtraction, R.id.tv_multiplication, R.id.tv_division, R.id.tv_dot};  //运算符
@@ -138,11 +148,11 @@ public class MainActivity extends BaseActivity {
     private String ips = "";
     private String key = "";
 
-    @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-    }
+//    @Override
+//    public void onCreate(@Nullable Bundle savedInstanceState) {
+//        super.onCreate(savedInstanceState);
+//        setContentView(R.layout.activity_main);
+//    }
 
     @Override
     public int initLayout() {
@@ -155,7 +165,8 @@ public class MainActivity extends BaseActivity {
 //        rexiufu();
 //        String guangbi = getIntent().getStringExtra("from");
 //        if (guangbi != null && guangbi.equals("food")) {
-            clGuanbi.setVisibility(View.VISIBLE);
+        clGuanbi.setVisibility(View.VISIBLE);
+        el_error = findViewById(R.id.el_error);
 //        } else {
 //            clGuanbi.setVisibility(View.GONE);
 //        }
@@ -180,7 +191,7 @@ public class MainActivity extends BaseActivity {
 
         initEvent();
         getCurrentExchangeRate();
-
+        getCouponFromServer(countryName);
         //获取屏幕宽度
         WindowManager manager = this.getWindowManager();
         DisplayMetrics outMetrics = new DisplayMetrics();
@@ -190,10 +201,12 @@ public class MainActivity extends BaseActivity {
         etCurrencyCount1.getViewTreeObserver().addOnGlobalLayoutListener(new MyGlobalLayoutListener(llZuo1, llYou1, tvCurrencyAbbreviations1, ivXiala1));
         etCurrencyCount2.getViewTreeObserver().addOnGlobalLayoutListener(new MyGlobalLayoutListener(llZuo2, llYou2, tvCurrencyAbbreviations2, ivXiala2));
         etCurrencyCount3.getViewTreeObserver().addOnGlobalLayoutListener(new MyGlobalLayoutListener(llZuo3, llYou3, tvCurrencyAbbreviations3, ivXiala3));
+        //初始化RecyclerVie
+        initRecyclerView();
 
     }
 
-    private void initView(){
+    private void initView() {
         tvCurrencyAbbreviations1 = findViewById(R.id.tv_currency_abbreviations1);
         tvCurrencyAbbreviations2 = findViewById(R.id.tv_currency_abbreviations2);
         tvCurrencyAbbreviations3 = findViewById(R.id.tv_currency_abbreviations3);
@@ -219,6 +232,7 @@ public class MainActivity extends BaseActivity {
         vCursor2 = findViewById(R.id.v_cursor2);
         vCursor3 = findViewById(R.id.v_cursor3);
     }
+
 
     @OnClick(R.id.iv_guanbi)
     public void onViewClicked() {
@@ -427,8 +441,7 @@ public class MainActivity extends BaseActivity {
                 //屏幕模式显示
                 resetInit("100");
                 try {
-                    tvProvider.setText(getResources().getString(R.string.provided_update) + " " + new SimpleDateFormat("yyyy-MM-dd").format(new Date(new Long(Constant
-                            .CURRENCY_TIME) * 1000)));
+                    tvProvider.setText(getResources().getString(R.string.provided_update) + " " + new SimpleDateFormat("yyyy-MM-dd").format(new Date(new Long(Constant.CURRENCY_TIME) * 1000)));
                 } catch (Exception e) {
 
                 }
@@ -444,7 +457,7 @@ public class MainActivity extends BaseActivity {
                 /**####  start-hjs-addStatisticsEvent   ##**/
                 try {
                     addStatisticsEvent("currency_main1", null);
-                }catch (Exception e){
+                } catch (Exception e) {
                     e.printStackTrace();
                 }
                 /**####  end-hjs-addStatisticsEvent  ##**/
@@ -457,7 +470,7 @@ public class MainActivity extends BaseActivity {
                 /**####  start-hjs-addStatisticsEvent   ##**/
                 try {
                     addStatisticsEvent("currency_main2", null);
-                }catch (Exception e){
+                } catch (Exception e) {
                     e.printStackTrace();
                 }
                 /**####  end-hjs-addStatisticsEvent  ##**/
@@ -470,7 +483,7 @@ public class MainActivity extends BaseActivity {
                 /**####  start-hjs-addStatisticsEvent   ##**/
                 try {
                     addStatisticsEvent("currency_main3", null);
-                }catch (Exception e){
+                } catch (Exception e) {
                     e.printStackTrace();
                 }
                 /**####  end-hjs-addStatisticsEvent  ##**/
@@ -483,7 +496,7 @@ public class MainActivity extends BaseActivity {
                 /**####  start-hjs-addStatisticsEvent   ##**/
                 try {
                     addStatisticsEvent("currency_main4", null);
-                }catch (Exception e){
+                } catch (Exception e) {
                     e.printStackTrace();
                 }
                 /**####  end-hjs-addStatisticsEvent  ##**/
@@ -504,7 +517,7 @@ public class MainActivity extends BaseActivity {
                 /**####  start-hjs-addStatisticsEvent   ##**/
                 try {
                     addStatisticsEvent("currency_main5", null);
-                }catch (Exception e){
+                } catch (Exception e) {
                     e.printStackTrace();
                 }
                 /**####  end-hjs-addStatisticsEvent  ##**/
@@ -525,7 +538,7 @@ public class MainActivity extends BaseActivity {
                 /**####  start-hjs-addStatisticsEvent   ##**/
                 try {
                     addStatisticsEvent("currency_main6", null);
-                }catch (Exception e){
+                } catch (Exception e) {
                     e.printStackTrace();
                 }
                 /**####  end-hjs-addStatisticsEvent  ##**/
@@ -589,7 +602,7 @@ public class MainActivity extends BaseActivity {
 
         @Override
         public void onClick(View v) {
-            addStatisticsEvent("currency_main7",null);
+            addStatisticsEvent("currency_main7", null);
 
             switch (which) {
                 case 1:
@@ -881,6 +894,140 @@ public class MainActivity extends BaseActivity {
                     public void onError(Response<String> response) {
                     }
                 });
+    }
+
+    /**
+     * @================================================================================
+     * @修改人：张文颖
+     * @修改时间：2019年4月19日 15:46:28
+     * @修改内容：添加优惠券信息
+     * @================================================================================
+     */
+    private void initRecyclerView() {
+
+        rvCoupon = findViewById(R.id.rv_coupon);
+        //横向RecyclerView
+        LinearLayoutManager layoutManager = new LinearLayoutManager(this);
+        //设置布局管理器
+        rvCoupon.setLayoutManager(layoutManager);
+        adapterCoupon = new Adapter_Coupon(R.layout.item_coupon, new ArrayList<CouponBean.DataBean>());
+        rvCoupon.setAdapter(adapterCoupon);
+        View view = getFooterView();
+        adapterCoupon.addFooterView(view);
+        adapterCoupon.setOnItemChildClickListener(new BaseQuickAdapter.OnItemChildClickListener() {
+            @Override
+            public void onItemChildClick(BaseQuickAdapter adapter, View view, int position) {
+                Intent intent = new Intent();
+                intent.setClass(MainActivity.this,PhotoViewActivity.class);
+                intent.putExtra("photo_img",list.get(position).getCouponData().getQrimage());
+                startActivity(intent);
+
+            }
+        });
+        cl_footer.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                toShop();
+            }
+        });
+        /**
+         * 重新加载
+         */
+        el_error.setOnBtnClickListener(new EmptyLayout.onClickListener() {
+            @Override
+            public void onBtnClick() {
+                getCouponFromServer(countryName);
+            }
+        });
+
+    }
+
+    private void getCouponFromServer(String countryName) {
+        if (!CommonUtils.isAvailable(this)) {
+            el_error.setErrorType(EmptyLayout.NETWORK_EMPTY);
+            return;
+        }
+
+        Map<String, String> map = new HashMap<>();
+        map.put("countryName", "日本");
+
+//        OkGoUtil.get(Constant.URL_COUPON, map, CouponBean.class, new BaseCallback<CouponBean>() {
+//            @Override
+//            public void onSuccess(String method, CouponBean model, String resoureJson) {
+//                if (null != model && null != model.getData()&&model.getData().size()>0) {
+//                    adapterCoupon.setNewData(model.getData());
+//        el_error.setErrorType(EmptyLayout.SUCCESS_EMPTY);
+//                }
+//            }
+//
+//            @Override
+//            public void onError(String method, String message, String resoureJson) {
+//el_error.setErrorType(EmptyLayout.ERROR_EMPTY);
+//            }
+//
+//            @Override
+//            public void onFinsh(String method) {
+//
+//            }
+//        });
+
+
+        GetRequest<String> getRequest = OkGo.<String>get(Constant.IP_PORT_TEST + Constant.URL_COUPON).tag(this);
+        getRequest.params("sn", CommonUtils.getSN());
+//        getRequest.params("sysLanguage", CommonUtils.getSN());
+        getRequest.params("sl", CommonUtils.getLocalLanguage());
+//        getRequest.params("no", CommonUtils.getRandom());
+        getRequest.params("no", CommonUtils.getRandom());
+        getRequest.params("countryName", "日本");
+        getRequest.execute(new StringCallback() {
+            @Override
+            public void onSuccess(Response<String> response) {
+                try {
+                    String json = response.body();
+                    CouponBean bean = FastJsonUtil.changeJsonToBean(json, CouponBean.class);
+                    if (null != bean && null != bean.getData() && bean.getData().size() > 0) {
+                        list = bean.getData();
+                        adapterCoupon.setNewData(list);
+                        el_error.setErrorType(EmptyLayout.SUCCESS_EMPTY);
+                    }else{
+                        el_error.setErrorType(EmptyLayout.ERROR_EMPTY);
+                    }
+
+                } catch (Exception e) {
+
+                }
+            }
+
+            @Override
+            public void onError(Response<String> response) {
+                super.onError(response);
+                Log.e("currency_main", "onError=====================================");
+                el_error.setErrorType(EmptyLayout.ERROR_EMPTY);
+            }
+        });
+    }
+
+    /**
+     * 获取 footer view
+     *
+     * @return
+     */
+    private View getFooterView() {
+        View view = getLayoutInflater().inflate(R.layout.layout_footer, (ViewGroup) rvCoupon.getParent(), false);
+        cl_footer = view.findViewById(R.id.cl_footer);
+        return view;
+    }
+
+
+    /**
+     * 跳转到优惠券
+     */
+    private void toShop() {
+        Intent intent = getPackageManager().getLaunchIntentForPackage("com.aibabel.coupon");
+        intent.putExtra("from", "map");
+        startActivity(intent);
+        this.finish();
+
     }
 
 }

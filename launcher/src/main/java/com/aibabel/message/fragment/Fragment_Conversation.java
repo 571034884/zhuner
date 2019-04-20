@@ -28,7 +28,7 @@ import java.util.List;
  * @Desc：对话列表
  *==========================================================================================
  */
-public class Fragment_Convertions extends EaseChatFragment implements EaseChatFragment.EaseChatFragmentHelper {
+public class Fragment_Conversation extends EaseChatFragment implements EaseChatFragment.EaseChatFragmentHelper {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         return super.onCreateView(inflater, container, savedInstanceState, DemoHelper.getInstance().getModel().isMsgRoaming() && (chatType != EaseConstant.CHATTYPE_CHATROOM));
