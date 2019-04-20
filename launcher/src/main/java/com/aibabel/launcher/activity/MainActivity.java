@@ -332,6 +332,9 @@ public class MainActivity extends LaunBaseActivity implements NetBroadcastReceiv
     //=================================================环信消息开始===================================
 
 
+    /**
+     * 请求后台获取环信登录账号密码
+     */
     private void getUserInfo() {
         try {
             JSONObject jsonObject = new JSONObject();
@@ -766,9 +769,8 @@ public class MainActivity extends LaunBaseActivity implements NetBroadcastReceiv
                             HashMap<String, Serializable> add_hp = (HashMap<String, Serializable>) msg.obj;
                             LogUtil.e("hjs" + add_hp.get("key"));
                             break;
-
                         case 800:
-
+                            getUserInfo();
                             break;
                         default:
                             break;
@@ -1053,7 +1055,6 @@ public class MainActivity extends LaunBaseActivity implements NetBroadcastReceiv
                     if (loopHandler != null) loopHandler.sendEmptyMessage(800);
                 }
             }
-
             SharePrefUtil.saveString(context, order_channelName, chanelname);
             SharePrefUtil.saveString(context, order_oid, oid);
             SPHelper.save(order_oid, oid);

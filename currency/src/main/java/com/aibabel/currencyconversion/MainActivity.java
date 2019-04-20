@@ -965,23 +965,23 @@ public class MainActivity extends BaseActivity {
             return;
         }
 
-        Map<String, String> map = new HashMap<>();
-        map.put("countryName", "中国");
-
+//        Map<String, String> map = new HashMap<>();
+//        map.put("countryName", "中国");
+//
 //        OkGoUtil.get(Constant.URL_COUPON, map, CouponBean.class, new BaseCallback<CouponBean>() {
 //            @Override
 //            public void onSuccess(String method, CouponBean model, String resoureJson) {
 //                if (null != model && null != model.getData()&&model.getData().size()>0) {
 //                    adapterCoupon.setNewData(model.getData());
-//        el_error.setErrorType(EmptyLayout.SUCCESS_EMPTY);
+//                    el_error.setErrorType(EmptyLayout.SUCCESS_EMPTY);
 //                }else{
-//        el_error.setErrorType(EmptyLayout.NORMAL_EMPTY);
-//                     }
+//                      el_error.setErrorType(EmptyLayout.NORMAL_EMPTY);
+//                }
 //            }
 //
 //            @Override
 //            public void onError(String method, String message, String resoureJson) {
-//el_error.setErrorType(EmptyLayout.ERROR_EMPTY);
+//                  el_error.setErrorType(EmptyLayout.ERROR_EMPTY);
 //            }
 //
 //            @Override
@@ -993,11 +993,9 @@ public class MainActivity extends BaseActivity {
 
         GetRequest<String> getRequest = OkGo.<String>get(Constant.IP_PORT_TEST + Constant.URL_COUPON).tag(this);
         getRequest.params("sn", CommonUtils.getSN());
-//        getRequest.params("sysLanguage", CommonUtils.getSN());
         getRequest.params("sl", CommonUtils.getLocalLanguage());
-//        getRequest.params("no", CommonUtils.getRandom());
         getRequest.params("no", CommonUtils.getRandom());
-        getRequest.params("countryName", "日本");
+        getRequest.params("countryName", "中国");
         getRequest.execute(new StringCallback() {
             @Override
             public void onSuccess(Response<String> response) {
