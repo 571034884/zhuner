@@ -20,7 +20,7 @@ import butterknife.Unbinder;
  */
 //public abstract class BaseActivity extends SimpleStatisticsActivity {
 
-public abstract class BaseActivity extends com.aibabel.baselibrary.base.BaseActivity {
+public abstract class BaseActivity extends com.aibabel.baselibrary.base.BaseActivity implements View.OnClickListener{
 
     private Unbinder mUnbinder;
 
@@ -103,4 +103,10 @@ public abstract class BaseActivity extends com.aibabel.baselibrary.base.BaseActi
 //
 //        return super.onKeyDown(keyCode, event);
 //    }
+
+
+    @Override
+    public void onClick(View v) {
+
+    }
 }

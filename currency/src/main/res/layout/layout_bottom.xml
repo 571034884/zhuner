@@ -6,35 +6,33 @@
 
 
     <RelativeLayout
-        android:background="@mipmap/bg_pull"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
-
+        android:layout_height="wrap_content"
+        android:background="@mipmap/bg_pull">
         <ImageView
             android:id="@+id/iv_up"
-            android:src="@mipmap/ic_up"
-            android:layout_marginTop="5px"
-            android:layout_centerHorizontal="true"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="5px"
+            android:src="@mipmap/ic_up" />
     </RelativeLayout>
-
-
 
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/rv_coupon"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="20dp"
-        android:padding="20dp"
-        android:background="@color/bg_activity" />
+        android:layout_marginTop="18dp"
+        android:background="@color/bg_activity"
+        android:paddingBottom="20dp"
+        android:paddingLeft="20dp"
+        android:paddingRight="20dp" />
 
     <com.aibabel.currencyconversion.custom.EmptyLayout
         android:id="@+id/el_error"
-        android:visibility="gone"
-        android:layout_marginTop="20dp"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+        android:layout_height="match_parent"
+        android:layout_marginTop="18dp"
+        android:visibility="gone" />
 </RelativeLayout>

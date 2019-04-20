@@ -170,14 +170,13 @@ public class ChooseCurrencyActivity extends BaseActivity {
          */
 
         NewCurrencyBean bean1 = new NewCurrencyBean(Constant.CURRENCY_NAME_MOREN_1);
-//        NewCurrencyBean bean2 = new NewCurrencyBean(Constant.CURRENCY_NAME_MOREN_2);
-        NewCurrencyBean bean3 = new NewCurrencyBean(Constant.CURRENCY_NAME_MOREN_3);
+        NewCurrencyBean bean2 = new NewCurrencyBean(Constant.CURRENCY_NAME_MOREN_2);
+//        NewCurrencyBean bean3 = new NewCurrencyBean(Constant.CURRENCY_NAME_MOREN_3);
         bean1.setGroup(getResources().getString(R.string.common_used));
-//        bean2.setGroup(getResources().getString(R.string.common_used));
-        bean3.setGroup(getResources().getString(R.string.common_used));
+        bean2.setGroup(getResources().getString(R.string.common_used));
+//        bean3.setGroup(getResources().getString(R.string.common_used));
         sourceDateList.add(0, bean1);
-        sourceDateList.add(1, bean3);
-//        sourceDateList.add(1, bean2);
+        sourceDateList.add(1, bean2);
 //        sourceDateList.add(2, bean3);
         ALL_CHARACTER = "#" + ALL_CHARACTER;
 //        counts[0] = 3;

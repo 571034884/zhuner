@@ -72,7 +72,7 @@ public class MainActivity extends BaseActivity implements MessageListener {
     private int index;
     private int currentTabIndex;
     private String toChatUsername;
-    private int fragment;
+    private int fragment_index;
 
 //    @Override
 //    public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -90,7 +90,7 @@ public class MainActivity extends BaseActivity implements MessageListener {
         //get user id or group id
 //        toChatUsername = getIntent().getExtras().getString("userId");
         tvUnreadNumber = findViewById(R.id.tv_unread_number);
-        fragment = getIntent().getExtras().getInt("fragment", 0);
+        fragment_index = getIntent().getExtras().getInt("fragment", 0);
         mTabs = new Button[3];
         mTabs[0] = findViewById(R.id.btn_msg);
         mTabs[1] = findViewById(R.id.btn_chat);
@@ -100,8 +100,8 @@ public class MainActivity extends BaseActivity implements MessageListener {
         mViews[1] = findViewById(R.id.v_chat);
         mViews[2] = findViewById(R.id.v_task);
         // select tab
-        mTabs[fragment].setSelected(true);
-        mViews[fragment].setVisibility(View.VISIBLE);
+        mTabs[fragment_index].setSelected(true);
+        mViews[fragment_index].setVisibility(View.VISIBLE);
 
         fragmentChat = new Fragment_Chat();
         fragmentConversation = new Fragment_Conversation();
@@ -111,14 +111,14 @@ public class MainActivity extends BaseActivity implements MessageListener {
 
         //判定是否支持，以便于显示不同的布局
 //        selectUI();
-
-        if (fragment == 0) {
+        currentTabIndex = fragment_index;
+        if (fragment_index == 0) {
             getSupportFragmentManager().beginTransaction()
                     .show(fragmentMessage)
                     .hide(fragmentConversation)
                     .hide(fragmentTask)
                     .commit();
-        } else if (fragment == 1) {
+        } else if (fragment_index == 1) {
             getSupportFragmentManager().beginTransaction()
                     .show(fragmentConversation)
                     .hide(fragmentMessage)

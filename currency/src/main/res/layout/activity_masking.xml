@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/ll_mask"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@mipmap/ic_main_masking"
+    android:onClick="onClick"
+    android:orientation="vertical"
+    android:gravity="center_horizontal"
+    android:visibility="visible">
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="60px"
+        android:orientation="horizontal"
+        android:layout_marginTop="189px"
+        android:background="@drawable/masking_dialog_bg"
+        android:gravity="center_vertical">
+
+        <TextView
+            android:id="@+id/tv_mask"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:onClick="onClick"
+            android:paddingLeft="26px"
+            android:paddingRight="26px"
+            android:text="今天送你的打折券在这里"
+            android:textColor="@android:color/white"
+            android:textSize="22px" />
+
+        <View
+            android:layout_width="2px"
+            android:background="@android:color/white"
+            android:layout_height="match_parent" />
+
+        <ImageView
+            android:id="@+id/iv_mask_close"
+            android:background="@mipmap/close"
+            android:onClick="onClick"
+            android:layout_width="60px"
+            android:layout_height="60px" />
+
+    </LinearLayout>
+
+    <ImageView
+        android:id="@+id/iv_mask_down"
+        android:src="@mipmap/ic_down"
+        android:layout_marginTop="20px"
+        android:layout_marginBottom="30px"
+        android:layout_width="33px"
+        android:layout_height="33px" />
+
+    <LinearLayout
+
+        android:background="@drawable/bg_masking_ll"
+        android:gravity="center_horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <ImageView
+            android:src="@mipmap/ic_launcher"
+            android:layout_marginBottom="30px"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+    </LinearLayout>
+
+
+
+
+</LinearLayout>

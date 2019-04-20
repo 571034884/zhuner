@@ -6,7 +6,6 @@ import android.graphics.Color;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.support.constraint.ConstraintLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -25,8 +24,6 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.aibabel.baselibrary.http.BaseCallback;
-import com.aibabel.baselibrary.http.OkGoUtil;
 import com.aibabel.currencyconversion.adapter.Adapter_Coupon;
 import com.aibabel.currencyconversion.app.BaseActivity;
 import com.aibabel.currencyconversion.app.Constant;
@@ -34,6 +31,7 @@ import com.aibabel.currencyconversion.bean.CouponBean;
 import com.aibabel.currencyconversion.bean.ExchangeRateBean;
 import com.aibabel.currencyconversion.bean.NewCurrencyBean;
 import com.aibabel.currencyconversion.custom.EmptyLayout;
+import com.aibabel.currencyconversion.custom.PullUpDragLayout;
 import com.aibabel.currencyconversion.utils.Calculate;
 import com.aibabel.currencyconversion.utils.CheckFlag;
 import com.aibabel.currencyconversion.utils.CommonUtils;
@@ -56,12 +54,11 @@ import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.regex.Pattern;
 
 import butterknife.BindView;
+import butterknife.ButterKnife;
 import butterknife.OnClick;
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -121,10 +118,23 @@ public class MainActivity extends BaseActivity {
     ImageView ivGuanbi;
     @BindView(R.id.clGuanbi)
     ConstraintLayout clGuanbi;
+    @BindView(R.id.pull_up_drag_layout)
+    PullUpDragLayout pullUpDragLayout;
+    @BindView(R.id.tv_mask)
+    TextView tvMask;
+    @BindView(R.id.iv_mask_close)
+    ImageView ivClose;
+    @BindView(R.id.iv_mask_down)
+    ImageView ivDown;
+    @BindView(R.id.ll_mask)
+    LinearLayout llMask;
     RecyclerView rvCoupon;
     ConstraintLayout cl_footer;
     EmptyLayout el_error;
+    ImageView iv_up;
+
     List<CouponBean.DataBean> list = new ArrayList<>();
+
 
     private int screenWidth;
     private ViewTreeObserver.OnGlobalLayoutListener globalLayoutListener;
@@ -167,9 +177,13 @@ public class MainActivity extends BaseActivity {
 //        if (guangbi != null && guangbi.equals("food")) {
         clGuanbi.setVisibility(View.VISIBLE);
         el_error = findViewById(R.id.el_error);
+        iv_up = findViewById(R.id.iv_up);
+        //初始化RecyclerVie
+        initRecyclerView();
 //        } else {
 //            clGuanbi.setVisibility(View.GONE);
 //        }
+
 
         try {
             Cursor cursor = getContentResolver().query(CONTENT_URI, null, null, null, null);
@@ -201,8 +215,7 @@ public class MainActivity extends BaseActivity {
         etCurrencyCount1.getViewTreeObserver().addOnGlobalLayoutListener(new MyGlobalLayoutListener(llZuo1, llYou1, tvCurrencyAbbreviations1, ivXiala1));
         etCurrencyCount2.getViewTreeObserver().addOnGlobalLayoutListener(new MyGlobalLayoutListener(llZuo2, llYou2, tvCurrencyAbbreviations2, ivXiala2));
         etCurrencyCount3.getViewTreeObserver().addOnGlobalLayoutListener(new MyGlobalLayoutListener(llZuo3, llYou3, tvCurrencyAbbreviations3, ivXiala3));
-        //初始化RecyclerVie
-        initRecyclerView();
+
 
     }
 
@@ -238,6 +251,7 @@ public class MainActivity extends BaseActivity {
     public void onViewClicked() {
         finish();
     }
+
 
     public class MyGlobalLayoutListener implements ViewTreeObserver.OnGlobalLayoutListener {
 
@@ -439,7 +453,7 @@ public class MainActivity extends BaseActivity {
             @Override
             public void run() {
                 //屏幕模式显示
-                resetInit("100");
+                resetInit("0");
                 try {
                     tvProvider.setText(getResources().getString(R.string.provided_update) + " " + new SimpleDateFormat("yyyy-MM-dd").format(new Date(new Long(Constant.CURRENCY_TIME) * 1000)));
                 } catch (Exception e) {
@@ -511,7 +525,7 @@ public class MainActivity extends BaseActivity {
                 etCurrencyCount1.setHintTextColor(Color.parseColor("#fe5000"));
                 etCurrencyCount2.setHintTextColor(Color.parseColor("#ffffff"));
                 etCurrencyCount3.setHintTextColor(Color.parseColor("#ffffff"));
-                resetInit("100");
+                resetInit("0");
                 break;
             case R.id.ll_you2:
                 /**####  start-hjs-addStatisticsEvent   ##**/
@@ -532,7 +546,7 @@ public class MainActivity extends BaseActivity {
                 etCurrencyCount1.setHintTextColor(Color.parseColor("#ffffff"));
                 etCurrencyCount2.setHintTextColor(Color.parseColor("#fe5000"));
                 etCurrencyCount3.setHintTextColor(Color.parseColor("#ffffff"));
-                resetInit("100");
+                resetInit("0");
                 break;
             case R.id.ll_you3:
                 /**####  start-hjs-addStatisticsEvent   ##**/
@@ -553,7 +567,7 @@ public class MainActivity extends BaseActivity {
                 etCurrencyCount1.setHintTextColor(Color.parseColor("#ffffff"));
                 etCurrencyCount2.setHintTextColor(Color.parseColor("#ffffff"));
                 etCurrencyCount3.setHintTextColor(Color.parseColor("#fe5000"));
-                resetInit("100");
+                resetInit("0");
                 break;
         }
     }
@@ -675,7 +689,7 @@ public class MainActivity extends BaseActivity {
             BigDecimal bd2 = new BigDecimal(str2);
             result = bd1.multiply(bd2).setScale(2, BigDecimal.ROUND_HALF_UP).toString();
         } catch (Exception e) {
-            resetInit("100");
+            resetInit("0");
         }
         return result;
     }
@@ -896,6 +910,7 @@ public class MainActivity extends BaseActivity {
                 });
     }
 
+
     /**
      * @================================================================================
      * @修改人：张文颖
@@ -903,6 +918,17 @@ public class MainActivity extends BaseActivity {
      * @修改内容：添加优惠券信息
      * @================================================================================
      */
+
+
+    private void initMasking() {
+        boolean isFirst = SharePrefUtil.getBoolean(this, "isFirst", true);
+        if (isFirst) {
+            llMask.setVisibility(View.VISIBLE);
+            SharePrefUtil.saveBoolean(this, "isFirst", false);
+        }
+    }
+
+
     private void initRecyclerView() {
 
         rvCoupon = findViewById(R.id.rv_coupon);
@@ -918,8 +944,8 @@ public class MainActivity extends BaseActivity {
             @Override
             public void onItemChildClick(BaseQuickAdapter adapter, View view, int position) {
                 Intent intent = new Intent();
-                intent.setClass(MainActivity.this,PhotoViewActivity.class);
-                intent.putExtra("photo_img",list.get(position).getCouponData().getQrimage());
+                intent.setClass(MainActivity.this, PhotoViewActivity.class);
+                intent.putExtra("photo_img", list.get(position).getCouponData().getQrimage());
                 startActivity(intent);
 
             }
@@ -930,13 +956,34 @@ public class MainActivity extends BaseActivity {
                 toShop();
             }
         });
+
+        iv_up.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                pullUpDragLayout.toggleBottomView();
+            }
+        });
+
+        pullUpDragLayout.setOnStateListener(new PullUpDragLayout.OnStateListener() {
+            @Override
+            public void open() {
+                iv_up.setImageResource(R.mipmap.ic_down);
+            }
+
+            @Override
+            public void close() {
+                iv_up.setImageResource(R.mipmap.ic_up);
+            }
+        });
+
+
         /**
          * 重新加载
          */
         el_error.setOnBtnClickListener(new EmptyLayout.onClickListener() {
             @Override
             public void onBtnClick(int type) {
-                switch (type){
+                switch (type) {
                     case EmptyLayout.NETWORK_EMPTY:
                         launcherApp("com.zhuner.administrator.settings");
                         break;
@@ -949,13 +996,23 @@ public class MainActivity extends BaseActivity {
 
     }
 
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.ll_mask:
+                break;
+            case R.id.iv_mask_close:
+                llMask.setVisibility(View.GONE);
+                break;
+        }
+    }
 
-    public void launcherApp(String packageStr){
+    public void launcherApp(String packageStr) {
         try {
             Intent LaunchIntent = getPackageManager().getLaunchIntentForPackage(packageStr);
             startActivity(LaunchIntent);
         } catch (Exception e) {
-            Log.e("launcherApp",packageStr+":"+e.toString());
+            Log.e("launcherApp", packageStr + ":" + e.toString());
         }
     }
 
@@ -967,7 +1024,6 @@ public class MainActivity extends BaseActivity {
 
 //        Map<String, String> map = new HashMap<>();
 //        map.put("countryName", "中国");
-//
 //        OkGoUtil.get(Constant.URL_COUPON, map, CouponBean.class, new BaseCallback<CouponBean>() {
 //            @Override
 //            public void onSuccess(String method, CouponBean model, String resoureJson) {
@@ -989,13 +1045,13 @@ public class MainActivity extends BaseActivity {
 //
 //            }
 //        });
+        countryName = "日本";
 
-
-        GetRequest<String> getRequest = OkGo.<String>get(Constant.IP_PORT_TEST + Constant.URL_COUPON).tag(this);
+        GetRequest<String> getRequest = OkGo.<String>get(Constant.IP_PORT + Constant.URL_COUPON).tag(this);
         getRequest.params("sn", CommonUtils.getSN());
         getRequest.params("sl", CommonUtils.getLocalLanguage());
         getRequest.params("no", CommonUtils.getRandom());
-        getRequest.params("countryName", "中国");
+        getRequest.params("countryName", countryName);
         getRequest.execute(new StringCallback() {
             @Override
             public void onSuccess(Response<String> response) {
@@ -1006,12 +1062,13 @@ public class MainActivity extends BaseActivity {
                         list = bean.getData();
                         adapterCoupon.setNewData(list);
                         el_error.setErrorType(EmptyLayout.SUCCESS_EMPTY);
-                    }else{
+                    } else {
                         el_error.setErrorType(EmptyLayout.NORMAL_EMPTY);
                     }
 
                 } catch (Exception e) {
-
+                    Log.e("currency_main", e.getMessage()+"=========================");
+                    el_error.setErrorType(EmptyLayout.ERROR_EMPTY);
                 }
             }
 
@@ -1040,11 +1097,13 @@ public class MainActivity extends BaseActivity {
      * 跳转到优惠券
      */
     private void toShop() {
-        Intent intent = getPackageManager().getLaunchIntentForPackage("com.aibabel.coupon");
-        intent.putExtra("from", "map");
-        startActivity(intent);
-        this.finish();
-
+        try {
+            Intent intent = getPackageManager().getLaunchIntentForPackage("com.aibabel.coupon");
+            intent.putExtra("from", "map");
+            startActivity(intent);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
 }
