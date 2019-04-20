@@ -70,7 +70,13 @@
             android:name="com.hyphenate.easeui.ui.EaseShowBigImageActivity"
             android:screenOrientation="portrait"
             android:theme="@style/horizontal_slide" />
-
+        <!--关机广播-->
+        <receiver android:name=".receiver.ShutdownBcastReceiver">
+            <intent-filter>
+                <action android:name="android.intent.action.ACTION_SHUTDOWN"/>
+                <category android:name="android.intent.category.HOME"/>
+            </intent-filter>
+        </receiver>
 
         <!-- 消息处理 -->
         <receiver
