@@ -10,6 +10,7 @@
         android:foreground="@mipmap/ic_top_g"
         android:layout_height="wrap_content">
     <ImageView
+        android:id="@+id/main_address_pic"
         android:layout_width="match_parent"
         android:layout_height="@dimen/y320"
         android:src="@mipmap/ic_top_default"
@@ -17,10 +18,11 @@
         />
     </FrameLayout>
     <TextView
-        android:id="@+id/tv_location"
+        android:id="@+id/main_location_app"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="北京"
+        android:onClick="onClick"
         android:layout_marginLeft="@dimen/x30"
         android:drawableLeft="@mipmap/main_top_location_icn"
         android:drawablePadding="@dimen/x15"
@@ -49,7 +51,7 @@
         <FrameLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:id="@+id/fl_notice"
+            android:id="@+id/main_notice_app"
             android:onClick="onClick"
             android:clickable="true"
             android:focusable="true">
@@ -81,27 +83,31 @@
 
 
     <TextView
-        android:id="@+id/tv_wifi"
-        android:layout_below="@id/tv_location"
+        android:id="@+id/main_wifi_app"
+        android:layout_below="@id/main_location_app"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="WIFI"
         android:layout_marginLeft="@dimen/x30"
         android:drawableLeft="@mipmap/ic_wifi"
         android:drawablePadding="@dimen/x15"
-        android:layout_marginTop="@dimen/y65"
-        android:paddingLeft="@dimen/x25"
+        android:layout_marginTop="@dimen/y55"
+        android:onClick="onClick"
+        android:paddingLeft="@dimen/x30"
         android:paddingRight="@dimen/x30"
         android:paddingTop="@dimen/y8"
         android:paddingBottom="@dimen/y8"
+        android:ellipsize="end"
+        android:maxEms="8"
+        android:singleLine="true"
         android:textStyle="bold"
         android:textColor="@android:color/white"
         android:textSize="@dimen/y30"
-        android:background="@mipmap/ic_wifi_bg"
+        android:background="@drawable/main_wifi_bg"
         />
     <LinearLayout
         android:id="@+id/main_layout_one"
-        android:layout_below="@id/tv_wifi"
+        android:layout_below="@id/main_wifi_app"
         android:layout_width="match_parent"
         android:paddingLeft="@dimen/x10"
         android:paddingRight="@dimen/x10"
@@ -109,7 +115,6 @@
         android:layout_marginTop="@dimen/y25"
         android:layout_height="@dimen/y180">
         <android.support.v7.widget.CardView
-            android:id="@+id/cv_timer"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             app:cardCornerRadius="16dp"
@@ -126,12 +131,15 @@
                 android:layout_height="match_parent"
                 android:orientation="horizontal">
                 <LinearLayout
+                    android:id="@+id/main_timer_app"
+                    android:onClick="onClick"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
                     android:gravity="center"
                     android:orientation="vertical">
                     <TextView
+                        android:id="@+id/main_timer_city"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="加拿大"
@@ -140,7 +148,7 @@
                         android:textColor="@color/c_99"
                         />
                     <TextClock
-                        android:id="@+id/main_middle_time"
+                        android:id="@+id/main_timer_clock"
                         android:text="20:40"
                         android:textColor="@color/color_66"
                         android:textSize="@dimen/y38"
@@ -153,8 +161,8 @@
                         android:layout_centerHorizontal="true"
                         />
                     <TextClock
-                        android:id="@+id/main_middle_date"
-                        android:layout_below="@id/main_middle_time"
+                        android:id="@+id/main_timer_data"
+                        android:layout_below="@id/main_timer_clock"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:textColor="@color/c_99"
@@ -168,7 +176,9 @@
                 </LinearLayout>
 
                 <RelativeLayout
+                    android:id="@+id/main_weather_app"
                     android:layout_width="0dp"
+                    android:onClick="onClick"
                     android:layout_height="match_parent"
                     android:gravity="center"
                     android:layout_weight="1">
@@ -180,7 +190,7 @@
                         android:layout_centerHorizontal="true"
                         >
                         <TextView
-                            android:id="@+id/main_middle_tianqi_du"
+                            android:id="@+id/main_weather_c"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:textColor="@color/color_66"
@@ -201,7 +211,7 @@
                             android:textStyle="bold" />
                     </LinearLayout>
                     <TextView
-                        android:id="@+id/main_middle_tianqi"
+                        android:id="@+id/main_weather_des"
                         android:layout_below="@id/linear_tianqi"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -215,10 +225,9 @@
                         />
                 </RelativeLayout>
             </LinearLayout>
-
         </android.support.v7.widget.CardView>
         <android.support.v7.widget.CardView
-            android:id="@+id/cv_huilv"
+            android:id="@+id/main_huilv_app"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             app:cardCornerRadius="16dp"
@@ -242,7 +251,7 @@
                     android:src="@mipmap/icon_menu_huilvs"
                     />
                 <TextView
-                    android:id="@+id/tv_huilvone"
+                    android:id="@+id/main_huilv_cny"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_toRightOf="@id/iv_huilv"
@@ -252,8 +261,8 @@
                     android:textSize="12sp"
                     />
                 <TextView
-                    android:id="@+id/tv_huilvtwo"
-                    android:layout_below="@id/tv_huilvone"
+                    android:id="@+id/main_huilv_chg"
+                    android:layout_below="@id/main_huilv_cny"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_toRightOf="@id/iv_huilv"
@@ -290,9 +299,9 @@
             android:orientation="vertical">
 
             <android.support.v7.widget.CardView
-                android:id="@+id/cv_change_one"
+                android:id="@+id/main_one_app"
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/y230"
+                android:layout_height="@dimen/y240"
                 app:cardCornerRadius="16dp"
                 app:cardPreventCornerOverlap="true"
                 app:cardUseCompatPadding="true"
@@ -329,13 +338,13 @@
                 </RelativeLayout>
             </android.support.v7.widget.CardView>
             <android.support.v7.widget.CardView
-                android:id="@+id/cv_carem"
+                android:id="@+id/main_two_app"
+                android:onClick="onClick"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/y180"
                 app:cardCornerRadius="16dp"
                 app:cardPreventCornerOverlap="true"
                 app:cardUseCompatPadding="true"
-                android:onClick="onClick"
                 android:foreground="?attr/selectableItemBackground"
                 app:cardElevation="@dimen/x5">
                 <RelativeLayout
@@ -368,13 +377,13 @@
 
             </android.support.v7.widget.CardView>
             <android.support.v7.widget.CardView
-                android:id="@+id/cv_translate"
+                android:id="@+id/main_three_app"
+                android:onClick="onClick"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/y120"
                 app:cardCornerRadius="16dp"
                 app:cardPreventCornerOverlap="true"
                 app:cardUseCompatPadding="true"
-                android:onClick="onClick"
                 android:foreground="?attr/selectableItemBackground"
                 app:cardElevation="@dimen/x5">
                 <RelativeLayout
@@ -412,13 +421,13 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
             <android.support.v7.widget.CardView
-                android:id="@+id/cv_map"
+                android:id="@+id/main_four_app"
+                android:onClick="onClick"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/y180"
                 app:cardCornerRadius="16dp"
                 app:cardPreventCornerOverlap="true"
                 app:cardUseCompatPadding="true"
-                android:onClick="onClick"
                 android:foreground="?attr/selectableItemBackground"
                 app:cardElevation="@dimen/x5">
                 <RelativeLayout
@@ -451,9 +460,9 @@
             </android.support.v7.widget.CardView>
 
             <android.support.v7.widget.CardView
-                android:id="@+id/cv_change_two"
+                android:id="@+id/main_five_app"
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/y230"
+                android:layout_height="@dimen/y240"
                 app:cardCornerRadius="16dp"
                 app:cardPreventCornerOverlap="true"
                 app:cardUseCompatPadding="true"
@@ -461,6 +470,7 @@
                 android:foreground="?attr/selectableItemBackground"
                 app:cardElevation="@dimen/x5">
                 <RelativeLayout
+                    android:id="@+id/main_five_rl"
                     android:layout_width="match_parent"
                     android:background="@mipmap/ic_game_bg"
                     android:gravity="bottom"
@@ -468,14 +478,15 @@
                     android:paddingBottom="@dimen/x15"
                     android:layout_height="match_parent">
                     <ImageView
-                        android:id="@+id/iv_game"
+                        android:id="@+id/iv_main_five"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_centerVertical="true"
                         android:src="@mipmap/ic_game_img"
                         />
                     <TextView
-                        android:layout_toRightOf="@id/iv_game"
+                        android:id="@+id/tv_main_five"
+                        android:layout_toRightOf="@id/iv_main_five"
                         android:textStyle="bold"
                         android:layout_centerVertical="true"
                         android:layout_centerInParent="true"
@@ -489,7 +500,7 @@
                 </RelativeLayout>
             </android.support.v7.widget.CardView>
             <android.support.v7.widget.CardView
-                android:id="@+id/cv_more"
+                android:id="@+id/main_six_app"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/y120"
                 app:cardCornerRadius="16dp"
