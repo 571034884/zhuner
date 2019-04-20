@@ -25,7 +25,7 @@ public class Adapter_Coupon extends BaseQuickAdapter<CouponBean.DataBean, BaseVi
         helper.setText(R.id.tv_item_coupon, item.getCouponData().getTitle());
         helper.setText(R.id.tv_item_condition, item.getCouponData().getTitle());
         // 加载网络图片
-        Glide.with(mContext).load(item.getCouponData().getQrimage()).into((ImageView) helper.getView(R.id.iv_item_img));
+        Glide.with(mContext).load(item.getCouponData().getImage()).into((ImageView) helper.getView(R.id.iv_item_img));
 
         helper.addOnClickListener(R.id.tv_item_use);
 

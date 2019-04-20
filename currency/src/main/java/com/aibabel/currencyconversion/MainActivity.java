@@ -935,11 +935,28 @@ public class MainActivity extends BaseActivity {
          */
         el_error.setOnBtnClickListener(new EmptyLayout.onClickListener() {
             @Override
-            public void onBtnClick() {
-                getCouponFromServer(countryName);
+            public void onBtnClick(int type) {
+                switch (type){
+                    case EmptyLayout.NETWORK_EMPTY:
+                        launcherApp("com.zhuner.administrator.settings");
+                        break;
+                    case EmptyLayout.ERROR_EMPTY:
+                        getCouponFromServer(countryName);
+                        break;
+                }
             }
         });
 
+    }
+
+
+    public void launcherApp(String packageStr){
+        try {
+            Intent LaunchIntent = getPackageManager().getLaunchIntentForPackage(packageStr);
+            startActivity(LaunchIntent);
+        } catch (Exception e) {
+            Log.e("launcherApp",packageStr+":"+e.toString());
+        }
     }
 
     private void getCouponFromServer(String countryName) {

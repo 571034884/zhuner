@@ -32,6 +32,8 @@ public class EmptyLayout extends LinearLayout {
     private LinearLayout empty_ll;
     private TextView empty_btn;
 
+    private int currentType = 0;
+
 
     public EmptyLayout(Context context) {
         super(context);
@@ -55,7 +57,7 @@ public class EmptyLayout extends LinearLayout {
         empty_btn.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                listener.onBtnClick();
+                listener.onBtnClick(currentType);
             }
         });
     }
@@ -67,7 +69,7 @@ public class EmptyLayout extends LinearLayout {
     }
 
     public interface onClickListener {
-        void onBtnClick();
+        void onBtnClick(int type);
     }
 
     public void setErrorType(int error) {
@@ -75,23 +77,27 @@ public class EmptyLayout extends LinearLayout {
         empty_btn.setVisibility(GONE);
         switch (error) {
             case SUCCESS_EMPTY:
+                currentType = SUCCESS_EMPTY;
                 setVisibility(View.GONE);
                 break;
             case NORMAL_EMPTY:
+                currentType = NORMAL_EMPTY;
                 empty_img.setImageResource(R.mipmap.ic_null);
                 empty_txt.setText("准儿没有找到信息");
                 break;
             case ERROR_EMPTY:
+                currentType = ERROR_EMPTY;
                 empty_img.setImageResource(R.mipmap.server_error);
                 empty_txt.setText("准儿出错了");
                 empty_btn.setVisibility(VISIBLE);
                 empty_btn.setText("重新加载");
                 break;
             case NETWORK_EMPTY:
+                currentType = NETWORK_EMPTY;
                 empty_img.setImageResource(R.mipmap.ic_network_error);
                 empty_txt.setText("网络开了小差，请连接网络");
                 empty_btn.setVisibility(VISIBLE);
-                empty_btn.setText("重新加载");
+                empty_btn.setText("连接WIFI");
                 break;
         }
     }
