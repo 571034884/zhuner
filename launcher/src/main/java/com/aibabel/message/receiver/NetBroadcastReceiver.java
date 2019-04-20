@@ -14,10 +14,12 @@ import com.aibabel.baselibrary.utils.CommonUtils;
 import com.aibabel.baselibrary.utils.FastJsonUtil;
 import com.aibabel.baselibrary.utils.ToastUtil;
 import com.aibabel.launcher.bean.PublicBean;
+import com.aibabel.launcher.utils.Logs;
 import com.aibabel.launcher.utils.ServerUtils;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.StringCallback;
 import com.lzy.okgo.model.Response;
+import com.tencent.mmkv.MMKV;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -40,7 +42,7 @@ public class NetBroadcastReceiver extends BroadcastReceiver {
 
     @Override
     public void onReceive(Context context, Intent intent) {
-
+        MMKV mmkv = MMKV.defaultMMKV();
         if (intent.getAction().equals("android.net.conn.CONNECTIVITY_CHANGE")) {
             boolean this_networkAvailable = CommonUtils.isNetworkAvailable(context);
             if (this_networkAvailable) {
@@ -57,7 +59,25 @@ public class NetBroadcastReceiver extends BroadcastReceiver {
                         listener.netState(wifiInfo.getSSID().replaceAll("\"",""));
                     }
                 }
-                getInternetService(context);
+
+                //预判服务器域名
+                String serIP = mmkv.decodeString("serIP","");
+                if (TextUtils.isEmpty(serIP)){
+                    Logs.e("当前 serIP 空");
+                    mmkv.encode("serIP",System.currentTimeMillis()+"");
+                    getInternetService(context);
+                }else{
+                    long intIP = Long.parseLong(serIP);
+                    long outIP = System.currentTimeMillis();
+                    long results = outIP - intIP;
+
+                    Logs.e("服务器域名计算:"+outIP+"-"+intIP+"="+results);
+                    //超过5小时 请求一次 1800000
+                    if (results > 1800000){
+                        mmkv.encode("serIP",outIP+"");
+                        getInternetService(context);
+                    }
+                }
             } else {
                 listener.netState(false);
                 listener.netState("WIFI");
