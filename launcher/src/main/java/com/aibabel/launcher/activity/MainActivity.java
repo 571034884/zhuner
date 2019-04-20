@@ -40,6 +40,7 @@ import com.aibabel.launcher.bean.MenuDataBean;
 import com.aibabel.launcher.bean.PushMessageBean;
 import com.aibabel.launcher.bean.SyncOrder;
 import com.aibabel.launcher.net.Api;
+import com.aibabel.launcher.receiver.LauncherBcastReceiver;
 import com.aibabel.launcher.rent.RentDialogActivity;
 import com.aibabel.launcher.rent.RentKeepUseActivity;
 import com.aibabel.launcher.rent.RentLockedActivity;
@@ -51,6 +52,7 @@ import com.aibabel.launcher.utils.LocationUtils;
 import com.aibabel.launcher.utils.LogUtil;
 import com.aibabel.launcher.utils.Logs;
 import com.aibabel.launcher.view.MaterialBadgeTextView;
+import com.aibabel.launcher.view.MyDialog;
 import com.aibabel.message.bean.IMUser;
 import com.aibabel.message.helper.DemoHelper;
 import com.aibabel.message.receiver.NetBroadcastReceiver;
@@ -74,7 +76,7 @@ import java.util.Map;
 
 import butterknife.BindView;
 
-public class MainActivity extends LaunBaseActivity implements NetBroadcastReceiver.NetListener {
+public class MainActivity extends LaunBaseActivity implements NetBroadcastReceiver.NetListener ,LauncherBcastReceiver.LauncherListener{
 
     @BindView(R.id.main_location_app)
     TextView mMainLocation;
@@ -116,11 +118,11 @@ public class MainActivity extends LaunBaseActivity implements NetBroadcastReceiv
     //环信交互handler
     Handler handler = new MyHandler(MainActivity.this);
 
-    private String locationCity;//城市
-    private String locationCountry;//国家
-    private String locationLatLng;//经纬度
+    private String locationCity = "";//城市
+    private String locationCountry  = "";//国家
+    private String locationLatLng  = "";//经纬度
     private boolean flagApi = false;//判断请求
-    private String oldCity;
+    private String oldCity = "";
 
 
     /**
@@ -128,6 +130,7 @@ public class MainActivity extends LaunBaseActivity implements NetBroadcastReceiv
      */
     private int fragment_index;
     private NetBroadcastReceiver broadcastReceiver;
+    private LauncherBcastReceiver launcherBcastReceiver;
 
 
     @Override
@@ -145,6 +148,7 @@ public class MainActivity extends LaunBaseActivity implements NetBroadcastReceiv
         }
         homeBadge = findViewById(R.id.home_badge);
         registerNet();
+        registerLauncher();
         startMessageService();
         signIn("user1", "123");
 
@@ -158,6 +162,8 @@ public class MainActivity extends LaunBaseActivity implements NetBroadcastReceiv
 
         requestNetwork();
     }
+
+
 
     public void onClick(View view) {
         switch (view.getId()) {
@@ -245,19 +251,50 @@ public class MainActivity extends LaunBaseActivity implements NetBroadcastReceiv
                         //选择
                         String cityID = data.getStringExtra("city_id");
                         String countryID = data.getStringExtra("country_id");
-                        if (!TextUtils.isEmpty(cityID) && !TextUtils.isEmpty(countryID) && !cityName.equals(oldCity)) {
+                        if (!TextUtils.isEmpty(cityID) && !TextUtils.isEmpty(countryID) && !cityName.equals(oldCity)){
                             oldCity = cityName;
-                            isNetWorkCity(cityID, countryID, "");
-                        }
-                        boolean isDialog = mmkv.decodeBool("isDialog", false);
-                        if (!TextUtils.isEmpty(locationLatLng) && !isDialog) {
-                            //判断有定位
-
+                            isNetWorkCity(cityID,countryID,"");
+                            boolean isDialog = mmkv.decodeBool("isDialogShow",false);
+                            Logs.e("是否显示Dialog："+isDialog);
+//                            isDialog = false;
+                            if (!TextUtils.isEmpty(locationLatLng) && !TextUtils.isEmpty(locationCity) && !isDialog){
+                                //判断有定位
+                                showDialogView(locationCity);
+                            }
                         }
                     }
                     break;
             }
         }
+    }
+    private MyDialog builder;
+    private void showDialogView(String locationCity) {
+        View view = getLayoutInflater().inflate(R.layout.dialog_layout_city, null);
+        builder = new MyDialog(mContext, 0, 0, view, R.style.dialog);
+        builder.setCancelable(false);
+
+        //初始化控件
+        TextView btnLeft = view.findViewById(R.id.dialog_left);
+        TextView btnRight = view.findViewById(R.id.dialog_right);
+        TextView titleCity = view.findViewById(R.id.dialog_citys);
+        titleCity.setText(locationCity+"");
+
+        btnLeft.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mmkv.encode("isDialogShow",true);
+                builder.dismiss();
+            }
+        });
+        btnRight.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mmkv.encode("isDialogShow",false);
+                changeView();
+                builder.dismiss();
+            }
+        });
+        builder.show();
     }
 
     @Override
@@ -274,7 +311,14 @@ public class MainActivity extends LaunBaseActivity implements NetBroadcastReceiv
         registerReceiver(broadcastReceiver, intentFilter);
         broadcastReceiver.setListener(this);
     }
-
+    private void registerLauncher() {
+        //后台定位广播接收器
+        launcherBcastReceiver = new LauncherBcastReceiver();
+        IntentFilter intentFilter = new IntentFilter();
+        intentFilter.addAction("com.aibabel.menu.MENULOCATION");
+        registerReceiver(launcherBcastReceiver, intentFilter);
+        launcherBcastReceiver.setListener(this);
+    }
 
     private void startActivity(int fragment_type) {
         fragment_type = 1;
@@ -373,6 +417,14 @@ public class MainActivity extends LaunBaseActivity implements NetBroadcastReceiv
     @Override
     public void netState(String nameWifi) {
         mMainWifi.setText(nameWifi);
+    }
+
+    @Override
+    public void launcherReceiver(String city) {
+        if (TextUtils.isEmpty(oldCity)){
+            Logs.e("oldCity - null - 了");
+            changeView();
+        }
     }
 
     /**
@@ -509,7 +561,6 @@ public class MainActivity extends LaunBaseActivity implements NetBroadcastReceiv
                 break;
         }
     }
-
 
     /**
      * 声明静态内部类不会持有外部类的隐式引用

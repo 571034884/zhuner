@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="300dp"
+        android:layout_height="180dp"
+        android:layout_centerInParent="true"
+        android:background="@drawable/bg_dialog_round"
+        android:orientation="vertical">
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:gravity="center"
+            android:layout_weight="1">
+            <TextView
+                android:id="@+id/dialog_change_content"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/clr_333"
+                android:lineSpacingExtra="@dimen/y8"
+                android:textSize="@dimen/y28"
+                android:gravity="center_horizontal"
+                android:text="准儿定位到您在"
+                android:textStyle="bold"
+                />
+            <TextView
+                android:id="@+id/dialog_citys"
+                android:layout_toRightOf="@+id/dialog_change_content"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/x10"
+                android:textColor="@color/color_ff8b01"
+                android:drawablePadding="@dimen/x10"
+                android:drawableLeft="@mipmap/main_top_location_icn"
+                android:textSize="@dimen/y28"
+                android:gravity="center_horizontal"
+                android:text="北京市"
+                android:textStyle="bold"
+                />
+            <TextView
+                android:layout_below="@+id/dialog_citys"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/clr_666"
+                android:layout_marginTop="@dimen/x20"
+                android:textSize="@dimen/y26"
+                android:gravity="center_horizontal"
+                android:text="是否切换至当前您所在的城市?"
+                />
+        </RelativeLayout>
+        <View
+            android:layout_width="match_parent"
+            android:background="#f9f9f9"
+            android:layout_height="2px" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+            <TextView
+                android:id="@+id/dialog_left"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:padding="15dp"
+                android:text="取消"
+                android:textSize="@dimen/y25"
+                android:textColor="@color/clr_666" />
+
+            <View
+                android:layout_width="2px"
+                android:background="#f9f9f9"
+                android:layout_height="match_parent" />
+
+            <TextView
+                android:id="@+id/dialog_right"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:padding="15dp"
+                android:text="切换"
+                android:textSize="@dimen/y25"
+                android:textColor="@color/color_ff8b01" />
+        </LinearLayout>
+    </LinearLayout>
+
+</RelativeLayout>
