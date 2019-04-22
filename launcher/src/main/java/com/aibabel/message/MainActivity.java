@@ -279,7 +279,7 @@ public class MainActivity extends LaunBaseActivity  {
         EditText editText = view.findViewById(R.id.et_dialog_nick);
         TextView btnCommit = view.findViewById(R.id.tv_dialog_commit);
 
-        editText.setHint("准儿帮" + getUUID());
+//        editText.setHint("准儿帮" + getUUID());
         btnCommit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

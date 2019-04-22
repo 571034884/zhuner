@@ -5,6 +5,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.text.TextUtils;
 
+import com.aibabel.baselibrary.utils.FastJsonUtil;
+import com.aibabel.launcher.bean.MusicBean;
 import com.aibabel.launcher.utils.Logs;
 
 /**
@@ -27,7 +29,11 @@ public class LauncherBcastReceiver extends BroadcastReceiver {
                 }
                 break;
             case "com.aibabel.launcher.MUSIC":
-                listener.launcherMusic("0");
+                int type = intent.getExtras().getInt("type");
+                Logs.e("景区导览：type:"+type);
+                String urlPic = intent.getExtras().getString("urlPic");
+                String name = intent.getExtras().getString("name");
+                listener.launcherMusic(urlPic,name,type);
                 break;
         }
     }
@@ -39,7 +45,7 @@ public class LauncherBcastReceiver extends BroadcastReceiver {
 
     public interface LauncherListener {
         void launcherReceiver(String city);
-        void launcherMusic(String type);
+        void launcherMusic(String urlPic,String name,int type);
     }
 
 }

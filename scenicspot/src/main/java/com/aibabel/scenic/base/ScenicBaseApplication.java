@@ -45,16 +45,10 @@ public class ScenicBaseApplication extends BaseApplication {
     public static AddressBean addressBeanOceanica = null;//大洋洲
     public static String LEASEID = "";//订单id
 
-    /**
-     * 存储程序中所创建的activity
-     */
-    private static LinkedList<Activity> activityLinkedList;
-
     @Override
     public void onCreate() {
         super.onCreate();
         CONTEXT = this.getApplicationContext();
-        initAppExitConfig();
         configUmeng();
         initCountry();
     }
@@ -118,50 +112,6 @@ public class ScenicBaseApplication extends BaseApplication {
         return CONTEXT;
     }
 
-    /**
-     * 每当创建新的activity的时候，添加Activity到list中，方便统一退出
-     */
-    public void initAppExitConfig() {
-
-        activityLinkedList = new LinkedList<>();
-
-        registerActivityLifecycleCallbacks(new ActivityLifecycleCallbacks() {
-            @Override
-            public void onActivityCreated(Activity activity, Bundle savedInstanceState) {
-                activityLinkedList.add(activity);
-            }
-
-            @Override
-            public void onActivityStarted(Activity activity) {
-                Log.d(TAG, "onActivityStarted: " + activity.getLocalClassName());
-
-            }
-
-            @Override
-            public void onActivityResumed(Activity activity) {
-            }
-
-            @Override
-            public void onActivityPaused(Activity activity) {
-            }
-
-            @Override
-            public void onActivityStopped(Activity activity) {
-                stateCount--;
-            }
-
-            @Override
-            public void onActivitySaveInstanceState(Activity activity, Bundle outState) {
-
-            }
-
-            @Override
-            public void onActivityDestroyed(Activity activity) {
-                activityLinkedList.remove(activity);
-            }
-        });
-    }
-
 
     /**
      * 判断程序是否在后台运行
@@ -171,23 +121,6 @@ public class ScenicBaseApplication extends BaseApplication {
     public static boolean isBackground() {
         return ScenicBaseApplication.stateCount == 0;
     }
-
-
-    /**
-     * 退出所有app
-     */
-    public static void exit() {
-        if(activityLinkedList!=null&& activityLinkedList.size()>0){
-            for (Activity activity : activityLinkedList) {
-                activity.finish();
-            }
-        }
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                android.os.Process.killProcess(android.os.Process.myPid());
-            }
-        },3000);    }
 
     @Override
     public void onTrimMemory(int level) {

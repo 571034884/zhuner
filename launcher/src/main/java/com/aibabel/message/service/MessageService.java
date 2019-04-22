@@ -138,8 +138,8 @@ public class MessageService extends Service {
             return;
         }
 
-//        username = "user1";
-//        password = "123";
+        username = "user1";
+        password = "123";
         /**
          * 保存账号密码到全局
          */
