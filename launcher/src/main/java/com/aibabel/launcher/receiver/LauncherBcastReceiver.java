@@ -32,8 +32,9 @@ public class LauncherBcastReceiver extends BroadcastReceiver {
                 int type = intent.getExtras().getInt("type");
                 Logs.e("景区导览：type:"+type);
                 String urlPic = intent.getExtras().getString("urlPic");
+                String poiName = intent.getExtras().getString("poiName");
                 String name = intent.getExtras().getString("name");
-                listener.launcherMusic(urlPic,name,type);
+                listener.launcherMusic(poiName,urlPic,name,type);
                 break;
         }
     }
@@ -45,7 +46,7 @@ public class LauncherBcastReceiver extends BroadcastReceiver {
 
     public interface LauncherListener {
         void launcherReceiver(String city);
-        void launcherMusic(String urlPic,String name,int type);
+        void launcherMusic(String poiName,String urlPic,String name,int type);
     }
 
 }

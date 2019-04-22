@@ -222,19 +222,27 @@ public class MainActivity extends LaunBaseActivity implements NetBroadcastReceiv
                 launcherApp("com.aibabel.scenic");
                 break;
             case R.id.main_one_app_left:
-                changeScenic(2);
+                if (CommonUtils.isFastClick()) {
+                    changeScenic(2);
+                }
                 break;
             case R.id.main_one_app_two_on:
                 if (flagScenic){
                     flagScenic = false;
-                    changeScenic(1);
+                    if (CommonUtils.isFastClick()) {
+                        changeScenic(1);
+                    }
                 }else{
                     flagScenic = true;
-                    changeScenic(0);
+                    if (CommonUtils.isFastClick()) {
+                        changeScenic(0);
+                    }
                 }
                 break;
             case R.id.main_one_app_right:
-                changeScenic(3);
+                if (CommonUtils.isFastClick()) {
+                    changeScenic(3);
+                }
                 break;
             case R.id.main_two_app://定位2
                 launcherApp("com.aibabel.ocr");
@@ -440,7 +448,7 @@ public class MainActivity extends LaunBaseActivity implements NetBroadcastReceiv
     }
     public RequestOptions options = new RequestOptions().placeholder(R.mipmap.placeholder_h).error(R.mipmap.error_h);
     @Override
-    public void launcherMusic(String urlPic,String name,int type) {
+    public void launcherMusic(String poiName,String urlPic,String name,int type) {
         mMainOneAppOne.setVisibility(View.GONE);
         mMainOneAppTwo.setVisibility(View.VISIBLE);
         switch (type){
@@ -448,7 +456,7 @@ public class MainActivity extends LaunBaseActivity implements NetBroadcastReceiv
                 flagScenic = true;
                 Glide.with(mContext).load(urlPic).apply(options).into(mMainOneAppTwoUrl);
                 mMainOneAppTwoName.setText(name);
-                mMainOneAppTwoTitle.setText(name);
+                mMainOneAppTwoTitle.setText(poiName);
                 mMainOneAppTwoOn.setImageResource(R.mipmap.ic_scenic_pause);
                 break;
             case 1://暂停

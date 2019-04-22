@@ -1,4 +1,4 @@
-package com.hyphenate.easeui;
+package com.aibabel.launcher.launcher;
 
 import org.junit.Test;
 

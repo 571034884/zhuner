@@ -215,16 +215,17 @@ public class MusicService extends Service implements MediaPlayer.OnErrorListener
                 Logs.e("播放index：" + position);
                 Logs.e("播放地址：" + mMusic_list.get(position).getAudioUrl());
                 mPlayer.prepareAsync();
-                sendToLauncher(mMusic_list.get(mPosition).getImageUrl(),mMusic_list.get(mPosition).getName(),0);
+                sendToLauncher(mMusic_list.get(0).getName(),mMusic_list.get(mPosition).getImageUrl(),mMusic_list.get(mPosition).getName(),0);
             } catch (IOException e) {
                 e.printStackTrace();
             }
         }
     }
 
-    public void sendToLauncher(String urlPic,String name,int type){
+    public void sendToLauncher(String poiName,String urlPic,String name,int type){
         Intent intent1 = new Intent();
         intent1.putExtra("urlPic",urlPic);
+        intent1.putExtra("poiName",poiName);
         intent1.putExtra("name",name);
         intent1.putExtra("type",type);
         intent1.setAction("com.aibabel.launcher.MUSIC");
@@ -279,7 +280,7 @@ public class MusicService extends Service implements MediaPlayer.OnErrorListener
                     break;
                 case Constants.ACTION_PAUSE:
                     Log.i(TAG, "onReceive: ACTION_PAUSE");
-                    sendToLauncher("","",1);
+                    sendToLauncher("","","",1);
                     //暂停播放
                     pause();
                     break;
@@ -291,7 +292,7 @@ public class MusicService extends Service implements MediaPlayer.OnErrorListener
                         if (null != audioManager)
                             audioManager.requestAudioFocus(MusicService.this, AudioManager.STREAM_MUSIC, AudioManager.AUDIOFOCUS_GAIN);
                         mPlayer.start();
-                        sendToLauncher("","",2);
+                        sendToLauncher("","","",2);
 //                        sentPlayStateLong();
                         //通知是否在播放
                         sentPlayStateToMain();
