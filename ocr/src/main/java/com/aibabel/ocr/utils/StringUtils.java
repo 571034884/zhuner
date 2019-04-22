@@ -118,6 +118,5 @@ public class StringUtils {
         }
         Log.e("realWidth","realWidth:"+realWidth+"---left:"+left+"-----+width:"+width);
         return realWidth;
-
     }
 }
