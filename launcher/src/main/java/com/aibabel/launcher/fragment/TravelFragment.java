@@ -30,6 +30,8 @@ public class TravelFragment extends BaseFragment implements View.OnClickListener
     CardView moreCountryApp;
     @BindView(R.id.more_food_app)
     CardView moreFoodApp;
+    @BindView(R.id.more_poortravel_app)
+    CardView morePoortravelApp;
 
     @Override
     public int getLayout() {
@@ -65,6 +67,11 @@ public class TravelFragment extends BaseFragment implements View.OnClickListener
                 break;
             case R.id.more_food_app:
                 launcherApp("com.aibabel.food");
+                break;
+            case R.id.more_poortravel_app:
+                Intent LaunchIntent = mContext.getPackageManager().getLaunchIntentForPackage("com.qyer.android.plan");
+                startActivity(LaunchIntent);
+
                 break;
         }
     }
