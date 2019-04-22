@@ -63,7 +63,7 @@
             android:name="com.aibabel.message.MainActivity"
             android:launchMode="singleTop"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="stateHidden|adjustPan" />
+            android:windowSoftInputMode="stateHidden|adjustResize" />
 
         <!-- 显示下载大图页面 -->
         <activity

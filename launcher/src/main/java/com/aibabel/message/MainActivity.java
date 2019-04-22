@@ -11,6 +11,7 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -20,23 +21,29 @@ import com.aibabel.baselibrary.base.BaseActivity;
 import com.aibabel.baselibrary.sphelper.SPHelper;
 import com.aibabel.baselibrary.utils.CommonUtils;
 import com.aibabel.launcher.R;
+import com.aibabel.launcher.base.LaunBaseActivity;
+import com.aibabel.launcher.view.MyDialog;
 import com.aibabel.message.fragment.Fragment_Chat;
 import com.aibabel.message.fragment.Fragment_Conversation;
 import com.aibabel.message.fragment.Fragment_Message;
 import com.aibabel.message.fragment.Fragment_Task;
+import com.aibabel.message.helper.DemoHelper;
 import com.aibabel.message.receiver.MessageListener;
 import com.aibabel.message.service.MessageService;
 import com.aibabel.message.utiles.Constant;
+import com.aibabel.message.utiles.StringUtils;
 import com.hyphenate.EMMessageListener;
 import com.hyphenate.chat.EMClient;
 import com.hyphenate.chat.EMMessage;
+import com.hyphenate.easeui.utils.EaseUserUtils;
 
 
 import java.util.List;
+import java.util.UUID;
 
 import butterknife.BindView;
 
-public class MainActivity extends BaseActivity implements MessageListener {
+public class MainActivity extends LaunBaseActivity  {
 
 
     @BindView(R.id.fl_content)
@@ -73,7 +80,8 @@ public class MainActivity extends BaseActivity implements MessageListener {
     private int currentTabIndex;
     private String toChatUsername;
     private int fragment_index;
-
+    private boolean isSetNick;
+    private MyDialog builder;
 //    @Override
 //    public void onCreate(@Nullable Bundle savedInstanceState) {
 //        super.onCreate(savedInstanceState);
@@ -86,7 +94,8 @@ public class MainActivity extends BaseActivity implements MessageListener {
     }
 
     @Override
-    public void init() {
+    protected void initView() {
+        isSetNick = mmkv.decodeBool("isSetNick", true);
         //get user id or group id
 //        toChatUsername = getIntent().getExtras().getString("userId");
         tvUnreadNumber = findViewById(R.id.tv_unread_number);
@@ -113,12 +122,14 @@ public class MainActivity extends BaseActivity implements MessageListener {
 //        selectUI();
         currentTabIndex = fragment_index;
         if (fragment_index == 0) {
+            refreshUIWithMessage();
             getSupportFragmentManager().beginTransaction()
                     .show(fragmentMessage)
                     .hide(fragmentConversation)
                     .hide(fragmentTask)
                     .commit();
         } else if (fragment_index == 1) {
+            isShowDialog();
             getSupportFragmentManager().beginTransaction()
                     .show(fragmentConversation)
                     .hide(fragmentMessage)
@@ -133,6 +144,7 @@ public class MainActivity extends BaseActivity implements MessageListener {
         }
     }
 
+
     @Override
     protected void onResume() {
         super.onResume();
@@ -140,28 +152,13 @@ public class MainActivity extends BaseActivity implements MessageListener {
     }
 
     private void selectUI() {
-        if (isSupported()) {
+        if (StringUtils.isSupported()) {
             btnContainerChat.setVisibility(View.VISIBLE);
         } else {
             btnContainerChat.setVisibility(View.GONE);
         }
     }
 
-
-    /**
-     * 是否支持微领队
-     *
-     * @return
-     */
-
-    private boolean isSupported() {
-        boolean isSupported = false;
-        String country = SPHelper.getString("country", "cn");
-        if (TextUtils.equals(country, "jpa") || TextUtils.equals(country, "th")) {
-            isSupported = true;
-        }
-        return isSupported;
-    }
 
 
     /**
@@ -177,6 +174,7 @@ public class MainActivity extends BaseActivity implements MessageListener {
             case R.id.btn_chat:
                 index = 1;
                 makeReaded();
+                isShowDialog();
                 break;
             case R.id.btn_task:
                 index = 2;
@@ -206,8 +204,8 @@ public class MainActivity extends BaseActivity implements MessageListener {
     }
 
 
-    @Override
-    public void getMessage(Intent intent) {
+
+    public void getMessage() {
         if (EMClient.getInstance().isLoggedInBefore() && currentTabIndex != 1) {
             int count = EMClient.getInstance().chatManager().getUnreadMessageCount();
             tvUnreadNumber.setVisibility(View.VISIBLE);
@@ -254,12 +252,15 @@ public class MainActivity extends BaseActivity implements MessageListener {
     };
 
     private void refreshUIWithMessage() {
-        if (isSupported()) {
+        if (StringUtils.isSupported()) {
             if (EMClient.getInstance().isConnected() && currentTabIndex != 1) {
                 int count = EMClient.getInstance().chatManager().getUnreadMessageCount();
                 tvUnreadNumber.setVisibility(View.VISIBLE);
                 if (count > 0) {
-                    tvUnreadNumber.setText(count);
+                    tvUnreadNumber.setText(String.valueOf(count));
+                }
+                if (count > 99) {
+                    tvUnreadNumber.setText("99+");
                 }
             } else {
                 tvUnreadNumber.setVisibility(View.GONE);
@@ -267,5 +268,45 @@ public class MainActivity extends BaseActivity implements MessageListener {
         }
     }
 
+
+
+    private void showDialogView() {
+        View view = getLayoutInflater().inflate(R.layout.dialog_layout_nick, null);
+        builder = new MyDialog(mContext, 0, 0, view, R.style.dialog);
+        builder.setCancelable(false);
+
+        //初始化控件
+        EditText editText = view.findViewById(R.id.et_dialog_nick);
+        TextView btnCommit = view.findViewById(R.id.tv_dialog_commit);
+
+        editText.setHint("准儿帮" + getUUID());
+        btnCommit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+            // TODO: 2019/4/20  此处要设置环信昵称
+
+                builder.dismiss();
+            }
+        });
+        builder.show();
+    }
+
+    /**
+     * 获得一个UUID
+     *
+     * @return String UUID
+     */
+    public static String getUUID() {
+        String uuid = UUID.randomUUID().toString();
+        //去掉“-”符号
+        return uuid.replaceAll("-", "");
+    }
+
+    private void isShowDialog() {
+        if (isSetNick) {
+            mmkv.encode("isSetNick", false);
+            showDialogView();
+        }
+    }
 
 }
