@@ -245,6 +245,8 @@ public class LanguageUtils {
         list.add("gl");
         list.add("ja");
         list.add("zu");
+        list.add("sw-ke");
+        list.add("mo-go");
         return list;
     }
 
@@ -264,7 +266,7 @@ public class LanguageUtils {
     }
 
     /**
-     * 获取10种不支持粤语语言列表(不支持的,显示不同的状态)
+     * 获取N种不支持粤语语言列表(不支持的,显示不同的状态)
      *
      * @return
      */

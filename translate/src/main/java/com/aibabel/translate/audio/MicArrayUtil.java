@@ -4,15 +4,9 @@ import android.content.Context;
 import android.util.Log;
 
 import com.aibabel.micarray.api.MICArray;
-
-
-import com.aibabel.translate.bean.JsonDataBean;
-import com.aibabel.translate.socket.SocketManger;
 import com.aibabel.translate.utils.CommonUtils;
 import com.aibabel.translate.utils.L;
-import com.aibabel.translate.utils.SDCardUtils;
 import com.aibabel.translate.utils.ThreadPoolManager;
-import com.aibabel.translate.utils.ZipFileUtil;
 import com.speex.util.SpeexUtil;
 
 import java.io.FileOutputStream;

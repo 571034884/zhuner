@@ -1,14 +1,11 @@
 package com.aibabel.translate.activity;
 
 import android.content.Context;
-import android.os.SystemClock;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.KeyEvent;
 import android.view.View;
 
 import com.aibabel.baselibrary.base.StatisticsBaseActivity;
-import com.aibabel.statisticalserver.SimpleStatisticsActivity;
 import com.aibabel.translate.bean.JsonDataBean;
 import com.aibabel.translate.socket.SocketManger;
 import com.aibabel.translate.utils.CommonUtils;
@@ -16,8 +13,6 @@ import com.aibabel.translate.utils.Constant;
 import com.aibabel.translate.utils.L;
 import com.aibabel.translate.utils.StringUtils;
 import com.umeng.analytics.MobclickAgent;
-
-import butterknife.OnClick;
 
 public class BaseActivity extends StatisticsBaseActivity implements View.OnClickListener {
 
