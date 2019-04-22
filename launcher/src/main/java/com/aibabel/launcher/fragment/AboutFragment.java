@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.aibabel.baselibrary.base.BaseFragment;
+import com.aibabel.launcher.activity.MoreActivity;
 import com.aibabel.launcher.utils.AppStatusUtils;
 import com.aibabel.menu.R;
 import com.aibabel.launcher.utils.Logs;
@@ -28,8 +29,8 @@ public class AboutFragment extends BaseFragment implements View.OnClickListener 
     CardView moreDownloadApp;
     @BindView(R.id.more_customer_app)
     CardView moreCustomerApp;
-    @BindView(R.id.more_setting_food)
-    CardView moreSettingFood;
+    @BindView(R.id.more_setting_app)
+    CardView moreSettingApp;
 
     @Override
     public int getLayout() {
@@ -41,22 +42,26 @@ public class AboutFragment extends BaseFragment implements View.OnClickListener 
         moreReadmeApp.setOnClickListener(this);
         moreDownloadApp.setOnClickListener(this);
         moreCustomerApp.setOnClickListener(this);
-        moreSettingFood.setOnClickListener(this);
+        moreSettingApp.setOnClickListener(this);
     }
 
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.more_readme_app:
+                ((MoreActivity) getActivity()).addStatisticsEvent("menu_readme_click",null);
                 launcherApp("com.aibabel.readme");
                 break;
             case R.id.more_download_app:
+                ((MoreActivity) getActivity()).addStatisticsEvent("menu_Offline_click",null);
                 launcherApp("com.aibabel.download.offline");
                 break;
             case R.id.more_customer_app:
+                ((MoreActivity) getActivity()).addStatisticsEvent("menu_complaints_click",null);
                 launcherApp("com.aibabel.tucao");
                 break;
-            case R.id.more_setting_food:
+            case R.id.more_setting_app:
+                ((MoreActivity) getActivity()).addStatisticsEvent("menu_settings_click",null);
                 launcherApp("com.zhuner.administrator.settings");
                 break;
         }

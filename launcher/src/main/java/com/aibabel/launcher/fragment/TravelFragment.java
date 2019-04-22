@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.aibabel.baselibrary.base.BaseFragment;
+import com.aibabel.launcher.activity.MoreActivity;
 import com.aibabel.launcher.utils.AppStatusUtils;
 import com.aibabel.menu.R;
 import com.aibabel.launcher.utils.Logs;
@@ -57,19 +58,24 @@ public class TravelFragment extends BaseFragment implements View.OnClickListener
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.more_travel_app:
+                ((MoreActivity) getActivity()).addStatisticsEvent("menu_fun_click",null);
                 launcherApp("com.aibabel.fyt_play");
                 break;
             case R.id.more_scenic_app:
+                ((MoreActivity) getActivity()).addStatisticsEvent("scenic_click",null);
                 launcherApp("com.aibabel.scenic");
                 break;
             case R.id.more_country_app:
+                ((MoreActivity) getActivity()).addStatisticsEvent("scenic_click",null);
                 launcherApp("com.aibabel.scenic");
                 break;
             case R.id.more_food_app:
+                ((MoreActivity) getActivity()).addStatisticsEvent("menu_areaselect_click",null);
                 launcherApp("com.aibabel.food");
                 break;
             case R.id.more_poortravel_app:
                 try {
+                    ((MoreActivity) getActivity()).addStatisticsEvent("poortravel_click",null);
                     Intent LaunchIntent = mContext.getPackageManager().getLaunchIntentForPackage("com.qyer.android.plan");
                     startActivity(LaunchIntent);
                 } catch (Exception e) {

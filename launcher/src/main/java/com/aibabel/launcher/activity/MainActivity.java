@@ -198,31 +198,44 @@ public class MainActivity extends LaunBaseActivity implements NetBroadcastReceiv
                 mRlMask.setVisibility(View.GONE);
                 break;
             case R.id.main_notice_app://跳转到消息中心
+                HashMap<String, Serializable> map = new HashMap<>();
+                map.put("menu_notice_click_id", "打开");
+                addStatisticsEvent("menu_notice_click", map);
                 startActivity(fragment_index);
                 break;
             case R.id.main_location_app://跳转到目的地
+                HashMap<String, Serializable> map1 = new HashMap<>();
+                map1.put("mddname", oldCity + "");
+                addStatisticsEvent("mdd_click", map1);
                 startActResult(SearchActivity.class, 100);
                 break;
             case R.id.main_wifi_app://跳转到wifi
+                addStatisticsEvent("wifi_click", null);
                 launcherApp("com.zhuner.administrator.settings");
                 break;
             case R.id.main_timer_app://跳转到世界钟
+                addStatisticsEvent("time_click", null);
                 launcherApp("com.aibabel.alliedclock");
                 break;
             case R.id.main_weather_app://天气
+                addStatisticsEvent("weather_click", null);
                 launcherApp("com.aibabel.weather");
                 break;
             case R.id.main_huilv_app://汇率
+                addStatisticsEvent("currency_click", null);
                 launcherApp("com.aibabel.currencyconversion");
                 break;
             case R.id.main_one_app_one://定位1
+                addStatisticsEvent("scenic_click", null);
                 launcherApp("com.aibabel.scenic");
                 break;
             case R.id.main_one_app_two://定位1
+                addStatisticsEvent("scenic_click", null);
                 launcherApp("com.aibabel.scenic");
                 break;
             case R.id.main_one_app_left:
                 if (CommonUtils.isFastClick()) {
+                    addStatisticsEvent("main_scenic_pre",null);
                     changeScenic(2);
                 }
                 break;
@@ -230,41 +243,52 @@ public class MainActivity extends LaunBaseActivity implements NetBroadcastReceiv
                 if (flagScenic){
                     flagScenic = false;
                     if (CommonUtils.isFastClick()) {
+                        addStatisticsEvent("main_scenic_off",null);
                         changeScenic(1);
                     }
                 }else{
                     flagScenic = true;
                     if (CommonUtils.isFastClick()) {
+                        addStatisticsEvent("main_scenic_on",null);
                         changeScenic(0);
                     }
                 }
                 break;
             case R.id.main_one_app_right:
                 if (CommonUtils.isFastClick()) {
+                    addStatisticsEvent("main_scenic_next",null);
                     changeScenic(3);
                 }
                 break;
             case R.id.main_two_app://定位2
+                addStatisticsEvent("photo_click", null);
                 launcherApp("com.aibabel.ocr");
                 break;
             case R.id.main_three_app://定位3
+                addStatisticsEvent("voice_click", null);
                 launcherApp("com.aibabel.translate");
                 break;
             case R.id.main_four_app://定位4
+                addStatisticsEvent("map_click", null);
                 launcherApp("com.aibabel.map");
                 break;
             case R.id.main_five_app://定位点5
                 switch (mmkv.decodeString("mainFive", "1")) {
                     case "1":
+                        addStatisticsEvent("menu_fun_click",null);
                         launcherApp("com.aibabel.fyt_play");
                         break;
                     case "2":
                         //TODO 跳转到H5
-                        ToastUtil.showShort(mContext, "敬请期待");
+                        addStatisticsEvent("menu_shop_click",null);
+                        Intent intent = new Intent(mContext, H5Activity.class);
+                        intent.putExtra("url","http://www.baidu.com");
+                        startActivity(intent);
                         break;
                 }
                 break;
             case R.id.main_six_app://定位点6
+                addStatisticsEvent("more_click", null);
                 startAct(MoreActivity.class);
                 break;
         }

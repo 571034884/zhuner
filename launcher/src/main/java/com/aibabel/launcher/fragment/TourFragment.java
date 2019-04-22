@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.aibabel.baselibrary.base.BaseFragment;
+import com.aibabel.launcher.activity.MoreActivity;
 import com.aibabel.launcher.utils.AppStatusUtils;
 import com.aibabel.menu.R;
 import com.aibabel.launcher.utils.Logs;
@@ -61,15 +62,19 @@ public class TourFragment extends BaseFragment implements View.OnClickListener {
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.more_outin_app:
+                ((MoreActivity) getActivity()).addStatisticsEvent("menu_choice_click",null);
                 launcherApp("com.aibabel.fyt_exitandentry");
                 break;
             case R.id.more_weather_app:
+                ((MoreActivity) getActivity()).addStatisticsEvent("weather_click",null);
                 launcherApp("com.aibabel.weather");
                 break;
             case R.id.more_timer_app:
+                ((MoreActivity) getActivity()).addStatisticsEvent("time_click",null);
                 launcherApp("com.aibabel.alliedclock");
                 break;
             case R.id.more_search_app:
+                ((MoreActivity) getActivity()).addStatisticsEvent("menu_search_click",null);
                 Intent intent = new Intent(Intent.ACTION_MAIN);
                 intent.addCategory(Intent.CATEGORY_LAUNCHER);
                 ComponentName cn = new ComponentName("com.google.android.googlequicksearchbox", "com.google.android.apps.gsa.queryentry.QueryEntryActivity");
@@ -77,15 +82,19 @@ public class TourFragment extends BaseFragment implements View.OnClickListener {
                 startActivity(intent);
                 break;
             case R.id.more_translate_app:
+                ((MoreActivity) getActivity()).addStatisticsEvent("voice_click",null);
                 launcherApp("com.aibabel.translate");
                 break;
             case R.id.more_menu_app:
+                ((MoreActivity) getActivity()).addStatisticsEvent("photo_click",null);
                 launcherApp("com.aibabel.ocr");
                 break;
             case R.id.more_essay_app:
+                ((MoreActivity) getActivity()).addStatisticsEvent("photo_click",null);
                 launcherApp("com.aibabel.ocr");
                 break;
             case R.id.more_body_app:
+                ((MoreActivity) getActivity()).addStatisticsEvent("photo_click",null);
                 launcherApp("com.aibabel.ocr");
                 break;
         }
