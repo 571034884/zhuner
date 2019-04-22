@@ -21,6 +21,7 @@ import com.aibabel.baselibrary.base.BaseActivity;
 import com.aibabel.baselibrary.sphelper.SPHelper;
 import com.aibabel.baselibrary.utils.CommonUtils;
 import com.aibabel.launcher.base.LaunBaseActivity;
+import com.aibabel.launcher.view.MaterialBadgeTextView;
 import com.aibabel.launcher.view.MyDialog;
 import com.aibabel.menu.R;
 import com.aibabel.message.fragment.Fragment_Chat;
@@ -43,6 +44,8 @@ import java.util.UUID;
 
 import butterknife.BindView;
 
+import static com.aibabel.launcher.activity.MainActivity.set_BadgeCount;
+
 public class MainActivity extends LaunBaseActivity  {
 
 
@@ -56,7 +59,7 @@ public class MainActivity extends LaunBaseActivity  {
     @BindView(R.id.btn_msg)
     Button btnMsg;
     @BindView(R.id.tv_unread_msg_number)
-    TextView tvUnreadMsgNumber;
+    MaterialBadgeTextView tvUnreadMsgNumber;
     @BindView(R.id.btn_container_msg)
     RelativeLayout btnContainerMsg;
     @BindView(R.id.btn_chat)
@@ -88,6 +91,8 @@ public class MainActivity extends LaunBaseActivity  {
 //        setContentView(R.layout.activity_main_mm);
 //    }
 
+
+    public static  MaterialBadgeTextView pubMater;
     @Override
     public int getLayout(Bundle savedInstanceState) {
         return R.layout.activity_main_mm;
@@ -118,6 +123,9 @@ public class MainActivity extends LaunBaseActivity  {
         fragmentTask = new Fragment_Task();
         fragments = new Fragment[]{fragmentMessage, fragmentConversation, fragmentTask};
 
+
+        pubMater = tvUnreadMsgNumber;
+        if(pubMater!=null)pubMater.setBadgeCount(set_BadgeCount);
         //判定是否支持，以便于显示不同的布局
 //        selectUI();
         currentTabIndex = fragment_index;
@@ -170,6 +178,7 @@ public class MainActivity extends LaunBaseActivity  {
         switch (view.getId()) {
             case R.id.btn_msg:
                 index = 0;
+                if(pubMater!=null)pubMater.setBadgeCount(0);
                 break;
             case R.id.btn_chat:
                 index = 1;
@@ -279,7 +288,7 @@ public class MainActivity extends LaunBaseActivity  {
         EditText editText = view.findViewById(R.id.et_dialog_nick);
         TextView btnCommit = view.findViewById(R.id.tv_dialog_commit);
 
-        editText.setHint("准儿帮" + getUUID());
+        editText.setHint("准儿帮");
         btnCommit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

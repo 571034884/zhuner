@@ -733,6 +733,8 @@ public class MainActivity extends LaunBaseActivity implements NetBroadcastReceiv
                         case 301:
                             set_BadgeCount += 1;
                             home_badge.setBadgeCount(set_BadgeCount);
+                            //消息里面显示红点
+
                             try {
                                 PushMessageBean bean = (PushMessageBean) msg.obj;
                                 bean.setBadge(true);

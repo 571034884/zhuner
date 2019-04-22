@@ -119,7 +119,9 @@ public class MessageService extends Service {
                     Log.i(TAG, "onReceive: ACTION_Login");
                     String userId = intent.getStringExtra("username");
                     String pswd = intent.getStringExtra("pswd");
-                    signIn(userId, pswd);
+                    if((userId!=null)&&(pswd!=null)) {
+                        signIn(userId, pswd);
+                    }
                     break;
 
 

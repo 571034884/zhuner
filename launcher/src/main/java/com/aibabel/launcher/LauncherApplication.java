@@ -184,7 +184,7 @@ public class LauncherApplication extends BaseApplication {
      */
     public void configJPush() {
         Log.e("BaseApplication","LauncherApplication配置极光推送");
-        JPushInterface.setDebugMode (true);    // 设置开启日志,发布时请关闭日志
+        JPushInterface.setDebugMode (false);    // 设置开启日志,发布时请关闭日志
         JPushInterface.init (this);
         L.e("SN:"+CommonUtils.getSN());
         JPushInterface.setAlias(this, 1, CommonUtils.getSN());
