@@ -4,7 +4,7 @@ import android.os.Bundle;
 import android.view.View;
 
 import com.aibabel.baselibrary.base.BaseFragment;
-import com.aibabel.launcher.R;
+import com.aibabel.menu.R;
 
 /**
  * Created by fytworks on 2019/4/18.

@@ -3,6 +3,7 @@ package com.aibabel.baselibrary.utils;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
+import android.content.pm.PackageManager;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Build;
@@ -196,4 +197,29 @@ public class CommonUtils {
         return 0;
     }
 
+    /*
+     * 获取系统版本号 去除 “-” */
+
+    public static String getDevice() {
+        String result = "";
+        String display = Build.DISPLAY;
+        result = display.replace("-", "");
+        Log.e("result", result);
+        return result;
+    }
+    /**
+     * 获取版本号名称
+     *
+     * @param context 上下文
+     * @return
+     */
+    public static String getVerName(Context context) {
+        String verName = "";
+        try {
+            verName = context.getPackageManager().getPackageInfo(context.getPackageName(), 0).versionName;
+        } catch (PackageManager.NameNotFoundException e) {
+            e.printStackTrace();
+        }
+        return verName;
+    }
 }

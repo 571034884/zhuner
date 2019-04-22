@@ -14,7 +14,7 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.Toast;
 
-import com.aibabel.launcher.R;
+import com.aibabel.menu.R;
 
 import static android.util.TypedValue.COMPLEX_UNIT_DIP;
 import static android.util.TypedValue.applyDimension;

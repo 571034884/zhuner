@@ -11,7 +11,7 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.aibabel.launcher.R;
+import com.aibabel.menu.R;
 import com.aibabel.launcher.base.LaunBaseActivity;
 import com.aibabel.launcher.fragment.AboutFragment;
 import com.aibabel.launcher.fragment.BusFragment;

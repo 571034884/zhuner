@@ -12,7 +12,7 @@ import android.util.AttributeSet;
 import android.util.Log;
 import android.util.TypedValue;
 
-import com.aibabel.launcher.R;
+import com.aibabel.menu.R;
 
 
 /**

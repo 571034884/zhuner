@@ -9,7 +9,6 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.text.TextUtils;
 import android.util.Log;
-import android.view.TextureView;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -19,15 +18,11 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.aibabel.baselibrary.base.BaseActivity;
-import com.aibabel.baselibrary.http.BaseCallback;
 import com.aibabel.baselibrary.sphelper.SPHelper;
 import com.aibabel.baselibrary.utils.CommonUtils;
-import com.aibabel.baselibrary.utils.ToastUtil;
-import com.aibabel.launcher.R;
 import com.aibabel.launcher.base.LaunBaseActivity;
-import com.aibabel.launcher.net.Api;
 import com.aibabel.launcher.view.MyDialog;
-import com.aibabel.message.bean.IMUser;
+import com.aibabel.menu.R;
 import com.aibabel.message.fragment.Fragment_Chat;
 import com.aibabel.message.fragment.Fragment_Conversation;
 import com.aibabel.message.fragment.Fragment_Message;
@@ -36,7 +31,6 @@ import com.aibabel.message.helper.DemoHelper;
 import com.aibabel.message.receiver.MessageListener;
 import com.aibabel.message.service.MessageService;
 import com.aibabel.message.utiles.Constant;
-import com.aibabel.message.utiles.OkGoUtilWeb;
 import com.aibabel.message.utiles.StringUtils;
 import com.hyphenate.EMMessageListener;
 import com.hyphenate.chat.EMClient;
@@ -44,14 +38,12 @@ import com.hyphenate.chat.EMMessage;
 import com.hyphenate.easeui.utils.EaseUserUtils;
 
 
-import org.json.JSONObject;
-
 import java.util.List;
 import java.util.UUID;
 
 import butterknife.BindView;
 
-public class MainActivity extends LaunBaseActivity {
+public class MainActivity extends LaunBaseActivity  {
 
 
     @BindView(R.id.fl_content)
@@ -168,6 +160,7 @@ public class MainActivity extends LaunBaseActivity {
     }
 
 
+
     /**
      * tab点击切换
      *
@@ -209,6 +202,7 @@ public class MainActivity extends LaunBaseActivity {
         tvUnreadNumber.setText("");
         tvUnreadNumber.setVisibility(View.GONE);
     }
+
 
 
     public void getMessage() {
@@ -275,6 +269,7 @@ public class MainActivity extends LaunBaseActivity {
     }
 
 
+
     private void showDialogView() {
         View view = getLayoutInflater().inflate(R.layout.dialog_layout_nick, null);
         builder = new MyDialog(mContext, 0, 0, view, R.style.dialog);
@@ -283,15 +278,13 @@ public class MainActivity extends LaunBaseActivity {
         //初始化控件
         EditText editText = view.findViewById(R.id.et_dialog_nick);
         TextView btnCommit = view.findViewById(R.id.tv_dialog_commit);
-        String default_nick = mmkv.getString("nick", "");
-        String edit_nick = editText.getText().toString().trim();
-        editText.setHint(default_nick);
 
-        final String nick = TextUtils.isEmpty(edit_nick) ? default_nick : edit_nick;
+        editText.setHint("准儿帮" + getUUID());
         btnCommit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                setNick(nick);
+            // TODO: 2019/4/20  此处要设置环信昵称
+
                 builder.dismiss();
             }
         });
@@ -306,48 +299,5 @@ public class MainActivity extends LaunBaseActivity {
             showDialogView();
         }
     }
-
-    /**
-     * 设置昵称，如果用户没有设置则用默认
-     *
-     * @param nick
-     */
-    private void setNick(String nick) {
-        if (!TextUtils.isEmpty(nick) && TextUtils.equals(nick, mmkv.getString("nick", ""))) {
-            return;
-        }
-
-        try {
-            JSONObject jsonObject = new JSONObject();
-            jsonObject.put("user_id", mmkv.getString(Constant.EM_USERNAME, ""));
-            jsonObject.put("nickname", nick);
-
-            OkGoUtilWeb.<String>post(this, Api.METHOD_IM, jsonObject, IMUser.class, new BaseCallback<IMUser>() {
-                @Override
-                public void onSuccess(String method, IMUser model, String resoureJson) {
-                    if (null != model) {
-                        // TODO: 2019/4/22  昵称缓存到本地
-                        ToastUtil.showShort(MainActivity.this, "昵称设置成功！");
-                    }
-
-                }
-
-                @Override
-                public void onError(String method, String message, String resoureJson) {
-                    ToastUtil.showShort(MainActivity.this, "修改失败了，您暂时使用默认昵称");
-                }
-
-                @Override
-                public void onFinsh(String method) {
-
-                }
-            });
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-
-    }
-
 
 }

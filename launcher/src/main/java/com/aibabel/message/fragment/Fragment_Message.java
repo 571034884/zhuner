@@ -7,7 +7,7 @@ import android.view.View;
 import android.widget.ImageView;
 
 import com.aibabel.baselibrary.base.BaseFragment;
-import com.aibabel.launcher.R;
+import com.aibabel.menu.R;
 import com.aibabel.message.MainActivity;
 //import com.aibabel.menu.R;
 //import com.aibabel.menu.bean.PushMessageBean;

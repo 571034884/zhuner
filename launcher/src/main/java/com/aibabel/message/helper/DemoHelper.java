@@ -11,7 +11,7 @@ import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 import android.widget.Toast;
 
-import com.aibabel.launcher.R;
+import com.aibabel.menu.R;
 import com.aibabel.message.model.DemoModel;
 import com.aibabel.message.model.InviteMessage;
 import com.aibabel.message.model.RobotUser;

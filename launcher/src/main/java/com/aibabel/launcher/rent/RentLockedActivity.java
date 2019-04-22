@@ -8,7 +8,7 @@ import android.view.View;
 import android.view.Window;
 import android.widget.LinearLayout;
 
-import com.aibabel.launcher.R;
+import com.aibabel.menu.R;
 import com.aibabel.launcher.utils.LogUtil;
 
 

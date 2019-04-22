@@ -11,7 +11,7 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
 import com.aibabel.baselibrary.utils.SharePrefUtil;
-import com.aibabel.launcher.R;
+import com.aibabel.menu.R;
 import com.aibabel.launcher.activity.MainActivity;
 
 /**

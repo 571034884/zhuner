@@ -3,35 +3,11 @@ package com.aibabel.launcher.service;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
-import android.net.ConnectivityManager;
-import android.net.Network;
-import android.net.NetworkInfo;
-import android.net.NetworkRequest;
-import android.os.Bundle;
 import android.os.IBinder;
-import android.os.Message;
-import android.text.TextUtils;
 import android.util.Log;
 
-
-import com.aibabel.baselibrary.mode.DataManager;
-import com.aibabel.baselibrary.sphelper.SPHelper;
-import com.aibabel.baselibrary.utils.CommonUtils;
-import com.aibabel.baselibrary.utils.FastJsonUtil;
-import com.aibabel.baselibrary.utils.SharePrefUtil;
 import com.aibabel.launcher.activity.MainActivity;
-import com.aibabel.launcher.bean.SyncOrder;
-import com.aibabel.launcher.rent.RentKeepUseActivity;
-import com.aibabel.launcher.rent.RentLockedActivity;
-import com.aibabel.launcher.utils.CalenderUtil;
-import com.aibabel.launcher.utils.DetectUtil;
-import com.aibabel.launcher.utils.LocationUtils;
 import com.aibabel.launcher.utils.LogUtil;
-import com.aibabel.message.sqlite.SqlUtils;
-import com.lzy.okgo.OkGo;
-import com.lzy.okgo.callback.StringCallback;
-import com.lzy.okgo.model.Response;
-
 import java.util.concurrent.ScheduledExecutorService;
 
 /***

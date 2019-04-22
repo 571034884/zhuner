@@ -1,4 +1,4 @@
-package com.aibabel.message.fragment;
+package com.aibabel.message;
 
 import android.content.ComponentName;
 import android.content.Intent;

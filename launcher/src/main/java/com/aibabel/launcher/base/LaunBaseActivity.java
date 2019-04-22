@@ -8,7 +8,7 @@ import android.support.annotation.Nullable;
 import android.view.Window;
 
 import com.aibabel.baselibrary.base.BaseActivity;
-import com.aibabel.launcher.R;
+import com.aibabel.menu.R;
 import com.aibabel.launcher.activity.SearchActivity;
 import com.tencent.mmkv.MMKV;
 

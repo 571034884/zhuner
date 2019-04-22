@@ -8,7 +8,7 @@ import android.widget.AbsListView;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 
-import com.aibabel.launcher.R;
+import com.aibabel.menu.R;
 import com.aibabel.launcher.bean.CityListBean;
 
 import java.util.List;

@@ -15,7 +15,7 @@ import android.text.TextUtils;
 import android.util.Log;
 
 import com.aibabel.baselibrary.utils.FastJsonUtil;
-import com.aibabel.launcher.R;
+import com.aibabel.menu.R;
 import com.aibabel.launcher.activity.MainActivity;
 import com.aibabel.launcher.bean.PushMessageBean;
 import com.aibabel.launcher.utils.DetectUtil;

@@ -16,7 +16,7 @@ import android.support.v4.app.NotificationCompat;
 import android.text.TextUtils;
 
 
-import com.aibabel.launcher.R;
+import com.aibabel.menu.R;
 import com.aibabel.message.receiver.NotificationClickReceiver;
 
 import java.util.List;
@@ -88,10 +88,11 @@ public class ResidentNotificationHelper {
         builder.setGroup(String.valueOf(System.currentTimeMillis()));
         builder.setColor(Color.parseColor("#fe5000"));
         builder.setWhen(System.currentTimeMillis());//通知产生的时间，会在通知信息里显示，一般是系统获取到的时间
-        builder.setContentTitle("您有新通知啦！");
+//        builder.setContentTitle("您有新通知啦！");
 //        builder.setContentText("准儿为您推荐附近好玩的地方，快点击查看吧！");
-        builder.setContentText("准儿发现附近有免费的景区讲解，快去看看吧！");
-
+//        builder.setContentText("准儿发现附近有免费的景区讲解，快去看看吧！");
+        builder.setContentTitle(""+title);
+        builder.setContentText(""+content);
 
         Notification notification = builder.build();
         notification.flags |= Notification.FLAG_AUTO_CANCEL;

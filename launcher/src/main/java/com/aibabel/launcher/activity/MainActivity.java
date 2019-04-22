@@ -34,17 +34,17 @@ import com.aibabel.baselibrary.utils.FastJsonUtil;
 import com.aibabel.baselibrary.utils.ProviderUtils;
 import com.aibabel.baselibrary.utils.SharePrefUtil;
 import com.aibabel.baselibrary.utils.ToastUtil;
-import com.aibabel.launcher.R;
-import com.aibabel.launcher.base.LaunBaseActivity;
-import com.aibabel.launcher.bean.MenuDataBean;
-import com.aibabel.launcher.bean.PushMessageBean;
-import com.aibabel.launcher.bean.SyncOrder;
-import com.aibabel.launcher.net.Api;
 import com.aibabel.launcher.receiver.LauncherBcastReceiver;
 import com.aibabel.launcher.rent.RentDialogActivity;
 import com.aibabel.launcher.rent.RentKeepUseActivity;
 import com.aibabel.launcher.rent.RentLockedActivity;
 import com.aibabel.launcher.rent.SimDetectActivity;
+import com.aibabel.menu.R;
+import com.aibabel.launcher.base.LaunBaseActivity;
+import com.aibabel.launcher.bean.MenuDataBean;
+import com.aibabel.launcher.bean.PushMessageBean;
+import com.aibabel.launcher.bean.SyncOrder;
+import com.aibabel.launcher.net.Api;
 import com.aibabel.launcher.utils.CalenderUtil;
 import com.aibabel.launcher.utils.DetectUtil;
 import com.aibabel.launcher.utils.I18NUtils;
@@ -60,10 +60,8 @@ import com.aibabel.message.service.MessageService;
 import com.aibabel.message.sqlite.SqlUtils;
 import com.aibabel.message.utiles.Constant;
 import com.aibabel.message.utiles.OkGoUtilWeb;
-import com.aibabel.message.utiles.StringUtils;
 import com.bumptech.glide.Glide;
 import com.hyphenate.chat.EMClient;
-import com.hyphenate.easeui.utils.EaseUserUtils;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.StringCallback;
 import com.lzy.okgo.model.Response;
@@ -77,8 +75,9 @@ import java.util.HashMap;
 import java.util.Map;
 
 import butterknife.BindView;
+import cn.jpush.android.api.JPushInterface;
 
-public class MainActivity extends LaunBaseActivity implements NetBroadcastReceiver.NetListener, LauncherBcastReceiver.LauncherListener {
+public class MainActivity extends LaunBaseActivity implements NetBroadcastReceiver.NetListener , LauncherBcastReceiver.LauncherListener{
 
     @BindView(R.id.main_location_app)
     TextView mMainLocation;
@@ -121,8 +120,8 @@ public class MainActivity extends LaunBaseActivity implements NetBroadcastReceiv
     Handler handler = new MyHandler(MainActivity.this);
 
     private String locationCity = "";//城市
-    private String locationCountry = "";//国家
-    private String locationLatLng = "";//经纬度
+    private String locationCountry  = "";//国家
+    private String locationLatLng  = "";//经纬度
     private boolean flagApi = false;//判断请求
     private String oldCity = "";
 
@@ -165,6 +164,12 @@ public class MainActivity extends LaunBaseActivity implements NetBroadcastReceiv
         requestNetwork();
     }
 
+    @Override
+    public void init() {
+        super.init();
+        JPushInterface.setAlias(this, 1, CommonUtils.getSN());
+        LogUtil.e("getSN:" + CommonUtils.getSN());
+    }
 
     public void onClick(View view) {
         switch (view.getId()) {
@@ -252,13 +257,13 @@ public class MainActivity extends LaunBaseActivity implements NetBroadcastReceiv
                         //选择
                         String cityID = data.getStringExtra("city_id");
                         String countryID = data.getStringExtra("country_id");
-                        if (!TextUtils.isEmpty(cityID) && !TextUtils.isEmpty(countryID) && !cityName.equals(oldCity)) {
+                        if (!TextUtils.isEmpty(cityID) && !TextUtils.isEmpty(countryID) && !cityName.equals(oldCity)){
                             oldCity = cityName;
-                            isNetWorkCity(cityID, countryID, "");
-                            boolean isDialog = mmkv.decodeBool("isDialogShow", false);
-                            Logs.e("是否显示Dialog：" + isDialog);
+                            isNetWorkCity(cityID,countryID,"");
+                            boolean isDialog = mmkv.decodeBool("isDialogShow",false);
+                            Logs.e("是否显示Dialog："+isDialog);
 //                            isDialog = false;
-                            if (!TextUtils.isEmpty(locationLatLng) && !TextUtils.isEmpty(locationCity) && !isDialog) {
+                            if (!TextUtils.isEmpty(locationLatLng) && !TextUtils.isEmpty(locationCity) && !isDialog){
                                 //判断有定位
                                 showDialogView(locationCity);
                             }
@@ -268,9 +273,7 @@ public class MainActivity extends LaunBaseActivity implements NetBroadcastReceiv
             }
         }
     }
-
     private MyDialog builder;
-
     private void showDialogView(String locationCity) {
         View view = getLayoutInflater().inflate(R.layout.dialog_layout_city, null);
         builder = new MyDialog(mContext, 0, 0, view, R.style.dialog);
@@ -280,19 +283,19 @@ public class MainActivity extends LaunBaseActivity implements NetBroadcastReceiv
         TextView btnLeft = view.findViewById(R.id.dialog_left);
         TextView btnRight = view.findViewById(R.id.dialog_right);
         TextView titleCity = view.findViewById(R.id.dialog_citys);
-        titleCity.setText(locationCity + "");
+        titleCity.setText(locationCity+"");
 
         btnLeft.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mmkv.encode("isDialogShow", true);
+                mmkv.encode("isDialogShow",true);
                 builder.dismiss();
             }
         });
         btnRight.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mmkv.encode("isDialogShow", false);
+                mmkv.encode("isDialogShow",false);
                 changeView();
                 builder.dismiss();
             }
@@ -314,7 +317,6 @@ public class MainActivity extends LaunBaseActivity implements NetBroadcastReceiv
         registerReceiver(broadcastReceiver, intentFilter);
         broadcastReceiver.setListener(this);
     }
-
     private void registerLauncher() {
         //后台定位广播接收器
         launcherBcastReceiver = new LauncherBcastReceiver();
@@ -324,6 +326,7 @@ public class MainActivity extends LaunBaseActivity implements NetBroadcastReceiv
         registerReceiver(launcherBcastReceiver, intentFilter);
         launcherBcastReceiver.setListener(this);
     }
+
 
 
     @Override
@@ -360,7 +363,7 @@ public class MainActivity extends LaunBaseActivity implements NetBroadcastReceiv
 
     @Override
     public void launcherReceiver(String city) {
-        if (TextUtils.isEmpty(oldCity)) {
+        if (TextUtils.isEmpty(oldCity)){
             Logs.e("oldCity - null - 了");
             changeView();
         }
@@ -507,15 +510,13 @@ public class MainActivity extends LaunBaseActivity implements NetBroadcastReceiv
     }
 
 
-    private void startActivity(int fragment_type) {
-        if (StringUtils.isSupported()) {
-            fragment_type = 1;
-            Intent intent = new Intent(this, com.aibabel.message.MainActivity.class);
-            intent.putExtra("fragment", fragment_type);
-            startActivity(intent);
-            homeBadge.setVisibility(View.GONE);
-        }
 
+    private void startActivity(int fragment_type) {
+        fragment_type = 1;
+        Intent intent = new Intent(this, com.aibabel.message.MainActivity.class);
+        intent.putExtra("fragment", fragment_type);
+        startActivity(intent);
+        homeBadge.setVisibility(View.GONE);
 
     }
 
@@ -535,10 +536,6 @@ public class MainActivity extends LaunBaseActivity implements NetBroadcastReceiv
                 public void onSuccess(String method, IMUser model, String resoureJson) {
                     if (null != resoureJson) {
                         signIn(model.getBody().getUser_id(), model.getBody().getPwd());
-                        // TODO: 2019/4/22 存储信息
-
-
-
                     }
 
                 }
@@ -557,14 +554,6 @@ public class MainActivity extends LaunBaseActivity implements NetBroadcastReceiv
             e.printStackTrace();
         }
 
-    }
-
-    private void saveUserInfo(IMUser bean){
-        mmkv.encode(Constant.EM_SUPPORT,false);
-        mmkv.encode(Constant.EM_NICk,"");
-        mmkv.encode(Constant.EM_AVATAR,"");
-        mmkv.encode(Constant.EM_USERNAME,bean.getBody().getUser_id());
-        mmkv.encode(Constant.EM_PASSWORD,bean.getBody().getPwd());
     }
 
 
@@ -591,6 +580,7 @@ public class MainActivity extends LaunBaseActivity implements NetBroadcastReceiv
         intent.putExtra(Constant.EM_PASSWORD, password);
         sendBroadcast(intent);
     }
+
 
 
     /**
