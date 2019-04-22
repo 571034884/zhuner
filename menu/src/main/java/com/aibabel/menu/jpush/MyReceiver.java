@@ -79,7 +79,7 @@ public class MyReceiver extends BroadcastReceiver {
             Log.d(TAG, "[MyReceiver] 通知的ID: " + notifactionId);
 //            setNotification(context, Constants.TITLE_JG, Constants.MESSAGE_JG);
             Log.e("hjs","MenuonReceive12");
-            //MenuonReceive(context, bundle);
+            MenuonReceive(context, bundle);
 
 
         } else if (JPushInterface.ACTION_NOTIFICATION_OPENED.equals(intent.getAction())) {
