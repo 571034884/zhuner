@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.aibabel.baselibrary.base.BaseFragment;
+import com.aibabel.launcher.utils.AppStatusUtils;
 import com.aibabel.menu.R;
 import com.aibabel.launcher.utils.Logs;
 
@@ -57,8 +58,7 @@ public class BusFragment extends BaseFragment implements View.OnClickListener{
 
     public void launcherApp(String packageStr) {
         try {
-            Intent LaunchIntent = mContext.getPackageManager().getLaunchIntentForPackage(packageStr);
-            startActivity(LaunchIntent);
+            startActivity(AppStatusUtils.getAppOpenIntentByPackageName(mContext, packageStr));
         } catch (Exception e) {
             Logs.e(packageStr + ":" + e.toString());
         }

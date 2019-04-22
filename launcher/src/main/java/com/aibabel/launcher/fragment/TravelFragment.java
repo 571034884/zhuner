@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.aibabel.baselibrary.base.BaseFragment;
+import com.aibabel.launcher.utils.AppStatusUtils;
 import com.aibabel.menu.R;
 import com.aibabel.launcher.utils.Logs;
 
@@ -29,6 +30,8 @@ public class TravelFragment extends BaseFragment implements View.OnClickListener
     CardView moreCountryApp;
     @BindView(R.id.more_food_app)
     CardView moreFoodApp;
+    @BindView(R.id.more_poortravel_app)
+    CardView morePoortravelApp;
 
     @Override
     public int getLayout() {
@@ -44,8 +47,7 @@ public class TravelFragment extends BaseFragment implements View.OnClickListener
     }
     public void launcherApp(String packageStr) {
         try {
-            Intent LaunchIntent = mContext.getPackageManager().getLaunchIntentForPackage(packageStr);
-            startActivity(LaunchIntent);
+            startActivity(AppStatusUtils.getAppOpenIntentByPackageName(mContext, packageStr));
         } catch (Exception e) {
             Logs.e(packageStr + ":" + e.toString());
         }
@@ -65,6 +67,15 @@ public class TravelFragment extends BaseFragment implements View.OnClickListener
                 break;
             case R.id.more_food_app:
                 launcherApp("com.aibabel.food");
+                break;
+            case R.id.more_poortravel_app:
+                try {
+                    Intent LaunchIntent = mContext.getPackageManager().getLaunchIntentForPackage("com.qyer.android.plan");
+                    startActivity(LaunchIntent);
+                } catch (Exception e) {
+                    Logs.e(  "com.qyer.android.plan:" + e.toString());
+                }
+
                 break;
         }
     }

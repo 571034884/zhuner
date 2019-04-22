@@ -468,7 +468,6 @@ public class SpotsActivity extends BaseScenicActivity implements ExpireBroadcast
                     int totalDuration = msg.arg2;
 //                    tvTotal.setText(StringUtil.formatTime(totalDuration));
                     pbProgress.setMax(totalDuration / 1000);
-
                     startTimer = System.currentTimeMillis();
                     switchUI(mPosition, mIsPlaying);
                 }
@@ -486,7 +485,6 @@ public class SpotsActivity extends BaseScenicActivity implements ExpireBroadcast
             }
         }
     }
-
 
     /**
      * 切换图片
