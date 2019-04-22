@@ -315,7 +315,8 @@ public class MainActivity extends LaunBaseActivity implements NetBroadcastReceiv
         //后台定位广播接收器
         launcherBcastReceiver = new LauncherBcastReceiver();
         IntentFilter intentFilter = new IntentFilter();
-        intentFilter.addAction("com.aibabel.menu.MENULOCATION");
+        intentFilter.addAction("com.aibabel.menu.MENULOCATION");//定位广播监听
+        intentFilter.addAction("com.aibabel.launcher.MUSIC");//音乐广播监听
         registerReceiver(launcherBcastReceiver, intentFilter);
         launcherBcastReceiver.setListener(this);
     }
@@ -428,6 +429,11 @@ public class MainActivity extends LaunBaseActivity implements NetBroadcastReceiv
             Logs.e("oldCity - null - 了");
             changeView();
         }
+    }
+
+    @Override
+    public void launcherMusic(String type) {
+
     }
 
     /**
