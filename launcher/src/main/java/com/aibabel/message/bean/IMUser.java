@@ -42,6 +42,7 @@ public class IMUser extends BaseBean{
         private String user_id;
         private String pwd;
 
+
         public String getUser_id() {
             return user_id;
         }

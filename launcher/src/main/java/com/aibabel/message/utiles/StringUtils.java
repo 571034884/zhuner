@@ -3,6 +3,7 @@ package com.aibabel.message.utiles;
 import android.text.TextUtils;
 
 import com.aibabel.baselibrary.sphelper.SPHelper;
+import com.tencent.mmkv.MMKV;
 
 public class StringUtils {
     /**
@@ -13,8 +14,8 @@ public class StringUtils {
 
     public static boolean isSupported() {
         boolean isSupported = false;
-        String country = SPHelper.getString("country", "cn");
-        if (TextUtils.equals(country, "jpa") || TextUtils.equals(country, "th")) {
+        MMKV mmkv = MMKV.defaultMMKV();
+        if (mmkv.decodeBool("isSupported", false)) {
             isSupported = true;
         }
         return isSupported;

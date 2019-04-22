@@ -159,6 +159,8 @@ public class MessageService extends Service {
 
                 sentLoginStatus(Constant.STATE_LOGIN_SUCCESS);
 
+
+
             }
 
             /**
