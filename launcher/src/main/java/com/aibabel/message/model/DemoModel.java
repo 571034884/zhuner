@@ -2,7 +2,7 @@ package com.aibabel.message.model;
 
 import android.content.Context;
 
-import com.aibabel.message.sqlite.UserDao;
+import com.aibabel.message.hx.db.UserDao;
 import com.aibabel.message.utiles.PreferenceManager;
 import com.hyphenate.easeui.domain.EaseUser;
 import com.hyphenate.easeui.model.EaseAtMessageHelper;

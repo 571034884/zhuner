@@ -59,6 +59,9 @@ public class Constant extends EaseConstant {
      */
     public static final String EM_USERNAME = "em_userId";
     public static final String EM_PASSWORD = "em_password";
+    public static final String EM_SUPPORT = "em_support";
+    public static final String EM_NICk = "em_nick";
+    public static final String EM_AVATAR = "em_avatar";
     public static final int MSG_RECEIVER = 001;
     public static final int MSG_UNREAD_NUM = 002;
     public static final int MSG_LOGIN_STATE = 003;

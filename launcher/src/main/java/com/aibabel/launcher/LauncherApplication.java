@@ -85,6 +85,9 @@ public class LauncherApplication extends BaseApplication {
      * 初始化环信
      */
     private void initEasemob() {
+
+
+
         // 获取当前进程 id 并取得进程名
         int pid = android.os.Process.myPid();
         String processAppName = getAppName(pid);
