@@ -69,8 +69,12 @@ public class TravelFragment extends BaseFragment implements View.OnClickListener
                 launcherApp("com.aibabel.food");
                 break;
             case R.id.more_poortravel_app:
-                Intent LaunchIntent = mContext.getPackageManager().getLaunchIntentForPackage("com.qyer.android.plan");
-                startActivity(LaunchIntent);
+                try {
+                    Intent LaunchIntent = mContext.getPackageManager().getLaunchIntentForPackage("com.qyer.android.plan");
+                    startActivity(LaunchIntent);
+                } catch (Exception e) {
+                    Logs.e(  "com.qyer.android.plan:" + e.toString());
+                }
 
                 break;
         }
