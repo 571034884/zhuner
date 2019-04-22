@@ -307,7 +307,7 @@ public class MainActivity extends LaunBaseActivity {
             jsonObject.put("user_id", mmkv.getString(Constant.EM_USERNAME, ""));
             jsonObject.put("nickname", nick);
 
-            OkGoUtilWeb.<String>post(this, Api.METHOD_IM, jsonObject, IMUser.class, new BaseCallback<IMUser>() {
+            OkGoUtilWeb.<String>post(this, Api.METHOD_IM_EDIT, jsonObject, IMUser.class, new BaseCallback<IMUser>() {
                 @Override
                 public void onSuccess(String method, IMUser model, String resoureJson) {
                     if (null != model) {
