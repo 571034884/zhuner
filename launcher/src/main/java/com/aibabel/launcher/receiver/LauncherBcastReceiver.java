@@ -26,6 +26,9 @@ public class LauncherBcastReceiver extends BroadcastReceiver {
                     listener.launcherReceiver(city);
                 }
                 break;
+            case "com.aibabel.launcher.MUSIC":
+                listener.launcherMusic("0");
+                break;
         }
     }
 
@@ -36,6 +39,7 @@ public class LauncherBcastReceiver extends BroadcastReceiver {
 
     public interface LauncherListener {
         void launcherReceiver(String city);
+        void launcherMusic(String type);
     }
 
 }

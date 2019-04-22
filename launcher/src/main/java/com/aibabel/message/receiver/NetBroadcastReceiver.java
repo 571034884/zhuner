@@ -7,9 +7,19 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
+import android.text.TextUtils;
 import android.util.Log;
 
 import com.aibabel.baselibrary.utils.CommonUtils;
+import com.aibabel.baselibrary.utils.FastJsonUtil;
+import com.aibabel.baselibrary.utils.ToastUtil;
+import com.aibabel.launcher.bean.PublicBean;
+import com.aibabel.launcher.utils.Logs;
+import com.aibabel.launcher.utils.ServerUtils;
+import com.lzy.okgo.OkGo;
+import com.lzy.okgo.callback.StringCallback;
+import com.lzy.okgo.model.Response;
+import com.tencent.mmkv.MMKV;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,7 +42,7 @@ public class NetBroadcastReceiver extends BroadcastReceiver {
 
     @Override
     public void onReceive(Context context, Intent intent) {
-
+        MMKV mmkv = MMKV.defaultMMKV();
         if (intent.getAction().equals("android.net.conn.CONNECTIVITY_CHANGE")) {
             boolean this_networkAvailable = CommonUtils.isNetworkAvailable(context);
             if (this_networkAvailable) {
@@ -47,6 +57,25 @@ public class NetBroadcastReceiver extends BroadcastReceiver {
                         WifiManager wifiManager = (WifiManager) context.getSystemService(WIFI_SERVICE);
                         WifiInfo wifiInfo = wifiManager.getConnectionInfo();
                         listener.netState(wifiInfo.getSSID().replaceAll("\"",""));
+                    }
+                }
+
+                //预判服务器域名
+                String serIP = mmkv.decodeString("serIP","");
+                if (TextUtils.isEmpty(serIP)){
+                    Logs.e("当前 serIP 空");
+                    mmkv.encode("serIP",System.currentTimeMillis()+"");
+                    getInternetService(context);
+                }else{
+                    long intIP = Long.parseLong(serIP);
+                    long outIP = System.currentTimeMillis();
+                    long results = outIP - intIP;
+
+                    Logs.e("服务器域名计算:"+outIP+"-"+intIP+"="+results);
+                    //超过5小时 请求一次 1800000
+                    if (results > 1800000){
+                        mmkv.encode("serIP",outIP+"");
+                        getInternetService(context);
                     }
                 }
             } else {
@@ -67,5 +96,79 @@ public class NetBroadcastReceiver extends BroadcastReceiver {
         void netState(String nameWifi);
     }
 
+    private int servers = 0;
 
+    /**
+     * 1.获取服务器域名
+     * 2.存储
+     * 3.开启定时轮询
+     * 1.判断容错是否达到3次
+     * 1.达到三次
+     * 判断时区，切换域名   容错清零
+     * 2.未达到三次
+     * 判断时区，域名不做变动     超时容错清零
+     */
+    private void getInternetService(final Context context) {
+        Log.e("SERVICE_FUWU", "开始请求域名接口");
+        String HOST_SERVER = "http://abroad.api.joner.aibabel.cn:7001";
+        switch (CommonUtils.getTimerType()){
+            case 1:
+                HOST_SERVER = "http://api.joner.aibabel.cn:7001";
+                break;
+            case 0:
+                HOST_SERVER = "http://abroad.api.joner.aibabel.cn:7001";
+                break;
+        }
+        OkGo.<String>get(HOST_SERVER+"/v2/jonerconfig/getConfig")
+                .tag(this)
+                .params("sn", CommonUtils.getSN())
+                .params("no", CommonUtils.getRandom())
+                .params("sl", CommonUtils.getLocalLanguage())
+                .execute(new StringCallback() {
+                    @Override
+                    public void onSuccess(Response<String> response) {
+                        if (!TextUtils.isEmpty(response.body().toString())) {
+                            Log.e("SERVICE_FUWU", "onSuccess:" + response.body().toString());
+                            saveService(response.body().toString());
+                        } else {
+                            //TODO 获取服务列表空
+                            Log.e("SERVICE_FUWU", "onSuccess:数据空");
+                        }
+                    }
+
+                    @Override
+                    public void onError(Response<String> response) {
+                        super.onError(response);
+                        switch (servers) {
+                            case 0:
+                                servers = 1;
+                                getInternetService(context);
+                                Log.e("SERVICE_FUWU", "获取服务器列表 第一次 出错");
+                                break;
+                            case 1:
+                                servers = 2;
+                                getInternetService(context);
+                                Log.e("SERVICE_FUWU", "获取服务器列表 第二次 出错");
+                                break;
+                            case 2:
+                                servers = 0;
+                                Log.e("SERVICE_FUWU", "获取服务器列表 第三次 出错");
+                                break;
+                        }
+
+                        Log.e("SERVICE_FUWU", "onError:" + response.getException().toString());
+                    }
+                });
+    }
+    private void saveService(String response) {
+        try {
+            PublicBean bean = FastJsonUtil.changeJsonToBean(response, PublicBean.class);
+            //备份所有服务器数据，使用,分割
+            ServerUtils.saveAllServer(bean.data.server);
+//            ServerManager.getInstance().setPingServerError(ServerKeyUtils.serverKeyChatJoner);
+            //TODO 任务
+        } catch (Exception e) {
+            Log.e("SERVICE_FUWU", "onError:" + e.toString());
+        }
+    }
 }

@@ -59,6 +59,7 @@
         </activity>
         <activity android:name=".activity.MoreActivity" />
         <activity android:name=".activity.SearchActivity"/>
+        <activity android:name=".activity.H5Activity"/>
         <activity
             android:name="com.aibabel.message.MainActivity"
             android:launchMode="singleTop"
