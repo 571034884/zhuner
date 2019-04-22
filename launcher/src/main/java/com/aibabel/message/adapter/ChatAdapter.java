@@ -4,7 +4,7 @@ import android.content.Context;
 import android.widget.ImageView;
 
 
-import com.aibabel.launcher.R;
+import com.aibabel.menu.R;
 import com.bumptech.glide.Glide;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;

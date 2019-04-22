@@ -9,7 +9,7 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.aibabel.launcher.R;
+import com.aibabel.menu.R;
 import com.aibabel.launcher.bean.PushMessageBean;
 import com.aibabel.launcher.utils.LogUtil;
 import com.aibabel.launcher.view.MaterialBadgeTextView;

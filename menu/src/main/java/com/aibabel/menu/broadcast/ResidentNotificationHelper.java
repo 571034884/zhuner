@@ -40,6 +40,7 @@ public class ResidentNotificationHelper {
 
 
     public static void sendResidentNotice(Context context, String title, String content, Intent intent) {
+        Log.e("hjs",""+title+content);
         if (NOTICE_ID_TYPE_0 > 10000) {
             NOTICE_ID_TYPE_0 = -1;
         }
@@ -93,9 +94,10 @@ public class ResidentNotificationHelper {
         builder.setGroup(String.valueOf(System.currentTimeMillis()));
         builder.setColor(Color.parseColor("#fe5000"));
         builder.setWhen(System.currentTimeMillis());//通知产生的时间，会在通知信息里显示，一般是系统获取到的时间
-        builder.setContentTitle("您有新通知啦！");
+//        builder.setContentTitle("您有新通知啦！");
 //        builder.setContentText("准儿为您推荐附近好玩的地方，快点击查看吧！");
-        builder.setContentText("准儿发现附近有免费的景区讲解，快去看看吧！");
+        builder.setContentTitle(""+title);
+        builder.setContentText(""+content);
 
 
         Notification notification = builder.build();

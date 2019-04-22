@@ -20,7 +20,7 @@ import android.widget.LinearLayout;
 
 import com.aibabel.baselibrary.utils.CommonUtils;
 import com.aibabel.baselibrary.utils.ToastUtil;
-import com.aibabel.launcher.R;
+import com.aibabel.menu.R;
 import com.aibabel.launcher.base.LaunBaseActivity;
 import com.baidu.location.BDLocation;
 

@@ -135,10 +135,10 @@ public class MyApplication extends BaseApplication {
         } catch (Exception e) {
             e.printStackTrace();
         }
+
         JPushInterface.setTags(this, 2, hashSet);
         //设置通知只显示20条
         JPushInterface.setLatestNotificationNumber(this, 20);
-
     }
     @Override
     public void onTrimMemory(int level) {

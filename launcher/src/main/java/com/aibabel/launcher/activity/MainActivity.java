@@ -34,17 +34,17 @@ import com.aibabel.baselibrary.utils.FastJsonUtil;
 import com.aibabel.baselibrary.utils.ProviderUtils;
 import com.aibabel.baselibrary.utils.SharePrefUtil;
 import com.aibabel.baselibrary.utils.ToastUtil;
-import com.aibabel.launcher.R;
-import com.aibabel.launcher.base.LaunBaseActivity;
-import com.aibabel.launcher.bean.MenuDataBean;
-import com.aibabel.launcher.bean.PushMessageBean;
-import com.aibabel.launcher.bean.SyncOrder;
-import com.aibabel.launcher.net.Api;
 import com.aibabel.launcher.receiver.LauncherBcastReceiver;
 import com.aibabel.launcher.rent.RentDialogActivity;
 import com.aibabel.launcher.rent.RentKeepUseActivity;
 import com.aibabel.launcher.rent.RentLockedActivity;
 import com.aibabel.launcher.rent.SimDetectActivity;
+import com.aibabel.menu.R;
+import com.aibabel.launcher.base.LaunBaseActivity;
+import com.aibabel.launcher.bean.MenuDataBean;
+import com.aibabel.launcher.bean.PushMessageBean;
+import com.aibabel.launcher.bean.SyncOrder;
+import com.aibabel.launcher.net.Api;
 import com.aibabel.launcher.utils.CalenderUtil;
 import com.aibabel.launcher.utils.DetectUtil;
 import com.aibabel.launcher.utils.I18NUtils;
@@ -75,8 +75,9 @@ import java.util.HashMap;
 import java.util.Map;
 
 import butterknife.BindView;
+import cn.jpush.android.api.JPushInterface;
 
-public class MainActivity extends LaunBaseActivity implements NetBroadcastReceiver.NetListener ,LauncherBcastReceiver.LauncherListener{
+public class MainActivity extends LaunBaseActivity implements NetBroadcastReceiver.NetListener , LauncherBcastReceiver.LauncherListener{
 
     @BindView(R.id.main_location_app)
     TextView mMainLocation;
@@ -163,7 +164,12 @@ public class MainActivity extends LaunBaseActivity implements NetBroadcastReceiv
         requestNetwork();
     }
 
-
+    @Override
+    public void init() {
+        super.init();
+        JPushInterface.setAlias(this, 1, CommonUtils.getSN());
+        LogUtil.e("getSN:" + CommonUtils.getSN());
+    }
 
     public void onClick(View view) {
         switch (view.getId()) {

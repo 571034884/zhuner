@@ -3,6 +3,7 @@ package com.aibabel.launcher;
 import android.app.ActivityManager;
 import android.content.Context;
 import android.content.Intent;
+import android.util.Log;
 
 import com.aibabel.baselibrary.base.BaseApplication;
 import com.aibabel.baselibrary.http.OkGoUtil;
@@ -10,13 +11,18 @@ import com.aibabel.baselibrary.utils.CommonUtils;
 import com.aibabel.launcher.service.MyService;
 import com.aibabel.launcher.utils.Logs;
 import com.aibabel.message.helper.DemoHelper;
+import com.aibabel.message.utiles.L;
 import com.hyphenate.chat.EMClient;
 import com.hyphenate.chat.EMOptions;
 
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 
 import java.util.List;
+import java.util.Set;
+
+import cn.jpush.android.api.JPushInterface;
 
 /**
  * Created by fytworks on 2019/4/16.
@@ -38,7 +44,7 @@ public class LauncherApplication extends BaseApplication {
         //init helper
         DemoHelper.getInstance().init(applicationContext);
         initEasemob();
-
+        configJPush();
         startService(new Intent(this, MyService.class));
 
     }
@@ -167,5 +173,30 @@ public class LauncherApplication extends BaseApplication {
         return null;
     }
 
+
+
+
+    /**
+     * 配置极光推送
+     */
+    public void configJPush() {
+        Log.e("BaseApplication","LauncherApplication配置极光推送");
+        JPushInterface.setDebugMode (true);    // 设置开启日志,发布时请关闭日志
+        JPushInterface.init (this);
+        L.e("SN:"+CommonUtils.getSN());
+        JPushInterface.setAlias(this, 1, CommonUtils.getSN());
+        JPushInterface.getAlias(this,1);
+        Set<String> hashSet = new HashSet<>();
+        hashSet.add(CommonUtils.getDevice());
+        try {
+            hashSet.add(CommonUtils.getVerName(this));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        JPushInterface.setTags(this, 2, hashSet);
+        //设置通知只显示20条
+        JPushInterface.setLatestNotificationNumber(this, 20);
+    }
 
 }

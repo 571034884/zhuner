@@ -13,7 +13,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 
-import com.aibabel.launcher.R;
+import com.aibabel.menu.R;
 import com.aibabel.launcher.utils.LogUtil;
 
 import butterknife.BindString;

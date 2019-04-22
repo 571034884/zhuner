@@ -10,7 +10,7 @@ import android.view.WindowManager;
 import android.widget.ImageView;
 
 import com.aibabel.baselibrary.base.BaseFragment;
-import com.aibabel.launcher.R;
+import com.aibabel.menu.R;
 import com.aibabel.launcher.bean.PushMessageBean;
 import com.aibabel.launcher.utils.LogUtil;
 import com.aibabel.message.adapter.RecyclerViewAdapter;

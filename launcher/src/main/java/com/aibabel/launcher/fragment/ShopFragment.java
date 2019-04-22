@@ -8,7 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.aibabel.baselibrary.base.BaseFragment;
-import com.aibabel.launcher.R;
+import com.aibabel.menu.R;
 import com.aibabel.launcher.activity.H5Activity;
 import com.aibabel.launcher.utils.Logs;
 

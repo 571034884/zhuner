@@ -15,7 +15,7 @@ import android.widget.TextView;
 import com.aibabel.baselibrary.http.BaseCallback;
 import com.aibabel.baselibrary.http.OkGoUtil;
 import com.aibabel.baselibrary.utils.ProviderUtils;
-import com.aibabel.launcher.R;
+import com.aibabel.menu.R;
 import com.aibabel.launcher.base.LaunBaseActivity;
 import com.aibabel.launcher.bean.CityListBean;
 import com.aibabel.launcher.net.Api;

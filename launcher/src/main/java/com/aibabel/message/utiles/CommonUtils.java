@@ -1,4 +1,4 @@
-package com.aibabel.menu.util;
+package com.aibabel.message.utiles;
 
 import android.content.Context;
 import android.content.pm.ApplicationInfo;
@@ -58,8 +58,7 @@ public class CommonUtils {
             Log.e("CommonUtils",e.getMessage());
         }
 
-//        return sn;
-        return "0000000000000001";
+        return sn;
     }
 
 

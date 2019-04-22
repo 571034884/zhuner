@@ -16,7 +16,7 @@ import android.widget.TextView;
 
 import com.aibabel.baselibrary.base.BaseFragment;
 import com.aibabel.baselibrary.sphelper.SPHelper;
-import com.aibabel.launcher.R;
+import com.aibabel.menu.R;
 import com.aibabel.message.adapter.ChatAdapter;
 import com.aibabel.message.utiles.ChatUiHelper;
 import com.aibabel.message.utiles.SizeUtils;

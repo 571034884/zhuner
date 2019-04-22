@@ -23,7 +23,7 @@ import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.TextView;
 
-import com.aibabel.launcher.R;
+import com.aibabel.menu.R;
 
 /**
  * Created by matrixxun on 2016/8/30.

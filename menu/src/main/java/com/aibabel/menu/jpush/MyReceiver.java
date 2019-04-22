@@ -65,6 +65,7 @@ public class MyReceiver extends BroadcastReceiver {
 
             receivingNotification(context, bundle);
 
+            Log.e("hjs","MenuonReceive1");
             /*** 处理推送流程hjs*/
             MenuonReceive(context, bundle);
 
@@ -77,7 +78,8 @@ public class MyReceiver extends BroadcastReceiver {
             int notifactionId = bundle.getInt(JPushInterface.EXTRA_NOTIFICATION_ID);
             Log.d(TAG, "[MyReceiver] 通知的ID: " + notifactionId);
 //            setNotification(context, Constants.TITLE_JG, Constants.MESSAGE_JG);
-            MenuonReceive(context, bundle);
+            Log.e("hjs","MenuonReceive12");
+            //MenuonReceive(context, bundle);
 
 
         } else if (JPushInterface.ACTION_NOTIFICATION_OPENED.equals(intent.getAction())) {
@@ -101,6 +103,7 @@ public class MyReceiver extends BroadcastReceiver {
         } else {
             Log.d(TAG, "[MyReceiver] Unhandled intent - " + intent.getAction());
         }
+
     }
 
     /**
