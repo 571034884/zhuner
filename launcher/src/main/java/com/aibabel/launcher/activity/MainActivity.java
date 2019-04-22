@@ -327,75 +327,7 @@ public class MainActivity extends LaunBaseActivity implements NetBroadcastReceiv
         launcherBcastReceiver.setListener(this);
     }
 
-    private void startActivity(int fragment_type) {
-        fragment_type = 1;
-        Intent intent = new Intent(this, com.aibabel.message.MainActivity.class);
-        intent.putExtra("fragment", fragment_type);
-        startActivity(intent);
-        homeBadge.setVisibility(View.GONE);
 
-    }
-
-    //=================================================环信消息开始===================================
-
-
-    /**
-     * 请求后台获取环信登录账号密码
-     */
-    private void getUserInfo() {
-        try {
-            JSONObject jsonObject = new JSONObject();
-            jsonObject.put("sn", CommonUtils.getSN());
-
-            OkGoUtilWeb.<String>post(this, Api.METHOD_IM, jsonObject, IMUser.class, new BaseCallback<IMUser>() {
-                @Override
-                public void onSuccess(String method, IMUser model, String resoureJson) {
-                    if (null != method) {
-                        signIn(model.getBody().getUser_id(), model.getBody().getPwd());
-                    }
-
-                }
-
-                @Override
-                public void onError(String method, String message, String resoureJson) {
-
-                }
-
-                @Override
-                public void onFinsh(String method) {
-
-                }
-            });
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-    }
-
-
-    /**
-     * 开始环信服务并传输数据
-     */
-    private void startMessageService() {
-        Intent messageService = new Intent();
-        messageService.setClass(getApplicationContext(), MessageService.class);
-        messageService.putExtra("messenger", new Messenger(handler));
-        startService(messageService);
-    }
-
-
-    /**
-     * 登录环信
-     *
-     * @param username
-     * @param password
-     */
-    private void signIn(String username, String password) {
-        Intent intent = new Intent(Constant.ACTION_LOGIN);
-        intent.putExtra(Constant.EM_USERNAME, username);
-        intent.putExtra(Constant.EM_PASSWORD, password);
-        sendBroadcast(intent);
-    }
 
     @Override
     public void netState(boolean isAvailable) {
@@ -576,6 +508,80 @@ public class MainActivity extends LaunBaseActivity implements NetBroadcastReceiv
                 break;
         }
     }
+
+
+
+    private void startActivity(int fragment_type) {
+        fragment_type = 1;
+        Intent intent = new Intent(this, com.aibabel.message.MainActivity.class);
+        intent.putExtra("fragment", fragment_type);
+        startActivity(intent);
+        homeBadge.setVisibility(View.GONE);
+
+    }
+
+    //=================================================环信消息开始===================================
+
+
+    /**
+     * 请求后台获取环信登录账号密码
+     */
+    private void getUserInfo() {
+        try {
+            JSONObject jsonObject = new JSONObject();
+            jsonObject.put("sn", CommonUtils.getSN());
+
+            OkGoUtilWeb.<String>post(this, Api.METHOD_IM, jsonObject, IMUser.class, new BaseCallback<IMUser>() {
+                @Override
+                public void onSuccess(String method, IMUser model, String resoureJson) {
+                    if (null != resoureJson) {
+                        signIn(model.getBody().getUser_id(), model.getBody().getPwd());
+                    }
+
+                }
+
+                @Override
+                public void onError(String method, String message, String resoureJson) {
+
+                }
+
+                @Override
+                public void onFinsh(String method) {
+
+                }
+            });
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+    }
+
+
+    /**
+     * 开始环信服务并传输数据
+     */
+    private void startMessageService() {
+        Intent messageService = new Intent();
+        messageService.setClass(getApplicationContext(), MessageService.class);
+        messageService.putExtra("messenger", new Messenger(handler));
+        startService(messageService);
+    }
+
+
+    /**
+     * 登录环信
+     *
+     * @param username
+     * @param password
+     */
+    private void signIn(String username, String password) {
+        Intent intent = new Intent(Constant.ACTION_LOGIN);
+        intent.putExtra(Constant.EM_USERNAME, username);
+        intent.putExtra(Constant.EM_PASSWORD, password);
+        sendBroadcast(intent);
+    }
+
+
 
     /**
      * 声明静态内部类不会持有外部类的隐式引用
