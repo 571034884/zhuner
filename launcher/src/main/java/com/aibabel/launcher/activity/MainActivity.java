@@ -495,6 +495,11 @@ public class MainActivity extends LaunBaseActivity implements NetBroadcastReceiv
                 flagScenic = true;
                 mMainOneAppTwoOn.setImageResource(R.mipmap.ic_scenic_pause);
                 break;
+            case 3://关闭播放器
+                flagScenic = false;
+                mMainOneAppOne.setVisibility(View.VISIBLE);
+                mMainOneAppTwo.setVisibility(View.GONE);
+                break;
         }
     }
 

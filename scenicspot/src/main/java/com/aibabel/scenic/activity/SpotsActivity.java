@@ -395,6 +395,9 @@ public class SpotsActivity extends BaseScenicActivity implements ExpireBroadcast
                 if (mIsPlaying){
                     addEventLong();
                 }
+                //暂停播放
+                sendToLauncher("","","",3);
+
                 addStatisticsEvent("scenic_spots_close", null);
                 onBackPressed();
                 sendBroadcast(Constants.ACTION_CLOSE);
@@ -422,6 +425,16 @@ public class SpotsActivity extends BaseScenicActivity implements ExpireBroadcast
             case R.id.rl_music:
                 break;
         }
+    }
+
+    public void sendToLauncher(String poiName,String urlPic,String name,int type){
+        Intent intent1 = new Intent();
+        intent1.putExtra("urlPic",urlPic);
+        intent1.putExtra("poiName",poiName);
+        intent1.putExtra("name",name);
+        intent1.putExtra("type",type);
+        intent1.setAction("com.aibabel.launcher.MUSIC");
+        sendBroadcast(intent1);
     }
 
     @Override
