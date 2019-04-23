@@ -10,7 +10,7 @@
         android:id="@+id/ll_introduce"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="47dp"
+        android:paddingTop="47dp"
         android:orientation="vertical"
         android:paddingLeft="22dp"
         android:paddingRight="22dp">
@@ -30,14 +30,16 @@
             android:id="@+id/tv_content"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="17dp"
+            android:paddingTop="17dp"
             android:textColor="@color/color333"
             android:textSize="15sp" />
 
         <ImageView
             android:id="@+id/tv_scenicmap"
+            android:layout_marginTop="10dp"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="150dp"
+            android:scaleType="centerCrop"
             />
 
     </LinearLayout>
