@@ -8,6 +8,8 @@ import android.util.Log;
 
 import com.aibabel.baselibrary.base.BaseActivity;
 import com.aibabel.baselibrary.utils.FastJsonUtil;
+import com.aibabel.launcher.activity.H5Activity;
+import com.aibabel.launcher.activity.PushH5Activity;
 import com.aibabel.launcher.bean.PushMessageBean;
 import com.aibabel.launcher.utils.LogUtil;
 import com.aibabel.message.bean.DetailBean;
@@ -50,6 +52,9 @@ public class MessageUtil {
 
             if (TextUtils.equals(bean.getType(), "5")) {
                 // TODO: 2019/1/10 打开链接地址
+                Intent intent = new Intent(context, PushH5Activity.class);
+                intent.putExtra("url",""+bean.getPath());
+                context.startActivity(intent);
 
             } else if (TextUtils.equals(bean.getType(), "4")) {
 
@@ -107,6 +112,9 @@ public class MessageUtil {
 
             if (TextUtils.equals(bean.getType(), "5")) {
                 // TODO: 2019/1/10 打开链接地址
+                Intent intent = new Intent(context, PushH5Activity.class);
+                intent.putExtra("url",""+bean.getPath());
+                context.startActivity(intent);
 
             } else if (TextUtils.equals(bean.getType(), "4")) {
 
