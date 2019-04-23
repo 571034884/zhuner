@@ -13,16 +13,19 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.aibabel.baselibrary.http.BaseCallback;
+import com.aibabel.baselibrary.utils.FastJsonUtil;
 import com.aibabel.baselibrary.utils.ToastUtil;
 import com.aibabel.launcher.base.LaunBaseActivity;
 import com.aibabel.launcher.net.Api;
 import com.aibabel.launcher.view.MyDialog;
 import com.aibabel.menu.R;
-import com.aibabel.message.bean.IMUser;
+import com.aibabel.message.hx.bean.CustomMessage;
+import com.aibabel.message.hx.bean.IMUser;
 import com.aibabel.message.fragment.Fragment_Chat;
 import com.aibabel.message.fragment.Fragment_Conversation;
 import com.aibabel.message.fragment.Fragment_Message;
 import com.aibabel.message.fragment.Fragment_Task;
+import com.aibabel.message.hx.cache.UserCacheManager;
 import com.aibabel.message.utiles.Constant;
 import com.aibabel.message.utiles.OkGoUtilWeb;
 import com.aibabel.message.utiles.StringUtils;
@@ -30,6 +33,7 @@ import com.hyphenate.EMMessageListener;
 import com.hyphenate.chat.EMClient;
 import com.hyphenate.chat.EMMessage;
 
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.util.List;
@@ -75,11 +79,8 @@ public class MainActivity extends LaunBaseActivity {
     private int fragment_index;
     private boolean isSetNick;
     private MyDialog builder;
-//    @Override
-//    public void onCreate(@Nullable Bundle savedInstanceState) {
-//        super.onCreate(savedInstanceState);
-//        setContentView(R.layout.activity_main_mm);
-//    }
+    private int unread;
+
 
     @Override
     public int getLayout(Bundle savedInstanceState) {
@@ -89,10 +90,11 @@ public class MainActivity extends LaunBaseActivity {
     @Override
     protected void initView() {
         isSetNick = mmkv.decodeBool("isSetNick", true);
+        unread = mmkv.decodeInt("count", 0);
         //get user id or group id
 //        toChatUsername = getIntent().getExtras().getString("userId");
         tvUnreadNumber = findViewById(R.id.tv_unread_number);
-        fragment_index = getIntent().getExtras().getInt("fragment", 0);
+        fragment_index = getIntent().getExtras().getInt("fragment_index", 0);
         mTabs = new Button[3];
         mTabs[0] = findViewById(R.id.btn_msg);
         mTabs[1] = findViewById(R.id.btn_chat);
@@ -115,19 +117,21 @@ public class MainActivity extends LaunBaseActivity {
 //        selectUI();
         currentTabIndex = fragment_index;
         if (fragment_index == 0) {
-            refreshUIWithMessage();
+            // TODO: 2019/4/22 除非为强推消息，否则优先准儿帮
+//            refreshUIWithMessage(unread);
             getSupportFragmentManager().beginTransaction()
                     .show(fragmentMessage)
                     .hide(fragmentConversation)
                     .hide(fragmentTask)
                     .commit();
         } else if (fragment_index == 1) {
-            isShowDialog();
+
             getSupportFragmentManager().beginTransaction()
                     .show(fragmentConversation)
                     .hide(fragmentMessage)
                     .hide(fragmentTask)
                     .commit();
+            isShowDialog();
         } else {
             getSupportFragmentManager().beginTransaction()
                     .hide(fragmentMessage)
@@ -144,13 +148,6 @@ public class MainActivity extends LaunBaseActivity {
         EMClient.getInstance().chatManager().addMessageListener(messageListener);
     }
 
-    private void selectUI() {
-        if (StringUtils.isSupported()) {
-            btnContainerChat.setVisibility(View.VISIBLE);
-        } else {
-            btnContainerChat.setVisibility(View.GONE);
-        }
-    }
 
 
     /**
@@ -191,31 +188,35 @@ public class MainActivity extends LaunBaseActivity {
 
 
     private void makeReaded() {
+        unread=0;
         tvUnreadNumber.setText("");
         tvUnreadNumber.setVisibility(View.GONE);
     }
 
-
-    public void getMessage() {
-        if (EMClient.getInstance().isLoggedInBefore() && currentTabIndex != 1) {
-            int count = EMClient.getInstance().chatManager().getUnreadMessageCount();
-            tvUnreadNumber.setVisibility(View.VISIBLE);
-            if (count > 0) {
-                tvUnreadNumber.setText(count);
-            }
-        } else {
-            tvUnreadNumber.setVisibility(View.GONE);
-        }
-
-
-    }
 
 
     EMMessageListener messageListener = new EMMessageListener() {
 
         @Override
         public void onMessageReceived(List<EMMessage> messages) {
-            refreshUIWithMessage();
+            for (EMMessage message : messages) {
+                try {
+                    JSONArray atJson = message.getJSONArrayAttribute("em_at_list"); // 被@用户列表,如果当前用户被@，需要ui特殊显示
+
+                    List<CustomMessage> customMessages = FastJsonUtil.changeJsonToList(atJson.toString(), CustomMessage.class);
+                    if (customMessages != null && customMessages.size() > 0) {
+                        for (CustomMessage custom : customMessages) {
+                            if (TextUtils.equals(custom.getExt().getAt(), UserCacheManager.getMyInfo().getUserId())) {
+                                unread++;
+                                refreshUIWithMessage(unread);
+
+                            }
+                        }
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
         }
 
         @Override
@@ -242,10 +243,9 @@ public class MainActivity extends LaunBaseActivity {
         }
     };
 
-    private void refreshUIWithMessage() {
+    private void refreshUIWithMessage(int count) {
         if (StringUtils.isSupported()) {
             if (EMClient.getInstance().isConnected() && currentTabIndex != 1) {
-                int count = EMClient.getInstance().chatManager().getUnreadMessageCount();
                 tvUnreadNumber.setVisibility(View.VISIBLE);
                 if (count > 0) {
                     tvUnreadNumber.setText(String.valueOf(count));
@@ -304,7 +304,7 @@ public class MainActivity extends LaunBaseActivity {
 
         try {
             JSONObject jsonObject = new JSONObject();
-            jsonObject.put("user_id", mmkv.getString(Constant.EM_USERNAME, ""));
+            jsonObject.put("user_id", UserCacheManager.getMyInfo().getUserId());
             jsonObject.put("nickname", nick);
 
             OkGoUtilWeb.<String>post(this, Api.METHOD_IM_EDIT, jsonObject, IMUser.class, new BaseCallback<IMUser>() {

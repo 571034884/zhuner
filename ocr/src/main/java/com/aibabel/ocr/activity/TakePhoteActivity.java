@@ -148,10 +148,7 @@ public class TakePhoteActivity extends BaseActivity implements CameraPreview.OnC
     private CustomProgress dialog;
     private int isDaubed = 0;//是否已经涂抹
     private String type = Constant.TYPE_MENU;//是否已经涂抹
-
     private OrientationEventListener mOrEventListener;
-
-
     private CardPagerAdapter mCardAdapter;
     private ShadowTransformer mCardShadowTransformer;
     private ViewPager mViewPager;
@@ -189,7 +186,7 @@ public class TakePhoteActivity extends BaseActivity implements CameraPreview.OnC
         iv_translation = findViewById(R.id.iv_translation);
         iv_camera = findViewById(R.id.iv_camera);
         tv_orLan = findViewById(R.id.tv_orLan);
-        tv_orLan = findViewById(R.id.tv_orLan);
+//        tv_orLan = findViewById(R.id.tv_orLan);
 //        tv_tranLan = findViewById(R.id.tv_tranLan);
         tv_back = findViewById(R.id.tv_back);
         tv_close = findViewById(R.id.tv_close);
@@ -265,6 +262,23 @@ public class TakePhoteActivity extends BaseActivity implements CameraPreview.OnC
             rl_hv.setVisibility(View.VISIBLE);
             rb_v.setChecked(true);
         }
+
+        /**
+         * @修改内容：2019-04-22，更新，根据定位国家显示当前选中语言
+         *
+         * @修改人：张文颖
+         *
+         */
+        String curCode = LanguageUtils.getCurrentSelect(this);
+        String curName = LanguageUtils.getNameByCode(or_code, this);
+        SharePrefUtil.saveString(this, Constant.LAN_OR, curName);
+        SharePrefUtil.saveString(this, Constant.LAN_OR_CODE, curCode);
+        if (TextUtils.equals(or_code, "jpa")) {
+            rl_hv.setVisibility(View.VISIBLE);
+        } else {
+            rl_hv.setVisibility(View.GONE);
+        }
+
 
     }
 
@@ -500,7 +514,7 @@ public class TakePhoteActivity extends BaseActivity implements CameraPreview.OnC
 
         //设置语言
         String or_code = SharePrefUtil.getString(this, Constant.LAN_OR_CODE, "en");
-        String tr_code = SharePrefUtil.getString(this, Constant.LAN_TR_CODE, "ch_ch");
+//        String tr_code = SharePrefUtil.getString(this, Constant.LAN_TR_CODE, "ch_ch");
 //        if (or_code.contains("jpa"))
 //            or_code = "jpa";
         String from = LanguageUtils.getNameByCode(or_code, this);
@@ -588,14 +602,12 @@ public class TakePhoteActivity extends BaseActivity implements CameraPreview.OnC
             case R.id.tv_back://返回涂抹界面
                 if (rg_tag != 2) {
                     showGuaguaka();
-                    // TODO: 2019/4/3  添加返回识别界面统计
                     HashMap<String, Serializable> map = new HashMap<>();
                     map.put("ocr_backAsr", type);
                     addStatisticsEvent("ocr_TakePhoto13", map);
 
                 } else {
                     reset();
-                    // TODO: 2019/4/3  添加返回拍照界面统计
                     HashMap<String, Serializable> map = new HashMap<>();
                     map.put("ocr_backTake", type);
                     addStatisticsEvent("ocr_TakePhoto14", map);
@@ -606,7 +618,6 @@ public class TakePhoteActivity extends BaseActivity implements CameraPreview.OnC
                 break;
             case R.id.iv_recamera://重新拍照
                 isTaken = false;
-                // TODO: 2019/4/3  添加重拍统计
                 HashMap<String, Serializable> map = new HashMap<>();
                 map.put("ocr_reTake", type);
                 addStatisticsEvent("ocr_TakePhoto10", map);
@@ -648,8 +659,6 @@ public class TakePhoteActivity extends BaseActivity implements CameraPreview.OnC
                 selectArticleOrMeau(1);
                 break;
             case R.id.iv_translation://识别翻译确定
-
-                // TODO: 2019/4/3  识别翻译确定
                 HashMap<String, Serializable> map_commit = new HashMap<>();
                 map_commit.put("ocr_commit", type);
                 addStatisticsEvent("ocr_TakePhoto11", map_commit);
@@ -670,7 +679,6 @@ public class TakePhoteActivity extends BaseActivity implements CameraPreview.OnC
      * 开启关闭闪光灯
      */
     private void setFlashMode() {
-        // TODO: 2019/4/3  添加闪光灯统计
         HashMap<String, Serializable> map_commit = new HashMap<>();
         if (isOpenFlashMode) {
             isOpenFlashMode = false;
@@ -722,7 +730,7 @@ public class TakePhoteActivity extends BaseActivity implements CameraPreview.OnC
      */
     private void selectLanguage(int type) {
 
-        // TODO: 2019/4/3  语言选择
+
         HashMap<String, Serializable> map_commit = new HashMap<>();
         map_commit.put("ocr_lang", this.type);
         addStatisticsEvent("TakePhoto7", map_commit);

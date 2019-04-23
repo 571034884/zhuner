@@ -9,18 +9,25 @@ import android.os.IBinder;
 import android.os.Message;
 import android.os.Messenger;
 import android.os.RemoteException;
+import android.text.TextUtils;
 import android.util.Log;
 import android.widget.Toast;
 
 import com.aibabel.baselibrary.sphelper.SPHelper;
+import com.aibabel.baselibrary.utils.FastJsonUtil;
 import com.aibabel.message.helper.DemoHelper;
+import com.aibabel.message.hx.bean.CustomMessage;
+import com.aibabel.message.hx.cache.UserCacheManager;
 import com.aibabel.message.utiles.Constant;
 import com.hyphenate.EMCallBack;
 import com.hyphenate.EMError;
 import com.hyphenate.EMMessageListener;
+import com.hyphenate.chat.EMChatManager;
 import com.hyphenate.chat.EMClient;
 import com.hyphenate.chat.EMMessage;
 import com.tencent.mmkv.MMKV;
+
+import org.json.JSONArray;
 
 import java.util.List;
 
@@ -28,11 +35,9 @@ import java.util.List;
 public class MessageService extends Service {
 
     private String TAG = MessageService.class.getSimpleName().toString();
-
-    private String username;
-    private String password;
     private Messenger mMessenger;
     private MessageMusicBroadReceiver receiver;
+    private int unread = 0;
 
     public MessageService() {
     }
@@ -66,7 +71,27 @@ public class MessageService extends Service {
 
         @Override
         public void onMessageReceived(List<EMMessage> messages) {
-            refreshUIWithMessage();
+
+            for (EMMessage message : messages) {
+                try {
+                    JSONArray atJson = message.getJSONArrayAttribute("em_at_list"); // 被@用户列表,如果当前用户被@，需要ui特殊显示
+
+                    List<CustomMessage> customMessages = FastJsonUtil.changeJsonToList(atJson.toString(), CustomMessage.class);
+                    if (customMessages != null && customMessages.size() > 0) {
+                        for (CustomMessage custom : customMessages) {
+                            if (TextUtils.equals(custom.getExt().getAt(), UserCacheManager.getMyInfo().getUserId())) {
+                                unread++;
+                                refreshUIWithMessage(unread);
+
+                            }
+                        }
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+
+
         }
 
         @Override
@@ -100,6 +125,8 @@ public class MessageService extends Service {
     private void regFilter() {
         IntentFilter intentFilter = new IntentFilter();
         intentFilter.addAction(Constant.ACTION_LOGIN);
+        intentFilter.addAction(Constant.ACTION_MAKE_READED);
+        intentFilter.addAction(Constant.ACTION_MESSAGE);
         intentFilter.setPriority(1000);
         if (receiver == null) {
             receiver = new MessageMusicBroadReceiver();
@@ -121,8 +148,9 @@ public class MessageService extends Service {
                     String pswd = intent.getStringExtra("pswd");
                     signIn(userId, pswd);
                     break;
-
-
+                case Constant.ACTION_MAKE_READED:
+                    unread = 0;
+                    break;
             }
         }
     }
@@ -137,14 +165,18 @@ public class MessageService extends Service {
             Log.i(TAG, "已经登录了");
             return;
         }
+        if(TextUtils.isEmpty(username)||TextUtils.isEmpty(password)){
+            Log.i(TAG, "账号密码空了");
+            return;
+        }
 
-        username = "user1";
-        password = "123";
+//        username = "user1";
+//        password = "123";
         /**
          * 保存账号密码到全局
          */
-        MMKV.defaultMMKV().encode(Constant.EM_USERNAME,username);
-        MMKV.defaultMMKV().encode(Constant.EM_PASSWORD,password);
+        MMKV.defaultMMKV().encode(Constant.EM_USERNAME, username);
+        MMKV.defaultMMKV().encode(Constant.EM_PASSWORD, password);
         EMClient.getInstance().login(username, password, new EMCallBack() {
             /**
              * 登陆成功的回调
@@ -156,11 +188,7 @@ public class MessageService extends Service {
                 EMClient.getInstance().chatManager().loadAllConversations();
                 // 加载所有群组到内存，如果使用了群组的话
                 EMClient.getInstance().groupManager().loadAllGroups();
-
                 sentLoginStatus(Constant.STATE_LOGIN_SUCCESS);
-
-
-
             }
 
             /**
@@ -263,11 +291,10 @@ public class MessageService extends Service {
     /**
      * 更新未读数量
      */
-    private void refreshUIWithMessage() {
+    private void refreshUIWithMessage(int count) {
         // refresh unread count
         Message mMessage = Message.obtain();
         mMessage.what = Constant.MSG_RECEIVER;
-        int count = getUnreadMsgCountTotal();
         mMessage.arg1 = count;
         try {
             //发送未读数量状态
@@ -278,22 +305,6 @@ public class MessageService extends Service {
 
     }
 
-    /**
-     * update unread message count
-     */
-    public void updateUnreadLabel() {
-        int count = getUnreadMsgCountTotal();
-
-    }
-
-    /**
-     * get unread message count
-     *
-     * @return
-     */
-    public int getUnreadMsgCountTotal() {
-        return EMClient.getInstance().chatManager().getUnreadMessageCount();
-    }
 
     @Override
     public void onDestroy() {
