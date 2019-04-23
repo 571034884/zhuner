@@ -36,6 +36,7 @@ public class LauncherApplication extends BaseApplication {
     private boolean isInit = false;
 
 
+
     @Override
     public void onCreate() {
         super.onCreate();

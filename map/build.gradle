@@ -20,7 +20,7 @@ android {
         applicationId "com.aibabel.map"
         minSdkVersion 21
         targetSdkVersion 28
-        versionCode 4
+        versionCode 5
         versionName "1.2.6"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }

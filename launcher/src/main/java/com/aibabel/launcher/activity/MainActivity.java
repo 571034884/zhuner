@@ -54,8 +54,8 @@ import com.aibabel.launcher.utils.LogUtil;
 import com.aibabel.launcher.utils.Logs;
 import com.aibabel.launcher.view.MaterialBadgeTextView;
 import com.aibabel.launcher.view.MyDialog;
+import com.aibabel.message.hx.bean.IMUser;
 import com.aibabel.menu.R;
-import com.aibabel.message.bean.IMUser;
 import com.aibabel.message.helper.DemoHelper;
 import com.aibabel.message.receiver.NetBroadcastReceiver;
 import com.aibabel.message.service.MessageService;
@@ -80,7 +80,7 @@ import java.util.Map;
 import butterknife.BindView;
 import cn.jpush.android.api.JPushInterface;
 
-public class MainActivity extends LaunBaseActivity implements NetBroadcastReceiver.NetListener , LauncherBcastReceiver.LauncherListener{
+public class MainActivity extends LaunBaseActivity implements NetBroadcastReceiver.NetListener, LauncherBcastReceiver.LauncherListener {
 
     @BindView(R.id.main_location_app)
     TextView mMainLocation;
@@ -136,10 +136,11 @@ public class MainActivity extends LaunBaseActivity implements NetBroadcastReceiv
     Handler handler = new MyHandler(MainActivity.this);
 
     private String locationCity = "";//城市
-    private String locationCountry  = "";//国家
-    private String locationLatLng  = "";//经纬度
+    private String locationCountry = "";//国家
+    private String locationLatLng = "";//经纬度
     private boolean flagApi = false;//判断请求
     private String oldCity = "";
+    private int hxMessage = 0;
 
 
     /**
@@ -198,10 +199,11 @@ public class MainActivity extends LaunBaseActivity implements NetBroadcastReceiv
                 mRlMask.setVisibility(View.GONE);
                 break;
             case R.id.main_notice_app://跳转到消息中心
+                startMessageActivity();
                 HashMap<String, Serializable> map = new HashMap<>();
                 map.put("menu_notice_click_id", "打开");
                 addStatisticsEvent("menu_notice_click", map);
-                startActivity(fragment_index);
+                startMessageActivity();
                 break;
             case R.id.main_location_app://跳转到目的地
                 HashMap<String, Serializable> map1 = new HashMap<>();
@@ -359,13 +361,13 @@ public class MainActivity extends LaunBaseActivity implements NetBroadcastReceiv
                         //选择
                         String cityID = data.getStringExtra("city_id");
                         String countryID = data.getStringExtra("country_id");
-                        if (!TextUtils.isEmpty(cityID) && !TextUtils.isEmpty(countryID) && !cityName.equals(oldCity)){
+                        if (!TextUtils.isEmpty(cityID) && !TextUtils.isEmpty(countryID) && !cityName.equals(oldCity)) {
                             oldCity = cityName;
-                            isNetWorkCity(cityID,countryID,"");
-                            boolean isDialog = mmkv.decodeBool("isDialogShow",false);
-                            Logs.e("是否显示Dialog："+isDialog);
+                            isNetWorkCity(cityID, countryID, "");
+                            boolean isDialog = mmkv.decodeBool("isDialogShow", false);
+                            Logs.e("是否显示Dialog：" + isDialog);
 //                            isDialog = false;
-                            if (!TextUtils.isEmpty(locationLatLng) && !TextUtils.isEmpty(locationCity) && !isDialog){
+                            if (!TextUtils.isEmpty(locationLatLng) && !TextUtils.isEmpty(locationCity) && !isDialog) {
                                 //判断有定位
                                 showDialogView(locationCity);
                             }
@@ -375,7 +377,9 @@ public class MainActivity extends LaunBaseActivity implements NetBroadcastReceiv
             }
         }
     }
+
     private MyDialog builder;
+
     private void showDialogView(String locationCity) {
         View view = getLayoutInflater().inflate(R.layout.dialog_layout_city, null);
         builder = new MyDialog(mContext, 0, 0, view, R.style.dialog);
@@ -385,19 +389,19 @@ public class MainActivity extends LaunBaseActivity implements NetBroadcastReceiv
         TextView btnLeft = view.findViewById(R.id.dialog_left);
         TextView btnRight = view.findViewById(R.id.dialog_right);
         TextView titleCity = view.findViewById(R.id.dialog_citys);
-        titleCity.setText(locationCity+"");
+        titleCity.setText(locationCity + "");
 
         btnLeft.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mmkv.encode("isDialogShow",true);
+                mmkv.encode("isDialogShow", true);
                 builder.dismiss();
             }
         });
         btnRight.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mmkv.encode("isDialogShow",false);
+                mmkv.encode("isDialogShow", false);
                 changeView();
                 builder.dismiss();
             }
@@ -419,6 +423,7 @@ public class MainActivity extends LaunBaseActivity implements NetBroadcastReceiv
         registerReceiver(broadcastReceiver, intentFilter);
         broadcastReceiver.setListener(this);
     }
+
     private void registerLauncher() {
         //后台定位广播接收器
         launcherBcastReceiver = new LauncherBcastReceiver();
@@ -428,7 +433,6 @@ public class MainActivity extends LaunBaseActivity implements NetBroadcastReceiv
         registerReceiver(launcherBcastReceiver, intentFilter);
         launcherBcastReceiver.setListener(this);
     }
-
 
 
     @Override
@@ -465,7 +469,7 @@ public class MainActivity extends LaunBaseActivity implements NetBroadcastReceiv
 
     @Override
     public void launcherReceiver(String city) {
-        if (TextUtils.isEmpty(oldCity)){
+        if (TextUtils.isEmpty(oldCity)) {
             Logs.e("oldCity - null - 了");
             changeView();
         }
@@ -490,6 +494,11 @@ public class MainActivity extends LaunBaseActivity implements NetBroadcastReceiv
             case 2://再次开始播放
                 flagScenic = true;
                 mMainOneAppTwoOn.setImageResource(R.mipmap.ic_scenic_pause);
+                break;
+            case 3://关闭播放器
+                flagScenic = false;
+                mMainOneAppOne.setVisibility(View.VISIBLE);
+                mMainOneAppTwo.setVisibility(View.GONE);
                 break;
         }
     }
@@ -630,14 +639,18 @@ public class MainActivity extends LaunBaseActivity implements NetBroadcastReceiv
     }
 
 
+    private void startMessageActivity() {
 
-    private void startActivity(int fragment_type) {
-        fragment_type = 1;
+        if (hxMessage > 0) {
+            fragment_index = 1;
+        }
         Intent intent = new Intent(this, com.aibabel.message.MainActivity.class);
-        intent.putExtra("fragment", fragment_type);
+        intent.putExtra("count", hxMessage);
+
+        intent.putExtra("fragment_index", fragment_index);
         startActivity(intent);
         homeBadge.setVisibility(View.GONE);
-
+        makeRead();
     }
 
     //=================================================环信消息开始===================================
@@ -701,6 +714,15 @@ public class MainActivity extends LaunBaseActivity implements NetBroadcastReceiv
         sendBroadcast(intent);
     }
 
+    /**
+     * 清除已读标记
+     */
+    private void makeRead() {
+        hxMessage = 0;
+        fragment_index = 0;
+        Intent intent = new Intent(Constant.ACTION_MAKE_READED);
+        sendBroadcast(intent);
+    }
 
 
     /**
@@ -718,9 +740,9 @@ public class MainActivity extends LaunBaseActivity implements NetBroadcastReceiv
             MainActivity activity = mActivity.get();
             if (activity != null) {
                 if (msg.what == Constant.MSG_RECEIVER) {
-                    int count = msg.arg1;
-                    if (count > 0) {
-                        homeBadge.setBadgeCount(count);
+                    hxMessage = msg.arg1;
+                    if (hxMessage + set_BadgeCount > 0) {
+                        homeBadge.setBadgeCount(hxMessage + set_BadgeCount);
                         homeBadge.setVisibility(View.VISIBLE);
                     } else {
                         homeBadge.setVisibility(View.INVISIBLE);
@@ -804,10 +826,6 @@ public class MainActivity extends LaunBaseActivity implements NetBroadcastReceiv
                                 keepuse.putExtra(bunder_iszhuner, zhuner_str);
                                 keepuse.putExtra(bunder_qudao, qudao_str);
                                 startActivity(keepuse);
-                                Intent intent_timeend = new Intent();
-                                intent_timeend.setAction("com.android.zhuner");
-                                intent_timeend.putExtra("Zhuner_devices", "time_end");
-                                sendBroadcast(intent_timeend);
                                 if (iflocksyncAgain) {
                                     iflocksyncAgain = false;
                                     loopHandler.sendEmptyMessageDelayed(130, 1000 * 5);
@@ -856,6 +874,8 @@ public class MainActivity extends LaunBaseActivity implements NetBroadcastReceiv
                             break;
                         case 301:
                             set_BadgeCount += 1;
+                            home_badge.setBadgeCount(set_BadgeCount + hxMessage);
+                            fragment_index = 0;
                             home_badge.setBadgeCount(set_BadgeCount);
                             //消息里面显示红点
 

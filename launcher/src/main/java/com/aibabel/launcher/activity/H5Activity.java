@@ -5,6 +5,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
 import android.webkit.CookieManager;
 import android.webkit.CookieSyncManager;
@@ -20,6 +21,7 @@ import android.widget.LinearLayout;
 
 import com.aibabel.baselibrary.utils.CommonUtils;
 import com.aibabel.baselibrary.utils.ToastUtil;
+import com.aibabel.launcher.utils.Logs;
 import com.aibabel.menu.R;
 import com.aibabel.launcher.base.LaunBaseActivity;
 import com.baidu.location.BDLocation;
@@ -142,7 +144,16 @@ public class H5Activity extends LaunBaseActivity{
         super.addPageParameters(key, value);
     }
 
-
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        switch (keyCode) {
+            case 133:
+                Logs.e("走了onKeyDown");
+                closeAct();
+                break;
+        }
+        return super.onKeyDown(keyCode, event);
+    }
 
     /**
      * 接收数据

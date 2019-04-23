@@ -23,7 +23,7 @@ android {
         applicationId "com.aibabel.sos"
         minSdkVersion 23
         targetSdkVersion 28
-        versionCode 15
+        versionCode 16
         versionName "1.1.2"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }

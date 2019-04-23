@@ -36,8 +36,10 @@ import org.json.JSONObject;
 import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -50,10 +52,20 @@ import butterknife.Unbinder;
  * 版本：1.0
  */
 public abstract class BaseActivity extends StatisticsBaseActivity  {
+    private static List<BaseActivity> activitiesList;
+    static {
+        activitiesList=  Collections.synchronizedList(new ArrayList<>());
+        Thread.setDefaultUncaughtExceptionHandler(new Thread.UncaughtExceptionHandler() {
+            @Override
+            public void uncaughtException(Thread t, Throwable e) {
 
-    private static ArrayList<BaseActivity> activitiesList=new ArrayList<>();
+            }
+        });
+    }
 
-    private boolean killedToBackground=true;
+
+
+    protected boolean killedToBackground=true;
     public String TAG = this.getClass().getSimpleName();
     public Unbinder mUnbinder;
     public Context mContext;
@@ -90,6 +102,7 @@ public abstract class BaseActivity extends StatisticsBaseActivity  {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Log.e("life==","onCreate"+getClass().getName());
         mContext = this;
         //setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         setNavigationBarVisibility();
@@ -204,7 +217,8 @@ public abstract class BaseActivity extends StatisticsBaseActivity  {
 
     @Override
     protected void onResume() {
-        Log.e("onResume===",getClass().getName());
+
+        Log.e("life==","onResume"+getClass().getName());
         super.onResume();
         inTime = System.currentTimeMillis();
         MobclickAgent.onResume(this);
@@ -221,7 +235,8 @@ public abstract class BaseActivity extends StatisticsBaseActivity  {
     @Override
     protected void onStop() {
         super.onStop();
-        Log.e("onStop===",getClass().getName());
+        Log.e("life==","onStop"+getClass().getName());
+
 
     }
 
@@ -359,20 +374,31 @@ public abstract class BaseActivity extends StatisticsBaseActivity  {
        if (killedToBackground){
            switch (keyCode) {
                case 133:
+                   exitAPP();
                case 134:
-//                   onStop();
-                   int size=activitiesList.size();
-                   for (int i=size-1; i>=0;i--){
-                      BaseActivity baseActivity=activitiesList.get(i);
-                      baseActivity.finish();
-                   }
+                  if (!getPackageName().equals("com.aibabel.ocr")){
+                      exitAPP();
+                  }
+
 //                   android.os.Process.killProcess(android.os.Process.myPid());
            }
        }
 
         return super.onKeyDown(keyCode, event);
     }
+   private void exitAPP(){
+       onPause();
+       onStop();
+       Iterator<BaseActivity> iterator=activitiesList.iterator();
+       while (iterator.hasNext()){
+           BaseActivity baseActivity=iterator.next();
+           baseActivity.finish();
+           iterator.remove();
+       }
 
+       activitiesList.clear();
+       System.exit(0);
+   }
     @Override
     public boolean dispatchTouchEvent(MotionEvent event) {
         switch (event.getAction()) {

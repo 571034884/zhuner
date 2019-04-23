@@ -246,7 +246,7 @@ public class LanguageUtils {
         list.add("ja");
         list.add("zu");
         list.add("sw-ke");
-        list.add("mo-go");
+        list.add("bn-bd");
         return list;
     }
 
