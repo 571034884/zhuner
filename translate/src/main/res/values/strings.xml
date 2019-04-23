@@ -17,6 +17,7 @@
     <string name="tongyuyanbuzhichi">同语言不支持离线翻译</string>
     <string name="offline">离线</string>
     <string name="notUnderstand">准儿没有听懂</string>
+    <string name="notUnderstand_en">I didn\'t catch that</string>
     <string name="tran_failed">准儿翻译失败</string>
     <string name="conn_net">连接网络</string>
     <string name="cont_use">继续使用</string>
@@ -35,11 +36,18 @@
     <string name="select_null">全不选</string>
     <string name="delete">删除</string>
     <string name="cancle">取消</string>
+    <string name="delete_record">是否确定永久删除？</string>
     <string name="error_response">服务器开小差了，请重试！</string>
     <string name="timeout_read">网络超时，请重试！</string>
     <string name="timeout_connect">连接超时！</string>
     <string name="error_connect">服务器连接失败，请重试！</string>
     <!--粤语不支持-->
     <string name="not_support">不支持该语种的翻译</string>
+
+    <!---->
+    <string name="m_menu">菜单</string>
+    <string name="m_translate">语音翻译</string>
+    <string name="m_translate_ai">智能翻译</string>
+    <string name="m_history">历史记录</string>
 
 </resources>

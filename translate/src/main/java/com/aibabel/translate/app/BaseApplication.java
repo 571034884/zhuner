@@ -13,8 +13,6 @@ import android.util.Log;
 import android.view.WindowManager;
 
 import com.aibabel.aidlaar.StatisticsManager;
-import com.aibabel.baselibrary.utils.DeviceUtils;
-import com.aibabel.baselibrary.utils.XIPCUtils;
 import com.aibabel.translate.BuildConfig;
 import com.aibabel.translate.MainActivity;
 import com.aibabel.translate.offline.ChangeOffline;
@@ -29,7 +27,6 @@ import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.StringCallback;
 import com.lzy.okgo.model.Response;
 import com.taobao.sophix.SophixManager;
-import com.tencent.mmkv.MMKV;
 import com.umeng.analytics.MobclickAgent;
 import com.umeng.commonsdk.UMConfigure;
 import com.xuhao.android.libsocket.sdk.OkSocket;
@@ -48,12 +45,13 @@ import static android.content.ContentValues.TAG;
  * Created by SunSH on 2018/3/14.
  */
 
-public class BaseApplication extends com.aibabel.baselibrary.base.BaseApplication {
+public class BaseApplication extends LitePalApplication {
 
 
 
     public static  boolean isTran=true;
     public static String isIpsil="Ipsil";
+    public static boolean newPoint = false;
 
     /**
      * DESIGN_WIDTH为设计图宽度
@@ -86,12 +84,6 @@ public class BaseApplication extends com.aibabel.baselibrary.base.BaseApplicatio
         super.onCreate();
         context = getApplicationContext();
 
-        if(lease_Debug_v&& DeviceUtils.getSystem()==DeviceUtils.System.PRO_LEASE){
-            UMConfigure.init(this, "5c9ac88e203657fd5e000214", CommonUtils.getSN(), UMConfigure.DEVICE_TYPE_PHONE,
-                    null);
-            MobclickAgent.setScenarioType(this, MobclickAgent.EScenarioType.E_UM_NORMAL);
-        }else{
-
         //初始化组件化基础库, 统计SDK/推送SDK/分享SDK都必须调用此初始化接口
         if (CommonUtils.isApkInDebug(this)) {
             //debug  版本
@@ -103,10 +95,11 @@ public class BaseApplication extends com.aibabel.baselibrary.base.BaseApplicatio
             UMConfigure.init(this, "5b446a5ca40fa31c6300003e", CommonUtils.getSN(), UMConfigure.DEVICE_TYPE_PHONE,
                     null);
             MobclickAgent.setScenarioType(this, MobclickAgent.EScenarioType.E_UM_NORMAL);
-        }}
+        }
 
+        //获取点的状态
+        newPoint = SharePrefUtil.getBoolean(context,"typePoint",false);
 
-        MMKV.initialize(this);
         initLayoutConfig();
         initLogConfig();
         initOkSocketConfig();
@@ -133,26 +126,9 @@ public class BaseApplication extends com.aibabel.baselibrary.base.BaseApplicatio
         initSQLite();
         //热修复
         rexiufu();
-    }
+        //
+        StatisticsManager.getInstance(this).setConfig(getPackageName(),BuildConfig.VERSION_NAME);
 
-    @Override
-    public String getAppVersionName() {
-        return null;
-    }
-
-    @Override
-    public String getAppPackageName() {
-        return null;
-    }
-
-    @Override
-    public void setServerUrlAndInterfaceGroup() {
-
-    }
-
-    @Override
-    public String setUmengKey() {
-        return null;
     }
 
     private void initCountryLanguage() {
@@ -260,10 +236,8 @@ public class BaseApplication extends com.aibabel.baselibrary.base.BaseApplicatio
      * 退出所有app
      */
     public static void exitAppList() {
-        if(activityLinkedList!=null&& activityLinkedList.size()>0){
-            for (Activity activity : activityLinkedList) {
-                activity.finish();
-            }
+        for (Activity activity : activityLinkedList) {
+            activity.finish();
         }
     }
 

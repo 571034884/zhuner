@@ -6,10 +6,10 @@ import android.os.SystemClock;
 import android.text.TextUtils;
 import android.util.Log;
 
+import com.aibabel.aidlaar.StatisticsManager;
 import com.aibabel.translate.R;
-import com.aibabel.translate.activity.BaseActivity;
 import com.aibabel.translate.app.BaseApplication;
-import com.aibabel.translate.audio.AudioRecordUtil;
+import com.aibabel.translate.audio.MicArrayUtil;
 import com.aibabel.translate.bean.AsrAndTranResultBean;
 import com.aibabel.translate.bean.ByteDataBean;
 import com.aibabel.translate.bean.ErrorResultBean;
@@ -33,29 +33,21 @@ import com.qinghuaofflineasr.inf.ResultListener;
 
 import org.json.JSONObject;
 
-import java.io.Serializable;
 import java.nio.charset.Charset;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 import java.util.Timer;
 import java.util.TimerTask;
 
-/**
- * ==========================================================================================
- *
- * @Author： 张文颖
- * @Date：2019/4/15
- * @Desc：
- * @Updtae：2019/4/15，将mic阵列改回原来的单麦（张明需求），修改人：张文颖 ==========================================================================================
- */
-public class TranslateUtil implements AudioRecordUtil.OnDealwithListener, SocketManger.OnReceiveListener {
+public class TranslateUtil implements MicArrayUtil.OnDealwithListener, SocketManger.OnReceiveListener {
 
     public int readnum = 0;
-    public int oldReadnum = 0;
+    public int oldReadnum=0;
     private Context context;
-    //    private MicArrayUtil util;
-    private AudioRecordUtil util;
+    private MicArrayUtil util;
     private OnResponseListener listener;
     private String id = "0";
     private long clickTime = 0;
@@ -66,8 +58,6 @@ public class TranslateUtil implements AudioRecordUtil.OnDealwithListener, Socket
     private String asrTextOffline;
     private long newTime;
     private int currentStatue = 0;
-    private long startTimer;
-    private long stopTimer;
 
     //离线缓冲
     private List<byte[]> offlineList = new LinkedList<>();
@@ -78,11 +68,11 @@ public class TranslateUtil implements AudioRecordUtil.OnDealwithListener, Socket
     private boolean isRead = false;
     private String to_lan_code;
     private String from_lan_code;
-    private int isResultFirst = 0;
+    private int isResultFirst=0;
 
     private Activity mActivity;
     //当前录音开始  是同侧还是异侧
-    private String currFrag = "Ipsil";
+    private String currFrag="Ipsil";
 
     private long startTime;
     private long endTime;
@@ -101,7 +91,7 @@ public class TranslateUtil implements AudioRecordUtil.OnDealwithListener, Socket
     public TranslateUtil(Context context, Activity activity) {
         this.context = context;
         mActivity = activity;
-        util = AudioRecordUtil.getInstance();
+        util = MicArrayUtil.getInstance();
         util.setOnDealwithListener(this);
 //        SocketManger.getInstance().setOnReceiveListener(this);
     }
@@ -122,11 +112,11 @@ public class TranslateUtil implements AudioRecordUtil.OnDealwithListener, Socket
      * @param to
      * @param key_
      */
-    public void sendAudio(String from, String to, int key_, String _currFrag) {
+    public void sendAudio(String from, String to, int key_,String _currFrag) {
         startTime = 0;
-        endTime = 0;
-        mtTime = 0;
-        soundTime = 0;
+        endTime =0;
+        mtTime =0;
+        soundTime =0;
 
         //开始 en
         SocketManger.getInstance().setOnReceiveListener(this);
@@ -135,7 +125,7 @@ public class TranslateUtil implements AudioRecordUtil.OnDealwithListener, Socket
             //如果两次的时间差＜500ms，就不执行操作
             newTime = SystemClock.uptimeMillis();
             listener.reset();
-            L.e("reset", "sendAudio");
+            L.e("reset","sendAudio");
             return;
         }
         //当前系统时间的毫秒值
@@ -151,26 +141,24 @@ public class TranslateUtil implements AudioRecordUtil.OnDealwithListener, Socket
         FileUtils.deleteCacheFile();
         //可以读取标识录音标识
         if (ThreadPoolManager.getInstance().getCarryNum() == 0) {
-            isRead = false;
+            isRead=false;
             getOfflineList().clear();
 
         }
 
         isStart = true;
         isRead = true;
-        isResultFirst = 0;
+        isResultFirst=0;
         key_press = key_;
 
         this.to_lan_code = to;
-        from_lan_code = from;
+        from_lan_code=from;
 //        copyofflineList.clear();
-        currFrag = _currFrag;
-        otherAsrResult = "";
-        if (offlineTimer != null)
-            offlineTimer.cancel();
-
-        readnum = StringUtils.long2Int();
-        sendStartFlag(from, to, readnum, key_);
+        currFrag=_currFrag;
+        otherAsrResult="";
+        if(offlineTimer!=null)
+        offlineTimer.cancel();
+        sendStartFlag(from, to,readnum, key_);
 
 
         L.e(readnum + "");
@@ -192,37 +180,36 @@ public class TranslateUtil implements AudioRecordUtil.OnDealwithListener, Socket
             mode = "online";
             // TODO: 2019/1/9
             MediaPlayerUtil.playMp3(context, R.raw.start);
-            AudioRecordUtil.getInstance().startRecord(true);
-            if (TextUtils.equals("fr", from)) {
-                from = "fra_fra";
+            MicArrayUtil.getInstance().startRecord(true,context);
+            if (TextUtils.equals("fr",from)) {
+                from="fra_fra";
             }
-            if (TextUtils.equals("fr", to)) {
-                to = "fra_fra";
+            if (TextUtils.equals("fr",to)) {
+                to="fra_fra";
             }
-            startTimer = System.currentTimeMillis();
             SocketManger.getInstance().sendMessage(new JsonDataBean(Constant.RECOGNIZE_BEGIN, getOnlineRecordTag(index, from, to)));
 
         } else {
             mode = "offline";
             //离线
-            if (from.equals("ch_ch") || from.equals("jpa")) {
+            if (from.equals("ch_ch")||from.equals("jpa")) {
                 // TODO: 2019/1/9
                 MediaPlayerUtil.playMp3(context, R.raw.start);
                 //中文离线永不释放  独立
-                AudioRecordUtil.getInstance().startRecord(false);
-                oldReadnum = readnum;
-                offlineASR(ChangeOffline.getInstance().getSpeech(from, to), ChangeOffline.getInstance().getTran(from, to), index, key);
+                MicArrayUtil.getInstance().startRecord(false,context);
+                oldReadnum=readnum;
+                offlineASR(ChangeOffline.getInstance().getSpeech(from,to), ChangeOffline.getInstance().getTran(from,to), index,key);
             } else {
 //                if (from.equals("jpa")) {
 //                    MicArrayUtil.getInstance().startRecord(false);
 //                    offlineASR(ChangeOffline.getInstance().speechUp, ChangeOffline.getInstance().tranUp, index);
 //                } else {
-                //其他asr不同的调法
+                    //其他asr不同的调法
 //                L.e("======================================"+BaseApplication.isTran);
-                if ((ChangeOffline.getInstance().getSpeech(from, to)) != null) {
-                    BaseApplication.isTran = false;
+                if((ChangeOffline.getInstance().getSpeech(from,to))!=null) {
+                    BaseApplication.isTran=false;
                     ((SpeechType) ChangeOffline.getInstance().getSpeech(from, to)).down();
-                    oldReadnum = readnum;
+                    oldReadnum=readnum;
 //                    L.e("oldReadnum=============="+oldReadnum+"===========readnum:"+readnum);
                     if (key == 132) {
                         if (up_listener == null) {
@@ -246,6 +233,7 @@ public class TranslateUtil implements AudioRecordUtil.OnDealwithListener, Socket
             }
 
 
+
         }
     }
 
@@ -254,9 +242,9 @@ public class TranslateUtil implements AudioRecordUtil.OnDealwithListener, Socket
     }
 
 
-    public synchronized void offlineASR(final SpeechBase speechBase, final TranBase tranBase, final int ui_index, final int key) {
+    public  synchronized void offlineASR(final SpeechBase speechBase, final TranBase tranBase , final int ui_index, final int key) {
 //        L.e("kaishioffline==================");
-        BaseApplication.isTran = false;
+        BaseApplication.isTran=false;
         ThreadPoolManager.getInstance().addTask(new Runnable() {
             @Override
             public void run() {
@@ -274,7 +262,7 @@ public class TranslateUtil implements AudioRecordUtil.OnDealwithListener, Socket
                             isRead = false;
                             return;
                         }
-                        if (readdata != null) {
+                        if (readdata!=null) {
                             num++;
                             speechBase.recognition(readdata, readdata.length, num);
                         }
@@ -300,8 +288,8 @@ public class TranslateUtil implements AudioRecordUtil.OnDealwithListener, Socket
                     mActivity.runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
-                            if (oldReadnum != readnum) {
-                                BaseApplication.isTran = true;
+                            if (oldReadnum!=readnum) {
+                                BaseApplication.isTran=true;
                                 if (BaseApplication.isIpsil.equals(currFrag)) {
                                     TTSUtil.getInstance().notUnderstand(context, 1, Constant.isSound);
                                 }
@@ -309,7 +297,7 @@ public class TranslateUtil implements AudioRecordUtil.OnDealwithListener, Socket
                                 return;
                             }
                             if (BaseApplication.isIpsil.equals(currFrag)) {
-                                listener.setAsr(asr, Constant.FLAG_OFFLINE);
+                                listener.setAsr(asr,Constant.FLAG_OFFLINE);
                             }
 
                         }
@@ -330,7 +318,7 @@ public class TranslateUtil implements AudioRecordUtil.OnDealwithListener, Socket
 //                                        L.e("readnum:"+readnum,"===========oldnum:"+oldReadnum+"============tran:"+res[0]);
                                         listener.setMt(res[0], Constant.FLAG_OFFLINE);
                                         //存入数据库
-                                        insert(from_lan_code, to_lan_code, asrTextOffline, res[0], "");
+                                        insert(from_lan_code,to_lan_code,asrTextOffline,res[0],"");
                                         if (BaseApplication.isIpsil.equals(currFrag)) {
                                             TTSUtil.speekOffline(key, res[0], to_lan_code);
                                         }
@@ -343,14 +331,14 @@ public class TranslateUtil implements AudioRecordUtil.OnDealwithListener, Socket
                                         }
                                         FileUtils.deleteCacheFile();
                                         listener.reset();
-                                        BaseApplication.isTran = true;
+                                        BaseApplication.isTran=true;
 
                                     }
 
                                 }
                             });
                         } else {
-                            //已不是上一次翻译了  做出界面反馈
+                             //已不是上一次翻译了  做出界面反馈
                             if (TextUtils.isEmpty(asr)) {
                                 if (BaseApplication.isIpsil.equals(currFrag)) {
                                     TTSUtil.getInstance().notUnderstand(context, 1, Constant.isSound);
@@ -372,7 +360,7 @@ public class TranslateUtil implements AudioRecordUtil.OnDealwithListener, Socket
                         }
                         FileUtils.deleteCacheFile();
                         listener.reset();
-                        BaseApplication.isTran = true;
+                        BaseApplication.isTran=true;
                     }
 
                 } else {
@@ -381,10 +369,11 @@ public class TranslateUtil implements AudioRecordUtil.OnDealwithListener, Socket
                         TTSUtil.getInstance().notUnderstand(context, 1, Constant.isSound);
                     }
                     listener.reset();
-                    BaseApplication.isTran = true;
+                    BaseApplication.isTran=true;
                 }
             }
         });
+
 
 
     }
@@ -394,14 +383,14 @@ public class TranslateUtil implements AudioRecordUtil.OnDealwithListener, Socket
      *
      * @param key
      */
-    public void stop(String from, String to, int key) {
+    public void stop(String from,String to,int key) {
         endTime = System.currentTimeMillis();
         //停止录音
 //        ZipFileUtil.createFileWithByte(copyofflineList, SDCardUtils.getSDCardPath() + "pcm/20180829_00_" + System.currentTimeMillis() + ".pcm");
         isStart = false;
-        AudioRecordUtil.getInstance().stopRecord();
+        MicArrayUtil.getInstance().stopRecord();
         if (SystemClock.uptimeMillis() - clickTime <= 300) {
-            //如果两次的时间差＜300ms，就不执行操作
+            //如果两次的时间差＜500ms，就不执行操作
             clickTime = SystemClock.uptimeMillis();
             listener.reset();
 //            L.e("发送结束标志函数");
@@ -417,15 +406,15 @@ public class TranslateUtil implements AudioRecordUtil.OnDealwithListener, Socket
             //无网络，离线识别结束
             if (key == 132) {
                 String lan = LanguageUtils.getCurrentUp(mActivity).get(Constant.CODE_UP);
-                if (!lan.equals("ch_ch") && !lan.equals("jpa") && (ChangeOffline.getInstance().getSpeech(from, to)) != null) {
-                    ((SpeechType) ChangeOffline.getInstance().getSpeech(from, to)).up();
+                if (!lan.equals("ch_ch") && !lan.equals("jpa")&& ( ChangeOffline.getInstance().getSpeech(from,to))!=null) {
+                    ((SpeechType) ChangeOffline.getInstance().getSpeech(from,to)).up();
                 }
 
 
             } else if (key == 131) {
                 String lan = LanguageUtils.getCurrentDown(mActivity).get(Constant.CODE_DOWN);
-                if (!lan.equals("ch_ch") && !lan.equals("jpa") && (ChangeOffline.getInstance().getSpeech(from, to)) != null) {
-                    ((SpeechType) ChangeOffline.getInstance().getSpeech(from, to)).up();
+                if (!lan.equals("ch_ch") && !lan.equals("jpa")&& (ChangeOffline.getInstance().getSpeech(from,to))!=null) {
+                    ((SpeechType) ChangeOffline.getInstance().getSpeech(from,to)).up();
                 }
             }
         }
@@ -497,7 +486,7 @@ public class TranslateUtil implements AudioRecordUtil.OnDealwithListener, Socket
             jsonObject.put("gps", CommonUtils.getGps(context));
             jsonObject.put("location", CommonUtils.getCountry(context));
             result = jsonObject.toString();
-            Log.e("TranslateUtil", result);
+            Log.e("TranslateUtil",result);
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -535,6 +524,8 @@ public class TranslateUtil implements AudioRecordUtil.OnDealwithListener, Socket
 //    }
 
 
+
+
     /**
      * 在线成功回调
      *
@@ -556,11 +547,11 @@ public class TranslateUtil implements AudioRecordUtil.OnDealwithListener, Socket
         }
 
 
+
     }
 
     /**
      * 在线结果赋值到界面上
-     *
      * @param flag
      * @param json
      */
@@ -574,19 +565,15 @@ public class TranslateUtil implements AudioRecordUtil.OnDealwithListener, Socket
                 if (!TextUtils.isEmpty(text)) {
                     if (TextUtils.equals(id, String.valueOf(readnum))) {
                         //设置识别结果
-                        listener.setAsr(text, Constant.FLAG_ONLINE);
+                        listener.setAsr(text,Constant.FLAG_ONLINE);
                     }
 
                 } else {
                     if (TextUtils.equals(id, String.valueOf(readnum))) {
                         //准儿没有听懂
-                        Log.e("_time:", String.valueOf(endTime - startTime));
-                        if (endTime - startTime > 700) {//防止误触（返回结果为空，并且返回时间小于一秒，不提示准儿没有听懂）
-                            TTSUtil.getInstance().notUnderstand(context, 1, Constant.isSound);
-                        }
+                        TTSUtil.getInstance().notUnderstand(context, 1, Constant.isSound);
                         listener.reset();
-                        isSuccess = "failed";
-                        statistics();
+//                        L.e("reset","setAsr");
                     }
 
                 }
@@ -601,10 +588,10 @@ public class TranslateUtil implements AudioRecordUtil.OnDealwithListener, Socket
                         listener.setMt(text, Constant.FLAG_ONLINE);
 //                        Log.e("mttext",mttext);
                         //存入数据库
-                        insert(from_lan_code, to_lan_code, asrText, mttext, entext);
+                        insert(from_lan_code,to_lan_code,asrText,mttext,entext);
                     }
                 } else {
-                    if (!TextUtils.isEmpty(asrText) && TextUtils.equals(id, String.valueOf(readnum))) {
+                    if (!TextUtils.isEmpty(asrText)&&TextUtils.equals(id, String.valueOf(readnum))) {
                         TTSUtil.getInstance().notUnderstand(context, 4, Constant.isSound);
                     }
                     FileUtils.deleteCacheFile();
@@ -663,6 +650,9 @@ public class TranslateUtil implements AudioRecordUtil.OnDealwithListener, Socket
     }
 
 
+
+
+
     /**
      * 服务器返回错误54中 包含的101/102/103/104
      *
@@ -671,18 +661,17 @@ public class TranslateUtil implements AudioRecordUtil.OnDealwithListener, Socket
     private void ServerError(String json) {
         ErrorResultBean bean = FastJsonUtil.changeJsonToBean(json, ErrorResultBean.class);
         int cmd = Integer.parseInt(bean.getEcode());
-        L.e("cmd:", bean.getEcode());
+//        L.e("cmd:", bean.getEcode());
         switch (cmd) {
             case 101://识别失败
-                //准儿没有听懂
-                Log.e("_time:", String.valueOf(endTime - startTime));
-                if (endTime - startTime > 700) {//防止误触（返回结果为空，并且返回时间小于一秒，不提示准儿没有听懂）
-                    TTSUtil.getInstance().notUnderstand(context, 1, Constant.isSound);
-                }
+                TTSUtil.getInstance().notUnderstand(context, 1, Constant.isSound);
                 listener.reset();
                 break;
+//                L.e("reset","101");
             case 102://翻译失败
                 ToastUtil.showShort(context.getResources().getString(R.string.error_response));
+//                listener.setMt("", Constant.FLAG_ONLINE);
+//                TTSUtil.getInstance().notUnderstand(context, 4, Constant.isSound);
                 break;
             case 103://合成失败
             case 104://参数不对
@@ -697,70 +686,53 @@ public class TranslateUtil implements AudioRecordUtil.OnDealwithListener, Socket
     /**
      * 统计（在线为主）
      */
-    private void statistics() {
-        stopTimer = System.currentTimeMillis();
-        long timer = stopTimer - startTime;
+    private void statistics(){
         int key = 1303;
-        String nkey = "translation_main9";
 
-        try {
+        try{
+            Map<String, String> map = new HashMap<>();
+            map.put("p2",(endTime-startTime)+"");
+            map.put("p3",(mtTime-endTime)+"");
+            map.put("p4",(soundTime-endTime)+"");
+            map.put("p6",to_lan_code+"");
+            map.put("p5",from_lan_code+"");
+            map.put("p1",isSuccess);
+            map.put("p7",currFrag);
+            map.put("p8",mode);
 
-
-            if (key_press == 132) {
-                key = 1302;
-                nkey = "translation_main9";
-                /**####  start-hjs-addStatisticsEvent   ##**/
-                try {
-                    HashMap<String, Serializable> add_hp = new HashMap<>();
-                    add_hp.put("original_language_up", "" + from_lan_code);
-                    add_hp.put("translation_language_up", "" + to_lan_code);
-                    add_hp.put("translation_status_up", "" + isSuccess);
-                    add_hp.put("translation_status_over", "" + timer);
-                    ((BaseActivity) context).addStatisticsEvent(nkey, add_hp);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-                /**####  end-hjs-addStatisticsEvent  ##**/
-            } else {
-                key = 1303;
-                nkey = "translation_main10";
-                /**####  start-hjs-addStatisticsEvent   ##**/
-                try {
-                    HashMap<String, Serializable> add_hp = new HashMap<>();
-                    add_hp.put("original_language_down", "" + from_lan_code);
-                    add_hp.put("translation_language_down", "" + to_lan_code);
-                    add_hp.put("translation_status_down", "" + isSuccess);
-                    add_hp.put("translation_status_over", "" + timer);
-                    ((BaseActivity) context).addStatisticsEvent(nkey, add_hp);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
+            if(key_press==132){
+                key=1302;
+            }else{
+                key=1303;
             }
-
-
-        } catch (Exception e) {
+            StatisticsManager.getInstance(context).addEventAidl(key,map);
+        }catch(Exception e){
             e.printStackTrace();
         }
 
     }
 
 
+
+
+
     //asr结果值
-    private String otherAsrResult = "";
+    private String otherAsrResult="";
     Timer offlineTimer;
 
-    private void setOfflineTimeout(long sj) {
-        offlineTimer = new Timer();
-        TimerTask timerTask = new TimerTask() {
+    private void setOfflineTimeout(long sj){
+        offlineTimer=new Timer();
+        TimerTask timerTask=new TimerTask() {
             @Override
             public void run() {
 //                L.e("UP_listener   end===================="+otherAsrResult);
-                BaseApplication.isTran = true;
+                BaseApplication.isTran=true;
 
             }
         };
-        offlineTimer.schedule(timerTask, sj);
+        offlineTimer.schedule(timerTask,sj);
     }
+
 
 
     //gs  asr 识别结果监听
@@ -785,12 +757,12 @@ public class TranslateUtil implements AudioRecordUtil.OnDealwithListener, Socket
         public void onError(int i) {
 //            L.e("UP_listener onError:"+i);
             //准儿没有听懂
-            if (i == 8 || i == 4) {
+            if (i==8||i==4) {
                 ChangeOffline.getInstance().createAgain(LanguageUtils.getCurrentUp(BaseApplication.getContext()).get(Constant.CODE_UP));
             }
             isResultFirst++;
             if (otherAsrResult.equals("")) {
-                if (isResultFirst == 1) {
+                if (isResultFirst==1) {
                     if (BaseApplication.isIpsil.equals(currFrag)) {
                         TTSUtil.getInstance().notUnderstand(context, 1, Constant.isSound);
 
@@ -805,22 +777,22 @@ public class TranslateUtil implements AudioRecordUtil.OnDealwithListener, Socket
         @Override
         public void onResult(final String s) {
 //            L.e("result===============");
-            otherAsrResult = s;
+            otherAsrResult=s;
             if (!TextUtils.isEmpty(s)) {
                 //设置识别结果
 
-                if (oldReadnum != readnum) {
-                    BaseApplication.isTran = true;
+                if (oldReadnum!=readnum) {
+                    BaseApplication.isTran=true;
                     return;
                 }
-                listener.setAsr(s, Constant.FLAG_OFFLINE);
+                listener.setAsr(s,Constant.FLAG_OFFLINE);
                 asrTextOffline = s;
 //                 L.e("BaseApplication.isIpsil========="+BaseApplication.isIpsil+"==========currFrag===="+currFrag);
                 //翻译
                 ThreadPoolManager.getInstance().addTask(new Runnable() {
                     @Override
                     public void run() {
-                        String mt = ChangeOffline.getInstance().getTran(from_lan_code, to_lan_code).tran(s, readnum);
+                        String mt = ChangeOffline.getInstance().getTran(from_lan_code,to_lan_code).tran(s, readnum);
                         final String res[] = mt.split("_");
 
                         if (!TextUtils.isEmpty(mt) && res.length == 2) {
@@ -831,10 +803,10 @@ public class TranslateUtil implements AudioRecordUtil.OnDealwithListener, Socket
                                     public void run() {
                                         listener.setMt(res[0], Constant.FLAG_OFFLINE);
                                         //存入数据库
-                                        insert(from_lan_code, to_lan_code, asrTextOffline, res[0], "");
+                                        insert(from_lan_code,to_lan_code,asrTextOffline,res[0],"");
 //                                        L.e("to_lan_code");
 //                                        TTSUtil.playText(to_lan_code, res[0]);
-                                        BaseApplication.isTran = true;
+                                        BaseApplication.isTran=true;
                                         if (BaseApplication.isIpsil.equals(currFrag)) {
                                             TTSUtil.speekOffline(132, res[0], to_lan_code);
                                         }
@@ -850,7 +822,7 @@ public class TranslateUtil implements AudioRecordUtil.OnDealwithListener, Socket
                             }
                             FileUtils.deleteCacheFile();
                             listener.reset();
-                            BaseApplication.isTran = true;
+                            BaseApplication.isTran=true;
                         }
 
 
@@ -864,7 +836,7 @@ public class TranslateUtil implements AudioRecordUtil.OnDealwithListener, Socket
                     TTSUtil.getInstance().notUnderstand(context, 1, Constant.isSound);
                 }
                 listener.reset();
-                BaseApplication.isTran = true;
+                BaseApplication.isTran=true;
             }
 
         }
@@ -897,12 +869,12 @@ public class TranslateUtil implements AudioRecordUtil.OnDealwithListener, Socket
         public void onError(int i) {
             //准儿没有听懂
 //            L.e("DOWN_listener onError:"+i);
-            if (i == 8 || i == 4) {
+            if (i==8||i==4) {
                 ChangeOffline.getInstance().createAgain(LanguageUtils.getCurrentDown(BaseApplication.getContext()).get(Constant.CODE_DOWN));
             }
             isResultFirst++;
             if (otherAsrResult.equals("")) {
-                if (isResultFirst == 1) {
+                if (isResultFirst==1) {
                     if (BaseApplication.isIpsil.equals(currFrag)) {
                         TTSUtil.getInstance().notUnderstand(context, 1, Constant.isSound);
                     }
@@ -916,21 +888,21 @@ public class TranslateUtil implements AudioRecordUtil.OnDealwithListener, Socket
         @Override
         public void onResult(final String s) {
 //            L.e("result===============");
-            otherAsrResult = s;
+            otherAsrResult=s;
             if (!TextUtils.isEmpty(s)) {
                 //设置识别结果
-                if (oldReadnum != readnum) {
-                    BaseApplication.isTran = true;
+                if (oldReadnum!=readnum) {
+                    BaseApplication.isTran=true;
                     return;
                 }
 
-                listener.setAsr(s, Constant.FLAG_OFFLINE);
+                listener.setAsr(s,Constant.FLAG_OFFLINE);
                 asrTextOffline = s;
                 //翻译
                 ThreadPoolManager.getInstance().addTask(new Runnable() {
                     @Override
                     public void run() {
-                        String mt = ChangeOffline.getInstance().getTran(from_lan_code, to_lan_code).tran(s, readnum);
+                        String mt = ChangeOffline.getInstance().getTran(from_lan_code,to_lan_code).tran(s, readnum);
                         final String res[] = mt.split("_");
 
                         if (!TextUtils.isEmpty(mt) && res.length == 2) {
@@ -939,10 +911,10 @@ public class TranslateUtil implements AudioRecordUtil.OnDealwithListener, Socket
                                 mActivity.runOnUiThread(new Runnable() {
                                     @Override
                                     public void run() {
-                                        if (oldReadnum == readnum) {
+                                        if (oldReadnum==readnum) {
                                             listener.setMt(res[0], Constant.FLAG_OFFLINE);
                                             //存入数据库
-                                            insert(from_lan_code, to_lan_code, asrTextOffline, res[0], "");
+                                            insert(from_lan_code,to_lan_code,asrTextOffline,res[0],"");
                                             L.e("to_lan_code");
 //                                        TTSUtil.playText(to_lan_code, res[0]);
                                             if (BaseApplication.isIpsil.equals(currFrag)) {
@@ -951,7 +923,7 @@ public class TranslateUtil implements AudioRecordUtil.OnDealwithListener, Socket
 
                                         }
 
-                                        BaseApplication.isTran = true;
+                                        BaseApplication.isTran=true;
 
 
                                     }
@@ -961,10 +933,10 @@ public class TranslateUtil implements AudioRecordUtil.OnDealwithListener, Socket
 
                         } else {
 
-                            TTSUtil.getInstance().notUnderstand(context, 4, Constant.isSound);
-                            FileUtils.deleteCacheFile();
-                            listener.reset();
-                            BaseApplication.isTran = true;
+                                TTSUtil.getInstance().notUnderstand(context, 4, Constant.isSound);
+                                FileUtils.deleteCacheFile();
+                                listener.reset();
+                                BaseApplication.isTran = true;
 
                         }
 
@@ -977,7 +949,7 @@ public class TranslateUtil implements AudioRecordUtil.OnDealwithListener, Socket
                 //准儿没有听懂
                 TTSUtil.getInstance().notUnderstand(context, 1, Constant.isSound);
                 listener.reset();
-                BaseApplication.isTran = true;
+                BaseApplication.isTran=true;
             }
         }
 
@@ -1002,18 +974,18 @@ public class TranslateUtil implements AudioRecordUtil.OnDealwithListener, Socket
     /**
      * 插入记录到数据库
      */
-    private void insert(String from, String to, String asr, String mt, String en) {
+    private void insert(String from,String to,String asr,String mt,String en) {
 
-        boolean IsSave = SqlUtils.insertData("", "", from, to, asr, mt, en, "", System.currentTimeMillis());
+            boolean IsSave = SqlUtils.insertData("","" ,from ,to , asr, mt, en, "", System.currentTimeMillis());
 
-        if (IsSave) {
-            Log.e("News_db", "存储成功");
-        } else {
-            Log.e("News_db", "存储成功");
+            if (IsSave) {
+                Log.e("News_db", "存储成功");
+            } else {
+                Log.e("News_db", "存储成功");
+            }
         }
-    }
 
-    public void resetListener() {
+    public void resetListener(){
         SocketManger.getInstance().setOnReceiveListener(this);
     }
 

@@ -22,7 +22,6 @@ import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.aibabel.aidlaar.StatisticsManager;
-import com.aibabel.baselibrary.base.StatisticsBaseActivity;
 import com.aibabel.translate.R;
 import com.aibabel.translate.activity.EditActivity;
 import com.aibabel.translate.activity.LanguageActivity;
@@ -46,7 +45,6 @@ import com.aibabel.translate.utils.ThreadPoolManager;
 import com.aibabel.translate.utils.ToastUtil;
 import com.aibabel.translate.view.AdaptionSizeTextView;
 
-import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -127,6 +125,8 @@ public class IpsilateralFragment extends BaseFragment implements OnResponseListe
     ScrollView svDownText;
     @BindView(R.id.iv_record)
     ImageView ivRecord;
+    @BindView(R.id.iv_point)
+    ImageView ivPoint;
 
     /*引导页布局*/
     private Handler mHandler = new Handler();
@@ -151,7 +151,6 @@ public class IpsilateralFragment extends BaseFragment implements OnResponseListe
     private String lan_do;//下面语言的值
     private Context context;
     private int DEFAULT;
-    private CountDownTimer timer;
     private AnimationDrawable animationCountUp;
     private AnimationDrawable animationCountDown;
     private AnimationDrawable animationDrawableUp;
@@ -253,9 +252,10 @@ public class IpsilateralFragment extends BaseFragment implements OnResponseListe
         rl4 = popu1.findViewById(R.id.rl4);
         rl5 = popu1.findViewById(R.id.rl5);
         rl1.setVisibility(View.VISIBLE);
-
-
     }
+
+
+
 
     private Runnable mRunnable = new Runnable() {
         public void run() {
@@ -359,6 +359,11 @@ public class IpsilateralFragment extends BaseFragment implements OnResponseListe
         super.onResume();
         BaseApplication.isIpsil = "Ipsil";
         netChanged();
+
+        if (BaseApplication.newPoint){
+            ivPoint.setVisibility(View.GONE);
+        }
+
     }
 
 
@@ -656,8 +661,6 @@ public class IpsilateralFragment extends BaseFragment implements OnResponseListe
                     }
                 }
                 selectLan(DOWN_KEY, lan_do);
-                //统计选择语言下
-                activity.addStatisticsEvent("translation_main8", null);
                 break;
             case R.id.tv_up_lan:
                 if (!CommonUtils.isAvailable()) {
@@ -667,10 +670,9 @@ public class IpsilateralFragment extends BaseFragment implements OnResponseListe
                     }
                 }
                 selectLan(UP_KEY, lan_up);
-                //统计选择语言上
-                activity.addStatisticsEvent("translation_main7", null);
                 break;
             case R.id.iv_switch:
+                StatisticsManager.getInstance(context).addEventAidl(1305);
                 toOppos();
                 break;
             case R.id.iv_down_sound:
@@ -695,9 +697,28 @@ public class IpsilateralFragment extends BaseFragment implements OnResponseListe
 
                 break;
             case R.id.iv_record:
-                toRecord();
+//                if (BaseFragment.isOpen) {
+//                    ivRecord.setImageDrawable(context.getDrawable(R.mipmap.ic_translate_back));
+//                } else {
+//                    ivRecord.setImageDrawable(context.getDrawable(R.mipmap.ic_translate_menu));
+//                }
+                activity.showDrawerLayout(0);
+//                toRecord();
                 break;
 
+        }
+    }
+
+    /**
+     * 切换图片
+     * @param isOpen
+     */
+    public void switchMenuIcon(boolean isOpen){
+        System.out.println(isOpen);
+        if (isOpen) {
+            ivRecord.setImageDrawable(context.getDrawable(R.mipmap.ic_translate_back));
+        } else {
+            ivRecord.setImageDrawable(context.getDrawable(R.mipmap.ic_translate_menu));
         }
     }
 
@@ -706,9 +727,9 @@ public class IpsilateralFragment extends BaseFragment implements OnResponseListe
      * 播放翻译内容
      */
     private void playAudio() {
-        //统计重播
-        activity.addStatisticsEvent("translation_main11", null);
-
+        Map<String, String> map = new HashMap<>();
+        map.put("p1", code_to);
+        StatisticsManager.getInstance(context).addEventAidl(1304);
         if (isOnline) {
             MediaPlayerUtil.playMp3(SharePrefUtil.getString(context, "mp3_1", ""), context);
         } else {
@@ -726,24 +747,19 @@ public class IpsilateralFragment extends BaseFragment implements OnResponseListe
             return;
         BaseApplication.isIpsil = "Oppos";
         Constant.isSound = false;
-        //统计跳转对面模式
-        HashMap<String,Serializable>  map = new HashMap<>();
-        map.put("translation_differ", "differ");
-        activity.addStatisticsEvent("translation_main5", map);
-        activity.showFragment(1);
+        activity.showFragment(1,1);
     }
 
 
     /**
      * 跳转历史记录
      */
-    private void toRecord() {
+    public void toRecord() {
         if (isRecording)
             return;
         if (!BaseApplication.isTran)
             return;
-        //统计历史记录按钮
-        activity.addStatisticsEvent("translation_main12", null);
+        StatisticsManager.getInstance(context).addEventAidl(1306);
         Intent intent = new Intent();
         intent.setClass(context, RecordActivity.class);
         startActivity(intent);
@@ -973,6 +989,12 @@ public class IpsilateralFragment extends BaseFragment implements OnResponseListe
                 netChanged();
                 ChangeOffline.getInstance().createOrChange();
             }
+            //添加统计
+            Map<String, String> map = new HashMap<>();
+            map.put("p1", lan_do);
+            map.put("p2", lan_up);
+            StatisticsManager.getInstance(context).addEventAidl(1311, map);
+
         } else if (requestCode == 101 && resultCode == 201) {//编辑修改页面返回设置参数
             String mt = data.getStringExtra("mt");
             String en = data.getStringExtra("en");

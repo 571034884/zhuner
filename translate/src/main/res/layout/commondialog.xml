@@ -1,58 +1,61 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
-    android:layout_height="match_parent"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginLeft="20px"
+    android:layout_marginRight="20px"
+    android:background="@drawable/dialog_round"
+    android:gravity="center"
+    android:minHeight="262px"
     android:orientation="vertical">
-    <LinearLayout
+
+    <TextView
+        android:id="@+id/tv_dialog_content"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="@dimen/px20"
-        android:layout_marginRight="@dimen/px20"
-        android:background="@drawable/popu_background"
-        android:orientation="vertical">
-        <TextView
-            android:id="@+id/tv_wenzi"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/dialog_content"
-            android:textSize="@dimen/px30"
-            android:lineSpacingExtra="@dimen/px8"
-            android:layout_marginLeft="@dimen/px32"
-            android:layout_marginRight="@dimen/px32"
-            android:gravity="center"
-            android:layout_marginTop="@dimen/px64"
-            android:layout_marginBottom="@dimen/px64"
-            android:textColor="#333"/>
+        android:layout_marginBottom="64px"
+        android:layout_marginLeft="32px"
+        android:layout_marginRight="32px"
+        android:layout_marginTop="64px"
+        android:gravity="center"
+
+        android:lineSpacingExtra="8px"
+        android:text="@string/delete_record"
+        android:textColor="#333"
+        android:textSize="30px" />
+
     <View
         android:layout_width="match_parent"
         android:layout_height="@dimen/px1"
-        android:background="#ccc"/>
+        android:background="#ccc" />
+
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="@dimen/px96">
+        android:layout_height="96px">
+
         <TextView
-            android:id="@+id/tv_jixu"
+            android:id="@+id/tv_cancel"
             android:layout_width="0px"
+            android:layout_height="match_parent"
             android:layout_weight="1"
-            android:text="@string/cont_use"
-            android:textColor="#999999"
-            android:textSize="@dimen/px30"
             android:gravity="center"
-            android:layout_height="match_parent" />
+            android:text="@string/cancle"
+            android:textColor="#999999"
+            android:textSize="30px" />
+
         <View
             android:layout_width="@dimen/px1"
             android:layout_height="match_parent"
-            android:background="#ccc"/>
-        <TextView
-            android:id="@+id/tv_lianwang"
-            android:layout_width="0px"
-            android:layout_weight="1"
-            android:text="@string/conn_net"
-            android:textColor="#fe5000"
-            android:textSize="@dimen/px30"
+            android:background="#ccc" />
 
+        <TextView
+            android:id="@+id/tv_confirm"
+            android:layout_width="0px"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
             android:gravity="center"
-            android:layout_height="match_parent" />
-    </LinearLayout>
+            android:text="@string/confirm"
+            android:textColor="#fe5000"
+            android:textSize="30px" />
     </LinearLayout>
 </LinearLayout>
