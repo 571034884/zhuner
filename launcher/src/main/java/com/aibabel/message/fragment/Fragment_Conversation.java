@@ -8,6 +8,7 @@ import android.widget.Toast;
 
 import com.aibabel.menu.R;
 import com.aibabel.message.helper.DemoHelper;
+import com.aibabel.message.hx.cache.UserCacheManager;
 import com.aibabel.message.utiles.Constant;
 import com.hyphenate.chat.EMClient;
 import com.hyphenate.chat.EMGroup;
@@ -15,19 +16,16 @@ import com.hyphenate.chat.EMMessage;
 import com.hyphenate.easeui.EaseConstant;
 import com.hyphenate.easeui.ui.EaseChatFragment;
 import com.hyphenate.easeui.widget.chatrow.EaseCustomChatRowProvider;
-import com.tencent.mmkv.MMKV;
 
 import java.util.List;
 
 
 /**
- *==========================================================================================
+ * ==========================================================================================
+ *
  * @Author： 张文颖
- *
  * @Date：2019/4/16
- *
- * @Desc：对话列表
- *==========================================================================================
+ * @Desc：对话列表 ==========================================================================================
  */
 public class Fragment_Conversation extends EaseChatFragment implements EaseChatFragment.EaseChatFragmentHelper {
 
@@ -50,10 +48,8 @@ public class Fragment_Conversation extends EaseChatFragment implements EaseChatF
 
     @Override
     public void onSetMessageAttributes(EMMessage message) {
-        String nick = MMKV.defaultMMKV().getString(Constant.EM_NICk,"");
-        String avatar = MMKV.defaultMMKV().getString(Constant.EM_AVATAR,"");
-        message.setAttribute(EaseConstant.MESSAGE_ATTR_NICK_MSG, nick);
-        message.setAttribute(EaseConstant.MESSAGE_ATTR_AVATAR_MSG, avatar);
+        // 设置消息的扩展属性，携带昵称头像
+        UserCacheManager.setMsgExt(message);
     }
 
     @Override
@@ -93,6 +89,7 @@ public class Fragment_Conversation extends EaseChatFragment implements EaseChatF
         //消息框点击事件，demo这里不做覆盖，如需覆盖，return true
         return false;
     }
+
     @Override
     public void onCmdMessageReceived(List<EMMessage> messages) {
         super.onCmdMessageReceived(messages);
@@ -107,8 +104,6 @@ public class Fragment_Conversation extends EaseChatFragment implements EaseChatF
         //keep exist extend menu
         return false;
     }
-
-
 
 
     @Override

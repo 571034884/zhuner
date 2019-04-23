@@ -217,6 +217,8 @@ public class MessageService extends Service implements NetBroadcastReceiver.NetL
                         if (model.getBody().getIs_im() == 1) {//支持准儿帮
                             mmkv.encode(Constant.EM_USERNAME, model.getBody().getUser_id());
                             mmkv.encode(Constant.EM_PASSWORD, model.getBody().getPwd());
+                            mmkv.encode(Constant.EM_PASSWORD, model.getBody().getPwd());
+                            mmkv.encode(Constant.EM_PASSWORD, model.getBody().getPwd());
                             mmkv.encode(Constant.EM_GROUP, model.getBody().getGroup_id());
                             mmkv.encode(Constant.EM_SUPPORT, true);
                             signIn(model);

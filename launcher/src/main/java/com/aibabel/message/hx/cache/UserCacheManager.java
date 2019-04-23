@@ -21,9 +21,13 @@ public class UserCacheManager {
     /**
      * 消息扩展属性
      */
-    private static final String kChatUserId = "ChatUserId";// 环信ID
-    private static final String kChatUserNick = "ChatUserNick";// 昵称
-    private static final String kChatUserPic = "ChatUserPic";// 头像Url
+//    private static final String kChatUserId = "ChatUserId";// 环信ID
+//    private static final String kChatUserNick = "ChatUserNick";// 昵称
+//    private static final String kChatUserPic = "ChatUserPic";// 头像Url
+
+    private static final String kChatUserId = "user_id";// 环信ID
+    private static final String kChatUserNick = "nickname";// 昵称
+    private static final String kChatUserPic = "head_img";// 头像Url
 
     /**
      * 获取所有用户信息

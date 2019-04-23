@@ -12,6 +12,7 @@ import android.util.Log;
 import android.widget.Toast;
 
 import com.aibabel.menu.R;
+import com.aibabel.message.hx.cache.UserCacheManager;
 import com.aibabel.message.model.DemoModel;
 import com.aibabel.message.model.InviteMessage;
 import com.aibabel.message.model.RobotUser;
@@ -1203,6 +1204,8 @@ public class DemoHelper {
 //                        String extension = message.getStringAttribute(Constant.MSG_ATTR_EXTENSION, "");
 //                        goConference(confId, password, extension);
 //                    }
+                    // 从消息的扩展属性里获取昵称头像
+                    UserCacheManager.save(message.ext());
                     // in background, do not refresh UI, notify it in notification bar
                     if(!easeUI.hasForegroundActivies()){
                         getNotifier().notify(message);
