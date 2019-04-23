@@ -14,6 +14,7 @@ import android.os.Message;
 import android.text.TextUtils;
 import android.util.Log;
 
+import com.aibabel.baselibrary.sphelper.SPHelper;
 import com.aibabel.baselibrary.utils.FastJsonUtil;
 import com.aibabel.menu.R;
 import com.aibabel.launcher.activity.MainActivity;
@@ -27,6 +28,7 @@ import com.aibabel.message.sqlite.SqlUtils;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.w3c.dom.Text;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -52,6 +54,7 @@ public class MyReceiver extends BroadcastReceiver {
         Bundle bundle = intent.getExtras();
         Log.d(TAG, "[MyReceiver] onReceive - " + intent.getAction() + ", extras: " + printBundle(bundle));
         checksyncOrder(context,bundle);
+
 
         if (JPushInterface.ACTION_REGISTRATION_ID.equals(intent.getAction())) {
             String regId = bundle.getString(JPushInterface.EXTRA_REGISTRATION_ID);
@@ -447,9 +450,7 @@ public class MyReceiver extends BroadcastReceiver {
             } else if (TextUtils.equals(bean.getLevel(), "2")) {
                 LogUtil.e("bean.getLevel()="+bean.getLevel());
                 //判定语音翻译，小秘书，拍照翻译是否在前台处理显示通知
-                if (DetectUtil.isAppInForeground(context, "com.aibabel.translate")
-                        || (DetectUtil.isAppInForeground(context, "com.aibabel.speech"))
-                        || (DetectUtil.isAppInForeground(context, "com.aibabel.ocr"))) {
+                if (getappisruning(context)) {
                     LogUtil.e("语音翻译正在运行----");
                     boolean delayshow = true;
                     while (delayshow) {
@@ -458,9 +459,7 @@ public class MyReceiver extends BroadcastReceiver {
                         } catch (InterruptedException e) {
                             e.printStackTrace();
                         }
-                        if (DetectUtil.isAppInForeground(context, "com.aibabel.translate")
-                                || (DetectUtil.isAppInForeground(context, "com.aibabel.speech"))
-                                || (DetectUtil.isAppInForeground(context, "com.aibabel.ocr"))) {
+                        if (getappisruning(context)) {
                             delayshow = true;
                         } else {
                             delayshow = false;
@@ -480,6 +479,21 @@ public class MyReceiver extends BroadcastReceiver {
             e.printStackTrace();
         }
 
+    }
+
+    public static boolean getappisruning(Context context) {
+
+        String ifrun = SPHelper.getString("ifruning", "");
+        if (!TextUtils.isEmpty(ifrun)) {
+            Log.d("hjs", "ifrun="+ifrun);
+            if (ifrun.equalsIgnoreCase("translate")
+                    || ifrun.equalsIgnoreCase("speech")
+                    || ifrun.equalsIgnoreCase("ocr")){
+                return  true;
+            }else return false;
+
+        }
+        return  false;
     }
 
 //    public static void main(String args[]){

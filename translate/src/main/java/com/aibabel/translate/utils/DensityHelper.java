@@ -5,8 +5,12 @@ import android.app.Application;
 import android.content.Context;
 import android.graphics.Point;
 import android.os.Bundle;
+import android.util.DisplayMetrics;
 import android.util.TypedValue;
 import android.view.WindowManager;
+
+import java.util.HashMap;
+import java.util.Map;
 
 import static android.content.Context.WINDOW_SERVICE;
 
@@ -136,5 +140,22 @@ public class DensityHelper {
     public void inactivate() {
         restoreDensity(mApplication);
         mApplication.unregisterActivityLifecycleCallbacks(activityLifecycleCallbacks);
+    }
+
+
+    /**
+     * 获取屏幕宽高
+     * @param activity
+     * @return
+     */
+    public static Map<String,Integer> getSystemWH(Activity activity){
+        Map<String,Integer> map = new HashMap<>();
+        DisplayMetrics outMetrics = new DisplayMetrics();
+        activity.getWindowManager().getDefaultDisplay().getRealMetrics(outMetrics);
+        int widthPixel = outMetrics.widthPixels;
+        int heightPixel = outMetrics.heightPixels;
+        map.put("width",widthPixel);
+        map.put("height",heightPixel);
+        return map;
     }
 }

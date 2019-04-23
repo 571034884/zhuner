@@ -106,7 +106,7 @@ public class SpotsActivity extends BaseScenicActivity implements ExpireBroadcast
     TextView tvSpots;
     TextView tvContent;
     LinearLayout llIntroduce;
-
+    ImageView ivScenicMap;
 
     private List<SpotsBean.DataBean.SubpoiMsgBean> list = new ArrayList<>();
     private Adapter_Spots mAdapter;
@@ -186,6 +186,7 @@ public class SpotsActivity extends BaseScenicActivity implements ExpireBroadcast
         tvSpots = view.findViewById(R.id.tv_spots);
         llIntroduce = view.findViewById(R.id.ll_introduce);
         tvContent = view.findViewById(R.id.tv_content);
+        ivScenicMap = view.findViewById(R.id.tv_scenicmap);
         return view;
     }
 
@@ -289,13 +290,49 @@ public class SpotsActivity extends BaseScenicActivity implements ExpireBroadcast
         String name = bean.getName();
         String desc = bean.getDesc();
         String title = bean.getName();
-        if (TextUtils.isEmpty(desc)) {
+        if (TextUtils.isEmpty(desc) && TextUtils.isEmpty(bean.getMap_image()) && TextUtils.isEmpty(bean.getNavi_image())) {
             llIntroduce.setVisibility(View.GONE);
         } else {
             llIntroduce.setVisibility(View.VISIBLE);
-            tvContent.setText(desc);
-            tvSpot.setText(name);
+            if (TextUtils.isEmpty(desc)){
+                tvContent.setVisibility(View.GONE);
+                tvSpot.setVisibility(View.GONE);
+            }else{
+                tvContent.setText(desc);
+                tvSpot.setText(name);
+            }
 
+            if (TextUtils.isEmpty(bean.getMap_image())){
+                if (TextUtils.isEmpty(bean.getNavi_image())){
+                    ivScenicMap.setVisibility(View.GONE);
+                }else{
+                    ivScenicMap.setVisibility(View.VISIBLE);
+                    Glide.with(this).load(bean.getNavi_image()).apply(CommonUtils.options).into(ivScenicMap);
+                    ivScenicMap.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            Intent intent = new Intent(mContext,PhotoViewActivity.class);
+                            intent.putExtra("photo_img",bean.getNavi_image());
+                            startActivity(intent);
+                        }
+                    });
+                }
+
+            }else{
+                ivScenicMap.setVisibility(View.VISIBLE);
+                Glide.with(this).load(bean.getMap_image()).apply(CommonUtils.options).into(ivScenicMap);
+
+                ivScenicMap.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Intent intent = new Intent(mContext,PhotoViewActivity.class);
+                        intent.putExtra("photo_img",bean.getMap_image());
+                        startActivity(intent);
+                    }
+                });
+            }
+            Logs.e("Map_image:"+bean.getMap_image());
+            Logs.e("Navi_image:"+bean.getNavi_image());
         }
         tvName.setText(name);
         tvMusicName.setText(name);
@@ -378,6 +415,9 @@ public class SpotsActivity extends BaseScenicActivity implements ExpireBroadcast
                 if (mIsPlaying){
                     addEventLong();
                 }
+                //暂停播放
+                sendToLauncher("","","",3);
+
                 addStatisticsEvent("scenic_spots_close", null);
                 onBackPressed();
                 sendBroadcast(Constants.ACTION_CLOSE);
@@ -405,6 +445,16 @@ public class SpotsActivity extends BaseScenicActivity implements ExpireBroadcast
             case R.id.rl_music:
                 break;
         }
+    }
+
+    public void sendToLauncher(String poiName,String urlPic,String name,int type){
+        Intent intent1 = new Intent();
+        intent1.putExtra("urlPic",urlPic);
+        intent1.putExtra("poiName",poiName);
+        intent1.putExtra("name",name);
+        intent1.putExtra("type",type);
+        intent1.setAction("com.aibabel.launcher.MUSIC");
+        sendBroadcast(intent1);
     }
 
     @Override

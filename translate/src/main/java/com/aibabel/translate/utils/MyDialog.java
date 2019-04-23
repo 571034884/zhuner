@@ -19,7 +19,7 @@ public class MyDialog {
         }
         builder = new OtherDialog.Builder(context);
         builder.setGravity(Gravity.CENTER)
-                .setContentView(R.layout.commondialog)
+                .setContentView(R.layout.mydialog)
                 .setText(R.id.tv_wenzi, context.getString(R.string.dialog_content))
                 .setCancelable(false)
                 .setOnClickListener(R.id.tv_lianwang, context.getString(R.string.conn_net), new View.OnClickListener() {

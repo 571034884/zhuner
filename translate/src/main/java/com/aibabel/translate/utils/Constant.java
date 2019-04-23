@@ -38,6 +38,12 @@ public class Constant {
     public static final int RESPONSE_MT = 56;//翻译结果flag
     public static final int RESPONSE_TTS = 57;//tts合成结果flag
     public static final int RESPONSE_EN = 65;//英语结果flag
+    public static final int RESPONSE_FINAL = 70;//最后一句
+    public static final int RESPONSE_NULL = 500;//没有识别到音频
+    public static final int TRAN_SUCCESS = 0;//没有识别到音频
+    public static final int TRAN_EROOR_JSON = 1;//上传json解析失败
+    public static final int TRAN_EROOR_PARMS = 2;//没有找到语言参数
+    public static final int TRAN_EROOR_TEXT = 3;//没有翻译文本 /或者翻译失败
     public static final int TIMEOUT_READ = 11;//读取结果超时flag
     public static final int TIMEOUT_CONNECTION = 12;//连接超时flag
     public static final int CONNECTION_FAILED = 13;//连接失败flag
@@ -47,7 +53,6 @@ public class Constant {
     public static final String AUDIO = "spx16";
     public static final String SPEED = "normal";
     public static final String GENDER = "m";
-    public static final String DEV = "AAAAAAAAAAAA";
 
     //离线模型是否创建完成
     public static  boolean IS_OFFLINE_CREATE_COMPLETE = false ;
@@ -78,10 +83,10 @@ public class Constant {
     public static boolean isSound = true;
 
     //录音状态
-    public static final int STOP = 0;
-    public static final int IS_RECORDING = 1;
-    public static final int START = 2;
-    public static final int TIME_OUT = 3;
+//    public static final int STOP = 0;
+//    public static final int IS_RECORDING = 1;
+//    public static final int START = 2;
+//    public static final int TIME_OUT = 3;
 
     public static boolean IS_NEED_SHOW = true;
 
@@ -90,6 +95,7 @@ public class Constant {
     public static final int OFFLINE_DEFAULT = 7 * 1000 + 10;
     //当前机器类型0：pro ，1：go ，2：fly
     public static int DEVICE_CATEGORY = 0;
+    public static final long TIME_OUT = 5000;
 
 
 

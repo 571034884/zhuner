@@ -115,6 +115,11 @@
             android:process=":remote"
             android:permission="android.permission.BAIDU_LOCATION_SERVICE">
         </service>
+        <provider
+            android:name="com.aibabel.baselibrary.sphelper.SPContentProvider"
+            android:authorities="com.pl.sphelper"
+            android:exported="false"
+            android:process=":sphelper" />
     </application>
 
 </manifest>

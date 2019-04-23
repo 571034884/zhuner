@@ -2001,7 +2001,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
 //                            e.printStackTrace();
 //                        }
 //                    }
-                    updatetime(CalenderUtil.getyyyyMMddHHmmss());
+//                    updatetime(CalenderUtil.getyyyyMMddHHmmss());
                     break;
                 case Intent.ACTION_TIMEZONE_CHANGED:
                     //设置了系统时区的action

@@ -16,6 +16,8 @@ public abstract class BaseFragment extends Fragment implements View.OnClickListe
     //这个activity就是MainActivity
     public MainActivity activity;
 
+    public static boolean isOpen = false;
+
     // Fragment被创建
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -68,6 +70,9 @@ public abstract class BaseFragment extends Fragment implements View.OnClickListe
 //            return false;
 //        }
     }
+
+
+
 
 
 }
