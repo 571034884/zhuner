@@ -56,7 +56,6 @@ import com.aibabel.launcher.view.MaterialBadgeTextView;
 import com.aibabel.launcher.view.MyDialog;
 import com.aibabel.message.hx.bean.IMUser;
 import com.aibabel.menu.R;
-import com.aibabel.message.bean.IMUser;
 import com.aibabel.message.helper.DemoHelper;
 import com.aibabel.message.receiver.NetBroadcastReceiver;
 import com.aibabel.message.service.MessageService;
@@ -204,7 +203,7 @@ public class MainActivity extends LaunBaseActivity implements NetBroadcastReceiv
                 HashMap<String, Serializable> map = new HashMap<>();
                 map.put("menu_notice_click_id", "打开");
                 addStatisticsEvent("menu_notice_click", map);
-                startActivity(fragment_index);
+                startMessageActivity();
                 break;
             case R.id.main_location_app://跳转到目的地
                 HashMap<String, Serializable> map1 = new HashMap<>();
