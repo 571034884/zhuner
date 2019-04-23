@@ -17,5 +17,6 @@ public class Api {
 
     //获取环信用户信息
     public static final String METHOD_IM = "user/getImInfoBySn";
+    public static final String METHOD_IM_EDIT = "user/editNickname";
 
 }

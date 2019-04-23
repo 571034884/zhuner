@@ -31,6 +31,7 @@ public class ContentProviderUtil {
 
     /**
      * 获取当前地区的host地址
+     *
      * @param context
      * @return
      */
@@ -43,9 +44,9 @@ public class ContentProviderUtil {
                 cursor.moveToFirst();
                 String ips = cursor.getString(cursor.getColumnIndex("ips"));
                 String countryNameCN = cursor.getString(cursor.getColumnIndex("country"));
-                if(getTimerType()==1){
+                if (getTimerType() == 1) {
                     key = "中国_" + context.getPackageName() + "_camera";
-                }else{
+                } else {
                     key = "default_" + context.getPackageName() + "_camera";
                 }
 //                if (TextUtils.equals(countryNameCN,"中国")) {
@@ -60,14 +61,43 @@ public class ContentProviderUtil {
             } else {
                 Log.d("ContentProviderUtil", "：没有获取到定位信息");
             }
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
-        }finally {
-            if(null!=cursor)
+        } finally {
+            if (null != cursor)
                 cursor.close();
         }
 
         return ip_host;
+
+    }
+
+
+    /**
+     * 获取定位国家
+     *
+     * @param context
+     * @return
+     */
+    public static String getLocationCountry(Context context) {
+        Cursor cursor = context.getContentResolver().query(CITY_URI, null, null, null, null);
+        String countryNameCN = "";
+        try {
+            if (cursor != null && cursor.getCount() > 0) {
+                cursor.moveToFirst();
+                countryNameCN = cursor.getString(cursor.getColumnIndex("country"));
+                Log.d("countryNameCN", countryNameCN);
+            } else {
+                Log.d("ContentProviderUtil", "：没有获取到定位信息");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            if (null != cursor)
+                cursor.close();
+        }
+
+        return countryNameCN;
 
     }
 
@@ -79,7 +109,7 @@ public class ContentProviderUtil {
      */
     public static String getServerHost() {
         String ip_host = SPHelper.getString(ServerKeyUtils.serverKeyOcrCamera, UrlConfig.DEFAULT_HOST);
-        Log.e("http：",ip_host);
+        Log.e("http：", ip_host);
         return ip_host;
 
     }
@@ -89,7 +119,7 @@ public class ContentProviderUtil {
      * 请求切换服务器
      */
     public static void sendErrorServer() {
-        try{
+        try {
             XIPC.connectApp(XIPC.getContext(), XIPCUtils.XIPC_MENU_NEW);
             XIPC.setIPCListener(new IPCListener() {
                 @Override
@@ -102,7 +132,7 @@ public class ContentProviderUtil {
                                 dsm.setPingServerError(ServerKeyUtils.serverKeyOcrCameraError);
                                 Log.e("http", "请求换服务器！");
                                 XIPC.disconnect(XIPC.getContext());
-                            }catch (Exception e){
+                            } catch (Exception e) {
                                 e.printStackTrace();
                             }
                         }
@@ -110,7 +140,7 @@ public class ContentProviderUtil {
 
                 }
             });
-        }catch(Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
 
@@ -118,10 +148,11 @@ public class ContentProviderUtil {
 
     /**
      * 获取当前定位城市（省）
+     *
      * @param context
      * @return
      */
-    public static String getCity(Context context){
+    public static String getCity(Context context) {
         Cursor cursor = context.getContentResolver().query(CITY_URI, null, null, null, null);
         String cityName = "";
         try {
@@ -132,8 +163,8 @@ public class ContentProviderUtil {
             } else {
                 Log.d("TAG", "：没有获取到定位信息");
             }
-        }finally {
-            if(null!=cursor)
+        } finally {
+            if (null != cursor)
                 cursor.close();
         }
         return cityName;
@@ -162,13 +193,13 @@ public class ContentProviderUtil {
     }
 
 
-
     /**
      * 获取该机器对应的国家
+     *
      * @param context
      * @return
      */
-    public static String getCountry(Context context){
+    public static String getCountry(Context context) {
         Cursor cursor = context.getContentResolver().query(COUNTRY_URI, null, null, null, null);
         String countryName = "";
         try {
@@ -179,8 +210,8 @@ public class ContentProviderUtil {
             } else {
                 Log.d("TAG", "：没有获取到定位信息");
             }
-        }finally {
-            if(null!=cursor)
+        } finally {
+            if (null != cursor)
                 cursor.close();
         }
         return countryName;
@@ -190,11 +221,12 @@ public class ContentProviderUtil {
 
     /**
      * 获取经纬度
+     *
      * @return
      */
-    public static Map<String,Double> getLocation() {
+    public static Map<String, Double> getLocation() {
         Cursor cursor = BaseApplication.CONTEXT.getContentResolver().query(Constant.CONTENT_URI, null, null, null, null);
-        Map<String,Double> map = new HashMap<>();
+        Map<String, Double> map = new HashMap<>();
         try {
             if (cursor != null && cursor.getCount() > 0) {
                 cursor.moveToFirst();
@@ -203,8 +235,8 @@ public class ContentProviderUtil {
                 int lonId = cursor.getColumnIndex("longitude");
                 double latitude = cursor.getDouble(latId);
                 double longitude = cursor.getDouble(lonId);
-                map.put("latitude",latitude);
-                map.put("longitude",longitude);
+                map.put("latitude", latitude);
+                map.put("longitude", longitude);
 
             } else {
 

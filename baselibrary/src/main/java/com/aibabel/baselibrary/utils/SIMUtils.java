@@ -135,11 +135,11 @@ public class SIMUtils {
     @RequiresApi(api = Build.VERSION_CODES.N)
     @SuppressLint("MissingPermission")
     public static Integer getDefaultDataSubId(Context context) {
-        int slotIndex=0;
+        int slotIndex=-1;
         try {
         SubscriptionManager subscriptionManager = (SubscriptionManager) context.getSystemService(
                 Context.TELEPHONY_SUBSCRIPTION_SERVICE);
-        SubscriptionInfo mSubscriptionInfo= (SubscriptionInfo) SubscriptionManager.class.getMethod("getDefaultDataSubscriptionInfo",null).invoke(subscriptionManager,null);
+        SubscriptionInfo mSubscriptionInfo= (SubscriptionInfo) SubscriptionManager.class.getMethod("getDefaultDataSubscriptionInfo", new Class[ 0 ]).invoke(subscriptionManager,new  Object[]{});
         if (mSubscriptionInfo!=null){
             slotIndex=mSubscriptionInfo.getSimSlotIndex();
         }
@@ -152,7 +152,7 @@ public class SIMUtils {
         } catch (Exception e) {
             e.printStackTrace();
         }
-
+        Log.e("slotIndex==",String.valueOf(slotIndex));
         return  slotIndex;
     }
 

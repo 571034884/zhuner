@@ -40,7 +40,8 @@ public class StatisticsBaseActivity extends AppCompatActivity {
     private JSONObject pageParameters;
     protected  static String appName, appVersion;
     public  IStatistics statisticsManager;
-    boolean hasConnectedXIPC;
+    private boolean callStop=false;
+
 
 
 
@@ -71,11 +72,15 @@ public class StatisticsBaseActivity extends AppCompatActivity {
             }
 
         }
-
+        initPageObject();
 
 
     }
+    private boolean isConnectXIPC(){
+       return statisticsManager!=null;
+    }
     protected void connectXIPC(){
+//        if (isConnectXIPC()) return;
 
         if (!getPackageName().equals("com.aibabel.menu")&&DeviceUtils.getSystem()== DeviceUtils.System.PRO_LEASE){
             XIPC.setIPCListener(new IPCListener() {
@@ -86,7 +91,7 @@ public class StatisticsBaseActivity extends AppCompatActivity {
                         statisticsManager=XIPC.getInstance(IStatistics.class);
                         count++;
                     }
-                    hasConnectedXIPC=true;
+
                 }
             });
             XIPC.connectApp(this,"com.aibabel.menu");
@@ -96,35 +101,38 @@ public class StatisticsBaseActivity extends AppCompatActivity {
            statisticsManager=StatisticsManager.getInstance();
 
         }
+        Log.e("connectXIPC==",getClass().getName());
 
+
+    }
+    private void initPageObject(){
+        try {
+            pageObject=new JSONObject();
+            pageObject.put("pn",getClass().getSimpleName());
+            pageObject.put("it",System.currentTimeMillis());
+            if (!TextUtils.isEmpty(notifyId)){
+                pageObject.put("notify",notifyId);
+            }
+//            if (isOpenFromHardwareButton&&(appName.equals("translate")||appName.equals("ocr")||appName.equals("speech"))){
+//                pageObject.put("h",true);
+//            }
+
+        }catch (Exception e){
+            e.printStackTrace();
+        }
 
     }
     @Override
     protected void onResume() {
         super.onResume();
-        if (!hasConnectedXIPC){
-            connectXIPC();
+        connectXIPC();
+
+        if (callStop&&DeviceUtils.getSystem()== DeviceUtils.System.PRO_LEASE){
+           initPageObject();
+
         }
 
-        if (DeviceUtils.getSystem()== DeviceUtils.System.PRO_LEASE){
-            try {
-                pageObject=new JSONObject();
-                pageObject.put("pn",getClass().getSimpleName());
-                pageObject.remove("it");
-                pageObject.put("it",System.currentTimeMillis());
-                if (!TextUtils.isEmpty(notifyId)){
-                    pageObject.put("notify",notifyId);
-                }
-                if (isOpenFromHardwareButton&&(appName.equals("translate")||appName.equals("ocr")||appName.equals("speech"))){
-                    pageObject.put("h",true);
-                }
-
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
-
-
+        callStop=false;
     }
 
 
@@ -147,8 +155,6 @@ public class StatisticsBaseActivity extends AppCompatActivity {
             }
         }
 
-
-
     }
     /**
      * 跨进程添加统计数据
@@ -157,7 +163,6 @@ public class StatisticsBaseActivity extends AppCompatActivity {
         if (DeviceUtils.getSystem()== DeviceUtils.System.PRO_LEASE&&statisticsManager!=null){
 
             try {
-
                 pageObject.put("p",pageParameters);
 
                 if (eventsArray!=null&&eventsArray.length()>0){
@@ -177,15 +182,13 @@ public class StatisticsBaseActivity extends AppCompatActivity {
     @Override
     protected void onPause() {
         super.onPause();
-
         try {
+            if (pageObject.has("ot"))
             pageObject.remove("ot");
             pageObject.put("ot",System.currentTimeMillis());
         } catch (Exception e) {
             e.printStackTrace();
         }
-
-
     }
 
 
@@ -194,21 +197,20 @@ public class StatisticsBaseActivity extends AppCompatActivity {
     protected void onStop() {
 
         try {
-            if (System.currentTimeMillis() - pageObject.optLong("it") > 500){
+            if (pageObject.optLong("ot") - pageObject.optLong("it") > 500){
                 if (statisticsManager==null){
                     if (getPackageName().equals("com.aibabel.menu")){
                         statisticsManager=StatisticsManager.getInstance();
                     }else{
                         statisticsManager=XIPC.getInstance(IStatistics.class);
                     }
-
                 }
                 addPathToStatisticsManager();
             }
         }catch (Exception e){
             e.printStackTrace();
         }
-
+        callStop=true;
         super.onStop();
     }
 

@@ -71,6 +71,7 @@ public class Constant extends EaseConstant {
     public static final int STATE_LOGIN_FAILED = 404;
 
     public static final String ACTION_LOGIN = "com.aibabel.launcher.login";
+    public static final String ACTION_MAKE_READED = "com.aibabel.launcher.read";
     public static final String ACTION_MESSAGE = "com.aibabel.launcher.message";
 
 
