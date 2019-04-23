@@ -804,6 +804,10 @@ public class MainActivity extends LaunBaseActivity implements NetBroadcastReceiv
                                 keepuse.putExtra(bunder_iszhuner, zhuner_str);
                                 keepuse.putExtra(bunder_qudao, qudao_str);
                                 startActivity(keepuse);
+                                Intent intent_timeend = new Intent();
+                                intent_timeend.setAction("com.android.zhuner");
+                                intent_timeend.putExtra("Zhuner_devices", "time_end");
+                                sendBroadcast(intent_timeend);
                                 if (iflocksyncAgain) {
                                     iflocksyncAgain = false;
                                     loopHandler.sendEmptyMessageDelayed(130, 1000 * 5);
