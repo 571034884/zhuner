@@ -10,6 +10,7 @@ import android.hardware.SensorManager;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.text.TextUtils;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -22,9 +23,7 @@ import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.aibabel.aidlaar.StatisticsManager;
-import com.aibabel.baselibrary.base.StatisticsBaseActivity;
 import com.aibabel.translate.R;
-import com.aibabel.translate.activity.BaseActivity;
 import com.aibabel.translate.activity.LanguageActivity;
 import com.aibabel.translate.activity.RecordActivity;
 import com.aibabel.translate.app.BaseApplication;
@@ -45,7 +44,6 @@ import com.aibabel.translate.utils.ThreadPoolManager;
 import com.aibabel.translate.utils.ToastUtil;
 import com.aibabel.translate.view.AdaptionSizeTextView;
 
-import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Timer;
@@ -60,8 +58,7 @@ import butterknife.Unbinder;
  *
  * @Author：CreateBy 张文颖
  * @Date：2018/8/3
- * @Desc：异侧模式
- * @==========================================================================================
+ * @Desc：异侧模式 ==========================================================================================
  */
 public class OppositeFragment extends BaseFragment implements OnResponseListener, ScreenBroadcastReceiver.ScreenListener, SensorEventListener {
 
@@ -136,6 +133,9 @@ public class OppositeFragment extends BaseFragment implements OnResponseListener
     Unbinder unbinder;
     @BindView(R.id.iv_record)
     ImageView ivRecord;
+    @BindView(R.id.iv_point)
+    ImageView ivPoint;
+
 
     private String code_from;//语言code
     private String code_to;//语言code
@@ -166,7 +166,7 @@ public class OppositeFragment extends BaseFragment implements OnResponseListener
     private String code_up;
     private boolean isOnline;
     private String mtText;
-    private String asrtext;
+      private String asrtext;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -283,8 +283,6 @@ public class OppositeFragment extends BaseFragment implements OnResponseListener
                                         direction_down = 2;
                                         return;
                                     }
-                                    //对侧倾斜模式
-                                    activity.addStatisticsEvent("translation_main6", null);
                                     direction_down = 2;
                                     L.e("=======================" + 2 + "=========================");
                                     changeColor(2);
@@ -308,8 +306,6 @@ public class OppositeFragment extends BaseFragment implements OnResponseListener
                                         return;
                                     }
                                     L.e("=======================" + 4 + "=========================");
-                                    //对侧倾斜模式
-                                    activity.addStatisticsEvent("translation_main6", null);
                                     direction_up = 2;
                                     changeColor(2);
                                     AnimationUtils.start(rlUp, rlUp.getHeight(), llRoot.getHeight() * 0.5f, 100, null, null);
@@ -386,6 +382,11 @@ public class OppositeFragment extends BaseFragment implements OnResponseListener
         BaseApplication.isIpsil = "Oppos";
         manager.registerListener(this, sensor, SensorManager.SENSOR_DELAY_UI);
         netChanged();
+
+        if (BaseApplication.newPoint){
+            ivPoint.setVisibility(View.GONE);
+        }
+
     }
 
     public void onKeyDown(int keyCode, KeyEvent event) {
@@ -482,7 +483,7 @@ public class OppositeFragment extends BaseFragment implements OnResponseListener
      * @param event
      */
     public void onKeyUp(int keyCode, KeyEvent event) {
-        if (isTimeOut) {
+        if (isTimeOut){
             isRecording = false;
             return;
         }
@@ -671,8 +672,6 @@ public class OppositeFragment extends BaseFragment implements OnResponseListener
                         return;
                     }
                 }
-                //统计选择语言下
-                activity.addStatisticsEvent("translation_main14", null);
                 selectLan(DOWN_KEY, lan_do, false);
                 break;
             case R.id.tv_up_lan:
@@ -682,18 +681,17 @@ public class OppositeFragment extends BaseFragment implements OnResponseListener
                         return;
                     }
                 }
-                //统计选择语言上
-                activity.addStatisticsEvent("translation_main13", null);
                 selectLan(UP_KEY, lan_up, true);
                 break;
             case R.id.iv_switch:
+                StatisticsManager.getInstance(context).addEventAidl(1305);
                 toIpsil();
                 break;
             case R.id.iv_down_sound:
             case R.id.iv_up_sound:
                 playAudio();
                 break;
-            case R.id.tv_down_text:
+              case R.id.tv_down_text:
                 if (curr_press == DOWN_KEY) {
 //                    toEdit(code_from, code_to, asrtext);
                     return;
@@ -710,8 +708,24 @@ public class OppositeFragment extends BaseFragment implements OnResponseListener
                 }
 
             case R.id.iv_record:
-                toRecord();
+//                toRecord();
+                activity.showDrawerLayout(0);
                 break;
+        }
+    }
+
+
+
+    /**
+     * 切换图片
+     * @param isOpen
+     */
+    public void switchMenuIcon(boolean isOpen){
+        System.out.println(isOpen);
+        if (isOpen) {
+            ivRecord.setImageDrawable(context.getDrawable(R.mipmap.ic_translate_back));
+        } else {
+            ivRecord.setImageDrawable(context.getDrawable(R.mipmap.ic_translate_menu));
         }
     }
 
@@ -719,8 +733,9 @@ public class OppositeFragment extends BaseFragment implements OnResponseListener
      * 播放翻译内容
      */
     private void playAudio() {
-        //统计重播
-        activity.addStatisticsEvent("translation_main11", null);
+        Map<String, String> map = new HashMap<>();
+        map.put("p1",code_to);
+        StatisticsManager.getInstance(context).addEventAidl(1304);
         if (isOnline) {
             MediaPlayerUtil.playMp3(SharePrefUtil.getString(context, "mp3_1", ""), context);
         } else {
@@ -739,11 +754,7 @@ public class OppositeFragment extends BaseFragment implements OnResponseListener
             return;
         BaseApplication.isIpsil = "Ipsil";
         Constant.isSound = false;
-        //统计跳转对面模式
-        HashMap<String, Serializable> map = new HashMap<>();
-        map.put("translation_same", "same");
-        activity.addStatisticsEvent("translation_main5", map);
-        activity.showFragment(0);
+        activity.showFragment(0,1);
     }
 
     /**
@@ -774,13 +785,12 @@ public class OppositeFragment extends BaseFragment implements OnResponseListener
     /**
      * 跳转历史记录
      */
-    private void toRecord() {
+    public void toRecord() {
         if (isRecording)
             return;
         if (!BaseApplication.isTran)
             return;
-        //统计历史记录按钮
-        activity.addStatisticsEvent("translation_main12", null);
+        StatisticsManager.getInstance(context).addEventAidl(1306);
         Intent intent = new Intent();
         intent.setClass(context, RecordActivity.class);
         startActivity(intent);
@@ -961,6 +971,11 @@ public class OppositeFragment extends BaseFragment implements OnResponseListener
                 ChangeOffline.getInstance().createOrChange();
             }
 
+            //添加统计
+            Map<String, String> map = new HashMap<>();
+            map.put("p1",lan_do);
+            map.put("p2",lan_up);
+            StatisticsManager.getInstance(context).addEventAidl(1311,map);
         } else if (requestCode == 101 && resultCode == 201) {
             String mt = data.getStringExtra("mt");
             String en = data.getStringExtra("en");
@@ -1145,7 +1160,7 @@ public class OppositeFragment extends BaseFragment implements OnResponseListener
     /**
      * 获取当前是否正在录音
      */
-    public boolean getIsRecording() {
+    public boolean getIsRecording(){
 
         return isRecording;
     }

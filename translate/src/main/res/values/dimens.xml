@@ -3,6 +3,7 @@
     <dimen name="px0">0pt</dimen>
     <dimen name="px180">180pt</dimen>
     <dimen name="px200">200pt</dimen>
+    <dimen name="px240">240pt</dimen>
     <dimen name="px70">70pt</dimen>
     <dimen name="px55">55pt</dimen>
     <dimen name="px28">28pt</dimen>
@@ -24,5 +25,8 @@
     <dimen name="px32">32pt</dimen>
     <dimen name="px96">96pt</dimen>
     <dimen name="px8">8pt</dimen>
+    <dimen name="px80">80pt</dimen>
     <dimen name="px88">88pt</dimen>
+    <dimen name="px640">640pt</dimen>
+    <dimen name="px48">48pt</dimen>
 </resources>

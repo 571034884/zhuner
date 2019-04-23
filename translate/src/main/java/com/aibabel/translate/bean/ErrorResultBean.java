@@ -13,6 +13,20 @@ public class ErrorResultBean {
     private String id;
     private String ecode;
 
+    //===================上面的为socket使用，下面的为websocket使用=====================
+    /**
+     * sessionId :
+     * info : You recommend a small dish. I have a strange taste.
+     * code : 200
+     */
+
+    private String sessionId;
+    private String info;
+    private int code;
+
+
+
+
     public String getId() {
         return id;
     }
@@ -27,5 +41,29 @@ public class ErrorResultBean {
 
     public void setEcode(String ecode) {
         this.ecode = ecode;
+    }
+
+    public String getSessionId() {
+        return sessionId;
+    }
+
+    public void setSessionId(String sessionId) {
+        this.sessionId = sessionId;
+    }
+
+    public String getInfo() {
+        return info;
+    }
+
+    public void setInfo(String info) {
+        this.info = info;
+    }
+
+    public int getCode() {
+        return code;
+    }
+
+    public void setCode(int code) {
+        this.code = code;
     }
 }

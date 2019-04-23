@@ -123,9 +123,6 @@ public class Adapter_Record extends RecyclerView.Adapter<Adapter_Record.MainView
         //判断当前checkbox的状态
         if (showCheckBox) {
             holder.cb_check.setVisibility(View.VISIBLE);
-//            if (isCheckAll) {
-//                checkAll();
-//            }
             //防止显示错乱
             holder.cb_check.setChecked(mCheckStates.get(position, false));
         } else {
@@ -173,8 +170,6 @@ public class Adapter_Record extends RecyclerView.Adapter<Adapter_Record.MainView
 
         holder.tv_asr.setText(bean.getAsr());
         holder.tv_mt.setText(bean.getMt());
-//        tv_form.setText(bean.getFrom());
-//        tv_to.setText(bean.getTo());
         String from = LanguageUtils.getNameByCode(bean.getFrom_code(), context);
         String to = LanguageUtils.getNameByCode(bean.getTo_code(), context);
         holder.tv_form.setText(from + "");

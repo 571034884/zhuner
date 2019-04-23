@@ -5,10 +5,11 @@
     <!--list 用于设定所有的映射模型-->
     <dbname value="t_record"></dbname>
 
-    <version value="1"></version>
+    <version value="2"></version>
 
     <list>
         <mapping class="com.aibabel.translate.bean.RecordBean"></mapping>
+        <mapping class="com.aibabel.translate.bean.MessageBean"></mapping>
     </list>
 
 </litepal>
