@@ -120,7 +120,7 @@
     </LinearLayout>
 
 
-    <com.aibabel.launcher.view.sousuo.PinnedHeaderListView
+    <com.aibabel.menu.view.sousuo.PinnedHeaderListView
         android:id="@+id/search_city"
         android:layout_width="0px"
         android:layout_height="0px"
@@ -150,7 +150,7 @@
         app:layout_constraintTop_toBottomOf="@id/ll"
         tools:visibility="visible" />
 
-    <com.aibabel.launcher.view.sousuo.SideBar
+    <com.aibabel.menu.view.sousuo.SideBar
         android:id="@+id/search_sort"
         android:layout_width="@dimen/x30"
         android:layout_height="0px"

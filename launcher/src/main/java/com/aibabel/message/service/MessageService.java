@@ -14,13 +14,10 @@ import android.util.Log;
 import android.widget.Toast;
 
 import com.aibabel.baselibrary.http.BaseCallback;
-import com.aibabel.baselibrary.sphelper.SPHelper;
 import com.aibabel.baselibrary.utils.CommonUtils;
-import com.aibabel.baselibrary.utils.FastJsonUtil;
-import com.aibabel.launcher.net.Api;
-import com.aibabel.launcher.utils.Logs;
+import com.aibabel.menu.net.Api;
+import com.aibabel.menu.utils.Logs;
 import com.aibabel.message.helper.DemoHelper;
-import com.aibabel.message.hx.bean.CustomMessage;
 import com.aibabel.message.hx.bean.IMUser;
 import com.aibabel.message.hx.cache.UserCacheManager;
 import com.aibabel.message.receiver.NetBroadcastReceiver;
@@ -29,12 +26,10 @@ import com.aibabel.message.utiles.OkGoUtilWeb;
 import com.hyphenate.EMCallBack;
 import com.hyphenate.EMError;
 import com.hyphenate.EMMessageListener;
-import com.hyphenate.chat.EMChatManager;
 import com.hyphenate.chat.EMClient;
 import com.hyphenate.chat.EMMessage;
 import com.tencent.mmkv.MMKV;
 
-import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.util.List;

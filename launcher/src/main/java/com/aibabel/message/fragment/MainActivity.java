@@ -5,20 +5,16 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
-import android.view.Window;
-import android.view.WindowManager;
 import android.widget.ImageView;
 
 import com.aibabel.baselibrary.base.BaseFragment;
 import com.aibabel.menu.R;
-import com.aibabel.launcher.bean.PushMessageBean;
-import com.aibabel.launcher.utils.LogUtil;
+import com.aibabel.menu.bean.PushMessageBean;
+import com.aibabel.menu.utils.LogUtil;
 import com.aibabel.message.adapter.RecyclerViewAdapter;
 import com.aibabel.message.sqlite.SqlUtils;
 
-import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 import butterknife.BindView;

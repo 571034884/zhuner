@@ -1,7 +1,7 @@
 package com.aibabel.message.sqlite;
 
 import com.aibabel.baselibrary.utils.FastJsonUtil;
-import com.aibabel.launcher.bean.PushMessageBean;
+import com.aibabel.menu.bean.PushMessageBean;
 
 import org.litepal.LitePal;
 

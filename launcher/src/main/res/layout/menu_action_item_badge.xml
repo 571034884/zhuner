@@ -21,7 +21,7 @@
         android:scaleType="center"
         />
 
-    <com.aibabel.launcher.view.MaterialBadgeTextView
+    <com.aibabel.menu.view.MaterialBadgeTextView
         android:id="@+id/menu_badge"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

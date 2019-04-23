@@ -2,7 +2,6 @@ package com.aibabel.message.receiver;
 
 
 import android.annotation.SuppressLint;
-import android.app.Notification;
 import android.content.BroadcastReceiver;
 import android.content.ComponentName;
 import android.content.Context;
@@ -17,10 +16,9 @@ import android.util.Log;
 import com.aibabel.baselibrary.sphelper.SPHelper;
 import com.aibabel.baselibrary.utils.FastJsonUtil;
 import com.aibabel.menu.R;
-import com.aibabel.launcher.activity.MainActivity;
-import com.aibabel.launcher.bean.PushMessageBean;
-import com.aibabel.launcher.utils.DetectUtil;
-import com.aibabel.launcher.utils.LogUtil;
+import com.aibabel.menu.activity.MainActivity;
+import com.aibabel.menu.bean.PushMessageBean;
+import com.aibabel.menu.utils.LogUtil;
 import com.aibabel.message.bean.DetailBean;
 import com.aibabel.message.broadcast.ResidentNotificationHelper;
 import com.aibabel.message.fragment.JiGuangActivity;
@@ -28,7 +26,6 @@ import com.aibabel.message.sqlite.SqlUtils;
 
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.w3c.dom.Text;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -36,7 +33,6 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 
-import cn.jpush.android.api.BasicPushNotificationBuilder;
 import cn.jpush.android.api.JPushInterface;
 
 /**

@@ -10,9 +10,9 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.aibabel.menu.R;
-import com.aibabel.launcher.bean.PushMessageBean;
-import com.aibabel.launcher.utils.LogUtil;
-import com.aibabel.launcher.view.MaterialBadgeTextView;
+import com.aibabel.menu.bean.PushMessageBean;
+import com.aibabel.menu.utils.LogUtil;
+import com.aibabel.menu.view.MaterialBadgeTextView;
 import com.aibabel.message.sqlite.SqlUtils;
 import com.aibabel.message.utiles.MessageUtil;
 
