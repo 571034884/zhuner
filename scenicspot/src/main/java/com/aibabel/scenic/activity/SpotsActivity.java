@@ -106,7 +106,7 @@ public class SpotsActivity extends BaseScenicActivity implements ExpireBroadcast
     TextView tvSpots;
     TextView tvContent;
     LinearLayout llIntroduce;
-
+    ImageView ivScenicMap;
 
     private List<SpotsBean.DataBean.SubpoiMsgBean> list = new ArrayList<>();
     private Adapter_Spots mAdapter;
@@ -186,6 +186,7 @@ public class SpotsActivity extends BaseScenicActivity implements ExpireBroadcast
         tvSpots = view.findViewById(R.id.tv_spots);
         llIntroduce = view.findViewById(R.id.ll_introduce);
         tvContent = view.findViewById(R.id.tv_content);
+        ivScenicMap = view.findViewById(R.id.tv_scenicmap);
         return view;
     }
 
@@ -289,13 +290,29 @@ public class SpotsActivity extends BaseScenicActivity implements ExpireBroadcast
         String name = bean.getName();
         String desc = bean.getDesc();
         String title = bean.getName();
-        if (TextUtils.isEmpty(desc)) {
+        if (TextUtils.isEmpty(desc) && TextUtils.isEmpty(bean.getMap_image())) {
             llIntroduce.setVisibility(View.GONE);
         } else {
             llIntroduce.setVisibility(View.VISIBLE);
             tvContent.setText(desc);
             tvSpot.setText(name);
+            if (TextUtils.isEmpty(bean.getMap_image())){
+                ivScenicMap.setVisibility(View.GONE);
+            }else{
+                ivScenicMap.setVisibility(View.VISIBLE);
+                Glide.with(this).load(bean.getMap_image()).apply(CommonUtils.options).into(ivScenicMap);
 
+                ivScenicMap.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Intent intent = new Intent(mContext,PhotoViewActivity.class);
+                        intent.putExtra("photo_img",bean.getMap_image());
+                        startActivity(intent);
+                    }
+                });
+            }
+            Logs.e(bean.getMap_image());
+            Logs.e(bean.getNavi_image());
         }
         tvName.setText(name);
         tvMusicName.setText(name);
