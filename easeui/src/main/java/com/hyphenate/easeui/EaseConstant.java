@@ -22,7 +22,10 @@ public class EaseConstant {
     public static final String MESSAGE_ATTR_IS_BIG_EXPRESSION = "em_is_big_expression";
     public static final String MESSAGE_ATTR_EXPRESSION_ID = "em_expression_id";
     
-    public static final String MESSAGE_ATTR_AT_MSG = "em_at_list";
+    public static final String MESSAGE_ATTR_AT_MSG = "at";
+    public static final String MESSAGE_ATTR_NICK_MSG = "nickname";
+    public static final String MESSAGE_ATTR_AVATAR_MSG = "head_img";
+//    public static final String MESSAGE_ATTR_AT_MSG = "em_at_list";
     public static final String MESSAGE_ATTR_VALUE_AT_MSG_ALL = "ALL";
 
     

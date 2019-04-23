@@ -110,11 +110,11 @@ public class SocketManger implements ISocketActionListener {
      */
     public void initConfig() {
         try {
-//            L.e("Host", Constant.HOST + "======" + Constant.PORT);
+            L.e("Host", Constant.HOST + "======" + Constant.PORT);
 
-            mInfo = new ConnectionInfo("39.107.238.111", Constant.PORT);
-            L.e("Host", "39.107.238.111" + "======" + Constant.PORT);
-//            mInfo = new ConnectionInfo(CommonUtils.getTranslateHost(), Constant.PORT);
+//            mInfo = new ConnectionInfo("39.107.238.111", Constant.PORT);
+//            L.e("Host", "39.107.238.111" + "======" + Constant.PORT);
+            mInfo = new ConnectionInfo(CommonUtils.getTranslateHost(), Constant.PORT);
             mOkOptions = new OkSocketOptions.Builder()
                     .setReconnectionManager(new NoneReconnect())
                     .setConnectTimeoutSecond(5)

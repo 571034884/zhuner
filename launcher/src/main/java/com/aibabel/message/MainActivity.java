@@ -1,5 +1,6 @@
 package com.aibabel.message;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
@@ -38,12 +39,13 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.util.List;
+import java.util.Map;
 
 import butterknife.BindView;
 
 import static com.aibabel.launcher.activity.MainActivity.set_BadgeCount;
 
-public class MainActivity extends LaunBaseActivity  {
+public class MainActivity extends LaunBaseActivity {
 
 
     @BindView(R.id.fl_content)
@@ -82,7 +84,7 @@ public class MainActivity extends LaunBaseActivity  {
     private int fragment_index;
     private boolean isSetNick;
     private MyDialog builder;
-    private int unread;
+    private int unread = 0;
 
 
     @Override
@@ -92,12 +94,21 @@ public class MainActivity extends LaunBaseActivity  {
 
     @Override
     protected void initView() {
+        fragment_index = getIntent().getExtras().getInt("fragment_index", 0);
         isSetNick = mmkv.decodeBool("isSetNick", true);
         unread = mmkv.decodeInt("count", 0);
         //get user id or group id
-//        toChatUsername = getIntent().getExtras().getString("userId");
+        toChatUsername = mmkv.decodeString(Constant.EM_GROUP);
+        if (TextUtils.isEmpty(toChatUsername) || !mmkv.decodeBool(Constant.EM_SUPPORT, false)) {
+            fragment_index = 0;
+        }
+
+        Bundle bundle = new Bundle();
+        bundle.putString("toChatUsername", toChatUsername);
+//        bundle.putString("userId",mmkv.decodeString(Constant.EM_USERNAME));
+
         tvUnreadNumber = findViewById(R.id.tv_unread_number);
-        fragment_index = getIntent().getExtras().getInt("fragment_index", 0);
+
         mTabs = new Button[3];
         mTabs[0] = findViewById(R.id.btn_msg);
         mTabs[1] = findViewById(R.id.btn_chat);
@@ -115,35 +126,85 @@ public class MainActivity extends LaunBaseActivity  {
         fragmentMessage = new Fragment_Message();
         fragmentTask = new Fragment_Task();
         fragments = new Fragment[]{fragmentMessage, fragmentConversation, fragmentTask};
+        //传入
+        fragmentConversation.setArguments(bundle);
 
-
-        if(tvUnreadMsgNumber!=null)tvUnreadMsgNumber.setBadgeCount(set_BadgeCount);
+        if (tvUnreadMsgNumber != null) tvUnreadMsgNumber.setBadgeCount(set_BadgeCount);
         //判定是否支持，以便于显示不同的布局
 //        selectUI();
         currentTabIndex = fragment_index;
-        if (fragment_index == 0) {
-            // TODO: 2019/4/22 除非为强推消息，否则优先准儿帮
-//            refreshUIWithMessage(unread);
+//        if (fragment_index == 0) {
+//            // TODO: 2019/4/22 除非为强推消息，否则优先准儿帮
+////            refreshUIWithMessage(unread);
+//            getSupportFragmentManager().beginTransaction()
+//                    .show(fragmentMessage)
+//                    .hide(fragmentConversation)
+//                    .hide(fragmentTask)
+//                    .commit();
+//        } else if (fragment_index == 1) {
+//
+//            getSupportFragmentManager().beginTransaction()
+//                    .show(fragmentConversation)
+//                    .hide(fragmentMessage)
+//                    .hide(fragmentTask)
+//                    .commit();
+//            isShowDialog();
+//        } else {
+//            getSupportFragmentManager().beginTransaction()
+//                    .hide(fragmentMessage)
+//                    .hide(fragmentConversation)
+//                    .show(fragmentTask)
+//                    .commit();
+//        }
+        isSupport();
+
+    }
+
+
+    /**
+     * 判定是否支持准儿帮，这个参数有后台返回
+     *
+     * 在MessageService保存的
+     */
+    private void isSupport() {
+
+        if (mmkv.decodeBool(Constant.EM_SUPPORT, false)) {
+            btnContainerChat.setVisibility(View.VISIBLE);
+            if (fragment_index == 0) {
+                // TODO: 2019/4/22 除非为强推消息，否则优先准儿帮
+                // refreshUIWithMessage(unread);
+                getSupportFragmentManager().beginTransaction()
+                        .show(fragmentMessage)
+                        .hide(fragmentConversation)
+                        .hide(fragmentTask)
+                        .commit();
+            } else if (fragment_index == 1) {
+
+                getSupportFragmentManager().beginTransaction()
+                        .show(fragmentConversation)
+                        .hide(fragmentMessage)
+                        .hide(fragmentTask)
+                        .commit();
+                isShowDialog();
+            } else {
+                getSupportFragmentManager().beginTransaction()
+                        .hide(fragmentMessage)
+                        .hide(fragmentConversation)
+                        .show(fragmentTask)
+                        .commit();
+            }
+
+        } else {
+            btnContainerChat.setVisibility(View.GONE);
             getSupportFragmentManager().beginTransaction()
                     .show(fragmentMessage)
                     .hide(fragmentConversation)
                     .hide(fragmentTask)
                     .commit();
-        } else if (fragment_index == 1) {
 
-            getSupportFragmentManager().beginTransaction()
-                    .show(fragmentConversation)
-                    .hide(fragmentMessage)
-                    .hide(fragmentTask)
-                    .commit();
-            isShowDialog();
-        } else {
-            getSupportFragmentManager().beginTransaction()
-                    .hide(fragmentMessage)
-                    .hide(fragmentConversation)
-                    .show(fragmentTask)
-                    .commit();
         }
+
+
     }
 
 
@@ -152,7 +213,6 @@ public class MainActivity extends LaunBaseActivity  {
         super.onResume();
         EMClient.getInstance().chatManager().addMessageListener(messageListener);
     }
-
 
 
     /**
@@ -164,7 +224,7 @@ public class MainActivity extends LaunBaseActivity  {
         switch (view.getId()) {
             case R.id.btn_msg:
                 index = 0;
-                if(tvUnreadMsgNumber!=null)tvUnreadMsgNumber.setBadgeCount(0);
+                if (tvUnreadMsgNumber != null) tvUnreadMsgNumber.setBadgeCount(0);
                 break;
             case R.id.btn_chat:
                 index = 1;
@@ -194,35 +254,33 @@ public class MainActivity extends LaunBaseActivity  {
 
 
     private void makeReaded() {
-        unread=0;
+        unread = 0;
         tvUnreadNumber.setText("");
         tvUnreadNumber.setVisibility(View.GONE);
     }
-
 
 
     EMMessageListener messageListener = new EMMessageListener() {
 
         @Override
         public void onMessageReceived(List<EMMessage> messages) {
-            for (EMMessage message : messages) {
-                try {
-                    JSONArray atJson = message.getJSONArrayAttribute("em_at_list"); // 被@用户列表,如果当前用户被@，需要ui特殊显示
+            if (currentTabIndex != 1) {
+                for (EMMessage message : messages) {
+                    try {
+                        Map<String, Object> map = message.ext();
+                        String at = (String) map.get("at");
 
-                    List<CustomMessage> customMessages = FastJsonUtil.changeJsonToList(atJson.toString(), CustomMessage.class);
-                    if (customMessages != null && customMessages.size() > 0) {
-                        for (CustomMessage custom : customMessages) {
-                            if (TextUtils.equals(custom.getExt().getAt(), UserCacheManager.getMyInfo().getUserId())) {
-                                unread++;
-                                refreshUIWithMessage(unread);
-
-                            }
+                        if (TextUtils.equals(at, UserCacheManager.getMyInfo().getUserId())) {
+                            unread++;
+                            refreshUIWithMessage(unread);
                         }
+
+                    } catch (Exception e) {
+                        e.printStackTrace();
                     }
-                } catch (Exception e) {
-                    e.printStackTrace();
                 }
             }
+
         }
 
         @Override
@@ -288,7 +346,6 @@ public class MainActivity extends LaunBaseActivity  {
         });
         builder.show();
     }
-
 
 
     private void isShowDialog() {

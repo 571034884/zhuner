@@ -2,7 +2,7 @@ package com.aibabel.message.hx.bean;
 
 import com.aibabel.baselibrary.http.BaseBean;
 
-public class IMUser extends BaseBean{
+public class IMUser extends BaseBean {
 
 
     /**
@@ -47,6 +47,7 @@ public class IMUser extends BaseBean{
         private String nickname;
         private String head_img;
         private int is_im;
+        private String group_id;
 
 
         public String getUser_id() {
@@ -87,6 +88,14 @@ public class IMUser extends BaseBean{
 
         public void setIs_im(int is_im) {
             this.is_im = is_im;
+        }
+
+        public String getGroup_id() {
+            return group_id;
+        }
+
+        public void setGroup_id(String group_id) {
+            this.group_id = group_id;
         }
     }
 }

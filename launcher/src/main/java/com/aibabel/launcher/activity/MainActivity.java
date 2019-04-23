@@ -57,6 +57,7 @@ import com.aibabel.launcher.view.MyDialog;
 import com.aibabel.message.hx.bean.IMUser;
 import com.aibabel.menu.R;
 import com.aibabel.message.helper.DemoHelper;
+import com.aibabel.message.receiver.MessageListener;
 import com.aibabel.message.receiver.NetBroadcastReceiver;
 import com.aibabel.message.service.MessageService;
 import com.aibabel.message.sqlite.SqlUtils;
@@ -80,7 +81,7 @@ import java.util.Map;
 import butterknife.BindView;
 import cn.jpush.android.api.JPushInterface;
 
-public class MainActivity extends LaunBaseActivity implements NetBroadcastReceiver.NetListener, LauncherBcastReceiver.LauncherListener {
+public class MainActivity extends LaunBaseActivity implements NetBroadcastReceiver.NetListener, LauncherBcastReceiver.LauncherListener,MessageListener {
 
     @BindView(R.id.main_location_app)
     TextView mMainLocation;
@@ -168,8 +169,6 @@ public class MainActivity extends LaunBaseActivity implements NetBroadcastReceiv
         registerNet();
         registerLauncher();
         startMessageService();
-        signIn("user1", "123");
-
         mMainLocation.setText("—·—");
         mMainTimerCity.setText("—·—");
         mMainWeatherC.setText("—·—");
@@ -437,16 +436,6 @@ public class MainActivity extends LaunBaseActivity implements NetBroadcastReceiv
 
     @Override
     public void netState(boolean isAvailable) {
-
-        //判定如果有网络检查环信是否登录，未登录去登录
-        if (isAvailable && !DemoHelper.getInstance().isLoggedIn()) {
-            String userId = MMKV.defaultMMKV().decodeString(Constant.EM_USERNAME, "");
-            String password = MMKV.defaultMMKV().decodeString(Constant.EM_PASSWORD, "");
-            if (TextUtils.isEmpty(userId) || TextUtils.isEmpty(password)) {
-                getUserInfo();
-            }
-        }
-
         /**
          * 获取首页数据，
          * 第一次必须走网络监听广播。
@@ -474,6 +463,7 @@ public class MainActivity extends LaunBaseActivity implements NetBroadcastReceiv
             changeView();
         }
     }
+
     public RequestOptions options = new RequestOptions().placeholder(R.mipmap.placeholder_h).error(R.mipmap.error_h);
     @Override
     public void launcherMusic(String poiName,String urlPic,String name,int type) {
@@ -651,38 +641,7 @@ public class MainActivity extends LaunBaseActivity implements NetBroadcastReceiv
     //=================================================环信消息开始===================================
 
 
-    /**
-     * 请求后台获取环信登录账号密码
-     */
-    private void getUserInfo() {
-        try {
-            JSONObject jsonObject = new JSONObject();
-            jsonObject.put("sn", CommonUtils.getSN());
 
-            OkGoUtilWeb.<String>post(this, Api.METHOD_IM, jsonObject, IMUser.class, new BaseCallback<IMUser>() {
-                @Override
-                public void onSuccess(String method, IMUser model, String resoureJson) {
-                    if (null != resoureJson) {
-                        signIn(model.getBody().getUser_id(), model.getBody().getPwd());
-                    }
-
-                }
-
-                @Override
-                public void onError(String method, String message, String resoureJson) {
-
-                }
-
-                @Override
-                public void onFinsh(String method) {
-
-                }
-            });
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-    }
 
 
     /**
@@ -695,24 +654,25 @@ public class MainActivity extends LaunBaseActivity implements NetBroadcastReceiv
         startService(messageService);
     }
 
-
-    /**
-     * 登录环信
-     *
-     * @param username
-     * @param password
-     */
-    private void signIn(String username, String password) {
-        Intent intent = new Intent(Constant.ACTION_LOGIN);
-        intent.putExtra(Constant.EM_USERNAME, username);
-        intent.putExtra(Constant.EM_PASSWORD, password);
+    private void getHxUserInfo(){
+        Intent intent = new Intent(Constant.ACTION_HX_USERINFO);
         sendBroadcast(intent);
     }
+
+
 
     /**
      * 清除已读标记
      */
     private void makeRead() {
+        hxMessage = 0;
+        fragment_index = 0;
+        Intent intent = new Intent(Constant.ACTION_MAKE_READED);
+        sendBroadcast(intent);
+    }
+
+    @Override
+    public void makeMessageAsRead() {
         hxMessage = 0;
         fragment_index = 0;
         Intent intent = new Intent(Constant.ACTION_MAKE_READED);
@@ -929,7 +889,7 @@ public class MainActivity extends LaunBaseActivity implements NetBroadcastReceiv
                             LogUtil.e("hjs" + add_hp.get("key"));
                             break;
                         case 800:
-                            getUserInfo();
+//                           getHxUserInfo();
                             break;
                         default:
                             break;

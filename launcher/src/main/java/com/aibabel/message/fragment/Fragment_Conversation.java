@@ -15,6 +15,7 @@ import com.hyphenate.chat.EMMessage;
 import com.hyphenate.easeui.EaseConstant;
 import com.hyphenate.easeui.ui.EaseChatFragment;
 import com.hyphenate.easeui.widget.chatrow.EaseCustomChatRowProvider;
+import com.tencent.mmkv.MMKV;
 
 import java.util.List;
 
@@ -29,6 +30,7 @@ import java.util.List;
  *==========================================================================================
  */
 public class Fragment_Conversation extends EaseChatFragment implements EaseChatFragment.EaseChatFragmentHelper {
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         return super.onCreateView(inflater, container, savedInstanceState, DemoHelper.getInstance().getModel().isMsgRoaming() && (chatType != EaseConstant.CHATTYPE_CHATROOM));
@@ -48,7 +50,10 @@ public class Fragment_Conversation extends EaseChatFragment implements EaseChatF
 
     @Override
     public void onSetMessageAttributes(EMMessage message) {
-
+        String nick = MMKV.defaultMMKV().getString(Constant.EM_NICk,"");
+        String avatar = MMKV.defaultMMKV().getString(Constant.EM_AVATAR,"");
+        message.setAttribute(EaseConstant.MESSAGE_ATTR_NICK_MSG, nick);
+        message.setAttribute(EaseConstant.MESSAGE_ATTR_AVATAR_MSG, avatar);
     }
 
     @Override

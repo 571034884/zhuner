@@ -60,6 +60,7 @@ public class Constant extends EaseConstant {
     public static final String EM_USERNAME = "em_userId";
     public static final String EM_PASSWORD = "em_password";
     public static final String EM_SUPPORT = "em_support";
+    public static final String EM_GROUP = "group_id";
     public static final String EM_NICk = "em_nick";
     public static final String EM_AVATAR = "em_avatar";
     public static final int MSG_RECEIVER = 001;
@@ -72,6 +73,7 @@ public class Constant extends EaseConstant {
 
     public static final String ACTION_LOGIN = "com.aibabel.launcher.login";
     public static final String ACTION_MAKE_READED = "com.aibabel.launcher.read";
+    public static final String ACTION_HX_USERINFO = "com.aibabel.launcher.userInfo";
     public static final String ACTION_MESSAGE = "com.aibabel.launcher.message";
 
 

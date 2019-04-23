@@ -25,9 +25,9 @@ public class MessageReceiver extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
 
-        if(intent.getAction()== Constant.ACTION_MESSAGE){
-            listener.getMessage(intent);
-        }
+//        if(intent.getAction()== Constant.ACTION_MESSAGE){
+//            listener.getMessage(intent);
+//        }
 
     }
 

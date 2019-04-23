@@ -13,12 +13,19 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.aibabel.baselibrary.http.BaseCallback;
 import com.aibabel.baselibrary.sphelper.SPHelper;
+import com.aibabel.baselibrary.utils.CommonUtils;
 import com.aibabel.baselibrary.utils.FastJsonUtil;
+import com.aibabel.launcher.net.Api;
+import com.aibabel.launcher.utils.Logs;
 import com.aibabel.message.helper.DemoHelper;
 import com.aibabel.message.hx.bean.CustomMessage;
+import com.aibabel.message.hx.bean.IMUser;
 import com.aibabel.message.hx.cache.UserCacheManager;
+import com.aibabel.message.receiver.NetBroadcastReceiver;
 import com.aibabel.message.utiles.Constant;
+import com.aibabel.message.utiles.OkGoUtilWeb;
 import com.hyphenate.EMCallBack;
 import com.hyphenate.EMError;
 import com.hyphenate.EMMessageListener;
@@ -28,16 +35,19 @@ import com.hyphenate.chat.EMMessage;
 import com.tencent.mmkv.MMKV;
 
 import org.json.JSONArray;
+import org.json.JSONObject;
 
 import java.util.List;
+import java.util.Map;
 
 
-public class MessageService extends Service {
+public class MessageService extends Service implements NetBroadcastReceiver.NetListener {
 
     private String TAG = MessageService.class.getSimpleName().toString();
     private Messenger mMessenger;
     private MessageMusicBroadReceiver receiver;
     private int unread = 0;
+    private MMKV mmkv = MMKV.defaultMMKV();
 
     public MessageService() {
     }
@@ -56,36 +66,44 @@ public class MessageService extends Service {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        //添加接受消息监听
-        EMClient.getInstance().chatManager().addMessageListener(messageListener);
 
         if (intent != null) {
             mMessenger = (Messenger) intent.getExtras().get("messenger");
         }
 
+        /**
+         * 添加环信监听
+         */
+        EMClient.getInstance().chatManager().addMessageListener(messageListener);
+
+        /**
+         * 每次进来先去请求环信用户
+         */
+        getUserInfo();
+
         return super.onStartCommand(intent, flags, startId);
     }
 
 
+    /**
+     * 环信监听
+     */
     EMMessageListener messageListener = new EMMessageListener() {
 
         @Override
         public void onMessageReceived(List<EMMessage> messages) {
 
+
             for (EMMessage message : messages) {
                 try {
-                    JSONArray atJson = message.getJSONArrayAttribute("em_at_list"); // 被@用户列表,如果当前用户被@，需要ui特殊显示
+                    Map<String,Object> map = message.ext();
+                    String at = (String) map.get("at");
 
-                    List<CustomMessage> customMessages = FastJsonUtil.changeJsonToList(atJson.toString(), CustomMessage.class);
-                    if (customMessages != null && customMessages.size() > 0) {
-                        for (CustomMessage custom : customMessages) {
-                            if (TextUtils.equals(custom.getExt().getAt(), UserCacheManager.getMyInfo().getUserId())) {
-                                unread++;
-                                refreshUIWithMessage(unread);
-
-                            }
-                        }
+                    if (TextUtils.equals(at, UserCacheManager.getMyInfo().getUserId())) {
+                        unread++;
+                        refreshUIWithMessage(unread);
                     }
+
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -127,11 +145,37 @@ public class MessageService extends Service {
         intentFilter.addAction(Constant.ACTION_LOGIN);
         intentFilter.addAction(Constant.ACTION_MAKE_READED);
         intentFilter.addAction(Constant.ACTION_MESSAGE);
+        intentFilter.addAction(Constant.ACTION_HX_USERINFO);
         intentFilter.setPriority(1000);
         if (receiver == null) {
             receiver = new MessageMusicBroadReceiver();
         }
         getApplicationContext().registerReceiver(receiver, intentFilter);
+    }
+
+    @Override
+    public void netState(boolean isAvailable) {
+        //判定如果有网络检查环信是否登录，未登录去登录
+        String isLogin = mmkv.decodeString("isLogin", "");
+        if (isAvailable && TextUtils.isEmpty(isLogin)) {
+            getUserInfo();
+        } else {
+            long intIP = Long.parseLong(isLogin);
+            long outIP = System.currentTimeMillis();
+            long results = outIP - intIP;
+            Logs.e("环信登录计算:" + outIP + "-" + intIP + "=" + results);
+            //超过5小时 请求一次 1800000
+            if (results > 1800000) {
+                getUserInfo();
+            }
+        }
+
+
+    }
+
+    @Override
+    public void netState(String nameWifi) {
+
     }
 
 
@@ -142,47 +186,95 @@ public class MessageService extends Service {
         @Override
         public void onReceive(Context context, Intent intent) {
             switch (intent.getAction()) {
-                case Constant.ACTION_LOGIN:
-                    Log.i(TAG, "onReceive: ACTION_Login");
-                    String userId = intent.getStringExtra("username");
-                    String pswd = intent.getStringExtra("pswd");
-                    if((userId!=null)&&(pswd!=null)) {
-                        signIn(userId, pswd);
-                    }
-                    break;
                 case Constant.ACTION_MAKE_READED:
                     unread = 0;
                     break;
+                case Constant.ACTION_HX_USERINFO:
+                    getUserInfo();
+                    break;
+
+
             }
         }
     }
 
 
     /**
+     * 请求后台获取环信登录账号密码
+     */
+    private void getUserInfo() {
+        Log.i(TAG, "开始发送请求了");
+        try {
+            JSONObject jsonObject = new JSONObject();
+            jsonObject.put("sn", CommonUtils.getSN());
+
+            OkGoUtilWeb.<String>post(this, Api.METHOD_IM, jsonObject, IMUser.class, new BaseCallback<IMUser>() {
+                @Override
+                public void onSuccess(String method, IMUser model, String resoureJson) {
+                    if (null != model) {
+                        Log.i(TAG, "请求成功了");
+                        mmkv.encode("isLogin", System.currentTimeMillis() + "");
+                        if (model.getBody().getIs_im() == 1) {//支持准儿帮
+                            mmkv.encode(Constant.EM_USERNAME, model.getBody().getUser_id());
+                            mmkv.encode(Constant.EM_PASSWORD, model.getBody().getPwd());
+                            mmkv.encode(Constant.EM_GROUP, model.getBody().getGroup_id());
+                            mmkv.encode(Constant.EM_SUPPORT, true);
+                            signIn(model);
+                        } else {
+                            mmkv.encode(Constant.EM_SUPPORT, false);
+                            //判定当前是否在登录着 如果登录着，则退出登录
+                            if (DemoHelper.getInstance().isLoggedIn()) {
+                                EMClient.getInstance().logout(true);
+                            }
+
+
+                        }
+
+                    }
+
+                }
+
+                @Override
+                public void onError(String method, String message, String resoureJson) {
+
+                }
+
+                @Override
+                public void onFinsh(String method) {
+
+                }
+            });
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+    }
+
+
+    /**
      * 环信登录方法
      */
-    private void signIn(String username, String password) {
+    private void signIn(IMUser model) {
+        final String username = model.getBody().getUser_id();
+        final String password = model.getBody().getPwd();
+        final String nickName = model.getBody().getNickname();
+        final String avatar = model.getBody().getHead_img();
 
-        if (DemoHelper.getInstance().isLoggedIn()) {
+        Log.e(TAG, "group:"+model.getBody().getGroup_id()+" username:"+username+" password:"+password +" nickName:"+nickName +" avatar:"+avatar);
+
+
+        if (TextUtils.equals(username, UserCacheManager.getMyInfo().getUserId())) {
             Log.i(TAG, "已经登录了");
             return;
         }
-        if(TextUtils.isEmpty(username)||TextUtils.isEmpty(password)){
+        if (TextUtils.isEmpty(username) || TextUtils.isEmpty(password)) {
             Log.i(TAG, "账号密码空了");
             return;
         }
 
-//        username = "user1";
-//        password = "123";
-        /**
-         * 保存账号密码到全局
-         */
-        MMKV.defaultMMKV().encode(Constant.EM_USERNAME, username);
-        MMKV.defaultMMKV().encode(Constant.EM_PASSWORD, password);
+
         EMClient.getInstance().login(username, password, new EMCallBack() {
-            /**
-             * 登陆成功的回调
-             */
+
             @Override
             public void onSuccess() {
                 Log.e(TAG, "登录成功");
@@ -191,6 +283,16 @@ public class MessageService extends Service {
                 // 加载所有群组到内存，如果使用了群组的话
                 EMClient.getInstance().groupManager().loadAllGroups();
                 sentLoginStatus(Constant.STATE_LOGIN_SUCCESS);
+                /**
+                 * 保存账号密码到全局
+                 */
+                MMKV.defaultMMKV().encode(Constant.EM_USERNAME, username);
+                MMKV.defaultMMKV().encode(Constant.EM_PASSWORD, password);
+                /**
+                 * 登录成功后，保存用户信息
+                 */
+                UserCacheManager.save(username, nickName, avatar);
+
             }
 
             /**

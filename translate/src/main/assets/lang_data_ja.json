@@ -881,14 +881,14 @@
     "sound": 0
   },
   {
-    "alert": "Стандарт хэлээр ярина уу.",
+    "alert": "মান ভাষা বলতে দয়া করে।",
     "child": [],
     "id": 54,
-    "lang_code": "mo-go",
-    "name": "モンゴル語",
-    "name_local": "Монгол хэл",
-    "offline": "Офлайн",
-    "offline_code": "mo-go",
+    "lang_code": "bn-bd",
+    "name": "ベンガル語",
+    "name_local": "বাংলা",
+    "offline": "অফলাইন",
+    "offline_code": "bn-bd",
     "sound": 0
   }
 ]
