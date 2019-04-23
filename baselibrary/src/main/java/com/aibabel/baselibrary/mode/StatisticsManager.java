@@ -84,7 +84,17 @@ public class StatisticsManager implements IStatistics {
                     modle.an = appName;
                     modle.av = appVersion;
                     modle.c.put(infoObject);
-                    pathNodes.add(modle);
+                    StatisticsModle lastModel=pathNodes.get(pathNodes.size()-1);
+                    long lastModelTime= lastModel.c.optJSONObject(0).optLong("it");
+                    long modelTime=modle.c.optJSONObject(0).optLong("it");
+
+                    if (modelTime-lastModelTime>0){
+                        pathNodes.add(modle);
+                    }else{
+                        pathNodes.add(pathNodes.size()-1,modle);
+                    }
+
+
                 }
 
             }
@@ -206,8 +216,10 @@ public class StatisticsManager implements IStatistics {
 
     }
 
-
+    private volatile boolean isUploading=false;
     public void uplaodData(Context context, String order_id) {
+        if (isUploading) return;
+        isUploading=true;
         String newData = createUploadData(order_id);
         if (TextUtils.isEmpty(newData)){
             return;
@@ -268,6 +280,7 @@ public class StatisticsManager implements IStatistics {
             @Override
             public void onFinish() {
                 super.onFinish();
+                isUploading=false;
 
             }
         });

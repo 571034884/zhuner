@@ -395,9 +395,9 @@ public class MainActivity extends BaseScenicActivity{
         mLocation.postDelayed(new Runnable() {
             @Override
             public void run() {
-                connectXIPC();
+                    connectXIPC();
             }
-        },1000);
+        },1500);
     }
 
     public void onClick(View v) {

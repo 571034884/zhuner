@@ -421,6 +421,7 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
         init_imei();
 
         get_okgo_net();
+        start_soft();
     }
 
     //1 硬卡   2软卡
@@ -449,11 +450,11 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
                 intent.setAction(" com.aibabel.softSIM.used");
                 sendBroadcast(intent);
             }else{
-                mSoftSIMManager.setSoftSIMEnabled(true);
+//                mSoftSIMManager.setSoftSIMEnabled(true);
             }
 
             saveFile(true);
-        } catch (RemoteException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
 
