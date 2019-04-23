@@ -24,6 +24,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.aibabel.baselibrary.utils.ProviderUtils;
 import com.aibabel.currencyconversion.adapter.Adapter_Coupon;
 import com.aibabel.currencyconversion.app.BaseActivity;
 import com.aibabel.currencyconversion.app.Constant;
@@ -120,12 +121,6 @@ public class MainActivity extends BaseActivity {
     ConstraintLayout clGuanbi;
     @BindView(R.id.pull_up_drag_layout)
     PullUpDragLayout pullUpDragLayout;
-    @BindView(R.id.tv_mask)
-    TextView tvMask;
-    @BindView(R.id.iv_mask_close)
-    ImageView ivClose;
-    @BindView(R.id.iv_mask_down)
-    ImageView ivDown;
     @BindView(R.id.ll_mask)
     LinearLayout llMask;
     RecyclerView rvCoupon;
@@ -216,7 +211,35 @@ public class MainActivity extends BaseActivity {
         etCurrencyCount2.getViewTreeObserver().addOnGlobalLayoutListener(new MyGlobalLayoutListener(llZuo2, llYou2, tvCurrencyAbbreviations2, ivXiala2));
         etCurrencyCount3.getViewTreeObserver().addOnGlobalLayoutListener(new MyGlobalLayoutListener(llZuo3, llYou3, tvCurrencyAbbreviations3, ivXiala3));
 
-
+        String city = ProviderUtils.getInfo(ProviderUtils.COLUMN_CITY);
+        if (city.equals("日本") || city.equals("泰国")){
+            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy年MM月dd日");
+            Date date = new Date(System.currentTimeMillis());
+            String currDate = simpleDateFormat.format(date);
+            String currencyMask = SharePrefUtil.getString(mContext,"currencyMask","");
+            String currencyMaskIndex = SharePrefUtil.getString(mContext,"currencyMaskIndex","");
+            if (TextUtils.isEmpty(currencyMask) && TextUtils.isEmpty(currencyMaskIndex)){
+                //1.第一天第一次打开
+                llMask.setVisibility(View.VISIBLE);
+                SharePrefUtil.saveString(mContext,"currencyMask",currDate);
+                SharePrefUtil.saveString(mContext,"currencyMaskIndex","1");
+            }else if (currencyMaskIndex.equals("1")){
+                if (currencyMask.equals(currDate)){
+                    //2.第一天第N次打开
+                    llMask.setVisibility(View.GONE);
+                }else{
+                    //3.第二天第一次打开
+                    llMask.setVisibility(View.VISIBLE);
+                    SharePrefUtil.saveString(mContext,"currencyMask",currDate);
+                    SharePrefUtil.saveString(mContext,"currencyMaskIndex","2");
+                }
+            }else if (currencyMaskIndex.equals("2")){
+                //4.第二天第N次打开
+                llMask.setVisibility(View.GONE);
+            }
+        }else {
+            llMask.setVisibility(View.GONE);
+        }
     }
 
     private void initView() {
@@ -1000,8 +1023,6 @@ public class MainActivity extends BaseActivity {
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.ll_mask:
-                break;
-            case R.id.iv_mask_close:
                 llMask.setVisibility(View.GONE);
                 break;
         }

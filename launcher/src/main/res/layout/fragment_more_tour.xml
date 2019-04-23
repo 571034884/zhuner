@@ -279,7 +279,7 @@
                     <ImageView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:src="@mipmap/more_tour_camera_bg" />
+                        android:src="@mipmap/more_tour_menu_bg" />
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -331,7 +331,7 @@
                     <ImageView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:src="@mipmap/more_tour_camera_bg" />
+                        android:src="@mipmap/more_tour_essay_bg" />
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -375,7 +375,7 @@
                     <ImageView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:src="@mipmap/more_tour_camera_bg" />
+                        android:src="@mipmap/more_tour_body_bg" />
 
                     <TextView
                         android:layout_width="wrap_content"
