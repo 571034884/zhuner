@@ -1,9 +1,13 @@
 package com.aibabel.launcher.activity;
 
+import android.content.ActivityNotFoundException;
+import android.content.ComponentName;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.text.TextUtils;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.FrameLayout;
@@ -70,6 +74,8 @@ public class MoreActivity extends LaunBaseActivity {
     RelativeLayout rlAbout;
     @BindView(R.id.iv_more_gs)
     ImageView ivMoreGS;
+    @BindView(R.id.tv_backstage)
+    TextView tvBackStage;
 
     private FragmentManager fragmentManager;
     private AboutFragment aboutFragment;
@@ -107,6 +113,41 @@ public class MoreActivity extends LaunBaseActivity {
 
         fragmentManager = getSupportFragmentManager();
         switchSelect(rlTravel,ivTravel,tvTravel);
+
+        //进入后台
+        beforeGo();
+    }
+
+    private int onclick = 0;
+    private void beforeGo() {
+        tvBackStage.setOnClickListener(new View.OnClickListener() {
+            private Long time1;
+
+            @Override
+            public void onClick(View v) {
+                onclick++;
+                if (onclick == 1) {
+                    time1 = System.currentTimeMillis();
+                }
+                if (System.currentTimeMillis() - time1 > 10000) {
+                    onclick = 0;
+                } else {
+                    if (onclick >= 15) {
+                        Intent intent = new Intent();
+                        ComponentName cmpName = new ComponentName("com.example.android.home", "com.example.android.home.Home");
+                        if (cmpName != null) {
+                            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                            intent.setComponent(cmpName);
+                            try {
+                                startActivity(intent);
+                            } catch (ActivityNotFoundException ex) {
+
+                            }
+                        }
+                    }
+                }
+            }
+        });
     }
 
     public void onClick(View view) {
@@ -138,6 +179,9 @@ public class MoreActivity extends LaunBaseActivity {
             case R.id.rl_about:
                 defaultType();
                 switchSelect(rlAbout,ivAbout,tvAbout);
+                break;
+            case R.id.tv_backstage:
+
                 break;
 
         }
