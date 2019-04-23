@@ -26,6 +26,7 @@ import android.widget.ZoomControls;
 
 
 import com.aibabel.aidlaar.StatisticsManager;
+import com.aibabel.baselibrary.sphelper.SPHelper;
 import com.aibabel.baselibrary.utils.ServerKeyUtils;
 import com.aibabel.speech.util.CommonUtils;
 import com.aibabel.speech.util.HostUtil;
@@ -382,6 +383,11 @@ public class MainActivity extends BaseActivity implements AudioRecordUtil.OnDeal
             mMapView.onPause();
         }
 
+        try {
+            SPHelper.save("ifruning", "");
+            Log.e("hjs", "speech stop");
+        } catch (Exception e) {
+        }
         super.onPause();
     }
 
@@ -395,6 +401,11 @@ public class MainActivity extends BaseActivity implements AudioRecordUtil.OnDeal
         }
         if (isFirst) {
             ping();
+        }
+        try {
+            SPHelper.save("ifruning", "speech");
+            Log.e("hjs", "speech stop");
+        } catch (Exception e) {
         }
     }
 

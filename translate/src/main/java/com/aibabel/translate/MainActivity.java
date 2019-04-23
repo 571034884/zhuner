@@ -7,11 +7,13 @@ import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 
+import com.aibabel.baselibrary.sphelper.SPHelper;
 import com.aibabel.translate.activity.BaseActivity;
 import com.aibabel.translate.app.BaseApplication;
 import com.aibabel.translate.broadcast.NetBroadcastReceiver;
@@ -273,11 +275,25 @@ public class MainActivity extends BaseActivity implements NetBroadcastReceiver.N
     }
 
 
+    @Override
+    protected void onPause() {
+        super.onPause();
+        try {
+            SPHelper.save("ifruning", "");
+        } catch (Exception e) {
+        }
+    }
+
     AlertDialog dialog;
 
     @Override
     protected void onResume() {
-
+        //SPHelper.save();
+        try {
+            SPHelper.save("ifruning", "translate");
+            Log.e("hjs", "translate runing");
+        } catch (Exception e) {
+        }
         if (TextUtils.equals(CommonUtils.getDeviceInfo(), "PM") && !Constant.IS_NEED_SHOW && CommonUtils.isAvailable()) {
             MyDialog.dismiss();
         }

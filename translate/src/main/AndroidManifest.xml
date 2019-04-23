@@ -78,6 +78,12 @@
 
         </receiver>
 
+        <provider
+            android:name="com.aibabel.baselibrary.sphelper.SPContentProvider"
+            android:authorities="com.pl.sphelper"
+            android:exported="false"
+            android:process=":sphelper" />
+
         <!--热修复-->
         <meta-data
             android:name="com.taobao.android.hotfix.IDSECRET"
