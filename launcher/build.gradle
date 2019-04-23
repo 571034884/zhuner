@@ -46,6 +46,7 @@ dependencies {
     implementation files('libs/jcore-android-1.2.7.jar')
     implementation 'cn.dreamtobe.kpswitch:library:1.6.1'
     implementation 'com.j256.ormlite:ormlite-android:5.0'
+//    compile project(path: ':badgelibrary')
 /*    implementation files('libs/hyphenatechat_3.5.4.jar')*/
     implementation project(path: ':easeui')
     implementation 'com.zhy:flowlayout-lib:1.0.3'

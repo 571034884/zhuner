@@ -112,6 +112,7 @@ public class MoreActivity extends LaunBaseActivity {
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.tv_close:
+                addStatisticsEvent("more_close_app",null);
                 closeAct();
                 break;
             case R.id.rl_travel:
@@ -171,21 +172,27 @@ public class MoreActivity extends LaunBaseActivity {
         int draw = 0;
         switch (iv.getId()){
             case R.id.iv_travel:
+                addStatisticsEvent("more_rl_travel",null);
                 draw = R.mipmap.ic_travel_default;
                 break;
             case R.id.iv_bus:
+                addStatisticsEvent("more_rl_bus",null);
                 draw = R.mipmap.ic_bus_default;
                 break;
             case R.id.iv_shop:
+                addStatisticsEvent("more_rl_shop",null);
                 draw = R.mipmap.ic_shop_default;
                 break;
             case R.id.iv_tour:
+                addStatisticsEvent("more_rl_tour",null);
                 draw = R.mipmap.ic_tour_default;
                 break;
             case R.id.iv_my:
+                addStatisticsEvent("more_rl_my",null);
                 draw = R.mipmap.ic_my_default;
                 break;
             case R.id.iv_about:
+                addStatisticsEvent("more_rl_about",null);
                 draw = R.mipmap.ic_about_default;
                 break;
         }

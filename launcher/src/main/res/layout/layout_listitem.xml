@@ -35,7 +35,7 @@
             android:textStyle="bold" />
 
 
-            <com.matrixxun.starry.badgetextview.MaterialBadgeTextView
+            <com.aibabel.launcher.view.MaterialBadgeTextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/badgetextview"

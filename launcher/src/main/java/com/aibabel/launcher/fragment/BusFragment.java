@@ -8,6 +8,8 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.aibabel.baselibrary.base.BaseFragment;
+import com.aibabel.launcher.activity.MoreActivity;
+import com.aibabel.launcher.utils.AppStatusUtils;
 import com.aibabel.menu.R;
 import com.aibabel.launcher.utils.Logs;
 
@@ -44,12 +46,15 @@ public class BusFragment extends BaseFragment implements View.OnClickListener{
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.more_map_app:
+                ((MoreActivity) getActivity()).addStatisticsEvent("map_click",null);
                 launcherApp("com.aibabel.map");
                 break;
             case R.id.more_huilv_app:
+                ((MoreActivity) getActivity()).addStatisticsEvent("currency_click",null);
                 launcherApp("com.aibabel.currencyconversion");
                 break;
             case R.id.more_discount_app:
+                ((MoreActivity) getActivity()).addStatisticsEvent("menu_coupon_click",null);
                 launcherApp("com.aibabel.coupon");
                 break;
         }
@@ -57,8 +62,7 @@ public class BusFragment extends BaseFragment implements View.OnClickListener{
 
     public void launcherApp(String packageStr) {
         try {
-            Intent LaunchIntent = mContext.getPackageManager().getLaunchIntentForPackage(packageStr);
-            startActivity(LaunchIntent);
+            startActivity(AppStatusUtils.getAppOpenIntentByPackageName(mContext, packageStr));
         } catch (Exception e) {
             Logs.e(packageStr + ":" + e.toString());
         }

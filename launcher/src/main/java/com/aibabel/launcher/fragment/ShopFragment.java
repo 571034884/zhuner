@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.aibabel.baselibrary.base.BaseFragment;
+import com.aibabel.launcher.activity.MoreActivity;
 import com.aibabel.menu.R;
 import com.aibabel.launcher.activity.H5Activity;
 import com.aibabel.launcher.utils.Logs;
@@ -49,15 +50,19 @@ public class ShopFragment extends BaseFragment implements View.OnClickListener {
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.more_car_app:
+                ((MoreActivity) getActivity()).addStatisticsEvent("cars_click",null);
                 launcherApp("http://www.baidu.com");
                 break;
             case R.id.more_coupon_app:
+                ((MoreActivity) getActivity()).addStatisticsEvent("coupon_click",null);
                 launcherApp("http://www.baidu.com");
                 break;
             case R.id.more_foodshop_app:
+                ((MoreActivity) getActivity()).addStatisticsEvent("foodshop_click",null);
                 launcherApp("http://www.baidu.com");
                 break;
             case R.id.more_insure_app:
+                ((MoreActivity) getActivity()).addStatisticsEvent("insure_click",null);
                 launcherApp("http://www.baidu.com");
                 break;
         }

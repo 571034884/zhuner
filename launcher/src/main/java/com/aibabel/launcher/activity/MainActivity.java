@@ -34,17 +34,18 @@ import com.aibabel.baselibrary.utils.FastJsonUtil;
 import com.aibabel.baselibrary.utils.ProviderUtils;
 import com.aibabel.baselibrary.utils.SharePrefUtil;
 import com.aibabel.baselibrary.utils.ToastUtil;
+import com.aibabel.launcher.base.LaunBaseActivity;
+import com.aibabel.launcher.bean.MenuDataBean;
+import com.aibabel.launcher.bean.MusicBean;
+import com.aibabel.launcher.bean.PushMessageBean;
+import com.aibabel.launcher.bean.SyncOrder;
+import com.aibabel.launcher.net.Api;
 import com.aibabel.launcher.receiver.LauncherBcastReceiver;
 import com.aibabel.launcher.rent.RentDialogActivity;
 import com.aibabel.launcher.rent.RentKeepUseActivity;
 import com.aibabel.launcher.rent.RentLockedActivity;
 import com.aibabel.launcher.rent.SimDetectActivity;
-import com.aibabel.menu.R;
-import com.aibabel.launcher.base.LaunBaseActivity;
-import com.aibabel.launcher.bean.MenuDataBean;
-import com.aibabel.launcher.bean.PushMessageBean;
-import com.aibabel.launcher.bean.SyncOrder;
-import com.aibabel.launcher.net.Api;
+import com.aibabel.launcher.utils.AppStatusUtils;
 import com.aibabel.launcher.utils.CalenderUtil;
 import com.aibabel.launcher.utils.DetectUtil;
 import com.aibabel.launcher.utils.I18NUtils;
@@ -54,6 +55,8 @@ import com.aibabel.launcher.utils.Logs;
 import com.aibabel.launcher.view.MaterialBadgeTextView;
 import com.aibabel.launcher.view.MyDialog;
 import com.aibabel.message.hx.bean.IMUser;
+import com.aibabel.menu.R;
+import com.aibabel.message.bean.IMUser;
 import com.aibabel.message.helper.DemoHelper;
 import com.aibabel.message.receiver.NetBroadcastReceiver;
 import com.aibabel.message.service.MessageService;
@@ -61,6 +64,7 @@ import com.aibabel.message.sqlite.SqlUtils;
 import com.aibabel.message.utiles.Constant;
 import com.aibabel.message.utiles.OkGoUtilWeb;
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 import com.hyphenate.chat.EMClient;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.StringCallback;
@@ -115,6 +119,19 @@ public class MainActivity extends LaunBaseActivity implements NetBroadcastReceiv
     ImageView mMainAddressPic;
     @BindView(R.id.main_wifi_app)
     TextView mMainWifi;
+    @BindView(R.id.main_one_app_one)
+    RelativeLayout mMainOneAppOne;
+    @BindView(R.id.main_one_app_two)
+    LinearLayout mMainOneAppTwo;
+    @BindView(R.id.main_one_app_two_url)
+    ImageView mMainOneAppTwoUrl;
+    @BindView(R.id.main_one_app_two_name)
+    TextView mMainOneAppTwoName;
+    @BindView(R.id.main_one_app_two_title)
+    TextView mMainOneAppTwoTitle;
+    @BindView(R.id.main_one_app_two_on)
+    ImageView mMainOneAppTwoOn;
+
 
     //环信交互handler
     Handler handler = new MyHandler(MainActivity.this);
@@ -165,6 +182,8 @@ public class MainActivity extends LaunBaseActivity implements NetBroadcastReceiv
         requestNetwork();
     }
 
+    //false 当前是未播状态   true  当前是播放状态         默认false
+    private boolean flagScenic = false;
     @Override
     public void init() {
         super.init();
@@ -182,46 +201,97 @@ public class MainActivity extends LaunBaseActivity implements NetBroadcastReceiv
                 break;
             case R.id.main_notice_app://跳转到消息中心
                 startMessageActivity();
+                HashMap<String, Serializable> map = new HashMap<>();
+                map.put("menu_notice_click_id", "打开");
+                addStatisticsEvent("menu_notice_click", map);
+                startActivity(fragment_index);
                 break;
             case R.id.main_location_app://跳转到目的地
+                HashMap<String, Serializable> map1 = new HashMap<>();
+                map1.put("mddname", oldCity + "");
+                addStatisticsEvent("mdd_click", map1);
                 startActResult(SearchActivity.class, 100);
                 break;
             case R.id.main_wifi_app://跳转到wifi
+                addStatisticsEvent("wifi_click", null);
                 launcherApp("com.zhuner.administrator.settings");
                 break;
             case R.id.main_timer_app://跳转到世界钟
+                addStatisticsEvent("time_click", null);
                 launcherApp("com.aibabel.alliedclock");
                 break;
             case R.id.main_weather_app://天气
+                addStatisticsEvent("weather_click", null);
                 launcherApp("com.aibabel.weather");
                 break;
             case R.id.main_huilv_app://汇率
+                addStatisticsEvent("currency_click", null);
                 launcherApp("com.aibabel.currencyconversion");
                 break;
-            case R.id.main_one_app://定位1
+            case R.id.main_one_app_one://定位1
+                addStatisticsEvent("scenic_click", null);
                 launcherApp("com.aibabel.scenic");
                 break;
+            case R.id.main_one_app_two://定位1
+                addStatisticsEvent("scenic_click", null);
+                launcherApp("com.aibabel.scenic");
+                break;
+            case R.id.main_one_app_left:
+                if (CommonUtils.isFastClick()) {
+                    addStatisticsEvent("main_scenic_pre",null);
+                    changeScenic(2);
+                }
+                break;
+            case R.id.main_one_app_two_on:
+                if (flagScenic){
+                    flagScenic = false;
+                    if (CommonUtils.isFastClick()) {
+                        addStatisticsEvent("main_scenic_off",null);
+                        changeScenic(1);
+                    }
+                }else{
+                    flagScenic = true;
+                    if (CommonUtils.isFastClick()) {
+                        addStatisticsEvent("main_scenic_on",null);
+                        changeScenic(0);
+                    }
+                }
+                break;
+            case R.id.main_one_app_right:
+                if (CommonUtils.isFastClick()) {
+                    addStatisticsEvent("main_scenic_next",null);
+                    changeScenic(3);
+                }
+                break;
             case R.id.main_two_app://定位2
+                addStatisticsEvent("photo_click", null);
                 launcherApp("com.aibabel.ocr");
                 break;
             case R.id.main_three_app://定位3
+                addStatisticsEvent("voice_click", null);
                 launcherApp("com.aibabel.translate");
                 break;
             case R.id.main_four_app://定位4
+                addStatisticsEvent("map_click", null);
                 launcherApp("com.aibabel.map");
                 break;
             case R.id.main_five_app://定位点5
                 switch (mmkv.decodeString("mainFive", "1")) {
                     case "1":
+                        addStatisticsEvent("menu_fun_click",null);
                         launcherApp("com.aibabel.fyt_play");
                         break;
                     case "2":
                         //TODO 跳转到H5
-                        ToastUtil.showShort(mContext, "敬请期待");
+                        addStatisticsEvent("menu_shop_click",null);
+                        Intent intent = new Intent(mContext, H5Activity.class);
+                        intent.putExtra("url","http://www.baidu.com");
+                        startActivity(intent);
                         break;
                 }
                 break;
             case R.id.main_six_app://定位点6
+                addStatisticsEvent("more_click", null);
                 startAct(MoreActivity.class);
                 break;
         }
@@ -229,11 +299,45 @@ public class MainActivity extends LaunBaseActivity implements NetBroadcastReceiv
 
     public void launcherApp(String packageStr) {
         try {
-            Intent LaunchIntent = getPackageManager().getLaunchIntentForPackage(packageStr);
-            startActivity(LaunchIntent);
+            startActivity(AppStatusUtils.getAppOpenIntentByPackageName(mContext, packageStr));
         } catch (Exception e) {
             Logs.e(packageStr + ":" + e.toString());
         }
+    }
+
+
+    /**
+     * 播放状态
+     * @param type  类型
+     *  0.开始播放
+     *  1.关闭播放
+     *  2.上一首
+     *  3.下一首
+     *  4.暂停播放
+     */
+    private void changeScenic(int type){
+        switch (type){
+            case 0:
+                mMainOneAppTwoOn.setImageResource(R.mipmap.ic_scenic_pause);
+                sendBroastCast("com.aibabel.travel.play");
+                break;
+            case 1:
+                mMainOneAppTwoOn.setImageResource(R.mipmap.ic_scenic_play);
+                sendBroastCast("com.aibabel.travel.pause");
+                break;
+            case 2:
+                sendBroastCast("com.aibabel.travel.prv");
+                break;
+            case 3:
+                sendBroastCast("com.aibabel.travel.next");
+                break;
+        }
+    }
+
+    private void sendBroastCast(String action){
+        Intent intent = new Intent();
+        intent.setAction(action);
+        sendBroadcast(intent);
     }
 
 
@@ -371,10 +475,28 @@ public class MainActivity extends LaunBaseActivity implements NetBroadcastReceiv
             changeView();
         }
     }
-
+    public RequestOptions options = new RequestOptions().placeholder(R.mipmap.placeholder_h).error(R.mipmap.error_h);
     @Override
-    public void launcherMusic(String type) {
-
+    public void launcherMusic(String poiName,String urlPic,String name,int type) {
+        mMainOneAppOne.setVisibility(View.GONE);
+        mMainOneAppTwo.setVisibility(View.VISIBLE);
+        switch (type){
+            case 0://开始播放
+                flagScenic = true;
+                Glide.with(mContext).load(urlPic).apply(options).into(mMainOneAppTwoUrl);
+                mMainOneAppTwoName.setText(name);
+                mMainOneAppTwoTitle.setText(poiName);
+                mMainOneAppTwoOn.setImageResource(R.mipmap.ic_scenic_pause);
+                break;
+            case 1://暂停
+                flagScenic = false;
+                mMainOneAppTwoOn.setImageResource(R.mipmap.ic_scenic_play);
+                break;
+            case 2://再次开始播放
+                flagScenic = true;
+                mMainOneAppTwoOn.setImageResource(R.mipmap.ic_scenic_pause);
+                break;
+        }
     }
 
     /**
@@ -589,7 +711,7 @@ public class MainActivity extends LaunBaseActivity implements NetBroadcastReceiv
     }
 
     /**
-     * 清除一睹
+     * 清除已读标记
      */
     private void makeRead() {
         hxMessage = 0;
@@ -750,6 +872,9 @@ public class MainActivity extends LaunBaseActivity implements NetBroadcastReceiv
                             set_BadgeCount += 1;
                             home_badge.setBadgeCount(set_BadgeCount + hxMessage);
                             fragment_index = 0;
+                            home_badge.setBadgeCount(set_BadgeCount);
+                            //消息里面显示红点
+
                             try {
                                 PushMessageBean bean = (PushMessageBean) msg.obj;
                                 bean.setBadge(true);

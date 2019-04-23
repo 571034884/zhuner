@@ -165,6 +165,7 @@
                 android:layout_height="@dimen/y170"
                 android:foreground="?attr/selectableItemBackground"
                 android:onClick="onClick"
+                android:visibility="gone"
                 app:cardCornerRadius="16dp"
                 app:cardElevation="@dimen/x5"
                 app:cardPreventCornerOverlap="true"
