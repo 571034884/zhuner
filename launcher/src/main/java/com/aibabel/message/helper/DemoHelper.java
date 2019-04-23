@@ -1170,13 +1170,16 @@ public class DemoHelper {
 	private EaseUser getUserInfo(String username){
 		// To get instance of EaseUser, here we get it from the user list in memory
 		// You'd better cache it if you get it from your server
-        EaseUser user = null;
-        if(username.equals(EMClient.getInstance().getCurrentUser()))
-            return getUserProfileManager().getCurrentUserInfo();
-        user = getContactList().get(username);
-        if(user == null && getRobotList() != null){
-            user = getRobotList().get(username);
-        }
+
+        // 从本地缓存中获取用户昵称头像
+        EaseUser user = UserCacheManager.getEaseUser(username);
+//        EaseUser user = null;
+//        if(username.equals(EMClient.getInstance().getCurrentUser()))
+//            return getUserProfileManager().getCurrentUserInfo();
+//        user = getContactList().get(username);
+//        if(user == null && getRobotList() != null){
+//            user = getRobotList().get(username);
+//        }
 
         // if user is not in your contacts, set inital letter for him/her
         if(user == null){

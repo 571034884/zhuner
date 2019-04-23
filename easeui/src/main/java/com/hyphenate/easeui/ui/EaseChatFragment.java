@@ -870,11 +870,8 @@ public class EaseChatFragment extends EaseBaseFragment implements EMMessageListe
         EMGroup group = EMClient.getInstance().groupManager().getGroup(toChatUsername);
         if (EMClient.getInstance().getCurrentUser().equals(group.getOwner()) && EaseAtMessageHelper.get().containsAtAll(content)) {
             message.setAttribute(EaseConstant.MESSAGE_ATTR_AT_MSG, EaseConstant.MESSAGE_ATTR_VALUE_AT_MSG_ALL);
-
         } else {
             message.setAttribute(EaseConstant.MESSAGE_ATTR_AT_MSG, EaseAtMessageHelper.get().atListToJsonArray(EaseAtMessageHelper.get().getAtMessageUsernames(content)));
-//            message.setAttribute(EaseConstant.MESSAGE_ATTR_NICK_MSG, nick);
-//            message.setAttribute(EaseConstant.MESSAGE_ATTR_AVATAR_MSG, avatar);
         }
         sendMessage(message);
 
