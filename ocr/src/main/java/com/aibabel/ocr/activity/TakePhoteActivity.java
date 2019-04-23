@@ -523,6 +523,12 @@ public class TakePhoteActivity extends BaseActivity implements CameraPreview.OnC
         tv_orLan.setText(from + "");
         SharePrefUtil.saveString(this, Constant.LAN_OR, from);
 //        SharePrefUtil.saveString(this, Constant.LAN_TR, to);
+        root_layout.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                connectXIPC();
+            }
+        },1500);
     }
 
     @Override

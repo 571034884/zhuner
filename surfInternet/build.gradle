@@ -19,7 +19,7 @@ android {
         applicationId "com.aibabel.surfinternet"
         minSdkVersion 21
         targetSdkVersion 28
-        versionCode 14
+        versionCode 17
         versionName "1.2.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }

@@ -5,6 +5,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AdapterView;
@@ -115,6 +116,17 @@ public class SearchActivity extends LaunBaseActivity implements View.OnClickList
 
         initEvents();
 
+    }
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        switch (keyCode) {
+            case 133:
+                Logs.e("走了onKeyDown");
+                closeAct();
+                break;
+        }
+        return super.onKeyDown(keyCode, event);
     }
 
     @Override
