@@ -968,7 +968,7 @@ public class MainActivity extends BaseActivity {
             public void onItemChildClick(BaseQuickAdapter adapter, View view, int position) {
                 Intent intent = new Intent();
                 intent.setClass(MainActivity.this, PhotoViewActivity.class);
-                intent.putExtra("photo_img", list.get(position).getCouponData().getQrimage());
+                intent.putExtra("photo_img", list.get(position).getCouponData().getBasicimage());
                 startActivity(intent);
 
             }
