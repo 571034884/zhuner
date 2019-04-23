@@ -1,6 +1,5 @@
 package com.aibabel.message;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
@@ -14,14 +13,12 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.aibabel.baselibrary.http.BaseCallback;
-import com.aibabel.baselibrary.utils.FastJsonUtil;
 import com.aibabel.baselibrary.utils.ToastUtil;
-import com.aibabel.launcher.base.LaunBaseActivity;
-import com.aibabel.launcher.net.Api;
-import com.aibabel.launcher.view.MaterialBadgeTextView;
-import com.aibabel.launcher.view.MyDialog;
+import com.aibabel.menu.base.LaunBaseActivity;
+import com.aibabel.menu.net.Api;
+import com.aibabel.menu.view.MaterialBadgeTextView;
+import com.aibabel.menu.view.MyDialog;
 import com.aibabel.menu.R;
-import com.aibabel.message.hx.bean.CustomMessage;
 import com.aibabel.message.hx.bean.IMUser;
 import com.aibabel.message.fragment.Fragment_Chat;
 import com.aibabel.message.fragment.Fragment_Conversation;
@@ -35,7 +32,6 @@ import com.hyphenate.EMMessageListener;
 import com.hyphenate.chat.EMClient;
 import com.hyphenate.chat.EMMessage;
 
-import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.util.List;
@@ -43,7 +39,7 @@ import java.util.Map;
 
 import butterknife.BindView;
 
-import static com.aibabel.launcher.activity.MainActivity.set_BadgeCount;
+import static com.aibabel.menu.activity.MainActivity.set_BadgeCount;
 
 public class MainActivity extends LaunBaseActivity {
 

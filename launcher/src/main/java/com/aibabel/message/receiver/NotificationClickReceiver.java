@@ -8,8 +8,8 @@ import android.os.Message;
 import android.util.Log;
 
 import com.aibabel.baselibrary.utils.FastJsonUtil;
-import com.aibabel.launcher.activity.MainActivity;
-import com.aibabel.launcher.bean.PushMessageBean;
+import com.aibabel.menu.activity.MainActivity;
+import com.aibabel.menu.bean.PushMessageBean;
 import com.aibabel.message.broadcast.ResidentNotificationHelper;
 import com.aibabel.message.utiles.MessageUtil;
 

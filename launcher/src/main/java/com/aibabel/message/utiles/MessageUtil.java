@@ -8,10 +8,9 @@ import android.util.Log;
 
 import com.aibabel.baselibrary.base.BaseActivity;
 import com.aibabel.baselibrary.utils.FastJsonUtil;
-import com.aibabel.launcher.activity.H5Activity;
-import com.aibabel.launcher.activity.PushH5Activity;
-import com.aibabel.launcher.bean.PushMessageBean;
-import com.aibabel.launcher.utils.LogUtil;
+import com.aibabel.menu.activity.PushH5Activity;
+import com.aibabel.menu.bean.PushMessageBean;
+import com.aibabel.menu.utils.LogUtil;
 import com.aibabel.message.bean.DetailBean;
 import com.aibabel.message.fragment.JiGuangActivity;
 

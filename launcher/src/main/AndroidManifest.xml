@@ -42,7 +42,7 @@
     <uses-permission android:name="android.permission.BROADCAST_STICKY" />
 
     <application
-        android:name="com.aibabel.launcher.LauncherApplication"
+        android:name=".LauncherApplication"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
@@ -51,7 +51,7 @@
         android:theme="@style/Theme.AppCompat.Light.NoActionBar"
         tools:ignore="GoogleAppIndexingWarning">
         <activity
-            android:name="com.aibabel.launcher.activity.MainActivity"
+            android:name=".activity.MainActivity"
             android:clearTaskOnLaunch="true"
             android:label="@string/app_name"
             android:launchMode="singleTask">
@@ -64,10 +64,10 @@
                 <category android:name="android.intent.category.MONKEY" />
             </intent-filter>
         </activity>
-        <activity android:name="com.aibabel.launcher.activity.MoreActivity" />
-        <activity android:name="com.aibabel.launcher.activity.SearchActivity" />
-        <activity android:name="com.aibabel.launcher.activity.H5Activity" />
-        <activity android:name="com.aibabel.launcher.activity.PushH5Activity" />
+        <activity android:name=".activity.MoreActivity" />
+        <activity android:name=".activity.SearchActivity" />
+        <activity android:name=".activity.H5Activity" />
+        <activity android:name=".activity.PushH5Activity" />
 
         <activity
             android:name="com.aibabel.message.MainActivity"
@@ -81,7 +81,7 @@
             android:screenOrientation="portrait"
             android:theme="@style/horizontal_slide" />
         <!--关机广播-->
-        <receiver android:name="com.aibabel.launcher.receiver.ShutdownBcastReceiver">
+        <receiver android:name=".receiver.ShutdownBcastReceiver">
             <intent-filter>
                 <action android:name="android.intent.action.ACTION_SHUTDOWN" />
                 <category android:name="android.intent.category.HOME" />
@@ -130,35 +130,35 @@
             </intent-filter>
         </receiver>
         <!-- ==================================== 环信结束 ========================================== -->
-        <service android:name="com.aibabel.launcher.service.MyService" />
+        <service android:name=".service.MyService" />
 
         <activity
-            android:name="com.aibabel.launcher.rent.RentDialogActivity"
+            android:name=".rent.RentDialogActivity"
             android:launchMode="singleTop"
             android:theme="@android:style/Theme.Translucent" />
         <activity
-            android:name="com.aibabel.launcher.rent.SimDetectActivity"
+            android:name=".rent.SimDetectActivity"
             android:launchMode="singleTop"
             android:theme="@android:style/Theme.Translucent" />
         <activity
-            android:name="com.aibabel.launcher.rent.RentKeepUseActivity"
+            android:name=".rent.RentKeepUseActivity"
             android:launchMode="singleTop"
             android:theme="@android:style/Theme.Translucent" />
         <activity
-            android:name="com.aibabel.launcher.rent.RentLockedActivity"
+            android:name=".rent.RentLockedActivity"
             android:launchMode="singleTop"
             android:theme="@android:style/Theme.Translucent" />
         <activity
             android:name="com.aibabel.message.fragment.JiGuangActivity"
             android:theme="@style/dialogstyle" />
 
-        <service android:name="com.aibabel.launcher.service.MyAidlMessageService">
+        <service android:name=".service.MyAidlMessageService">
             <intent-filter>
                 <action android:name="action.menu.MyAidlMessageService" />
             </intent-filter>
         </service>
         <service
-            android:name="com.aibabel.launcher.service.MenuMessengerService"
+            android:name=".service.MenuMessengerService"
             android:exported="true">
             <intent-filter>
                 <action android:name="action.menu.MenuMessengerService" />

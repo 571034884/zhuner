@@ -12,17 +12,13 @@ import android.util.Log;
 
 import com.aibabel.baselibrary.utils.CommonUtils;
 import com.aibabel.baselibrary.utils.FastJsonUtil;
-import com.aibabel.baselibrary.utils.ToastUtil;
-import com.aibabel.launcher.bean.PublicBean;
-import com.aibabel.launcher.utils.Logs;
-import com.aibabel.launcher.utils.ServerUtils;
+import com.aibabel.menu.bean.PublicBean;
+import com.aibabel.menu.utils.Logs;
+import com.aibabel.menu.utils.ServerUtils;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.StringCallback;
 import com.lzy.okgo.model.Response;
 import com.tencent.mmkv.MMKV;
-
-import java.util.ArrayList;
-import java.util.List;
 
 import static android.content.Context.WIFI_SERVICE;
 

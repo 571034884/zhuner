@@ -5,7 +5,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.text.TextUtils;
 
-import com.aibabel.launcher.LauncherApplication;
+import com.aibabel.menu.LauncherApplication;
 import com.aibabel.message.model.InviteMessage;
 import com.aibabel.message.model.RobotUser;
 import com.aibabel.message.utiles.Constant;
