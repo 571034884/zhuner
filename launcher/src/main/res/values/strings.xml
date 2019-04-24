@@ -1,8 +1,21 @@
 <resources>
-    <string name="app_name">launcher</string>
+    <string name="app_name">菜单</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
     <string name="msg_recall_by_self">您撤回了一条消息</string>
     <string name="msg_recall_by_user">%1$s 撤回了一条消息</string>
     <string name="at_your_in_group">%s在群聊中@了你</string>
+
+    <string name="xzmdd">选择目的地</string>
+    <string name="remenchengshi">热门城市</string>
+    <string name="my_weizaizulinqi">未在租赁期内</string>
+    <string name="kaiqiredian">开启热点</string>
+    <string name="xiabokaiqi">下拨开启</string>
+    <string name="fenxiangredian">分享热点</string>
+    <string name="shangboguanbi">租赁版翻译机热点共享始终开启</string>
+    <string name="mima">密码:</string>
     <string name="renttimeout">你所租赁的翻译机即将到期</string>
     <string name="rent_locked_timeout">你的翻译机已锁定,请按时将翻译机归还</string>
     <string name="rent_manager">工作人员操作</string>
