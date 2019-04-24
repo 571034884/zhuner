@@ -1449,5 +1449,6 @@ public class MainActivity extends LaunBaseActivity implements NetBroadcastReceiv
         super.onDestroy();
         if (null != broadcastReceiver)
             unregisterReceiver(broadcastReceiver);
+//        stopService();
     }
 }

@@ -94,7 +94,7 @@ public class MessageService extends Service implements NetBroadcastReceiver.NetL
                     Map<String, Object> map = message.ext();
                     String at = (String) map.get("at");
 
-                    if (TextUtils.equals(at, UserCacheManager.getMyInfo().getUserId())) {
+                    if (TextUtils.equals(at, mmkv.getString(Constant.EM_USERNAME,""))) {
                         unread++;
                         refreshUIWithMessage(unread);
                     }
@@ -265,10 +265,10 @@ public class MessageService extends Service implements NetBroadcastReceiver.NetL
         Log.e(TAG, "group:" + model.getBody().getGroup_id() + " username:" + username + " password:" + password + " nickName:" + nickName + " avatar:" + avatar);
 
 
-        if (TextUtils.equals(username, UserCacheManager.getMyInfo().getUserId())) {
-            Log.i(TAG, "已经登录了");
-            return;
-        }
+//        if (TextUtils.equals(username, UserCacheManager.getMyInfo().getUserId())) {
+//            Log.i(TAG, "已经登录了");
+//            return;
+//        }
         if (TextUtils.isEmpty(username) || TextUtils.isEmpty(password)) {
             Log.i(TAG, "账号密码空了");
             return;

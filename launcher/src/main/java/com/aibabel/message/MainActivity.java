@@ -238,7 +238,7 @@ public class MainActivity extends LaunBaseActivity {
                         Map<String, Object> map = message.ext();
                         String at = (String) map.get("at");
 
-                        if (TextUtils.equals(at, UserCacheManager.getMyInfo().getUserId())) {
+                        if (TextUtils.equals(at, mmkv.getString(Constant.EM_USERNAME,""))) {
                             unread++;
                             refreshUIWithMessage(unread);
                         }
@@ -337,7 +337,7 @@ public class MainActivity extends LaunBaseActivity {
 
         try {
             JSONObject jsonObject = new JSONObject();
-            jsonObject.put("user_id", UserCacheManager.getMyInfo().getUserId());
+            jsonObject.put("user_id", mmkv.decodeString(Constant.EM_USERNAME));
             jsonObject.put("nickname", nick);
             OkGoUtilWeb.<String>post(this, Api.METHOD_IM_EDIT, jsonObject, IMUser.class, new BaseCallback<IMUser>() {
                 @Override
