@@ -4,6 +4,7 @@ import android.app.job.JobParameters;
 import android.content.Context;
 import android.content.res.AssetManager;
 import android.text.TextUtils;
+import android.util.Log;
 
 import com.aibabel.ocr.bean.LanBean;
 
@@ -72,7 +73,7 @@ public class LanguageUtils {
                 name = bean.getName();
             }
         }
-
+        Log.e("languageUtils", name + "===");
         return name;
     }
 
@@ -295,13 +296,13 @@ public class LanguageUtils {
 
     /**
      * 获取当前定位城市的语种
+     *
      * @param context
      * @return
      */
     public static String getCurrentSelect(Context context) {
         String select = "en";
-//        String key = ContentProviderUtil.getLocationCountry(context);
-        String key = "德国";
+        String key = ContentProviderUtil.getLocationCountry(context);
         if (getMap().containsKey(key)) {
             select = getMap().get(key);
         }
