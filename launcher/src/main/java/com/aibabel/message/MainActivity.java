@@ -37,6 +37,8 @@ import org.json.JSONObject;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import butterknife.BindView;
 
@@ -60,7 +62,7 @@ public class MainActivity extends LaunBaseActivity {
     @BindView(R.id.btn_chat)
     Button btnChat;
     @BindView(R.id.tv_unread_number)
-    TextView tvUnreadNumber;
+    MaterialBadgeTextView tvUnreadNumber;
     @BindView(R.id.btn_container_chat)
     RelativeLayout btnContainerChat;
     @BindView(R.id.btn_task)
@@ -101,7 +103,7 @@ public class MainActivity extends LaunBaseActivity {
         }
 
 
-        tvUnreadNumber = findViewById(R.id.tv_unread_number);
+//        tvUnreadNumber = findViewById(R.id.tv_unread_number);
 
         mTabs = new Button[3];
         mTabs[0] = findViewById(R.id.btn_msg);
@@ -159,7 +161,6 @@ public class MainActivity extends LaunBaseActivity {
 
 
     }
-
 
 
     @Override
@@ -237,10 +238,21 @@ public class MainActivity extends LaunBaseActivity {
                     try {
                         Map<String, Object> map = message.ext();
                         String at = (String) map.get("at");
+                        if (TextUtils.equals(at, mmkv.getString(Constant.EM_USERNAME, "")) && EMClient.getInstance().chatManager().getUnreadMessageCount() > 0) {
+//                            unread++;
+//                            refreshUIWithMessage(unread);
+                            TimerTask task = new TimerTask() {
+                                @Override
+                                public void run() {
+                                    if (EMClient.getInstance().chatManager().getUnreadMessageCount() > 0) {
+                                        unread++;
+                                        refreshUIWithMessage(unread);
+                                    }
+                                }
+                            };
+                            Timer timer = new Timer();
+                            timer.schedule(task, 3000);//3秒后执行TimeTask的run方法
 
-                        if (TextUtils.equals(at, mmkv.getString(Constant.EM_USERNAME,""))) {
-                            unread++;
-                            refreshUIWithMessage(unread);
                         }
                     } catch (Exception e) {
                         e.printStackTrace();
@@ -274,25 +286,26 @@ public class MainActivity extends LaunBaseActivity {
         }
     };
 
-    private void refreshUIWithMessage(int count) {
-        if (StringUtils.isSupported()) {
-            if (EMClient.getInstance().isLoggedInBefore() && currentTabIndex != 1) {
-                tvUnreadNumber.setVisibility(View.VISIBLE);
-                if (0 < count && count < 99) {
-                    tvUnreadNumber.setText(String.valueOf(count));
+    private void refreshUIWithMessage(final int count) {
+
+        if (EMClient.getInstance().isLoggedInBefore() && currentTabIndex != 1) {
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    if (count > 0) {
+                        tvUnreadNumber.setBadgeCount(count);
+                        tvUnreadNumber.setVisibility(View.VISIBLE);
+                    } else {
+                        tvUnreadNumber.setVisibility(View.GONE);
+                    }
                 }
-                if (count > 99) {
-                    tvUnreadNumber.setText("99+");
-                }
-            } else {
-                tvUnreadNumber.setVisibility(View.GONE);
-            }
+            });
+
         }
     }
 
 
     private void isShowDialog() {
-//        isSetNick = true;
         if (isSetNick) {
             mmkv.encode("isSetNick", false);
             showDialogView();

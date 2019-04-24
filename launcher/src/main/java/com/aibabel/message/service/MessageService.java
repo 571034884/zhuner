@@ -34,6 +34,8 @@ import org.json.JSONObject;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Timer;
+import java.util.TimerTask;
 
 
 public class MessageService extends Service implements NetBroadcastReceiver.NetListener {
@@ -94,9 +96,21 @@ public class MessageService extends Service implements NetBroadcastReceiver.NetL
                     Map<String, Object> map = message.ext();
                     String at = (String) map.get("at");
 
-                    if (TextUtils.equals(at, mmkv.getString(Constant.EM_USERNAME,""))) {
-                        unread++;
-                        refreshUIWithMessage(unread);
+                    if (TextUtils.equals(at, mmkv.getString(Constant.EM_USERNAME, ""))) {
+
+                        TimerTask task = new TimerTask() {
+                            @Override
+                            public void run() {
+                                if (EMClient.getInstance().chatManager().getUnreadMessageCount() > 0) {
+                                    unread++;
+                                    refreshUIWithMessage(unread);
+                                }
+                            }
+                        };
+                        Timer timer = new Timer();
+                        timer.schedule(task, 3000);//3秒后执行TimeTask的run方法
+
+
                     }
 
                 } catch (Exception e) {

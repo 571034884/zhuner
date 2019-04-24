@@ -6,6 +6,7 @@
     android:layout_height="match_parent"
     android:background="@color/color_f9"
     android:orientation="vertical">
+
     <ImageView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -52,15 +53,16 @@
                 android:layout_height="wrap_content"
                 android:layout_alignEnd="@id/btn_msg"
                 android:layout_gravity="top|end"
-                android:gravity="top"
-                android:textStyle="bold"
-                android:textColor="@android:color/white"
-                android:maxLines="1"
-                android:visibility="gone"
-                android:ellipsize="none"
-                android:textSize="10sp"
                 android:background="#EF4738"
+                android:ellipsize="none"
+                android:gravity="top"
+                android:maxLines="1"
+                android:textColor="@android:color/white"
+                android:textSize="12sp"
+                android:textStyle="bold"
+                android:visibility="gone"
                 tools:ignore="EllipsizeMaxLines" />
+
             <View
                 android:id="@+id/v_msg"
                 android:layout_width="60dp"
@@ -95,7 +97,7 @@
                 android:textSize="15sp"
                 android:textStyle="bold" />
 
-            <TextView
+            <!--<TextView
                 android:id="@+id/tv_unread_number"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -103,7 +105,25 @@
                 android:layout_marginTop="10dp"
                 android:layout_marginRight="16dp"
                 android:background="@drawable/em_unread_dot"
-                android:visibility="gone" />
+                android:visibility="visible" />-->
+
+
+            <com.aibabel.menu.view.MaterialBadgeTextView
+                android:id="@+id/tv_unread_number"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignEnd="@id/btn_chat"
+                android:layout_gravity="top|end"
+                android:background="#EF4738"
+                android:ellipsize="none"
+                android:gravity="top"
+                android:maxLines="1"
+                android:textColor="@android:color/white"
+                android:textSize="12sp"
+                android:textStyle="bold"
+                android:visibility="gone"
+                tools:ignore="EllipsizeMaxLines" />
+
 
             <View
                 android:id="@+id/v_chat"
@@ -119,9 +139,9 @@
         <RelativeLayout
             android:id="@+id/btn_container_task"
             android:layout_width="0dp"
-            android:visibility="gone"
             android:layout_height="match_parent"
-            android:layout_weight="1">
+            android:layout_weight="1"
+            android:visibility="gone">
 
             <Button
                 android:id="@+id/btn_task"
@@ -146,7 +166,7 @@
                 android:layout_alignParentRight="true"
                 android:layout_marginTop="14dp"
                 android:background="@mipmap/ic_new"
-                android:visibility="visible" />
+                android:visibility="gone" />
 
             <View
                 android:id="@+id/v_task"
