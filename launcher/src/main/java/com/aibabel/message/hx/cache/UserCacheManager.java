@@ -57,7 +57,7 @@ public class UserCacheManager {
         UserCacheInfo info = null;
 
         // 如果本地缓存不存在或者过期，则从存储服务器获取
-        if (notExistedOrExpired(userId)) {
+//        if (notExistedOrExpired(userId)) {
 //            UserWebManager.getUserInfoAync(userId, new UserWebManager.UserCallback() {
 //                @Override
 //                public void onCompleted(UserWebInfo info) {
@@ -68,7 +68,7 @@ public class UserCacheManager {
 //                    save(info.getOpenId(), info.getNickName(),info.getAvatarUrl());
 //                }
 //            });
-        }
+//        }
 
         // 从本地缓存中获取用户数据
         info = getFromCache(userId);

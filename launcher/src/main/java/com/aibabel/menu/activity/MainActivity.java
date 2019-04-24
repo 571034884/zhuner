@@ -191,7 +191,6 @@ public class MainActivity extends LaunBaseActivity implements NetBroadcastReceiv
                 mRlMask.setVisibility(View.GONE);
                 break;
             case R.id.main_notice_app://跳转到消息中心
-                startMessageActivity();
                 HashMap<String, Serializable> map = new HashMap<>();
                 map.put("menu_notice_click_id", "打开");
                 addStatisticsEvent("menu_notice_click", map);
@@ -652,6 +651,7 @@ public class MainActivity extends LaunBaseActivity implements NetBroadcastReceiv
     }
 
     private void getHxUserInfo(){
+
         Intent intent = new Intent(Constant.ACTION_HX_USERINFO);
         sendBroadcast(intent);
     }
@@ -886,7 +886,7 @@ public class MainActivity extends LaunBaseActivity implements NetBroadcastReceiv
                             LogUtil.e("hjs" + add_hp.get("key"));
                             break;
                         case 800:
-//                           getHxUserInfo();
+                           getHxUserInfo();
                             break;
                         default:
                             break;

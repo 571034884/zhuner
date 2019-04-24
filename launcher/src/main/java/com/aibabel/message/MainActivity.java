@@ -78,7 +78,7 @@ public class MainActivity extends LaunBaseActivity {
     private int index;
     private int currentTabIndex;
     private String toChatUsername;
-    private int fragment_index;
+    private int fragment_index = 0;
     private boolean isSetNick;
     private MyDialog builder;
     private int unread = 0;
@@ -137,7 +137,7 @@ public class MainActivity extends LaunBaseActivity {
 
     /**
      * 判定是否支持准儿帮，这个参数有后台返回
-     *
+     * <p>
      * 在MessageService保存的
      */
     private void isSupport() {
