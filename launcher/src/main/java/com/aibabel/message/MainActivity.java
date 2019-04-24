@@ -92,7 +92,7 @@ public class MainActivity extends LaunBaseActivity {
     protected void initView() {
         fragment_index = getIntent().getExtras().getInt("fragment_index", 0);
         isSetNick = mmkv.decodeBool("isSetNick", true);
-        unread = mmkv.decodeInt("count", 0);
+//        unread = mmkv.decodeInt("count", 0);
         //get user id or group id
         toChatUsername = mmkv.decodeString(Constant.EM_GROUP);
         String groupName = mmkv.decodeString(Constant.EM_GROUP_NAME);
@@ -100,9 +100,7 @@ public class MainActivity extends LaunBaseActivity {
             fragment_index = 0;
         }
 
-        Bundle bundle = new Bundle();
-        bundle.putString("toChatUsername", toChatUsername);
-        bundle.putString("groupName", groupName);
+
         tvUnreadNumber = findViewById(R.id.tv_unread_number);
 
         mTabs = new Button[3];
@@ -122,7 +120,10 @@ public class MainActivity extends LaunBaseActivity {
         fragmentMessage = new Fragment_Message();
         fragmentTask = new Fragment_Task();
         fragments = new Fragment[]{fragmentMessage, fragmentConversation, fragmentTask};
-        //传入
+        //传入Fragment中
+        Bundle bundle = new Bundle();
+        bundle.putString("toChatUsername", toChatUsername);
+        bundle.putString("groupName", groupName);
         fragmentConversation.setArguments(bundle);
         if (tvUnreadMsgNumber != null) tvUnreadMsgNumber.setBadgeCount(set_BadgeCount);
         //判定是否支持，以便于显示不同的布局
@@ -138,7 +139,6 @@ public class MainActivity extends LaunBaseActivity {
      * 在MessageService保存的
      */
     private void isSupport() {
-
         if (mmkv.decodeBool(Constant.EM_SUPPORT, false)) {
             btnContainerChat.setVisibility(View.VISIBLE);
             if (fragment_index == 0) {
@@ -161,6 +161,7 @@ public class MainActivity extends LaunBaseActivity {
     }
 
 
+
     @Override
     protected void onResume() {
         super.onResume();
@@ -181,7 +182,7 @@ public class MainActivity extends LaunBaseActivity {
                 break;
             case R.id.btn_chat:
                 index = 1;
-                makeReaded();
+                makeAsRead();
                 isShowDialog();
                 break;
             case R.id.btn_task:
@@ -207,7 +208,6 @@ public class MainActivity extends LaunBaseActivity {
 
 
     private void showSelect(int selectIndex) {
-
         FragmentTransaction trx = getSupportFragmentManager().beginTransaction();
         for (int i = 0; i < fragments.length; i++) {
             if (i == selectIndex) {
@@ -221,7 +221,7 @@ public class MainActivity extends LaunBaseActivity {
     }
 
 
-    private void makeReaded() {
+    private void makeAsRead() {
         unread = 0;
         tvUnreadNumber.setText("");
         tvUnreadNumber.setVisibility(View.GONE);
@@ -278,7 +278,7 @@ public class MainActivity extends LaunBaseActivity {
         if (StringUtils.isSupported()) {
             if (EMClient.getInstance().isConnected() && currentTabIndex != 1) {
                 tvUnreadNumber.setVisibility(View.VISIBLE);
-                if (count > 0) {
+                if (0 < count && count < 99) {
                     tvUnreadNumber.setText(String.valueOf(count));
                 }
                 if (count > 99) {

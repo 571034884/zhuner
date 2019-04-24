@@ -224,8 +224,6 @@ public class MessageService extends Service implements NetBroadcastReceiver.NetL
                             if (DemoHelper.getInstance().isLoggedIn()) {
                                 EMClient.getInstance().logout(true);
                             }
-
-
                         }
 
                     }
