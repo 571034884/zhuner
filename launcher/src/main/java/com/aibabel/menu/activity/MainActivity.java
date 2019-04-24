@@ -30,6 +30,7 @@ import android.widget.TextView;
 import com.aibabel.baselibrary.http.BaseCallback;
 import com.aibabel.baselibrary.http.OkGoUtil;
 import com.aibabel.baselibrary.mode.DataManager;
+import com.aibabel.baselibrary.mode.StatisticsManager;
 import com.aibabel.baselibrary.sphelper.SPHelper;
 import com.aibabel.baselibrary.utils.CommonUtils;
 import com.aibabel.baselibrary.utils.FastJsonUtil;
@@ -215,7 +216,7 @@ public class MainActivity extends LaunBaseActivity implements NetBroadcastReceiv
                 mMainLocation.postDelayed(new Runnable() {
                     @Override
                     public void run() {
-                        com.aibabel.baselibrary.mode.StatisticsManager.getInstance().uplaodData(getApplicationContext(), SharePrefUtil.getString(mContext, "order_oid", ""));
+                        StatisticsManager.getInstance().uplaodData(getApplicationContext(), SharePrefUtil.getString(mContext, "order_oid", ""));
 
                     }
 
