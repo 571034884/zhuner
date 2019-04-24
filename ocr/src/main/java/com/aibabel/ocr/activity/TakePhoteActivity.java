@@ -32,6 +32,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.aibabel.aidlaar.StatisticsManager;
+import com.aibabel.baselibrary.sphelper.SPHelper;
 import com.aibabel.ocr.BuildConfig;
 import com.aibabel.ocr.MainActivity;
 import com.aibabel.ocr.R;
@@ -523,6 +524,21 @@ public class TakePhoteActivity extends BaseActivity implements CameraPreview.OnC
         tv_orLan.setText(from + "");
         SharePrefUtil.saveString(this, Constant.LAN_OR, from);
 //        SharePrefUtil.saveString(this, Constant.LAN_TR, to);
+        try {
+            SPHelper.save("ifruning", "ocr");
+            Log.e("hjs", "ocr runing");
+        } catch (Exception e) {
+        }
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        try {
+            SPHelper.save("ifruning", "");
+            Log.e("hjs", "ocr stop");
+        } catch (Exception e) {
+        }
     }
 
     @Override
