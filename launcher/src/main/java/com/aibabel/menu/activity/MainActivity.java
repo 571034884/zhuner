@@ -700,6 +700,10 @@ public class MainActivity extends LaunBaseActivity implements NetBroadcastReceiv
     }
 
     public void startMessage(){
+        mIvNativeMask.setVisibility(View.GONE);
+        if (hxMessage > 0) {
+            fragment_index = 1;
+        }
         Intent intent = new Intent(this, com.aibabel.message.MainActivity.class);
         intent.putExtra("count", hxMessage);
         intent.putExtra("fragment_index", fragment_index);
