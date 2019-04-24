@@ -2,6 +2,7 @@ package com.aibabel.menu.activity;
 
 import android.annotation.TargetApi;
 import android.app.Activity;
+import android.content.BroadcastReceiver;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
@@ -148,7 +149,7 @@ public class MainActivity extends LaunBaseActivity implements NetBroadcastReceiv
     private int fragment_index;
     private NetBroadcastReceiver broadcastReceiver;
     private LauncherBcastReceiver launcherBcastReceiver;
-
+    ScreenOffReceiver screenrecive;
 
     @Override
     public int getLayout(Bundle savedInstanceState) {
@@ -189,7 +190,42 @@ public class MainActivity extends LaunBaseActivity implements NetBroadcastReceiv
             e.printStackTrace();
         }
 
+
+        //息屏广播数据上传
+        try {
+
+            IntentFilter filter = new IntentFilter();
+            filter.addAction(Intent.ACTION_SCREEN_OFF);
+
+            screenrecive = new ScreenOffReceiver();
+            mContext.registerReceiver(screenrecive, filter);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
     }
+
+
+    private class ScreenOffReceiver extends BroadcastReceiver {
+
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            String action = intent.getAction();
+            if (action.equals(Intent.ACTION_SCREEN_OFF)) {
+                mMainLocation.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        com.aibabel.baselibrary.mode.StatisticsManager.getInstance().uplaodData(getApplicationContext(), SharePrefUtil.getString(mContext, "order_oid", ""));
+
+                    }
+
+
+                }, 2000);
+            }
+
+        }
+    }
+
 
     //false 当前是未播状态   true  当前是播放状态         默认false
     private boolean flagScenic = false;
@@ -1451,8 +1487,16 @@ public class MainActivity extends LaunBaseActivity implements NetBroadcastReceiv
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        if (null != broadcastReceiver)
-            unregisterReceiver(broadcastReceiver);
+        try{
+            if (screenrecive != null) {
+                unregisterReceiver(screenrecive);
+            }
+
+            if (null != broadcastReceiver)
+                unregisterReceiver(broadcastReceiver);
+        }catch (Exception e){
+            Logs.e("launcher："+e.toString());
+        }
 //        stopService();
     }
 }

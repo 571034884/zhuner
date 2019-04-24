@@ -317,6 +317,7 @@ public class HistoryActivity extends BaseScenicActivity implements ExpireBroadca
                 }
                 addStatisticsEvent("scenic_history_close", null);
                 onBackPressed();
+                sendToLauncher("","","",3);
                 sendBroadcast(Constants.ACTION_CLOSE);
                 Intent intent = new Intent(getApplicationContext(), MusicService.class);
                 stopService(intent);// 关闭服务
@@ -326,6 +327,17 @@ public class HistoryActivity extends BaseScenicActivity implements ExpireBroadca
         }
 
     }
+
+    public void sendToLauncher(String poiName,String urlPic,String name,int type){
+        Intent intent1 = new Intent();
+        intent1.putExtra("urlPic",urlPic);
+        intent1.putExtra("poiName",poiName);
+        intent1.putExtra("name",name);
+        intent1.putExtra("type",type);
+        intent1.setAction("com.aibabel.launcher.MUSIC");
+        sendBroadcast(intent1);
+    }
+
 
     @Override
     public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
