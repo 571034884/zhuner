@@ -2,6 +2,7 @@ package com.hyphenate.easeui.widget.chatrow;
 
 import android.app.Activity;
 import android.content.Context;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.BaseAdapter;
@@ -10,6 +11,9 @@ import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.request.RequestOptions;
 import com.hyphenate.chat.EMClient;
 import com.hyphenate.chat.EMMessage;
 import com.hyphenate.chat.EMMessage.Direct;
@@ -147,8 +151,12 @@ public abstract class EaseChatRow extends LinearLayout {
             if (message.direct() == Direct.SEND) {
                 EaseUserUtils.setUserAvatar(context, EMClient.getInstance().getCurrentUser(), userAvatarView);
             } else {
-                EaseUserUtils.setUserAvatar(context, message.getFrom(), userAvatarView);
-                EaseUserUtils.setUserNick(message.getFrom(), usernickView);
+                usernickView.setText(TextUtils.isEmpty((String)(message.ext().get("nickname")))?message.getFrom():(String)(message.ext().get("nickname")));
+                RequestOptions options = new RequestOptions().diskCacheStrategy(DiskCacheStrategy.ALL).placeholder(R.drawable.ease_default_avatar);
+                Glide.with(context).load((String)(message.ext().get("head_img"))).apply(options).into(userAvatarView);
+
+//                EaseUserUtils.setUserAvatar(context, message.getFrom(), userAvatarView);
+//                EaseUserUtils.setUserNick(message.getFrom(), usernickView);
             }
         }
         if (EMClient.getInstance().getOptions().getRequireDeliveryAck()) {

@@ -248,7 +248,6 @@ public class MainActivity extends LaunBaseActivity {
                             unread++;
                             refreshUIWithMessage(unread);
                         }
-
                     } catch (Exception e) {
                         e.printStackTrace();
                     }

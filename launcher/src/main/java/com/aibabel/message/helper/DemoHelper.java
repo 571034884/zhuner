@@ -55,6 +55,7 @@ import com.hyphenate.easeui.model.EaseAtMessageHelper;
 import com.hyphenate.easeui.model.EaseNotifier;
 import com.hyphenate.easeui.model.EaseNotifier.EaseNotificationInfoProvider;
 import com.hyphenate.easeui.utils.EaseCommonUtils;
+import com.hyphenate.easeui.utils.EaseUserUtils;
 import com.hyphenate.exceptions.HyphenateException;
 import com.hyphenate.push.EMPushConfig;
 import com.hyphenate.util.EMLog;
@@ -1209,6 +1210,7 @@ public class DemoHelper {
 //                    }
                     // 从消息的扩展属性里获取昵称头像
                     UserCacheManager.save(message.ext());
+//                    EaseUserUtils.
                     // in background, do not refresh UI, notify it in notification bar
                     if(!easeUI.hasForegroundActivies()){
                         getNotifier().notify(message);
