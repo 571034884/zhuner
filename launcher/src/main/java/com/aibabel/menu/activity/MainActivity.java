@@ -176,7 +176,7 @@ public class MainActivity extends LaunBaseActivity implements NetBroadcastReceiv
         mMainHuiLvCny.setText("—·—");
         mMainHuiLvChg.setText("—·—");
         mMainLocation.setCompoundDrawablesWithIntrinsicBounds(null, null, null, null);
-
+        loopHandler = new LooptempHandler(this);
         requestNetwork();
 
         try {

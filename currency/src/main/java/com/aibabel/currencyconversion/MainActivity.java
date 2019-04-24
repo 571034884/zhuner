@@ -215,7 +215,7 @@ public class MainActivity extends BaseActivity {
         etCurrencyCount3.getViewTreeObserver().addOnGlobalLayoutListener(new MyGlobalLayoutListener(llZuo3, llYou3, tvCurrencyAbbreviations3, ivXiala3));
 
         String city = ProviderUtils.getInfo(ProviderUtils.COLUMN_CITY);
-        if (city.equals("日本") || city.equals("泰国")){
+        if (city.equals("日本") || city.equals("泰国")|| city.equals("Japan")|| city.equals("Thailand")){
             rlBottomView.setVisibility(View.VISIBLE);
             SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy年MM月dd日");
             Date date = new Date(System.currentTimeMillis());
@@ -1010,31 +1010,6 @@ public class MainActivity extends BaseActivity {
             el_error.setErrorType(EmptyLayout.NETWORK_EMPTY);
             return;
         }
-
-//        Map<String, String> map = new HashMap<>();
-//        map.put("countryName", "中国");
-//        OkGoUtil.get(Constant.URL_COUPON, map, CouponBean.class, new BaseCallback<CouponBean>() {
-//            @Override
-//            public void onSuccess(String method, CouponBean model, String resoureJson) {
-//                if (null != model && null != model.getData()&&model.getData().size()>0) {
-//                    adapterCoupon.setNewData(model.getData());
-//                    el_error.setErrorType(EmptyLayout.SUCCESS_EMPTY);
-//                }else{
-//                      el_error.setErrorType(EmptyLayout.NORMAL_EMPTY);
-//                }
-//            }
-//
-//            @Override
-//            public void onError(String method, String message, String resoureJson) {
-//                  el_error.setErrorType(EmptyLayout.ERROR_EMPTY);
-//            }
-//
-//            @Override
-//            public void onFinsh(String method) {
-//
-//            }
-//        });
-//        countryName = "日本";
 
         GetRequest<String> getRequest = OkGo.<String>get(Constant.IP_PORT + Constant.URL_COUPON).tag(this);
         getRequest.params("sn", CommonUtils.getSN());

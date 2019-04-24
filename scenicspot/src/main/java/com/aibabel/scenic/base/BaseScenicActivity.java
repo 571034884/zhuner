@@ -99,4 +99,19 @@ public abstract class BaseScenicActivity extends BaseActivity implements OnClick
 //        }
 //        return super.onKeyDown(keyCode, event);
 //    }
+
+
+    @Override
+    public boolean onKeyLongPress(int keyCode, KeyEvent event) {
+
+        switch (keyCode) {
+            case 133:
+            case 134:
+                Intent intent = new Intent("com.aibabel.scenic.stop");
+                sendBroadcast(intent);
+                break;
+        }
+
+        return super.onKeyLongPress(keyCode, event);
+    }
 }
