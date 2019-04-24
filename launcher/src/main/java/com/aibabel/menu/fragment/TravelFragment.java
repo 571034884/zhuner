@@ -1,6 +1,7 @@
 package com.aibabel.menu.fragment;
 
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.support.v7.widget.CardView;
 import android.view.View;
@@ -41,6 +42,7 @@ public class TravelFragment extends BaseFragment implements View.OnClickListener
         moreScenicApp.setOnClickListener(this);
         moreCountryApp.setOnClickListener(this);
         moreFoodApp.setOnClickListener(this);
+        morePoortravelApp.setOnClickListener(this);
     }
     public void launcherApp(String packageStr) {
         try {
@@ -70,14 +72,8 @@ public class TravelFragment extends BaseFragment implements View.OnClickListener
                 launcherApp("com.aibabel.food");
                 break;
             case R.id.more_poortravel_app:
-                try {
-                    ((MoreActivity) getActivity()).addStatisticsEvent("poortravel_click",null);
-                    Intent LaunchIntent = mContext.getPackageManager().getLaunchIntentForPackage("com.qyer.android.plan");
-                    startActivity(LaunchIntent);
-                } catch (Exception e) {
-                    Logs.e(  "com.qyer.android.plan:" + e.toString());
-                }
-
+                ((MoreActivity) getActivity()).addStatisticsEvent("poortravel_click",null);
+                launcherApp("com.qyer.android.plan");
                 break;
         }
     }
