@@ -412,11 +412,6 @@
                     android:layout_height="0px"
                     android:layout_weight="1">
 
-                    <View
-                        android:layout_width="1px"
-                        android:layout_height="match_parent"
-                        android:background="#cccccc"></View>
-
                     <TextView
                         android:id="@+id/tv_7"
                         android:layout_width="0px"
@@ -428,6 +423,10 @@
                         android:textColor="#333333"
                         android:textSize="44px" />
 
+                    <View
+                        android:layout_width="1px"
+                        android:layout_height="match_parent"
+                        android:background="#cccccc"></View>
                     <TextView
                         android:id="@+id/tv_8"
                         android:layout_width="0px"
