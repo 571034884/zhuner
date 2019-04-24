@@ -219,6 +219,7 @@
                 android:foreground="?attr/selectableItemBackground"
                 android:onClick="onClick"
                 app:cardCornerRadius="16dp"
+                android:visibility="gone"
                 app:cardElevation="@dimen/x5"
                 app:cardPreventCornerOverlap="true"
                 app:cardUseCompatPadding="true">
