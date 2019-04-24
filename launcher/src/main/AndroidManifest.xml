@@ -173,9 +173,6 @@
             android:exported="false"
             android:theme="@style/MyDialogStyle"></activity>
 
-        <activity
-            android:name="com.aibabel.message.JiGuangActivity"
-            android:theme="@style/dialogstyle" />
 
 
         <!-- Required SDK核心功能-->
