@@ -629,7 +629,6 @@ public class MainActivity extends LaunBaseActivity implements NetBroadcastReceiv
         }
         Intent intent = new Intent(this, com.aibabel.message.MainActivity.class);
         intent.putExtra("count", hxMessage);
-
         intent.putExtra("fragment_index", fragment_index);
         startActivity(intent);
         homeBadge.setVisibility(View.GONE);

@@ -25,6 +25,7 @@ import com.aibabel.message.fragment.Fragment_Conversation;
 import com.aibabel.message.fragment.Fragment_Message;
 import com.aibabel.message.fragment.Fragment_Task;
 import com.aibabel.message.hx.cache.UserCacheManager;
+import com.aibabel.message.receiver.MessageListener;
 import com.aibabel.message.utiles.Constant;
 import com.aibabel.message.utiles.OkGoUtilWeb;
 import com.aibabel.message.utiles.StringUtils;
@@ -127,31 +128,8 @@ public class MainActivity extends LaunBaseActivity {
 
         if (tvUnreadMsgNumber != null) tvUnreadMsgNumber.setBadgeCount(set_BadgeCount);
         //判定是否支持，以便于显示不同的布局
-//        selectUI();
         currentTabIndex = fragment_index;
-//        if (fragment_index == 0) {
-//            // TODO: 2019/4/22 除非为强推消息，否则优先准儿帮
-////            refreshUIWithMessage(unread);
-//            getSupportFragmentManager().beginTransaction()
-//                    .show(fragmentMessage)
-//                    .hide(fragmentConversation)
-//                    .hide(fragmentTask)
-//                    .commit();
-//        } else if (fragment_index == 1) {
-//
-//            getSupportFragmentManager().beginTransaction()
-//                    .show(fragmentConversation)
-//                    .hide(fragmentMessage)
-//                    .hide(fragmentTask)
-//                    .commit();
-//            isShowDialog();
-//        } else {
-//            getSupportFragmentManager().beginTransaction()
-//                    .hide(fragmentMessage)
-//                    .hide(fragmentConversation)
-//                    .show(fragmentTask)
-//                    .commit();
-//        }
+
         isSupport();
 
     }

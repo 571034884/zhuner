@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/ll_root"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
@@ -12,7 +13,7 @@
         android:background="@color/gray_normal" />
 
     <LinearLayout
-        android:id="@+id/rl_bottom"
+        android:id="@+id/ll_bottom"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="#aaffffff"
@@ -131,5 +132,11 @@
             android:textSize="14sp"
             android:visibility="visible" />
     </LinearLayout>
+
+    <!--<View
+        android:id="@+id/v_visible"
+        android:visibility="gone"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>-->
 
 </LinearLayout>
