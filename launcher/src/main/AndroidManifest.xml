@@ -131,7 +131,7 @@
         </receiver>
         <!-- ==================================== 环信结束 ========================================== -->
         <service android:name=".service.MyService" />
-
+        <activity android:name=".three7Activity"/>
         <activity
             android:name=".rent.RentDialogActivity"
             android:launchMode="singleTop"
@@ -172,8 +172,6 @@
             android:name="cn.jpush.android.ui.PopWinActivity"
             android:exported="false"
             android:theme="@style/MyDialogStyle"></activity>
-
-
 
         <!-- Required SDK核心功能-->
         <activity
