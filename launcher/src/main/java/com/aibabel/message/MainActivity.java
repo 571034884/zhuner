@@ -179,14 +179,17 @@ public class MainActivity extends LaunBaseActivity {
         switch (view.getId()) {
             case R.id.btn_msg:
                 index = 0;
+                addStatisticsEvent("menu_team_butt", null);
                 if (tvUnreadMsgNumber != null) tvUnreadMsgNumber.setBadgeCount(0);
                 break;
             case R.id.btn_chat:
                 index = 1;
+                addStatisticsEvent("menu_team_help", null);
                 makeAsRead();
                 isShowDialog();
                 break;
             case R.id.btn_task:
+                addStatisticsEvent("menu_team_task", null);
                 index = 2;
                 break;
         }
@@ -214,6 +217,13 @@ public class MainActivity extends LaunBaseActivity {
             if (i == selectIndex) {
                 trx.add(R.id.fl_content, fragments[i]);
                 trx.show(fragments[i]);
+                if (i == 0) {
+                    addStatisticsEvent("menu_team_butt", null);
+                } else if (i == 1) {
+                    addStatisticsEvent("menu_team_help", null);
+                } else if (i == 2) {
+                    addStatisticsEvent("menu_team_task", null);
+                }
             } else {
                 trx.hide(fragments[i]);
             }
