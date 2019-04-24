@@ -171,6 +171,18 @@ public class MainActivity extends LaunBaseActivity implements NetBroadcastReceiv
         mMainLocation.setCompoundDrawablesWithIntrinsicBounds(null, null, null, null);
 
         requestNetwork();
+
+        try {
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    init_neveruser();
+                    lock90day();
+                }
+            }).start();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     //false 当前是未播状态   true  当前是播放状态         默认false
