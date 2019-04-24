@@ -2,6 +2,7 @@ package com.aibabel.menu.activity;
 
 import android.annotation.TargetApi;
 import android.app.Activity;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
@@ -183,6 +184,7 @@ public class MainActivity extends LaunBaseActivity implements NetBroadcastReceiv
         } catch (Exception e) {
             e.printStackTrace();
         }
+
     }
 
     //false 当前是未播状态   true  当前是播放状态         默认false

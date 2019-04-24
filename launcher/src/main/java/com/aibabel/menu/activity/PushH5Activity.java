@@ -1,6 +1,9 @@
 package com.aibabel.menu.activity;
 
 import android.annotation.SuppressLint;
+import android.content.ComponentName;
+import android.content.Context;
+import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -22,6 +25,7 @@ import android.widget.LinearLayout;
 import com.aibabel.baselibrary.utils.CommonUtils;
 import com.aibabel.baselibrary.utils.ToastUtil;
 import com.aibabel.menu.base.LaunBaseActivity;
+import com.aibabel.menu.bean.PushMessageBean;
 import com.aibabel.menu.utils.Logs;
 import com.aibabel.menu.R;
 import com.baidu.location.BDLocation;
@@ -36,7 +40,7 @@ import java.util.Iterator;
 import butterknife.BindView;
 
 /**
- * 打卡页面 H5
+ * 推送 H5
  *
  * Created by fytworks on 2018/12/19.
  */
@@ -64,6 +68,7 @@ public class PushH5Activity extends LaunBaseActivity{
         url = getIntent().getStringExtra("url");
         llError.setVisibility(View.GONE);
         initOptionWeb();
+
     }
 
     @SuppressLint("JavascriptInterface")
@@ -79,7 +84,7 @@ public class PushH5Activity extends LaunBaseActivity{
         webView.getSettings().setDefaultTextEncodingName("utf-8");
 
         String ua = webView.getSettings().getUserAgentString();
-        webView.getSettings().setUserAgentString(ua + "aibabel_map");
+        webView.getSettings().setUserAgentString(ua + "aibabel_push");
         ua = webView.getSettings().getUserAgentString();
         Log.i("uasssssss",ua);
         // 添加js交互接口类，并起别名 imagelistner
@@ -100,6 +105,45 @@ public class PushH5Activity extends LaunBaseActivity{
         });
         webView.loadUrl(url);
     }
+
+    /**
+     *
+     *
+     */
+    @JavascriptInterface
+    public void openpushapp(String packname,String acitiyname,String type ,String par){
+        Log.i("packname",packname);
+        startNewScenic(getApplicationContext(),packname,acitiyname,type,par);
+    }
+
+    /**
+     * 启动新景区导览详情页
+     *
+     * @param
+     * @param context
+     */
+    public  void startNewScenic(Context context,String packname,String acitiyname,String type ,String par) {
+        try {
+            if (type != null) {
+                if(type.equalsIgnoreCase("1")) {
+                    Intent mIntent = new Intent();
+                    ComponentName componentName = new ComponentName(packname, acitiyname);
+                    mIntent.setComponent(componentName);
+                    mIntent.putExtra("poiId", par);
+                    context.startActivity(mIntent);
+                }else if(type.equalsIgnoreCase("2")) {
+                    Intent intent = new Intent();
+                    ComponentName componentName = new ComponentName(packname, acitiyname);
+                    intent.setComponent(componentName);
+                    intent.putExtra("couponId", Integer.valueOf(par));
+                    context.startActivity(intent);
+            }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
 
     public void onClick(View view){
         switch (view.getId()){
@@ -155,14 +199,6 @@ public class PushH5Activity extends LaunBaseActivity{
         return super.onKeyDown(keyCode, event);
     }
 
-    /**
-     * 接收数据
-     * @param name
-     */
-    @JavascriptInterface
-    public void aiBabelMap(String name){
-        Log.i("aiBabelMap",name);
-    }
 
     @Override
     protected void onDestroy() {
