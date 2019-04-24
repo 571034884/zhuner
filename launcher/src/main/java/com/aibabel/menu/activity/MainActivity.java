@@ -1286,7 +1286,12 @@ public class MainActivity extends LaunBaseActivity implements NetBroadcastReceiv
                 if ((!TextUtils.isEmpty(order_id)) && (!order_id.equalsIgnoreCase(oid))) {
                     if (loopHandler != null) loopHandler.sendEmptyMessage(800);
                 }
+                if(TextUtils.isEmpty(order_id)){
+                    if (loopHandler != null) loopHandler.sendEmptyMessage(800);
+                }
             }
+
+
             SharePrefUtil.saveString(context, order_channelName, chanelname);
             SharePrefUtil.saveString(context, order_oid, oid);
             SPHelper.save(order_oid, oid);

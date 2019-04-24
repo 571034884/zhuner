@@ -56,7 +56,7 @@ public class ViewPagerActivity extends BaseActivity {
     private int[] quanqiu_proL = {R.mipmap.quanqiu1, R.mipmap.quanqiu2, R.mipmap.quanqiu8, R.mipmap.quanqiu9, R.mipmap.quanqiu4, R.mipmap.quanqiu5, R.mipmap.quanqiu6, R.mipmap.quanqiu7};
 
     private int[] shijiezhong_proL = {R.mipmap.zhong1};
-    private int[] caidan_proL = {R.mipmap.caidan1, R.mipmap.caidan2};
+    private int[] caidan_proL = {R.mipmap.caidan1, R.mipmap.caidan2,R.mipmap.caidan3,R.mipmap.caidan4};
     private int[] tianqi_proL = {R.mipmap.tianqi1, R.mipmap.tianqi2};
     private int[] youhuiquan_proL = {R.mipmap.youhuiquan1, R.mipmap.youhuiquan2, R.mipmap.youhuiquan3};
 //    private int[] yuyinfanyi_proL = {R.mipmap.yuyinfanyi1, R.mipmap.yuyinfanyi4, R.mipmap.yuyinfanyi5, R.mipmap.yuyinfanyi6, R.mipmap.yuyinfanyi3};
