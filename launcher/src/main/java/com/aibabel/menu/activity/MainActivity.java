@@ -69,6 +69,8 @@ import com.lzy.okgo.model.Response;
 
 import java.io.Serializable;
 import java.lang.ref.WeakReference;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -125,6 +127,8 @@ public class MainActivity extends LaunBaseActivity implements NetBroadcastReceiv
     TextView mMainOneAppTwoTitle;
     @BindView(R.id.main_one_app_two_on)
     ImageView mMainOneAppTwoOn;
+    @BindView(R.id.iv_native)
+    ImageView mIvNativeMask;
 
 
     //环信交互handler
@@ -297,6 +301,27 @@ public class MainActivity extends LaunBaseActivity implements NetBroadcastReceiv
             case R.id.main_six_app://定位点6
                 addStatisticsEvent("more_click", null);
                 startAct(MoreActivity.class);
+                break;
+            case R.id.iv_native:
+                if (indexNativeMask == 1){
+                    if (hxMessage>0){
+                        indexNativeMask = 2;
+                        mIvNativeMask.setImageResource(R.mipmap.ic_native_keybord_bg);
+                    }else{
+                        indexNativeMask = 2;
+                        mIvNativeMask.setImageResource(R.mipmap.ic_native_im_bg);
+                    }
+                }else if (indexNativeMask == 2){
+                    if (hxMessage>0){
+                        indexNativeMask = 3;
+                        mIvNativeMask.setImageResource(R.mipmap.ic_native_xi_bg);
+                    }else{
+                        indexNativeMask = 3;
+                        mIvNativeMask.setImageResource(R.mipmap.ic_native_keybord_bg);
+                    }
+                }else if (indexNativeMask == 3){
+                    startMessage();
+                }
                 break;
         }
     }
@@ -634,12 +659,47 @@ public class MainActivity extends LaunBaseActivity implements NetBroadcastReceiv
         }
     }
 
-
+    private int indexNativeMask = 0;
     private void startMessageActivity() {
-
-        if (hxMessage > 0) {
-            fragment_index = 1;
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy年MM月dd日");
+        Date date = new Date(System.currentTimeMillis());
+        String nativeDate = simpleDateFormat.format(date);
+        String nativeMask = mmkv.decodeString("nativeMask","");
+        String nativeMaskIndex = mmkv.decodeString("nativeMaskIndex","");
+        if (TextUtils.isEmpty(nativeMask) && TextUtils.isEmpty(nativeMaskIndex)){
+            //1.第一天第一次打开
+            indexNativeMask = 1;
+            mIvNativeMask.setVisibility(View.VISIBLE);
+            mmkv.encode("nativeMask",nativeDate);
+            mmkv.encode("nativeMaskIndex","1");
+        }else if (nativeMaskIndex.equals("1")){
+            if (nativeMask.equals(nativeDate)){
+                indexNativeMask = 3;
+                //2.第一天第N次打开
+                mIvNativeMask.setVisibility(View.GONE);
+                startMessage();
+            }else{
+                //3.第二天第一次打开
+                indexNativeMask = 1;
+                mIvNativeMask.setVisibility(View.VISIBLE);
+                mmkv.encode("nativeMask",nativeDate);
+                mmkv.encode("nativeMaskIndex","2");
+            }
+        }else if (nativeMaskIndex.equals("2")){
+            indexNativeMask = 3;
+            //4.第二天第N次打开
+            mIvNativeMask.setVisibility(View.GONE);
+            startMessage();
         }
+        if (hxMessage > 0) {
+            mIvNativeMask.setImageResource(R.mipmap.ic_native_im_bg);
+        }else{
+            mIvNativeMask.setImageResource(R.mipmap.ic_native_xi_bg);
+        }
+
+    }
+
+    public void startMessage(){
         Intent intent = new Intent(this, com.aibabel.message.MainActivity.class);
         intent.putExtra("count", hxMessage);
         intent.putExtra("fragment_index", fragment_index);
@@ -647,6 +707,7 @@ public class MainActivity extends LaunBaseActivity implements NetBroadcastReceiv
         homeBadge.setVisibility(View.GONE);
         makeRead();
     }
+
 
     //=================================================环信消息开始===================================
 

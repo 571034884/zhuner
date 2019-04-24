@@ -642,5 +642,12 @@
     <include
         layout="@layout/activity_masking"
         />
-
+    <ImageView
+        android:id="@+id/iv_native"
+        android:visibility="gone"
+        android:onClick="onClick"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scaleType="fitXY"
+        />
 </RelativeLayout>
