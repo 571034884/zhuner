@@ -11,7 +11,7 @@ public class Api {
 
     //------------------------环信相关的api-----------------------------
     //    public static String HOST_WEB = "http://abroad.api.web.aibabel.cn:7002";
-    public static String HOST_WEB = " https://wx.aibabel.com:3002";
+    public static String HOST_WEB = "https://wx.aibabel.com:3002";
 
     public static final String METHOD_GROUP_WEB = "/common/api/im/";
 

@@ -47,7 +47,6 @@ public class MainActivity extends LaunBaseActivity {
 
     @BindView(R.id.fl_content)
     FrameLayout flContent;
-
     Fragment_Chat fragmentChat;
     Fragment_Task fragmentTask;
     Fragment_Conversation fragmentConversation;
@@ -96,14 +95,14 @@ public class MainActivity extends LaunBaseActivity {
         unread = mmkv.decodeInt("count", 0);
         //get user id or group id
         toChatUsername = mmkv.decodeString(Constant.EM_GROUP);
+        String groupName = mmkv.decodeString(Constant.EM_GROUP_NAME);
         if (TextUtils.isEmpty(toChatUsername) || !mmkv.decodeBool(Constant.EM_SUPPORT, false)) {
             fragment_index = 0;
         }
 
         Bundle bundle = new Bundle();
         bundle.putString("toChatUsername", toChatUsername);
-//        bundle.putString("userId",mmkv.decodeString(Constant.EM_USERNAME));
-
+        bundle.putString("groupName", groupName);
         tvUnreadNumber = findViewById(R.id.tv_unread_number);
 
         mTabs = new Button[3];
@@ -125,11 +124,9 @@ public class MainActivity extends LaunBaseActivity {
         fragments = new Fragment[]{fragmentMessage, fragmentConversation, fragmentTask};
         //传入
         fragmentConversation.setArguments(bundle);
-
         if (tvUnreadMsgNumber != null) tvUnreadMsgNumber.setBadgeCount(set_BadgeCount);
         //判定是否支持，以便于显示不同的布局
         currentTabIndex = fragment_index;
-
         isSupport();
 
     }
@@ -146,36 +143,18 @@ public class MainActivity extends LaunBaseActivity {
             btnContainerChat.setVisibility(View.VISIBLE);
             if (fragment_index == 0) {
                 // TODO: 2019/4/22 除非为强推消息，否则优先准儿帮
+                showSelect(fragment_index);
                 // refreshUIWithMessage(unread);
-                getSupportFragmentManager().beginTransaction()
-                        .show(fragmentMessage)
-                        .hide(fragmentConversation)
-                        .hide(fragmentTask)
-                        .commit();
             } else if (fragment_index == 1) {
-
-                getSupportFragmentManager().beginTransaction()
-                        .show(fragmentConversation)
-                        .hide(fragmentMessage)
-                        .hide(fragmentTask)
-                        .commit();
+                showSelect(fragment_index);
                 isShowDialog();
             } else {
-                getSupportFragmentManager().beginTransaction()
-                        .hide(fragmentMessage)
-                        .hide(fragmentConversation)
-                        .show(fragmentTask)
-                        .commit();
+                showSelect(fragment_index);
             }
 
         } else {
             btnContainerChat.setVisibility(View.GONE);
-            getSupportFragmentManager().beginTransaction()
-                    .show(fragmentMessage)
-                    .hide(fragmentConversation)
-                    .hide(fragmentTask)
-                    .commit();
-
+            showSelect(0);
         }
 
 
@@ -224,6 +203,21 @@ public class MainActivity extends LaunBaseActivity {
         mViews[index].setVisibility(View.VISIBLE);
         currentTabIndex = index;
 
+    }
+
+
+    private void showSelect(int selectIndex) {
+
+        FragmentTransaction trx = getSupportFragmentManager().beginTransaction();
+        for (int i = 0; i < fragments.length; i++) {
+            if (i == selectIndex) {
+                trx.add(R.id.fl_content, fragments[i]);
+                trx.show(fragments[i]);
+            } else {
+                trx.hide(fragments[i]);
+            }
+        }
+        trx.commit();
     }
 
 
@@ -297,6 +291,14 @@ public class MainActivity extends LaunBaseActivity {
     }
 
 
+    private void isShowDialog() {
+//        isSetNick = true;
+        if (isSetNick) {
+            mmkv.encode("isSetNick", false);
+            showDialogView();
+        }
+    }
+
     private void showDialogView() {
         View view = getLayoutInflater().inflate(R.layout.dialog_layout_nick, null);
         builder = new MyDialog(mContext, 0, 0, view, R.style.dialog);
@@ -305,10 +307,9 @@ public class MainActivity extends LaunBaseActivity {
         //初始化控件
         EditText editText = view.findViewById(R.id.et_dialog_nick);
         TextView btnCommit = view.findViewById(R.id.tv_dialog_commit);
-        String default_nick = mmkv.getString("nick", "");
-        String edit_nick = editText.getText().toString().trim();
+        String default_nick = mmkv.getString(Constant.EM_NICk, "");
         editText.setHint(default_nick);
-
+        String edit_nick = editText.getText().toString().trim();
         final String nick = TextUtils.isEmpty(edit_nick) ? default_nick : edit_nick;
         btnCommit.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -320,21 +321,17 @@ public class MainActivity extends LaunBaseActivity {
         builder.show();
     }
 
-
-    private void isShowDialog() {
-        if (isSetNick) {
-            mmkv.encode("isSetNick", false);
-            showDialogView();
-        }
-    }
-
     /**
      * 设置昵称，如果用户没有设置则用默认
      *
      * @param nick
      */
-    private void setNick(String nick) {
-        if (!TextUtils.isEmpty(nick) && TextUtils.equals(nick, mmkv.getString("nick", ""))) {
+    private void setNick(final String nick) {
+        if (TextUtils.isEmpty(nick)) {
+            ToastUtil.showShort(MainActivity.this, "昵称不能为空！");
+            return;
+        }
+        if (!TextUtils.isEmpty(nick) && TextUtils.equals(nick, mmkv.getString(Constant.EM_NICk, ""))) {
             return;
         }
 
@@ -342,14 +339,15 @@ public class MainActivity extends LaunBaseActivity {
             JSONObject jsonObject = new JSONObject();
             jsonObject.put("user_id", UserCacheManager.getMyInfo().getUserId());
             jsonObject.put("nickname", nick);
-
             OkGoUtilWeb.<String>post(this, Api.METHOD_IM_EDIT, jsonObject, IMUser.class, new BaseCallback<IMUser>() {
                 @Override
                 public void onSuccess(String method, IMUser model, String resoureJson) {
-                    if (null != model) {
-                        // TODO: 2019/4/22  昵称缓存到本地
-                        ToastUtil.showShort(MainActivity.this, "昵称设置成功！");
-                    }
+//                    if (null != model) {
+                    ToastUtil.showShort(MainActivity.this, "昵称设置成功！");
+                    // TODO: 2019/4/22  昵称缓存到本地
+                    UserCacheManager.updateMyNick(nick);
+                    mmkv.encode(Constant.EM_NICk, nick);
+//                    }
 
                 }
 

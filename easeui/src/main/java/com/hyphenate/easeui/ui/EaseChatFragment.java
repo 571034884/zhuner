@@ -25,7 +25,9 @@ import android.view.View.OnTouchListener;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.hyphenate.EMCallBack;
@@ -111,6 +113,7 @@ public class EaseChatFragment extends EaseBaseFragment implements EMMessageListe
     protected EaseVoiceRecorderView voiceRecorderView;
     protected SwipeRefreshLayout swipeRefreshLayout;
     protected ListView listView;
+    protected TextView groupTitle;
 
     private View kickedForOfflineLayout;
 
@@ -139,6 +142,7 @@ public class EaseChatFragment extends EaseBaseFragment implements EMMessageListe
     private boolean turnOnTyping;
     private String nick;
     private String avatar;
+    private String groupName;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -159,13 +163,16 @@ public class EaseChatFragment extends EaseBaseFragment implements EMMessageListe
         chatType = EaseConstant.CHATTYPE_GROUP;
         // userId you are chat with or group id
         toChatUsername = fragmentArgs.getString("toChatUsername");
+        groupName = fragmentArgs.getString("groupName");
         nick = fragmentArgs.getString("nick");
         avatar = fragmentArgs.getString("avatar");
         if (TextUtils.isEmpty(toChatUsername)) {
             List<EMGroup> grouplist = EMClient.getInstance().groupManager().getAllGroups();
             toChatUsername = grouplist.get(0).getGroupId();
         }
-//        toChatUsername = "79769202917377";
+        if (TextUtils.isEmpty(groupName)) {
+            groupName = "准儿帮帮群";
+        }
 
         this.turnOnTyping = turnOnTyping();
 
@@ -183,7 +190,8 @@ public class EaseChatFragment extends EaseBaseFragment implements EMMessageListe
         // hold to record voice
         //noinspection ConstantConditions
         voiceRecorderView = (EaseVoiceRecorderView) getView().findViewById(R.id.voice_recorder);
-
+        groupTitle =  getView().findViewById(R.id.group_title);
+        groupTitle.setText(groupName);
         // message list layout
         messageList = (EaseChatMessageList) getView().findViewById(R.id.message_list);
         if (chatType != EaseConstant.CHATTYPE_SINGLE)

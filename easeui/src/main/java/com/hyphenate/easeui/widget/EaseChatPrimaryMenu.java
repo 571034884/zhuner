@@ -244,23 +244,23 @@ public class EaseChatPrimaryMenu extends EaseChatPrimaryMenuBase implements OnCl
                 listener.onSendBtnClicked(s);
             }
         } else if (id == R.id.btn_set_mode_voice) {
-            setModeVoice();
-            showNormalFaceImage();
-            if (listener != null)
-                listener.onToggleVoiceBtnClicked();
+//            setModeVoice();
+//            showNormalFaceImage();
+//            if (listener != null)
+//                listener.onToggleVoiceBtnClicked();
         } else if (id == R.id.btn_set_mode_keyboard) {
-            setModeKeyboard();
-            showNormalFaceImage();
-            if (listener != null)
-                listener.onToggleVoiceBtnClicked();
+//            setModeKeyboard();
+//            showNormalFaceImage();
+//            if (listener != null)
+//                listener.onToggleVoiceBtnClicked();
         } else if (id == R.id.btn_more) {
-            buttonSetModeVoice.setVisibility(View.VISIBLE);
-            buttonSetModeKeyboard.setVisibility(View.GONE);
-            edittext_layout.setVisibility(View.VISIBLE);
-            buttonPressToSpeak.setVisibility(View.GONE);
-            showNormalFaceImage();
-            if (listener != null)
-                listener.onToggleExtendClicked();
+//            buttonSetModeVoice.setVisibility(View.VISIBLE);
+//            buttonSetModeKeyboard.setVisibility(View.GONE);
+//            edittext_layout.setVisibility(View.VISIBLE);
+//            buttonPressToSpeak.setVisibility(View.GONE);
+//            showNormalFaceImage();
+//            if (listener != null)
+//                listener.onToggleExtendClicked();
         } else if (id == R.id.et_sendmessage) {
             edittext_layout.setBackgroundResource(R.drawable.ease_input_bar_bg_active);
             faceNormal.setVisibility(View.VISIBLE);
@@ -299,7 +299,8 @@ public class EaseChatPrimaryMenu extends EaseChatPrimaryMenuBase implements OnCl
     protected void setModeKeyboard() {
         edittext_layout.setVisibility(View.VISIBLE);
         buttonSetModeKeyboard.setVisibility(View.GONE);
-        buttonSetModeVoice.setVisibility(View.VISIBLE);
+        buttonSetModeVoice.setVisibility(View.GONE);
+//        buttonSetModeVoice.setVisibility(View.VISIBLE);
         // mEditTextContent.setVisibility(View.VISIBLE);
         editText.requestFocus();
         // buttonSend.setVisibility(View.VISIBLE);

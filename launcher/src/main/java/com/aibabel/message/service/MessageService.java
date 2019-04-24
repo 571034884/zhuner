@@ -91,7 +91,7 @@ public class MessageService extends Service implements NetBroadcastReceiver.NetL
 
             for (EMMessage message : messages) {
                 try {
-                    Map<String,Object> map = message.ext();
+                    Map<String, Object> map = message.ext();
                     String at = (String) map.get("at");
 
                     if (TextUtils.equals(at, UserCacheManager.getMyInfo().getUserId())) {
@@ -212,9 +212,10 @@ public class MessageService extends Service implements NetBroadcastReceiver.NetL
                         if (model.getBody().getIs_im() == 1) {//支持准儿帮
                             mmkv.encode(Constant.EM_USERNAME, model.getBody().getUser_id());
                             mmkv.encode(Constant.EM_PASSWORD, model.getBody().getPwd());
-                            mmkv.encode(Constant.EM_PASSWORD, model.getBody().getPwd());
-                            mmkv.encode(Constant.EM_PASSWORD, model.getBody().getPwd());
+                            mmkv.encode(Constant.EM_NICk, model.getBody().getNickname());
+                            mmkv.encode(Constant.EM_AVATAR, model.getBody().getHead_img());
                             mmkv.encode(Constant.EM_GROUP, model.getBody().getGroup_id());
+                            mmkv.encode(Constant.EM_GROUP_NAME, model.getBody().getGroup_name());
                             mmkv.encode(Constant.EM_SUPPORT, true);
                             signIn(model);
                         } else {
@@ -257,7 +258,7 @@ public class MessageService extends Service implements NetBroadcastReceiver.NetL
         final String nickName = model.getBody().getNickname();
         final String avatar = model.getBody().getHead_img();
 
-        Log.e(TAG, "group:"+model.getBody().getGroup_id()+" username:"+username+" password:"+password +" nickName:"+nickName +" avatar:"+avatar);
+        Log.e(TAG, "group:" + model.getBody().getGroup_id() + " username:" + username + " password:" + password + " nickName:" + nickName + " avatar:" + avatar);
 
 
         if (TextUtils.equals(username, UserCacheManager.getMyInfo().getUserId())) {

@@ -48,6 +48,7 @@ public class IMUser extends BaseBean {
         private String head_img;
         private int is_im;
         private String group_id;
+        private String group_name;
 
 
         public String getUser_id() {
@@ -96,6 +97,14 @@ public class IMUser extends BaseBean {
 
         public void setGroup_id(String group_id) {
             this.group_id = group_id;
+        }
+
+        public String getGroup_name() {
+            return group_name;
+        }
+
+        public void setGroup_name(String group_name) {
+            this.group_name = group_name;
         }
     }
 }
