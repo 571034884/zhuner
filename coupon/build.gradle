@@ -47,7 +47,7 @@ android {
                 def version = "v${versionName}_${buildTime()}"
                 def endIndex = outputFile.name.indexOf('.apk')
                 def apkName = outputFile.name.substring(0, endIndex);
-                def fileName = "优惠券${version}.apk"
+                def fileName = "打折券_${version}.apk"
                 output.outputFileName = fileName
             }
         }

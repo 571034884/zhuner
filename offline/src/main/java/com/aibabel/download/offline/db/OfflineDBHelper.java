@@ -11,7 +11,7 @@ import com.aibabel.download.offline.app.MyApplication;
 import com.aibabel.download.offline.util.L;
 
 public class OfflineDBHelper extends SQLiteOpenHelper {
-    private static final int DB_VERSION = 7;
+    private static final int DB_VERSION = 6;
     private static final String DB_NAME = "offline.db";
     public static final String TABLE_NAME_OFFLINE_LAN = "offline_lan_list";
 

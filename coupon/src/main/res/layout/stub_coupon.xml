@@ -64,7 +64,7 @@
                 android:layout_centerInParent="true"
                 android:drawableLeft="@mipmap/my_coupon_no"
                 android:gravity="center"
-                android:text="优惠券"
+                android:text="打折券"
                 android:textColor="#c2c2c2"
                 android:textSize="@dimen/y28" />
         </RelativeLayout>
