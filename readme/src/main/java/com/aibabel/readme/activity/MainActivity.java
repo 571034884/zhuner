@@ -176,12 +176,12 @@ public class MainActivity extends BaseActivity {
                     readmeList.add(new ReadmeItemBean(9, "美食"));
                     readmeList.add(new ReadmeItemBean(10, "景区导览"));
                     readmeList.add(new ReadmeItemBean(11, "出入境"));
-                    readmeList.add(new ReadmeItemBean(12, "优惠券"));
+                    readmeList.add(new ReadmeItemBean(12, "打折券"));
                     readmeList.add(new ReadmeItemBean(13, "语音秘书"));
                     readmeList.add(new ReadmeItemBean(14, "全球上网"));
                     readmeList.add(new ReadmeItemBean(15, "离线管理"));
                     readmeList.add(new ReadmeItemBean(16, "设置"));
-                    readmeList.add(new ReadmeItemBean(17, "sos"));
+//                    readmeList.add(new ReadmeItemBean(17, "sos"));
                 }
                 break;
             case "PH"://fly
