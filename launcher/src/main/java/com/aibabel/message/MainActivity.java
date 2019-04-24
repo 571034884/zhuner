@@ -276,7 +276,7 @@ public class MainActivity extends LaunBaseActivity {
 
     private void refreshUIWithMessage(int count) {
         if (StringUtils.isSupported()) {
-            if (EMClient.getInstance().isConnected() && currentTabIndex != 1) {
+            if (EMClient.getInstance().isLoggedInBefore() && currentTabIndex != 1) {
                 tvUnreadNumber.setVisibility(View.VISIBLE);
                 if (0 < count && count < 99) {
                     tvUnreadNumber.setText(String.valueOf(count));

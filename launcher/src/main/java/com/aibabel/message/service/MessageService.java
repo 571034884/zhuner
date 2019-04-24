@@ -232,7 +232,13 @@ public class MessageService extends Service implements NetBroadcastReceiver.NetL
 
                 @Override
                 public void onError(String method, String message, String resoureJson) {
-
+                    mmkv.encode(Constant.EM_USERNAME, "");
+                    mmkv.encode(Constant.EM_PASSWORD, "");
+                    mmkv.encode(Constant.EM_NICk, "");
+                    mmkv.encode(Constant.EM_AVATAR, "");
+                    mmkv.encode(Constant.EM_GROUP, "");
+                    mmkv.encode(Constant.EM_GROUP_NAME, "");
+                    mmkv.encode(Constant.EM_SUPPORT, false);
                 }
 
                 @Override
