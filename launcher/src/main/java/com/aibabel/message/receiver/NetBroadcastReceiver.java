@@ -60,7 +60,6 @@ public class NetBroadcastReceiver extends BroadcastReceiver {
                 String serIP = mmkv.decodeString("serIP","");
                 if (TextUtils.isEmpty(serIP)){
                     Logs.e("当前 serIP 空");
-                    mmkv.encode("serIP",System.currentTimeMillis()+"");
                     getInternetService(context);
                 }else{
                     long intIP = Long.parseLong(serIP);
@@ -125,6 +124,7 @@ public class NetBroadcastReceiver extends BroadcastReceiver {
                     public void onSuccess(Response<String> response) {
                         if (!TextUtils.isEmpty(response.body().toString())) {
                             Log.e("SERVICE_FUWU", "onSuccess:" + response.body().toString());
+                            MMKV.defaultMMKV().encode("serIP",System.currentTimeMillis()+"");
                             saveService(response.body().toString());
                         } else {
                             //TODO 获取服务列表空
