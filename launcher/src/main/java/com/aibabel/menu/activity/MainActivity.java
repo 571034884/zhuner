@@ -178,19 +178,8 @@ public class MainActivity extends LaunBaseActivity implements NetBroadcastReceiv
         mMainLocation.setCompoundDrawablesWithIntrinsicBounds(null, null, null, null);
         loopHandler = new LooptempHandler(this);
         requestNetwork();
-
-        try {
-            new Thread(new Runnable() {
-                @Override
-                public void run() {
-                    init_neveruser();
-                    lock90day();
-                }
-            }).start();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
+        init_neveruser();
+        
 
         //息屏广播数据上传
         try {
