@@ -62,14 +62,17 @@ public class NetBroadcastReceiver extends BroadcastReceiver {
                     Logs.e("当前 serIP 空");
                     getInternetService(context);
                 }else{
-                    long intIP = Long.parseLong(serIP);
-                    long outIP = System.currentTimeMillis();
-                    long results = outIP - intIP;
-
-                    Logs.e("服务器域名计算:"+outIP+"-"+intIP+"="+results);
-                    //超过5小时 请求一次 1800000
-                    if (results > 1800000){
-                        mmkv.encode("serIP",outIP+"");
+                    if (!TextUtils.isEmpty(serIP)){
+                        long intIP = Long.parseLong(serIP);
+                        long outIP = System.currentTimeMillis();
+                        long results = outIP - intIP;
+                        Logs.e("服务器域名计算:"+outIP+"-"+intIP+"="+results);
+                        //超过5小时 请求一次 1800000
+                        if (results > 1800000){
+                            mmkv.encode("serIP",outIP+"");
+                            getInternetService(context);
+                        }
+                    }else{
                         getInternetService(context);
                     }
                 }
