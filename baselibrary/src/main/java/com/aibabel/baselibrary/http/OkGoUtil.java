@@ -2,9 +2,7 @@ package com.aibabel.baselibrary.http;
 
 import android.content.Context;
 import android.os.Build;
-import android.text.TextUtils;
 import android.util.Log;
-import android.widget.Toast;
 
 import com.aibabel.baselibrary.R;
 import com.aibabel.baselibrary.base.BaseApplication;
@@ -15,7 +13,6 @@ import com.aibabel.baselibrary.utils.ToastUtil;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.model.Response;
 import com.lzy.okgo.request.GetRequest;
-import com.lzy.okgo.request.PostRequest;
 import com.orhanobut.logger.Logger;
 
 import org.json.JSONArray;
@@ -23,10 +20,8 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 /**
  * 作者：SunSH on 2018/6/12 15:26

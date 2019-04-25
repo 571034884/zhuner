@@ -6,14 +6,9 @@ import android.net.Uri;
 import android.os.Build;
 import android.text.TextUtils;
 import android.util.Log;
-import android.view.TextureView;
 
 import com.aibabel.baselibrary.impl.IStatistics;
 import com.aibabel.baselibrary.utils.CommonUtils;
-import com.aibabel.baselibrary.utils.SharePrefUtil;
-import com.aibabel.baselibrary.utils.ToastUtil;
-import com.google.gson.JsonArray;
-import com.google.gson.JsonObject;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.StringCallback;
 import com.lzy.okgo.model.Response;
@@ -42,7 +37,6 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.logging.Logger;
 import java.util.zip.GZIPOutputStream;
 
 @ClassName("IStatistics")

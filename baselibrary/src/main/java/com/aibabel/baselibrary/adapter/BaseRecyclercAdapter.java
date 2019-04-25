@@ -8,7 +8,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.aibabel.baselibrary.R;
-import com.aibabel.baselibrary.http.BaseBean;
 import com.zhouyou.recyclerview.adapter.HelperRecyclerViewHolder;
 import com.zhouyou.recyclerview.adapter.HelperStateRecyclerViewAdapter;
 

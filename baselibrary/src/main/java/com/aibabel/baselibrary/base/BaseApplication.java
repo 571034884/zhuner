@@ -4,11 +4,8 @@ import android.app.Activity;
 import android.app.Application;
 import android.content.Context;
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.annotation.Nullable;
-import android.util.Log;
 
-import com.aibabel.aidlaar.StatisticsManager;
 import com.aibabel.baselibrary.BuildConfig;
 import com.aibabel.baselibrary.http.OkGoUtil;
 import com.aibabel.baselibrary.imageloader.ImageLoader;
@@ -20,7 +17,6 @@ import com.aibabel.baselibrary.mode.DataManager;
 import com.aibabel.baselibrary.mode.ServerManager;
 import com.aibabel.baselibrary.sphelper.SPHelper;
 import com.aibabel.baselibrary.utils.CommonUtils;
-import com.aibabel.baselibrary.utils.ProviderUtils;
 import com.lzy.okgo.OkGo;
 import com.orhanobut.logger.AndroidLogAdapter;
 import com.orhanobut.logger.FormatStrategy;
@@ -31,8 +27,6 @@ import com.umeng.analytics.MobclickAgent;
 import com.umeng.commonsdk.UMConfigure;
 import com.xuexiang.xipc.XIPC;
 
-import org.json.JSONArray;
-import org.json.JSONObject;
 import org.litepal.LitePal;
 
 import java.util.LinkedList;

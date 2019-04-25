@@ -14,7 +14,22 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
-import static com.aibabel.baselibrary.sphelper.ConstantUtil.*;
+import static com.aibabel.baselibrary.sphelper.ConstantUtil.CONTENT_URI;
+import static com.aibabel.baselibrary.sphelper.ConstantUtil.CURSOR_COLUMN_NAME;
+import static com.aibabel.baselibrary.sphelper.ConstantUtil.CURSOR_COLUMN_TYPE;
+import static com.aibabel.baselibrary.sphelper.ConstantUtil.CURSOR_COLUMN_VALUE;
+import static com.aibabel.baselibrary.sphelper.ConstantUtil.NULL_STRING;
+import static com.aibabel.baselibrary.sphelper.ConstantUtil.SEPARATOR;
+import static com.aibabel.baselibrary.sphelper.ConstantUtil.TYPE_BOOLEAN;
+import static com.aibabel.baselibrary.sphelper.ConstantUtil.TYPE_CLEAN;
+import static com.aibabel.baselibrary.sphelper.ConstantUtil.TYPE_CONTAIN;
+import static com.aibabel.baselibrary.sphelper.ConstantUtil.TYPE_FLOAT;
+import static com.aibabel.baselibrary.sphelper.ConstantUtil.TYPE_GET_ALL;
+import static com.aibabel.baselibrary.sphelper.ConstantUtil.TYPE_INT;
+import static com.aibabel.baselibrary.sphelper.ConstantUtil.TYPE_LONG;
+import static com.aibabel.baselibrary.sphelper.ConstantUtil.TYPE_STRING;
+import static com.aibabel.baselibrary.sphelper.ConstantUtil.TYPE_STRING_SET;
+import static com.aibabel.baselibrary.sphelper.ConstantUtil.VALUE;
 
 
 public class SPHelper {

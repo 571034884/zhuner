@@ -87,6 +87,15 @@
                 <category android:name="android.intent.category.HOME" />
             </intent-filter>
         </receiver>
+        <!--添加统计数据广播-->
+        <receiver android:name=".receiver.StatisticsReceiver"
+            android:exported="true"
+            android:enabled="true">
+            <intent-filter>
+                <action android:name="com.aibabel.statistics"/>
+
+            </intent-filter>
+        </receiver>
 
         <!-- 消息处理 -->
         <receiver

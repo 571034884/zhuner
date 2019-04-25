@@ -1,40 +1,26 @@
 package com.aibabel.baselibrary.base;
 
-import android.app.ActivityManager;
 import android.content.Context;
-import android.content.Entity;
 import android.content.Intent;
-import android.content.pm.ActivityInfo;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.WindowManager;
 
-import com.aibabel.aidlaar.StatisticsManager;
 import com.aibabel.baselibrary.bean.RepaireBean;
 import com.aibabel.baselibrary.http.BaseCallback;
 import com.aibabel.baselibrary.http.OkGoUtil;
-import com.aibabel.baselibrary.impl.KillSelfListener;
 import com.aibabel.baselibrary.utils.CommonUtils;
 import com.aibabel.baselibrary.utils.SharePrefUtil;
-import com.google.gson.JsonObject;
-import com.lzy.okgo.OkGo;
 import com.orhanobut.logger.Logger;
 import com.taobao.sophix.SophixManager;
 import com.umeng.analytics.MobclickAgent;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.io.IOException;
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
