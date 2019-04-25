@@ -67,8 +67,9 @@ public class NetBroadcastReceiver extends BroadcastReceiver {
                         long outIP = System.currentTimeMillis();
                         long results = outIP - intIP;
                         Logs.e("服务器域名计算:"+outIP+"-"+intIP+"="+results);
-                        //超过5小时 请求一次 1800000
-                        if (results > 1800000){
+                        //超过5小时 请求一次 18000000
+                        long fiveTimer = 60*60*1000*5;
+                        if (results > fiveTimer){
                             mmkv.encode("serIP",outIP+"");
                             getInternetService(context);
                         }
