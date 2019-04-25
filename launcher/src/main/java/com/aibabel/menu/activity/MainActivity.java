@@ -179,7 +179,7 @@ public class MainActivity extends LaunBaseActivity implements NetBroadcastReceiv
         loopHandler = new LooptempHandler(this);
         requestNetwork();
         init_neveruser();
-        
+
 
         //息屏广播数据上传
         try {
@@ -1145,7 +1145,7 @@ public class MainActivity extends LaunBaseActivity implements NetBroadcastReceiv
     /**
      * 测试IP
      */
-    //private static final String url_sync_order = "https://wx.aibabel.com:3002/common/api/machine/syncOrder";
+//    private static final String url_sync_order = "https://wx.aibabel.com:3002/common/api/machine/syncOrder";
     private static final String url_sync_order = "https://api.web.aibabel.cn:7001/common/api/machine/syncOrder";
 
     /**

@@ -58,8 +58,7 @@ public class CommonUtils {
             Log.e("CommonUtils",e.getMessage());
         }
 
-//        return sn;
-        return "0000000000000001";
+        return sn;
     }
 
 
