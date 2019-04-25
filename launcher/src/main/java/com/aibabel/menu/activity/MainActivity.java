@@ -3,7 +3,6 @@ package com.aibabel.menu.activity;
 import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.BroadcastReceiver;
-import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
@@ -57,7 +56,7 @@ import com.aibabel.menu.utils.Logs;
 import com.aibabel.menu.view.MaterialBadgeTextView;
 import com.aibabel.menu.view.MyDialog;
 import com.aibabel.menu.R;
-import com.aibabel.message.broadcast.ResidentNotificationHelper;
+import com.aibabel.message.HxMainActivity;
 import com.aibabel.message.receiver.MessageListener;
 import com.aibabel.message.receiver.NetBroadcastReceiver;
 import com.aibabel.message.service.MessageService;
@@ -80,7 +79,7 @@ import java.util.Map;
 import butterknife.BindView;
 import cn.jpush.android.api.JPushInterface;
 
-public class MainActivity extends LaunBaseActivity implements NetBroadcastReceiver.NetListener, LauncherBcastReceiver.LauncherListener,MessageListener {
+public class MainActivity extends LaunBaseActivity implements NetBroadcastReceiver.NetListener, LauncherBcastReceiver.LauncherListener {
 
     @BindView(R.id.main_location_app)
     TextView mMainLocation;
@@ -143,6 +142,7 @@ public class MainActivity extends LaunBaseActivity implements NetBroadcastReceiv
     private boolean flagApi = false;//判断请求
     private String oldCity = "";
     private int hxMessage = 0;
+    private boolean isEM = false;
 
 
     /**
@@ -467,8 +467,21 @@ public class MainActivity extends LaunBaseActivity implements NetBroadcastReceiv
 
     @Override
     protected void onResume() {
+        isEM = true;
+        if (hxMessage + set_BadgeCount > 0) {
+            homeBadge.setBadgeCount(hxMessage + set_BadgeCount);
+            homeBadge.setVisibility(View.VISIBLE);
+        } else {
+            homeBadge.setVisibility(View.INVISIBLE);
+        }
+
         super.onResume();
-        int count = EMClient.getInstance().chatManager().getUnreadMessageCount();
+    }
+
+    @Override
+    protected void onPause() {
+        isEM = false;
+        super.onPause();
     }
 
     private void registerNet() {
@@ -730,12 +743,12 @@ public class MainActivity extends LaunBaseActivity implements NetBroadcastReceiv
         if (hxMessage > 0) {
             fragment_index = 1;
         }
-        Intent intent = new Intent(this, com.aibabel.message.MsgMainActivity.class);
+        Intent intent = new Intent(this, HxMainActivity.class);
         intent.putExtra("count", hxMessage);
         intent.putExtra("fragment_index", fragment_index);
         startActivity(intent);
         homeBadge.setVisibility(View.GONE);
-        makeRead();
+        makeMessageAsRead();
     }
 
 
@@ -755,26 +768,16 @@ public class MainActivity extends LaunBaseActivity implements NetBroadcastReceiv
         startService(messageService);
     }
 
-    private void getHxUserInfo(){
-
+    private void getHxUserInfo() {
         Intent intent = new Intent(Constant.ACTION_HX_USERINFO);
         sendBroadcast(intent);
     }
 
 
-
     /**
      * 清除已读标记
      */
-    private void makeRead() {
-        hxMessage = 0;
-        fragment_index = 0;
-        Intent intent = new Intent(Constant.ACTION_MAKE_READED);
-        sendBroadcast(intent);
-    }
-
-    @Override
-    public void makeMessageAsRead() {
+    private void makeMessageAsRead() {
         hxMessage = 0;
         fragment_index = 0;
         Intent intent = new Intent(Constant.ACTION_MAKE_READED);
@@ -798,12 +801,15 @@ public class MainActivity extends LaunBaseActivity implements NetBroadcastReceiv
             if (activity != null) {
                 if (msg.what == Constant.MSG_RECEIVER) {
                     hxMessage = msg.arg1;
-                    if (hxMessage + set_BadgeCount > 0) {
-                        homeBadge.setBadgeCount(hxMessage + set_BadgeCount);
-                        homeBadge.setVisibility(View.VISIBLE);
-                    } else {
-                        homeBadge.setVisibility(View.INVISIBLE);
+                    if (isEM) {
+                        if ((hxMessage + set_BadgeCount) > 0) {
+                            homeBadge.setBadgeCount(hxMessage + set_BadgeCount);
+                            homeBadge.setVisibility(View.VISIBLE);
+                        } else {
+                            homeBadge.setVisibility(View.INVISIBLE);
+                        }
                     }
+
                 }
             }
         }

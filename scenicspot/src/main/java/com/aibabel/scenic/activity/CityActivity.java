@@ -144,12 +144,12 @@ public class CityActivity extends BaseScenicActivity {
     protected void onResume() {
         super.onResume();
         // 当前页面加载消耗系统资源较多，容易导致xipc与menu连接失败，延迟1500毫秒判断是否已经连接。如果没有连接则重新连接
-        tvHot.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                connectXIPC();
-            }
-        }, 1500);
+//        tvHot.postDelayed(new Runnable() {
+//            @Override
+//            public void run() {
+//                connectXIPC();
+//            }
+//        }, 1500);
     }
 
     /**

@@ -162,17 +162,26 @@ public class EaseChatFragment extends EaseBaseFragment implements EMMessageListe
 //        chatType = fragmentArgs.getInt(EaseConstant.EXTRA_CHAT_TYPE, EaseConstant.CHATTYPE_SINGLE);
         chatType = EaseConstant.CHATTYPE_GROUP;
         // userId you are chat with or group id
-        toChatUsername = fragmentArgs.getString("toChatUsername");
-        groupName = fragmentArgs.getString("groupName");
-        nick = fragmentArgs.getString("nick");
-        avatar = fragmentArgs.getString("avatar");
-        if (TextUtils.isEmpty(toChatUsername)) {
-            List<EMGroup> grouplist = EMClient.getInstance().groupManager().getAllGroups();
-            toChatUsername = grouplist.get(0).getGroupId();
+        try {
+            toChatUsername = fragmentArgs.getString("toChatUsername");
+            groupName = fragmentArgs.getString("groupName");
+            nick = fragmentArgs.getString("nick");
+            avatar = fragmentArgs.getString("avatar");
+            if (TextUtils.isEmpty(toChatUsername)) {
+                List<EMGroup> grouplist = EMClient.getInstance().groupManager().getAllGroups();
+                toChatUsername = grouplist.get(0).getGroupId();
+            }
+            if (TextUtils.isEmpty(groupName)) {
+                groupName = "准儿帮帮群";
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            if (TextUtils.isEmpty(toChatUsername)) {
+                List<EMGroup> grouplist = EMClient.getInstance().groupManager().getAllGroups();
+                toChatUsername = grouplist.get(0).getGroupId();
+            }
         }
-        if (TextUtils.isEmpty(groupName)) {
-            groupName = "准儿帮帮群";
-        }
+
 
         this.turnOnTyping = turnOnTyping();
 
@@ -190,7 +199,7 @@ public class EaseChatFragment extends EaseBaseFragment implements EMMessageListe
         // hold to record voice
         //noinspection ConstantConditions
         voiceRecorderView = (EaseVoiceRecorderView) getView().findViewById(R.id.voice_recorder);
-        groupTitle =  getView().findViewById(R.id.group_title);
+        groupTitle = getView().findViewById(R.id.group_title);
         groupTitle.setText(groupName);
         // message list layout
         messageList = (EaseChatMessageList) getView().findViewById(R.id.message_list);
@@ -741,7 +750,7 @@ public class EaseChatFragment extends EaseBaseFragment implements EMMessageListe
                 messageList.refreshSelectLast();
                 conversation.markMessageAsRead(message.getMsgId());
             }
-            EaseUI.getInstance().getNotifier().vibrateAndPlayTone(message);
+//            EaseUI.getInstance().getNotifier().vibrateAndPlayTone(message);
         }
     }
 
@@ -923,7 +932,9 @@ public class EaseChatFragment extends EaseBaseFragment implements EMMessageListe
         }
         if (chatFragmentHelper != null) {
             //set extension
+            message.setAttribute("at","");
             chatFragmentHelper.onSetMessageAttributes(message);
+
         }
         if (chatType == EaseConstant.CHATTYPE_GROUP) {
             message.setChatType(ChatType.GroupChat);

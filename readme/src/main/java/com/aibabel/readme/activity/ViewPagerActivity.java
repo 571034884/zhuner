@@ -33,7 +33,7 @@ public class ViewPagerActivity extends BaseActivity {
 
     private int[] sos = {R.mipmap.sos1, R.mipmap.sos2};
     private int[] huilu = {R.mipmap.huilv1};
-    private int[] jinqu = {R.mipmap.jinqu1, R.mipmap.jinqu2, R.mipmap.jinqu3, R.mipmap.jinqu4, R.mipmap.jinqu5, R.mipmap.jinqu6, R.mipmap.jinqu7, R.mipmap.jinqu8};
+    private int[] jinqu = {R.mipmap.jingqu1, R.mipmap.jingqu2, R.mipmap.jingqu3, R.mipmap.jingqu4, R.mipmap.jingqu5};
     private int[] quanqiu = {R.mipmap.quanqiu1, R.mipmap.quanqiu2, R.mipmap.quanqiu3, R.mipmap.quanqiu4, R.mipmap.quanqiu5, R.mipmap.quanqiu6, R.mipmap.quanqiu7};
     private int[] mudidi = {R.mipmap.mudidi1, R.mipmap.mudidi2, R.mipmap.mudidi3};
 
@@ -48,18 +48,18 @@ public class ViewPagerActivity extends BaseActivity {
     private int[] ditu_proL = {R.mipmap.ditu1, R.mipmap.ditu2, R.mipmap.ditu3, R.mipmap.ditu4, R.mipmap.ditu5, R.mipmap.ditu6, R.mipmap.ditu7, R.mipmap.ditu8};
     private int[] shezhi_proL = {R.mipmap.shezhi1, R.mipmap.shezhi2, R.mipmap.shezhi3, R.mipmap.shezhi4, R.mipmap.shezhi5, R.mipmap.shezhi6, R.mipmap.shezhi7};
     private int[] huilu_proL = {R.mipmap.huilv1};
-    private int[] jinqu_proL = {R.mipmap.jinqu1, R.mipmap.jinqu2, R.mipmap.jinqu3, R.mipmap.jinqu4, R.mipmap.jinqu5, R.mipmap.jinqu6, R.mipmap.jinqu7, R.mipmap.jinqu8};
+    private int[] jinqu_proL = {R.mipmap.jingqu1, R.mipmap.jingqu2, R.mipmap.jingqu3, R.mipmap.jingqu4, R.mipmap.jingqu5};
     private int[] lixian_proL = {R.mipmap.lixian1, R.mipmap.lixian2};
     private int[] sos_proL = {R.mipmap.sos1, R.mipmap.sos2};
-//    private int[] paizhao_proL = {R.mipmap.p1, R.mipmap.p2,R.mipmap.p3};
-    private int[] paizhao_proL = {R.mipmap.p1, R.mipmap.photo2};
+    //    private int[] paizhao_proL = {R.mipmap.p1, R.mipmap.p2,R.mipmap.p3};
+    private int[] paizhao_proL = {R.mipmap.photo1, R.mipmap.photo2};
     private int[] quanqiu_proL = {R.mipmap.quanqiu1, R.mipmap.quanqiu2, R.mipmap.quanqiu8, R.mipmap.quanqiu9, R.mipmap.quanqiu4, R.mipmap.quanqiu5, R.mipmap.quanqiu6, R.mipmap.quanqiu7};
 
     private int[] shijiezhong_proL = {R.mipmap.zhong1};
     private int[] caidan_proL = {R.mipmap.caidan1, R.mipmap.caidan2,R.mipmap.caidan3,R.mipmap.caidan4};
     private int[] tianqi_proL = {R.mipmap.tianqi1, R.mipmap.tianqi2};
     private int[] youhuiquan_proL = {R.mipmap.youhuiquan1, R.mipmap.youhuiquan2, R.mipmap.youhuiquan3};
-//    private int[] yuyinfanyi_proL = {R.mipmap.yuyinfanyi1, R.mipmap.yuyinfanyi4, R.mipmap.yuyinfanyi5, R.mipmap.yuyinfanyi6, R.mipmap.yuyinfanyi3};
+    //    private int[] yuyinfanyi_proL = {R.mipmap.yuyinfanyi1, R.mipmap.yuyinfanyi4, R.mipmap.yuyinfanyi5, R.mipmap.yuyinfanyi6, R.mipmap.yuyinfanyi3};
     private int[] yuyinfanyi_proL = {R.mipmap.yuyinfanyi1, R.mipmap.yuyinfanyi4, R.mipmap.yuyinfanyi7, R.mipmap.yuyinfanyi6, R.mipmap.yuyinfanyi3};
     private int[] yuyinmishu_proL = {R.mipmap.yuyinmishu1};
     private int[] wanle_proL = {R.mipmap.play1, R.mipmap.play2, R.mipmap.play3, R.mipmap.play4, R.mipmap.play5, R.mipmap.play6, R.mipmap.play7};

@@ -15,12 +15,15 @@ import android.widget.Toast;
 
 import com.aibabel.baselibrary.http.BaseCallback;
 import com.aibabel.baselibrary.utils.CommonUtils;
+import com.aibabel.baselibrary.utils.ThreadPoolManager;
+import com.aibabel.menu.activity.MainActivity;
 import com.aibabel.menu.net.Api;
+import com.aibabel.menu.utils.DetectUtil;
 import com.aibabel.menu.utils.Logs;
 import com.aibabel.message.helper.DemoHelper;
 import com.aibabel.message.hx.bean.IMUser;
 import com.aibabel.message.hx.cache.UserCacheManager;
-import com.aibabel.message.receiver.NetBroadcastReceiver;
+import com.aibabel.message.receiver.HXNetBroadcastReceiver;
 import com.aibabel.message.utiles.Constant;
 import com.aibabel.message.utiles.OkGoUtilWeb;
 import com.hyphenate.EMCallBack;
@@ -38,11 +41,12 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 
-public class MessageService extends Service implements NetBroadcastReceiver.NetListener {
+public class MessageService extends Service implements HXNetBroadcastReceiver.NetListener {
 
     private String TAG = MessageService.class.getSimpleName().toString();
     private Messenger mMessenger;
     private MessageMusicBroadReceiver receiver;
+    private HXNetBroadcastReceiver broadcastReceiver;
     private int unread = 0;
     private MMKV mmkv = MMKV.defaultMMKV();
 
@@ -53,6 +57,7 @@ public class MessageService extends Service implements NetBroadcastReceiver.NetL
     public void onCreate() {
         super.onCreate();
         regFilter();
+        registerNet();
     }
 
     @Override
@@ -67,7 +72,6 @@ public class MessageService extends Service implements NetBroadcastReceiver.NetL
         if (intent != null) {
             mMessenger = (Messenger) intent.getExtras().get("messenger");
         }
-
         /**
          * 添加环信监听
          */
@@ -81,6 +85,15 @@ public class MessageService extends Service implements NetBroadcastReceiver.NetL
         return super.onStartCommand(intent, flags, startId);
     }
 
+
+    private void registerNet() {
+        //网络变化广播监听
+        broadcastReceiver = new HXNetBroadcastReceiver();
+        IntentFilter intentFilter = new IntentFilter();
+        intentFilter.addAction("android.net.conn.CONNECTIVITY_CHANGE");
+        registerReceiver(broadcastReceiver, intentFilter);
+        broadcastReceiver.setListener(this);
+    }
 
     /**
      * 环信监听
@@ -96,20 +109,13 @@ public class MessageService extends Service implements NetBroadcastReceiver.NetL
                     Map<String, Object> map = message.ext();
                     String at = (String) map.get("at");
 
-                    if (TextUtils.equals(at, mmkv.getString(Constant.EM_USERNAME, ""))) {
-
-                        TimerTask task = new TimerTask() {
-                            @Override
-                            public void run() {
-                                if (EMClient.getInstance().chatManager().getUnreadMessageCount() > 0) {
-                                    unread++;
-                                    refreshUIWithMessage(unread);
-                                }
+                    if (!TextUtils.isEmpty(at) && TextUtils.equals(at, mmkv.getString(Constant.EM_USERNAME, ""))) {
+                        if (EMClient.getInstance().chatManager().getUnreadMessageCount() > 0) {
+                            if (DetectUtil.isForeground(getApplicationContext(), MainActivity.class)) {
+                                unread++;
+                                refreshUIWithMessage(unread);
                             }
-                        };
-                        Timer timer = new Timer();
-                        timer.schedule(task, 3000);//3秒后执行TimeTask的run方法
-
+                        }
 
                     }
 
@@ -117,7 +123,6 @@ public class MessageService extends Service implements NetBroadcastReceiver.NetL
                     e.printStackTrace();
                 }
             }
-
 
         }
 
@@ -166,27 +171,30 @@ public class MessageService extends Service implements NetBroadcastReceiver.NetL
     public void netState(boolean isAvailable) {
         //判定如果有网络检查环信是否登录，未登录去登录
         String isLogin = mmkv.decodeString("isLogin", "");
-        if (isAvailable && TextUtils.isEmpty(isLogin)) {
-            getUserInfo();
-        } else {
-            long intIP = Long.parseLong(isLogin);
-            long outIP = System.currentTimeMillis();
-            long results = outIP - intIP;
-            Logs.e("环信登录计算:" + outIP + "-" + intIP + "=" + results);
-            //超过5小时 请求一次 1800000
-            if (results > 1800000) {
+        if (isAvailable) {
+            Logs.e("监听到有网络了");
+            if (TextUtils.isEmpty(isLogin)) {
                 getUserInfo();
+            } else {
+                try {
+                    long intIP = Long.parseLong(isLogin);
+                    long outIP = System.currentTimeMillis();
+                    long results = outIP - intIP;
+                    Logs.e("环信登录计算:" + outIP + "-" + intIP + "=" + results);
+                    //超过5小时 请求一次 5*60*60*1000
+                    if (results > 5 * 60 * 60 * 1000) {
+                        getUserInfo();
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+
+
             }
         }
 
 
     }
-
-    @Override
-    public void netState(String nameWifi) {
-
-    }
-
 
     /**
      * 广播接收者
@@ -199,10 +207,9 @@ public class MessageService extends Service implements NetBroadcastReceiver.NetL
                     unread = 0;
                     break;
                 case Constant.ACTION_HX_USERINFO:
+                    Log.e(TAG, "getUserInfo");
                     getUserInfo();
                     break;
-
-
             }
         }
     }
@@ -216,10 +223,12 @@ public class MessageService extends Service implements NetBroadcastReceiver.NetL
         try {
             JSONObject jsonObject = new JSONObject();
             jsonObject.put("sn", CommonUtils.getSN());
+            jsonObject.put("version", CommonUtils.getDevice());
 
-            OkGoUtilWeb.<String>post(this, Api.METHOD_IM, jsonObject, IMUser.class, new BaseCallback<IMUser>() {
+            OkGoUtilWeb.<String>post(MessageService.this, Api.METHOD_IM, jsonObject, IMUser.class, new BaseCallback<IMUser>() {
                 @Override
                 public void onSuccess(String method, IMUser model, String resoureJson) {
+                    Log.i(TAG, "" + resoureJson);
                     if (null != model) {
                         Log.i(TAG, "请求成功了");
                         mmkv.encode("isLogin", System.currentTimeMillis() + "");
@@ -233,6 +242,7 @@ public class MessageService extends Service implements NetBroadcastReceiver.NetL
                             mmkv.encode(Constant.EM_SUPPORT, true);
                             signIn(model);
                         } else {
+                            Log.i(TAG, "不支持环信登录");
                             mmkv.encode(Constant.EM_SUPPORT, false);
                             //判定当前是否在登录着 如果登录着，则退出登录
                             if (DemoHelper.getInstance().isLoggedIn()) {
@@ -246,13 +256,14 @@ public class MessageService extends Service implements NetBroadcastReceiver.NetL
 
                 @Override
                 public void onError(String method, String message, String resoureJson) {
-                    mmkv.encode(Constant.EM_USERNAME, "");
-                    mmkv.encode(Constant.EM_PASSWORD, "");
-                    mmkv.encode(Constant.EM_NICk, "");
-                    mmkv.encode(Constant.EM_AVATAR, "");
-                    mmkv.encode(Constant.EM_GROUP, "");
-                    mmkv.encode(Constant.EM_GROUP_NAME, "");
-                    mmkv.encode(Constant.EM_SUPPORT, false);
+                    Log.i(TAG, "请求失败了！");
+//                    mmkv.encode(Constant.EM_USERNAME, "");
+//                    mmkv.encode(Constant.EM_PASSWORD, "");
+//                    mmkv.encode(Constant.EM_NICk, "");
+//                    mmkv.encode(Constant.EM_AVATAR, "");
+//                    mmkv.encode(Constant.EM_GROUP, "");
+//                    mmkv.encode(Constant.EM_GROUP_NAME, "");
+//                    mmkv.encode(Constant.EM_SUPPORT, false);
                 }
 
                 @Override
@@ -263,6 +274,7 @@ public class MessageService extends Service implements NetBroadcastReceiver.NetL
         } catch (Exception e) {
             e.printStackTrace();
         }
+
 
     }
 
@@ -278,16 +290,16 @@ public class MessageService extends Service implements NetBroadcastReceiver.NetL
 
         Log.e(TAG, "group:" + model.getBody().getGroup_id() + " username:" + username + " password:" + password + " nickName:" + nickName + " avatar:" + avatar);
 
-
-//        if (TextUtils.equals(username, UserCacheManager.getMyInfo().getUserId())) {
-//            Log.i(TAG, "已经登录了");
-//            return;
-//        }
         if (TextUtils.isEmpty(username) || TextUtils.isEmpty(password)) {
             Log.i(TAG, "账号密码空了");
             return;
         }
 
+        String id = UserCacheManager.getUserId();
+        if (!TextUtils.isEmpty(id) && TextUtils.equals(id, username)) {
+            Log.i(TAG, "自动登录了");
+            return;
+        }
 
         EMClient.getInstance().login(username, password, new EMCallBack() {
 
@@ -298,7 +310,6 @@ public class MessageService extends Service implements NetBroadcastReceiver.NetL
                 EMClient.getInstance().chatManager().loadAllConversations();
                 // 加载所有群组到内存，如果使用了群组的话
                 EMClient.getInstance().groupManager().loadAllGroups();
-                sentLoginStatus(Constant.STATE_LOGIN_SUCCESS);
                 /**
                  * 保存账号密码到全局
                  */
@@ -308,6 +319,7 @@ public class MessageService extends Service implements NetBroadcastReceiver.NetL
                  * 登录成功后，保存用户信息
                  */
                 UserCacheManager.save(username, nickName, avatar);
+                UserCacheManager.saveUserId(username);
 
             }
 
@@ -318,10 +330,7 @@ public class MessageService extends Service implements NetBroadcastReceiver.NetL
              */
             @Override
             public void onError(final int i, final String s) {
-
-                sentLoginStatus(Constant.STATE_LOGIN_FAILED);
-
-                Log.d("lzan13", "登录失败 Error code:" + i + ", message:" + s);
+                Log.e(TAG, "登录失败 Error code:" + i + ", message:" + s);
                 /**
                  * 关于错误码可以参考官方api详细说明
                  * http://www.easemob.com/apidoc/android/chat3.0/classcom_1_1hyphenate_1_1_e_m_error.html
@@ -390,25 +399,6 @@ public class MessageService extends Service implements NetBroadcastReceiver.NetL
     }
 
     /**
-     * 发送登录状态
-     *
-     * @param status
-     */
-    private void sentLoginStatus(int status) {
-        Message mMessage = Message.obtain();
-        mMessage.what = Constant.STATE_LOGIN_SUCCESS;
-        mMessage.obj = status;
-        try {
-            //发送登录状态
-            mMessenger.send(mMessage);
-        } catch (RemoteException e) {
-            e.printStackTrace();
-        }
-
-    }
-
-
-    /**
      * 更新未读数量
      */
     private void refreshUIWithMessage(int count) {
@@ -422,7 +412,6 @@ public class MessageService extends Service implements NetBroadcastReceiver.NetL
         } catch (RemoteException e) {
             e.printStackTrace();
         }
-
     }
 
 
@@ -431,6 +420,9 @@ public class MessageService extends Service implements NetBroadcastReceiver.NetL
         super.onDestroy();
         if (receiver != null) {
             getApplicationContext().unregisterReceiver(receiver);
+        }
+        if (broadcastReceiver != null) {
+            getApplicationContext().unregisterReceiver(broadcastReceiver);
         }
 
     }

@@ -1,9 +1,12 @@
 package com.aibabel.message;
 
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -13,7 +16,9 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.aibabel.baselibrary.http.BaseCallback;
+import com.aibabel.baselibrary.utils.CommonUtils;
 import com.aibabel.baselibrary.utils.ToastUtil;
+import com.aibabel.menu.activity.MainActivity;
 import com.aibabel.menu.base.LaunBaseActivity;
 import com.aibabel.menu.net.Api;
 import com.aibabel.menu.view.MaterialBadgeTextView;
@@ -35,6 +40,7 @@ import com.hyphenate.chat.EMMessage;
 
 import org.json.JSONObject;
 
+import java.lang.ref.WeakReference;
 import java.util.List;
 import java.util.Map;
 import java.util.Timer;
@@ -44,7 +50,7 @@ import butterknife.BindView;
 
 import static com.aibabel.menu.activity.MainActivity.set_BadgeCount;
 
-public class MsgMainActivity extends LaunBaseActivity {
+public class HxMainActivity extends LaunBaseActivity {
 
 
     @BindView(R.id.fl_content)
@@ -83,6 +89,8 @@ public class MsgMainActivity extends LaunBaseActivity {
     private boolean isSetNick;
     private MyDialog builder;
     private int unread = 0;
+    private MyHandler handler = new MyHandler(HxMainActivity.this);
+    private String groupName;
 
 
     @Override
@@ -92,18 +100,19 @@ public class MsgMainActivity extends LaunBaseActivity {
 
     @Override
     protected void initView() {
-        fragment_index = getIntent().getExtras().getInt("fragment_index", 0);
-        isSetNick = mmkv.decodeBool("isSetNick", true);
-//        unread = mmkv.decodeInt("count", 0);
-        //get user id or group id
-        toChatUsername = mmkv.decodeString(Constant.EM_GROUP);
-        String groupName = mmkv.decodeString(Constant.EM_GROUP_NAME);
-        if (TextUtils.isEmpty(toChatUsername) || !mmkv.decodeBool(Constant.EM_SUPPORT, false)) {
-            fragment_index = 0;
+        try {
+            fragment_index = getIntent().getExtras().getInt("fragment_index", 0);
+            isSetNick = mmkv.decodeBool("isSetNick", true);
+            toChatUsername = mmkv.decodeString(Constant.EM_GROUP);
+            groupName = mmkv.decodeString(Constant.EM_GROUP_NAME);
+        } catch (Exception e) {
+            e.printStackTrace();
         }
 
 
-//        tvUnreadNumber = findViewById(R.id.tv_unread_number);
+        if (TextUtils.isEmpty(toChatUsername) || !mmkv.decodeBool(Constant.EM_SUPPORT, false)) {
+            fragment_index = 0;
+        }
 
         mTabs = new Button[3];
         mTabs[0] = findViewById(R.id.btn_msg);
@@ -130,6 +139,7 @@ public class MsgMainActivity extends LaunBaseActivity {
         if (tvUnreadMsgNumber != null) tvUnreadMsgNumber.setBadgeCount(set_BadgeCount);
         //判定是否支持，以便于显示不同的布局
         currentTabIndex = fragment_index;
+//        EMClient.getInstance().chatManager().addMessageListener(messageListener);
         isSupport();
 
     }
@@ -166,7 +176,6 @@ public class MsgMainActivity extends LaunBaseActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        EMClient.getInstance().chatManager().addMessageListener(messageListener);
     }
 
 
@@ -216,6 +225,7 @@ public class MsgMainActivity extends LaunBaseActivity {
         for (int i = 0; i < fragments.length; i++) {
             if (i == selectIndex) {
                 trx.add(R.id.fl_content, fragments[i]);
+                Log.e("selectIndex", selectIndex + "");
                 trx.show(fragments[i]);
                 if (i == 0) {
                     addStatisticsEvent("menu_team_butt", null);
@@ -248,21 +258,15 @@ public class MsgMainActivity extends LaunBaseActivity {
                     try {
                         Map<String, Object> map = message.ext();
                         String at = (String) map.get("at");
-                        if (TextUtils.equals(at, mmkv.getString(Constant.EM_USERNAME, "")) && EMClient.getInstance().chatManager().getUnreadMessageCount() > 0) {
-//                            unread++;
-//                            refreshUIWithMessage(unread);
-                            TimerTask task = new TimerTask() {
-                                @Override
-                                public void run() {
-                                    if (EMClient.getInstance().chatManager().getUnreadMessageCount() > 0) {
-                                        unread++;
-                                        refreshUIWithMessage(unread);
-                                    }
-                                }
-                            };
-                            Timer timer = new Timer();
-                            timer.schedule(task, 3000);//3秒后执行TimeTask的run方法
-
+                        if (TextUtils.equals(at, mmkv.getString(Constant.EM_USERNAME, ""))) {
+                            if (EMClient.getInstance().chatManager().getUnreadMessageCount() > 0) {
+                                Log.e("HxMainActivity", "接受到环信@的消息了");
+                                unread++;
+                                Message msg = new Message();
+                                msg.what = 100;
+                                msg.arg1 = unread;
+                                handler.sendMessage(msg);
+                            }
                         }
                     } catch (Exception e) {
                         e.printStackTrace();
@@ -296,20 +300,41 @@ public class MsgMainActivity extends LaunBaseActivity {
         }
     };
 
+    /**
+     * 声明静态内部类不会持有外部类的隐式引用
+     */
+    private class MyHandler extends Handler {
+        private final WeakReference<HxMainActivity> mActivity;
+
+        public MyHandler(HxMainActivity activity) {
+            mActivity = new WeakReference<HxMainActivity>(activity);
+        }
+
+        @Override
+        public void handleMessage(Message msg) {
+            HxMainActivity activity = mActivity.get();
+            if (activity != null) {
+                if (msg.what == 100) {
+                    int count = msg.arg1;
+                    refreshUIWithMessage(count);
+                }
+            }
+        }
+    }
+
+
     private void refreshUIWithMessage(final int count) {
 
         if (EMClient.getInstance().isLoggedInBefore() && currentTabIndex != 1) {
-            runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    if (count > 0) {
-                        tvUnreadNumber.setBadgeCount(count);
-                        tvUnreadNumber.setVisibility(View.VISIBLE);
-                    } else {
-                        tvUnreadNumber.setVisibility(View.GONE);
-                    }
-                }
-            });
+
+            Log.e("HxMainActivity", count + "");
+            if (count > 0) {
+                tvUnreadNumber.setBadgeCount(count);
+                tvUnreadNumber.setVisibility(View.VISIBLE);
+            } else {
+                tvUnreadNumber.setVisibility(View.GONE);
+            }
+
 
         }
     }
@@ -351,7 +376,7 @@ public class MsgMainActivity extends LaunBaseActivity {
      */
     private void setNick(final String nick) {
         if (TextUtils.isEmpty(nick)) {
-            ToastUtil.showShort(this, "昵称不能为空！");
+            ToastUtil.showShort(HxMainActivity.this, "昵称不能为空！");
             return;
         }
         if (!TextUtils.isEmpty(nick) && TextUtils.equals(nick, mmkv.getString(Constant.EM_NICk, ""))) {
@@ -362,11 +387,12 @@ public class MsgMainActivity extends LaunBaseActivity {
             JSONObject jsonObject = new JSONObject();
             jsonObject.put("user_id", mmkv.decodeString(Constant.EM_USERNAME));
             jsonObject.put("nickname", nick);
+            jsonObject.put("version", CommonUtils.getDevice());
             OkGoUtilWeb.<String>post(this, Api.METHOD_IM_EDIT, jsonObject, IMUser.class, new BaseCallback<IMUser>() {
                 @Override
                 public void onSuccess(String method, IMUser model, String resoureJson) {
 //                    if (null != model) {
-                    ToastUtil.showShort(MsgMainActivity.this, "昵称设置成功！");
+                    ToastUtil.showShort(HxMainActivity.this, "昵称设置成功！");
                     // TODO: 2019/4/22  昵称缓存到本地
                     UserCacheManager.updateMyNick(nick);
                     mmkv.encode(Constant.EM_NICk, nick);
@@ -376,7 +402,7 @@ public class MsgMainActivity extends LaunBaseActivity {
 
                 @Override
                 public void onError(String method, String message, String resoureJson) {
-                    ToastUtil.showShort(MsgMainActivity.this, "修改失败了，您暂时使用默认昵称");
+                    ToastUtil.showShort(HxMainActivity.this, "修改失败了，您暂时使用默认昵称");
                 }
 
                 @Override

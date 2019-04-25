@@ -288,7 +288,7 @@ public abstract class EaseChatRow extends LinearLayout {
                         } else {
 //                            itemClickListener.onUserAvatarLongClick(message.getFrom());
                             //修改长按显示昵称不显示用户ID
-                            itemClickListener.onUserAvatarLongClick(TextUtils.isEmpty((String) (message.ext().get("nickname"))) ? message.getFrom() : (String) (message.ext().get("nickname")));
+//                            itemClickListener.onUserAvatarLongClick(TextUtils.isEmpty((String) (message.ext().get("nickname"))) ? message.getFrom() : (String) (message.ext().get("nickname")));
                         }
                         return true;
                     }

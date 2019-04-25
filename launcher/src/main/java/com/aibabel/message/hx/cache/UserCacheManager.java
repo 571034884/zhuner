@@ -7,6 +7,7 @@ import com.hyphenate.chat.EMClient;
 import com.hyphenate.chat.EMMessage;
 import com.hyphenate.easeui.domain.EaseUser;
 import com.j256.ormlite.dao.Dao;
+import com.tencent.mmkv.MMKV;
 
 import java.util.Date;
 import java.util.HashMap;
@@ -313,4 +314,22 @@ public class UserCacheManager {
 
         return new Gson().toJson(map);
     }
+
+
+    /**
+     * 获取环信用户Id
+     * @return
+     */
+    public static String getUserId(){
+        return MMKV.defaultMMKV().decodeString(kChatUserId,"");
+    }
+
+    /**
+     * 在登陆成功后保存环信用户ID
+     * @param userId
+     */
+    public static void saveUserId(String userId){
+        MMKV.defaultMMKV().encode(kChatUserId,userId);
+    }
+
 }

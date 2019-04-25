@@ -70,7 +70,7 @@
         <activity android:name=".activity.PushH5Activity" />
 
         <activity
-            android:name="com.aibabel.message.MsgMainActivity"
+            android:name="com.aibabel.message.HxMainActivity"
             android:launchMode="singleTop"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden|adjustResize" />
