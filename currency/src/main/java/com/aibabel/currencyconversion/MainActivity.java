@@ -214,8 +214,8 @@ public class MainActivity extends BaseActivity {
         etCurrencyCount2.getViewTreeObserver().addOnGlobalLayoutListener(new MyGlobalLayoutListener(llZuo2, llYou2, tvCurrencyAbbreviations2, ivXiala2));
         etCurrencyCount3.getViewTreeObserver().addOnGlobalLayoutListener(new MyGlobalLayoutListener(llZuo3, llYou3, tvCurrencyAbbreviations3, ivXiala3));
 
-        String city = ProviderUtils.getInfo(ProviderUtils.COLUMN_CITY);
-        if (city.equals("日本") || city.equals("泰国")|| city.equals("Japan")|| city.equals("Thailand")){
+        String country = ProviderUtils.getInfo(ProviderUtils.COLUMN_COUNTRY);
+        if (country.equals("日本") || country.equals("泰国")|| country.equals("Japan")|| country.equals("Thailand")){
             rlBottomView.setVisibility(View.VISIBLE);
             SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy年MM月dd日");
             Date date = new Date(System.currentTimeMillis());
