@@ -11,13 +11,23 @@ import com.aibabel.baselibrary.base.StatisticsBaseActivity;
 import com.aibabel.tucao.app.BaseApplication;
 import com.umeng.analytics.MobclickAgent;
 
-public class BaseActivity extends StatisticsBaseActivity implements View.OnClickListener {
+public class BaseActivity extends com.aibabel.baselibrary.base.BaseActivity implements View.OnClickListener {
     @Override
-    protected void onCreate(@Nullable Bundle savedInstanceState) {
+    public void onCreate(@Nullable Bundle savedInstanceState) {
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
         super.onCreate(savedInstanceState);
+
+    }
+
+    @Override
+    public int getLayout(Bundle savedInstanceState) {
+        return 0;
+    }
+
+    @Override
+    public void init() {
 
     }
 

@@ -93,7 +93,7 @@ public class Main2Activity extends BaseActivity implements BaseCallback, AudioRe
     private boolean isFind;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main2);
         ButterKnife.bind(this);
