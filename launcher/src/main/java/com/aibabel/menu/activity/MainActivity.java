@@ -730,7 +730,7 @@ public class MainActivity extends LaunBaseActivity implements NetBroadcastReceiv
         if (hxMessage > 0) {
             fragment_index = 1;
         }
-        Intent intent = new Intent(this, com.aibabel.message.MainActivity.class);
+        Intent intent = new Intent(this, com.aibabel.message.MsgMainActivity.class);
         intent.putExtra("count", hxMessage);
         intent.putExtra("fragment_index", fragment_index);
         startActivity(intent);

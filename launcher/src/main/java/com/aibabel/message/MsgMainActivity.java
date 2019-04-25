@@ -44,7 +44,7 @@ import butterknife.BindView;
 
 import static com.aibabel.menu.activity.MainActivity.set_BadgeCount;
 
-public class MainActivity extends LaunBaseActivity {
+public class MsgMainActivity extends LaunBaseActivity {
 
 
     @BindView(R.id.fl_content)
@@ -351,7 +351,7 @@ public class MainActivity extends LaunBaseActivity {
      */
     private void setNick(final String nick) {
         if (TextUtils.isEmpty(nick)) {
-            ToastUtil.showShort(MainActivity.this, "昵称不能为空！");
+            ToastUtil.showShort(this, "昵称不能为空！");
             return;
         }
         if (!TextUtils.isEmpty(nick) && TextUtils.equals(nick, mmkv.getString(Constant.EM_NICk, ""))) {
@@ -366,7 +366,7 @@ public class MainActivity extends LaunBaseActivity {
                 @Override
                 public void onSuccess(String method, IMUser model, String resoureJson) {
 //                    if (null != model) {
-                    ToastUtil.showShort(MainActivity.this, "昵称设置成功！");
+                    ToastUtil.showShort(MsgMainActivity.this, "昵称设置成功！");
                     // TODO: 2019/4/22  昵称缓存到本地
                     UserCacheManager.updateMyNick(nick);
                     mmkv.encode(Constant.EM_NICk, nick);
@@ -376,7 +376,7 @@ public class MainActivity extends LaunBaseActivity {
 
                 @Override
                 public void onError(String method, String message, String resoureJson) {
-                    ToastUtil.showShort(MainActivity.this, "修改失败了，您暂时使用默认昵称");
+                    ToastUtil.showShort(MsgMainActivity.this, "修改失败了，您暂时使用默认昵称");
                 }
 
                 @Override
