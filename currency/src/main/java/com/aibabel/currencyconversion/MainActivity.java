@@ -25,9 +25,9 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.aibabel.baselibrary.base.BaseActivity;
 import com.aibabel.baselibrary.utils.ProviderUtils;
 import com.aibabel.currencyconversion.adapter.Adapter_Coupon;
-import com.aibabel.currencyconversion.app.BaseActivity;
 import com.aibabel.currencyconversion.app.Constant;
 import com.aibabel.currencyconversion.bean.CouponBean;
 import com.aibabel.currencyconversion.bean.ExchangeRateBean;
@@ -64,7 +64,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import de.hdodenhof.circleimageview.CircleImageView;
 
-public class MainActivity extends BaseActivity {
+public class MainActivity extends BaseActivity implements View.OnClickListener{
 
     @BindView(R.id.tv_provider)
     TextView tvProvider;
@@ -156,32 +156,18 @@ public class MainActivity extends BaseActivity {
     private String ips = "";
     private String key = "";
 
-//    @Override
-//    public void onCreate(@Nullable Bundle savedInstanceState) {
-//        super.onCreate(savedInstanceState);
-//        setContentView(R.layout.activity_main);
-//    }
-
     @Override
-    public int initLayout() {
+    public int getLayout(Bundle savedInstanceState) {
         return R.layout.activity_main;
     }
 
     @Override
     public void init() {
-//        initView();
-//        rexiufu();
-//        String guangbi = getIntent().getStringExtra("from");
-//        if (guangbi != null && guangbi.equals("food")) {
         clGuanbi.setVisibility(View.VISIBLE);
         el_error = findViewById(R.id.el_error);
         iv_up = findViewById(R.id.iv_up);
         //初始化RecyclerVie
         initRecyclerView();
-//        } else {
-//            clGuanbi.setVisibility(View.GONE);
-//        }
-
 
         try {
             Cursor cursor = getContentResolver().query(CONTENT_URI, null, null, null, null);
@@ -246,34 +232,6 @@ public class MainActivity extends BaseActivity {
             llMask.setVisibility(View.GONE);
         }
     }
-
-    private void initView() {
-        tvCurrencyAbbreviations1 = findViewById(R.id.tv_currency_abbreviations1);
-        tvCurrencyAbbreviations2 = findViewById(R.id.tv_currency_abbreviations2);
-        tvCurrencyAbbreviations3 = findViewById(R.id.tv_currency_abbreviations3);
-        tvCurrencyName1 = findViewById(R.id.tv_currency_name1);
-        tvCurrencyName2 = findViewById(R.id.tv_currency_name2);
-        tvCurrencyName3 = findViewById(R.id.tv_currency_name3);
-        tvProvider = findViewById(R.id.tv_provider);
-        ivCountryFlag1 = findViewById(R.id.iv_country_flag1);
-        ivCountryFlag2 = findViewById(R.id.iv_country_flag2);
-        ivCountryFlag3 = findViewById(R.id.iv_country_flag3);
-        ivGuanbi = findViewById(R.id.iv_guanbi);
-        ivXiala1 = findViewById(R.id.iv_xiala1);
-        ivXiala2 = findViewById(R.id.iv_xiala2);
-        ivXiala3 = findViewById(R.id.iv_xiala3);
-        clGuanbi = findViewById(R.id.clGuanbi);
-        llYou1 = findViewById(R.id.ll_you1);
-        llYou2 = findViewById(R.id.ll_you2);
-        llYou3 = findViewById(R.id.ll_you3);
-        llZuo1 = findViewById(R.id.ll_zuo1);
-        llYou2 = findViewById(R.id.ll_zuo2);
-        llYou3 = findViewById(R.id.ll_zuo3);
-        vCursor1 = findViewById(R.id.v_cursor1);
-        vCursor2 = findViewById(R.id.v_cursor2);
-        vCursor3 = findViewById(R.id.v_cursor3);
-    }
-
 
     @OnClick(R.id.iv_guanbi)
     public void onViewClicked() {
@@ -774,16 +732,16 @@ public class MainActivity extends BaseActivity {
      * 开启View闪烁效果
      */
     private void startFlick(View view) {
-        if (null == view) {
-            return;
-        }
-        view.setVisibility(View.VISIBLE);
-        Animation alphaAnimation = new AlphaAnimation(1, 0f);
-        alphaAnimation.setDuration(500);
-        alphaAnimation.setInterpolator(new LinearInterpolator());
-        alphaAnimation.setRepeatCount(Animation.INFINITE);
-        alphaAnimation.setRepeatMode(Animation.REVERSE);
-        view.startAnimation(alphaAnimation);
+//        if (null == view) {
+//            return;
+//        }
+//        view.setVisibility(View.VISIBLE);
+//        Animation alphaAnimation = new AlphaAnimation(1, 0f);
+//        alphaAnimation.setDuration(500);
+//        alphaAnimation.setInterpolator(new LinearInterpolator());
+//        alphaAnimation.setRepeatCount(Animation.INFINITE);
+//        alphaAnimation.setRepeatMode(Animation.REVERSE);
+//        view.startAnimation(alphaAnimation);
     }
 
     /**
@@ -792,8 +750,8 @@ public class MainActivity extends BaseActivity {
      * @param view
      */
     private void stopFlick(View view) {
-        view.setVisibility(View.GONE);
-        view.clearAnimation();
+//        view.setVisibility(View.GONE);
+//        view.clearAnimation();
     }
 
     @Override
