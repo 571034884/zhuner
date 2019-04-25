@@ -57,6 +57,7 @@ import com.aibabel.menu.utils.Logs;
 import com.aibabel.menu.view.MaterialBadgeTextView;
 import com.aibabel.menu.view.MyDialog;
 import com.aibabel.menu.R;
+import com.aibabel.message.broadcast.ResidentNotificationHelper;
 import com.aibabel.message.receiver.MessageListener;
 import com.aibabel.message.receiver.NetBroadcastReceiver;
 import com.aibabel.message.service.MessageService;
@@ -179,7 +180,6 @@ public class MainActivity extends LaunBaseActivity implements NetBroadcastReceiv
         loopHandler = new LooptempHandler(this);
         requestNetwork();
         init_neveruser();
-
 
         //息屏广播数据上传
         try {

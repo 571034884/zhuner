@@ -117,6 +117,25 @@ public class PushH5Activity extends LaunBaseActivity{
     }
 
     /**
+     *
+     *
+     */
+    @JavascriptInterface
+    public void opencouponapp(String packname,String acitiyname,String country ,String country_english,String country_img){
+       try{
+        Intent intent = new Intent();
+        ComponentName componentName = new ComponentName(packname, acitiyname);
+        intent.putExtra("country_name",country);
+        intent.putExtra("country_name_english",country_english);
+        intent.putExtra("country_img",country_img);
+        intent.setComponent(componentName);
+        startActivity(intent);
+        }catch (Exception e){
+           e.printStackTrace();
+       }
+    }
+
+    /**
      * 启动新景区导览详情页
      *
      * @param
