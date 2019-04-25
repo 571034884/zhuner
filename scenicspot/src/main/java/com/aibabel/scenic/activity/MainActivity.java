@@ -392,12 +392,12 @@ public class MainActivity extends BaseScenicActivity{
     protected void onResume() {
         super.onResume();
         vpInfo.setAutoPlaying(true);
-        mLocation.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                    connectXIPC();
-            }
-        },1500);
+//        mLocation.postDelayed(new Runnable() {
+//            @Override
+//            public void run() {
+//                    connectXIPC();
+//            }
+//        },1500);
     }
 
     public void onClick(View v) {

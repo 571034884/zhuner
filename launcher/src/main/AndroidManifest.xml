@@ -99,6 +99,10 @@
             android:enabled="true"
             android:exported="true"></service>
 
+        <service
+            android:name="com.xuexiang.xipc.core.channel.IPCService$IPCService0"
+            android:exported="true" />
+
         <provider
             android:name="com.aibabel.baselibrary.sphelper.SPContentProvider"
             android:authorities="com.pl.sphelper"

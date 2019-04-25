@@ -152,7 +152,7 @@ public class MainActivity extends BaseActivity implements BaseCallback, AudioRec
     //    private RecorderUtil recorderUtil = new RecorderUtil();
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP_MR1)
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main2);
         ButterKnife.bind(this);
