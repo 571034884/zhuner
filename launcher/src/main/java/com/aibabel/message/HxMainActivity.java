@@ -88,8 +88,6 @@ public class HxMainActivity extends LaunBaseActivity {
     private int fragment_index = 0;
     private boolean isSetNick;
     private MyDialog builder;
-    private int unread = 0;
-    private MyHandler handler = new MyHandler(HxMainActivity.this);
     private String groupName;
 
 
@@ -139,7 +137,6 @@ public class HxMainActivity extends LaunBaseActivity {
         if (tvUnreadMsgNumber != null) tvUnreadMsgNumber.setBadgeCount(set_BadgeCount);
         //判定是否支持，以便于显示不同的布局
         currentTabIndex = fragment_index;
-//        EMClient.getInstance().chatManager().addMessageListener(messageListener);
         isSupport();
 
     }
@@ -199,7 +196,7 @@ public class HxMainActivity extends LaunBaseActivity {
             case R.id.btn_chat:
                 index = 1;
                 addStatisticsEvent("menu_team_help", null);
-                makeAsRead();
+//                makeAsRead();
                 isShowDialog();
                 break;
             case R.id.btn_task:
@@ -244,104 +241,6 @@ public class HxMainActivity extends LaunBaseActivity {
             }
         }
         trx.commit();
-    }
-
-
-    private void makeAsRead() {
-        unread = 0;
-        tvUnreadNumber.setText("");
-        tvUnreadNumber.setVisibility(View.GONE);
-    }
-
-
-    EMMessageListener messageListener = new EMMessageListener() {
-
-        @Override
-        public void onMessageReceived(List<EMMessage> messages) {
-            if (currentTabIndex != 1) {
-                for (EMMessage message : messages) {
-                    try {
-                        Map<String, Object> map = message.ext();
-                        String at = (String) map.get("at");
-                        if (TextUtils.equals(at, mmkv.getString(Constant.EM_USERNAME, ""))) {
-                            if (EMClient.getInstance().chatManager().getUnreadMessageCount() > 0) {
-                                Log.e("HxMainActivity", "接受到环信@的消息了");
-                                unread++;
-                                Message msg = new Message();
-                                msg.what = 100;
-                                msg.arg1 = unread;
-                                handler.sendMessage(msg);
-                            }
-                        }
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                }
-            }
-
-        }
-
-        @Override
-        public void onCmdMessageReceived(List<EMMessage> messages) {
-
-        }
-
-        @Override
-        public void onMessageRead(List<EMMessage> messages) {
-        }
-
-        @Override
-        public void onMessageDelivered(List<EMMessage> message) {
-        }
-
-        @Override
-        public void onMessageRecalled(List<EMMessage> messages) {
-
-        }
-
-        @Override
-        public void onMessageChanged(EMMessage message, Object change) {
-
-        }
-    };
-
-    /**
-     * 声明静态内部类不会持有外部类的隐式引用
-     */
-    private class MyHandler extends Handler {
-        private final WeakReference<HxMainActivity> mActivity;
-
-        public MyHandler(HxMainActivity activity) {
-            mActivity = new WeakReference<HxMainActivity>(activity);
-        }
-
-        @Override
-        public void handleMessage(Message msg) {
-            HxMainActivity activity = mActivity.get();
-            if (activity != null) {
-                if (msg.what == 100) {
-                    int count = msg.arg1;
-                    refreshUIWithMessage(count);
-                }
-            }
-        }
-    }
-
-
-    private void refreshUIWithMessage(final int count) {
-
-        if (EMClient.getInstance().isLoggedInBefore() && currentTabIndex != 1) {
-
-            Log.e("HxMainActivity", count + "");
-            if (count > 0) {
-                tvUnreadNumber.setBadgeCount(count);
-                tvUnreadNumber.setVisibility(View.VISIBLE);
-            } else {
-                tvUnreadNumber.setVisibility(View.GONE);
-            }
-
-
-        }
     }
 
 
