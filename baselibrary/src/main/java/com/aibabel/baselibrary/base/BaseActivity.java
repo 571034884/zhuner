@@ -95,7 +95,6 @@ public abstract class BaseActivity extends StatisticsBaseActivity  {
 
         int getlayout = getLayout(savedInstanceState);
 
-        Log.e("hjs","BaseAcitivyt="+getlayout);
         if(getlayout>0) {
             setContentView(getlayout);
             mUnbinder = ButterKnife.bind(this);

@@ -877,6 +877,10 @@ public class MainActivity extends LaunBaseActivity implements NetBroadcastReceiv
                     switch (msg.what) {
                         case 100:
                             try {
+                                Intent intent = new Intent();
+                                intent.setAction("com.android.zhuner");
+                                intent.putExtra("Zhuner_devices", "time_end");
+                                sendBroadcast(intent);
                                 boolean RentLocked_fore = DetectUtil.isForeground(activity, RentLockedActivity.class);
                                 LogUtil.e("RentLocked_fore " + RentLocked_fore);
                                 SqlUtils.deleteDataAll();
