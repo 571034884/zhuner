@@ -3,6 +3,7 @@ package com.aibabel.menu;
 import android.app.ActivityManager;
 import android.content.Context;
 import android.content.Intent;
+import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
 import com.aibabel.baselibrary.base.BaseApplication;
@@ -14,6 +15,9 @@ import com.aibabel.message.helper.DemoHelper;
 import com.aibabel.message.utiles.L;
 import com.hyphenate.chat.EMClient;
 import com.hyphenate.chat.EMOptions;
+
+import org.litepal.LitePal;
+import org.litepal.tablemanager.Connector;
 
 import java.util.HashSet;
 import java.util.Iterator;
@@ -45,8 +49,19 @@ public class LauncherApplication extends BaseApplication {
         DemoHelper.getInstance().init(applicationContext);
         initEasemob();
         configJPush();
+        LitePal.initialize(this);
+        initSQLite();
         startService(new Intent(this, MyService.class));
 
+    }
+
+    private void initSQLite() {
+        //创建表,如果存在就不会在创建了
+        try {
+            SQLiteDatabase db = Connector.getDatabase();
+        }catch (Exception e){
+            e.printStackTrace();
+        }
     }
 
     @Override

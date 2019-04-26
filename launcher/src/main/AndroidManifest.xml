@@ -285,7 +285,22 @@
             android:value="4c4eaa2acbc344fec69de116" /> <!--  </>值来自开发者平台取得的AppKey-->
         <!---极光完成-->
         <receiver android:name="com.aibabel.message.receiver.NotificationClickReceiver"></receiver>
-
+        <receiver
+            android:name=".receiver.UnlockReceiver"
+            android:enabled="true"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="com.android.qrcode.unlock.ok" />
+            </intent-filter>
+        </receiver>
+        <receiver
+            android:name=".receiver.MySimDectectReceiver"
+            android:enabled="true"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.SIM_STATE_CHANGED" />
+            </intent-filter>
+        </receiver>
 
     </application>
 
