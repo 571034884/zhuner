@@ -47,7 +47,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="4dp"
-                        android:text="入境指南"
+                        android:text="入境卡"
                         android:textColor="#666666"
                         android:textSize="12sp"
                         android:textStyle="bold" />
