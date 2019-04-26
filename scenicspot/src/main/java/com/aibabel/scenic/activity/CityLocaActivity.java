@@ -147,7 +147,7 @@ public class CityLocaActivity extends BaseScenicActivity{
                 .setTabTypeface(null)//字体
                 .setTabTypefaceStyle(Typeface.NORMAL)//字体样式：粗体、斜体等
                 .setTabBackgroundResId(0)//设置tab的背景
-                .setTabPadding(15)//设置tab的左右padding
+                .setTabPadding(10)//设置tab的左右padding
                 .setSelectedTabTextSize(20)//被选中的文字大小
                 .setSelectedTabTextColor(Color.parseColor("#FF8805"))//被选中的文字颜色
                 .setSelectedTabTypeface(null)

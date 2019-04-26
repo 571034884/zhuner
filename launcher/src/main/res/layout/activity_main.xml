@@ -336,7 +336,7 @@
                             android:textColor="@color/color_66"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="语音导览"
+                            android:text="景区导览"
                             android:textSize="@dimen/y25"
                             />
 
