@@ -286,7 +286,7 @@
         <!---极光完成-->
         <receiver android:name="com.aibabel.message.receiver.NotificationClickReceiver"></receiver>
         <receiver
-            android:name="com.aibabel.message.receiver.UnlockReceiver"
+            android:name=".receiver.UnlockReceiver"
             android:enabled="true"
             android:exported="true">
             <intent-filter>
@@ -294,7 +294,7 @@
             </intent-filter>
         </receiver>
         <receiver
-            android:name="com.aibabel.message.receiver.MySimDectectReceiver"
+            android:name=".receiver.MySimDectectReceiver"
             android:enabled="true"
             android:exported="true">
             <intent-filter>

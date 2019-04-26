@@ -1,4 +1,4 @@
-package com.aibabel.message.receiver;
+package com.aibabel.menu.receiver;
 
 import android.app.Service;
 import android.content.BroadcastReceiver;
