@@ -95,7 +95,7 @@ public class SpotsActivity extends BaseScenicActivity implements ExpireBroadcast
     LinearLayout llPlay;
     @BindView(R.id.pb_progress)
     ProgressBar pbProgress;
-    @BindView(R.id.rv_spots)
+//    @BindView(R.id.rv_spots)
     RecyclerView rvSpots;
     @BindView(R.id.rl_music)
     RelativeLayout rlMusic;
@@ -134,6 +134,7 @@ public class SpotsActivity extends BaseScenicActivity implements ExpireBroadcast
 
     @Override
     public void initView() {
+        rvSpots = findViewById(R.id.rv_spots);
         tvPre.setOnClickListener(this);
         tvNext.setOnClickListener(this);
         tvLeft.setOnClickListener(this);
