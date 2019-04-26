@@ -14,6 +14,7 @@ import android.net.Uri;
 import android.os.SystemClock;
 import android.support.v4.app.NotificationCompat;
 import android.text.TextUtils;
+import android.util.Log;
 
 
 import com.aibabel.menu.R;
@@ -33,8 +34,7 @@ public class ResidentNotificationHelper {
     public static final String intentjson = "json";
     public static final String intenttitle = "title";
 
-
-    public static void sendResidentNotice(Context context, String title, String content, Intent intent) {
+    public static void sendResidentNotice(Context context, final String title, String content, Intent intent) {
         if (NOTICE_ID_TYPE_0 > 10000) {
             NOTICE_ID_TYPE_0 = -1;
         }
@@ -45,14 +45,15 @@ public class ResidentNotificationHelper {
         long[] vibrates = {0, 1000, 1000, 1000};
 //        intent.setClass(context, InformationActivity.class);
         intent.putExtra(NOTICE_ID_KEY, NOTICE_ID_TYPE_0);
-        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         intent.setClass(context, NotificationClickReceiver.class);
         intent.putExtra(intenttitle, title);
         int requestCode = (int) SystemClock.uptimeMillis();
 //        PendingIntent pendingIntent = PendingIntent.getActivity(context, requestCode, intent, PendingIntent.FLAG_UPDATE_CURRENT);
 
 //        Intent intent_click =new Intent (context,com.aibabel.messagemanage.MainActivity.class);
-        PendingIntent pendingIntent = PendingIntent.getBroadcast(context, 0, intent, 0);
+//        PendingIntent hangPendingIntent = PendingIntent.getActivity(this, 0, hangIntent, PendingIntent.FLAG_CANCEL_CURRENT);
+//        PendingIntent pendingIntent = PendingIntent.getBroadcast(context, 0, intent,  PendingIntent.FLAG_UPDATE_CURRENT);
 
         Intent intentClick = new Intent(context, NotificationClickReceiver.class);
         intentClick.setAction("notification_clicked");
@@ -71,10 +72,12 @@ public class ResidentNotificationHelper {
         PendingIntent pendingIntentCancel = PendingIntent.getBroadcast(context, 0, intentCancel, PendingIntent.FLAG_ONE_SHOT);
 
 
-        NotificationCompat.Builder builder = new NotificationCompat.Builder(context);
+//        NotificationCompat.Builder builder =new NotificationCompat.Builder(context, "default");//;new NotificationCompat.Builder(context);
+        NotificationCompat.Builder builder =new NotificationCompat.Builder(context);
         builder.setAutoCancel(true);
         builder.setSmallIcon(R.mipmap.ic_notice);
-        builder.setFullScreenIntent(pendingIntent, true);
+//        builder.setFullScreenIntent(pendingIntent, true);
+        builder.setTicker("悬浮通知");
         builder.setAutoCancel(true);
         builder.setContentIntent(pendingIntentClick);
         builder.setDeleteIntent(pendingIntentCancel);
@@ -84,7 +87,8 @@ public class ResidentNotificationHelper {
         builder.setSound(uri);
         builder.setVibrate(vibrates);
 //        builder.setOngoing(true);
-        builder.setPriority(NotificationCompat.PRIORITY_MAX);
+        builder.setDefaults(Notification.DEFAULT_LIGHTS );
+        builder.setPriority(NotificationCompat.PRIORITY_HIGH);
         builder.setGroup(String.valueOf(System.currentTimeMillis()));
         builder.setColor(Color.parseColor("#fe5000"));
         builder.setWhen(System.currentTimeMillis());//通知产生的时间，会在通知信息里显示，一般是系统获取到的时间
@@ -100,6 +104,18 @@ public class ResidentNotificationHelper {
         final NotificationManager manager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
         manager.notify(NOTICE_ID_TYPE_0, notification);
 
+//        new Thread(new Runnable() {
+//            @Override
+//            public void run() {
+//                try {
+//                    Thread.sleep(8000);
+//                } catch (InterruptedException e) {
+//                    e.printStackTrace();
+//                }
+//                Log.e("hjs","manager.cancel");
+//                manager.cancel(NOTICE_ID_TYPE_0);
+//            }
+//        }).start();
     }
 
 
