@@ -35,6 +35,7 @@
         </activity>
         <activity
             android:name=".activity.SpotsActivity"
+            android:launchMode="singleTask"
             android:exported="true" />
         <activity android:name=".activity.MainActivity" />
         <activity android:name=".activity.CityLocaActivity" />
