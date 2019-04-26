@@ -90,7 +90,7 @@ public class HxMainActivity extends LaunBaseActivity {
     private MyDialog builder;
     private String groupName;
 
-
+   public static MaterialBadgeTextView statictvUnreadMsgNumber;
     @Override
     public int getLayout(Bundle savedInstanceState) {
         return R.layout.activity_main_mm;
@@ -134,17 +134,26 @@ public class HxMainActivity extends LaunBaseActivity {
         bundle.putString("toChatUsername", toChatUsername);
         bundle.putString("groupName", groupName);
         fragmentConversation.setArguments(bundle);
-        if (tvUnreadMsgNumber != null) tvUnreadMsgNumber.setBadgeCount(set_BadgeCount);
+//        if(HX_BadgeCount>0) {
+//            if (tvUnreadMsgNumber != null) tvUnreadMsgNumber.setBadgeCount(HX_BadgeCount);
+//            Log.e("hjs", "HX_BadgeCount+onRestart" + HX_BadgeCount);
+//        }
+        statictvUnreadMsgNumber = tvUnreadMsgNumber;
         //判定是否支持，以便于显示不同的布局
         currentTabIndex = fragment_index;
         isSupport();
 
     }
 
+    public static int HX_BadgeCount = 0;
+
     @Override
     protected void onRestart() {
         super.onRestart();
-        if (tvUnreadMsgNumber != null) tvUnreadMsgNumber.setBadgeCount(set_BadgeCount);
+
+//        Log.e("hjs","HX_BadgeCount+onRestart"+HX_BadgeCount);
+//
+//        if(HX_BadgeCount>0) { if (tvUnreadMsgNumber != null) tvUnreadMsgNumber.setBadgeCount(HX_BadgeCount);}
     }
 
     /**

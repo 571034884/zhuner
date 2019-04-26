@@ -14,10 +14,13 @@ import com.aibabel.menu.activity.MainActivity;
 import com.aibabel.menu.bean.PushMessageBean;
 import com.aibabel.menu.utils.LogUtil;
 import com.aibabel.menu.view.MaterialBadgeTextView;
+import com.aibabel.message.HxMainActivity;
 import com.aibabel.message.sqlite.SqlUtils;
 import com.aibabel.message.utiles.MessageUtil;
 
 import java.util.ArrayList;
+
+import static com.aibabel.message.HxMainActivity.HX_BadgeCount;
 
 /**
  * Created by User on 1/1/2018.
@@ -74,8 +77,16 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
                     // Log.d(TAG, "onClick: clicked on: " + message.get(position));
                     // Log.d(TAG, "onClick: position: " + position);
                     try {
+
                         LogUtil.e("setOnClickListener pos = " + position);
                         PushMessageBean push_bean = message.get(position);
+                        if(push_bean.isBadge()) {
+                            HX_BadgeCount -= 1;
+                            HxMainActivity.statictvUnreadMsgNumber.setBadgeCount(HX_BadgeCount);
+                            if( MainActivity.loopHandler!=null)MainActivity.loopHandler.sendEmptyMessage(302);
+                        }
+
+
                         //push_bean.setBadge(false);
                         message.set(position, push_bean);
                         LogUtil.e("push_bean.getId = " + push_bean.getId());
@@ -86,7 +97,9 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
                         notifyItemChanged(position, push_bean);
 
                         PushMessageBean new_push_bean = SqlUtils.queryjsonById(push_bean.getId());
-                        if( MainActivity.loopHandler!=null)MainActivity.loopHandler.sendEmptyMessage(302);
+                       // if( MainActivity.loopHandler!=null)MainActivity.loopHandler.sendEmptyMessage(302);
+
+
                         MessageUtil.openNotification_pushbean(mContext, new_push_bean);
 
                     } catch (Exception e) {
