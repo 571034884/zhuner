@@ -95,7 +95,7 @@ public class LauncherApplication extends BaseApplication {
 
     @Override
     public String setUmengKey() {
-        return null;
+              return "5bfe125db465f545ae0000eb";
     }
 
     public static LauncherApplication getInstance() {

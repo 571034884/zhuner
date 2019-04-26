@@ -474,7 +474,6 @@ public class MainActivity extends LaunBaseActivity implements NetBroadcastReceiv
         } else {
             homeBadge.setVisibility(View.INVISIBLE);
         }
-
         super.onResume();
     }
 
@@ -941,7 +940,6 @@ public class MainActivity extends LaunBaseActivity implements NetBroadcastReceiv
                             fragment_index = 0;
                             home_badge.setBadgeCount(set_BadgeCount);
                             //消息里面显示红点
-
                             try {
                                 PushMessageBean bean = (PushMessageBean) msg.obj;
                                 bean.setBadge(true);
@@ -952,7 +950,8 @@ public class MainActivity extends LaunBaseActivity implements NetBroadcastReceiv
                             break;
                         case 302:
                             set_BadgeCount -= 1;
-                            if (set_BadgeCount > 0) home_badge.setBadgeCount(set_BadgeCount);
+                            if (set_BadgeCount > 0)
+                                 home_badge.setBadgeCount(set_BadgeCount);
                             else {
                                 set_BadgeCount = 0;
                                 home_badge.setBadgeCount(set_BadgeCount);

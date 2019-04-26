@@ -61,11 +61,6 @@
             android:screenOrientation="portrait" />
         <activity android:name=".activity.TakePhotoResultActivity" />
         <activity android:name=".activity.DetailActivity"></activity>
-        <!--<provider
-            android:name="com.aibabel.baselibrary.sphelper.SPContentProvider"
-            android:authorities="com.pl.sphelper"
-            android:exported="false"
-            android:process=":sphelper" />-->
     </application>
 
 </manifest>
