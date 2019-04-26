@@ -46,6 +46,7 @@ import com.aibabel.menu.rent.RentDialogActivity;
 import com.aibabel.menu.rent.RentKeepUseActivity;
 import com.aibabel.menu.rent.RentLockedActivity;
 import com.aibabel.menu.rent.SimDetectActivity;
+import com.aibabel.menu.three7Activity;
 import com.aibabel.menu.utils.AppStatusUtils;
 import com.aibabel.menu.utils.CalenderUtil;
 import com.aibabel.menu.utils.DetectUtil;
@@ -251,7 +252,9 @@ public class MainActivity extends LaunBaseActivity implements NetBroadcastReceiv
                 break;
             case R.id.main_wifi_app://跳转到wifi
                 addStatisticsEvent("wifi_click", null);
-                launcherApp("com.zhuner.administrator.settings");
+//                launcherApp("com.zhuner.administrator.settings");
+                startActivity(new Intent(MainActivity.this,three7Activity.class));
+
                 break;
             case R.id.main_timer_app://跳转到世界钟
                 addStatisticsEvent("time_click", null);
@@ -525,7 +528,7 @@ public class MainActivity extends LaunBaseActivity implements NetBroadcastReceiv
 
     @Override
     public void netState(String nameWifi) {
-        mMainWifi.setText(nameWifi);
+//        mMainWifi.setText(nameWifi);
     }
 
     @Override
