@@ -37,8 +37,8 @@ public class NotificationClickReceiver extends BroadcastReceiver {
                 //String message = intent.getStringExtra("MESSAGE");
                 //Toast.makeText(context, "clicked " + message, Toast.LENGTH_LONG).show();
 
-                Log.i("hjs", "userClick:我被点击啦！！！ ");
                 String extjson = intent.getStringExtra(ResidentNotificationHelper.intentjson);
+                Log.i("hjs", "userClick:我被点击啦！！！ "+extjson);
                 String title = intent.getStringExtra("title");
                 MessageUtil.TITLE_JG = title;
 

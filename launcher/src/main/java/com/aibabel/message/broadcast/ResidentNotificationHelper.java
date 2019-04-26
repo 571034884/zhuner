@@ -45,7 +45,7 @@ public class ResidentNotificationHelper {
         long[] vibrates = {0, 1000, 1000, 1000};
 //        intent.setClass(context, InformationActivity.class);
         intent.putExtra(NOTICE_ID_KEY, NOTICE_ID_TYPE_0);
-        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         intent.setClass(context, NotificationClickReceiver.class);
         intent.putExtra(intenttitle, title);
         int requestCode = (int) SystemClock.uptimeMillis();
@@ -62,14 +62,14 @@ public class ResidentNotificationHelper {
         intentClick.putExtra(intenttitle, title);
         intentClick.putExtra(intentjson, intent.getStringExtra(intentjson));
 
-        PendingIntent pendingIntentClick = PendingIntent.getBroadcast(context, 0, intentClick, PendingIntent.FLAG_ONE_SHOT);
+        PendingIntent pendingIntentClick = PendingIntent.getBroadcast(context, NOTICE_ID_TYPE_0, intentClick, 0);
         //cancle广播监听
         Intent intentCancel = new Intent(context, NotificationClickReceiver.class);
         intentCancel.setAction("notification_cancelled");
         intentCancel.putExtra(NotificationClickReceiver.TYPE, NOTICE_ID_TYPE_0);
         intentCancel.putExtra(intenttitle, title);
         intentCancel.putExtra(intentjson, intent.getStringExtra(intentjson));
-        PendingIntent pendingIntentCancel = PendingIntent.getBroadcast(context, 0, intentCancel, PendingIntent.FLAG_ONE_SHOT);
+        PendingIntent pendingIntentCancel = PendingIntent.getBroadcast(context, NOTICE_ID_TYPE_0, intentCancel, 0);
 
 
 //        NotificationCompat.Builder builder =new NotificationCompat.Builder(context, "default");//;new NotificationCompat.Builder(context);
@@ -104,18 +104,6 @@ public class ResidentNotificationHelper {
         final NotificationManager manager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
         manager.notify(NOTICE_ID_TYPE_0, notification);
 
-//        new Thread(new Runnable() {
-//            @Override
-//            public void run() {
-//                try {
-//                    Thread.sleep(8000);
-//                } catch (InterruptedException e) {
-//                    e.printStackTrace();
-//                }
-//                Log.e("hjs","manager.cancel");
-//                manager.cancel(NOTICE_ID_TYPE_0);
-//            }
-//        }).start();
     }
 
 
