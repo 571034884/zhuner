@@ -168,7 +168,7 @@ public class SpotsActivity extends BaseScenicActivity implements ExpireBroadcast
         mAdapter = new Adapter_Spots(R.layout.item_spots, list);
         View headerView = getHeaderView();
         mAdapter.addHeaderView(headerView);
-        rvSpots.addItemDecoration(new RecyclerItemDecoration(12, 2));
+        rvSpots.addItemDecoration(new RecyclerItemDecoration(0, 2));
         rvSpots.setAdapter(mAdapter);
         mAdapter.setOnItemClickListener(this);
         mAdapter.setOnLoadMoreListener(new BaseQuickAdapter.RequestLoadMoreListener() {
