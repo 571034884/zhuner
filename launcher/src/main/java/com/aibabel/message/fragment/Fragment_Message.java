@@ -6,9 +6,11 @@ import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
 import com.aibabel.baselibrary.base.BaseFragment;
+import com.aibabel.menu.activity.MainActivity;
 import com.aibabel.menu.bean.PushMessageBean;
 import com.aibabel.menu.utils.LogUtil;
 import com.aibabel.menu.R;
+import com.aibabel.message.HxMainActivity;
 import com.aibabel.message.adapter.RecyclerViewAdapter;
 import com.aibabel.message.sqlite.SqlUtils;
 
@@ -16,6 +18,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
+
+import static com.aibabel.message.HxMainActivity.HX_BadgeCount;
 
 /**
  *==========================================================================================
@@ -105,19 +109,23 @@ public class Fragment_Message extends BaseFragment {
 //        msglist.add(msgbean);
 //        msglist.add(msgbean3);
 
+        int count_unread = 0;
         List<PushMessageBean> tt = SqlUtils.queryMethed();
         if (tt != null) {
             for (PushMessageBean pushobj : tt) {
-
                 LogUtil.e("timecode = "+pushobj.getTimeCode()+"= baseg="+pushobj.isBadge());
-
+                if(pushobj.isBadge()){
+                    count_unread+=1;
+                }
             }
 
             msglist.addAll(tt);
             if (adapter != null) adapter.notifyDataSetChanged();
         }
+        Log.e("hjs","count_unread="+count_unread);
 
-
+        HX_BadgeCount = count_unread;
+        if ((HxMainActivity.statictvUnreadMsgNumber != null))HxMainActivity.statictvUnreadMsgNumber.setBadgeCount(HX_BadgeCount);
 //        updateMessBean(tt.get(0),tt.get(0).getId());
 //        PushMessageBean tttttt = tt.get(0);
 //        tttttt.setContent("update ");
@@ -133,6 +141,7 @@ public class Fragment_Message extends BaseFragment {
 //        }
 
     }
+
 
     public  static void updateMessBean(PushMessageBean sqlbean, Long ID) {
         sqlbean.setBadge(false);

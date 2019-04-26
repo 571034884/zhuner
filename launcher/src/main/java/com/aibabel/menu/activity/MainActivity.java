@@ -471,6 +471,9 @@ public class MainActivity extends LaunBaseActivity implements NetBroadcastReceiv
     @Override
     protected void onResume() {
         isEM = true;
+        if(HxMainActivity.HX_BadgeCount>0) {
+            set_BadgeCount = HxMainActivity.HX_BadgeCount;
+        }
         if (hxMessage + set_BadgeCount > 0) {
             homeBadge.setBadgeCount(hxMessage + set_BadgeCount);
             homeBadge.setVisibility(View.VISIBLE);
