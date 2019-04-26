@@ -177,6 +177,9 @@ public class MainActivity extends LaunBaseActivity implements NetBroadcastReceiv
         mMainHuiLvCny.setText("—·—");
         mMainHuiLvChg.setText("—·—");
         mMainLocation.setCompoundDrawablesWithIntrinsicBounds(null, null, null, null);
+        home_badge = findViewById(R.id.home_badge);
+        home_badge.setBadgeCount(0);
+
         loopHandler = new LooptempHandler(this);
         requestNetwork();
         init_neveruser();
@@ -474,7 +477,6 @@ public class MainActivity extends LaunBaseActivity implements NetBroadcastReceiv
         } else {
             homeBadge.setVisibility(View.INVISIBLE);
         }
-
         super.onResume();
     }
 
@@ -939,20 +941,22 @@ public class MainActivity extends LaunBaseActivity implements NetBroadcastReceiv
                             set_BadgeCount += 1;
                             home_badge.setBadgeCount(set_BadgeCount + hxMessage);
                             fragment_index = 0;
-                            home_badge.setBadgeCount(set_BadgeCount);
-                            //消息里面显示红点
+                            //home_badge.setBadgeCount(set_BadgeCount);
 
+                            //消息里面显示红点
                             try {
                                 PushMessageBean bean = (PushMessageBean) msg.obj;
                                 bean.setBadge(true);
                                 SqlUtils.updateBadgeBean(bean);
                                 LogUtil.e("++++++++++++new ");
                             } catch (Exception e) {
+                                e.printStackTrace();
                             }
                             break;
                         case 302:
                             set_BadgeCount -= 1;
-                            if (set_BadgeCount > 0) home_badge.setBadgeCount(set_BadgeCount);
+                            if (set_BadgeCount > 0)
+                                 home_badge.setBadgeCount(set_BadgeCount);
                             else {
                                 set_BadgeCount = 0;
                                 home_badge.setBadgeCount(set_BadgeCount);

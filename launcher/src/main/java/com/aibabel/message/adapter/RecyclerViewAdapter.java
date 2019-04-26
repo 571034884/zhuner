@@ -10,6 +10,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.aibabel.menu.R;
+import com.aibabel.menu.activity.MainActivity;
 import com.aibabel.menu.bean.PushMessageBean;
 import com.aibabel.menu.utils.LogUtil;
 import com.aibabel.menu.view.MaterialBadgeTextView;
@@ -85,6 +86,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
                         notifyItemChanged(position, push_bean);
 
                         PushMessageBean new_push_bean = SqlUtils.queryjsonById(push_bean.getId());
+                        if( MainActivity.loopHandler!=null)MainActivity.loopHandler.sendEmptyMessage(302);
                         MessageUtil.openNotification_pushbean(mContext, new_push_bean);
 
                     } catch (Exception e) {
