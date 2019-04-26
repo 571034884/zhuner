@@ -87,7 +87,7 @@ public class LauncherApplication extends BaseApplication {
         }
         Logs.e(HOST);
         //设置服务器地址
-        OkGoUtil.setDefualtServerUrl("http://test39.aibabel.cn:7001");
+        OkGoUtil.setDefualtServerUrl(HOST);
 //        //如果需要其他接口组
         OkGoUtil.setDefaultInterfaceGroup("/v1/deviceMenu/");
 
