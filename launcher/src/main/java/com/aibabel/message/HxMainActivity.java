@@ -200,7 +200,6 @@ public class HxMainActivity extends LaunBaseActivity {
             case R.id.btn_msg:
                 index = 0;
                 addStatisticsEvent("menu_team_butt", null);
-                if (tvUnreadMsgNumber != null) tvUnreadMsgNumber.setBadgeCount(0);
                 break;
             case R.id.btn_chat:
                 index = 1;

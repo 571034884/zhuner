@@ -228,6 +228,7 @@ public class MainActivity extends LaunBaseActivity implements NetBroadcastReceiv
         super.init();
         JPushInterface.setAlias(this, 1, CommonUtils.getSN());
         LogUtil.e("getSN:" + CommonUtils.getSN());
+
     }
 
     public void onClick(View view) {

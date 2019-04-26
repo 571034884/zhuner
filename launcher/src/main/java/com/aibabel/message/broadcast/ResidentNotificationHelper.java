@@ -14,6 +14,7 @@ import android.net.Uri;
 import android.os.SystemClock;
 import android.support.v4.app.NotificationCompat;
 import android.text.TextUtils;
+import android.util.Log;
 
 
 import com.aibabel.menu.R;
@@ -33,8 +34,7 @@ public class ResidentNotificationHelper {
     public static final String intentjson = "json";
     public static final String intenttitle = "title";
 
-
-    public static void sendResidentNotice(Context context, String title, String content, Intent intent) {
+    public static void sendResidentNotice(Context context, final String title, String content, Intent intent) {
         if (NOTICE_ID_TYPE_0 > 10000) {
             NOTICE_ID_TYPE_0 = -1;
         }
@@ -52,7 +52,8 @@ public class ResidentNotificationHelper {
 //        PendingIntent pendingIntent = PendingIntent.getActivity(context, requestCode, intent, PendingIntent.FLAG_UPDATE_CURRENT);
 
 //        Intent intent_click =new Intent (context,com.aibabel.messagemanage.MainActivity.class);
-        PendingIntent pendingIntent = PendingIntent.getBroadcast(context, 0, intent, 0);
+//        PendingIntent hangPendingIntent = PendingIntent.getActivity(this, 0, hangIntent, PendingIntent.FLAG_CANCEL_CURRENT);
+//        PendingIntent pendingIntent = PendingIntent.getBroadcast(context, 0, intent,  PendingIntent.FLAG_UPDATE_CURRENT);
 
         Intent intentClick = new Intent(context, NotificationClickReceiver.class);
         intentClick.setAction("notification_clicked");
@@ -61,20 +62,22 @@ public class ResidentNotificationHelper {
         intentClick.putExtra(intenttitle, title);
         intentClick.putExtra(intentjson, intent.getStringExtra(intentjson));
 
-        PendingIntent pendingIntentClick = PendingIntent.getBroadcast(context, 0, intentClick, PendingIntent.FLAG_ONE_SHOT);
+        PendingIntent pendingIntentClick = PendingIntent.getBroadcast(context, NOTICE_ID_TYPE_0, intentClick, 0);
         //cancle广播监听
         Intent intentCancel = new Intent(context, NotificationClickReceiver.class);
         intentCancel.setAction("notification_cancelled");
         intentCancel.putExtra(NotificationClickReceiver.TYPE, NOTICE_ID_TYPE_0);
         intentCancel.putExtra(intenttitle, title);
         intentCancel.putExtra(intentjson, intent.getStringExtra(intentjson));
-        PendingIntent pendingIntentCancel = PendingIntent.getBroadcast(context, 0, intentCancel, PendingIntent.FLAG_ONE_SHOT);
+        PendingIntent pendingIntentCancel = PendingIntent.getBroadcast(context, NOTICE_ID_TYPE_0, intentCancel, 0);
 
 
-        NotificationCompat.Builder builder = new NotificationCompat.Builder(context);
+//        NotificationCompat.Builder builder =new NotificationCompat.Builder(context, "default");//;new NotificationCompat.Builder(context);
+        NotificationCompat.Builder builder =new NotificationCompat.Builder(context);
         builder.setAutoCancel(true);
         builder.setSmallIcon(R.mipmap.ic_notice);
-        builder.setFullScreenIntent(pendingIntent, true);
+//        builder.setFullScreenIntent(pendingIntent, true);
+        builder.setTicker("悬浮通知");
         builder.setAutoCancel(true);
         builder.setContentIntent(pendingIntentClick);
         builder.setDeleteIntent(pendingIntentCancel);
@@ -84,7 +87,8 @@ public class ResidentNotificationHelper {
         builder.setSound(uri);
         builder.setVibrate(vibrates);
 //        builder.setOngoing(true);
-        builder.setPriority(NotificationCompat.PRIORITY_MAX);
+        builder.setDefaults(Notification.DEFAULT_LIGHTS );
+        builder.setPriority(NotificationCompat.PRIORITY_HIGH);
         builder.setGroup(String.valueOf(System.currentTimeMillis()));
         builder.setColor(Color.parseColor("#fe5000"));
         builder.setWhen(System.currentTimeMillis());//通知产生的时间，会在通知信息里显示，一般是系统获取到的时间
