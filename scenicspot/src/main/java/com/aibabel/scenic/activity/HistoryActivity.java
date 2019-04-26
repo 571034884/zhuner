@@ -147,10 +147,9 @@ public class HistoryActivity extends BaseScenicActivity implements ExpireBroadca
 
     @Override
     public void initData() {
-        if (mIsPlaying) {
-            sendBroadcast(Constants.ACTION_CLOSE);
-            sendToLauncher("", "", "", 3);
-        }
+        sendBroadcast(Constants.ACTION_CLOSE);
+        sendToLauncher("", "", "", 3);
+
         mPosition = 0;
         mIsPlaying = false;
         menuCountryId = getIntent().getStringExtra("menuCountryId");

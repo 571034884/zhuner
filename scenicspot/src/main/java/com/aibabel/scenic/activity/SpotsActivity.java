@@ -146,10 +146,9 @@ public class SpotsActivity extends BaseScenicActivity implements ExpireBroadcast
 
     @Override
     public void initData() {
-        if (mIsPlaying) {
-            sendBroadcast(Constants.ACTION_CLOSE);
-            sendToLauncher("", "", "", 3);
-        }
+        sendBroadcast(Constants.ACTION_CLOSE);
+        sendToLauncher("", "", "", 3);
+
         page = 1;
         mPosition = 0;
         mIsPlaying = false;
