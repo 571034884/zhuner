@@ -144,6 +144,11 @@ public class HxMainActivity extends LaunBaseActivity {
 
     }
 
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+        if (tvUnreadMsgNumber != null) tvUnreadMsgNumber.setBadgeCount(set_BadgeCount);
+    }
 
     /**
      * 判定是否支持准儿帮，这个参数有后台返回
