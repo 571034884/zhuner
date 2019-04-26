@@ -22,7 +22,6 @@ import com.orhanobut.logger.AndroidLogAdapter;
 import com.orhanobut.logger.FormatStrategy;
 import com.orhanobut.logger.Logger;
 import com.orhanobut.logger.PrettyFormatStrategy;
-import com.tencent.mmkv.MMKV;
 import com.umeng.analytics.MobclickAgent;
 import com.umeng.commonsdk.UMConfigure;
 import com.xuexiang.xipc.XIPC;
@@ -94,7 +93,6 @@ public abstract class BaseApplication extends Application {
         super.onCreate();
 
         mApplication = this;
-        MMKV.initialize(this);
         SPHelper.init(this);
         initAppExitConfig();
         initLogConfig();

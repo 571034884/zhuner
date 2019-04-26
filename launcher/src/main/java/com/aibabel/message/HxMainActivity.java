@@ -1,5 +1,6 @@
 package com.aibabel.message;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -17,6 +18,7 @@ import android.widget.TextView;
 
 import com.aibabel.baselibrary.http.BaseCallback;
 import com.aibabel.baselibrary.utils.CommonUtils;
+import com.aibabel.baselibrary.utils.ThreadPoolManager;
 import com.aibabel.baselibrary.utils.ToastUtil;
 import com.aibabel.menu.activity.MainActivity;
 import com.aibabel.menu.base.LaunBaseActivity;
@@ -36,6 +38,7 @@ import com.aibabel.message.utiles.OkGoUtilWeb;
 import com.aibabel.message.utiles.StringUtils;
 import com.hyphenate.EMMessageListener;
 import com.hyphenate.chat.EMClient;
+import com.hyphenate.chat.EMGroup;
 import com.hyphenate.chat.EMMessage;
 
 import org.json.JSONObject;
@@ -141,8 +144,8 @@ public class HxMainActivity extends LaunBaseActivity {
         statictvUnreadMsgNumber = tvUnreadMsgNumber;
         //判定是否支持，以便于显示不同的布局
         currentTabIndex = fragment_index;
+        compareGroupId();
         isSupport();
-
     }
 
     public static int HX_BadgeCount = 0;
@@ -183,6 +186,40 @@ public class HxMainActivity extends LaunBaseActivity {
 
     }
 
+    private void compareGroupId() {
+
+        final String groupId = mmkv.getString(Constant.EM_GROUP, "");
+        final boolean isSupport = mmkv.getBoolean(Constant.EM_SUPPORT, false);
+
+        ThreadPoolManager.getInstance().addTask(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    if (EMClient.getInstance().isLoggedInBefore() && isSupport && CommonUtils.isNetworkAvailable(HxMainActivity.this)) {
+                        //从服务器获取自己加入的和创建的群组列表，此api获取的群组sdk会自动保存到内存和db。
+                        List<EMGroup> groupList = EMClient.getInstance().groupManager().getJoinedGroupsFromServer();//需异步处理
+                        if (null != groupList && groupList.size() > 0) {
+                            String hxGroupId = groupList.get(0).getGroupId();
+                            Log.e("groupId","hxGroupId:" + hxGroupId);
+                            Log.e("groupId","groupId:" + groupId);
+                            if (!TextUtils.isEmpty(groupId) && !TextUtils.equals(hxGroupId, groupId)) {
+                                Log.e("groupId","groupId变化了，下次进来就不会请求了");
+                                mmkv.encode(Constant.EM_SUPPORT, false);
+                                getHxUserInfo();
+                            }
+                        }
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+    }
+
+    private void getHxUserInfo() {
+        Intent intent = new Intent(Constant.ACTION_HX_USERINFO);
+        sendBroadcast(intent);
+    }
 
     @Override
     protected void onResume() {

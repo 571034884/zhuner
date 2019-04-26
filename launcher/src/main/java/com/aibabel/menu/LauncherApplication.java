@@ -15,6 +15,7 @@ import com.aibabel.message.helper.DemoHelper;
 import com.aibabel.message.utiles.L;
 import com.hyphenate.chat.EMClient;
 import com.hyphenate.chat.EMOptions;
+import com.tencent.mmkv.MMKV;
 
 import org.litepal.LitePal;
 import org.litepal.tablemanager.Connector;
@@ -46,6 +47,11 @@ public class LauncherApplication extends BaseApplication {
         instance = this;
         applicationContext = this;
         //init helper
+        try{
+            MMKV.initialize(this);
+        }catch (Exception e){
+            Logs.e(e.toString());
+        }
         DemoHelper.getInstance().init(applicationContext);
         initEasemob();
         configJPush();
