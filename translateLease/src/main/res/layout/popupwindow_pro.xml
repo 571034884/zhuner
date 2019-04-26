@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <RelativeLayout
+        android:id="@+id/rl1"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@mipmap/fanyi1"
+        android:visibility="gone">
+
+        <TextView
+            android:id="@+id/tv_I_kown1"
+            android:layout_width="240px"
+            android:layout_height="64px"
+            android:layout_marginLeft="186px"
+            android:layout_marginTop="590px"
+            android:gravity="center"
+            android:text="@string/idown"
+            android:textColor="#fff"
+            android:textSize="30px" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="200px"
+            android:layout_marginTop="716px"
+            android:text="@string/onclick_my"
+            android:textColor="#fff"
+            android:textSize="34px" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/rl2"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@mipmap/fanyi2"
+        android:visibility="gone">
+
+        <TextView
+            android:id="@+id/tv_I_kown2"
+            android:layout_width="240px"
+            android:layout_height="64px"
+            android:layout_marginLeft="186px"
+            android:layout_marginTop="320px"
+            android:gravity="center"
+            android:text="@string/idown"
+            android:textColor="#fff"
+            android:textSize="30px" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="78px"
+            android:layout_marginTop="212px"
+            android:text="@string/onclick_op"
+            android:textColor="#fff"
+            android:textSize="34px" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/rl3"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@mipmap/fanyi3"
+        android:visibility="gone">
+
+        <TextView
+            android:id="@+id/tv_I_kown3"
+            android:layout_width="240px"
+            android:layout_height="64px"
+            android:layout_marginLeft="206px"
+            android:layout_marginTop="554px"
+            android:gravity="center"
+            android:text="@string/idown"
+            android:textColor="#fff"
+            android:textSize="30px" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="40px"
+            android:layout_marginTop="690px"
+            android:text="@string/onclick_xuanzhuan"
+            android:textColor="#fff"
+            android:textSize="34px" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/rl4"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@mipmap/fanyi4"
+        android:visibility="gone">
+
+        <TextView
+            android:id="@+id/tv_I_kown4"
+            android:layout_width="240px"
+            android:layout_height="64px"
+            android:layout_marginLeft="150px"
+            android:layout_marginTop="598px"
+            android:gravity="center"
+            android:text="@string/idown"
+            android:textColor="#fff"
+            android:textSize="30px" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="160px"
+            android:layout_marginRight="162px"
+            android:layout_marginTop="350px"
+            android:text="@string/longdown_my"
+            android:textColor="#fff"
+            android:textSize="34px" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/rl5"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@mipmap/fanyi5"
+        android:visibility="gone">
+
+        <TextView
+            android:id="@+id/tv_I_kown5"
+            android:layout_width="240px"
+            android:layout_height="64px"
+            android:layout_marginLeft="150px"
+            android:layout_marginTop="400px"
+            android:gravity="center"
+            android:text="@string/idown"
+            android:textColor="#fff"
+            android:textSize="30px" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="160px"
+            android:layout_marginRight="162px"
+            android:layout_marginTop="180px"
+            android:text="@string/longdown_op"
+            android:textColor="#fff"
+            android:textSize="34px" />
+    </RelativeLayout>
+</RelativeLayout>

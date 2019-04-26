@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TextView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/tv_time"
+    android:layout_width="match_parent"
+    android:layout_height="64px"
+    android:background="#181818"
+    android:gravity="center_vertical"
+    android:paddingLeft="20px"
+    android:layout_marginBottom="36px"
+    android:text=""
+    android:textColor="#888"
+    android:textSize="24px"
+    android:visibility="gone" />
