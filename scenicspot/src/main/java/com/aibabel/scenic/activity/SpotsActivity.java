@@ -6,9 +6,11 @@ import android.os.Handler;
 import android.os.Message;
 import android.os.Messenger;
 import android.os.Parcelable;
+import android.support.annotation.Nullable;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -124,6 +126,7 @@ public class SpotsActivity extends BaseScenicActivity implements ExpireBroadcast
     private long startTimer = 0;
     private long endTimer = 0;
 
+
     @Override
     public int getLayouts(Bundle var1) {
         return R.layout.activity_spots;
@@ -140,10 +143,18 @@ public class SpotsActivity extends BaseScenicActivity implements ExpireBroadcast
         ExpireBroadcast.setStopMp3(this, Constants.key_spot);
     }
 
+
     @Override
     public void initData() {
+        if (mIsPlaying) {
+            sendBroadcast(Constants.ACTION_CLOSE);
+            sendToLauncher("", "", "", 3);
+        }
         page = 1;
         mPosition = 0;
+        mIsPlaying = false;
+        isFirst = true;
+        isScenic = false;
         poiId = getIntent().getStringExtra("poiId");
         try {
             HashMap<String, Serializable> map = new HashMap<>();
@@ -179,6 +190,16 @@ public class SpotsActivity extends BaseScenicActivity implements ExpireBroadcast
         //请求数据
         getDataValue();
     }
+
+
+    @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+        setIntent(intent);
+        initView();
+        initData();
+    }
+
 
     private View getHeaderView() {
         View view = getLayoutInflater().inflate(R.layout.layout_spot, (ViewGroup) rvSpots.getParent(), false);
@@ -250,7 +271,6 @@ public class SpotsActivity extends BaseScenicActivity implements ExpireBroadcast
         if (isRefresh) {
 
 
-
             mAdapter.setNewData(list);
             setText(bean);
             rlMusic.setVisibility(View.VISIBLE);
@@ -294,45 +314,45 @@ public class SpotsActivity extends BaseScenicActivity implements ExpireBroadcast
             llIntroduce.setVisibility(View.GONE);
         } else {
             llIntroduce.setVisibility(View.VISIBLE);
-            if (TextUtils.isEmpty(desc)){
+            if (TextUtils.isEmpty(desc)) {
                 tvContent.setVisibility(View.GONE);
                 tvSpot.setVisibility(View.GONE);
-            }else{
+            } else {
                 tvContent.setText(desc);
                 tvSpot.setText(name);
             }
 
-            if (TextUtils.isEmpty(bean.getMap_image())){
-                if (TextUtils.isEmpty(bean.getNavi_image())){
+            if (TextUtils.isEmpty(bean.getMap_image())) {
+                if (TextUtils.isEmpty(bean.getNavi_image())) {
                     ivScenicMap.setVisibility(View.GONE);
-                }else{
+                } else {
                     ivScenicMap.setVisibility(View.VISIBLE);
                     Glide.with(this).load(bean.getNavi_image()).apply(CommonUtils.options).into(ivScenicMap);
                     ivScenicMap.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-                            Intent intent = new Intent(mContext,PhotoViewActivity.class);
-                            intent.putExtra("photo_img",bean.getNavi_image());
+                            Intent intent = new Intent(mContext, PhotoViewActivity.class);
+                            intent.putExtra("photo_img", bean.getNavi_image());
                             startActivity(intent);
                         }
                     });
                 }
 
-            }else{
+            } else {
                 ivScenicMap.setVisibility(View.VISIBLE);
                 Glide.with(this).load(bean.getMap_image()).apply(CommonUtils.options).into(ivScenicMap);
 
                 ivScenicMap.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        Intent intent = new Intent(mContext,PhotoViewActivity.class);
-                        intent.putExtra("photo_img",bean.getMap_image());
+                        Intent intent = new Intent(mContext, PhotoViewActivity.class);
+                        intent.putExtra("photo_img", bean.getMap_image());
                         startActivity(intent);
                     }
                 });
             }
-            Logs.e("Map_image:"+bean.getMap_image());
-            Logs.e("Navi_image:"+bean.getNavi_image());
+            Logs.e("Map_image:" + bean.getMap_image());
+            Logs.e("Navi_image:" + bean.getNavi_image());
         }
         tvName.setText(name);
         tvMusicName.setText(name);
@@ -341,15 +361,15 @@ public class SpotsActivity extends BaseScenicActivity implements ExpireBroadcast
         tvTitle.setText(title);
     }
 
-    public void addEventLong(){
+    public void addEventLong() {
         //TODO 播放时长
 
-        if (startTimer != 0.0){
+        if (startTimer != 0.0) {
             endTimer = System.currentTimeMillis();
             HashMap<String, Serializable> map = new HashMap<>();
-            map.put("scenic_spots_over_name",musicList.get(mPosition).getName());
-            map.put("scenic_spots_over_long",(endTimer-startTimer)+"");
-            addStatisticsEvent("scenic_spots_over",map);
+            map.put("scenic_spots_over_name", musicList.get(mPosition).getName());
+            map.put("scenic_spots_over_long", (endTimer - startTimer) + "");
+            addStatisticsEvent("scenic_spots_over", map);
         }
         startTimer = 0;
         endTimer = 0;
@@ -366,20 +386,20 @@ public class SpotsActivity extends BaseScenicActivity implements ExpireBroadcast
                     addEventLong();
                     //TODO 暂停
                     HashMap<String, Serializable> maps = new HashMap<>();
-                    maps.put("scenic_spots_auto_off_name",musicList.get(mPosition).getName());
-                    addStatisticsEvent("scenic_spots_auto_off",maps);
+                    maps.put("scenic_spots_auto_off_name", musicList.get(mPosition).getName());
+                    addStatisticsEvent("scenic_spots_auto_off", maps);
                     sendBroadcast(Constants.ACTION_PAUSE);
                 } else {
-                    if(!isFirst){
+                    if (!isFirst) {
                         HashMap<String, Serializable> maps = new HashMap<>();
-                        maps.put("scenic_spots_auto_on_name",musicList.get(mPosition).getName());
-                        addStatisticsEvent("scenic_spots_auto_on",maps);
+                        maps.put("scenic_spots_auto_on_name", musicList.get(mPosition).getName());
+                        addStatisticsEvent("scenic_spots_auto_on", maps);
                         sendBroadcast(Constants.ACTION_PLAY);
-                    }else{
+                    } else {
                         HashMap<String, Serializable> maps = new HashMap<>();
-                        maps.put("scenic_spots_auto_on_name",musicList.get(0).getName());
-                        addStatisticsEvent("scenic_spots_auto_on",maps);
-                        sendBroadcast(Constants.ACTION_LIST_ITEM,0);
+                        maps.put("scenic_spots_auto_on_name", musicList.get(0).getName());
+                        addStatisticsEvent("scenic_spots_auto_on", maps);
+                        sendBroadcast(Constants.ACTION_LIST_ITEM, 0);
                         isFirst = false;
                     }
 
@@ -394,7 +414,7 @@ public class SpotsActivity extends BaseScenicActivity implements ExpireBroadcast
                     addEventLong();
                     //TODO 下一首
                     isScenic = true;
-                    addStatisticsEvent("scenic_spots_down",null);
+                    addStatisticsEvent("scenic_spots_down", null);
                     sendBroadcast(Constants.ACTION_NEXT);
                 }
                 break;
@@ -407,38 +427,38 @@ public class SpotsActivity extends BaseScenicActivity implements ExpireBroadcast
                     addEventLong();
                     //TODO 上一首
                     isScenic = true;
-                    addStatisticsEvent("scenic_spots_up",null);
+                    addStatisticsEvent("scenic_spots_up", null);
                     sendBroadcast(Constants.ACTION_PRV);
                 }
                 break;
             case R.id.tv_left:
-                if (mIsPlaying){
+                if (mIsPlaying) {
                     addEventLong();
                 }
                 //暂停播放
-                sendToLauncher("","","",3);
+                sendToLauncher("", "", "", 3);
 
                 addStatisticsEvent("scenic_spots_close", null);
                 onBackPressed();
                 sendBroadcast(Constants.ACTION_CLOSE);
                 Intent intent = new Intent(getApplicationContext(), MusicService.class);
                 stopService(intent);// 关闭服务
-
+                finish();
                 break;
             case R.id.iv_scenic:
                 if (!CommonUtils.isNetworkAvailable(this)) {
                     ToastUtil.showShort(this, "当前网络不可用！");
                     return;
                 }
-                if (isScenic){
+                if (isScenic) {
                     addEventLong();
-                }else{
+                } else {
                     isScenic = true;
                 }
 
                 HashMap<String, Serializable> maps = new HashMap<>();
-                maps.put("scenic_spots_list_name",musicList.get(0).getName());
-                addStatisticsEvent("scenic_spots_list",maps);
+                maps.put("scenic_spots_list_name", musicList.get(0).getName());
+                addStatisticsEvent("scenic_spots_list", maps);
 
                 sendBroadcast(Constants.ACTION_LIST_ITEM, 0);
                 break;
@@ -447,12 +467,12 @@ public class SpotsActivity extends BaseScenicActivity implements ExpireBroadcast
         }
     }
 
-    public void sendToLauncher(String poiName,String urlPic,String name,int type){
+    public void sendToLauncher(String poiName, String urlPic, String name, int type) {
         Intent intent1 = new Intent();
-        intent1.putExtra("urlPic",urlPic);
-        intent1.putExtra("poiName",poiName);
-        intent1.putExtra("name",name);
-        intent1.putExtra("type",type);
+        intent1.putExtra("urlPic", urlPic);
+        intent1.putExtra("poiName", poiName);
+        intent1.putExtra("name", name);
+        intent1.putExtra("type", type);
         intent1.setAction("com.aibabel.launcher.MUSIC");
         sendBroadcast(intent1);
     }
@@ -463,15 +483,15 @@ public class SpotsActivity extends BaseScenicActivity implements ExpireBroadcast
             ToastUtil.showShort(this, "当前网络不可用！");
             return;
         }
-        if (isScenic){
+        if (isScenic) {
             addEventLong();
-        }else {
+        } else {
             isScenic = true;
         }
 
         HashMap<String, Serializable> maps = new HashMap<>();
-        maps.put("scenic_spots_list_name",musicList.get(position+1).getName());
-        addStatisticsEvent("scenic_spots_list",maps);
+        maps.put("scenic_spots_list_name", musicList.get(position + 1).getName());
+        addStatisticsEvent("scenic_spots_list", maps);
         isFirst = false;
         sendBroadcast(Constants.ACTION_LIST_ITEM, position + 1);
     }
@@ -507,9 +527,7 @@ public class SpotsActivity extends BaseScenicActivity implements ExpireBroadcast
             if (activity != null) {
                 if (msg.what == Constants.MSG_PROGRESS) {
                     int currentPosition = msg.arg1;
-//                    int totalDuration = msg.arg2;
                     pbProgress.setProgress(currentPosition / 1000);
-//                    tvProgress.setText(StringUtil.formatTime(currentPosition));
 
                 }
                 if (msg.what == Constants.MSG_PREPARED) {
@@ -523,14 +541,15 @@ public class SpotsActivity extends BaseScenicActivity implements ExpireBroadcast
                 }
                 if (msg.what == Constants.MSG_PLAY_STATE) {
                     mIsPlaying = (boolean) msg.obj;
-                    if(mIsPlaying && startTimer==0.0){
+                    if (mIsPlaying && startTimer == 0.0) {
                         startTimer = System.currentTimeMillis();
                     }
                     switchUI(mPosition, mIsPlaying);
                 }
                 if (msg.what == Constants.MSG_CANCEL) {
                     mIsPlaying = false;
-                    finish();
+                    pbProgress.setProgress(0);
+                    tvStart.setBackgroundResource(R.mipmap.ic_play_normal);
                 }
             }
         }
@@ -572,8 +591,21 @@ public class SpotsActivity extends BaseScenicActivity implements ExpireBroadcast
     }
 
     @Override
+    protected void onResume() {
+        super.onResume();
+        Log.e("tag", "=============onResume===================");
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        Log.e("tag", "=============onPause===================");
+    }
+
+    @Override
     protected void onStop() {
         super.onStop();
+        Log.e("tag", "=============onStop===================");
     }
 
     /**
@@ -582,16 +614,16 @@ public class SpotsActivity extends BaseScenicActivity implements ExpireBroadcast
      * @param action
      */
     private void sendBroadcast(String action) {
-            Intent intent = new Intent();
-            intent.setAction(action);
-            sendBroadcast(intent);
+        Intent intent = new Intent();
+        intent.setAction(action);
+        sendBroadcast(intent);
     }
 
     private void sendBroadcast(String action, int position) {
-            Intent intent = new Intent();
-            intent.putExtra("position", position);
-            intent.setAction(action);
-            sendBroadcast(intent);
+        Intent intent = new Intent();
+        intent.putExtra("position", position);
+        intent.setAction(action);
+        sendBroadcast(intent);
 
     }
 

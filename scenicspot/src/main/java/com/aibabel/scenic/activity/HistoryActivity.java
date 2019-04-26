@@ -109,8 +109,6 @@ public class HistoryActivity extends BaseScenicActivity implements ExpireBroadca
     private Adapter_H adapterH;
     private Adapter_V adapterV;
     private List<HistoryBean> list = new ArrayList<>();
-    private int page;
-    private final int PAGE_SIZE = 50;
     private int mPosition = 0;
     //播放状态
     private boolean mIsPlaying;
@@ -129,6 +127,14 @@ public class HistoryActivity extends BaseScenicActivity implements ExpireBroadca
     }
 
     @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+        setIntent(intent);
+        initView();
+        initData();
+    }
+
+    @Override
     public void initView() {
         tvPre.setOnClickListener(this);
         tvNext.setOnClickListener(this);
@@ -141,13 +147,17 @@ public class HistoryActivity extends BaseScenicActivity implements ExpireBroadca
 
     @Override
     public void initData() {
+        if (mIsPlaying) {
+            sendBroadcast(Constants.ACTION_CLOSE);
+            sendToLauncher("", "", "", 3);
+        }
+        mPosition = 0;
+        mIsPlaying = false;
         menuCountryId = getIntent().getStringExtra("menuCountryId");
         historyPage = getIntent().getStringExtra("historyPage");
         imageCountry = getIntent().getStringExtra("imageCountry");
         json = getIntent().getStringExtra("json");
         mPosition = getIntent().getIntExtra("position", 0);
-        page = 1;
-
         try {
             HashMap<String, Serializable> map = new HashMap<>();
             map.put("scenic_history_open_name", list.get(mPosition).getName());
@@ -411,7 +421,9 @@ public class HistoryActivity extends BaseScenicActivity implements ExpireBroadca
                 }
                 if (msg.what == Constants.MSG_CANCEL) {
                     mIsPlaying = false;
-                    finish();
+                    pbProgress.setProgress(0);
+                    tvStart.setBackgroundResource(R.mipmap.ic_play_normal);
+//                    finish();
                 }
             }
         }
@@ -464,18 +476,18 @@ public class HistoryActivity extends BaseScenicActivity implements ExpireBroadca
     private void sendBroadcast(String action) {
 
 
-            Intent intent = new Intent();
-            intent.setAction(action);
-            sendBroadcast(intent);
+        Intent intent = new Intent();
+        intent.setAction(action);
+        sendBroadcast(intent);
 
 
     }
 
     private void sendBroadcast(String action, int position) {
-            Intent intent = new Intent();
-            intent.putExtra("position", position);
-            intent.setAction(action);
-            sendBroadcast(intent);
+        Intent intent = new Intent();
+        intent.putExtra("position", position);
+        intent.setAction(action);
+        sendBroadcast(intent);
 
     }
 
