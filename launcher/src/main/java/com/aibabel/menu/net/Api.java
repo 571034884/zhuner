@@ -13,9 +13,9 @@ public class Api {
     /**
      * 正式服务器
      */
-//        public static String HOST_WEB = "https://api.web.aibabel.cn:7001";
+    public static String HOST_WEB = "https://api.web.aibabel.cn:7001";
     //测试服务器
-    public static String HOST_WEB = "https://wx.aibabel.com:3002";
+//    public static String HOST_WEB = "https://wx.aibabel.com:3002";
 
     public static final String METHOD_GROUP_WEB = "/common/api/im/";
 

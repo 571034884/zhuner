@@ -144,8 +144,8 @@ public class HxMainActivity extends LaunBaseActivity {
         statictvUnreadMsgNumber = tvUnreadMsgNumber;
         //判定是否支持，以便于显示不同的布局
         currentTabIndex = fragment_index;
-        compareGroupId();
         isSupport();
+        compareGroupId();
     }
 
     public static int HX_BadgeCount = 0;
@@ -197,6 +197,7 @@ public class HxMainActivity extends LaunBaseActivity {
                 try {
                     if (EMClient.getInstance().isLoggedInBefore() && isSupport && CommonUtils.isNetworkAvailable(HxMainActivity.this)) {
                         //从服务器获取自己加入的和创建的群组列表，此api获取的群组sdk会自动保存到内存和db。
+                        Log.e("groupId","111111111111111111111");
                         List<EMGroup> groupList = EMClient.getInstance().groupManager().getJoinedGroupsFromServer();//需异步处理
                         if (null != groupList && groupList.size() > 0) {
                             String hxGroupId = groupList.get(0).getGroupId();
@@ -207,6 +208,9 @@ public class HxMainActivity extends LaunBaseActivity {
                                 mmkv.encode(Constant.EM_SUPPORT, false);
                                 getHxUserInfo();
                             }
+                        }else{
+                            Log.e("groupId","groupId变化了，下次进来就不会请求了");
+                            mmkv.encode(Constant.EM_SUPPORT, false);
                         }
                     }
                 } catch (Exception e) {
