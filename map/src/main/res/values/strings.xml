@@ -1,7 +1,0 @@
-<resources>
-    <string name="app_name">Map</string>
-    <string name="splash_zero">0 跳过</string>
-    <string name="more">查看更多</string>
-    <string name="navigation">导航</string>
-    <string name="card">问路卡</string>
-</resources>

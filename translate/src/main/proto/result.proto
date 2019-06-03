@@ -1,7 +1,0 @@
-package proto;
-
-message Result{
-    optional int32 code= 1;
-    optional string msg = 2;
-    optional bytes buffer = 3;
-}
